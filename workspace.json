@@ -102,6 +102,32 @@
           }
         }
       }
+    },
+    "email": {
+      "root": "packages/email",
+      "sourceRoot": "packages/email",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/email",
+            "tsConfig": "packages/email/tsconfig.json",
+            "packageJson": "packages/email/package.json",
+            "main": "packages/email/index.ts",
+            "assets": [
+              "packages/email/*.md",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/email/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
