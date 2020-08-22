@@ -6,7 +6,7 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-            <Button text="local-notifications" tap="{{ viewDemo }}" class="btn"/>
+            <Button text="local-notifications" tap="{{ viewDemo }}" class="btn view-demo"/>
 
           </StackLayout>
         </ScrollView>

@@ -13,7 +13,8 @@
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
     "@nativescript/local-notifications": "file:../../packages/local-notifications",
-    "@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate"
+    "@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
+    "@nativescript/email": "file:../../packages/email"
   },
   "devDependencies": {
     "@nativescript/webpack": "~2.1.0",

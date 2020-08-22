@@ -35,6 +35,9 @@
     },
     "demo": {
       "tags": []
+    },
+    "email": {
+      "tags": []
     }
   },
   "workspaceLayout": {

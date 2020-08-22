@@ -40,4 +40,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
+*.tgz
 apps/**/webpack.config.js
