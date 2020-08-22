@@ -128,6 +128,23 @@
           }
         }
       }
+    },
+    "all": {
+      "root": "packages",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run email:build",
+              "nx run local-notifications:build",
+              "nx run shared-notification-delegate:build"
+            ],
+            "parallel": false
+          }
+        }
+      }
     }
   },
   "cli": {

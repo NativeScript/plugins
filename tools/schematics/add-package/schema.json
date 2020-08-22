@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "add-plugin",
+  "id": "add-package",
   "type": "object",
   "properties": {
     "name": {
@@ -9,7 +9,8 @@
       "$default": {
         "$source": "argv",
         "index": 0
-      }
+      },
+      "x-prompt": "What should the new package be named?"
     }
   },
   "required": ["name"]

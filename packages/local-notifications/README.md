@@ -15,12 +15,12 @@
 The Local Notifications plugin allows your app to show notifications when the app is not running.
 Just like remote push notifications, but a few orders of magnitude easier to set up.
 
-> ⚠️ Plugin version 4.0.0 should be used with NativeScript 6+. If you have an older `tns --version`, please use an older plugin version.
+> ⚠️ Plugin version 4.0.0 should be used with NativeScript 6+. If you have an older `ns --version`, please use an older plugin version.
 
 ## Installation
 From the command prompt go to your app's root folder and execute:
 ```bash
-tns plugin add @nativescript/local-notifications
+ns plugin add @nativescript/local-notifications
 ```
 
 ## Setup (since plugin version 3.0.0)

@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.telerik.localnotifications">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application>
+        <service
+            android:name="com.telerik.localnotifications.NotificationActionReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.telerik.localnotifications.NotificationClearedReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.telerik.localnotifications.NotificationAlarmReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.telerik.localnotifications.NotificationRestoreReceiver"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

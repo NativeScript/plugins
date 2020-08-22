@@ -35,3 +35,7 @@ export function jsonParse(content: string) {
   }
   return {};
 }
+
+export function sanitizeCollectionArgs(value: string) {
+  return (value || '').split(',').map(t => t.toLowerCase().trim());
+}

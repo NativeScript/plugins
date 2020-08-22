@@ -38,6 +38,9 @@
     },
     "email": {
       "tags": []
+    },
+    "all": {
+      "tags": []
     }
   },
   "workspaceLayout": {

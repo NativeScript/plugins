@@ -160,23 +160,3 @@ export class MFMailComposeViewControllerDelegateImpl extends NSObject {
     this._callback(result, error);
   }
 }
-// var MFMailComposeViewControllerDelegateImpl = (function (_super) {
-//   __extends(MFMailComposeViewControllerDelegateImpl, _super);
-
-//   function MFMailComposeViewControllerDelegateImpl() {
-//     _super.apply(this, arguments);
-//   }
-
-//   MFMailComposeViewControllerDelegateImpl.new = function () {
-//     return _super.new.call(this);
-//   };
-//   MFMailComposeViewControllerDelegateImpl.prototype.initWithCallback = function (callback) {
-//     this._callback = callback;
-//     return this;
-//   };
-//   MFMailComposeViewControllerDelegateImpl.prototype.mailComposeControllerDidFinishWithResultError = function (controller, result, error) {
-//     this._callback(result, error);
-//   };
-//   MFMailComposeViewControllerDelegateImpl.ObjCProtocols = [MFMailComposeViewControllerDelegate];
-//   return MFMailComposeViewControllerDelegateImpl;
-// })(NSObject);

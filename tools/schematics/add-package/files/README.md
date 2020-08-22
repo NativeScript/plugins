@@ -1,7 +1,7 @@
 # Nativescript <%= name %>
 
 ```javascript
-tns plugin add @nativescript/<%= name %>
+ns plugin add @nativescript/<%= name %>
 ```
 
 ## Usage 

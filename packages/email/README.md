@@ -15,7 +15,7 @@ You can use this plugin to compose an e-mail, have the user edit the draft manua
 > Note that this plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
 
 ```javascript
-tns plugin add @nativescript/email
+ns plugin add @nativescript/email
 ```
 
 ## Usage 
@@ -63,9 +63,9 @@ var email = require("@nativescript/email");
 #### JavaScript
 
 ```js
-  // let's first create a File object using the tns file module
-  var fs = require("file-system");
-  var appPath = fs.knownFolders.currentApp().path;
+  // let's first create a File object
+  import { knownFolders } from "@nativescript/core";
+  var appPath = knownFolders.currentApp().path;
   var logoPath = appPath + "/res/telerik-logo.png";
 
   email.compose({
