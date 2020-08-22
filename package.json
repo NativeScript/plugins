@@ -3,38 +3,48 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "nx": "nx",
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
-    "lint": "nx workspace-lint && nx lint",
-    "e2e": "nx e2e",
-    "affected:apps": "nx affected:apps",
-    "affected:libs": "nx affected:libs",
-    "affected:build": "nx affected:build",
-    "affected:e2e": "nx affected:e2e",
-    "affected:test": "nx affected:test",
-    "affected:lint": "nx affected:lint",
-    "affected:dep-graph": "nx affected:dep-graph",
-    "affected": "nx affected",
-    "format": "nx format:write",
-    "format:write": "nx format:write",
-    "format:check": "nx format:check",
-    "update": "nx migrate latest",
-    "workspace-schematic": "nx workspace-schematic",
-    "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "setup": "npx rimraf node_modules package-lock.json && npm i && ts-patch install",
+    "start": "nps"
   },
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "@nativescript/core": "rc",
+    "@nativescript/types": "rc",
+    "@nativescript/webpack": "^2.1.3",
+    "@nrwl/eslint-plugin-nx": "10.0.13",
+    "@nrwl/jest": "^10.0.13",
+    "@nrwl/node": "^10.0.13",
     "@nrwl/workspace": "10.0.13",
-    "@types/node": "~8.9.4",
-    "dotenv": "6.2.0",
-    "ts-node": "~7.0.0",
-    "tslint": "~6.0.0",
-    "eslint": "6.8.0",
+    "@nstudio/nps-i": "~1.1.0",
+    "@nstudio/focus": "^10.0.6",
+    "@types/jest": "~26.0.10",
+    "@types/node": "~12.0.0",
+    "@typescript-eslint/eslint-plugin": "~3.6.0",
+    "@typescript-eslint/parser": "~3.6.0",
+    "dotenv": "~8.2.0",
+    "eslint": "~7.4.0",
+    "eslint-config-prettier": "~6.11.0",
+    "husky": "^4.2.5",
+    "jest": "~26.4.1",
+    "lint-staged": "^10.2.11",
+    "nativescript-theme-core": "^1.0.4",
+    "prettier": "~2.0.4",
+    "rimraf": "^3.0.2",
+    "ts-jest": "~26.2.0",
+    "ts-node": "~8.10.2",
+    "ts-patch": "^1.3.0",
+    "tslint": "~6.1.2",
     "typescript": "~3.9.3",
-    "prettier": "2.0.4"
+    "node-sass": "^4.12.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": [
+      "nx format:write --files"
+    ]
   }
 }

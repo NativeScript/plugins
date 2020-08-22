@@ -1,7 +1,110 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "local-notifications": {
+      "root": "packages/local-notifications",
+      "sourceRoot": "packages/local-notifications",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/local-notifications",
+            "tsConfig": "packages/local-notifications/tsconfig.json",
+            "packageJson": "packages/local-notifications/package.json",
+            "main": "packages/local-notifications/index.ts",
+            "assets": [
+              "packages/local-notifications/*.md",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/local-notifications/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "shared-notification-delegate": {
+      "root": "packages/shared-notification-delegate",
+      "sourceRoot": "packages/shared-notification-delegate",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/shared-notification-delegate",
+            "tsConfig": "packages/shared-notification-delegate/tsconfig.json",
+            "packageJson": "packages/shared-notification-delegate/package.json",
+            "main": "packages/shared-notification-delegate/index.ts",
+            "assets": [
+              "packages/shared-notification-delegate/*.md",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/shared-notification-delegate/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "demo": {
+      "root": "apps/demo/",
+      "sourceRoot": "apps/demo/src",
+      "projectType": "application",
+      "prefix": "nativescript",
+      "architect": {
+        "ios": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "ns debug ios --no-hmr"
+              }
+            ],
+            "cwd": "apps/demo",
+            "parallel": false
+          }
+        },
+        "android": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "ns debug android --no-hmr"
+              }
+            ],
+            "cwd": "apps/demo",
+            "parallel": false
+          }
+        },
+        "clean": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npx rimraf -- hooks node_modules platforms package-lock.json"
+              },
+              {
+                "command": "npm i"
+              },
+              {
+                "command": "npx rimraf -- package-lock.json"
+              }
+            ],
+            "cwd": "apps/demo",
+            "parallel": false
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nstudio/xplat"
   }
 }

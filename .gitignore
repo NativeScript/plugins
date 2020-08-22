@@ -6,7 +6,9 @@
 /out-tsc
 
 # dependencies
-/node_modules
+node_modules
+package-lock.json
+yarn.lock
 
 # IDEs and editors
 /.idea
@@ -37,3 +39,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+apps/**/webpack.config.js

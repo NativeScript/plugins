@@ -1,5 +1,5 @@
 {
-  "npmScope": "plugins",
+  "npmScope": "nativescript",
   "affected": {
     "defaultBase": "master"
   },
@@ -17,13 +17,28 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ]
       }
     }
   },
-  "projects": {},
+  "projects": {
+    "local-notifications": {
+      "tags": []
+    },
+    "shared-notification-delegate": {
+      "tags": []
+    },
+    "demo": {
+      "tags": []
+    }
+  },
   "workspaceLayout": {
-    "appsDir": "packages",
+    "appsDir": "apps",
     "libsDir": "packages"
   }
 }
