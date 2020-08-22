@@ -1,9 +1,9 @@
-# @nativescript plugins
+# @nativescript/\* plugins
 
 ```
 npm run setup
 npm start
 ```
 
-@nativescript/local-notifications
-@nativescript/shared-notification-delegate
+- @nativescript/local-notifications
+- @nativescript/shared-notification-delegate
