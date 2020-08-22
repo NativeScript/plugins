@@ -1,0 +1,5 @@
+import { <%= stringUtils.classify(name) %>Common } from './common';
+
+export class <%= stringUtils.classify(name) %> extends <%= stringUtils.classify(name) %>Common {
+    
+}
