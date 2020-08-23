@@ -45,11 +45,60 @@ module.exports = {
 		// packages
 		// build output is always in dist/packages
 		'@nativescript': {
+			// @nativescript/camera
+			camera: {
+				build: {
+					script: 'nx run camera:build',
+					description: '@nativescript/camera: Build',
+				},
+			},
+			// @nativescript/datetimepicker
+			datetimepicker: {
+				build: {
+					script: 'nx run datetimepicker:build',
+					description: '@nativescript/datetimepicker: Build',
+				},
+			},
+			// @nativescript/directions
+			directions: {
+				build: {
+					script: 'nx run directions:build',
+					description: '@nativescript/directions: Build',
+				},
+			},
 			// @nativescript/email
 			email: {
 				build: {
 					script: 'nx run email:build',
 					description: '@nativescript/email: Build',
+				},
+			},
+			// @nativescript/fingerprint-auth
+			'fingerprint-auth': {
+				build: {
+					script: 'nx run fingerprint-auth:build',
+					description: '@nativescript/fingerprint-auth: Build',
+				},
+			},
+			// @nativescript/geolocation
+			geolocation: {
+				build: {
+					script: 'nx run geolocation:build',
+					description: '@nativescript/geolocation: Build',
+				},
+			},
+			// @nativescript/imagepicker
+			imagepicker: {
+				build: {
+					script: 'nx run imagepicker:build',
+					description: '@nativescript/imagepicker: Build',
+				},
+			},
+			// @nativescript/iqkeyboardmanager
+			iqkeyboardmanager: {
+				build: {
+					script: 'nx run iqkeyboardmanager:build',
+					description: '@nativescript/iqkeyboardmanager: Build',
 				},
 			},
 			// @nativescript/local-notifications
@@ -64,6 +113,13 @@ module.exports = {
 				build: {
 					script: 'nx run shared-notification-delegate:build',
 					description: '@nativescript/shared-notification-delegate: Build',
+				},
+			},
+			// @nativescript/zip
+			zip: {
+				build: {
+					script: 'nx run zip:build',
+					description: '@nativescript/zip: Build',
 				},
 			},
 			'build-all': {
@@ -90,9 +146,37 @@ module.exports = {
 			description: '_____________  Focus (VS Code supported)  _____________',
 		},
 		focus: {
+			camera: {
+				script: 'nx g @nstudio/focus:mode camera',
+				description: 'Focus on @nativescript/camera',
+			},
+			datetimepicker: {
+				script: 'nx g @nstudio/focus:mode datetimepicker',
+				description: 'Focus on @nativescript/datetimepicker',
+			},
+			directions: {
+				script: 'nx g @nstudio/focus:mode directions',
+				description: 'Focus on @nativescript/directions',
+			},
 			email: {
 				script: 'nx g @nstudio/focus:mode email',
 				description: 'Focus on @nativescript/email',
+			},
+			'fingerprint-auth': {
+				script: 'nx g @nstudio/focus:mode fingerprint-auth',
+				description: 'Focus on @nativescript/fingerprint-auth',
+			},
+			geolocation: {
+				script: 'nx g @nstudio/focus:mode geolocation',
+				description: 'Focus on @nativescript/geolocation',
+			},
+			imagepicker: {
+				script: 'nx g @nstudio/focus:mode imagepicker',
+				description: 'Focus on @nativescript/imagepicker',
+			},
+			iqkeyboardmanager: {
+				script: 'nx g @nstudio/focus:mode iqkeyboardmanager',
+				description: 'Focus on @nativescript/iqkeyboardmanager',
 			},
 			'local-notifications': {
 				script: 'nx g @nstudio/focus:mode local-notifications',
@@ -101,6 +185,10 @@ module.exports = {
 			'shared-notification-delegate': {
 				script: 'nx g @nstudio/focus:mode shared-notification-delegate',
 				description: 'Focus on @nativescript/shared-notification-delegate',
+			},
+			zip: {
+				script: 'nx g @nstudio/focus:mode zip',
+				description: 'Focus on @nativescript/zip',
 			},
 			reset: {
 				script: 'nx g @nstudio/focus:mode',

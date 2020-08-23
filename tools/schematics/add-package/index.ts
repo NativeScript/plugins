@@ -12,6 +12,7 @@ export default function (schema: Schema): Rule {
 		addProjectToNxJsonInTree(name, {}),
 		updateWorkspaceConfig(),
 		updateWorkspaceScripts(),
+		updateReadMe(),
 		syncPackagesWithDemos(
 			{
 				packages: name,
@@ -60,6 +61,7 @@ function updateWorkspaceConfig() {
 						main: `packages/${name}/index.ts`,
 						assets: [
 							`packages/${name}/*.md`,
+							`packages/${name}/index.d.ts`,
 							'LICENSE',
 							{
 								glob: '**/*',
@@ -110,6 +112,30 @@ function updateWorkspaceScripts() {
 		workspaceScripts = `${focusStart}${newFocus}			${focusEnd}`;
 		// context.logger.info(workspaceScripts);
 		tree.overwrite(workspaceScriptPath, workspaceScripts);
+		return tree;
+	};
+}
+
+function updateReadMe() {
+	return (tree: Tree, context: SchematicContext) => {
+		const readmePath = 'README.md';
+		let readmeContent = tree.read(readmePath).toString('utf-8');
+
+		// Add package as build option
+		const listPackageSectionIndex = readmeContent.indexOf(`* @nativescript`);
+		const readmeStart = readmeContent.substring(0, listPackageSectionIndex);
+		const listEndIndex = readmeContent.indexOf(`# How to`);
+		const readmeEnd = readmeContent.substring(listEndIndex, readmeContent.length);
+		const packagesDir = tree.getDir('packages');
+		const packageNames = packagesDir.subdirs.sort();
+		let packageList = '';
+		for (const packageName of packageNames) {
+			packageList += `* @nativescript/${packageName}\n`;
+		}
+		readmeContent = `${readmeStart}${packageList}${readmeEnd}`;
+
+		// context.logger.info(readmeContent);
+		tree.overwrite(readmePath, readmeContent);
 		return tree;
 	};
 }
