@@ -1,0 +1,37 @@
+{
+  "nativescript": {
+    "id": "org.nativescript.demovue",
+    "tns-android": {
+      "version": "6.2.0"
+    },
+    "tns-ios": {
+      "version": "6.2.0"
+    }
+  },
+  "dependencies": {
+    "@nativescript/imagepicker": "../src",
+    "nativescript-theme-core": "~1.0.4",
+    "nativescript-vue": "~2.4.0",
+    "@nativescript/core": "rc"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "10.5.7",
+    "@babel/core": "~7.1.0",
+    "@babel/preset-env": "~7.1.0",
+    "babel-loader": "~8.0.0",
+    "chai": "~4.1.2",
+    "chai-as-promised": "~7.1.1",
+    "mocha": "^3.3.0",
+    "mocha-junit-reporter": "^1.18.0",
+    "mocha-multi": "^1.0.1",
+    "mochawesome": "^3.1.1",
+    "nativescript-dev-appium": "~5.2.0",
+    "@nativescript/webpack": "^2.1.3",
+    "nativescript-vue-template-compiler": "~2.4.0",
+    "node-sass": "~4.12.0",
+    "vue-loader": "~15.4.0",
+    "typescript": "~3.9.0"
+  }
+}

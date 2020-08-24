@@ -9,6 +9,6 @@ export function navigatingTo(args: EventData) {
 export class DemoModel extends Observable {
 	
   testIt() {
-    // Test something here
+    // test something here
   }
 }

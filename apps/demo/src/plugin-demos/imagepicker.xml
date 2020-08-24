@@ -1,14 +1,18 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+<Page xmlns="http://www.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo">
     <Page.actionBar>
-        <ActionBar title="imagepicker" icon="" class="action-bar">
-        </ActionBar>
+        <ActionBar title="Image Picker" />
     </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
-
-          </StackLayout>
-        </ScrollView>
-    </StackLayout>
+    <GridLayout rows="*, auto, auto">
+        <ListView visibility="{{ isSingleMode ? 'collapsed' : 'visible' }}" itemLoading="{{ onItemLoading }}" items="{{ imageAssets }}">
+            <ListView.itemTemplate>
+                <GridLayout columns="auto, *">
+                    <Image width="80" height="80" src="{{ $value }}" stretch="aspectFill" />
+                    <Label class="m-10" id="imageLabel" col="1" />
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+        <Image src="{{ imageSrc }}" visibility="{{ isSingleMode ? 'visible' : 'collapsed' }}" width="{{ previewSize }}" height="{{ previewSize }}" stretch="aspectFit" />
+        <Button row="1" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" />
+        <Button row="2" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" />
+    </GridLayout>
 </Page>

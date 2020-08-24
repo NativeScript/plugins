@@ -1,6 +1,86 @@
 {
 	"version": 1,
 	"projects": {
+    "demo": {
+      "root": "apps/demo/",
+      "sourceRoot": "apps/demo/src",
+      "projectType": "application",
+      "prefix": "demo",
+      "architect": {
+        "ios": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "ns debug ios --no-hmr --emulator --env.testing"
+            ],
+            "cwd": "apps/demo",
+            "parallel": false
+          }
+        },
+        "android": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "ns debug android --no-hmr --emulator --env.testing"
+            ],
+            "cwd": "apps/demo",
+            "parallel": false
+          }
+        },
+        "clean": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "npx rimraf -- hooks node_modules platforms package-lock.json webpack.config.js",
+              "npm i",
+              "npx rimraf -- package-lock.json"
+            ],
+            "cwd": "apps/demo",
+            "parallel": false
+          }
+        }
+      }
+    },
+    "demo-angular": {
+      "root": "apps/demo-angular/",
+      "sourceRoot": "apps/demo-angular/src",
+      "projectType": "application",
+      "prefix": "demo",
+      "architect": {
+        "ios": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "ns debug ios --no-hmr --emulator --env.testing"
+            ],
+            "cwd": "apps/demo-angular",
+            "parallel": false
+          }
+        },
+        "android": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "ns debug android --no-hmr --emulator --env.testing"
+            ],
+            "cwd": "apps/demo-angular",
+            "parallel": false
+          }
+        },
+        "clean": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "npx rimraf -- hooks node_modules platforms package-lock.json webpack.config.js",
+              "npm i",
+              "npx rimraf -- package-lock.json"
+            ],
+            "cwd": "apps/demo-angular",
+            "parallel": false
+          }
+        }
+      }
+    },
 		"local-notifications": {
 			"root": "packages/local-notifications",
 			"sourceRoot": "packages/local-notifications",
@@ -51,56 +131,6 @@
 								"output": "./platforms/"
 							}
 						]
-					}
-				}
-			}
-		},
-		"demo": {
-			"root": "apps/demo/",
-			"sourceRoot": "apps/demo/src",
-			"projectType": "application",
-			"prefix": "nativescript",
-			"architect": {
-				"ios": {
-					"builder": "@nrwl/workspace:run-commands",
-					"options": {
-						"commands": [
-							{
-								"command": "ns debug ios --no-hmr"
-							}
-						],
-						"cwd": "apps/demo",
-						"parallel": false
-					}
-				},
-				"android": {
-					"builder": "@nrwl/workspace:run-commands",
-					"options": {
-						"commands": [
-							{
-								"command": "ns debug android --no-hmr"
-							}
-						],
-						"cwd": "apps/demo",
-						"parallel": false
-					}
-				},
-				"clean": {
-					"builder": "@nrwl/workspace:run-commands",
-					"options": {
-						"commands": [
-							{
-								"command": "npx rimraf -- hooks node_modules platforms package-lock.json"
-							},
-							{
-								"command": "npm i"
-							},
-							{
-								"command": "npx rimraf -- package-lock.json"
-							}
-						],
-						"cwd": "apps/demo",
-						"parallel": false
 					}
 				}
 			}

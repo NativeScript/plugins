@@ -1,0 +1,50 @@
+{
+	"nativescript": {
+		"id": "org.nativescript.plugindemoangular",
+		"tns-ios": {
+			"version": "6.5.2"
+		},
+		"tns-android": {
+			"version": "6.5.3"
+		}
+	},
+	"dependencies": {
+		"@angular/animations": "~10.0.0",
+		"@angular/common": "~10.0.0",
+		"@angular/compiler": "~10.0.0",
+		"@angular/core": "~10.0.0",
+		"@angular/forms": "~10.0.0",
+		"@angular/platform-browser": "~10.0.0",
+		"@angular/platform-browser-dynamic": "~10.0.0",
+		"@angular/router": "~10.0.0",
+		"@nativescript/angular": "~10.0.0",
+		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"nativescript-theme-core": "^1.0.4",
+		"nativescript-unit-test-runner": "0.7.0",
+		"reflect-metadata": "~0.1.13",
+		"rxjs": "^6.6.0",
+		"zone.js": "~0.10.3",
+		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
+		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
+		"@nativescript/email": "file:../../dist/packages/email",
+		"@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
+		"@nativescript/datetimepicker": "file:../../dist/packages/datetimepicker",
+		"@nativescript/camera": "file:../../dist/packages/camera",
+		"@nativescript/zip": "file:../../dist/packages/zip",
+		"@nativescript/directions": "file:../../dist/packages/directions",
+		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
+		"@nativescript/geolocation": "file:../../dist/packages/geolocation",
+		"@nativescript/fingerprint-auth": "file:../../dist/packages/fingerprint-auth"
+	},
+	"devDependencies": {
+		"jasmine-core": "^2.5.2",
+		"karma": "4.1.0",
+		"karma-jasmine": "2.0.1",
+		"karma-nativescript-launcher": "^0.4.0",
+		"@nativescript/webpack": "^2.1.3",
+		"typescript": "file:../../node_modules/typescript",
+		"karma-webpack": "3.0.5",
+		"@angular/compiler-cli": "~10.0.0",
+		"@ngtools/webpack": "~10.0.0"
+	}
+}

@@ -30,6 +30,9 @@
 		},
 		"demo": {
 			"tags": []
+    },
+    "demo-angular": {
+			"tags": []
 		},
 		"email": {
 			"tags": []

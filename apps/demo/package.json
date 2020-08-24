@@ -1,6 +1,6 @@
 {
 	"nativescript": {
-		"id": "org.nativescript.sample",
+		"id": "org.nativescript.plugindemo",
 		"tns-ios": {
 			"version": "6.5.2"
 		}
