@@ -42,3 +42,4 @@ Thumbs.db
 
 *.tgz
 apps/**/webpack.config.js
+packages/**/angular/dist

@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 	demos = [
+    {
+			name: 'datetimepicker',
+		},
 		{
 			name: 'imagepicker',
 		},

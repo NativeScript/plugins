@@ -1,14 +1,29 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="camera" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
-
-          </StackLayout>
-        </ScrollView>
-    </StackLayout>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ScrollView>
+        <GridLayout rows="auto, *, auto, auto">
+            <StackLayout row="0" orientation="vertical" padding="5">
+                <StackLayout orientation="horizontal" row="0" padding="5">
+                    <Label text="saveToGallery" />
+                    <Switch checked="{{ saveToGallery }}"/>
+                </StackLayout>
+                <StackLayout android:visibility="collapsed" orientation="horizontal" row="0" padding="5">
+                    <Label text="allowsEditing" />
+                    <Switch checked="{{ allowsEditing }}"/>
+                </StackLayout>
+                <StackLayout orientation="horizontal" row="0" padding="5">
+                    <Label text="keepAspectRatio" />
+                    <Switch checked="{{ keepAspectRatio }}"/>
+                </StackLayout>
+                <StackLayout orientation="horizontal" padding="5">
+                    <Label text="width"></Label>
+                    <TextField hint="Enter width" keyboardType="number" text="{{ width }}" class="input"></TextField>
+                    <Label text="height"></Label>
+                    <TextField hint="Enter height" keyboardType="number" text="{{ height }}" class="input"></TextField>
+                </StackLayout>
+            </StackLayout>
+            <Image row="1" src="{{ cameraImage }}" id="image" stretch="aspectFit" margin="10"/>
+            <TextView row="2" text="{{ labelText }}" editable="false"></TextView>>
+            <Button row="3"  text="Take Picture" tap="onTakePictureTap"  padding="10"/>
+        </GridLayout>
+    </ScrollView>
 </Page>

@@ -105,7 +105,17 @@
 							}
 						]
 					}
-				}
+        },
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run local-notifications:build",
+              "node tools/scripts/build-finish.ts local-notifications"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"shared-notification-delegate": {
@@ -132,7 +142,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run shared-notification-delegate:build",
+              "node tools/scripts/build-finish.ts shared-notification-delegate"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"email": {
@@ -159,7 +179,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run email:build",
+              "node tools/scripts/build-finish.ts email"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"all": {
@@ -169,7 +199,7 @@
 				"build": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["nx run email:build", "nx run local-notifications:build", "nx run shared-notification-delegate:build", "nx run imagepicker:build", "nx run datetimepicker:build", "nx run camera:build", "nx run zip:build", "nx run directions:build", "nx run iqkeyboardmanager:build", "nx run geolocation:build", "nx run fingerprint-auth:build"],
+						"commands": ["nx run email:build.all", "nx run shared-notification-delegate:build.all", "nx run local-notifications:build.all", "nx run imagepicker:build.all", "nx run datetimepicker:build.all", "nx run camera:build.all", "nx run zip:build.all", "nx run directions:build.all", "nx run iqkeyboardmanager:build.all", "nx run geolocation:build.all", "nx run fingerprint-auth:build.all"],
 						"parallel": false
 					}
 				}
@@ -199,7 +229,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run imagepicker:build",
+              "node tools/scripts/build-finish.ts imagepicker"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"datetimepicker": {
@@ -226,7 +266,17 @@
 							}
 						]
 					}
-				}
+        },
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run datetimepicker:build",
+              "node tools/scripts/build-finish.ts datetimepicker"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"camera": {
@@ -253,7 +303,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run camera:build",
+              "node tools/scripts/build-finish.ts camera"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"zip": {
@@ -280,7 +340,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run zip:build",
+              "node tools/scripts/build-finish.ts zip"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"directions": {
@@ -307,7 +377,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run directions:build",
+              "node tools/scripts/build-finish.ts directions"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"iqkeyboardmanager": {
@@ -334,7 +414,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run iqkeyboardmanager:build",
+              "node tools/scripts/build-finish.ts iqkeyboardmanager"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"geolocation": {
@@ -361,7 +451,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run geolocation:build",
+              "node tools/scripts/build-finish.ts geolocation"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		},
 		"fingerprint-auth": {
@@ -388,7 +488,17 @@
 							}
 						]
 					}
-				}
+				},
+        "build.all": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run fingerprint-auth:build",
+              "node tools/scripts/build-finish.ts fingerprint-auth"
+            ],
+            "parallel": false
+          }
+        }
 			}
 		}
 	},

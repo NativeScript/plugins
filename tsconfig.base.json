@@ -23,9 +23,6 @@
       }
     ],
     "paths": {
-      "@nativescript/core": [
-        "node_modules/@nativescript/core/index.d.ts"
-      ],
       "@nativescript/*": [
         "packages/*"
       ]
