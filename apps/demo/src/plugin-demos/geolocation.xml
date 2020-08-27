@@ -3,12 +3,22 @@
         <ActionBar title="geolocation" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
-
-          </StackLayout>
-        </ScrollView>
-    </StackLayout>
+    <GridLayout rows="auto, auto, *, auto">
+        <GridLayout row="0" columns="*, *, *, *" >
+            <Button text="Enable Location" col="0" textWrap="true" tap="{{ enableLocationTap }}"/>
+            <Button text="Get Current Location" col="1" textWrap="true" tap="{{ buttonGetLocationTap }}"/>
+            <Button text="Start Monitoring" col="2" textWrap="true" tap="{{ buttonStartTap }}"/>
+            <Button text="Stop Monitoring" col="3" textWrap="true" tap="{{ buttonStopTap }}"/>
+        </GridLayout>
+        <GridLayout row="1" columns="*, *" >
+            <Button text="Start Background thread monitoring" col="0" ios:visibility="collapsed" textWrap="true" tap="{{ startBackgroundTap }}"/>
+            <Button text="Stop Background thread monitoring" col="1" ios:visibility="collapsed" textWrap="true" tap="{{ stopBackgroundTap }}"/>
+        </GridLayout>
+        <ListView row="2" items="{{ locations }}">
+            <ListView.itemTemplate>
+                <Label text="{{ $value, latitude + ', ' + longitude + ', ' + altitude }}" />
+            </ListView.itemTemplate>
+        </ListView>
+        <Button text="Clear" row="3" tap="{{ buttonClearTap }}"/>
+    </GridLayout>
 </Page>

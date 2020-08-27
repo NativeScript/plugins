@@ -1,3 +1,7 @@
-import { IqkeyboardmanagerCommon } from './common';
+import { ContentView, TextView } from "@nativescript/core";
 
-export class Iqkeyboardmanager extends IqkeyboardmanagerCommon {}
+export class PreviousNextView extends ContentView {
+}
+
+export class TextViewWithHint extends TextView {
+}

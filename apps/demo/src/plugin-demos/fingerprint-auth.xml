@@ -1,14 +1,43 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="fingerprint-auth" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+  <TabView>
+    <TabView.items>
+      <TabViewItem title="Demo">
+        <TabViewItem.view>
+          <ScrollView>
+            <StackLayout class="tab-content">
+              <Label text="{{ status }}" class="status" textWrap="true" style="text-align: center"/>
+              <Label text="Checking availability" class="title"/>
+              <Button text="available?" tap="{{ doCheckAvailable }}" class="button" />
 
+              <Label text="Detect changes in the device biometric database. For best security you want to have the user reauth whenever this method returns true." textWrap="true"/>
+              <Button text="Biometric ID changed?" tap="{{ doCheckFingerprintsChanged }}" class="button" />
+
+              <Label text="Scanning the fingerprint / face" class="title"/>
+              <Label text="When scanning fails or is not possible, you can either use the built-in passcode fallback or handle it yourself (custom fallback)." textWrap="true"/>
+              <Button text="verify with passcode fallback" tap="{{ doVerifyFingerprint }}" class="button" />
+              <iOS>
+                <Button text="verify with custom fallback" tap="{{ doVerifyFingerprintWithCustomFallback }}" class="button" />
+              </iOS>
+              <Android>
+                <Label text="Note that this will fail if you previously cancelled authentication with the button above. Try reinstalling the app if funny things happen." textWrap="true"/>
+                <Button text="verify with custom UI" tap="{{ doVerifyFingerprintWithCustomUI }}" class="button" />
+              </Android>
+            </StackLayout>
+          </ScrollView>
+        </TabViewItem.view>
+      </TabViewItem>
+      <TabViewItem title="About">
+        <TabViewItem.view>
+          <StackLayout class="tab-content">
+            <Image margin="10" src="~/res/telerik-logo.png" />
+            <Label text="Fingerprint Auth plugin demo" class="title"/>
+            <Label text="The Fingerprint Auth allows you to use the fingerprint / face scanner of your mobile device." textWrap="true"/>
+            <Label text=" "/>
+            <!-- poor mans line break, lol -->
+            <Label text="With this plugin you can replace traditional password / pincode login forms by a convenient and secure biometric authentication mechanism." textWrap="true"/>
           </StackLayout>
-        </ScrollView>
-    </StackLayout>
+        </TabViewItem.view>
+      </TabViewItem>
+    </TabView.items>
+  </TabView>
 </Page>

@@ -1,0 +1,16 @@
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+}
+
+android {
+}
+
+dependencies {
+	def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion : "11.4.0"
+	compile "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
+}
