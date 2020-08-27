@@ -1,14 +1,15 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="directions" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
-
-          </StackLayout>
-        </ScrollView>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+  <ScrollView>
+    <StackLayout>
+      <Label text="You get to control both the from and to address. Both specified either as address string or GPS coordinates." class="message" textWrap="true"/>
+      <Button text="is maps app available?" tap="{{ doCheckAvailable }}" class="button button-a" />
+      <Button text="from current location to address" tap="{{ doCurrentLocationToAddress }}" class="button" />
+      <Button text="from coord to coord" tap="{{ doCoordinateToCoordinate }}" class="button" />
+      <Button text="from address to address to address" tap="{{ doAddressToAddressToAddress }}" class="button" />
+      <ios>
+        <Label text="This one prefers Google Maps on iOS:" textWrap="true" class="hint"/>
+      </ios>
+      <Button text="from address to coord" tap="{{ doAddressToCoordinate }}" class="button" />
     </StackLayout>
+  </ScrollView>
 </Page>

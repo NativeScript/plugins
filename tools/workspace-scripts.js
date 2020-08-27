@@ -63,6 +63,13 @@ module.exports = {
 		// packages
 		// build output is always in dist/packages
 		'@nativescript': {
+      // @nativescript/appavailability
+			'appavailability': {
+				build: {
+					script: 'nx run appavailability:build',
+					description: '@nativescript/appavailability: Build',
+				},
+			},
 			// @nativescript/camera
 			camera: {
 				build: {
@@ -139,8 +146,8 @@ module.exports = {
 					script: 'nx run zip:build',
 					description: '@nativescript/zip: Build',
 				},
-			},
-			'build-all': {
+      },
+      'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
 			},
@@ -164,6 +171,10 @@ module.exports = {
 			description: '_____________  Focus (VS Code supported)  _____________',
 		},
 		focus: {
+      'appavailability': {
+				script: 'nx g @nstudio/focus:mode appavailability',
+				description: 'Focus on @nativescript/appavailability',
+			},
 			camera: {
 				script: 'nx g @nstudio/focus:mode camera',
 				description: 'Focus on @nativescript/camera',

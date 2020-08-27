@@ -1,72 +1,80 @@
 {
-	"npmScope": "nativescript",
-	"affected": {
-		"defaultBase": "master"
-	},
-	"implicitDependencies": {
-		"workspace.json": "*",
-		"package.json": {
-			"dependencies": "*",
-			"devDependencies": "*"
-		},
-		"tsconfig.base.json": "*",
-		"tslint.json": "*",
-		"nx.json": "*"
-	},
-	"tasksRunnerOptions": {
-		"default": {
-			"runner": "@nrwl/workspace/tasks-runners/default",
-			"options": {
-				"cacheableOperations": ["build", "lint", "test", "e2e"]
-			}
-		}
-	},
-	"projects": {
-		"local-notifications": {
-			"tags": []
-		},
-		"shared-notification-delegate": {
-			"tags": []
-		},
-		"demo": {
-			"tags": []
+  "npmScope": "nativescript",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "local-notifications": {
+      "tags": []
+    },
+    "shared-notification-delegate": {
+      "tags": []
+    },
+    "demo": {
+      "tags": []
     },
     "demo-angular": {
-			"tags": []
-		},
-		"email": {
-			"tags": []
-		},
-		"all": {
-			"tags": []
-		},
-		"imagepicker": {
-			"tags": []
-		},
-		"datetimepicker": {
-			"tags": []
-		},
-		"camera": {
-			"tags": []
-		},
-		"zip": {
-			"tags": []
-		},
-		"directions": {
-			"tags": []
-		},
-		"iqkeyboardmanager": {
-			"tags": []
-		},
-		"geolocation": {
-			"tags": []
-		},
-		"fingerprint-auth": {
-			"tags": []
-		}
-	},
-	"workspaceLayout": {
-		"appsDir": "apps",
-		"libsDir": "packages"
-	}
+      "tags": []
+    },
+    "email": {
+      "tags": []
+    },
+    "all": {
+      "tags": []
+    },
+    "imagepicker": {
+      "tags": []
+    },
+    "datetimepicker": {
+      "tags": []
+    },
+    "camera": {
+      "tags": []
+    },
+    "zip": {
+      "tags": []
+    },
+    "directions": {
+      "tags": []
+    },
+    "iqkeyboardmanager": {
+      "tags": []
+    },
+    "geolocation": {
+      "tags": []
+    },
+    "fingerprint-auth": {
+      "tags": []
+    },
+    "appavailability": {
+      "tags": []
+    }
+  },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  }
 }

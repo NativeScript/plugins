@@ -23,7 +23,7 @@
             </StackLayout>
             <Image row="1" src="{{ cameraImage }}" id="image" stretch="aspectFit" margin="10"/>
             <TextView row="2" text="{{ labelText }}" editable="false"></TextView>>
-            <Button row="3"  text="Take Picture" tap="onTakePictureTap"  padding="10"/>
+            <Button row="3"  text="Take Picture" tap="{{ onTakePictureTap }}"  padding="10"/>
         </GridLayout>
     </ScrollView>
 </Page>

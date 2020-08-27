@@ -1,5 +1,6 @@
 import { Application, Utils } from "@nativescript/core";
 import { DirectionsApi, DirectionsCommon, NavigateToOptions } from "./common";
+export * from './common';
 
 let com: any;
 

@@ -86,7 +86,7 @@ function updateWorkspaceConfig() {
 		// add to build all
 		const workspaceData = getJsonFromFile(tree, 'workspace.json');
 		projects.all = workspaceData.projects.all;
-		projects.all.architect.build.options.commands.push(`nx run ${name}:build`);
+		projects.all.architect.build.options.commands.push(`nx run ${name}:build.all`);
 		return updateWorkspaceJson({ projects })(tree, context);
 	};
 }

@@ -1,7 +1,7 @@
 <Page class="page"
     navigatingTo="navigatingTo"
     xmlns="http://schemas.nativescript.org/tns.xsd"
-    xmlns:datetime="nativescript-datetimepicker">
+    xmlns:datetime="@nativescript/datetimepicker">
     
     <ActionBar class="action-bar">
         <Label class="action-bar-title" text="DateTimePicker Demo TS"></Label>

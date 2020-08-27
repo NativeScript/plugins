@@ -1,4 +1,4 @@
-import { Observable, EventData, Page } from '@nativescript/core';
+import { Observable, EventData, Page, ItemEventData, Label } from '@nativescript/core';
 import * as imagepicker from '@nativescript/imagepicker';
 
 export function navigatingTo(args: EventData) {

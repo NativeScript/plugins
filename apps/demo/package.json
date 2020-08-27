@@ -1,31 +1,32 @@
 {
-	"nativescript": {
-		"id": "org.nativescript.plugindemo",
-		"tns-ios": {
-			"version": "6.5.2"
-		}
-	},
-	"main": "app.js",
-	"description": "NativeScript Application",
-	"license": "SEE LICENSE IN <your-license-filename>",
-	"repository": "<fill-your-repository-here>",
-	"dependencies": {
-		"nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
-		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/local-notifications": "file:../../packages/local-notifications",
-		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
-		"@nativescript/email": "file:../../packages/email",
-		"@nativescript/imagepicker": "file:../../packages/imagepicker",
-		"@nativescript/datetimepicker": "file:../../packages/datetimepicker",
-		"@nativescript/camera": "file:../../packages/camera",
-		"@nativescript/zip": "file:../../packages/zip",
-		"@nativescript/directions": "file:../../packages/directions",
-		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
-		"@nativescript/geolocation": "file:../../packages/geolocation",
-		"@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth"
-	},
-	"devDependencies": {
-		"@nativescript/webpack": "~2.1.0",
-		"typescript": "file:../../node_modules/typescript"
-	}
+  "nativescript": {
+    "id": "org.nativescript.plugindemo",
+    "tns-ios": {
+      "version": "6.5.2"
+    }
+  },
+  "main": "app.js",
+  "description": "NativeScript Application",
+  "license": "SEE LICENSE IN <your-license-filename>",
+  "repository": "<fill-your-repository-here>",
+  "dependencies": {
+    "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
+    "@nativescript/core": "file:../../node_modules/@nativescript/core",
+    "@nativescript/local-notifications": "file:../../packages/local-notifications",
+    "@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
+    "@nativescript/email": "file:../../packages/email",
+    "@nativescript/imagepicker": "file:../../packages/imagepicker",
+    "@nativescript/datetimepicker": "file:../../packages/datetimepicker",
+    "@nativescript/camera": "file:../../packages/camera",
+    "@nativescript/zip": "file:../../packages/zip",
+    "@nativescript/directions": "file:../../packages/directions",
+    "@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
+    "@nativescript/geolocation": "file:../../packages/geolocation",
+    "@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
+    "@nativescript/appavailability": "file:../../packages/appavailability"
+  },
+  "devDependencies": {
+    "@nativescript/webpack": "~2.1.0",
+    "typescript": "file:../../node_modules/typescript"
+  }
 }

@@ -1,8 +1,6 @@
-/**
- * iOS and Android apis should match.
- * It doesn't matter if you export `.ios` or `.android`, either one but only one.
- */
-export * from './directions.ios';
-
-// Export any shared classes, constants, etc.
-export * from './directions.common';
+import { DirectionsApi, DirectionsCommon, NavigateToOptions } from "./common";
+export declare class Directions extends DirectionsCommon implements DirectionsApi {
+    available(): Promise<boolean>;
+    navigate(options: NavigateToOptions): Promise<void>;
+}
+export * from './common';
