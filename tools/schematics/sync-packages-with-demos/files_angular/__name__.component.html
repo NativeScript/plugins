@@ -1,14 +1,10 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="<%= name %>" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
+<ActionBar title="<%= name %>" class="action-bar">
+</ActionBar>
+<StackLayout class="p-20">
+    <ScrollView class="h-full">
+      <StackLayout>
+        <Button text="Test Plugin" (tap)="testIt()" class="btn btn-primary"></Button>
 
-          </StackLayout>
-        </ScrollView>
-    </StackLayout>
-</Page>
+      </StackLayout>
+    </ScrollView>
+</StackLayout>
