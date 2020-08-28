@@ -70,16 +70,14 @@ function updateWorkspaceConfig() {
 							},
 						],
 					},
-        },
-        'build.all': {
+				},
+				'build.all': {
 					builder: '@nrwl/workspace:run-commands',
-          options: {
-            commands: [
-              `nx run ${name}:build`,
-              `node tools/scripts/build-finish.ts ${name}`
-            ],
-            parallel: false
-          }
+					outputs: ['dist/packages'],
+					options: {
+						commands: [`nx run ${name}:build`, `node tools/scripts/build-finish.ts ${name}`],
+						parallel: false,
+					},
 				},
 			},
 		};

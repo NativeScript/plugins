@@ -3,12 +3,66 @@
         <ActionBar title="iqkeyboardmanager" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
+    <ScrollView>
+    <StackLayout>
 
+      <iOS>
+        <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*, auto" horizontalAlignment="stretch">
+          <Label row="0" colSpan="2" text="Flip these default settings and try the effect with the textfields below" textWrap="true" class="title"/>
+
+          <Label row="1" text="Enable IQKeyboard" class="{{ iqKeyboardEnabled ? '' : 'disabled' }}"/>
+          <Switch row="1" checked="{{ iqKeyboardEnabled }}" tap="{{ toggleIQKeyboard }}"/>
+
+          <Label row="2" text="Enable IQKeyboard toolbar" class="{{ iqKeyboardToolbarEnabled ? '' : 'disabled' }}"/>
+          <Switch row="2" checked="{{ iqKeyboardToolbarEnabled }}" tap="{{ toggleIQKeyboardToolbar }}"/>
+
+          <Label row="3" text="Tap outside keeps keyboard open" class="{{ keepKeyboardOpenOnTouchOutside ? '' : 'disabled' }}"/>
+          <Switch row="3" checked="{{ keepKeyboardOpenOnTouchOutside }}" tap="{{ toggleKeepKeyboardOpen }}"/>
+
+          <Label row="4" text="Show 'hint' in toolbar" class="{{ showHintInToolbar ? '' : 'disabled' }}"/>
+          <Switch row="4" checked="{{ showHintInToolbar }}" tap="{{ toggleShowHintInToolbar }}"/>
+
+          <Label row="5" text="Change toolbar 'Done' button" class="{{ toggleDoneButtonTextChanged ? '' : 'disabled' }}"/>
+          <Switch row="5" checked="{{ toggleDoneButtonTextChanged }}" tap="{{ toggleDoneButtonText }}"/>
+
+          <Label row="6" text="Dark keyboard appearance" class="{{ keyboardAppearanceDark ? '' : 'disabled' }}"/>
+          <Switch row="6" checked="{{ keyboardAppearanceDark }}" tap="{{ toggleKeyboardAppearance }}"/>
+
+          <Label row="7" text="Increased keyboard distance" class="{{ increaseKeyboardDistanceFromTextField ? '' : 'disabled' }}"/>
+          <Switch row="7" checked="{{ increaseKeyboardDistanceFromTextField }}" tap="{{ toggleIncreaseKeyboardDistanceFromTextField }}"/>
+        </GridLayout>
+      </iOS>
+
+      <IQKeyboardManager:PreviousNextView>
+        <StackLayout>
+            <TextField hint="Email"/>
+            <TextField hint="Password"/>
+          <StackLayout>
+            <IQKeyboardManager:TextViewWithHint text="{{ textViewWithHintText }}" hint="Working TextView hint 🤪"/>
           </StackLayout>
-        </ScrollView>
+          <StackLayout>
+            <TextView text="{{ textViewText }}" hint="Not working TextView hint"/>
+          </StackLayout>
+          <StackLayout>
+            <TextField hint="5"/>
+          </StackLayout>
+          <StackLayout>
+            <TextField hint="6"/>
+          </StackLayout>
+          <StackLayout>
+            <TextView hint="7"/>
+          </StackLayout>
+          <StackLayout>
+            <TextView hint="8"/>
+          </StackLayout>
+          <StackLayout>
+            <TextView hint="9"/>
+          </StackLayout>
+          <StackLayout>
+            <TextField hint="10"/>
+          </StackLayout>
+        </StackLayout>
+      </IQKeyboardManager:PreviousNextView>
     </StackLayout>
+  </ScrollView>
 </Page>

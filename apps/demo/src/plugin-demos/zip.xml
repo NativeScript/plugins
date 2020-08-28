@@ -4,11 +4,7 @@
         </ActionBar>
     </Page.actionBar>
     <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
-
-          </StackLayout>
-        </ScrollView>
+        <Button text="Create Zip file" tap="{{ create }}"/>
+        <Button text="Extract Zip File" tap="{{ extract }}"/>
     </StackLayout>
 </Page>

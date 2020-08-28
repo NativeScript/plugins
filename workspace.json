@@ -108,6 +108,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run local-notifications:build",
@@ -145,6 +146,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run shared-notification-delegate:build",
@@ -182,6 +184,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run email:build",
@@ -198,6 +201,7 @@
       "architect": {
         "build": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run email:build.all",
@@ -245,6 +249,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run imagepicker:build",
@@ -282,6 +287,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run datetimepicker:build",
@@ -319,6 +325,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run camera:build",
@@ -356,6 +363,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run zip:build",
@@ -393,6 +401,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run directions:build",
@@ -430,6 +439,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run iqkeyboardmanager:build",
@@ -467,6 +477,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run geolocation:build",
@@ -504,6 +515,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run fingerprint-auth:build",
@@ -541,6 +553,7 @@
         },
         "build.all": {
           "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["dist/packages"],
           "options": {
             "commands": [
               "nx run appavailability:build",
