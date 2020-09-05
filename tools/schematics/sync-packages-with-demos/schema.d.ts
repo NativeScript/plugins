@@ -1,4 +1,3 @@
-export type SupportedDemoType = 'xml' | 'angular' | 'vue' | 'svelte' | 'react';
 export interface Schema {
   // Demo types to update
   types?: string;

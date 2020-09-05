@@ -1,12 +1,8 @@
 import { chain, Rule, Tree, SchematicContext, SchematicsException, apply, url, move, mergeWith, template, noop } from '@angular-devkit/schematics';
-import { stringUtils, serializeJson } from '@nrwl/workspace';
-import { getJsonFromFile, sanitizeCollectionArgs } from '../utils';
-import { Schema, SupportedDemoType } from './schema';
+import { stringUtils } from '@nrwl/workspace';
+import { getJsonFromFile, sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexInfoForType, getDemoIndexPathForType } from '../utils';
+import { Schema } from './schema';
 
-export const SupportedDemoTypes: Array<SupportedDemoType> = ['xml', 'angular'];//, 'vue', 'svelte', 'react'];
-// default to update all demo types
-let types: Array<SupportedDemoType> = SupportedDemoTypes;
-let packageNamesToUpdate: Array<string>;
 export default function (schema?: Schema, relativePrefix?: string): Rule {
 	if (schema) {
 		if (schema.types) {
@@ -17,18 +13,18 @@ export default function (schema?: Schema, relativePrefix?: string): Rule {
 					throw new SchematicsException(`Can only update supported demo types: ${SupportedDemoTypes.join()}`);
 				}
 			}
-			types = demoTypes;
+			setDemoTypes(demoTypes);
 		}
 		if (schema.packages) {
 			// only updating demo's for specific packages
-			packageNamesToUpdate = sanitizeCollectionArgs(schema.packages).sort();
+			setPackageNamesToUpdate(sanitizeCollectionArgs(schema.packages).sort());
 		}
 	}
 	const demoFileChains: Array<Rule> = [];
 	const demoIndexChains: Array<Rule> = [];
 	const demoDependencyChains: Array<Rule> = [];
 
-	for (const t of types) {
+	for (const t of getDemoTypes()) {
 		const demoAppRoot = getDemoAppRoot(t);
 		demoFileChains.push(addDemoFiles(t, demoAppRoot, relativePrefix));
 		demoIndexChains.push(addToDemoIndex(t, demoAppRoot));
@@ -44,15 +40,6 @@ function prerun() {
 	};
 }
 
-function checkPackages(tree: Tree, context: SchematicContext) {
-	if (!packageNamesToUpdate) {
-		// default to updating demo's for all packages in workspace
-		const packagesDir = tree.getDir('packages');
-		packageNamesToUpdate = packagesDir.subdirs.sort();
-	}
-	// context.logger.info('packageNamesToUpdate:' + packageNamesToUpdate);
-}
-
 function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePrefix: string = './') {
 	return (tree: Tree, context: SchematicContext) => {
 		context.logger.info(`Updating "${demoAppRoot}"`);
@@ -66,7 +53,7 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 				break;
 		}
 		const fileChain: Array<Rule> = [];
-		for (const name of packageNamesToUpdate) {
+		for (const name of getPackageNamesToUpdate()) {
 			const packageDemoViewPath = `${demoAppFolder}/${name}.${viewExt}`;
 			// context.logger.info('packageDemoViewPath: ' + packageDemoViewPath);
 			if (!tree.exists(packageDemoViewPath)) {
@@ -93,84 +80,47 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 
 function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 	return (tree: Tree, context: SchematicContext) => {
-    checkPackages(tree, context);
-    let demoIndexViewPath: string;
-    let indexViewContent: string;
-		let indexViewAppPath = 'src/main-page.xml';
-		let buttonTap = `tap="{{ viewDemo }}"`;
-		let buttonClass = `class="btn btn-primary view-demo"`;
-		let buttonEnd = `/>`;
-		// adjust index view app path dependent on demo type
-		switch (type) {
-			case 'angular':
-        indexViewAppPath = 'src/home.component.ts';
-        demoIndexViewPath = `${demoAppRoot}/${indexViewAppPath}`;
-        indexViewContent = tree.read(demoIndexViewPath).toString('utf-8');
-				// for (const name of packageNamesToUpdate) {
-    
-        //   if (indexViewContent.indexOf(`name: '${name}'`) === -1) {
-        //     // get index of last view-demo button
-        //     const lastEntryIndex = indexViewContent.lastIndexOf(`},`);
-        //     // get final content after that last button
-        //     const remainingContent = indexViewContent.substr(lastEntryIndex, indexViewContent.length);
-        //     // get first line break to determine position of where to insert next button
-        //     const firstLB = remainingContent.indexOf('\n');
-        //     const endingContent = indexViewContent.substring(lastEntryIndex + firstLB, indexViewContent.length);
-        //     const buttonMarkup = `${buttonStart} ${buttonTap} ${buttonClass}${buttonEnd}`;
-        //     // context.logger.info('buttonMarkup: ' + buttonMarkup);
-        //     indexViewContent = indexViewContent.substring(0, lastEntryIndex + firstLB) + `\n${buttonMarkup}` + endingContent;
-        //   }
-        // }
-        break;
-      default: 
-      demoIndexViewPath = `${demoAppRoot}/${indexViewAppPath}`;
-      indexViewContent = tree.read(demoIndexViewPath).toString('utf-8');
-  
-      for (const name of packageNamesToUpdate) {
-        let buttonStart = `<Button text="${name}"`;
-  
-        if (indexViewContent.indexOf(`Button text="${name}"`) === -1) {
-          // get index of last view-demo button
-          const lastBtnLocatorIndex = indexViewContent.lastIndexOf('view-demo');
-          // get final content after that last button
-          const remainingContent = indexViewContent.substr(lastBtnLocatorIndex, indexViewContent.length);
-          // get first line break to determine position of where to insert next button
-          const firstLB = remainingContent.indexOf('\n');
-          const endingContent = indexViewContent.substring(lastBtnLocatorIndex + firstLB, indexViewContent.length);
-          const buttonMarkup = `${buttonStart} ${buttonTap} ${buttonClass}${buttonEnd}`;
-          // context.logger.info('buttonMarkup: ' + buttonMarkup);
-          indexViewContent = indexViewContent.substring(0, lastBtnLocatorIndex + firstLB) + `\n${buttonMarkup}` + endingContent;
-        }
-      }
+		checkPackages(tree, context);
 
-      break;
+		const demoIndexViewPath = `${demoAppRoot}/${getDemoIndexPathForType(type)}`;
+		let indexViewContent = tree.read(demoIndexViewPath).toString('utf-8');
+		// adjust index view app path dependent on demo type
+		for (const name of getPackageNamesToUpdate()) {
+			switch (type) {
+				case 'angular':
+					//   if (indexViewContent.indexOf(`name: '${name}'`) === -1) {
+					//     // get index of last view-demo button
+					//     const lastEntryIndex = indexViewContent.lastIndexOf(`},`);
+					//     // get final content after that last button
+					//     const remainingContent = indexViewContent.substr(lastEntryIndex, indexViewContent.length);
+					//     // get first line break to determine position of where to insert next button
+					//     const firstLB = remainingContent.indexOf('\n');
+					//     const endingContent = indexViewContent.substring(lastEntryIndex + firstLB, indexViewContent.length);
+					//     const buttonMarkup = `${buttonStart} ${buttonTap} ${buttonClass}${buttonEnd}`;
+					//     // context.logger.info('buttonMarkup: ' + buttonMarkup);
+					//     indexViewContent = indexViewContent.substring(0, lastEntryIndex + firstLB) + `\n${buttonMarkup}` + endingContent;
+					//   }
+					break;
+				default:
+					const { buttonMarkup } = getDemoIndexInfoForType(type, name);
+
+					if (indexViewContent.indexOf(`Button text="${name}"`) === -1) {
+						// get index of last view-demo button
+						const lastBtnLocatorIndex = indexViewContent.lastIndexOf('view-demo');
+						// get final content after that last button
+						const remainingContent = indexViewContent.substr(lastBtnLocatorIndex, indexViewContent.length);
+						// get first line break to determine position of where to insert next button
+						const firstLB = remainingContent.indexOf('\n');
+						const endingContent = indexViewContent.substring(lastBtnLocatorIndex + firstLB, indexViewContent.length);
+						// context.logger.info('buttonMarkup: ' + buttonMarkup);
+						indexViewContent = indexViewContent.substring(0, lastBtnLocatorIndex + firstLB) + `\n${buttonMarkup}` + endingContent;
+					}
+
+					break;
+			}
 		}
 		// context.logger.info(indexViewContent);
 		tree.overwrite(demoIndexViewPath, indexViewContent);
 		return tree;
 	};
-}
-
-function addDependencyToDemoApp(type: SupportedDemoType, demoAppRoot: string) {
-	return (tree: Tree, context: SchematicContext) => {
-		checkPackages(tree, context);
-		// update app dependencies for plugin development
-		const packagePath = `${demoAppRoot}/package.json`;
-		const packageData = getJsonFromFile(tree, packagePath);
-
-		if (packageData) {
-			packageData.dependencies = packageData.dependencies || {};
-			for (const name of packageNamesToUpdate) {
-				packageData.dependencies[`@nativescript/${name}`] = `file:../../${type === 'angular' ? 'dist/' : ''}packages/${name}`;
-			}
-
-			tree.overwrite(packagePath, serializeJson(packageData));
-		}
-
-		return tree;
-	};
-}
-
-function getDemoAppRoot(type: SupportedDemoType) {
-	return `apps/demo${type !== 'xml' ? '-' + type : ''}`;
 }

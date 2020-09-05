@@ -3,11 +3,15 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const rootDir = path.resolve(path.join(__dirname, '..', '..'));
-const args = process.argv.slice(2);
-const packageName = args[0];
-const publish = args[1] === 'publish';
+const cmdArgs = process.argv.slice(2);
+const packageName = cmdArgs[0];
+const publish = cmdArgs[1] === 'publish';
 
-console.log(`Building @nativescript/${packageName}...${publish ? 'and publishing.' : ''}`);
+// can make this argument in future to support multi scoped workspaces
+// for example: a workspace could manage @triniwiz plugins alongside @nativescript-community plugins
+let scopeName = '@nativescript'; 
+
+console.log(`Building ${scopeName}/${packageName}...${publish ? 'and publishing.' : ''}`);
 
 // build angular package
 function buildAngular() {

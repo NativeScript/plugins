@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template } from '@angular-devkit/schematics';
 import { stringUtils, addProjectToNxJsonInTree, getWorkspace } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile } from '../utils';
+import { updateWorkspaceJson, getJsonFromFile, scopeName } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
 
@@ -20,7 +20,7 @@ export default function (schema: Schema): Rule {
 			'../sync-packages-with-demos/'
 		),
 		(tree: Tree, context: SchematicContext) => {
-			context.logger.info(`"@nativescript/${name}" created and added to all demo apps. Ready to develop!`);
+			context.logger.info(`"${scopeName}/${name}" created and added to all demo apps. Ready to develop!`);
 		},
 	]);
 }
@@ -98,11 +98,11 @@ function updateWorkspaceScripts() {
 		const buildSectionIndex = workspaceScripts.indexOf(`'build-all':`);
 		const buildStart = workspaceScripts.substring(0, buildSectionIndex);
 		const buildEnd = workspaceScripts.substring(buildSectionIndex, workspaceScripts.length);
-		const newBuild = `// @nativescript/${name}
+		const newBuild = `// ${scopeName}/${name}
 			'${name}': {
 				build: {
-					script: 'nx run ${name}:build',
-					description: '@nativescript/${name}: Build',
+					script: 'nx run ${name}:build.all',
+					description: '${scopeName}/${name}: Build',
 				},
 			},
 `;
@@ -113,8 +113,8 @@ function updateWorkspaceScripts() {
 		const focusStart = workspaceScripts.substring(0, focusSectionIndex);
 		const focusEnd = workspaceScripts.substring(focusSectionIndex, workspaceScripts.length);
 		const newFocus = `'${name}': {
-				script: 'nx g @nstudio/focus:mode ${name}',
-				description: 'Focus on @nativescript/${name}',
+				script: 'node tools/scripts/focus.ts ${name}',
+				description: 'Focus on ${scopeName}/${name}',
 			},
 `;
 		workspaceScripts = `${focusStart}${newFocus}			${focusEnd}`;
@@ -130,7 +130,7 @@ function updateReadMe() {
 		let readmeContent = tree.read(readmePath).toString('utf-8');
 
 		// Add package as build option
-		const listPackageSectionIndex = readmeContent.indexOf(`* @nativescript`);
+		const listPackageSectionIndex = readmeContent.indexOf(`* ${scopeName}`);
 		const readmeStart = readmeContent.substring(0, listPackageSectionIndex);
 		const listEndIndex = readmeContent.indexOf(`# How to`);
 		const readmeEnd = readmeContent.substring(listEndIndex, readmeContent.length);
@@ -138,9 +138,9 @@ function updateReadMe() {
 		const packageNames = packagesDir.subdirs.sort();
 		let packageList = '';
 		for (const packageName of packageNames) {
-			packageList += `* @nativescript/${packageName}\n`;
+			packageList += `* ${scopeName}/${packageName}\n`;
 		}
-		readmeContent = `${readmeStart}${packageList}${readmeEnd}`;
+		readmeContent = `${readmeStart}${packageList}\n${readmeEnd}`;
 
 		// context.logger.info(readmeContent);
 		tree.overwrite(readmePath, readmeContent);

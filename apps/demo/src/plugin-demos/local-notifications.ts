@@ -1,4 +1,5 @@
 import { Observable, Dialogs, DialogStrings, EventData, Page, Color } from '@nativescript/core';
+import * as localNotifications from '@nativescript/local-notifications';
 import { LocalNotifications, ScheduleOptions } from '@nativescript/local-notifications';
 
 export function navigatingTo(args: EventData) {

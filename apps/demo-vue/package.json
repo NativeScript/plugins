@@ -1,18 +1,21 @@
 {
-  "nativescript": {
-    "id": "org.nativescript.demovue",
-    "tns-android": {
-      "version": "6.2.0"
-    },
-    "tns-ios": {
-      "version": "6.2.0"
-    }
-  },
+  "main": "app.js",
   "dependencies": {
-    "@nativescript/imagepicker": "../src",
-    "nativescript-theme-core": "~1.0.4",
-    "nativescript-vue": "~2.4.0",
-    "@nativescript/core": "rc"
+    "@nativescript/imagepicker": "file:../../packages/imagepicker",
+    "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
+    "nativescript-vue": "file:../../node_modules/nativescript-vue",
+    "@nativescript/core": "file:../../node_modules/@nativescript/core",
+    "@nativescript/appavailability": "file:../../packages/appavailability",
+    "@nativescript/camera": "file:../../packages/camera",
+    "@nativescript/datetimepicker": "file:../../packages/datetimepicker",
+    "@nativescript/directions": "file:../../packages/directions",
+    "@nativescript/email": "file:../../packages/email",
+    "@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
+    "@nativescript/geolocation": "file:../../packages/geolocation",
+    "@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
+    "@nativescript/local-notifications": "file:../../packages/local-notifications",
+    "@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
+    "@nativescript/zip": "file:../../packages/zip"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
@@ -27,11 +30,11 @@
     "mocha-junit-reporter": "^1.18.0",
     "mocha-multi": "^1.0.1",
     "mochawesome": "^3.1.1",
-    "nativescript-dev-appium": "~5.2.0",
+    "@nativescript/android": "~7.0.0",
+    "@nativescript/ios": "~7.0.0",
     "@nativescript/webpack": "^2.1.3",
-    "nativescript-vue-template-compiler": "~2.4.0",
-    "node-sass": "~4.12.0",
-    "vue-loader": "~15.4.0",
-    "typescript": "~3.9.0"
+    "nativescript-vue-template-compiler": "file:../../node_modules/nativescript-vue-template-compiler",
+    "vue-loader": "~15.9.3",
+    "typescript": "file:../../node_modules/typescript"
   }
 }
