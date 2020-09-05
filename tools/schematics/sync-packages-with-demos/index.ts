@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, SchematicsException, apply, url, move, mergeWith, template, noop } from '@angular-devkit/schematics';
 import { stringUtils } from '@nrwl/workspace';
-import { getJsonFromFile, sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexInfoForType, getDemoIndexPathForType } from '../utils';
+import { getJsonFromFile, sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType } from '../utils';
 import { Schema } from './schema';
 
 export default function (schema?: Schema, relativePrefix?: string): Rule {
@@ -102,7 +102,7 @@ function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 					//   }
 					break;
 				default:
-					const { buttonMarkup } = getDemoIndexInfoForType(type, name);
+					const { buttonMarkup } = getDemoIndexButtonForType(type, name);
 
 					if (indexViewContent.indexOf(`Button text="${name}"`) === -1) {
 						// get index of last view-demo button
