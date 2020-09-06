@@ -50,7 +50,7 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 		// adjust folder location and viewExt dependent on demo type if needed
 		switch (type) {
 			case 'angular':
-				viewExt = 'html';
+				viewExt = 'component.html';
 				break;
 		}
 		const fileChain: Array<Rule> = [];
