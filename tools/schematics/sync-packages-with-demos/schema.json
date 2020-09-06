@@ -14,6 +14,11 @@
     "packages": {
       "type": "string",
       "description": "Specific packages to update in demo apps. Defaults to all packages in workspace."
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "default": false,
+      "description": "Skip formatting files."
     }
   }
 }

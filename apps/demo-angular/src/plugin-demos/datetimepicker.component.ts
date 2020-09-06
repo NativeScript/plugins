@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewChild, ElementRef } from '@angular/core';
-import { DateTimePicker } from '@nativescript/datetimepicker';
 import { EventData, Button } from '@nativescript/core';
+import { DateTimePicker } from '@nativescript/datetimepicker';
 
 @Component({
 	selector: 'demo-datetimepicker',

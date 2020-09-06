@@ -11,6 +11,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'imagepicker',
+    },
+    {
+			name: 'appavailability',
 		},
 	];
 }

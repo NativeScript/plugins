@@ -1,6 +1,7 @@
 import { Tree, SchematicContext } from '@angular-devkit/schematics';
-import { updateWorkspaceInTree, readJsonInTree, getWorkspacePath, serializeJson } from '@nrwl/workspace';
+import { updateWorkspaceInTree, readJsonInTree, getWorkspacePath, serializeJson, stringUtils } from '@nrwl/workspace';
 import * as stripJsonComments from 'strip-json-comments';
+const xml2js = require('xml2js');
 
 // TODO: make Array in future to support multi scoped workspaces
 // for example: a workspace could manage @triniwiz plugins alongside @nativescript-community plugins
@@ -63,11 +64,14 @@ export function sanitizeCollectionArgs(value: string) {
 		.sort();
 }
 
+export function getAllPackages(tree: Tree) {
+	return tree.getDir('packages').subdirs.sort();
+}
+
 export function checkPackages(tree: Tree, context: SchematicContext) {
 	if (!packageNamesToUpdate) {
 		// default to updating demo's for all packages in workspace
-		const packagesDir = tree.getDir('packages');
-		setPackageNamesToUpdate(packagesDir.subdirs.sort());
+		setPackageNamesToUpdate(getAllPackages(tree));
 	}
 	// context.logger.info('packageNamesToUpdate:' + packageNamesToUpdate);
 }
@@ -122,6 +126,10 @@ export function getDemoAppRoot(type: SupportedDemoType) {
 	return `apps/demo${type !== 'xml' ? '-' + type : ''}`;
 }
 
+export function getPluginDemoPath() {
+  return 'src/plugin-demos';
+}
+
 export function getDemoTypeFromName(name: string): SupportedDemoType {
 	const parts = name.split('-');
 	if (parts.length > 1) {
@@ -158,7 +166,7 @@ export function getDemoIndexButtonForType(
 				buttonMarkup: `${buttonStart} ${buttonTap} ${buttonClass}${buttonEnd}`,
 			};
 		// case 'angular':
-		//   
+		//
 		//   return {
 		//     indexViewPath
 		//   };
@@ -171,5 +179,106 @@ export function getDemoIndexPathForType(type: SupportedDemoType): string {
 			return 'src/main-page.xml';
 		case 'angular':
 			return 'src/home.component.ts';
+	}
+}
+
+export function resetAngularIndex(tree: Tree, packages?: Array<string>) {
+	const angularIndexPath = `${getDemoAppRoot('angular')}/${getDemoIndexPathForType('angular')}`;
+	let angularIndex = tree.get(angularIndexPath).content.toString();
+	const demosIndex = angularIndex.indexOf('[');
+	packages = packages && packages.length ? packages : getAllPackages(tree);
+	angularIndex =
+		angularIndex.substring(0, demosIndex + 1) +
+		packages
+			.sort()
+			.map((p) => `\n{\nname: '${p}'\n}`)
+			.join(',') +
+		'\n];\n}';
+	tree.overwrite(angularIndexPath, angularIndex);
+}
+
+export function resetAngularRoutes(tree: Tree, packages?: Array<string>) {
+	const angularRouteModulePath = `${getDemoAppRoot('angular')}/src/app-routing.module.ts`;
+	let angularRouteModule = tree.get(angularRouteModulePath).content.toString();
+  const routeDefIndex = angularRouteModule.indexOf('const routes');
+  const routeModuleStart = angularRouteModule.substring(0, routeDefIndex);
+  const routeMoudleDefIndex = angularRouteModule.indexOf('@NgModule');
+  const routeModuleEnd = angularRouteModule.substring(routeMoudleDefIndex, angularRouteModule.length);
+
+	packages = packages && packages.length ? packages : getAllPackages(tree);
+	const packageRoutes =
+		packages
+			.sort()
+			.map((p) => `{ path: '${p}', loadChildren: () => import('./plugin-demos/${p}.module').then(m => m.${stringUtils.classify(p)}Module) }`)
+			.join(',\n') +
+    '\n];\n\n';
+  const routeStart = `const routes: Routes = [
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent },`;
+  angularRouteModule = routeModuleStart + routeStart + packageRoutes + routeModuleEnd;
+  console.log('angularRouteModule:', angularRouteModule)
+	// tree.overwrite(angularRouteModulePath, angularRouteModule);
+}
+
+export function resetIndexForDemoType(tree: Tree, demoType: SupportedDemoType) {
+  const packages = getPackageNamesToUpdate();
+	switch (demoType) {
+		case 'angular':
+      resetAngularIndex(tree, packages);
+      resetAngularRoutes(tree, packages);
+			break;
+		case 'xml':
+			const demoIndexPath = getDemoIndexPathForType(demoType);
+			const demoIndexFullPath = `${getDemoAppRoot(demoType)}/${demoIndexPath}`;
+			if (tree.exists(demoIndexFullPath)) {
+				const indexStringData = tree.get(demoIndexFullPath).content.toString();
+				xml2js.parseString(indexStringData, (err, indexData: any) => {
+					// console.log('indexData:', indexData);
+					if (indexData && indexData.Page) {
+						if (indexData.Page.StackLayout) {
+							const stackLayout = indexData.Page.StackLayout[0];
+							if (stackLayout && stackLayout.ScrollView) {
+								const scrollView = stackLayout.ScrollView[0];
+								if (scrollView && scrollView.StackLayout) {
+									const buttons = scrollView.StackLayout[0].Button;
+									const buttonStructure = buttons[0];
+									// console.log('buttonStructure:', buttonStructure);
+									// console.log('buttons:', buttons);
+									scrollView.StackLayout[0].Button = [];
+									if (packages.length === 0) {
+										// resetting to include buttons for all packages
+										for (const p of getAllPackages(tree)) {
+											scrollView.StackLayout[0].Button.push({
+												$: {
+													...buttonStructure.$,
+													text: p,
+												},
+											});
+										}
+									} else {
+										// focus on specific packages for demo testing
+										for (const p of packages) {
+											scrollView.StackLayout[0].Button.push({
+												$: {
+													...buttonStructure.$,
+													text: p,
+												},
+											});
+										}
+									}
+
+									const xmlBuilder = new xml2js.Builder({
+										headless: true,
+									});
+									const modifiedIndex = xmlBuilder.buildObject(indexData);
+									// console.log('modifiedIndex:', modifiedIndex);
+									tree.overwrite(demoIndexFullPath, modifiedIndex);
+								}
+							}
+						}
+					}
+				});
+			}
+			break;
 	}
 }

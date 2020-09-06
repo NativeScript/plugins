@@ -29,11 +29,11 @@
 		"@nativescript/zip": "file:../../dist/packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~7.0.0",
-		"@nativescript/ios": "~7.0.0",
-		"@nativescript/webpack": "~3.0.0",
-		"typescript": "file:../../node_modules/typescript",
 		"@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",
-		"@ngtools/webpack": "file:../../node_modules/@ngtools/webpack"
+		"@nativescript/android": "~7.0.0",
+		"@nativescript/ios": "7.0.0",
+		"@nativescript/webpack": "~3.0.0",
+		"@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",
+		"typescript": "file:../../node_modules/typescript"
 	}
 }

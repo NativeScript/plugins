@@ -4,5 +4,9 @@
     "paths": {
       "~/*": ["src/*"]
     }
-  }
+  },
+  "files": [
+    "./references.d.ts",
+    "./src/main.ts"
+  ]
 }

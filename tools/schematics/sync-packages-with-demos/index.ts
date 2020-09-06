@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, SchematicsException, apply, url, move, mergeWith, template, noop } from '@angular-devkit/schematics';
-import { stringUtils } from '@nrwl/workspace';
-import { getJsonFromFile, sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType } from '../utils';
+import { stringUtils, formatFiles } from '@nrwl/workspace';
+import { getJsonFromFile, sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes } from '../utils';
 import { Schema } from './schema';
 
 export default function (schema?: Schema, relativePrefix?: string): Rule {
@@ -31,7 +31,9 @@ export default function (schema?: Schema, relativePrefix?: string): Rule {
 		demoDependencyChains.push(addDependencyToDemoApp(t, demoAppRoot));
 	}
 
-	return chain([prerun(), ...demoFileChains, ...demoIndexChains, ...demoDependencyChains]);
+	return chain([prerun(), ...demoFileChains, ...demoIndexChains, ...demoDependencyChains, formatFiles({
+    skipFormat: !!schema.skipFormat
+  })]);
 }
 
 function prerun() {
@@ -43,8 +45,7 @@ function prerun() {
 function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePrefix: string = './') {
 	return (tree: Tree, context: SchematicContext) => {
 		context.logger.info(`Updating "${demoAppRoot}"`);
-		let demoFolder = 'src/plugin-demos';
-		const demoAppFolder = `${demoAppRoot}/${demoFolder}`;
+		const demoAppFolder = `${demoAppRoot}/${getPluginDemoPath()}`;
 		let viewExt = 'xml';
 		// adjust folder location and viewExt dependent on demo type if needed
 		switch (type) {
@@ -81,27 +82,18 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 	return (tree: Tree, context: SchematicContext) => {
 		checkPackages(tree, context);
+    if (type === 'angular') {
+      resetAngularIndex(tree, getPackageNamesToUpdate());
+      resetAngularRoutes(tree, getPackageNamesToUpdate());
+      return tree;
+    }
 
 		const demoIndexViewPath = `${demoAppRoot}/${getDemoIndexPathForType(type)}`;
 		let indexViewContent = tree.read(demoIndexViewPath).toString('utf-8');
 		// adjust index view app path dependent on demo type
 		for (const name of getPackageNamesToUpdate()) {
 			switch (type) {
-				case 'angular':
-					//   if (indexViewContent.indexOf(`name: '${name}'`) === -1) {
-					//     // get index of last view-demo button
-					//     const lastEntryIndex = indexViewContent.lastIndexOf(`},`);
-					//     // get final content after that last button
-					//     const remainingContent = indexViewContent.substr(lastEntryIndex, indexViewContent.length);
-					//     // get first line break to determine position of where to insert next button
-					//     const firstLB = remainingContent.indexOf('\n');
-					//     const endingContent = indexViewContent.substring(lastEntryIndex + firstLB, indexViewContent.length);
-					//     const buttonMarkup = `${buttonStart} ${buttonTap} ${buttonClass}${buttonEnd}`;
-					//     // context.logger.info('buttonMarkup: ' + buttonMarkup);
-					//     indexViewContent = indexViewContent.substring(0, lastEntryIndex + firstLB) + `\n${buttonMarkup}` + endingContent;
-					//   }
-					break;
-				default:
+				case 'xml':
 					const { buttonMarkup } = getDemoIndexButtonForType(type, name);
 
 					if (indexViewContent.indexOf(`Button text="${name}"`) === -1) {
@@ -117,7 +109,7 @@ function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 					}
 
 					break;
-			}
+      }
 		}
 		// context.logger.info(indexViewContent);
 		tree.overwrite(demoIndexViewPath, indexViewContent);

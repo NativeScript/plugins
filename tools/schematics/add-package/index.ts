@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template } from '@angular-devkit/schematics';
 import { stringUtils, addProjectToNxJsonInTree, getWorkspace } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, scopeName } from '../utils';
+import { updateWorkspaceJson, getJsonFromFile, scopeName, getAllPackages } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
 
@@ -134,8 +134,7 @@ function updateReadMe() {
 		const readmeStart = readmeContent.substring(0, listPackageSectionIndex);
 		const listEndIndex = readmeContent.indexOf(`# How to`);
 		const readmeEnd = readmeContent.substring(listEndIndex, readmeContent.length);
-		const packagesDir = tree.getDir('packages');
-		const packageNames = packagesDir.subdirs.sort();
+		const packageNames = getAllPackages(tree);
 		let packageList = '';
 		for (const packageName of packageNames) {
 			packageList += `* ${scopeName}/${packageName}\n`;

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "setup": "ns clean && npm i && ts-patch install",
+    "setup": "npx rimraf node_modules package-lock.json dist tmp && npm i && ts-patch install",
     "start": "nps"
   },
   "private": true,

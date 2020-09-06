@@ -10,7 +10,7 @@ export class <%= stringUtils.classify(name) %>Component {
 	constructor(private _ngZone: NgZone) {}
 
   testIt() {
-    // test something here
+    console.log('test your plugin!');
   }
 
 }

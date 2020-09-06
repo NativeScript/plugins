@@ -1,7 +1,7 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template, externalSchematic, noop } from '@angular-devkit/schematics';
 import * as path from 'path';
 import { stringUtils, addProjectToNxJsonInTree, getWorkspace } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, sanitizeCollectionArgs, getDemoAppRoot, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getDemoIndexPathForType } from '../utils';
+import { updateWorkspaceJson, getJsonFromFile, sanitizeCollectionArgs, getDemoAppRoot, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getDemoIndexPathForType, getAllPackages, resetIndexForDemoType, getPluginDemoPath } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
 const prettyData = require('pretty-data').pd;
@@ -24,27 +24,25 @@ export default function (schema: Schema): Rule {
 			? noop()
 			: (tree: Tree, context: SchematicContext) => {
 					setPackageNamesToUpdate(focusPackages);
-					allPackages = tree.getDir('packages').subdirs;
+					allPackages = getAllPackages(tree);
 					// console.log('allPackages:', allPackages);
 					// apps
 					const appsDir = tree.getDir('apps');
 					if (appsDir && appsDir.subdirs) {
 						const appFolders = appsDir.subdirs;
 						for (const dir of appFolders) {
-							const demoViewsPath = `${appsDir.path}/${dir}/src/plugin-demos`;
+							const demoViewsPath = `${appsDir.path}/${dir}/${getPluginDemoPath()}`;
 							const demoAppRoot = `${appsDir.path}/${dir}`;
 							// console.log(`demoAppRoot: ${demoAppRoot}`);
 							const demoType = getDemoTypeFromName(dir);
 							// console.log(`demoType: ${demoType}`);
 							updateDemoDependencies(tree, demoType, demoAppRoot, allPackages, true);
-							let mainIndex: string;
 
 							// add `_off` suffix on ts,xml files for those that not being focused on
 							// this removes those from the app build
 							for (const p of allPackages) {
 								switch (demoType) {
 									case 'xml':
-										mainIndex = `${demoAppRoot}/src/main-page.xml`;
 										const xmlView = `${demoViewsPath}/${p}.xml`;
 										// console.log('xmlView:', xmlView);
 										const tsClass = `${demoViewsPath}/${p}.ts`;
@@ -73,57 +71,7 @@ export default function (schema: Schema): Rule {
 							}
 
 							// cleanup index listing to only have buttons for what is being focused on
-							const demoIndexPath = getDemoIndexPathForType(demoType);
-							const demoIndexFullPath = `${demoAppRoot}/${demoIndexPath}`;
-							if (tree.exists(demoIndexFullPath)) {
-								const indexStringData = tree.get(demoIndexFullPath).content.toString();
-								xml2js.parseString(indexStringData, (err, indexData: any) => {
-									// console.log('indexData:', indexData);
-									if (indexData && indexData.Page) {
-										if (indexData.Page.StackLayout) {
-											const stackLayout = indexData.Page.StackLayout[0];
-											if (stackLayout && stackLayout.ScrollView) {
-												const scrollView = stackLayout.ScrollView[0];
-												if (scrollView && scrollView.StackLayout) {
-													const buttons = scrollView.StackLayout[0].Button;
-													const buttonStructure = buttons[0];
-													// console.log('buttonStructure:', buttonStructure);
-													// console.log('buttons:', buttons);
-													scrollView.StackLayout[0].Button = [];
-													if (focusPackages.length === 0) {
-														// resetting to include buttons for all packages
-														for (const p of allPackages) {
-															scrollView.StackLayout[0].Button.push({
-																$: {
-																	...buttonStructure.$,
-																	text: p,
-																},
-															});
-														}
-													} else {
-														// focus on specific packages for demo testing
-														for (const p of focusPackages) {
-															scrollView.StackLayout[0].Button.push({
-																$: {
-																	...buttonStructure.$,
-																	text: p,
-																},
-															});
-														}
-													}
-
-													const xmlBuilder = new xml2js.Builder({
-														headless: true,
-													});
-													const modifiedIndex = xmlBuilder.buildObject(indexData);
-													// console.log('modifiedIndex:', modifiedIndex);
-													tree.overwrite(demoIndexFullPath, modifiedIndex);
-												}
-											}
-										}
-									}
-								});
-							}
+							resetIndexForDemoType(tree, demoType);
 						}
 					}
 					return tree;
