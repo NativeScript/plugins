@@ -36,8 +36,8 @@ module.exports = {
 					script: 'nx run demo:android',
 					description: '⚆  Run Android  🤖',
 				},
-      },
-      '...Angular...': {
+			},
+			'...Angular...': {
 				script: `npx cowsay "Test all the Angles!"`,
 				description: ` 🔻 Angular`,
 			},
@@ -63,8 +63,8 @@ module.exports = {
 		// packages
 		// build output is always in dist/packages
 		'@nativescript': {
-      // @nativescript/appavailability
-			'appavailability': {
+			// @nativescript/appavailability
+			appavailability: {
 				build: {
 					script: 'nx run appavailability:build.all',
 					description: '@nativescript/appavailability: Build',
@@ -146,8 +146,8 @@ module.exports = {
 					script: 'nx run zip:build.all',
 					description: '@nativescript/zip: Build',
 				},
-      },
-      'build-all': {
+			},
+			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
 			},
@@ -171,8 +171,8 @@ module.exports = {
 			description: '_____________  Focus (VS Code supported)  _____________',
 		},
 		focus: {
-      'appavailability': {
-				script: 'nx workspace-schematic focus-packages appavailability',
+			appavailability: {
+				script: 'nx run appavailability:focus',
 				description: 'Focus on @nativescript/appavailability',
 			},
 			camera: {
@@ -180,11 +180,11 @@ module.exports = {
 				description: 'Focus on @nativescript/camera',
 			},
 			datetimepicker: {
-				script: 'nx workspace-schematic focus-packages datetimepicker',
+				script: 'nx run datetimepicker:focus',
 				description: 'Focus on @nativescript/datetimepicker',
 			},
 			directions: {
-				script: 'nx workspace-schematic focus-packages directions',
+				script: 'nx run directions:focus',
 				description: 'Focus on @nativescript/directions',
 			},
 			email: {
@@ -192,31 +192,31 @@ module.exports = {
 				description: 'Focus on @nativescript/email',
 			},
 			'fingerprint-auth': {
-				script: 'nx workspace-schematic focus-packages fingerprint-auth',
+				script: 'nx run fingerprint-auth:focus',
 				description: 'Focus on @nativescript/fingerprint-auth',
 			},
 			geolocation: {
-				script: 'nx workspace-schematic focus-packages geolocation',
+				script: 'nx run geolocation:focus',
 				description: 'Focus on @nativescript/geolocation',
 			},
 			imagepicker: {
-				script: 'nx workspace-schematic focus-packages imagepicker',
+				script: 'nx run imagepicker:focus',
 				description: 'Focus on @nativescript/imagepicker',
 			},
 			iqkeyboardmanager: {
-				script: 'nx workspace-schematic focus-packages iqkeyboardmanager',
+				script: 'nx run iqkeyboardmanager:focus',
 				description: 'Focus on @nativescript/iqkeyboardmanager',
 			},
 			'local-notifications': {
-				script: 'nx workspace-schematic focus-packages local-notifications',
+				script: 'nx run local-notifications:focus',
 				description: 'Focus on @nativescript/local-notifications',
 			},
 			'shared-notification-delegate': {
-				script: 'nx workspace-schematic focus-packages shared-notification-delegate',
+				script: 'nx run shared-notification-delegate:focus',
 				description: 'Focus on @nativescript/shared-notification-delegate',
 			},
 			zip: {
-				script: 'nx workspace-schematic focus-packages zip',
+				script: 'nx run zip:focus',
 				description: 'Focus on @nativescript/zip',
 			},
 			reset: {
