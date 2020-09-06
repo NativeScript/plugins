@@ -6,14 +6,41 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 	demos = [
-    {
-			name: 'datetimepicker',
-		},
-		{
-			name: 'imagepicker',
-    },
-    {
-			name: 'appavailability',
-		},
-	];
+	{
+		name: 'appavailability'
+	},
+	{
+		name: 'camera'
+	},
+	{
+		name: 'datetimepicker'
+	},
+	{
+		name: 'directions'
+	},
+	{
+		name: 'email'
+	},
+	{
+		name: 'fingerprint-auth'
+	},
+	{
+		name: 'geolocation'
+	},
+	{
+		name: 'imagepicker'
+	},
+	{
+		name: 'iqkeyboardmanager'
+	},
+	{
+		name: 'local-notifications'
+	},
+	{
+		name: 'shared-notification-delegate'
+	},
+	{
+		name: 'zip'
+	}
+];
 }

@@ -127,7 +127,7 @@ export function getDemoAppRoot(type: SupportedDemoType) {
 }
 
 export function getPluginDemoPath() {
-  return 'src/plugin-demos';
+	return 'src/plugin-demos';
 }
 
 export function getDemoTypeFromName(name: string): SupportedDemoType {
@@ -191,7 +191,7 @@ export function resetAngularIndex(tree: Tree, packages?: Array<string>) {
 		angularIndex.substring(0, demosIndex + 1) +
 		packages
 			.sort()
-			.map((p) => `\n{\nname: '${p}'\n}`)
+			.map((p) => `\n	{\n		name: '${p}'\n	}`)
 			.join(',') +
 		'\n];\n}';
 	tree.overwrite(angularIndexPath, angularIndex);
@@ -200,32 +200,31 @@ export function resetAngularIndex(tree: Tree, packages?: Array<string>) {
 export function resetAngularRoutes(tree: Tree, packages?: Array<string>) {
 	const angularRouteModulePath = `${getDemoAppRoot('angular')}/src/app-routing.module.ts`;
 	let angularRouteModule = tree.get(angularRouteModulePath).content.toString();
-  const routeDefIndex = angularRouteModule.indexOf('const routes');
-  const routeModuleStart = angularRouteModule.substring(0, routeDefIndex);
-  const routeMoudleDefIndex = angularRouteModule.indexOf('@NgModule');
-  const routeModuleEnd = angularRouteModule.substring(routeMoudleDefIndex, angularRouteModule.length);
+	const routeDefIndex = angularRouteModule.indexOf('const routes');
+	const routeModuleStart = angularRouteModule.substring(0, routeDefIndex);
+	const routeMoudleDefIndex = angularRouteModule.indexOf('@NgModule');
+	const routeModuleEnd = angularRouteModule.substring(routeMoudleDefIndex, angularRouteModule.length);
 
 	packages = packages && packages.length ? packages : getAllPackages(tree);
 	const packageRoutes =
 		packages
 			.sort()
-			.map((p) => `{ path: '${p}', loadChildren: () => import('./plugin-demos/${p}.module').then(m => m.${stringUtils.classify(p)}Module) }`)
-			.join(',\n') +
-    '\n];\n\n';
-  const routeStart = `const routes: Routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },`;
-  angularRouteModule = routeModuleStart + routeStart + packageRoutes + routeModuleEnd;
-  console.log('angularRouteModule:', angularRouteModule)
-	// tree.overwrite(angularRouteModulePath, angularRouteModule);
+			.map((p) => `	{ path: '${p}', loadChildren: () => import('./plugin-demos/${p}.module').then(m => m.${stringUtils.classify(p)}Module) }`)
+			.join(',\n') + '\n];\n\n';
+	const routeStart = `const routes: Routes = [
+   { path: '', redirectTo: '/home', pathMatch: 'full' },
+   { path: 'home', component: HomeComponent },\n`;
+	angularRouteModule = routeModuleStart + routeStart + packageRoutes + routeModuleEnd;
+	// console.log('angularRouteModule:', angularRouteModule);
+	tree.overwrite(angularRouteModulePath, angularRouteModule);
 }
 
 export function resetIndexForDemoType(tree: Tree, demoType: SupportedDemoType) {
-  const packages = getPackageNamesToUpdate();
+	const packages = getPackageNamesToUpdate();
 	switch (demoType) {
 		case 'angular':
-      resetAngularIndex(tree, packages);
-      resetAngularRoutes(tree, packages);
+			resetAngularIndex(tree, packages);
+			resetAngularRoutes(tree, packages);
 			break;
 		case 'xml':
 			const demoIndexPath = getDemoIndexPathForType(demoType);
