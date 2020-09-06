@@ -58,7 +58,7 @@ import { DateTimePicker } from '@nativescript/datetimepicker';
 		`,
 	],
 })
-export class DateTimePickerComponent {
+export class DatetimepickerComponent {
 	public dateText: string = 'tap to select date';
 	public timeText: string = 'tap to select time';
 	public dateTimeText: string = 'tap to select date and time';

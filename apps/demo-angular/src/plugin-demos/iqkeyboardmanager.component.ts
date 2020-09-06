@@ -1,5 +1,4 @@
 import { Component, NgZone } from '@angular/core';
-import {} from '@nativescript/iqkeyboardmanager';
 
 @Component({
 	selector: 'demo-iqkeyboardmanager',

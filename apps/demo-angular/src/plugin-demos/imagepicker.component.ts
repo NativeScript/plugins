@@ -6,7 +6,7 @@ import * as imagepicker from '@nativescript/imagepicker';
 	selector: 'demo-imagepicker',
 	templateUrl: 'imagepicker.component.html',
 })
-export class ImagePickerComponent {
+export class ImagepickerComponent {
 	imageAssets = [];
 	imageSrc: any;
 	isSingleMode: boolean = true;
