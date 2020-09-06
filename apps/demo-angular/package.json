@@ -26,7 +26,8 @@
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
-		"@nativescript/zip": "file:../../dist/packages/zip"
+		"@nativescript/zip": "file:../../dist/packages/zip",
+		"@nativescript/intl": "file:../../dist/packages/intl"
 	},
 	"devDependencies": {
 		"@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",

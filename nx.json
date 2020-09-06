@@ -1,70 +1,73 @@
 {
-  "npmScope": "nativescript",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "implicitDependencies": {
-    "workspace.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
-  },
-  "projects": {
-    "local-notifications": {
-      "tags": []
-    },
-    "shared-notification-delegate": {
-      "tags": []
-    },
-    "demo": {
-      "tags": []
-    },
-    "demo-angular": {
-      "tags": []
-    },
-    "demo-vue": {
-      "tags": []
-    },
-    "email": {
-      "tags": []
-    },
-    "all": {
-      "tags": []
-    },
-    "imagepicker": {
-      "tags": []
-    },
-    "datetimepicker": {
-      "tags": []
-    },
-    "camera": {
-      "tags": []
-    },
-    "zip": {
-      "tags": []
-    },
-    "directions": {
-      "tags": []
-    },
-    "iqkeyboardmanager": {
-      "tags": []
-    },
-    "geolocation": {
-      "tags": []
-    },
-    "fingerprint-auth": {
-      "tags": []
-    },
-    "appavailability": {
-      "tags": []
-    }
-  },
-  "workspaceLayout": {
-    "appsDir": "apps",
-    "libsDir": "packages"
-  }
+	"npmScope": "nativescript",
+	"affected": {
+		"defaultBase": "master"
+	},
+	"implicitDependencies": {
+		"workspace.json": "*",
+		"package.json": {
+			"dependencies": "*",
+			"devDependencies": "*"
+		},
+		"tsconfig.base.json": "*",
+		"tslint.json": "*",
+		"nx.json": "*"
+	},
+	"projects": {
+		"local-notifications": {
+			"tags": []
+		},
+		"shared-notification-delegate": {
+			"tags": []
+		},
+		"demo": {
+			"tags": []
+		},
+		"demo-angular": {
+			"tags": []
+		},
+		"demo-vue": {
+			"tags": []
+		},
+		"email": {
+			"tags": []
+		},
+		"all": {
+			"tags": []
+		},
+		"imagepicker": {
+			"tags": []
+		},
+		"datetimepicker": {
+			"tags": []
+		},
+		"camera": {
+			"tags": []
+		},
+		"zip": {
+			"tags": []
+		},
+		"directions": {
+			"tags": []
+		},
+		"iqkeyboardmanager": {
+			"tags": []
+		},
+		"geolocation": {
+			"tags": []
+		},
+		"fingerprint-auth": {
+			"tags": []
+		},
+		"appavailability": {
+			"tags": []
+		},
+		"intl": {
+			"tags": []
+		}
+	},
+	"workspaceLayout": {
+		"appsDir": "apps",
+		"libsDir": "packages"
+	}
 }

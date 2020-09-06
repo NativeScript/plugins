@@ -147,6 +147,13 @@ module.exports = {
 					description: '@nativescript/zip: Build',
 				},
 			},
+			// @nativescript/intl
+			intl: {
+				build: {
+					script: 'nx run intl:build.all',
+					description: '@nativescript/intl: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -218,6 +225,10 @@ module.exports = {
 			zip: {
 				script: 'nx run zip:focus',
 				description: 'Focus on @nativescript/zip',
+			},
+			intl: {
+				script: 'nx run intl:focus',
+				description: 'Focus on @nativescript/intl',
 			},
 			reset: {
 				script: 'nx run all:focus',
