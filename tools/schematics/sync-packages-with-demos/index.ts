@@ -83,8 +83,8 @@ function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 	return (tree: Tree, context: SchematicContext) => {
 		checkPackages(tree, context);
     if (type === 'angular') {
-      resetAngularIndex(tree, getPackageNamesToUpdate());
-      resetAngularRoutes(tree, getPackageNamesToUpdate());
+      resetAngularIndex(tree, getPackageNamesToUpdate(), true);
+      resetAngularRoutes(tree, getPackageNamesToUpdate(), true);
       return tree;
     }
 

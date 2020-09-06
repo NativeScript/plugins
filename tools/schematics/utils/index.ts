@@ -182,11 +182,29 @@ export function getDemoIndexPathForType(type: SupportedDemoType): string {
 	}
 }
 
-export function resetAngularIndex(tree: Tree, packages?: Array<string>) {
+export function getPackagesForIndex(tree: Tree, packages?: Array<string>, addingNew?: boolean) {
+  if (addingNew) {
+    // just add to all packages
+    const allPackages = <Array<string>>getAllPackages(tree);
+    for (const p of packages) {
+      if (!allPackages.includes(p)) {
+        allPackages.push(p);
+      }
+    }
+    packages = allPackages;
+  } else {
+    // isolate to packages or fallback to all
+    packages = packages && packages.length ? packages : getAllPackages(tree);
+  }
+  return packages;
+}
+
+export function resetAngularIndex(tree: Tree, packages?: Array<string>, addingNew?: boolean) {
 	const angularIndexPath = `${getDemoAppRoot('angular')}/${getDemoIndexPathForType('angular')}`;
 	let angularIndex = tree.get(angularIndexPath).content.toString();
-	const demosIndex = angularIndex.indexOf('[');
-	packages = packages && packages.length ? packages : getAllPackages(tree);
+  const demosIndex = angularIndex.indexOf('[');
+  packages = getPackagesForIndex(tree, packages, addingNew);
+
 	angularIndex =
 		angularIndex.substring(0, demosIndex + 1) +
 		packages
@@ -197,15 +215,15 @@ export function resetAngularIndex(tree: Tree, packages?: Array<string>) {
 	tree.overwrite(angularIndexPath, angularIndex);
 }
 
-export function resetAngularRoutes(tree: Tree, packages?: Array<string>) {
+export function resetAngularRoutes(tree: Tree, packages?: Array<string>, addingNew?: boolean) {
 	const angularRouteModulePath = `${getDemoAppRoot('angular')}/src/app-routing.module.ts`;
 	let angularRouteModule = tree.get(angularRouteModulePath).content.toString();
 	const routeDefIndex = angularRouteModule.indexOf('const routes');
 	const routeModuleStart = angularRouteModule.substring(0, routeDefIndex);
 	const routeMoudleDefIndex = angularRouteModule.indexOf('@NgModule');
 	const routeModuleEnd = angularRouteModule.substring(routeMoudleDefIndex, angularRouteModule.length);
-
-	packages = packages && packages.length ? packages : getAllPackages(tree);
+  packages = getPackagesForIndex(tree, packages, addingNew);
+  
 	const packageRoutes =
 		packages
 			.sort()
