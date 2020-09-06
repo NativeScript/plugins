@@ -41,7 +41,7 @@ function copyAngularDist() {
 
 function finishPreparation() {
   fs.copy(path.join('tools', 'assets', 'publishing'), path.join('dist', 'packages', packageName))
-		.then(() => console.log(`${packageName} ready to publish.`))
+		.then(() => console.log(`${scopeName}/${packageName} ready to publish.`))
 		.catch((err) => console.error(err));
 }
 

@@ -101,7 +101,7 @@ export default function (schema: Schema): Rule {
 															});
 														}
 													} else {
-                            // focus on specific packages for demo testing
+														// focus on specific packages for demo testing
 														for (const p of focusPackages) {
 															scrollView.StackLayout[0].Button.push({
 																$: {
@@ -116,7 +116,8 @@ export default function (schema: Schema): Rule {
 														headless: true,
 													});
 													const modifiedIndex = xmlBuilder.buildObject(indexData);
-													console.log('modifiedIndex:', modifiedIndex);
+													// console.log('modifiedIndex:', modifiedIndex);
+													tree.overwrite(demoIndexFullPath, modifiedIndex);
 												}
 											}
 										}

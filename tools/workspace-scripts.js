@@ -172,55 +172,55 @@ module.exports = {
 		},
 		focus: {
       'appavailability': {
-				script: 'nx g @nstudio/focus:mode appavailability',
+				script: 'nx workspace-schematic focus-packages appavailability',
 				description: 'Focus on @nativescript/appavailability',
 			},
 			camera: {
-				script: 'nx g @nstudio/focus:mode camera',
+				script: 'nx workspace-schematic focus-packages camera',
 				description: 'Focus on @nativescript/camera',
 			},
 			datetimepicker: {
-				script: 'nx g @nstudio/focus:mode datetimepicker',
+				script: 'nx workspace-schematic focus-packages datetimepicker',
 				description: 'Focus on @nativescript/datetimepicker',
 			},
 			directions: {
-				script: 'nx g @nstudio/focus:mode directions',
+				script: 'nx workspace-schematic focus-packages directions',
 				description: 'Focus on @nativescript/directions',
 			},
 			email: {
-				script: 'nx g @nstudio/focus:mode email',
+				script: 'nx workspace-schematic focus-packages email',
 				description: 'Focus on @nativescript/email',
 			},
 			'fingerprint-auth': {
-				script: 'nx g @nstudio/focus:mode fingerprint-auth',
+				script: 'nx workspace-schematic focus-packages fingerprint-auth',
 				description: 'Focus on @nativescript/fingerprint-auth',
 			},
 			geolocation: {
-				script: 'nx g @nstudio/focus:mode geolocation',
+				script: 'nx workspace-schematic focus-packages geolocation',
 				description: 'Focus on @nativescript/geolocation',
 			},
 			imagepicker: {
-				script: 'nx g @nstudio/focus:mode imagepicker',
+				script: 'nx workspace-schematic focus-packages imagepicker',
 				description: 'Focus on @nativescript/imagepicker',
 			},
 			iqkeyboardmanager: {
-				script: 'nx g @nstudio/focus:mode iqkeyboardmanager',
+				script: 'nx workspace-schematic focus-packages iqkeyboardmanager',
 				description: 'Focus on @nativescript/iqkeyboardmanager',
 			},
 			'local-notifications': {
-				script: 'nx g @nstudio/focus:mode local-notifications',
+				script: 'nx workspace-schematic focus-packages local-notifications',
 				description: 'Focus on @nativescript/local-notifications',
 			},
 			'shared-notification-delegate': {
-				script: 'nx g @nstudio/focus:mode shared-notification-delegate',
+				script: 'nx workspace-schematic focus-packages shared-notification-delegate',
 				description: 'Focus on @nativescript/shared-notification-delegate',
 			},
 			zip: {
-				script: 'nx g @nstudio/focus:mode zip',
+				script: 'nx workspace-schematic focus-packages zip',
 				description: 'Focus on @nativescript/zip',
 			},
 			reset: {
-				script: 'nx g @nstudio/focus:mode',
+				script: 'nx workspace-schematic focus-packages',
 				description: 'Reset Focus',
 			},
 		},
