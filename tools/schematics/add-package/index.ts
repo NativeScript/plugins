@@ -78,15 +78,15 @@ function updateWorkspaceConfig() {
 						commands: [`nx run ${name}:build`, `node tools/scripts/build-finish.ts ${name}`],
 						parallel: false,
 					},
-        },
-        focus: {
-          builder: '@nrwl/workspace:run-commands',
+				},
+				focus: {
+					builder: '@nrwl/workspace:run-commands',
 					outputs: ['dist/packages'],
-          options: {
-            commands: [`nx workspace-schematic focus-packages ${name}`],
-            parallel: false
-          }
-        }
+					options: {
+						commands: [`nx workspace-schematic focus-packages ${name}`],
+						parallel: false,
+					},
+				},
 			},
 		};
 		// add to build all
