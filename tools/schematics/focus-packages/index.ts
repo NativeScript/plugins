@@ -78,8 +78,11 @@ export default function (schema: Schema): Rule {
 			  },
 		(tree: Tree, context: SchematicContext) => {
 			const isFocusing = focusPackages && focusPackages.length > 0;
-			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `${scopeName}/${n}`).join(', ');
-			console.log(`${isFocusing ? 'Focusing workspace on:' : 'Resetting workspace for:'}`, focusTargets, `${schema.ignoreDemos || !isFocusing ? '' : '...and isolating code across all demo apps.'}`);
+			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `\n${scopeName}/${n}`).join('');
+      context.logger.info(`${isFocusing ? 'Focusing workspace on:' : 'Resetting workspace for:'}\n${focusTargets}\n\n`);
+      if (!schema.ignoreDemos) {
+        context.logger.info(` > NOTE: Clean the demo app you plan to test with before running now that the demo code has been updated.\n`);
+      }
 		},
 	]);
 }

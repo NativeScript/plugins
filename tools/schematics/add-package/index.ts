@@ -78,7 +78,15 @@ function updateWorkspaceConfig() {
 						commands: [`nx run ${name}:build`, `node tools/scripts/build-finish.ts ${name}`],
 						parallel: false,
 					},
-				},
+        },
+        focus: {
+          builder: '@nrwl/workspace:run-commands',
+					outputs: ['dist/packages'],
+          options: {
+            commands: [`nx workspace-schematic focus-packages ${name}`],
+            parallel: false
+          }
+        }
 			},
 		};
 		// add to build all
@@ -113,7 +121,7 @@ function updateWorkspaceScripts() {
 		const focusStart = workspaceScripts.substring(0, focusSectionIndex);
 		const focusEnd = workspaceScripts.substring(focusSectionIndex, workspaceScripts.length);
 		const newFocus = `'${name}': {
-				script: 'node tools/scripts/focus.ts ${name}',
+				script: 'nx run ${name}:focus',
 				description: 'Focus on ${scopeName}/${name}',
 			},
 `;

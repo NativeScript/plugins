@@ -156,6 +156,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages local-notifications"],
+            "parallel": false
+          }
         }
       }
     },
@@ -192,6 +200,14 @@
               "nx run shared-notification-delegate:build",
               "node tools/scripts/build-finish.ts shared-notification-delegate"
             ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages shared-notification-delegate"],
             "parallel": false
           }
         }
@@ -232,6 +248,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages email"],
+            "parallel": false
+          }
         }
       }
     },
@@ -257,6 +281,14 @@
               "nx run geolocation:build.all",
               "nx run fingerprint-auth:build.all"
             ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages"],
             "parallel": false
           }
         }
@@ -297,6 +329,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages imagepicker"],
+            "parallel": false
+          }
         }
       }
     },
@@ -333,6 +373,14 @@
               "nx run datetimepicker:build",
               "node tools/scripts/build-finish.ts datetimepicker"
             ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages datetimepicker"],
             "parallel": false
           }
         }
@@ -373,6 +421,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages camera"],
+            "parallel": false
+          }
         }
       }
     },
@@ -409,6 +465,14 @@
               "nx run zip:build",
               "node tools/scripts/build-finish.ts zip"
             ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages zip"],
             "parallel": false
           }
         }
@@ -449,6 +513,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages directions"],
+            "parallel": false
+          }
         }
       }
     },
@@ -485,6 +557,14 @@
               "nx run iqkeyboardmanager:build",
               "node tools/scripts/build-finish.ts iqkeyboardmanager"
             ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages iqkeyboardmanager"],
             "parallel": false
           }
         }
@@ -525,6 +605,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages geolocation"],
+            "parallel": false
+          }
         }
       }
     },
@@ -563,6 +651,14 @@
             ],
             "parallel": false
           }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages fingerprint-auth"],
+            "parallel": false
+          }
         }
       }
     },
@@ -599,6 +695,14 @@
               "nx run appavailability:build",
               "node tools/scripts/build-finish.ts appavailability"
             ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+          "options": {
+            "commands": ["nx workspace-schematic focus-packages appavailability"],
             "parallel": false
           }
         }

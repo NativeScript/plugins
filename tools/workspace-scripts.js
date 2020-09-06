@@ -176,7 +176,7 @@ module.exports = {
 				description: 'Focus on @nativescript/appavailability',
 			},
 			camera: {
-				script: 'nx workspace-schematic focus-packages camera',
+				script: 'nx run camera:focus',
 				description: 'Focus on @nativescript/camera',
 			},
 			datetimepicker: {
@@ -188,7 +188,7 @@ module.exports = {
 				description: 'Focus on @nativescript/directions',
 			},
 			email: {
-				script: 'nx workspace-schematic focus-packages email',
+				script: 'nx run email:focus',
 				description: 'Focus on @nativescript/email',
 			},
 			'fingerprint-auth': {
@@ -220,7 +220,7 @@ module.exports = {
 				description: 'Focus on @nativescript/zip',
 			},
 			reset: {
-				script: 'nx workspace-schematic focus-packages',
+				script: 'nx run all:focus',
 				description: 'Reset Focus',
 			},
 		},
