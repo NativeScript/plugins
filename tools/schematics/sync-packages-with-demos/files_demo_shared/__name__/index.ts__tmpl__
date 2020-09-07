@@ -4,6 +4,6 @@ import {  } from '<%= npmScope %>/<%= name %>';
 export class DemoShared<%= stringUtils.classify(name) %> extends DemoSharedBase {
 
   testIt() {
-    console.log('test your plugin!');
+    console.log('test <%= name %>!');
   }
 }
