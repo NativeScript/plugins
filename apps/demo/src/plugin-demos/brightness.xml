@@ -1,0 +1,19 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="brightness" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+            <Label text="{{ message }}" class="t-20 text-center c-black" textWrap="true"/>
+            <GridLayout class="m-15" rows="auto auto" columns="50 * 50">
+              <Label row="1" col="0" text="{{ minValue }}" textWrap="true" fontSize="15"/>
+              <Slider row="1" col="1" value="{{ sliderValue }}" minValue="{{ minValue }}" maxValue="{{ maxValue }}"/>
+              <Label row="1" col="2" text="{{ maxValue }}" textWrap="true" fontSize="20"/>
+            </GridLayout>
+
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>

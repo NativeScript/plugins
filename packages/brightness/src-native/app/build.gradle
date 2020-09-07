@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 28
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+// task to delete the old jar
+task deleteOldJar(type: Delete) {
+    delete 'release/Brightness.jar'
+}
+
+// task to export contents as jar
+task exportJar(type: Copy) {
+    from('build/intermediates/intermediate-jars/release/')
+    into('release')
+    include('classes.jar')
+    // name the plugin
+    rename('classes.jar','Brightness.jar')
+}
+
+exportJar.dependsOn(deleteOldJar, build)

@@ -6,6 +6,7 @@
     <ScrollView class="h-full">
       <StackLayout>
         <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="directions" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
