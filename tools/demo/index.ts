@@ -1,5 +1,6 @@
 export * from './utils';
 export * from './appavailability';
+export * from './brightness';
 export * from './camera';
 export * from './datetimepicker';
 export * from './directions';

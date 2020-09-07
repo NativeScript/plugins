@@ -147,6 +147,13 @@ module.exports = {
 					description: '@nativescript/zip: Build',
 				},
 			},
+			// @nativescript/brightness
+			brightness: {
+				build: {
+					script: 'nx run brightness:build.all',
+					description: '@nativescript/brightness: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -218,6 +225,10 @@ module.exports = {
 			zip: {
 				script: 'nx run zip:focus',
 				description: 'Focus on @nativescript/zip',
+			},
+			brightness: {
+				script: 'nx run brightness:focus',
+				description: 'Focus on @nativescript/brightness',
 			},
 			reset: {
 				script: 'nx run all:focus',

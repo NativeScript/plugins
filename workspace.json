@@ -234,7 +234,7 @@
 					"builder": "@nrwl/workspace:run-commands",
 					"outputs": ["dist/packages"],
 					"options": {
-						"commands": ["nx run email:build.all", "nx run shared-notification-delegate:build.all", "nx run appavailability:build.all", "nx run local-notifications:build.all", "nx run imagepicker:build.all", "nx run datetimepicker:build.all", "nx run camera:build.all", "nx run zip:build.all", "nx run directions:build.all", "nx run iqkeyboardmanager:build.all", "nx run geolocation:build.all", "nx run fingerprint-auth:build.all"],
+						"commands": ["nx run email:build.all", "nx run shared-notification-delegate:build.all", "nx run appavailability:build.all", "nx run local-notifications:build.all", "nx run imagepicker:build.all", "nx run datetimepicker:build.all", "nx run camera:build.all", "nx run zip:build.all", "nx run directions:build.all", "nx run iqkeyboardmanager:build.all", "nx run geolocation:build.all", "nx run fingerprint-auth:build.all", "nx run brightness:build.all"],
 						"parallel": false
 					}
 				},
@@ -630,6 +630,49 @@
 					"outputs": ["dist/packages"],
 					"options": {
 						"commands": ["nx workspace-schematic focus-packages appavailability"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"brightness": {
+			"root": "packages/brightness",
+			"sourceRoot": "packages/brightness",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/brightness",
+						"tsConfig": "packages/brightness/tsconfig.json",
+						"packageJson": "packages/brightness/package.json",
+						"main": "packages/brightness/index.ts",
+						"assets": [
+							"packages/brightness/*.md",
+							"packages/brightness/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/brightness/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run brightness:build", "node tools/scripts/build-finish.ts brightness"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx workspace-schematic focus-packages brightness"],
 						"parallel": false
 					}
 				}
