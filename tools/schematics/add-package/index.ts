@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template } from '@angular-devkit/schematics';
-import { stringUtils, addProjectToNxJsonInTree, getWorkspace } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, scopeName, getAllPackages, updateReadMe } from '../utils';
+import { stringUtils, addProjectToNxJsonInTree } from '@nrwl/workspace';
+import { updateWorkspaceJson, getJsonFromFile, npmScope, updateReadMe } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
 
@@ -21,7 +21,7 @@ export default function (schema: Schema): Rule {
 			true
 		),
 		(tree: Tree, context: SchematicContext) => {
-			context.logger.info(`"${scopeName}/${name}" created and added to all demo apps. Ready to develop!`);
+			context.logger.info(`"${npmScope}/${name}" created and added to all demo apps. Ready to develop!`);
 		},
 	]);
 }
@@ -32,7 +32,8 @@ function addPackageFiles(schema: Schema): Rule {
 
 		const templateSource = apply(url('./files'), [
 			template({
-				name,
+        name,
+        npmScope,
 				stringUtils,
 				tmpl: '',
 				dot: '.',
@@ -107,11 +108,11 @@ function updateWorkspaceScripts() {
 		const buildSectionIndex = workspaceScripts.indexOf(`'build-all':`);
 		const buildStart = workspaceScripts.substring(0, buildSectionIndex);
 		const buildEnd = workspaceScripts.substring(buildSectionIndex, workspaceScripts.length);
-		const newBuild = `// ${scopeName}/${name}
+		const newBuild = `// ${npmScope}/${name}
 			'${name}': {
 				build: {
 					script: 'nx run ${name}:build.all',
-					description: '${scopeName}/${name}: Build',
+					description: '${npmScope}/${name}: Build',
 				},
 			},
 `;
@@ -123,7 +124,7 @@ function updateWorkspaceScripts() {
 		const focusEnd = workspaceScripts.substring(focusSectionIndex, workspaceScripts.length);
 		const newFocus = `'${name}': {
 				script: 'nx run ${name}:focus',
-				description: 'Focus on ${scopeName}/${name}',
+				description: 'Focus on ${npmScope}/${name}',
 			},
 `;
 		workspaceScripts = `${focusStart}${newFocus}			${focusEnd}`;

@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, SchematicsException, apply, url, move, mergeWith, template, noop } from '@angular-devkit/schematics';
 import { stringUtils, formatFiles } from '@nrwl/workspace';
-import { sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes, scopeName, updateDemoSharedIndex, getAllPackages } from '../utils';
+import { sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes, npmScope, updateDemoSharedIndex, getAllPackages } from '../utils';
 import { Schema } from './schema';
 
 export default function (schema?: Schema, relativePrefix?: string, addingNew?: boolean): Rule {
@@ -72,7 +72,7 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 				const templateSource = apply(url(`${relativePrefix}files_${type}`), [
 					template({
 						name,
-						npmScope: scopeName,
+						npmScope,
 						stringUtils,
 						tmpl: '',
 						dot: '.',
@@ -142,7 +142,7 @@ function addDemoSharedFiles(relativePrefix: string = './') {
 				const templateSource = apply(url(`${relativePrefix}files_demo_shared`), [
 					template({
 						name,
-						npmScope: scopeName,
+						npmScope,
 						stringUtils,
 						tmpl: '',
 						dot: '.',

@@ -1,3 +1,5 @@
+import { npmScope } from "../schematics/utils";
+
 const ngPackage = require('ng-packagr');
 const path = require('path');
 const fs = require('fs-extra');
@@ -7,11 +9,7 @@ const cmdArgs = process.argv.slice(2);
 const packageName = cmdArgs[0];
 const publish = cmdArgs[1] === 'publish';
 
-// can make this argument in future to support multi scoped workspaces
-// for example: a workspace could manage @triniwiz plugins alongside @nativescript-community plugins
-let scopeName = '@nativescript';
-
-console.log(`Building ${scopeName}/${packageName}...${publish ? 'and publishing.' : ''}`);
+console.log(`Building ${npmScope}/${packageName}...${publish ? 'and publishing.' : ''}`);
 
 // build angular package
 function buildAngular() {
@@ -41,7 +39,7 @@ function copyAngularDist() {
 
 function finishPreparation() {
 	fs.copy(path.join('tools', 'assets', 'publishing'), path.join('dist', 'packages', packageName))
-		.then(() => console.log(`${scopeName}/${packageName} ready to publish.`))
+		.then(() => console.log(`${npmScope}/${packageName} ready to publish.`))
 		.catch((err) => console.error(err));
 }
 

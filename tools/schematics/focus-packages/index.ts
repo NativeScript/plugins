@@ -1,11 +1,7 @@
 import { chain, Rule, Tree, SchematicContext, externalSchematic, noop } from '@angular-devkit/schematics';
-import { sanitizeCollectionArgs, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getAllPackages, resetIndexForDemoType, getPluginDemoPath, updateDemoSharedIndex } from '../utils';
-import syncPackagesWithDemos from '../sync-packages-with-demos';
+import { sanitizeCollectionArgs, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getAllPackages, resetIndexForDemoType, getPluginDemoPath, updateDemoSharedIndex, npmScope } from '../utils';
 import { Schema } from './schema';
 
-// can make this argument in future to support multi scoped workspaces
-// for example: a workspace could manage @triniwiz plugins alongside @nativescript-community plugins
-let scopeName = '@nativescript';
 let focusPackages: Array<string>;
 let allPackages: Array<string>;
 export default function (schema: Schema): Rule {
@@ -78,7 +74,7 @@ export default function (schema: Schema): Rule {
 			  },
 		(tree: Tree, context: SchematicContext) => {
 			const isFocusing = focusPackages && focusPackages.length > 0;
-			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `\n${scopeName}/${n}`).join('');
+			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `\n${npmScope}/${n}`).join('');
 			context.logger.info(`${isFocusing ? 'Focusing workspace on:' : 'Resetting workspace for:'}\n${focusTargets}\n\n`);
 			if (!schema.ignoreDemos) {
 				context.logger.info(` > NOTE: Clean the demo app you plan to test with before running now that the demo code has been updated.\n`);

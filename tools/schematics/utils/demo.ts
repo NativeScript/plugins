@@ -3,7 +3,7 @@
  */
 import { Tree, SchematicContext } from '@angular-devkit/schematics';
 import { serializeJson, stringUtils } from '@nrwl/workspace';
-import { checkPackages, getJsonFromFile, scopeName, getPackageNamesToUpdate, getAllPackages } from './workspace';
+import { checkPackages, getJsonFromFile, npmScope, getPackageNamesToUpdate, getAllPackages } from './workspace';
 const xml2js = require('xml2js');
 
 export type SupportedDemoType = 'xml' | 'angular' | 'vue' | 'svelte' | 'react';
@@ -59,18 +59,18 @@ export function updateDemoDependencies(tree: Tree, type: SupportedDemoType, demo
 			// reset to all
 			if (allPackages) {
 				for (const name of allPackages) {
-					packageData.dependencies[`${scopeName}/${name}`] = getPathToPackageForDemo(type, name);
+					packageData.dependencies[`${npmScope}/${name}`] = getPathToPackageForDemo(type, name);
 				}
 			}
 		} else {
 			for (const name of packageNamesToUpdate) {
-				packageData.dependencies[`${scopeName}/${name}`] = getPathToPackageForDemo(type, name);
+				packageData.dependencies[`${npmScope}/${name}`] = getPathToPackageForDemo(type, name);
 			}
 			if (focus && allPackages) {
 				// when focusing packages, remove others not being focused on
 				for (const name of allPackages) {
 					if (!packageNamesToUpdate.includes(name)) {
-						delete packageData.dependencies[`${scopeName}/${name}`];
+						delete packageData.dependencies[`${npmScope}/${name}`];
 					}
 				}
 			}

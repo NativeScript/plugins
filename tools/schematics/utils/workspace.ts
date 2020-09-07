@@ -5,7 +5,7 @@ import { Tree, SchematicContext } from '@angular-devkit/schematics';
 import { updateWorkspaceInTree, readJsonInTree, getWorkspacePath } from '@nrwl/workspace';
 import * as stripJsonComments from 'strip-json-comments';
 
-export const scopeName = '@nativescript';
+export const npmScope = '@nativescript';
 let packageNamesToUpdate: Array<string>;
 
 export function setPackageNamesToUpdate(names: Array<string>) {
@@ -70,14 +70,14 @@ export function updateReadMe() {
 		let readmeContent = tree.read(readmePath).toString('utf-8');
 
 		// Add package as build option
-		const listPackageSectionIndex = readmeContent.indexOf(`* ${scopeName}`);
+		const listPackageSectionIndex = readmeContent.indexOf(`* ${npmScope}`);
 		const readmeStart = readmeContent.substring(0, listPackageSectionIndex);
 		const listEndIndex = readmeContent.indexOf(`# How to`);
 		const readmeEnd = readmeContent.substring(listEndIndex, readmeContent.length);
 		const packageNames = getAllPackages(tree);
 		let packageList = '';
 		for (const packageName of packageNames) {
-			packageList += `* ${scopeName}/${packageName}\n`;
+			packageList += `* ${npmScope}/${packageName}\n`;
 		}
 		readmeContent = `${readmeStart}${packageList}\n${readmeEnd}`;
 

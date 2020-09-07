@@ -1,7 +1,7 @@
 # Nativescript <%= name %>
 
 ```javascript
-ns plugin add @nativescript/<%= name %>
+ns plugin add <%= npmScope %>/<%= name %>
 ```
 
 ## Usage 
