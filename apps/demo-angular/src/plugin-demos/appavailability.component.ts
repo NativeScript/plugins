@@ -9,6 +9,6 @@ export class AppavailabilityComponent {
 	constructor(private ngZone: NgZone) {}
 
 	testIt() {
-    console.log('test your plugin!');
+		console.log('test your plugin!');
 	}
 }

@@ -1,9 +1,9 @@
 import { chain, Rule, Tree, SchematicContext, SchematicsException, apply, url, move, mergeWith, template, noop } from '@angular-devkit/schematics';
 import { stringUtils, formatFiles } from '@nrwl/workspace';
-import { getJsonFromFile, sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes } from '../utils';
+import { sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes, scopeName, updateDemoSharedIndex, getAllPackages } from '../utils';
 import { Schema } from './schema';
 
-export default function (schema?: Schema, relativePrefix?: string): Rule {
+export default function (schema?: Schema, relativePrefix?: string, addingNew?: boolean): Rule {
 	if (schema) {
 		if (schema.types) {
 			// only updating specific demo types
@@ -31,9 +31,19 @@ export default function (schema?: Schema, relativePrefix?: string): Rule {
 		demoDependencyChains.push(addDependencyToDemoApp(t, demoAppRoot));
 	}
 
-	return chain([prerun(), ...demoFileChains, ...demoIndexChains, ...demoDependencyChains, formatFiles({
-    skipFormat: !!schema.skipFormat
-  })]);
+	return chain([
+		prerun(),
+		...demoFileChains,
+		...demoIndexChains,
+		...demoDependencyChains,
+		addDemoSharedFiles(relativePrefix),
+		(tree: Tree) => {
+			updateDemoSharedIndex(tree, getAllPackages(tree), getPackageNamesToUpdate(), addingNew);
+		},
+		formatFiles({
+			skipFormat: !!schema.skipFormat,
+		}),
+	]);
 }
 
 function prerun() {
@@ -62,6 +72,7 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 				const templateSource = apply(url(`${relativePrefix}files_${type}`), [
 					template({
 						name,
+						npmScope: scopeName,
 						stringUtils,
 						tmpl: '',
 						dot: '.',
@@ -82,11 +93,11 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 	return (tree: Tree, context: SchematicContext) => {
 		checkPackages(tree, context);
-    if (type === 'angular') {
-      resetAngularIndex(tree, getPackageNamesToUpdate(), true);
-      resetAngularRoutes(tree, getPackageNamesToUpdate(), true);
-      return tree;
-    }
+		if (type === 'angular') {
+			resetAngularIndex(tree, getPackageNamesToUpdate(), true);
+			resetAngularRoutes(tree, getPackageNamesToUpdate(), true);
+			return tree;
+		}
 
 		const demoIndexViewPath = `${demoAppRoot}/${getDemoIndexPathForType(type)}`;
 		let indexViewContent = tree.read(demoIndexViewPath).toString('utf-8');
@@ -109,10 +120,42 @@ function addToDemoIndex(type: SupportedDemoType, demoAppRoot: string) {
 					}
 
 					break;
-      }
+			}
 		}
 		// context.logger.info(indexViewContent);
 		tree.overwrite(demoIndexViewPath, indexViewContent);
 		return tree;
+	};
+}
+
+function addDemoSharedFiles(relativePrefix: string = './') {
+	return (tree: Tree, context: SchematicContext) => {
+		const demoSharedPath = `tools/demo`;
+		context.logger.info(`Updating shared demo code in "${demoSharedPath}"`);
+
+		const fileChain: Array<Rule> = [];
+		for (const name of getPackageNamesToUpdate()) {
+			const demoSharedIndex = `${demoSharedPath}/${name}/index.ts`;
+			// context.logger.info('packageDemoViewPath: ' + packageDemoViewPath);
+			if (!tree.exists(demoSharedIndex)) {
+				// context.logger.info('packageDemoViewPath: DID NOT EXIST!');
+				const templateSource = apply(url(`${relativePrefix}files_demo_shared`), [
+					template({
+						name,
+						npmScope: scopeName,
+						stringUtils,
+						tmpl: '',
+						dot: '.',
+					}),
+					move(demoSharedPath),
+				]);
+
+				fileChain.push(mergeWith(templateSource));
+			} else {
+				fileChain.push(noop());
+			}
+		}
+
+		return chain(fileChain)(tree, context);
 	};
 }

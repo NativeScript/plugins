@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template } from '@angular-devkit/schematics';
 import { stringUtils, addProjectToNxJsonInTree, getWorkspace } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, scopeName, getAllPackages } from '../utils';
+import { updateWorkspaceJson, getJsonFromFile, scopeName, getAllPackages, updateReadMe } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
 
@@ -17,7 +17,8 @@ export default function (schema: Schema): Rule {
 			{
 				packages: name,
 			},
-			'../sync-packages-with-demos/'
+			'../sync-packages-with-demos/',
+			true
 		),
 		(tree: Tree, context: SchematicContext) => {
 			context.logger.info(`"${scopeName}/${name}" created and added to all demo apps. Ready to develop!`);
@@ -128,29 +129,6 @@ function updateWorkspaceScripts() {
 		workspaceScripts = `${focusStart}${newFocus}			${focusEnd}`;
 		// context.logger.info(workspaceScripts);
 		tree.overwrite(workspaceScriptPath, workspaceScripts);
-		return tree;
-	};
-}
-
-function updateReadMe() {
-	return (tree: Tree, context: SchematicContext) => {
-		const readmePath = 'README.md';
-		let readmeContent = tree.read(readmePath).toString('utf-8');
-
-		// Add package as build option
-		const listPackageSectionIndex = readmeContent.indexOf(`* ${scopeName}`);
-		const readmeStart = readmeContent.substring(0, listPackageSectionIndex);
-		const listEndIndex = readmeContent.indexOf(`# How to`);
-		const readmeEnd = readmeContent.substring(listEndIndex, readmeContent.length);
-		const packageNames = getAllPackages(tree);
-		let packageList = '';
-		for (const packageName of packageNames) {
-			packageList += `* ${scopeName}/${packageName}\n`;
-		}
-		readmeContent = `${readmeStart}${packageList}\n${readmeEnd}`;
-
-		// context.logger.info(readmeContent);
-		tree.overwrite(readmePath, readmeContent);
 		return tree;
 	};
 }

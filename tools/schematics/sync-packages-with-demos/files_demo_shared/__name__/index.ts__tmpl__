@@ -1,0 +1,9 @@
+import { DemoSharedBase } from '../utils';
+import {  } from '<%= npmScope %>/<%= name %>';
+
+export class DemoSharedCamera extends DemoSharedBase {
+
+  testIt() {
+    console.log('test your plugin!');
+  }
+}

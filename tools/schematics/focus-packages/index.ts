@@ -1,11 +1,7 @@
-import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template, externalSchematic, noop } from '@angular-devkit/schematics';
-import * as path from 'path';
-import { stringUtils, addProjectToNxJsonInTree, getWorkspace } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, sanitizeCollectionArgs, getDemoAppRoot, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getDemoIndexPathForType, getAllPackages, resetIndexForDemoType, getPluginDemoPath } from '../utils';
+import { chain, Rule, Tree, SchematicContext, externalSchematic, noop } from '@angular-devkit/schematics';
+import { sanitizeCollectionArgs, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getAllPackages, resetIndexForDemoType, getPluginDemoPath, updateDemoSharedIndex } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
-const prettyData = require('pretty-data').pd;
-const xml2js = require('xml2js');
 
 // can make this argument in future to support multi scoped workspaces
 // for example: a workspace could manage @triniwiz plugins alongside @nativescript-community plugins
@@ -26,6 +22,10 @@ export default function (schema: Schema): Rule {
 					setPackageNamesToUpdate(focusPackages);
 					allPackages = getAllPackages(tree);
 					// console.log('allPackages:', allPackages);
+
+					// adjust demo shared index for focusing
+					updateDemoSharedIndex(tree, allPackages, focusPackages);
+
 					// apps
 					const appsDir = tree.getDir('apps');
 					if (appsDir && appsDir.subdirs) {
@@ -79,10 +79,10 @@ export default function (schema: Schema): Rule {
 		(tree: Tree, context: SchematicContext) => {
 			const isFocusing = focusPackages && focusPackages.length > 0;
 			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `\n${scopeName}/${n}`).join('');
-      context.logger.info(`${isFocusing ? 'Focusing workspace on:' : 'Resetting workspace for:'}\n${focusTargets}\n\n`);
-      if (!schema.ignoreDemos) {
-        context.logger.info(` > NOTE: Clean the demo app you plan to test with before running now that the demo code has been updated.\n`);
-      }
+			context.logger.info(`${isFocusing ? 'Focusing workspace on:' : 'Resetting workspace for:'}\n${focusTargets}\n\n`);
+			if (!schema.ignoreDemos) {
+				context.logger.info(` > NOTE: Clean the demo app you plan to test with before running now that the demo code has been updated.\n`);
+			}
 		},
 	]);
 }

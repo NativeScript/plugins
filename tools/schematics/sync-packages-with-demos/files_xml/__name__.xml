@@ -6,7 +6,7 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-            <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>
+            <Button text="Test <%= name %>" tap="{{ testIt }}" class="btn btn-primary"/>
 
           </StackLayout>
         </ScrollView>

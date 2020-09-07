@@ -1,24 +1,24 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "id": "sync-packages-with-demos",
-  "type": "object",
-  "properties": {
-    "types": {
-      "type": "string",
-      "description": "Demo types to update",
-      "$default": {
-        "$source": "argv",
-        "index": 0
-      }
-    },
-    "packages": {
-      "type": "string",
-      "description": "Specific packages to update in demo apps. Defaults to all packages in workspace."
-    },
-    "skipFormat": {
-      "type": "boolean",
-      "default": false,
-      "description": "Skip formatting files."
-    }
-  }
+	"$schema": "http://json-schema.org/schema",
+	"id": "sync-packages-with-demos",
+	"type": "object",
+	"properties": {
+		"types": {
+			"type": "string",
+			"description": "Demo types to update",
+			"$default": {
+				"$source": "argv",
+				"index": 0
+			}
+		},
+		"packages": {
+			"type": "string",
+			"description": "Specific packages to update in demo apps. Defaults to all packages in workspace."
+		},
+		"skipFormat": {
+			"type": "boolean",
+			"default": false,
+			"description": "Skip formatting files."
+		}
+	}
 }

@@ -4,7 +4,7 @@ import { AppavailabilityComponent } from './appavailability.component';
 
 @NgModule({
 	imports: [NativeScriptCommonModule, NativeScriptRouterModule.forChild([{ path: '', component: AppavailabilityComponent }])],
-  declarations: [AppavailabilityComponent],
-  schemas: [ NO_ERRORS_SCHEMA]
+	declarations: [AppavailabilityComponent],
+	schemas: [NO_ERRORS_SCHEMA],
 })
 export class AppavailabilityModule {}

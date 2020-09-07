@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedCamera } from '@demo/shared';
 import {} from '@nativescript/camera';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/camera';
 	templateUrl: 'camera.component.html',
 })
 export class CameraComponent {
+	demoShared: DemoSharedCamera;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedCamera();
 	}
 }

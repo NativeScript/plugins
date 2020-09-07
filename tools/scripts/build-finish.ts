@@ -9,7 +9,7 @@ const publish = cmdArgs[1] === 'publish';
 
 // can make this argument in future to support multi scoped workspaces
 // for example: a workspace could manage @triniwiz plugins alongside @nativescript-community plugins
-let scopeName = '@nativescript'; 
+let scopeName = '@nativescript';
 
 console.log(`Building ${scopeName}/${packageName}...${publish ? 'and publishing.' : ''}`);
 
@@ -33,22 +33,22 @@ function buildAngular() {
 function copyAngularDist() {
 	fs.copy(path.join('packages', packageName, 'angular', 'dist'), path.join('dist', 'packages', packageName, 'angular'))
 		.then(() => {
-      console.log(`${packageName} angular built successfully.`);
-      finishPreparation();
-    })
+			console.log(`${packageName} angular built successfully.`);
+			finishPreparation();
+		})
 		.catch((err) => console.error(err));
 }
 
 function finishPreparation() {
-  fs.copy(path.join('tools', 'assets', 'publishing'), path.join('dist', 'packages', packageName))
+	fs.copy(path.join('tools', 'assets', 'publishing'), path.join('dist', 'packages', packageName))
 		.then(() => console.log(`${scopeName}/${packageName} ready to publish.`))
 		.catch((err) => console.error(err));
 }
 
 console.log('rootDir:', rootDir);
 if (fs.existsSync(path.join(rootDir, 'packages', packageName, 'angular'))) {
-  // package has angular specific src, build it first
-  buildAngular();
+	// package has angular specific src, build it first
+	buildAngular();
 } else {
-  finishPreparation();
+	finishPreparation();
 }

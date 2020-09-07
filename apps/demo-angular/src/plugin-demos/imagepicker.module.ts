@@ -4,7 +4,7 @@ import { ImagepickerComponent } from './imagepicker.component';
 
 @NgModule({
 	imports: [NativeScriptCommonModule, NativeScriptRouterModule.forChild([{ path: '', component: ImagepickerComponent }])],
-  declarations: [ImagepickerComponent],
-  schemas: [ NO_ERRORS_SCHEMA]
+	declarations: [ImagepickerComponent],
+	schemas: [NO_ERRORS_SCHEMA],
 })
 export class ImagepickerModule {}
