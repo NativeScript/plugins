@@ -26,7 +26,7 @@
 				"clean": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns clean", "npx rimraf webpack.config.js", "npm i"],
+						"commands": ["ns clean", "npm i"],
 						"cwd": "apps/demo",
 						"parallel": false
 					}
@@ -58,7 +58,7 @@
 				"clean": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns clean", "npx rimraf webpack.config.js", "npm i"],
+						"commands": ["ns clean", "npm i"],
 						"cwd": "apps/demo-angular",
 						"parallel": false
 					}
@@ -90,7 +90,7 @@
 				"clean": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns clean", "npx rimraf webpack.config.js", "npm i"],
+						"commands": ["ns clean", "npm i"],
 						"cwd": "apps/demo-vue",
 						"parallel": false
 					}

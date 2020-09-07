@@ -2,7 +2,8 @@
 <StackLayout class="p-20">
 	<ScrollView class="h-full">
 		<StackLayout>
-			<Button text="Test fingerprint-auth" (tap)="demoShared.testIt()" class="btn btn-primary"></Button>
+      <Label [text]="demoShared.status" class="t-20 text-center c-black" textWrap="true"></Label>
+			<Button text="Test fingerprint-auth" (tap)="demoShared.doCheckAvailable()" class="btn btn-primary"></Button>
 		</StackLayout>
 	</ScrollView>
 </StackLayout>

@@ -1,10 +1,12 @@
-import { npmScope } from "../schematics/utils";
-
 const ngPackage = require('ng-packagr');
 const path = require('path');
 const fs = require('fs-extra');
 
 const rootDir = path.resolve(path.join(__dirname, '..', '..'));
+const nxConfigPath = path.resolve(path.join(rootDir, 'nx.json'));
+const nxConfig = JSON.parse(fs.readFileSync(nxConfigPath));
+const npmScope = nxConfig.npmScope;
+
 const cmdArgs = process.argv.slice(2);
 const packageName = cmdArgs[0];
 const publish = cmdArgs[1] === 'publish';
@@ -43,7 +45,6 @@ function finishPreparation() {
 		.catch((err) => console.error(err));
 }
 
-console.log('rootDir:', rootDir);
 if (fs.existsSync(path.join(rootDir, 'packages', packageName, 'angular'))) {
 	// package has angular specific src, build it first
 	buildAngular();

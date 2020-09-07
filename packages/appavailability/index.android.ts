@@ -1,3 +1,5 @@
+declare var com: any;
+
 export function available(uri: string) {
 	return new Promise(function (resolve) {
 		resolve(isAvailable(uri));
