@@ -1,0 +1,27 @@
+{
+	"$schema": "http://json-schema.org/schema",
+	"id": "focus-packages",
+	"title": "focus schema",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "The packages to focus on.",
+			"alias": "n",
+			"$default": {
+				"$source": "argv",
+				"index": 0
+			}
+		},
+		"projects": {
+			"type": "string",
+			"description": "Demos to focus on.",
+			"alias": "apps"
+		},
+		"ignoreDemos": {
+			"type": "boolean",
+			"default": false,
+			"description": "Ignore focusing and isolating packages in demo apps."
+		}
+	}
+}

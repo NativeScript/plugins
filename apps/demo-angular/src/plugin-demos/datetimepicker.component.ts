@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewChild, ElementRef } from '@angular/core';
-import { DateTimePicker } from '@nativescript/datetimepicker';
 import { EventData, Button } from '@nativescript/core';
+import { DateTimePicker } from '@nativescript/datetimepicker';
 
 @Component({
 	selector: 'demo-datetimepicker',
@@ -58,7 +58,7 @@ import { EventData, Button } from '@nativescript/core';
 		`,
 	],
 })
-export class DateTimePickerComponent {
+export class DatetimepickerComponent {
 	public dateText: string = 'tap to select date';
 	public timeText: string = 'tap to select time';
 	public dateTimeText: string = 'tap to select date and time';

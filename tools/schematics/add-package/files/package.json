@@ -1,5 +1,5 @@
 {
-    "name": "@nativescript/<%= name %>",
+    "name": "<%= npmScope %>/<%= name %>",
     "version": "1.0.0",
     "description": "Add a plugin description",
     "main": "index",

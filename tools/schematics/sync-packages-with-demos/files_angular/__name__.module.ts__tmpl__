@@ -1,0 +1,10 @@
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NativeScriptCommonModule, NativeScriptRouterModule } from '@nativescript/angular';
+import { <%= stringUtils.classify(name) %>Component } from './<%= name %>.component';
+
+@NgModule({
+	imports: [NativeScriptCommonModule, NativeScriptRouterModule.forChild([{ path: '', component: <%= stringUtils.classify(name) %>Component }])],
+  declarations: [<%= stringUtils.classify(name) %>Component],
+  schemas: [ NO_ERRORS_SCHEMA]
+})
+export class <%= stringUtils.classify(name) %>Module {}

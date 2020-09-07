@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript/iqkeyboardmanager" navigatingTo="navigatingTo" class="page">
     <Page.actionBar>
         <ActionBar title="iqkeyboardmanager" icon="" class="action-bar">
         </ActionBar>

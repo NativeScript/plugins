@@ -1,16 +1,19 @@
 import { Component, NgZone } from '@angular/core';
-import { } from '@nativescript/<%= name %>';
+import { DemoShared<%= stringUtils.classify(name) %> } from '@demo/shared';
+import { } from '<%= npmScope %>/<%= name %>';
 
 @Component({
 	selector: 'demo-<%= name %>',
 	templateUrl: '<%= name %>.component.html',
 })
 export class <%= stringUtils.classify(name) %>Component {
-
+  
+  demoShared: DemoShared<%= stringUtils.classify(name) %>;
+  
 	constructor(private _ngZone: NgZone) {}
 
-  testIt() {
-    // test something here
+  ngOnInit() {
+    this.demoShared = new DemoShared<%= stringUtils.classify(name) %>();
   }
 
 }

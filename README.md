@@ -13,6 +13,7 @@ npm start
 - @nativescript/fingerprint-auth
 - @nativescript/geolocation
 - @nativescript/imagepicker
+- @nativescript/intl
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
 - @nativescript/shared-notification-delegate

@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-    selector: "demo-app",
-    templateUrl: "app.component.html",
+	selector: 'demo-app',
+	template: `<GridLayout>
+		<page-router-outlet></page-router-outlet>
+	</GridLayout>`,
 })
-export class AppComponent {
-    
-}
+export class AppComponent {}

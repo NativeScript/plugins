@@ -1,21 +1,17 @@
 <ActionBar>
-  <ActionBar title="Image Picker"></ActionBar>
+	<ActionBar title="imagepicker"></ActionBar>
 </ActionBar>
-
 <GridLayout rows="*, auto, auto">
-  <ListView [items]="imageAssets" *ngIf="!isSingleMode">
-      <ng-template let-image="item" let-i="index">
-          <GridLayout columns="auto, *">
-              <Image
-                  [width]="thumbSize" 
-                  [height]="thumbSize" 
-                  [src]="image" stretch="aspectFill"></Image>
-              <Label col="1" [text]="'image ' + i"></Label>
-          </GridLayout>
-      </ng-template>
-  </ListView>
-  
-  <Image [src]="imageSrc" *ngIf="isSingleMode" [width]="previewSize" [height]="previewSize" stretch="aspectFit"></Image>
-  <Button row="1" text="Pick Single" (tap)="onSelectSingleTap()" horizontalAlignment="center"></Button>
-  <Button row="2" text="Pick Multiple" (tap)="onSelectMultipleTap()" horizontalAlignment="center"></Button>
+	<ListView [items]="imageAssets" *ngIf="!isSingleMode">
+		<ng-template let-image="item" let-i="index">
+			<GridLayout columns="auto, *">
+				<Image [width]="thumbSize" [height]="thumbSize" [src]="image" stretch="aspectFill"></Image>
+				<Label col="1" [text]="'image ' + i"></Label>
+			</GridLayout>
+		</ng-template>
+	</ListView>
+
+	<Image [src]="imageSrc" *ngIf="isSingleMode" [width]="previewSize" [height]="previewSize" stretch="aspectFit"></Image>
+	<Button row="1" text="Pick Single" (tap)="onSelectSingleTap()" horizontalAlignment="center"></Button>
+	<Button row="2" text="Pick Multiple" (tap)="onSelectMultipleTap()" horizontalAlignment="center"></Button>
 </GridLayout>

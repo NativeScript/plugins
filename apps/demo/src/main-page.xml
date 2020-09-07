@@ -1,26 +1,23 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="Plugin Demos" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="directions" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-            <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-
-          </StackLayout>
-        </ScrollView>
-        
-    </StackLayout>
+  <Page.actionBar>
+    <ActionBar title="Plugin Demos" icon="" class="action-bar"/>
+  </Page.actionBar>
+  <StackLayout class="p-20">
+    <ScrollView class="h-full">
+      <StackLayout>
+        <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="directions" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+      </StackLayout>
+    </ScrollView>
+  </StackLayout>
 </Page>

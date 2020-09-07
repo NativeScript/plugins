@@ -1,4 +1,4 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo">
+<Page xmlns="http://www.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
     <Page.actionBar>
         <ActionBar title="Image Picker" />
     </Page.actionBar>
