@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedZip } from '@demo/shared';
 import {} from '@nativescript/zip';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/zip';
 	templateUrl: 'zip.component.html',
 })
 export class ZipComponent {
+	demoShared: DemoSharedZip;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedZip();
 	}
 }

@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedLocalNotifications } from '@demo/shared';
 import {} from '@nativescript/local-notifications';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/local-notifications';
 	templateUrl: 'local-notifications.component.html',
 })
 export class LocalNotificationsComponent {
+	demoShared: DemoSharedLocalNotifications;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedLocalNotifications();
 	}
 }

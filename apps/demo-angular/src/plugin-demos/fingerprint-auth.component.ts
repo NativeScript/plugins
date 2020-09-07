@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedFingerprintAuth } from '@demo/shared';
 import {} from '@nativescript/fingerprint-auth';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/fingerprint-auth';
 	templateUrl: 'fingerprint-auth.component.html',
 })
 export class FingerprintAuthComponent {
+	demoShared: DemoSharedFingerprintAuth;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedFingerprintAuth();
 	}
 }

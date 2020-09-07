@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedEmail } from '@demo/shared';
 import {} from '@nativescript/email';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/email';
 	templateUrl: 'email.component.html',
 })
 export class EmailComponent {
+	demoShared: DemoSharedEmail;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedEmail();
 	}
 }

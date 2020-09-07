@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedGeolocation } from '@demo/shared';
 import {} from '@nativescript/geolocation';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/geolocation';
 	templateUrl: 'geolocation.component.html',
 })
 export class GeolocationComponent {
+	demoShared: DemoSharedGeolocation;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedGeolocation();
 	}
 }

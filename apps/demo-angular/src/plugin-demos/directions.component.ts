@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedDirections } from '@demo/shared';
 import {} from '@nativescript/directions';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/directions';
 	templateUrl: 'directions.component.html',
 })
 export class DirectionsComponent {
+	demoShared: DemoSharedDirections;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedDirections();
 	}
 }

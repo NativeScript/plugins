@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedAppavailability } from '@demo/shared';
 import {} from '@nativescript/appavailability';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/appavailability';
 	templateUrl: 'appavailability.component.html',
 })
 export class AppavailabilityComponent {
-	constructor(private ngZone: NgZone) {}
+	demoShared: DemoSharedAppavailability;
 
-	testIt() {
-		console.log('test your plugin!');
+	constructor(private _ngZone: NgZone) {}
+
+	ngOnInit() {
+		this.demoShared = new DemoSharedAppavailability();
 	}
 }

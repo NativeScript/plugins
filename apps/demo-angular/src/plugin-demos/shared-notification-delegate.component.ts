@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { DemoSharedSharedNotificationDelegate } from '@demo/shared';
 import {} from '@nativescript/shared-notification-delegate';
 
 @Component({
@@ -6,9 +7,11 @@ import {} from '@nativescript/shared-notification-delegate';
 	templateUrl: 'shared-notification-delegate.component.html',
 })
 export class SharedNotificationDelegateComponent {
+	demoShared: DemoSharedSharedNotificationDelegate;
+
 	constructor(private _ngZone: NgZone) {}
 
-	testIt() {
-		console.log('test your plugin!');
+	ngOnInit() {
+		this.demoShared = new DemoSharedSharedNotificationDelegate();
 	}
 }
