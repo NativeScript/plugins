@@ -19,7 +19,8 @@
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/zip": "file:../../packages/zip",
-		"@nativescript/background-http": "file:../../packages/background-http"
+		"@nativescript/background-http": "file:../../packages/background-http",
+		"@nativescript/social-share": "file:../../packages/social-share"
 	},
 	"devDependencies": {
 		"@nativescript/android": "~7.0.0",

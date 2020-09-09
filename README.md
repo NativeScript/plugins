@@ -18,6 +18,7 @@ npm start
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
 - @nativescript/shared-notification-delegate
+- @nativescript/social-share
 - @nativescript/zip
 
 # How to contribute?

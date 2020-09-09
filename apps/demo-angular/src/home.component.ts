@@ -46,6 +46,9 @@ export class HomeComponent {
 			name: 'shared-notification-delegate',
 		},
 		{
+			name: 'social-share',
+		},
+		{
 			name: 'zip',
 		},
 	];

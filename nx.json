@@ -67,6 +67,9 @@
 		},
 		"background-http": {
 			"tags": []
+		},
+		"social-share": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

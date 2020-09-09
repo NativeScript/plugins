@@ -161,6 +161,13 @@ module.exports = {
 					description: '@nativescript/background-http: Build',
 				},
 			},
+			// @nativescript/social-share
+			'social-share': {
+				build: {
+					script: 'nx run social-share:build.all',
+					description: '@nativescript/social-share: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -240,6 +247,10 @@ module.exports = {
 			'background-http': {
 				script: 'nx run background-http:focus',
 				description: 'Focus on @nativescript/background-http',
+			},
+			'social-share': {
+				script: 'nx run social-share:focus',
+				description: 'Focus on @nativescript/social-share',
 			},
 			reset: {
 				script: 'nx run all:focus',
