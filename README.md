@@ -23,6 +23,8 @@ npm start
 
 # How to contribute?
 
+NOTE: links below are placeholders which videos will be made available for soon
+
 - [Intro]()
 - [Fix a bug]()
 - [Add a new package]()
