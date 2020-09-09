@@ -1,0 +1,30 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="background-http" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+   <GridLayout rows="3*,10, 2*, auto" columns="*, *, *">
+  		<ListView colSpan="3" items="{{ tasks }}">
+  			<ListView.itemTemplate>
+  				<StackLayout>
+  					<Label text="{{ description }}" />
+  					<Progress value="{{ upload }}" maxValue="{{ totalUpload }}" />
+  					<Label text="{{ upload, 'Uploading: ' + upload + ' / ' + totalUpload }}" />
+  					<Label text="{{ status, 'status: ' + status }}" />
+  				</StackLayout>
+  			</ListView.itemTemplate>
+  		</ListView>
+  		<StackLayout class="hr-dark" row="1" colSpan="3"></StackLayout>
+  		<ListView row="2" colSpan="3" items="{{ events }}">
+  			<ListView.itemTemplate>
+  				<StackLayout>
+  					<Label text="{{ eventTitle }} " />
+  					<Label text="{{ eventData }}" textWrap="true" />
+  				</StackLayout>
+  			</ListView.itemTemplate>
+  		</ListView>
+  		<Button row="3" margin="2" text="Upload!" tap="{{ upload }}" />
+  		<Button row="3" col="1" margin="2" text="Erro-Up!" tap="{{ upload_error }}" />
+  		<Button row="3" col="2" margin="2" text="MultiPart-Up!" tap="{{ upload_multi }}" />
+  	</GridLayout>
+</Page>

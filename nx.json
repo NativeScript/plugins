@@ -64,6 +64,9 @@
 		},
 		"brightness": {
 			"tags": []
+		},
+		"background-http": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

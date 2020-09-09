@@ -6,6 +6,7 @@ npm start
 ```
 
 - @nativescript/appavailability
+- @nativescript/background-http
 - @nativescript/brightness
 - @nativescript/camera
 - @nativescript/datetimepicker

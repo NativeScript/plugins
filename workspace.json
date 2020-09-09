@@ -234,7 +234,7 @@
 					"builder": "@nrwl/workspace:run-commands",
 					"outputs": ["dist/packages"],
 					"options": {
-						"commands": ["nx run email:build.all", "nx run shared-notification-delegate:build.all", "nx run appavailability:build.all", "nx run local-notifications:build.all", "nx run imagepicker:build.all", "nx run datetimepicker:build.all", "nx run camera:build.all", "nx run zip:build.all", "nx run directions:build.all", "nx run iqkeyboardmanager:build.all", "nx run geolocation:build.all", "nx run fingerprint-auth:build.all", "nx run brightness:build.all"],
+						"commands": ["nx run email:build.all", "nx run shared-notification-delegate:build.all", "nx run appavailability:build.all", "nx run local-notifications:build.all", "nx run imagepicker:build.all", "nx run datetimepicker:build.all", "nx run camera:build.all", "nx run zip:build.all", "nx run directions:build.all", "nx run iqkeyboardmanager:build.all", "nx run geolocation:build.all", "nx run fingerprint-auth:build.all", "nx run brightness:build.all", "nx run background-http:build.all"],
 						"parallel": false
 					}
 				},
@@ -673,6 +673,49 @@
 					"outputs": ["dist/packages"],
 					"options": {
 						"commands": ["nx workspace-schematic focus-packages brightness"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"background-http": {
+			"root": "packages/background-http",
+			"sourceRoot": "packages/background-http",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/background-http",
+						"tsConfig": "packages/background-http/tsconfig.json",
+						"packageJson": "packages/background-http/package.json",
+						"main": "packages/background-http/index.ts",
+						"assets": [
+							"packages/background-http/*.md",
+							"packages/background-http/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/background-http/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run background-http:build", "node tools/scripts/build-finish.ts background-http"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx workspace-schematic focus-packages background-http"],
 						"parallel": false
 					}
 				}

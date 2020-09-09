@@ -154,6 +154,13 @@ module.exports = {
 					description: '@nativescript/brightness: Build',
 				},
 			},
+			// @nativescript/background-http
+			'background-http': {
+				build: {
+					script: 'nx run background-http:build.all',
+					description: '@nativescript/background-http: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -229,6 +236,10 @@ module.exports = {
 			brightness: {
 				script: 'nx run brightness:focus',
 				description: 'Focus on @nativescript/brightness',
+			},
+			'background-http': {
+				script: 'nx run background-http:focus',
+				description: 'Focus on @nativescript/background-http',
 			},
 			reset: {
 				script: 'nx run all:focus',
