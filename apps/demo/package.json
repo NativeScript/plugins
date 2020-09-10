@@ -20,10 +20,11 @@
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/zip": "file:../../packages/zip",
 		"@nativescript/background-http": "file:../../packages/background-http",
-		"@nativescript/social-share": "file:../../packages/social-share"
+		"@nativescript/social-share": "file:../../packages/social-share",
+		"@nativescript/auto-fit-text": "file:../../packages/auto-fit-text"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~7.0.0",
+		"@nativescript/android": "7.0.0",
 		"@nativescript/ios": "7.0.0",
 		"@nativescript/webpack": "3.0.0",
 		"typescript": "file:../../node_modules/typescript"

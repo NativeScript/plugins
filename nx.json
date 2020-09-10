@@ -70,6 +70,9 @@
 		},
 		"social-share": {
 			"tags": []
+		},
+		"auto-fit-text": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

@@ -29,11 +29,12 @@
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/zip": "file:../../dist/packages/zip",
 		"@nativescript/background-http": "file:../../dist/packages/background-http",
-		"@nativescript/social-share": "file:../../dist/packages/social-share"
+		"@nativescript/social-share": "file:../../dist/packages/social-share",
+		"@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text"
 	},
 	"devDependencies": {
 		"@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",
-		"@nativescript/android": "~7.0.0",
+		"@nativescript/android": "7.0.0",
 		"@nativescript/ios": "7.0.0",
 		"@nativescript/webpack": "~3.0.0",
 		"@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",

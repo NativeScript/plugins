@@ -4,8 +4,8 @@
 	"license": "MIT",
 	"scripts": {
 		"setup": "npx rimraf node_modules package-lock.json dist tmp && npm i && ts-patch install",
-    "start": "nps",
-    "add": "nx workspace-schematic add-package"
+		"start": "nps",
+		"add": "nx workspace-schematic add-package"
 	},
 	"private": true,
 	"devDependencies": {

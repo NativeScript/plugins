@@ -42,3 +42,4 @@ Thumbs.db
 
 *.tgz
 packages/**/angular/dist
+*.aar

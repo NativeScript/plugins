@@ -1,5 +1,6 @@
 export * from './utils';
 export * from './appavailability';
+export * from './auto-fit-text';
 export * from './background-http';
 export * from './brightness';
 export * from './camera';

@@ -168,6 +168,13 @@ module.exports = {
 					description: '@nativescript/social-share: Build',
 				},
 			},
+			// @nativescript/auto-fit-text
+			'auto-fit-text': {
+				build: {
+					script: 'nx run auto-fit-text:build.all',
+					description: '@nativescript/auto-fit-text: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -251,6 +258,10 @@ module.exports = {
 			'social-share': {
 				script: 'nx run social-share:focus',
 				description: 'Focus on @nativescript/social-share',
+			},
+			'auto-fit-text': {
+				script: 'nx run auto-fit-text:focus',
+				description: 'Focus on @nativescript/auto-fit-text',
 			},
 			reset: {
 				script: 'nx run all:focus',

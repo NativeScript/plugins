@@ -1,0 +1,16 @@
+{
+	"name": "nativescript-auto-fit-text-angular",
+	"ngPackage": {
+		"lib": {
+			"entryFile": "index.ts",
+			"umdModuleIds": {
+				"@nativescript/core": "ns-core",
+				"@nativescript/angular": "ns-angular",
+				"@nativescript/auto-fit-text": "ns-auto-fit-text"
+			}
+		},
+		"whitelistedNonPeerDependencies": [
+			"."
+		]
+	}
+}
