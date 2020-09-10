@@ -15,7 +15,7 @@ This plugin is based on the Nativescript Label implementation but with changes t
   xmlns="http://schemas.nativescript.org/tns.xsd"
   loaded="pageLoaded"
   class="page"
-  xmlns:AFT="nativescript-auto-fit-text"
+  xmlns:AFT="@nativescript/auto-fit-text"
 >
   <StackLayout class="p-20">
     <AFT:AutoFitText
