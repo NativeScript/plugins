@@ -10,6 +10,9 @@ export class HomeComponent {
 			name: 'appavailability',
 		},
 		{
+			name: 'auto-fit-text',
+		},
+		{
 			name: 'background-http',
 		},
 		{

@@ -18,8 +18,9 @@
         <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>

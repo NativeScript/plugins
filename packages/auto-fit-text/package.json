@@ -1,0 +1,36 @@
+{
+	"name": "@nativescript/auto-fit-text",
+	"version": "1.0.0",
+	"description": "NativeScript plugin for a label that resizes on a single line to fit the screen.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "7.0.0",
+			"android": "7.0.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS",
+		"Android",
+		"auto-fit-text"
+	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed"
+}
