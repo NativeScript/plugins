@@ -1,5 +1,14 @@
 # @nativescript/\* plugins
 
+## Prerequisites
+
+```
+npm i -g nps nps-utils nps-i
+export NODE_PATH=`npm root -g`
+```
+
+## Run
+
 ```
 npm run setup
 npm start
