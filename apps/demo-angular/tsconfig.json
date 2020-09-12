@@ -8,6 +8,6 @@
 			"@nativescript/*": ["../../dist/packages/*"],
 			"@demo/shared": ["../../tools/demo/index.ts"]
 		}
-  },
-  "files": ["./references.d.ts", "./src/main.ts"],
+	},
+	"files": ["./references.d.ts", "./src/main.ts"]
 }

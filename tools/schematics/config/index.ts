@@ -1,5 +1,5 @@
 import { chain, Rule, Tree, SchematicContext, externalSchematic, noop } from '@angular-devkit/schematics';
-import { sanitizeCollectionArgs, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getAllPackages, resetIndexForDemoType, getPluginDemoPath, updateDemoSharedIndex, getJsonFromFile } from '../utils';
+import { getJsonFromFile } from '../utils';
 import { Schema } from './schema';
 import { stringUtils, serializeJson } from '@nrwl/workspace';
 
@@ -18,6 +18,7 @@ export default function (schema: Schema): Rule {
 			const tsconfigBasePath = `tsconfig.base.json`;
 			const tsconfigBase = getJsonFromFile(tree, tsconfigBasePath);
 			if (tsconfigBase && tsconfigBase.compilerOptions && tsconfigBase.compilerOptions.paths) {
+				delete tsconfigBase.compilerOptions.paths[`@nativescript/*`];
 				tsconfigBase.compilerOptions.paths[`@${customNpmScope}/*`] = ['packages/*'];
 				tree.overwrite(tsconfigBasePath, serializeJson(tsconfigBase));
 			}
@@ -28,12 +29,15 @@ export default function (schema: Schema): Rule {
 				const appFolders = appsDir.subdirs;
 				for (const dir of appFolders) {
 					const demoTsConfigPath = `${appsDir.path}/${dir}/tsconfig.json`;
-					const demoTsConfig = getJsonFromFile(tree, demoTsConfigPath);
-					// console.log(`demoTsConfig:`, demoTsConfig);
+					if (tree.exists(demoTsConfigPath)) {
+						const demoTsConfig = getJsonFromFile(tree, demoTsConfigPath);
+						// console.log(`demoTsConfig:`, demoTsConfig);
 
-					if (demoTsConfig && demoTsConfig.compilerOptions && demoTsConfig.compilerOptions.paths) {
-						demoTsConfig.compilerOptions.paths[`@${customNpmScope}/*`] = ['../../packages/*'];
-						tree.overwrite(demoTsConfigPath, serializeJson(demoTsConfig));
+						if (demoTsConfig && demoTsConfig.compilerOptions && demoTsConfig.compilerOptions.paths) {
+							delete demoTsConfig.compilerOptions.paths[`@nativescript/*`];
+							demoTsConfig.compilerOptions.paths[`@${customNpmScope}/*`] = [`../../${dir.indexOf('angular') > -1 ? 'dist/' : ''}packages/*`];
+							tree.overwrite(demoTsConfigPath, serializeJson(demoTsConfig));
+						}
 					}
 				}
 			}
