@@ -5,6 +5,7 @@ npm run setup
 npm start
 ```
 
+- @nativescript/animated-circle
 - @nativescript/appavailability
 - @nativescript/auto-fit-text
 - @nativescript/background-http
