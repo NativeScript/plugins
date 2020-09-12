@@ -73,6 +73,9 @@
 		},
 		"auto-fit-text": {
 			"tags": []
+		},
+		"animated-circle": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {
