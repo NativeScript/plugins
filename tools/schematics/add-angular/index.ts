@@ -1,15 +1,16 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template } from '@angular-devkit/schematics';
 import { stringUtils, addProjectToNxJsonInTree } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, npmScope, updateReadMe } from '../utils';
+import { updateWorkspaceJson, getJsonFromFile, updateReadMe, prerun, getNpmScope } from '../utils';
 import { Schema } from './schema';
 
 let name: string;
 export default function (schema: Schema): Rule {
 	name = stringUtils.dasherize(schema.name.toLowerCase());
 	return chain([
+		prerun(),
 		addAngularFiles(schema),
 		(tree: Tree, context: SchematicContext) => {
-			context.logger.info(`Angular support added for "${npmScope}/${name}". Continue developing the Angular support in the packages/${name}/angular folder.`);
+			context.logger.info(`Angular support added for "${getNpmScope()}/${name}". Continue developing the Angular support in the packages/${name}/angular folder.`);
 		},
 	]);
 }
@@ -20,8 +21,8 @@ function addAngularFiles(schema: Schema): Rule {
 
 		const templateSource = apply(url('./files'), [
 			template({
-        name,
-        npmScope,
+				name,
+				npmScope: getNpmScope(),
 				stringUtils,
 				tmpl: '',
 				dot: '.',

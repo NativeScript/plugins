@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, SchematicsException, apply, url, move, mergeWith, template, noop } from '@angular-devkit/schematics';
 import { stringUtils, formatFiles } from '@nrwl/workspace';
-import { sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes, npmScope, updateDemoSharedIndex, getAllPackages } from '../utils';
+import { sanitizeCollectionArgs, setPackageNamesToUpdate, setDemoTypes, SupportedDemoTypes, SupportedDemoType, getDemoTypes, getPackageNamesToUpdate, getDemoAppRoot, addDependencyToDemoApp, checkPackages, getDemoIndexButtonForType, getDemoIndexPathForType, resetAngularIndex, getPluginDemoPath, resetAngularRoutes, updateDemoSharedIndex, getAllPackages, prerun, getNpmScope } from '../utils';
 import { Schema } from './schema';
 
 export default function (schema?: Schema, relativePrefix?: string, addingNew?: boolean): Rule {
@@ -46,12 +46,6 @@ export default function (schema?: Schema, relativePrefix?: string, addingNew?: b
 	]);
 }
 
-function prerun() {
-	return (tree: Tree, context: SchematicContext) => {
-		checkPackages(tree, context);
-	};
-}
-
 function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePrefix: string = './') {
 	return (tree: Tree, context: SchematicContext) => {
 		context.logger.info(`Updating "${demoAppRoot}"`);
@@ -72,7 +66,7 @@ function addDemoFiles(type: SupportedDemoType, demoAppRoot: string, relativePref
 				const templateSource = apply(url(`${relativePrefix}files_${type}`), [
 					template({
 						name,
-						npmScope,
+						npmScope: getNpmScope(),
 						stringUtils,
 						tmpl: '',
 						dot: '.',
@@ -142,7 +136,7 @@ function addDemoSharedFiles(relativePrefix: string = './') {
 				const templateSource = apply(url(`${relativePrefix}files_demo_shared`), [
 					template({
 						name,
-						npmScope,
+						npmScope: getNpmScope(),
 						stringUtils,
 						tmpl: '',
 						dot: '.',

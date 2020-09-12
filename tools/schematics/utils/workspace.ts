@@ -5,7 +5,24 @@ import { Tree, SchematicContext } from '@angular-devkit/schematics';
 import { updateWorkspaceInTree, readJsonInTree, getWorkspacePath } from '@nrwl/workspace';
 import * as stripJsonComments from 'strip-json-comments';
 
-export const npmScope = '@nativescript';
+let npmScope: string;
+
+export function getNpmScope() {
+	return npmScope;
+}
+
+export function prerun() {
+	return (tree: Tree, context: SchematicContext) => {
+		if (!npmScope) {
+			const nxConfig = getJsonFromFile(tree, 'nx.json');
+			if (nxConfig && nxConfig.npmScope) {
+				npmScope = `@${nxConfig.npmScope}`;
+			}
+		}
+		checkPackages(tree, context);
+	};
+}
+
 let packageNamesToUpdate: Array<string>;
 
 export function setPackageNamesToUpdate(names: Array<string>) {

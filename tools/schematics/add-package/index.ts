@@ -1,6 +1,6 @@
 import { chain, Rule, Tree, SchematicContext, apply, url, move, mergeWith, template } from '@angular-devkit/schematics';
 import { stringUtils, addProjectToNxJsonInTree } from '@nrwl/workspace';
-import { updateWorkspaceJson, getJsonFromFile, npmScope, updateReadMe } from '../utils';
+import { updateWorkspaceJson, getJsonFromFile, updateReadMe, prerun, getNpmScope } from '../utils';
 import syncPackagesWithDemos from '../sync-packages-with-demos';
 import { Schema } from './schema';
 
@@ -8,6 +8,7 @@ let name: string;
 export default function (schema: Schema): Rule {
 	name = stringUtils.dasherize(schema.name.toLowerCase());
 	return chain([
+    prerun(),
 		addPackageFiles(schema),
 		addProjectToNxJsonInTree(name, {}),
 		updateWorkspaceConfig(),
@@ -21,7 +22,7 @@ export default function (schema: Schema): Rule {
 			true
 		),
 		(tree: Tree, context: SchematicContext) => {
-			context.logger.info(`"${npmScope}/${name}" created and added to all demo apps. Ready to develop!`);
+			context.logger.info(`"${getNpmScope()}/${name}" created and added to all demo apps. Ready to develop!`);
 		},
 	]);
 }
@@ -33,7 +34,7 @@ function addPackageFiles(schema: Schema): Rule {
 		const templateSource = apply(url('./files'), [
 			template({
         name,
-        npmScope,
+        npmScope: getNpmScope(),
 				stringUtils,
 				tmpl: '',
 				dot: '.',
@@ -108,11 +109,11 @@ function updateWorkspaceScripts() {
 		const buildSectionIndex = workspaceScripts.indexOf(`'build-all':`);
 		const buildStart = workspaceScripts.substring(0, buildSectionIndex);
 		const buildEnd = workspaceScripts.substring(buildSectionIndex, workspaceScripts.length);
-		const newBuild = `// ${npmScope}/${name}
+		const newBuild = `// ${getNpmScope()}/${name}
 			'${name}': {
 				build: {
 					script: 'nx run ${name}:build.all',
-					description: '${npmScope}/${name}: Build',
+					description: '${getNpmScope()}/${name}: Build',
 				},
 			},
 `;
@@ -124,7 +125,7 @@ function updateWorkspaceScripts() {
 		const focusEnd = workspaceScripts.substring(focusSectionIndex, workspaceScripts.length);
 		const newFocus = `'${name}': {
 				script: 'nx run ${name}:focus',
-				description: 'Focus on ${npmScope}/${name}',
+				description: 'Focus on ${getNpmScope()}/${name}',
 			},
 `;
 		workspaceScripts = `${focusStart}${newFocus}			${focusEnd}`;

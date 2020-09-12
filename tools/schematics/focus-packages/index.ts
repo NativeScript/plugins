@@ -1,5 +1,5 @@
 import { chain, Rule, Tree, SchematicContext, externalSchematic, noop } from '@angular-devkit/schematics';
-import { sanitizeCollectionArgs, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getAllPackages, resetIndexForDemoType, getPluginDemoPath, updateDemoSharedIndex, npmScope } from '../utils';
+import { sanitizeCollectionArgs, getDemoTypeFromName, updateDemoDependencies, setPackageNamesToUpdate, getAllPackages, resetIndexForDemoType, getPluginDemoPath, updateDemoSharedIndex, getNpmScope, prerun } from '../utils';
 import { Schema } from './schema';
 
 let focusPackages: Array<string>;
@@ -7,6 +7,7 @@ let allPackages: Array<string>;
 export default function (schema: Schema): Rule {
 	focusPackages = sanitizeCollectionArgs(schema.name);
 	return chain([
+    prerun(),
 		// Focus workspace
 		externalSchematic('@nstudio/focus', 'mode', {
 			name: schema.name,
@@ -74,7 +75,7 @@ export default function (schema: Schema): Rule {
 			  },
 		(tree: Tree, context: SchematicContext) => {
 			const isFocusing = focusPackages && focusPackages.length > 0;
-			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `\n${npmScope}/${n}`).join('');
+			const focusTargets = (focusPackages && focusPackages.length ? focusPackages : allPackages).map((n) => `\n${getNpmScope()}/${n}`).join('');
 			context.logger.info(`${isFocusing ? 'Focusing workspace on:' : 'Resetting workspace for:'}\n${focusTargets}\n\n`);
 			if (!schema.ignoreDemos) {
 				context.logger.info(` > NOTE: Clean the demo app you plan to test with before running now that the demo code has been updated.\n`);
