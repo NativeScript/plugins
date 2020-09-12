@@ -44,13 +44,13 @@ export default function (schema: Schema): Rule {
 
 			const travisPath = `.travis.yml`;
 			let travisContent = tree.read(travisPath).toString('utf-8');
-			travisContent.replace('@nativescript', customNpmScope);
-			// context.logger.info(travisContent);
+			travisContent = travisContent.replace('@nativescript', `@${customNpmScope}`);
+			// context.logger.info('travisContent:' + travisContent);
 			tree.overwrite(travisPath, travisContent);
 
 			const readmePath = `README.md`;
 			let readme = tree.read(readmePath).toString('utf-8');
-			readme.replace('@nativescript', customNpmScope);
+			readme = readme.replace('@nativescript', `@${customNpmScope}`);
 			// context.logger.info(travisContent);
 			tree.overwrite(readmePath, readme);
 
