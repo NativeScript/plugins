@@ -50,7 +50,7 @@ export default function (schema: Schema): Rule {
 
 			const workspaceScriptsPath = `tools/workspace-scripts.js`;
 			let workspaceScripts = tree.read(workspaceScriptsPath).toString('utf-8');
-			workspaceScripts = workspaceScripts.replace('@nativescript', `@${customNpmScope}`);
+			workspaceScripts = workspaceScripts.replace(/@nativescript/gm, `@${customNpmScope}`);
 			// context.logger.info(travisContent);
 			tree.overwrite(workspaceScriptsPath, workspaceScripts);
 
