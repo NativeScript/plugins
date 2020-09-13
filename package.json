@@ -31,7 +31,7 @@
 		"nativescript-vue-template-compiler": "~2.8.0",
 		"ng-packagr": "~10.1.0",
 		"rxjs": "~6.6.0",
-		"typescript": "~3.9.3",
+		"typescript": "~3.9.7",
 		"zone.js": "0.11.1"
 	},
 	"husky": {
