@@ -175,6 +175,13 @@ module.exports = {
 					description: '@nativescript/auto-fit-text: Build',
 				},
 			},
+			// @nativescript/animated-circle
+			'animated-circle': {
+				build: {
+					script: 'nx run animated-circle:build.all',
+					description: '@nativescript/animated-circle: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -262,6 +269,10 @@ module.exports = {
 			'auto-fit-text': {
 				script: 'nx run auto-fit-text:focus',
 				description: 'Focus on @nativescript/auto-fit-text',
+			},
+			'animated-circle': {
+				script: 'nx run animated-circle:focus',
+				description: 'Focus on @nativescript/animated-circle',
 			},
 			reset: {
 				script: 'nx run all:focus',

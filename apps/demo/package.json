@@ -21,7 +21,8 @@
 		"@nativescript/zip": "file:../../packages/zip",
 		"@nativescript/background-http": "file:../../packages/background-http",
 		"@nativescript/social-share": "file:../../packages/social-share",
-		"@nativescript/auto-fit-text": "file:../../packages/auto-fit-text"
+		"@nativescript/auto-fit-text": "file:../../packages/auto-fit-text",
+		"@nativescript/animated-circle": "file:../../packages/animated-circle"
 	},
 	"devDependencies": {
 		"@nativescript/android": "7.0.0",

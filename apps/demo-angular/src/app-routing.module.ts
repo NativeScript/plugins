@@ -7,6 +7,7 @@ import { HomeComponent } from './home.component';
 const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 	{ path: 'home', component: HomeComponent },
+	{ path: 'animated-circle', loadChildren: () => import('./plugin-demos/animated-circle.module').then((m) => m.AnimatedCircleModule) },
 	{ path: 'appavailability', loadChildren: () => import('./plugin-demos/appavailability.module').then((m) => m.AppavailabilityModule) },
 	{ path: 'auto-fit-text', loadChildren: () => import('./plugin-demos/auto-fit-text.module').then((m) => m.AutoFitTextModule) },
 	{ path: 'background-http', loadChildren: () => import('./plugin-demos/background-http.module').then((m) => m.BackgroundHttpModule) },

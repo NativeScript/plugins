@@ -21,6 +21,7 @@
         <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="animated-circle" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>

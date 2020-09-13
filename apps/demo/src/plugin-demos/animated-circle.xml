@@ -1,0 +1,15 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:AC="@nativescript/animated-circle" navigatingTo="navigatingTo" class="page">
+  <Page.actionBar>
+    <ActionBar title="animated-circle" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <StackLayout class="p-20">
+    <ScrollView class="h-full">
+      <StackLayout class="p-20">
+        <Label text="Animated Circle Demo" marginBottom="20" class="t-20 text-center c-black" textWrap="true"/>
+        <AC:AnimatedCircle backgroundColor="transparent" width="200" height="200" animated="true" animateFrom="0" rimColor="#fff000" barColor="#ff4081" rimWidth="25" progress="{{ progress }}" />
+      </StackLayout>
+    </ScrollView>
+  </StackLayout>
+</Page>
