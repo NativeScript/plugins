@@ -48,6 +48,12 @@ export default function (schema: Schema): Rule {
 			// context.logger.info('travisContent:' + travisContent);
 			tree.overwrite(travisPath, travisContent);
 
+			const workspaceScriptsPath = `tools/workspace-scripts.js`;
+			let workspaceScripts = tree.read(workspaceScriptsPath).toString('utf-8');
+			workspaceScripts = workspaceScripts.replace('@nativescript', `@${customNpmScope}`);
+			// context.logger.info(travisContent);
+			tree.overwrite(workspaceScriptsPath, workspaceScripts);
+
 			const readmePath = `README.md`;
 			let readme = tree.read(readmePath).toString('utf-8');
 			readme = readme.replace('@nativescript', `@${customNpmScope}`);

@@ -6,7 +6,8 @@
 		"setup": "npx rimraf node_modules package-lock.json dist tmp && npm i && ts-patch install",
 		"start": "nps",
 		"add": "nx workspace-schematic add-package",
-		"add-angular": "nx workspace-schematic add-angular"
+		"add-angular": "nx workspace-schematic add-angular",
+		"config": "nx workspace-schematic config"
 	},
 	"private": true,
 	"devDependencies": {
