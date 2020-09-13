@@ -35,7 +35,7 @@ npm run add
 
 At the prompt, enter the name of the new package.
 
-- This adds a package harness with necessary boilerplate to just start developing
+- This adds a plugin harness in `packages` with the necessary boilerplate to just start developing
 - Updates all demo app flavors to support demoing the new package
 - Adds shared code in `tools/demo` where you can write demo code **once** and share across all demo flavors
 - Updates build tooling to support the new package
@@ -56,4 +56,17 @@ At the prompt, enter the name of the package to add an `angular` folder to it wi
 npm start
 ```
 
-Choose the focus commands for the package you wish to focus on and all demo app's will be updated and for supported IDE's (currently VS Code), source will also become isolated in the workspace.
+- Choose the focus commands for the package you wish to focus on and hit enter.
+- All the demo app's will be updated to isolate that 1 package and for supported IDE's (currently VS Code), the source code will also become isolated in the workspace.
+
+Note: good to always clean the demo you plan to run after focusing. (You can clean any demo from `npm start` as well)
+
+## How to publish packages?
+
+```
+npm run publish-packages
+```
+
+- You will be prompted for the package names to publish. Leaving blank and hitting enter will publish them all.
+- You will then be prompted for the version to use. Leaving blank will auto bump the patch version (it also handles prerelease types like alpha, beta, rc, etc. - It even auto tags the corresponding prelease type on npm).
+- You will then be given a brief sanity check 🧠😊

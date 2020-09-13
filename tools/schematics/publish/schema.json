@@ -1,0 +1,28 @@
+{
+	"$schema": "http://json-schema.org/schema",
+	"id": "publish",
+	"title": "publish schema",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "The packages to publish.",
+			"$default": {
+				"$source": "argv",
+				"index": 0
+			},
+			"x-prompt": "Which packages 📦 would you like to publish? [Type single name, comma separated list or hit enter for all]"
+		},
+		"version": {
+			"type": "string",
+			"description": "The version to publish.",
+			"x-prompt": "What 🆕 version would you like to publish? [Type specific version or hit enter to auto bump the patch version]"
+		},
+		"verify": {
+			"type": "boolean",
+			"default": false,
+			"description": "Are you sure? Quick verification sanity check.",
+			"x-prompt": "Sanity check 🧠 Are you sure you have tested your local changes and want to publish?"
+		}
+	}
+}

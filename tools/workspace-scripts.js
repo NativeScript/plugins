@@ -192,10 +192,6 @@ module.exports = {
 			description: '_____________  Tools  _____________',
 		},
 		tools: {
-			'add-package': {
-				script: 'nx workspace-schematic add-package',
-				description: 'Add a new @nativescript package to workspace',
-			},
 			'sync-packages-with-demos': {
 				script: 'nx workspace-schematic sync-packages-with-demos',
 				description: 'Helps ensure all packages have views to test across all demo apps',

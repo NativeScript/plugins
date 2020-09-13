@@ -5,9 +5,10 @@
 	"scripts": {
 		"setup": "npx rimraf node_modules package-lock.json dist tmp && npm i && ts-patch install",
 		"start": "nps",
-		"add": "nx workspace-schematic add-package",
-		"add-angular": "nx workspace-schematic add-angular",
-		"config": "nx workspace-schematic config"
+		"add": "nx g @nativescript/plugin-tools:add-package",
+		"add-angular": "nx g @nativescript/plugin-tools:add-angular",
+		"config": "nx g @nativescript/plugin-tools:config",
+		"publish-packages": "nx g @nativescript/plugin-tools:publish"
 	},
 	"private": true,
 	"devDependencies": {
