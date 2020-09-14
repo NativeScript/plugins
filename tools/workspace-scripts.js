@@ -187,16 +187,6 @@ module.exports = {
 				description: 'Build all packages',
 			},
 		},
-		'🧰': {
-			script: `npx cowsay "Tools for the workspace 🧰"`,
-			description: '_____________  Tools  _____________',
-		},
-		tools: {
-			'sync-packages-with-demos': {
-				script: 'nx g @nativescript/plugin-tools:sync-packages-with-demos',
-				description: 'Helps ensure all packages have views to test across all demo apps',
-			},
-		},
 		'⚡': {
 			script: `npx cowsay "Focus only on source you care about for efficiency ⚡"`,
 			description: '_____________  Focus (VS Code supported)  _____________',

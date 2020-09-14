@@ -25,7 +25,9 @@ npm start
 
 # How to use?
 
-This workspace manages the suite of plugins listed above. In general, when in doubt just `npm start` 😊
+This workspace manages the suite of plugins listed above.
+
+In general, when in doubt with what to do, just `npm start`.
 
 ## How to add a new package to workspace?
 
@@ -59,7 +61,7 @@ npm start
 - Choose the focus commands for the package you wish to focus on and hit enter.
 - All the demo app's will be updated to isolate that 1 package and for supported IDE's (currently VS Code), the source code will also become isolated in the workspace.
 
-Note: good to always clean the demo you plan to run after focusing. (You can clean any demo from `npm start` as well)
+Note: _good to always clean the demo you plan to run after focusing. (You can clean any demo from `npm start` as well)_
 
 ## How to publish packages?
 
@@ -70,3 +72,5 @@ npm run publish-packages
 - You will be prompted for the package names to publish. Leaving blank and hitting enter will publish them all.
 - You will then be prompted for the version to use. Leaving blank will auto bump the patch version (it also handles prerelease types like alpha, beta, rc, etc. - It even auto tags the corresponding prelease type on npm).
 - You will then be given a brief sanity check 🧠😊
+
+<h3 align="center">Made with ❤️</h3>

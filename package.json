@@ -8,7 +8,8 @@
 		"add": "nx g @nativescript/plugin-tools:add-package",
 		"add-angular": "nx g @nativescript/plugin-tools:add-angular",
 		"config": "nx g @nativescript/plugin-tools:config",
-		"publish-packages": "nx g @nativescript/plugin-tools:publish"
+		"publish-packages": "nx g @nativescript/plugin-tools:publish",
+		"sync-packages-with-demos": "nx g @nativescript/plugin-tools:sync-packages-with-demos"
 	},
 	"private": true,
 	"devDependencies": {
@@ -23,7 +24,7 @@
 		"@angular/router": "~10.1.0",
 		"@nativescript/angular": "~10.1.0",
 		"@nativescript/core": "~7.0.0",
-		"@nativescript/plugin-tools": "rc",
+		"@nativescript/plugin-tools": "~1.0.0",
 		"@nativescript/types": "~7.0.0",
 		"@nativescript/webpack": "~3.0.0",
 		"@ngtools/webpack": "~10.1.0",
