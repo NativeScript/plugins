@@ -1,4 +1,0 @@
-import { Observable } from '@nativescript/core';
-
-export class <%= stringUtils.classify(name) %>Common extends Observable {
-}

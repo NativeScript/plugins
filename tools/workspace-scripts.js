@@ -193,7 +193,7 @@ module.exports = {
 		},
 		tools: {
 			'sync-packages-with-demos': {
-				script: 'nx workspace-schematic sync-packages-with-demos',
+				script: 'nx g @nativescript/plugin-tools:sync-packages-with-demos',
 				description: 'Helps ensure all packages have views to test across all demo apps',
 			},
 		},

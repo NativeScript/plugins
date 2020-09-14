@@ -1,9 +1,0 @@
-import { NgModule } from '@angular/core';
-import { registerElement } from '@nativescript/angular';
-import { <%= stringUtils.classify(name) %> } from '<%= npmScope %>/<%= name %>';
-
-@NgModule()
-export class NativeScript<%= stringUtils.classify(name) %>Module {}
-
-// Uncomment this line if the package provides a custom view component
-// registerElement('<%= stringUtils.classify(name) %>', () => <%= stringUtils.classify(name) %>);
