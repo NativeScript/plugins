@@ -251,7 +251,8 @@
 							"nx run background-http:build.all",
 							"nx run social-share:build.all",
 							"nx run auto-fit-text:build.all",
-							"nx run animated-circle:build.all"
+							"nx run animated-circle:build.all",
+							"nx run localize:build.all"
 						],
 						"parallel": false
 					}
@@ -867,7 +868,67 @@
 					}
 				}
 			}
-		}
+		},
+		"localize": {
+			"root": "packages/localize",
+			"sourceRoot": "packages/localize",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/localize",
+						"tsConfig": "packages/localize/tsconfig.json",
+						"packageJson": "packages/localize/package.json",
+						"main": "packages/localize/index.ts",
+						"assets": [
+							"packages/localize/*.md",
+							"packages/localize/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/localize/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+        },
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run localize:build", "nx run localize.hooks:build", "node tools/scripts/build-finish.ts localize"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages localize"],
+						"parallel": false
+					}
+				}
+			}
+    },
+    "localize.hooks": {
+			"root": "packages/localize/hooks",
+			"sourceRoot": "packages/localize/hooks",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+        "build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/localize/hooks",
+            "tsConfig": "packages/localize/hooks/tsconfig.es5.json",
+            "packageJson": "packages/localize/hooks/package.json",
+            "main": "packages/localize/hooks/index.ts"
+					}
+        }
+      }
+    }
 	},
 	"cli": {
 		"defaultCollection": "@nstudio/xplat"

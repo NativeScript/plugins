@@ -76,7 +76,13 @@
 		},
 		"animated-circle": {
 			"tags": []
-		}
+		},
+		"localize": {
+			"tags": []
+    },
+    "localize.hooks": {
+      "tags": []
+    }
 	},
 	"workspaceLayout": {
 		"appsDir": "apps",

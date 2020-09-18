@@ -13,6 +13,7 @@ export * from './geolocation';
 export * from './imagepicker';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';
+export * from './localize';
 export * from './shared-notification-delegate';
 export * from './social-share';
 export * from './zip';
