@@ -15,8 +15,12 @@
 		"reflect-metadata": "file:../../node_modules/reflect-metadata",
 		"rxjs": "file:../../node_modules/rxjs",
 		"zone.js": "file:../../node_modules/zone.js",
-		"@nativescript/brightness": "file:../../dist/packages/brightness",
+		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
+		"@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
+		"@nativescript/background-http": "file:../../dist/packages/background-http",
+		"@nativescript/brightness": "file:../../dist/packages/brightness",
 		"@nativescript/camera": "file:../../dist/packages/camera",
 		"@nativescript/datetimepicker": "file:../../dist/packages/datetimepicker",
 		"@nativescript/directions": "file:../../dist/packages/directions",
@@ -27,11 +31,8 @@
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
-		"@nativescript/zip": "file:../../dist/packages/zip",
-		"@nativescript/background-http": "file:../../dist/packages/background-http",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",
-		"@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
-		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle"
+		"@nativescript/zip": "file:../../dist/packages/zip"
 	},
 	"devDependencies": {
 		"@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",

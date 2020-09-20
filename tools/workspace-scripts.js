@@ -182,6 +182,13 @@ module.exports = {
 					description: '@nativescript/animated-circle: Build',
 				},
 			},
+			// @nativescript/localize
+			localize: {
+				build: {
+					script: 'nx run localize:build.all',
+					description: '@nativescript/localize: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -259,6 +266,10 @@ module.exports = {
 			'animated-circle': {
 				script: 'nx run animated-circle:focus',
 				description: 'Focus on @nativescript/animated-circle',
+			},
+			localize: {
+				script: 'nx run localize:focus',
+				description: 'Focus on @nativescript/localize',
 			},
 			reset: {
 				script: 'nx run all:focus',

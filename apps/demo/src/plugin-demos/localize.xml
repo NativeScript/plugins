@@ -1,0 +1,36 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="{{ L('app.name') }}" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+            <Label text="{{ L('hello.world') }}"></Label>
+            <Label text="{{ L('sprintf') }}"></Label>
+            <Label text="{{ L('sprintf', 'PARTIALLY') }}"></Label>
+            <Label text="{{ L('sprintf', 'AGAIN', 'OK') }}"></Label>
+            <Label text="{{ L('sprintf.numbered.placeholders', '1', '2') }}"></Label>
+            <Label text="{{ L('array') }}"></Label>
+            <Label text="{{ L('this.key.does.not.exist') }}"></Label>
+            <Label text="{{ L('html') }}"></Label>
+            <Label text="{{ L('new.line') }}"></Label>
+            <Label text="{{ L('new.line') }}" textWrap="true"></Label>
+            <Label text="{{ L('tab') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.characters.n') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.characters.r') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.characters.t') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.characters.backslash') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.characters.single.quote') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.characters.double.quote') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.keys.\n') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.keys.\r') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.keys.\t') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.keys.\\') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.keys.\'') }}" textWrap="true"></Label>
+            <Label text="{{ L('special.keys.&quot;') }}" textWrap="true"></Label>
+
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>

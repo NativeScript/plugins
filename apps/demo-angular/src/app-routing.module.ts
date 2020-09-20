@@ -21,6 +21,7 @@ const routes: Routes = [
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then((m) => m.ImagepickerModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then((m) => m.IqkeyboardmanagerModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then((m) => m.LocalNotificationsModule) },
+	{ path: 'localize', loadChildren: () => import('./plugin-demos/localize.module').then((m) => m.LocalizeModule) },
 	{ path: 'shared-notification-delegate', loadChildren: () => import('./plugin-demos/shared-notification-delegate.module').then((m) => m.SharedNotificationDelegateModule) },
 	{ path: 'social-share', loadChildren: () => import('./plugin-demos/social-share.module').then((m) => m.SocialShareModule) },
 	{ path: 'zip', loadChildren: () => import('./plugin-demos/zip.module').then((m) => m.ZipModule) },

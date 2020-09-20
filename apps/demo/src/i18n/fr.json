@@ -1,0 +1,6 @@
+{
+	"hello": {
+		"world": "Bonjour le monde !"
+	},
+	"not found in en.default": "pas trouvé dans en.default"
+}

@@ -28,6 +28,8 @@
 		"@nativescript/types": "~7.0.0",
 		"@nativescript/webpack": "~3.0.0",
 		"@ngtools/webpack": "~10.1.0",
+		"@types/mkdirp": "^1.0.1",
+		"@types/sprintf-js": "^1.1.0",
 		"nativescript-vue": "~2.8.0",
 		"nativescript-vue-template-compiler": "~2.8.0",
 		"ng-packagr": "~10.1.0",

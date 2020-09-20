@@ -49,6 +49,9 @@ export class HomeComponent {
 			name: 'local-notifications',
 		},
 		{
+			name: 'localize',
+		},
+		{
 			name: 'shared-notification-delegate',
 		},
 		{

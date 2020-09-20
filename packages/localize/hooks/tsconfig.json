@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"outDir": "../../../dist/packages/localize/hooks",
+		"rootDirs": [".", ".."],
+		"module": "commonjs",
+		"target": "es2015",
+		"moduleResolution": "node",
+		"declaration": false,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"noEmitHelpers": false,
+		"noEmitOnError": true,
+		"removeComments": true
+	},
+	"include": ["../typings/**/*.d.ts"],
+	"files": ["index.ts"]
+}

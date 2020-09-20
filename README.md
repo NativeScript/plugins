@@ -19,6 +19,7 @@ npm start
 - @nativescript/imagepicker
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
+- @nativescript/localize
 - @nativescript/shared-notification-delegate
 - @nativescript/social-share
 - @nativescript/zip
