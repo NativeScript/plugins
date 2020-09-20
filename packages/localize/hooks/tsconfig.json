@@ -2,7 +2,7 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-		"rootDir": ".",
+    "rootDirs": [".", ".."],
     "module": "commonjs",
     "target": "es2015",
     "moduleResolution": "node",
@@ -13,5 +13,6 @@
     "noEmitOnError": true,
     "removeComments": true
   },
-	"include": ["**/*.ts"]
+  "include": ["../typings/**/*.d.ts", "**/*.ts"],
+  "files": ["index.ts"]
 }

@@ -65,38 +65,6 @@
 				}
 			}
 		},
-		"demo-vue": {
-			"root": "apps/demo-vue/",
-			"sourceRoot": "apps/demo-vue/src",
-			"projectType": "application",
-			"prefix": "demo",
-			"architect": {
-				"ios": {
-					"builder": "@nrwl/workspace:run-commands",
-					"options": {
-						"commands": ["ns debug ios --no-hmr --emulator --env.testing"],
-						"cwd": "apps/demo-vue",
-						"parallel": false
-					}
-				},
-				"android": {
-					"builder": "@nrwl/workspace:run-commands",
-					"options": {
-						"commands": ["ns debug android --no-hmr --emulator --env.testing"],
-						"cwd": "apps/demo-vue",
-						"parallel": false
-					}
-				},
-				"clean": {
-					"builder": "@nrwl/workspace:run-commands",
-					"options": {
-						"commands": ["ns clean", "npm i"],
-						"cwd": "apps/demo-vue",
-						"parallel": false
-					}
-				}
-			}
-		},
 		"local-notifications": {
 			"root": "packages/local-notifications",
 			"sourceRoot": "packages/local-notifications",
@@ -884,7 +852,9 @@
 						"main": "packages/localize/index.ts",
 						"assets": [
 							"packages/localize/*.md",
-							"packages/localize/index.d.ts",
+              "packages/localize/index.d.ts",
+              "packages/localize/postinstall.js",
+              "packages/localize/preuninstall.js",
 							"LICENSE",
 							{
 								"glob": "**/*",
@@ -922,7 +892,7 @@
 					"builder": "@nrwl/node:package",
 					"options": {
 						"outputPath": "dist/packages/localize/hooks",
-            "tsConfig": "packages/localize/hooks/tsconfig.es5.json",
+            "tsConfig": "packages/localize/hooks/tsconfig.json",
             "packageJson": "packages/localize/hooks/package.json",
             "main": "packages/localize/hooks/index.ts"
 					}
