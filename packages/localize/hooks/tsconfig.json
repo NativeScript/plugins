@@ -1,7 +1,6 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../../dist/out-tsc",
+    "outDir": ".",
     "rootDirs": [".", ".."],
     "module": "commonjs",
     "target": "es2015",
