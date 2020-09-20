@@ -1,4 +1,3 @@
-const t = require("../../../demo/src/i18n/en.default");
-t["app.name"] =  "NSL NG Demo";
-export const translations = t;
-// module.exports = translations;
+const translations = require('../../../demo/src/i18n/en.default');
+translations['app.name'] = 'NSL NG Demo';
+module.exports = translations;

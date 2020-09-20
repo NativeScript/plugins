@@ -1,6 +1,8 @@
-import { Observable, EventData, Page } from '@nativescript/core';
+import { Observable, EventData, Page, Application } from '@nativescript/core';
 import { DemoSharedLocalize } from '@demo/shared';
-import {} from '@nativescript/localize';
+import { localize } from '@nativescript/localize';
+
+Application.setResources({ L: localize });
 
 export function navigatingTo(args: EventData) {
 	const page = <Page>args.object;

@@ -852,9 +852,9 @@
 						"main": "packages/localize/index.ts",
 						"assets": [
 							"packages/localize/*.md",
-              "packages/localize/index.d.ts",
-              "packages/localize/postinstall.js",
-              "packages/localize/preuninstall.js",
+							"packages/localize/index.d.ts",
+							"packages/localize/postinstall.js",
+							"packages/localize/preuninstall.js",
 							"LICENSE",
 							{
 								"glob": "**/*",
@@ -863,12 +863,12 @@
 							}
 						]
 					}
-        },
+				},
 				"build.all": {
 					"builder": "@nrwl/workspace:run-commands",
 					"outputs": ["dist/packages"],
 					"options": {
-						"commands": ["nx run localize:build", "nx run localize.hooks:build", "node tools/scripts/build-finish.ts localize"],
+						"commands": ["nx run localize:build", "./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
 						"parallel": false
 					}
 				},
@@ -881,24 +881,7 @@
 					}
 				}
 			}
-    },
-    "localize.hooks": {
-			"root": "packages/localize/hooks",
-			"sourceRoot": "packages/localize/hooks",
-			"projectType": "library",
-			"schematics": {},
-			"architect": {
-        "build": {
-					"builder": "@nrwl/node:package",
-					"options": {
-						"outputPath": "dist/packages/localize/hooks",
-            "tsConfig": "packages/localize/hooks/tsconfig.json",
-            "packageJson": "packages/localize/hooks/package.json",
-            "main": "packages/localize/hooks/index.ts"
-					}
-        }
-      }
-    }
+		}
 	},
 	"cli": {
 		"defaultCollection": "@nstudio/xplat"

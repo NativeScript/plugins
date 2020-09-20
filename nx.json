@@ -76,10 +76,7 @@
 		},
 		"localize": {
 			"tags": []
-    },
-    "localize.hooks": {
-      "tags": []
-    }
+		}
 	},
 	"workspaceLayout": {
 		"appsDir": "apps",
