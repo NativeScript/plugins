@@ -1,5 +1,5 @@
-import { Observable, knownFolders } from "@nativescript/core";
-import { ProgressEventData, ErrorEventData, ResultEventData, Session as ISession, Task as ITask, Request as IRequest, CompleteEventData } from ".";
+import { knownFolders, Observable } from "@nativescript/core";
+import { CompleteEventData, ErrorEventData, ProgressEventData, Request as IRequest, ResultEventData } from ".";
 
 const main_queue = dispatch_get_current_queue();
 let zonedOnProgress = null;
@@ -230,36 +230,8 @@ class Session implements Session {
     }
 }
 
-class NativePropertyReader {
-    private _invocationCache = new Map<string, NSInvocation>();
-
-    private getInvocationObject(object: NSObject, selector: string): NSInvocation {
-        let invocation = this._invocationCache.get(selector);
-        if (!invocation) {
-            const sig = object.methodSignatureForSelector(selector);
-            invocation = NSInvocation.invocationWithMethodSignature(sig);
-            invocation.selector = selector;
-
-            this._invocationCache[selector] = invocation;
-        }
-
-        return invocation;
-    }
-
-    public readProp<T>(object: NSObject, prop: string, type: interop.Type<T>): T {
-        const invocation = this.getInvocationObject(object, prop);
-        invocation.invokeWithTarget(object);
-
-        const ret = new interop.Reference<T>(type, new interop.Pointer());
-        invocation.getReturnValue(ret);
-
-        return ret.value;
-    }
-}
-
 class Task extends Observable {
     public static _tasks = new Map<NSURLSessionTask, Task>();
-    public static tasksReader = new NativePropertyReader();
     private static is64BitArchitecture = interop.sizeof(interop.types.id) === 8;
     public static NSIntegerType = Task.is64BitArchitecture ? interop.types.int64 : interop.types.int32;
 
@@ -282,19 +254,19 @@ class Task extends Observable {
     }
 
     get upload(): number {
-        return Task.tasksReader.readProp(this._task, "countOfBytesSent", interop.types.int64);
+        return this._task.countOfBytesSent;
     }
 
     get totalUpload(): number {
-        return Task.tasksReader.readProp(this._task, "countOfBytesExpectedToSend", interop.types.int64);
+        return this._task.countOfBytesExpectedToSend;
     }
 
     get status(): string {
-        if (Task.tasksReader.readProp(this._task, "error", Task.NSIntegerType)) {
+        if (this._task.error) {
             return "error";
         }
         // NSURLSessionTaskState : NSInteger, so we should pass number format here
-        switch (Task.tasksReader.readProp(this._task, "state", Task.NSIntegerType) as NSURLSessionTaskState) {
+        switch (this._task.state) {
             case NSURLSessionTaskState.Running: return "uploading";
             case NSURLSessionTaskState.Completed: return "complete";
             case NSURLSessionTaskState.Canceling: return "error";
