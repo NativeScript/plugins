@@ -6,12 +6,14 @@ export const spinBarColorProperty = new InheritedCssProperty<Style, Color>({
 	equalityComparer: Color.equals,
 	valueConverter: (value) => new Color(value),
 });
+
 export const rimColorProperty = new InheritedCssProperty<Style, Color>({
 	name: 'rimColor',
 	cssName: 'rim-color',
 	equalityComparer: Color.equals,
 	valueConverter: (value) => new Color(value),
 });
+
 export const barColorProperty = new InheritedCssProperty<Style, Color>({
 	name: 'barColor',
 	cssName: 'bar-color',
@@ -25,18 +27,18 @@ export class AnimatedCircleCommon extends ContentView {
 	}
 }
 
-// register after class definition or we'll get an exception according
-// to
+// register after class definition or we'll get an exception according to
 // https://docs.nativescript.org/core-concepts/properties#registering-the-property
 
-// augmenting style definitino so it includes rimColor and barColor
+// augmenting style definition so it includes rimColor and barColor
 declare module '@nativescript/core/ui/styling/style' {
 	interface Style {
-		spinBarColor: Color;
-		rimColor: Color;
-		barColor: Color;
+		spinBarColor: Color | string;
+		rimColor: Color | string;
+		barColor: Color | string;
 	}
 }
+
 // defines 'spinBarColor' property on Style class
 spinBarColorProperty.register(Style);
 // defines 'rimColor' property on Style class
