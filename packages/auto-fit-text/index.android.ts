@@ -8,7 +8,6 @@ export class AutoFitText extends Label {
 		textField.setMaxLines(1);
 		textField.setSingleLine();
 		textField.setMaxHeight(200);
-		textField.setTextSize(200);
 		textField.setMinHeight(40);
 		textField.setTextAlignment(android.widget.TextView.TEXT_ALIGNMENT_CENTER);
 
