@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/auto-fit-text",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "NativeScript plugin for a label that resizes on a single line to fit the screen.",
 	"main": "index",
 	"typings": "index.d.ts",
