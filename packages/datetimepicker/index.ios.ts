@@ -185,7 +185,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 		if (color) {
 			if (this.SUPPORT_TEXT_COLOR) {
-				nativePicker.setValueForKey(color, 'textColor');
+				nativePicker.setValueForKey(color.ios, 'textColor');
 			}
 			nativePicker.setValueForKey(false, 'highlightsToday');
 		}
