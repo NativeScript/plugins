@@ -76,6 +76,9 @@
 		},
 		"localize": {
 			"tags": []
+		},
+		"detox": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

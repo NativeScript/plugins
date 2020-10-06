@@ -12,6 +12,7 @@ npm start
 - @nativescript/brightness
 - @nativescript/camera
 - @nativescript/datetimepicker
+- @nativescript/detox
 - @nativescript/directions
 - @nativescript/email
 - @nativescript/fingerprint-auth
