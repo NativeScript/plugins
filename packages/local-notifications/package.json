@@ -1,42 +1,42 @@
 {
-  "name": "@nativescript/local-notifications",
-  "version": "5.0.1",
-  "description": "The Local Notifications plugin allows your app to show notifications when the app is not running. Just like remote push notifications, but a few orders of magnitude easier to set up.",
-  "main": "index",
-  "typings": "index.d.ts",
-  "nativescript": {
-    "platforms": {
-      "android": "6.0.0",
-      "ios": "6.0.0"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eddyverbruggen/nativescript-local-notifications.git"
-  },
-  "keywords": [
-    "ecosystem:NativeScript",
-    "NativeScript",
-    "Alarm",
-    "Notification",
-    "Local Notification"
-  ],
-  "author": {
-    "name": "Eddy Verbruggen",
-    "url": "https://github.com/EddyVerbruggen/"
-  },
-  "contributors": [
-    {
-      "name": "Dani Gámez Franco",
-      "url": "https://github.com/Danziger"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/eddyverbruggen/nativescript-local-notifications/issues"
-  },
-  "homepage": "https://github.com/eddyverbruggen/nativescript-local-notifications",
-  "dependencies": {
-    "@nativescript/shared-notification-delegate": "~1.0.0"
-  }
+	"name": "@nativescript/local-notifications",
+	"version": "5.0.1",
+	"description": "The Local Notifications plugin allows your app to show notifications when the app is not running. Just like remote push notifications, but a few orders of magnitude easier to set up.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"android": "6.0.0",
+			"ios": "6.0.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/eddyverbruggen/nativescript-local-notifications.git"
+	},
+	"keywords": [
+		"ecosystem:NativeScript",
+		"NativeScript",
+		"Alarm",
+		"Notification",
+		"Local Notification"
+	],
+	"author": {
+		"name": "Eddy Verbruggen",
+		"url": "https://github.com/EddyVerbruggen/"
+	},
+	"contributors": [
+		{
+			"name": "Dani Gámez Franco",
+			"url": "https://github.com/Danziger"
+		}
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/eddyverbruggen/nativescript-local-notifications/issues"
+	},
+	"homepage": "https://github.com/eddyverbruggen/nativescript-local-notifications",
+	"dependencies": {
+		"@nativescript/shared-notification-delegate": "~1.0.0"
+	}
 }
