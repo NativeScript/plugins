@@ -1,6 +1,6 @@
 import { Color } from '@nativescript/core';
 
-export type ScheduleInterval = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
+export type ScheduleInterval = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | number;
 
 export interface NotificationAction {
 	id: string;
@@ -89,6 +89,9 @@ export interface ScheduleOptions {
 	 */
 	color?: Color;
 
+	/**
+	 * If the interval is a number, it will be calculated as DAYS.
+	 */
 	interval?: ScheduleInterval;
 
 	/**

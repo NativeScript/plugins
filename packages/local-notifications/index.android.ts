@@ -25,7 +25,7 @@ function useAndroidX() {
 export class LocalNotificationsImpl extends LocalNotificationsCommon implements LocalNotificationsApi {
 	private static IS_GTE_LOLLIPOP: boolean = android.os.Build.VERSION.SDK_INT >= 21;
 
-	private static getInterval(interval: ScheduleInterval): number {
+	private static getInterval(interval: ScheduleInterval | number): number {
 		if (interval === 'second') {
 			return 1000; // it's in ms
 		} else if (interval === 'minute') {
@@ -40,6 +40,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			return android.app.AlarmManager.INTERVAL_DAY * 31; // well that's almost accurate
 		} else if (interval === 'year') {
 			return android.app.AlarmManager.INTERVAL_DAY * 365; // same here
+		} else if (typeof interval === 'number') {
+			return android.app.AlarmManager.INTERVAL_DAY * interval;
 		} else {
 			return undefined;
 		}

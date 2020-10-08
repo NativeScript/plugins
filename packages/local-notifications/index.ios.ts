@@ -54,7 +54,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		return NSNotificationCenter.defaultCenter.addObserverForNameObjectQueueUsingBlock(eventName, null, NSOperationQueue.mainQueue, callback);
 	}
 
-	private static getInterval(interval: ScheduleInterval): NSCalendarUnit {
+	private static getInterval(interval: ScheduleInterval | number): NSCalendarUnit {
 		if (interval === 'minute') {
 			return NSCalendarUnit.CalendarUnitSecond;
 		} else if (interval === 'hour') {
@@ -67,6 +67,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			return NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond;
 		} else if (interval === 'year') {
 			return NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond;
+		} else if (typeof interval === 'number') {
+			return interval;
 		} else {
 			return NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond;
 		}
