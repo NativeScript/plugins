@@ -21,7 +21,7 @@ function share(thingsToShare) {
 }
 
 export function shareImage(image) {
-	share([image]);
+	share([image.ios]);
 }
 
 export function shareText(text) {
