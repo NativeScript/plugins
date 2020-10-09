@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/social-share",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Social sharing widget handling for NativeScript",
 	"main": "index",
 	"typings": "index.d.ts",
@@ -30,8 +30,8 @@
 			"name": "Eddy Verbruggen",
 			"email": "eddyverbruggen@gmail.com",
 			"url": "https://github.com/EddyVerbruggen"
-    },
-    {
+		},
+		{
 			"name": "NativeScript",
 			"email": "oss@nativescript.org"
 		}
