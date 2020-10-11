@@ -1,0 +1,11 @@
+{
+	"migrations": [
+		{
+			"version": "1.0.6",
+			"description": "Migrate tools to 1.0.6",
+			"factory": "./migrations/update-1-0-6/update-1-0-6",
+			"package": "@nativescript/plugin-tools",
+			"name": "update-to-1.0.6"
+		}
+	]
+}
