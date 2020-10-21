@@ -1,7 +1,7 @@
 {
 	"name": "@nativescript/detox",
 	"version": "1.0.0",
-	"description": "Add a plugin description",
+	"description": "Simplifies usage of wix/Detox e2e tests in NativeScript apps!",
 	"main": "index",
 	"typings": "index.d.ts",
 	"bin": {
@@ -33,7 +33,11 @@
 		"JavaScript",
 		"TypeScript",
 		"iOS",
-		"Android"
+		"Android",
+		"e2e",
+		"testing",
+		"tests",
+		"detox"
 	],
 	"author": {
 		"name": "NativeScript",
