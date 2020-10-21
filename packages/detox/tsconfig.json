@@ -1,0 +1,12 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "../../dist/out-tsc",
+		"rootDir": ".",
+		"allowJs": true,
+		"assets": [
+			"**/*.sh"
+		]
+	},
+	"exclude": ["**/*.spec.ts", "angular"],
+}

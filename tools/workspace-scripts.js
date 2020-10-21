@@ -189,6 +189,13 @@ module.exports = {
 					description: '@nativescript/localize: Build',
 				},
 			},
+			// @nativescript/detox
+			detox: {
+				build: {
+					script: 'nx run detox:build.all',
+					description: '@nativescript/detox: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -270,6 +277,10 @@ module.exports = {
 			localize: {
 				script: 'nx run localize:focus',
 				description: 'Focus on @nativescript/localize',
+			},
+			detox: {
+				script: 'nx run detox:focus',
+				description: 'Focus on @nativescript/detox',
 			},
 			reset: {
 				script: 'nx run all:focus',
