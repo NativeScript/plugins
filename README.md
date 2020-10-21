@@ -1,29 +1,29 @@
 # @nativescript/\* plugins
 
-```
+```bash
 npm run setup
 npm start
 ```
 
-- @nativescript/animated-circle
-- @nativescript/appavailability
-- @nativescript/auto-fit-text
-- @nativescript/background-http
-- @nativescript/brightness
-- @nativescript/camera
-- @nativescript/datetimepicker
-- @nativescript/detox
-- @nativescript/directions
-- @nativescript/email
-- @nativescript/fingerprint-auth
-- @nativescript/geolocation
-- @nativescript/imagepicker
-- @nativescript/iqkeyboardmanager
-- @nativescript/local-notifications
-- @nativescript/localize
-- @nativescript/shared-notification-delegate
-- @nativescript/social-share
-- @nativescript/zip
+- [@nativescript/animated-circle](/packages/animated-circle/README.md)
+- [@nativescript/appavailability](/packages/appavailability/README.md)
+- [@nativescript/auto-fit-text](/packages/auto-fit-text/README.md)
+- [@nativescript/background-http](/packages/background-http/README.md)
+- [@nativescript/brightness](/packages/brightness/README.md)
+- [@nativescript/camera](/packages/camera/README.md)
+- [@nativescript/datetimepicker](/packages/datetimepicker/README.md)
+- [@nativescript/detox](/packages/detox/README.md)
+- [@nativescript/directions](/packages/directions/README.md)
+- [@nativescript/email](/packages/email/README.md)
+- [@nativescript/fingerprint-auth](/packages/fingerprint-auth/README.md)
+- [@nativescript/geolocation](/packages/geolocation/README.md)
+- [@nativescript/imagepicker](/packages/imagepicker/README.md)
+- [@nativescript/iqkeyboardmanager](/packages/iqkeyboardmanager/README.md)
+- [@nativescript/local-notifications](/packages/local-notifications/README.md)
+- [@nativescript/localize](/packages/localize/README.md)
+- [@nativescript/shared-notification-delegate](/packages/shared-notification-delegate/README.md)
+- [@nativescript/social-share](/packages/social-share/README.md)
+- [@nativescript/zip](/packages/zip/README.md)
 
 # How to use?
 
@@ -33,7 +33,7 @@ In general, when in doubt with what to do, just `npm start`.
 
 ## How to add a new package to workspace?
 
-```
+```bash
 npm run add
 ```
 
@@ -48,7 +48,7 @@ At the prompt, enter the name of the new package.
 
 ## How to add Angular compatibility to a package
 
-```
+```bash
 npm run add-angular
 ```
 
@@ -56,7 +56,7 @@ At the prompt, enter the name of the package to add an `angular` folder to it wi
 
 ## How to focus on just 1 package to develop in isolation
 
-```
+```bash
 npm start
 ```
 
@@ -67,7 +67,7 @@ Note: _good to always clean the demo you plan to run after focusing. (You can cl
 
 ## How to publish packages?
 
-```
+```bash
 npm run publish-packages
 ```
 
