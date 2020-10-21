@@ -137,21 +137,9 @@ This example creates a testing scenario called `Example` and has a single test i
 
 ### Matchers
 
-Detox uses [matchers](https://github.com/wix/Detox/blob/master/docs/APIRef.Matchers.md) to find elements in your UI to interact with such as `by.id()` or `by.text()`.
+Detox uses [matchers](https://github.com/wix/Detox/blob/master/docs/APIRef.Matchers.md) to find elements in your UI to interact with such as `by.label()` or `by.text()`.
 
-You can use the `testID` property to find your UI elements by a unique identifier in NativeScript (like in React Native).
-
-Example `by.id()`:
-
-```xml
-<Button text="Tap Me!" testID="testButton"></Button>
-```
-
-```javascript
-await element(by.id('testButton')).tap();
-```
-
-You can also use the `automationText` property to find your UI elements.
+You can use the `automationText` property to find your UI elements by a unique label in NativeScript.
 
 Example `by.label()`:
 
