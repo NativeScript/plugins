@@ -17,8 +17,8 @@ console.log(`Building ${npmScope}/${packageName}...${publish ? 'and publishing.'
 function buildAngular() {
 	ngPackage
 		.ngPackagr()
-		.forProject(`packages/${packageName}/angular/package.json`)
-		.withTsConfig(`packages/${packageName}/angular/tsconfig.angular.json`)
+		.forProject(path.join('packages', packageName, 'angular', 'package.json'))
+		.withTsConfig(path.join('packages', packageName, 'angular', 'tsconfig.angular.json'))
 		.build()
 		.then(() => {
 			copyAngularDist();
