@@ -143,7 +143,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	[spinBarColorProperty.setNative](value: any) {
 		this._spinBarColor = value;
 		if (value instanceof Color) {
-			this.android.setBarColor([value.argb]);
+			this.android.setSpinBarColor(value.argb);
 		} else if (typeof value === 'string') {
 			this.android.setSpinBarColor(new Color(value).argb);
 		}
