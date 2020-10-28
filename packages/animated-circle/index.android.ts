@@ -1,5 +1,5 @@
 import { Color } from '@nativescript/core';
-import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorProperty } from './common';
+import { AnimatedCircleCommon } from './common';
 
 declare const at;
 
@@ -12,15 +12,15 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	private _maxValue = 100;
 	private _barColor = new Color('#3D8FF4');
 	private _barWidth: number;
-	private _rimColor = new Color('#FF5722');
+	private _rimColor: Color;
 	private _rimWidth = 5;
 	private _spinBarColor = new Color('green');
 	private _startAngle: number;
 	private _text = '';
 	private _textColor = new Color('orange');
 	private _textSize = 8;
+	private _fillColor: Color;
 	clockwise = true;
-	fillColor: any;
 
 	constructor() {
 		super();
@@ -98,7 +98,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set maxValue(value: number) {
 		this._maxValue = Number(value);
-		this.updateAnimatedCircle();
+		this._updateMaxValue(value);
 	}
 
 	get maxValue(): number {
@@ -107,7 +107,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set rimColor(value: any) {
 		this._rimColor = value;
-		this.updateAnimatedCircle();
+		this._updateRimColor(value);
 	}
 
 	get rimColor() {
@@ -117,14 +117,15 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	get barColor(): Color {
 		return this._barColor;
 	}
+
 	set barColor(value: Color) {
 		this._barColor = value;
-		this.updateAnimatedCircle();
+		this._updateBarColor(value);
 	}
 
 	set rimWidth(value: number) {
 		this._rimWidth = Number(value);
-		this.updateAnimatedCircle();
+		this._updateRimWidth(value);
 	}
 
 	get rimWidth() {
@@ -133,43 +134,16 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set spinBarColor(value: any) {
 		this._spinBarColor = value;
-		this.updateAnimatedCircle();
+		this._updateSpinBarColor(value);
 	}
 
 	get spinBarColor() {
 		return this._spinBarColor;
 	}
 
-	[rimColorProperty.setNative](value: any) {
-		this._rimColor = value;
-		this.updateAnimatedCircle();
-	}
-
-	[rimColorProperty.getDefault]() {
-		return this._rimColor;
-	}
-
-	[barColorProperty.setNative](value: any) {
-		this._barColor = value;
-		this.updateAnimatedCircle();
-	}
-
-	[barColorProperty.getDefault]() {
-		return this._barColor;
-	}
-
-	[spinBarColorProperty.setNative](value: any) {
-		this._spinBarColor = value;
-		this.updateAnimatedCircle();
-	}
-
-	[spinBarColorProperty.getDefault]() {
-		return this._spinBarColor;
-	}
-
 	set startAngle(value: number) {
 		this._startAngle = Number(value);
-		this.updateAnimatedCircle();
+		this._updateStartAngle(value);
 	}
 
 	get startAngle() {
@@ -178,7 +152,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set barWidth(value: number) {
 		this._barWidth = Number(value);
-		this.updateAnimatedCircle();
+		this._updateBarWidth(value);
 	}
 
 	get barWidth() {
@@ -187,7 +161,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set text(value: string) {
 		this._text = value;
-		this.updateAnimatedCircle();
+		this._updateText(value);
 	}
 
 	get text() {
@@ -196,23 +170,68 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set textColor(value: string) {
 		this._textColor = new Color(value);
-		this.updateAnimatedCircle();
+		this._updateTextColor(this._textColor);
 	}
 
 	set textSize(value: number) {
 		this._textSize = value;
-		this.updateAnimatedCircle();
+		this._updateTextSize(value);
 	}
 
 	get textSize() {
 		return this.android.getTextSize();
 	}
 
+	set fillColor(value: Color) {
+		this._fillColor = value;
+		this._updateFillColor(value);
+	}
+
+	private _updateBarWidth(value) {
+		this.android?.setBarWidth(this.barWidth);
+	}
+	private _updateTextColor(value) {
+		this.android?.setTextColor(value.argb);
+	}
+
+	private _updateText(value: string) {
+		this.android?.setText(value);
+	}
+
+	private _updateMaxValue(value) {
+		this.android?.setMaxValue(value);
+	}
+
+	private _updateRimWidth(value) {
+		this.android?.setRimWidth(value);
+	}
+
+	private _updateRimColor(value) {
+		this.android?.setRimColor(new Color(value).argb);
+	}
+
+	private _updateBarColor(value) {
+		this.android?.setBarColor([new Color(value).argb]);
+	}
+
+	private _updateSpinBarColor(value: Color) {
+		this.android?.setSpinBarColor(value.argb);
+	}
+
+	private _updateStartAngle(value: number) {
+		this.android?.setStartAngle(value);
+	}
+
+	private _updateTextSize(value: number) {
+		this.android?.setTextSize(value);
+	}
+
+	private _updateFillColor(value) {
+		this.android?.setFillCircleColor(value.argb);
+	}
+
 	private updateAnimatedCircle(): void {
 		if (this.android) {
-			this.android.setText(this._text);
-			this.android.setTextColor(this._textColor.argb);
-			this.android.setTextSize(this._textSize);
 			if (this.animated) {
 				if (this.animateFrom) {
 					this.android.setValueAnimated(this.animateFrom, this.progress, this.animationDuration);
@@ -225,33 +244,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 				}
 			} else {
 				this.android.setValue(this.progress);
-			}
-			this.android.setMaxValue(this.maxValue);
-			if (this.rimColor) {
-				this.android.setRimColor(new Color(this.rimColor).argb);
-			}
-			if (this.spinBarColor) {
-				this.android.setSpinBarColor(new Color(this.spinBarColor).argb);
-			}
-			if (this.startAngle) {
-				this.android.setStartAngle(this.startAngle);
-			}
-			if (this.barWidth) {
-				this.android.setBarWidth(this.barWidth);
-			} else {
-				if (this.rimWidth) {
-					// set rim width to bar width if no bar width provided
-					this.android.setBarWidth(this.rimWidth);
-				}
-			}
-			if (this.rimWidth) {
-				this.android.setRimWidth(this.rimWidth);
-			}
-			if (this.barColor) {
-				this.android.setBarColor([this.barColor.argb]);
-			}
-			if (this.fillColor) {
-				this.android.setFillCircleColor(new Color(this.fillColor).argb);
 			}
 
 			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
