@@ -105,23 +105,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		return this._maxValue;
 	}
 
-	//   set rimColor(value: any) {
-	//     this._rimColor = value;
-	//     this.updateAnimatedCircle();
-	//   }
-
-	//   get rimColor() {
-	//     return this._rimColor;
-	//   }
-
-	//   get barColor(): Color {
-	//     return this._barColor;
-	//   }
-	//   set barColor(value: Color) {
-	//     this._barColor = value;
-	//     this.updateAnimatedCircle();
-	//   }
-
 	set rimWidth(value: number) {
 		this._rimWidth = Number(value);
 		this.updateAnimatedCircle();
@@ -130,15 +113,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	get rimWidth() {
 		return this._rimWidth;
 	}
-
-	//   set spinBarColor(value: any) {
-	//     this._spinBarColor = value;
-	//     this.updateAnimatedCircle();
-	//   }
-
-	//   get spinBarColor() {
-	//     return this._spinBarColor;
-	//   }
 
 	[rimColorProperty.setNative](value: any) {
 		this._rimColor = value;
