@@ -1,4 +1,4 @@
-import { Color, Utils } from '@nativescript/core';
+import { booleanConverter, Color, Utils } from '@nativescript/core';
 import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorProperty } from './common';
 
 export class AnimatedCircle extends AnimatedCircleCommon {
@@ -117,7 +117,11 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	 * The draw direction for the filled circle
 	 */
 	set clockwise(value: boolean) {
-		this._ios.clockwise = value;
+		if (typeof value === 'string') {
+			this._ios.clockwise = booleanConverter(value);
+		} else {
+			this._ios.clockwise = value;
+		}
 	}
 
 	/**
