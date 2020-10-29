@@ -228,7 +228,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	get clockwise() {
 		return this._clockwise;
 	}
-
 	// CSS Properties
 
 	[rimColorProperty.setNative](value: any) {
