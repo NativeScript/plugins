@@ -15,6 +15,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this._ios.backgroundColor = new Color('#348F74').ios;
 		this._ios.thickness = 5;
 		this._label = UILabel.alloc().initWithFrame(CGRectMake(0, 0, 0, 0));
+		this._label.adjustsFontSizeToFitWidth = true;
 		this._label.textAlignment = NSTextAlignment.Center;
 		this._label.textColor = new Color('#3D8FF4').ios;
 	}
