@@ -5,22 +5,22 @@ declare const at;
 
 export class AnimatedCircle extends AnimatedCircleCommon {
 	private _android: any;
-	private _progress: number;
-	private _animateFrom: number;
+	private _progress = 0;
+	private _animateFrom = 0;
 	private _animationDuration = 1000;
 	private _animated: boolean;
 	private _maxValue = 100;
 	private _barColor = new Color('#3D8FF4');
-	private _barWidth: number;
+	private _barWidth;
 	private _rimColor = new Color('#FF5722');
-	private _rimWidth = 5;
+	private _rimWidth;
 	private _spinBarColor = new Color('green');
-	private _startAngle: number;
+	private _startAngle: number = 0;
 	private _text = '';
 	private _textColor = new Color('orange');
 	private _textSize = 8;
-	private _fillColor: Color;
-	clockwise = true;
+	private _fillColor = new Color('transparent');
+	private _clockwise = true;
 
 	constructor() {
 		super();
@@ -31,15 +31,22 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	initNativeView() {
-		this.android.setAutoTextSize(false);
+		this.android.setAutoTextSize(true);
 		this.android.setBarStrokeCap(android.graphics.Paint.Cap.ROUND);
 		this.android.setTextMode(at.grabner.circleprogress.TextMode.TEXT);
 		this.android.setShowTextWhileSpinning(true);
-		this.android.setTextScale(1.1);
-		this.android.setTextSize(300);
 		this.android.setUnitVisible(false);
 		this.android.setOuterContourSize(0);
 		this.android.setInnerContourSize(0);
+		this.android.setText(this.text);
+		this.android.setValueAnimated(this.progress);
+		this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
+		this.android.setRimWidth(this.rimWidth);
+		this.android.setBarWidth(this.barWidth);
+		if (this.rimWidth) {
+			// set rim width to bar width if no bar width provided
+			this.android.setBarWidth(this.rimWidth);
+		}
 		this.updateAnimatedCircle();
 	}
 
@@ -61,8 +68,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set progress(value: number) {
-		this._progress = Number(value);
-		this.updateAnimatedCircle();
+		this._progress = value;
+		this.android?.setValueAnimated(this._progress);
 	}
 
 	get progress(): number {
@@ -97,8 +104,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set maxValue(value: number) {
-		this._maxValue = Number(value);
-		this.updateAnimatedCircle();
+		this._maxValue = value;
+		this.android?.setMaxValue(this.maxValue);
 	}
 
 	get maxValue(): number {
@@ -108,9 +115,9 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	set rimColor(value: any) {
 		this._rimColor = value;
 		if (value instanceof Color) {
-			this.android.setRimColor(value.argb);
+			this.android?.setRimColor(value.argb);
 		} else {
-			this.android.setRimColor(new Color(value).argb);
+			this.android?.setRimColor(new Color(value).argb);
 		}
 	}
 
@@ -124,15 +131,15 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	set barColor(value: Color) {
 		this._barColor = value;
 		if (value instanceof Color) {
-			this.android.setBarColor([value.argb]);
+			this.android?.setBarColor([value.argb]);
 		} else {
-			this.android.setBarColor([new Color(value).argb]);
+			this.android?.setBarColor([new Color(value).argb]);
 		}
 	}
 
 	set rimWidth(value: number) {
 		this._rimWidth = Number(value);
-		this.updateAnimatedCircle();
+		this.android?.setRimWidth(this._rimWidth);
 	}
 
 	get rimWidth() {
@@ -166,8 +173,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set startAngle(value: number) {
-		this._startAngle = Number(value);
-		this.updateAnimatedCircle();
+		this._startAngle = value;
+		this.android?.setStartAngle(this._startAngle);
 	}
 
 	get startAngle() {
@@ -175,8 +182,15 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set barWidth(value: number) {
-		this._barWidth = Number(value);
-		this.updateAnimatedCircle();
+		this._barWidth = value;
+		if (this._barWidth) {
+			this.android?.setBarWidth(this._barWidth);
+		} else {
+			if (this._rimWidth) {
+				// set rim width to bar width if no bar width provided
+				this.android?.setBarWidth(this._rimWidth);
+			}
+		}
 	}
 
 	get barWidth() {
@@ -185,11 +199,11 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set text(value: string) {
 		this._text = value;
-		this.updateAnimatedCircle();
+		this.android?.setText(this._text);
 	}
 
 	get text() {
-		return this.android.getText();
+		return this._text;
 	}
 
 	set textColor(value: string) {
@@ -206,6 +220,14 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		return this.android.getTextSize();
 	}
 
+	set clockwise(value: boolean) {
+		this._clockwise = value;
+		this.android?.setDirection(value === true ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
+	}
+
+	get clockwise() {
+		return this._clockwise;
+	}
 	// CSS Properties
 
 	[rimColorProperty.setNative](value: any) {
@@ -249,7 +271,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	private updateAnimatedCircle(): void {
 		if (this.android) {
-			this.android.setText(this._text);
 			if (this.animated) {
 				if (this.animateFrom) {
 					this.android.setValueAnimated(this.animateFrom, this.progress, this.animationDuration);
@@ -263,24 +284,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 			} else {
 				this.android.setValue(this.progress);
 			}
-			this.android.setMaxValue(this.maxValue);
-
-			if (this.startAngle) {
-				this.android.setStartAngle(this.startAngle);
-			}
-			if (this.barWidth) {
-				this.android.setBarWidth(this.barWidth);
-			} else {
-				if (this.rimWidth) {
-					// set rim width to bar width if no bar width provided
-					this.android.setBarWidth(this.rimWidth);
-				}
-			}
-			if (this.rimWidth) {
-				this.android.setRimWidth(this.rimWidth);
-			}
-
-			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		}
 	}
 }
