@@ -30,10 +30,10 @@ tns plugin add @nativescript/localize
 
 ## Usage
 
-Create a folder `i18n` in the `app` folder with the following structure:
+Create a folder `i18n` in the `src` folder with the following structure:
 
 ```
-app
+src
   | i18n
       | en.json           <-- english language
       | fr.default.json   <-- french language (default)
