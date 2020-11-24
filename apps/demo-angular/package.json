@@ -32,7 +32,8 @@
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",
-		"@nativescript/zip": "file:../../dist/packages/zip"
+		"@nativescript/zip": "file:../../dist/packages/zip",
+		"@nativescript/payments": "file:../../dist/packages/payments"
 	},
 	"devDependencies": {
 		"@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",

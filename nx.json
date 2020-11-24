@@ -79,6 +79,9 @@
 		},
 		"detox": {
 			"tags": []
+		},
+		"payments": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

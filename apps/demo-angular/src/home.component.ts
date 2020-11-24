@@ -28,6 +28,9 @@ export class HomeComponent {
 			name: 'datetimepicker',
 		},
 		{
+			name: 'detox',
+		},
+		{
 			name: 'directions',
 		},
 		{
@@ -50,6 +53,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'localize',
+		},
+		{
+			name: 'payments',
 		},
 		{
 			name: 'shared-notification-delegate',

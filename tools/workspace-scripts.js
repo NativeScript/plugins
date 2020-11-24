@@ -196,6 +196,13 @@ module.exports = {
 					description: '@nativescript/detox: Build',
 				},
 			},
+			// @nativescript/payments
+			payments: {
+				build: {
+					script: 'nx run payments:build.all',
+					description: '@nativescript/payments: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -281,6 +288,10 @@ module.exports = {
 			detox: {
 				script: 'nx run detox:focus',
 				description: 'Focus on @nativescript/detox',
+			},
+			payments: {
+				script: 'nx run payments:focus',
+				description: 'Focus on @nativescript/payments',
 			},
 			reset: {
 				script: 'nx run all:focus',

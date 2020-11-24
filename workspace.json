@@ -221,7 +221,8 @@
 							"nx run auto-fit-text:build.all",
 							"nx run animated-circle:build.all",
 							"nx run localize:build.all",
-							"nx run detox:build.all"
+							"nx run detox:build.all",
+							"nx run payments:build.all"
 						],
 						"parallel": false
 					}
@@ -921,6 +922,49 @@
 					"outputs": ["dist/packages"],
 					"options": {
 						"commands": ["nx g @nativescript/plugin-tools:focus-packages detox"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"payments": {
+			"root": "packages/payments",
+			"sourceRoot": "packages/payments",
+			"projectType": "library",
+			"schematics": {},
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/payments",
+						"tsConfig": "packages/payments/tsconfig.json",
+						"packageJson": "packages/payments/package.json",
+						"main": "packages/payments/index.ts",
+						"assets": [
+							"packages/payments/*.md",
+							"packages/payments/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/payments/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run payments:build", "node tools/scripts/build-finish.ts payments"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages payments"],
 						"parallel": false
 					}
 				}
