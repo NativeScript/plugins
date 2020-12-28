@@ -11,10 +11,11 @@ export = function (androidResourcesMigrationService: IAndroidResourcesMigrationS
 	let converter: ConverterCommon;
 	const dataProvider = new DataProvider(logger, projectData);
 
+	const environmentName = hookArgs.prepareData.env.use ? hookArgReader(hookArgs.prepareData.env.use) : '';
 	if (platformName === 'android') {
-		converter = new ConverterAndroid(dataProvider, logger, platformData, projectData, androidResourcesMigrationService);
+		converter = new ConverterAndroid(dataProvider, logger, platformData, projectData, androidResourcesMigrationService, environmentName);
 	} else if (platformName === 'ios') {
-		converter = new ConverterIOS(dataProvider, logger, platformData, projectData);
+		converter = new ConverterIOS(dataProvider, logger, platformData, projectData, environmentName);
 	} else {
 		logger.warn(`Platform '${platformName}' isn't supported: skipping localization`);
 		return;
@@ -32,3 +33,12 @@ function getPlatformData(platformData: IPlatformData, projectData: IProjectData,
 
 	return platformData;
 }
+
+const hookArgReader = (args) => {
+	if (typeof args !== 'string') {
+		return Object.keys(args)[0];
+	}
+	else {
+		return args;
+	}
+};
