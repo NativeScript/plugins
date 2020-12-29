@@ -91,7 +91,6 @@ export class ConverterAndroid extends ConverterCommon {
 		const fileName = "environment-rules." + 'android' + ".json";
 		// environment-rules.android.json
 		const ruleFile = path.join(this.projectData.projectDir, fileName);
-		console.log('File Name>>>', ruleFile);
 		if (fs.existsSync(ruleFile)) {
 			this.logger.debug("Environment Rules found, reading contents");
 			return JSON.parse(fs.readFileSync(ruleFile).toString());
@@ -104,7 +103,6 @@ export class ConverterAndroid extends ConverterCommon {
 
 	protected createLanguageResourcesFiles(language: string, isDefaultLanguage: boolean, i18nEntries: I18nEntries): this {
 		let languageResourcesDir = path.join(this.appResourcesDirectoryPath, `values${isDefaultLanguage ? '' : `-${language.replace(/^(.+?)-(.+?)$/, '$1-r$2')}`}`);
-		console.log(this.environmentName);
 		let multiEnvironmentName = [];
 		if (this.environmentName) {
 			const multEnvironmentRules = this.readRules();
