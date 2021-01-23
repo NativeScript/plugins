@@ -55,8 +55,9 @@ const replacePlaceholder = function (find: RegExp, replace: Function, subject: s
 };
 
 export class ConverterAndroid extends ConverterCommon {
-	public constructor(dataProvider: DataProvider, logger: ILogger, platformData: IPlatformData, projectData: IProjectData, androidResourcesMigrationService: IAndroidResourcesMigrationService) {
-		super(dataProvider, logger, platformData, projectData);
+	public constructor(dataProvider: DataProvider, logger: ILogger, platformData: IPlatformData, projectData: IProjectData, androidResourcesMigrationService: IAndroidResourcesMigrationService, environmentName: string) {
+		super(dataProvider, logger, platformData, projectData, environmentName);
+		this.environmentName = environmentName;
 		if (androidResourcesMigrationService.hasMigrated(projectData.appResourcesDirectoryPath)) {
 			this.appResourcesDirectoryPath = path.join(this.appResourcesDirectoryPath, 'src', 'main', 'res');
 		}
@@ -86,16 +87,51 @@ export class ConverterAndroid extends ConverterCommon {
 		return this;
 	}
 
+	readRules() {
+		const fileName = "environment-rules." + 'android' + ".json";
+		// environment-rules.android.json
+		const ruleFile = path.join(this.projectData.projectDir, fileName);
+		if (fs.existsSync(ruleFile)) {
+			this.logger.debug("Environment Rules found, reading contents");
+			return JSON.parse(fs.readFileSync(ruleFile).toString());
+		}
+		else {
+			this.logger.fatal("1111 Environment Rules File does not exist, Skipping....");
+			return;
+		}
+	}
+
 	protected createLanguageResourcesFiles(language: string, isDefaultLanguage: boolean, i18nEntries: I18nEntries): this {
-		const languageResourcesDir = path.join(this.appResourcesDirectoryPath, `values${isDefaultLanguage ? '' : `-${language.replace(/^(.+?)-(.+?)$/, '$1-r$2')}`}`);
-		this.createDirectoryIfNeeded(languageResourcesDir);
+		let languageResourcesDir = path.join(this.appResourcesDirectoryPath, `values${isDefaultLanguage ? '' : `-${language.replace(/^(.+?)-(.+?)$/, '$1-r$2')}`}`);
+		let multiEnvironmentName = [];
+		if (this.environmentName) {
+			const multEnvironmentRules = this.readRules();
+			if (multEnvironmentRules) {
+				multiEnvironmentName = multEnvironmentRules.environments.map(environment => environment.name)
+			}
+		}
+
+		const canCreateFile = multiEnvironmentName.some(envName => languageResourcesDir.includes('.' + envName))
+		if (!canCreateFile) {
+			this.createDirectoryIfNeeded(languageResourcesDir);
+		}
+
 		let strings = '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n';
 		this.encodeI18nEntries(i18nEntries).forEach((encodedValue, encodedKey) => {
 			strings += `  <string name="${encodedKey}">${encodedValue}</string>\n`;
 		});
 		strings += '</resources>\n';
 		const resourceFilePath = path.join(languageResourcesDir, 'strings.xml');
-		this.writeFileSyncIfNeeded(resourceFilePath, strings);
+
+		if (multiEnvironmentName.length > 0) {
+				multiEnvironmentName.map(multEnvironmentName => {
+				languageResourcesDir = languageResourcesDir.replace("/\.default." + multEnvironmentName + "/g", '');
+				languageResourcesDir = languageResourcesDir.replace("/\." + multEnvironmentName + "/g", '');
+			})
+		}
+		if (!canCreateFile) {
+			this.writeFileSyncIfNeeded(resourceFilePath, strings);
+		}
 		return this;
 	}
 

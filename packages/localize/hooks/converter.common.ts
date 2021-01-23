@@ -10,7 +10,7 @@ export abstract class ConverterCommon {
 	protected readonly appResourcesDestinationDirectoryPath?: string;
 	protected readonly i18nDirectoryPath?: string;
 
-	public constructor(protected dataProvider: DataProvider, protected logger: ILogger, protected platformData: IPlatformData, protected projectData: IProjectData) {
+	public constructor(protected dataProvider: DataProvider, protected logger: ILogger, protected platformData: IPlatformData, protected projectData: IProjectData, protected environmentName: string) {
 		this.appResourcesDirectoryPath = path.join(projectData.appResourcesDirectoryPath, platformData.normalizedPlatformName);
 		this.appResourcesDestinationDirectoryPath = platformData.platformProjectService.getAppResourcesDestinationDirectoryPath(projectData);
 		this.i18nDirectoryPath = path.join(projectData.appDirectoryPath, 'i18n');
@@ -40,14 +40,14 @@ export abstract class ConverterCommon {
 	protected removeDirectoryIfEmpty(directoryPath: string): this {
 		try {
 			fs.rmdirSync(directoryPath);
-		} catch (error) {}
+		} catch (error) { }
 		return this;
 	}
 
 	protected removeFileIfExists(filePath: string): this {
 		try {
 			fs.unlinkSync(filePath);
-		} catch (error) {}
+		} catch (error) { }
 		return this;
 	}
 
@@ -56,7 +56,7 @@ export abstract class ConverterCommon {
 			if (content === fs.readFileSync(filePath, 'utf8')) {
 				return this;
 			}
-		} catch (error) {}
+		} catch (error) { }
 		fs.writeFileSync(filePath, content, { encoding: 'utf8' });
 		return this;
 	}
