@@ -10,7 +10,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	private _animationDuration = 1000;
 	private _animated: boolean;
 	private _maxValue = 100;
-	private _barColor = new Color('#3D8FF4');
+	private _barColor: string | Color = new Color('#3D8FF4');
 	private _barWidth;
 	private _rimColor = new Color('#FF5722');
 	private _rimWidth;
@@ -56,11 +56,11 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	spin() {
-		this.android.spin();
+		this.android?.spin();
 	}
 
 	stopSpinning() {
-		this.android.stopSpinning();
+		this.android?.stopSpinning();
 	}
 
 	disposeNativeView() {
@@ -125,15 +125,22 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		return this._rimColor;
 	}
 
-	get barColor(): Color {
-		return this._barColor;
+	get barColor(): string | Color {
+		if (this._barColor instanceof Color) {
+			return this._barColor;
+		} else if (typeof this.barColor === 'string') {
+			return new Color(this._barColor);
+		}
 	}
-	set barColor(value: Color) {
-		this._barColor = value;
-		if (value instanceof Color) {
-			this.android?.setBarColor([value.argb]);
-		} else {
-			this.android?.setBarColor([new Color(value).argb]);
+
+	set barColor(value: string | Color) {
+		if (value) {
+			if (value instanceof Color) {
+				this._barColor = value;
+			} else {
+				this._barColor = new Color(value);
+			}
+			this.android?.setBarColor([this._barColor.argb]);
 		}
 	}
 
@@ -149,9 +156,9 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	set spinBarColor(value: any) {
 		this._spinBarColor = value;
 		if (value instanceof Color) {
-			this.android.setSpinBarColor(value.argb);
+			this.android?.setSpinBarColor(value.argb);
 		} else {
-			this.android.setSpinBarColor(new Color(this.spinBarColor).argb);
+			this.android?.setSpinBarColor(new Color(this.spinBarColor).argb);
 		}
 	}
 
@@ -166,9 +173,9 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	set fillColor(value: any) {
 		this._fillColor = value;
 		if (value instanceof Color) {
-			this.android.setFillCircleColor(value.argb);
+			this.android?.setFillCircleColor(value.argb);
 		} else {
-			this.android.setFillCircleColor(new Color(value).argb);
+			this.android?.setFillCircleColor(new Color(value).argb);
 		}
 	}
 
@@ -208,16 +215,16 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set textColor(value: string) {
 		this._textColor = new Color(value);
-		this.android.setTextColor(this._textColor.argb);
+		this.android?.setTextColor(this._textColor.argb);
 	}
 
 	set textSize(value: number) {
 		this._textSize = value;
-		this.android.setTextSize(value);
+		this.android?.setTextSize(value);
 	}
 
 	get textSize() {
-		return this.android.getTextSize();
+		return this.android ? this.android.getTextSize() : 0;
 	}
 
 	set clockwise(value: boolean) {
@@ -244,16 +251,11 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	[barColorProperty.setNative](value: any) {
-		this._barColor = value;
-		if (value instanceof Color) {
-			this.android?.setBarColor([value.argb]);
-		} else {
-			this.android?.setBarColor([new Color(value).argb]);
-		}
+		this.barColor = value;
 	}
 
 	[barColorProperty.getDefault]() {
-		return this._barColor;
+		return this.barColor;
 	}
 
 	[spinBarColorProperty.setNative](value: any) {
@@ -284,6 +286,35 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 			} else {
 				this.android.setValue(this.progress);
 			}
+			this.android.setMaxValue(this.maxValue);
+			if (this.rimColor) {
+				this.android.setRimColor(new Color(this.rimColor).argb);
+			}
+			if (this.spinBarColor) {
+				this.android.setSpinBarColor(new Color(this.spinBarColor).argb);
+			}
+			if (this.startAngle) {
+				this.android.setStartAngle(this.startAngle);
+			}
+			if (this.barWidth) {
+				this.android.setBarWidth(this.barWidth);
+			} else {
+				if (this.rimWidth) {
+					// set rim width to bar width if no bar width provided
+					this.android.setBarWidth(this.rimWidth);
+				}
+			}
+			if (this.rimWidth) {
+				this.android.setRimWidth(this.rimWidth);
+			}
+			if (this.barColor) {
+				this.android.setBarColor([(<Color>this.barColor).argb]);
+			}
+			if (this.fillColor) {
+				this.android.setFillCircleColor(new Color(this.fillColor).argb);
+			}
+
+			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		}
 	}
 }
