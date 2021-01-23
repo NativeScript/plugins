@@ -1,75 +1,75 @@
 {
-  "name": "@nativescript/localize",
-  "version": "5.0.2",
-  "description": "i18n plugin for NativeScript using native capabilities of each platform.",
-  "main": "index",
-  "typings": "index.d.ts",
-  "nativescript": {
-    "platforms": {
-      "ios": "6.0.0",
-      "android": "6.0.0"
-    },
-    "hooks": [
-      {
-        "type": "before-checkForChanges",
-        "script": "hooks/before-checkForChanges.js",
-        "inject": true
-      },
-      {
-        "type": "before-watchPatterns",
-        "script": "hooks/before-watchPatterns.js",
-        "inject": true
-      }
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NativeScript/plugins.git"
-  },
-  "keywords": [
-    "NativeScript",
-    "JavaScript",
-    "TypeScript",
-    "iOS",
-    "Android"
-  ],
-  "author": {
-    "name": "Ludovic Fabrèges",
-    "email": "ludovic.fabreges@gmail.com"
-  },
-  "contributors": [
-    {
-      "name": "Eddy Verbruggen",
-      "email": "eddyverbruggen@gmail.com"
-    },
-    {
-      "name": "Brendan Ingham",
-      "email": "brendan.ingham13@gmail.com"
-    },
-    {
-      "name": "MultiShiv19",
-      "email": "sp@shiv19.com"
-    },
-    {
-      "name": "NativeScript",
-      "email": "oss@nativescript.org"
-    }
-  ],
-  "bugs": {
-    "url": "https://github.com/NativeScript/plugins/issues"
-  },
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/NativeScript/plugins",
-  "readmeFilename": "README.md",
-  "bootstrapper": "@nativescript/plugin-seed",
-  "scripts": {
-    "preuninstall": "node preuninstall",
-    "postinstall": "node postinstall"
-  },
-  "dependencies": {
-    "mkdirp": "^1.0.4",
-    "shorthash": "0.0.2",
-    "simple-plist": "^1.1.0",
-    "sprintf-js": "^1.1.1"
-  }
+	"name": "@nativescript/localize",
+	"version": "5.0.3",
+	"description": "i18n plugin for NativeScript using native capabilities of each platform.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "6.0.0",
+			"android": "6.0.0"
+		},
+		"hooks": [
+			{
+				"type": "before-checkForChanges",
+				"script": "hooks/before-checkForChanges.js",
+				"inject": true
+			},
+			{
+				"type": "before-watchPatterns",
+				"script": "hooks/before-watchPatterns.js",
+				"inject": true
+			}
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS",
+		"Android"
+	],
+	"author": {
+		"name": "Ludovic Fabrèges",
+		"email": "ludovic.fabreges@gmail.com"
+	},
+	"contributors": [
+		{
+			"name": "Eddy Verbruggen",
+			"email": "eddyverbruggen@gmail.com"
+		},
+		{
+			"name": "Brendan Ingham",
+			"email": "brendan.ingham13@gmail.com"
+		},
+		{
+			"name": "MultiShiv19",
+			"email": "sp@shiv19.com"
+		},
+		{
+			"name": "NativeScript",
+			"email": "oss@nativescript.org"
+		}
+	],
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed",
+	"scripts": {
+		"preuninstall": "node preuninstall",
+		"postinstall": "node postinstall"
+	},
+	"dependencies": {
+		"mkdirp": "^1.0.4",
+		"shorthash": "0.0.2",
+		"simple-plist": "^1.1.0",
+		"sprintf-js": "^1.1.1"
+	}
 }
