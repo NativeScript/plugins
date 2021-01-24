@@ -14,6 +14,7 @@ const routes: Routes = [
 	{ path: 'brightness', loadChildren: () => import('./plugin-demos/brightness.module').then((m) => m.BrightnessModule) },
 	{ path: 'camera', loadChildren: () => import('./plugin-demos/camera.module').then((m) => m.CameraModule) },
 	{ path: 'datetimepicker', loadChildren: () => import('./plugin-demos/datetimepicker.module').then((m) => m.DatetimepickerModule) },
+	{ path: 'detox', loadChildren: () => import('./plugin-demos/detox.module').then((m) => m.DetoxModule) },
 	{ path: 'directions', loadChildren: () => import('./plugin-demos/directions.module').then((m) => m.DirectionsModule) },
 	{ path: 'email', loadChildren: () => import('./plugin-demos/email.module').then((m) => m.EmailModule) },
 	{ path: 'fingerprint-auth', loadChildren: () => import('./plugin-demos/fingerprint-auth.module').then((m) => m.FingerprintAuthModule) },

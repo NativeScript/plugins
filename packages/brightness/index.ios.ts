@@ -1,19 +1,16 @@
 import { validateOptions } from './common';
 
 export class Brightness {
-    public getNative() {
-        let screen = UIScreen.mainScreen;
-        let currentBrightness = screen.brightness;
-        return currentBrightness;
-    }
+	public getNative() {
+		return UIScreen.mainScreen.brightness;
+	}
 
-    public get() {
-        return Math.round(this.getNative() * 100);
-    }
+	public get() {
+		return Math.round(this.getNative() * 100);
+	}
 
-    public set(options) {
-        validateOptions(options);
-        let screen = UIScreen.mainScreen;
-        screen.brightness = options.intensity / 100;
-    }
+	public set(options) {
+		validateOptions(options);
+		UIScreen.mainScreen.brightness = options.intensity / 100;
+	}
 }

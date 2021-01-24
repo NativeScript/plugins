@@ -153,7 +153,7 @@ export let takePicture = function (options?): Promise<any> {
 					}
 				});
 
-				Application.android.foregroundActivity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+				(Application.android.foregroundActivity || Application.android.startActivity).startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 			}
 		} catch (e) {
 			if (reject) {

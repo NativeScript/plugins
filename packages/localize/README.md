@@ -237,7 +237,7 @@ alert({
 }).then(() => {
 	L.localize.overrideLocale(selectedLang);
 	if (isAndroid) {
-		Application.android.foregroundActivity.finish();
+		(Application.android.foregroundActivity || Application.android.startActivity).finish();
 	} else {
 		exit(0);
 	}

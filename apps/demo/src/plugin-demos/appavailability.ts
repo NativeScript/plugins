@@ -1,5 +1,5 @@
 import { Observable, EventData, Page } from '@nativescript/core';
-import { } from '@nativescript/appavailability';
+import { available } from '@nativescript/appavailability';
 
 export function navigatingTo(args: EventData) {
 	const page = <Page>args.object;
@@ -7,8 +7,9 @@ export function navigatingTo(args: EventData) {
 }
 
 export class DemoModel extends Observable {
-	
-  testIt() {
-    // test something here
-  }
+	testIt() {
+		available('twitter://').then((avail: boolean) => {
+			alert('Twitter app available? ' + avail);
+		});
+	}
 }

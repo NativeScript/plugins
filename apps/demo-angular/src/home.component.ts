@@ -28,6 +28,9 @@ export class HomeComponent {
 			name: 'datetimepicker',
 		},
 		{
+			name: 'detox',
+		},
+		{
 			name: 'directions',
 		},
 		{
