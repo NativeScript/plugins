@@ -1,210 +1,206 @@
-import { Utils, Application, Device, Trace, ImageAsset } from "@nativescript/core";
-import * as permissions from "nativescript-permissions";
+import { Utils, Application, Device, Trace, ImageAsset } from '@nativescript/core';
+import * as permissions from 'nativescript-permissions';
 
 let REQUEST_IMAGE_CAPTURE = 3453;
 declare let global: any;
 
 let useAndroidX = function () {
-    return global.androidx && global.androidx.appcompat;
+	return global.androidx && global.androidx.appcompat;
 };
 const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : global.android.support.v4.content;
 
 export let takePicture = function (options?): Promise<any> {
-    return new Promise((resolve, reject) => {
-        try {
-            if (!permissions.hasPermission(android.Manifest.permission.CAMERA)) {
-                reject(new Error("Application does not have permissions to use Camera"));
+	return new Promise((resolve, reject) => {
+		try {
+			if (!permissions.hasPermission(android.Manifest.permission.CAMERA)) {
+				reject(new Error('Application does not have permissions to use Camera'));
 
-                return;
-            }
+				return;
+			}
 
-            let saveToGallery = true;
-            let reqWidth = 0;
-            let reqHeight = 0;
-            let shouldKeepAspectRatio = true;
+			let saveToGallery = true;
+			let reqWidth = 0;
+			let reqHeight = 0;
+			let shouldKeepAspectRatio = true;
 
-            let density = Utils.layout.getDisplayDensity();
-            if (options) {
-                saveToGallery = Utils.isNullOrUndefined(options.saveToGallery) ? saveToGallery : options.saveToGallery;
-                reqWidth = options.width ? options.width * density : reqWidth;
-                reqHeight = options.height ? options.height * density : reqWidth;
-                shouldKeepAspectRatio = Utils.isNullOrUndefined(options.keepAspectRatio) ? shouldKeepAspectRatio : options.keepAspectRatio;
-            }
+			let density = Utils.layout.getDisplayDensity();
+			if (options) {
+				saveToGallery = Utils.isNullOrUndefined(options.saveToGallery) ? saveToGallery : options.saveToGallery;
+				reqWidth = options.width ? options.width * density : reqWidth;
+				reqHeight = options.height ? options.height * density : reqWidth;
+				shouldKeepAspectRatio = Utils.isNullOrUndefined(options.keepAspectRatio) ? shouldKeepAspectRatio : options.keepAspectRatio;
+			}
 
-            if (!permissions.hasPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+			if (!permissions.hasPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				saveToGallery = false;
+			}
 
-                saveToGallery = false;
-            }
+			let takePictureIntent = new android.content.Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			let dateStamp = createDateTimeStamp();
 
-            let takePictureIntent = new android.content.Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            let dateStamp = createDateTimeStamp();
+			let picturePath: string;
+			let nativeFile;
+			const fileName = 'NSIMG_' + dateStamp + '.jpg';
+			const createTmpFile = () => {
+				picturePath = Utils.android.getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + '/' + fileName;
+				nativeFile = new java.io.File(picturePath);
+			};
+			if (saveToGallery) {
+				const externalDir = Utils.android.getApplicationContext().getExternalFilesDir(android.os.Environment.DIRECTORY_DCIM);
+				if (externalDir == null) {
+					createTmpFile();
+				} else {
+					if (!externalDir.exists()) {
+						externalDir.mkdirs();
+					}
+					const cameraDir = new java.io.File(externalDir, 'Camera');
 
-            let picturePath: string;
-            let nativeFile;
-            let tempPictureUri;
+					if (!cameraDir.exists()) {
+						cameraDir.mkdirs();
+					}
 
-            if (saveToGallery) {
-                picturePath = android.os.Environment.getExternalStoragePublicDirectory(
-                    android.os.Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/" + "NSIMG_" + dateStamp + ".jpg";
+					nativeFile = new java.io.File(cameraDir, fileName);
+					picturePath = nativeFile.getAbsolutePath();
+				}
+			} else {
+				createTmpFile();
+			}
+			const sdkVersionInt = parseInt(Device.sdkVersion, 10);
+			let tempPictureUri;
+			if (sdkVersionInt >= 21) {
+				tempPictureUri = FileProviderPackageName.FileProvider.getUriForFile(Application.android.context, Application.android.nativeApp.getPackageName() + '.provider', nativeFile);
+			} else {
+				tempPictureUri = android.net.Uri.fromFile(nativeFile);
+			}
+			takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, tempPictureUri);
 
-                nativeFile = new java.io.File(picturePath);
-            } else {
-                picturePath = Utils.android.getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + "NSIMG_" + dateStamp + ".jpg";
-                nativeFile = new java.io.File(picturePath);
-            }
+			if (options && options.cameraFacing === 'front') {
+				takePictureIntent.putExtra('android.intent.extras.CAMERA_FACING', android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
+			} else {
+				takePictureIntent.putExtra('android.intent.extras.CAMERA_FACING', android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK);
+			}
 
-            let sdkVersionInt = parseInt(Device.sdkVersion);
-            if (sdkVersionInt >= 21) {
-                tempPictureUri = FileProviderPackageName.FileProvider.getUriForFile(
-                  Application.android.context,
-                  Application.android.nativeApp.getPackageName() + ".provider", nativeFile);
-            } else {
-                tempPictureUri = android.net.Uri.fromFile(nativeFile);
-            }
+			if (takePictureIntent.resolveActivity(Utils.android.getApplicationContext().getPackageManager()) != null) {
+				// Remove previous listeners if any
+				Application.android.off('activityResult');
 
-            takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, tempPictureUri);
+				Application.android.on('activityResult', (args) => {
+					const requestCode = args.requestCode;
+					const resultCode = args.resultCode;
 
-            if (options && options.cameraFacing === "front") {
-                takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING",
-                    android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
-            } else {
-                takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING",
-                    android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK);
-            }
+					if (requestCode === REQUEST_IMAGE_CAPTURE && resultCode === android.app.Activity.RESULT_OK) {
+						const currentTimeMillis = java.lang.Long.valueOf(java.lang.System.currentTimeMillis());
+						const values = new android.content.ContentValues();
+						values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+						values.put((android as any).provider.MediaStore.Images.Media.DATE_ADDED, currentTimeMillis);
+						values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, 'image/*');
+						if (sdkVersionInt >= 29) {
+							values.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DCIM);
+							values.put(android.provider.MediaStore.MediaColumns.IS_PENDING, 1 as any);
+							values.put((android as any).provider.MediaStore.Images.Media.DATE_TAKEN, currentTimeMillis);
+						}
 
-            if (takePictureIntent.resolveActivity(Utils.android.getApplicationContext().getPackageManager()) != null) {
+						const uri = Utils.android.getApplicationContext().getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-                // Remove previous listeners if any
-                Application.android.off("activityResult");
+						if (saveToGallery) {
+							const fos: java.io.FileOutputStream = Utils.android.getApplicationContext().getContentResolver().openOutputStream(uri);
+							const fis = new java.io.FileInputStream(nativeFile);
+							try {
+								(org as any).nativescript.plugins.camera.Utils.copy(fis, fos);
+								if (sdkVersionInt >= 29) {
+									values.clear();
+									values.put((android as any).provider.MediaStore.Video.Media.IS_PENDING, 0 as any);
+									Utils.android.getApplicationContext().contentResolver.update(uri, values, null, null);
+								}
+							} catch (e) {
+								reject(e);
+							}
+						}
 
-                Application.android.on("activityResult", (args) => {
-                    const requestCode = args.requestCode;
-                    const resultCode = args.resultCode;
+						let exif = new android.media.ExifInterface(picturePath);
+						let orientation = exif.getAttributeInt(android.media.ExifInterface.TAG_ORIENTATION, android.media.ExifInterface.ORIENTATION_NORMAL);
 
-                    if (requestCode === REQUEST_IMAGE_CAPTURE && resultCode === android.app.Activity.RESULT_OK) {
-                        if (saveToGallery) {
-                            try {
-                                let callback = new android.media.MediaScannerConnection.OnScanCompletedListener({
-                                    onScanCompleted: function (path, uri) {
-                                        if (Trace.isEnabled()) {
-                                            Trace.write(`image from path ${path} has been successfully scanned!`, Trace.categories.Debug);
-                                        }
-                                    }
-                                });
+						if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_90) {
+							rotateBitmap(picturePath, 90);
+						} else if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_180) {
+							rotateBitmap(picturePath, 180);
+						} else if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_270) {
+							rotateBitmap(picturePath, 270);
+						}
 
-                                android.media.MediaScannerConnection.scanFile(Application.android.context, [picturePath], null, callback);
-                            } catch (ex) {
-                                if (Trace.isEnabled()) {
-                                    Trace.write(`An error occurred while scanning file ${picturePath}: ${ex.message}!`,
-                                        Trace.categories.Debug);
-                                }
-                            }
-                        }
+						if (shouldKeepAspectRatio) {
+							let pictureWidth = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_WIDTH, 0);
+							let pictureHeight = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_LENGTH, 0);
+							let isPictureLandscape = pictureWidth > pictureHeight;
+							let areOptionsLandscape = reqWidth > reqHeight;
+							if (isPictureLandscape !== areOptionsLandscape) {
+								let oldReqWidth = reqWidth;
+								reqWidth = reqHeight;
+								reqHeight = oldReqWidth;
+							}
+						}
 
-                        let exif = new android.media.ExifInterface(picturePath);
-                        let orientation = exif.getAttributeInt(android.media.ExifInterface.TAG_ORIENTATION,
-                            android.media.ExifInterface.ORIENTATION_NORMAL);
+						let asset = new ImageAsset(picturePath);
+						asset.options = {
+							width: reqWidth,
+							height: reqHeight,
+							keepAspectRatio: shouldKeepAspectRatio,
+						};
+						resolve(asset);
+					} else if (resultCode === android.app.Activity.RESULT_CANCELED) {
+						// User cancelled the image capture
+						reject(new Error('cancelled'));
+					}
+				});
 
-                        if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_90) {
-                            rotateBitmap(picturePath, 90);
-                        } else if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_180) {
-                            rotateBitmap(picturePath, 180);
-                        } else if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_270) {
-                            rotateBitmap(picturePath, 270);
-                        }
-
-                        if (shouldKeepAspectRatio) {
-                            let pictureWidth = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_WIDTH, 0);
-                            let pictureHeight = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_LENGTH, 0);
-                            let isPictureLandscape = pictureWidth > pictureHeight;
-                            let areOptionsLandscape = reqWidth > reqHeight;
-                            if (isPictureLandscape !== areOptionsLandscape) {
-                                let oldReqWidth = reqWidth;
-                                reqWidth = reqHeight;
-                                reqHeight = oldReqWidth;
-                            }
-                        }
-
-                        let asset = new ImageAsset(picturePath);
-                        asset.options = {
-                            width: reqWidth,
-                            height: reqHeight,
-                            keepAspectRatio: shouldKeepAspectRatio
-                        };
-                        resolve(asset);
-                    } else if (resultCode === android.app.Activity.RESULT_CANCELED) {
-                        // User cancelled the image capture
-                        reject(new Error("cancelled"));
-                    }
-                });
-
-                Application.android.foregroundActivity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
-            }
-        } catch (e) {
-            if (reject) {
-                reject(e);
-            }
-        }
-    });
+				Application.android.foregroundActivity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+			}
+		} catch (e) {
+			if (reject) {
+				reject(e);
+			}
+		}
+	});
 };
 
 export let isAvailable = function () {
-
-    return Utils.android
-        .getApplicationContext()
-        .getPackageManager()
-        .hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA);
+	return Utils.android.getApplicationContext().getPackageManager().hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA);
 };
 
 export let requestPermissions = function () {
-    return permissions.requestPermissions([
-      android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-      android.Manifest.permission.CAMERA
-    ]);
+	return permissions.requestPermissions([android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA]);
 };
 
 export let requestPhotosPermissions = function () {
-    return permissions.requestPermissions([
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-    ]);
+	return permissions.requestPermissions([android.Manifest.permission.WRITE_EXTERNAL_STORAGE]);
 };
 
 export let requestCameraPermissions = function () {
-    return permissions.requestPermissions([
-        android.Manifest.permission.CAMERA
-    ]);
+	return permissions.requestPermissions([android.Manifest.permission.CAMERA]);
 };
 
 let createDateTimeStamp = function () {
-    let result = "";
-    let date = new Date();
-    result = date.getFullYear().toString() +
-        ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString()) +
-        (date.getDate() < 10 ? "0" + date.getDate().toString() : date.getDate().toString()) + "_" +
-        date.getHours().toString() +
-        date.getMinutes().toString() +
-        date.getSeconds().toString();
+	let result = '';
+	let date = new Date();
+	result = date.getFullYear().toString() + (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString()) + (date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString()) + '_' + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
 
-    return result;
+	return result;
 };
 
 let rotateBitmap = function (picturePath, angle) {
-    try {
-        let matrix = new android.graphics.Matrix();
-        matrix.postRotate(angle);
-        let bmOptions = new android.graphics.BitmapFactory.Options();
-        let oldBitmap = android.graphics.BitmapFactory.decodeFile(picturePath, bmOptions);
-        let finalBitmap = android.graphics.Bitmap.createBitmap(
-            oldBitmap, 0, 0, oldBitmap.getWidth(), oldBitmap.getHeight(), matrix, true);
-        let out = new java.io.FileOutputStream(picturePath);
-        finalBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, out);
-        out.flush();
-        out.close();
-    } catch (ex) {
-        if (Trace.isEnabled()) {
-            Trace.write(`An error occurred while rotating file ${picturePath} (using the original one): ${ex.message}!`,
-                Trace.categories.Debug);
-        }
-    }
+	try {
+		let matrix = new android.graphics.Matrix();
+		matrix.postRotate(angle);
+		let bmOptions = new android.graphics.BitmapFactory.Options();
+		let oldBitmap = android.graphics.BitmapFactory.decodeFile(picturePath, bmOptions);
+		let finalBitmap = android.graphics.Bitmap.createBitmap(oldBitmap, 0, 0, oldBitmap.getWidth(), oldBitmap.getHeight(), matrix, true);
+		let out = new java.io.FileOutputStream(picturePath);
+		finalBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, out);
+		out.flush();
+		out.close();
+	} catch (ex) {
+		if (Trace.isEnabled()) {
+			Trace.write(`An error occurred while rotating file ${picturePath} (using the original one): ${ex.message}!`, Trace.categories.Debug);
+		}
+	}
 };
