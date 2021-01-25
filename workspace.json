@@ -10,7 +10,7 @@
 				"ios": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns debug ios --no-hmr --emulator --env.testing"],
+						"commands": ["ns debug ios --no-hmr --env.testing"],
 						"cwd": "apps/demo",
 						"parallel": false
 					}
@@ -18,7 +18,7 @@
 				"android": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns debug android --no-hmr --emulator --env.testing"],
+						"commands": ["ns debug android --no-hmr --env.testing"],
 						"cwd": "apps/demo",
 						"parallel": false
 					}
@@ -42,7 +42,7 @@
 				"ios": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns debug ios --no-hmr --emulator --env.testing"],
+						"commands": ["ns debug ios --no-hmr --env.testing"],
 						"cwd": "apps/demo-angular",
 						"parallel": false
 					}
@@ -50,7 +50,7 @@
 				"android": {
 					"builder": "@nrwl/workspace:run-commands",
 					"options": {
-						"commands": ["ns debug android --no-hmr --emulator --env.testing"],
+						"commands": ["ns debug android --no-hmr --env.testing"],
 						"cwd": "apps/demo-angular",
 						"parallel": false
 					}

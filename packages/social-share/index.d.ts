@@ -21,3 +21,17 @@ export function shareText(text: string, subject?: string);
  * @param {string} [subject] - The subject of the share *** ANDROID ONLY ***
  */
 export function shareUrl(url: string, text: string, subject?: string);
+
+/**
+ * Share via Twitter
+ * @param {string} text - Text to share with URL.
+ * @param {string} url - URL to share.
+ */
+export function shareViaTwitter(text?: string, url?: string): Promise<void>;
+
+/**
+ * Share via Facebook
+ * @param {string} text - Text to share with URL.
+ * @param {string} url - URL to share.
+ */
+export function shareViaFacebook(text?: string, url?: string): Promise<void>;

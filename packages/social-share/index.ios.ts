@@ -1,4 +1,4 @@
-import { Frame, Utils } from '@nativescript/core';
+import { Frame, ImageSource, Utils } from '@nativescript/core';
 
 function share(thingsToShare) {
 	const activityController = UIActivityViewController.alloc().initWithActivityItemsApplicationActivities(thingsToShare, null);
@@ -13,21 +13,55 @@ function share(thingsToShare) {
 		}
 	}
 
-	const app = UIApplication.sharedApplication;
-	const window = app.keyWindow || (app.windows && app.windows.count > 0 && app.windows[0]);
-	const rootController = window.rootViewController;
-
-	Utils.ios.getVisibleViewController(rootController).presentViewControllerAnimatedCompletion(activityController, true, null);
+	Utils.ios.getVisibleViewController(getRootViewController()).presentViewControllerAnimatedCompletion(activityController, true, null);
 }
 
-export function shareImage(image) {
+function shareSocial(type: string, text?: string, url?: string): Promise<void> {
+	return new Promise((resolve, reject) => {
+		const composeViewController = SLComposeViewController.composeViewControllerForServiceType(type);
+		if (text) {
+			composeViewController.setInitialText(text);
+		}
+		if (url) {
+			composeViewController.addURL(NSURL.URLWithString(url));
+		}
+		composeViewController.completionHandler = (result) => {
+			console.log(result);
+			switch (result) {
+				case SLComposeViewControllerResult.Cancelled:
+					// ignore
+					break;
+				case SLComposeViewControllerResult.Done:
+					resolve();
+					break;
+			}
+		};
+		Utils.ios.getVisibleViewController(getRootViewController()).presentViewControllerAnimatedCompletion(composeViewController, true, null);
+	});
+}
+
+function getRootViewController() {
+	const app = UIApplication.sharedApplication;
+	const win = app.keyWindow || (app.windows && app.windows.count > 0 && app.windows[0]);
+	return win.rootViewController;
+}
+
+export function shareImage(image: ImageSource) {
 	share([image.ios]);
 }
 
-export function shareText(text) {
+export function shareText(text: string) {
 	share([text]);
 }
 
 export function shareUrl(url, text) {
 	share([NSURL.URLWithString(url), text]);
+}
+
+export function shareViaTwitter(text?: string, url?: string): Promise<void> {
+	return shareSocial(SLServiceTypeTwitter, text, url);
+}
+
+export function shareViaFacebook(text?: string, url?: string): Promise<void> {
+	return shareSocial(SLServiceTypeFacebook, text, url);
 }
