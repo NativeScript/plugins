@@ -42,7 +42,7 @@ function shareSocial(type: string, text?: string, url?: string): Promise<void> {
 
 function getRootViewController() {
 	const app = UIApplication.sharedApplication;
-	const win = app.keyWindow || (app.windows && app.windows.count > 0 && app.windows[0]);
+	const win = app.keyWindow || (app.windows && app.windows.count > 0 && app.windows.objectAtIndex(0));
 	return win.rootViewController;
 }
 
