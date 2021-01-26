@@ -96,7 +96,7 @@ export let takePicture = function (options?): Promise<any> {
 						values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, 'image/*');
 						if (sdkVersionInt >= 29) {
 							values.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DCIM);
-							values.put(android.provider.MediaStore.MediaColumns.IS_PENDING, 1 as any);
+							values.put(android.provider.MediaStore.MediaColumns.IS_PENDING, java.lang.Integer.valueOf(1));
 							values.put((android as any).provider.MediaStore.Images.Media.DATE_TAKEN, currentTimeMillis);
 						}
 
@@ -109,7 +109,7 @@ export let takePicture = function (options?): Promise<any> {
 								(org as any).nativescript.plugins.camera.Utils.copy(fis, fos);
 								if (sdkVersionInt >= 29) {
 									values.clear();
-									values.put((android as any).provider.MediaStore.Video.Media.IS_PENDING, 0 as any);
+									values.put((android as any).provider.MediaStore.Video.Media.IS_PENDING, java.lang.Integer.valueOf(0));
 									Utils.android.getApplicationContext().contentResolver.update(uri, values, null, null);
 								}
 							} catch (e) {
