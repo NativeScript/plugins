@@ -65,7 +65,7 @@ export class DataProvider {
 
 		if (!this.defaultLanguage) {
 			this.defaultLanguage = this.languages.keys().next().value;
-			this.logger.warn(`No file found with the .default extension: default langage set to '${this.defaultLanguage}'`);
+			this.logger.warn(`No file found with the .default extension: default language set to '${this.defaultLanguage}'`);
 		}
 
 		const defaultLanguageI18nEntries = this.languages.get(this.defaultLanguage);
