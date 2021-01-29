@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/localize",
-	"version": "5.0.3",
+	"version": "5.0.4",
 	"description": "i18n plugin for NativeScript using native capabilities of each platform.",
 	"main": "index",
 	"typings": "index.d.ts",
