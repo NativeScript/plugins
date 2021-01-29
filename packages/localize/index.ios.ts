@@ -16,7 +16,12 @@ const getBundle = (function () {
 })();
 
 export function localize(key: string, ...args: string[]): string {
-	const localizedString = getBundle().localizedStringForKeyValueTable(encodeKey(key), key, null);
+	let localizedString;
+	try {
+		localizedString = getBundle().localizedStringForKeyValueTable(encodeKey(key), key, null);
+	} catch (error) {
+		localizedString = key;
+	}
 	return vsprintf(convertAtSignToStringSign(localizedString), args);
 }
 
