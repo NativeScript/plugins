@@ -88,22 +88,22 @@ export let takePicture = function (options?): Promise<any> {
 				const resultCode = args.resultCode;
 
 				if (requestCode === REQUEST_IMAGE_CAPTURE && resultCode === android.app.Activity.RESULT_OK) {
-					const currentTimeMillis = java.lang.Integer.valueOf(java.lang.System.currentTimeMillis());
-					const values = new android.content.ContentValues();
-					values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, fileName);
-					values.put(android.provider.MediaStore.MediaColumns.DATE_ADDED, currentTimeMillis);
-					values.put(android.provider.MediaStore.MediaColumns.DATE_MODIFIED, currentTimeMillis);
-					values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, 'image/*');
-
-					if (sdkVersionInt >= 29) {
-						values.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DCIM);
-						values.put(android.provider.MediaStore.MediaColumns.IS_PENDING, java.lang.Integer.valueOf(1));
-						values.put(android.provider.MediaStore.MediaColumns.DATE_TAKEN, currentTimeMillis);
-					}
-
-					const uri = Utils.android.getApplicationContext().getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
 					if (saveToGallery) {
+						const currentTimeMillis = java.lang.Integer.valueOf(java.lang.System.currentTimeMillis());
+						const values = new android.content.ContentValues();
+						values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+						values.put(android.provider.MediaStore.MediaColumns.DATE_ADDED, currentTimeMillis);
+						values.put(android.provider.MediaStore.MediaColumns.DATE_MODIFIED, currentTimeMillis);
+						values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, 'image/*');
+
+						if (sdkVersionInt >= 29) {
+							values.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DCIM);
+							values.put(android.provider.MediaStore.MediaColumns.IS_PENDING, java.lang.Integer.valueOf(1));
+							values.put(android.provider.MediaStore.MediaColumns.DATE_TAKEN, currentTimeMillis);
+						}
+
+						const uri = Utils.android.getApplicationContext().getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
 						const fos: java.io.FileOutputStream = Utils.android.getApplicationContext().getContentResolver().openOutputStream(uri);
 						const fis = new java.io.FileInputStream(nativeFile);
 						try {
