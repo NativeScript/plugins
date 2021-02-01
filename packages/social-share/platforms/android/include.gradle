@@ -1,0 +1,7 @@
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'com.facebook.android:facebook-share:[5,6)'
+}

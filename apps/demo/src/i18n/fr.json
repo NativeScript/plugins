@@ -2,5 +2,6 @@
 	"hello": {
 		"world": "Bonjour le monde !"
 	},
-	"not found in en.default": "pas trouvé dans en.default"
+	"not found in en.default": "pas trouvé dans en.default",
+	"app.name": "Demo"
 }
