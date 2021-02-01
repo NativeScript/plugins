@@ -3,6 +3,9 @@
 ```bash
 npm run setup
 npm start
+
+// Ensure all plugins build properly first
+> type "build-all" (and hit ENTER)
 ```
 
 - [@nativescript/animated-circle](/packages/animated-circle/README.md)
