@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
 	package="__PACKAGE__"
 	android:versionCode="1"
 	android:versionName="1.0">
@@ -23,6 +24,24 @@
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme">
 		<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+    <provider android:authorities="com.facebook.app.FacebookContentProvider680941809251035"
+          android:name="com.facebook.FacebookContentProvider"
+          android:exported="true"
+          tools:replace="android:authorities"/>
+
+    <provider
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="${applicationId}.fileprovider"
+      android:exported="false"
+      android:grantUriPermissions="true"
+      tools:replace="android:authorities">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/file_paths"
+          tools:replace="android:resource"></meta-data>
+    </provider>
+
 		<activity
 			android:name="com.tns.NativeScriptActivity"
 			android:label="@string/title_activity_kimera"

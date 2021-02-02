@@ -111,10 +111,6 @@ export function shareViaFacebook(text?: string, url?: string): Promise<void> {
 			if (!activity) {
 				reject('No activity found.');
 			} else {
-				const content = new (<any>com).facebook.share.model.ShareLinkContent.Builder();
-				if (url) {
-					content.setContentUrl(android.net.Uri.parse(url));
-				}
 				let manager = (<any>com).facebook.CallbackManager.Factory.create();
 				Application.android.off('activityResult');
 				Application.android.on('activityResult', (args) => {
@@ -136,6 +132,10 @@ export function shareViaFacebook(text?: string, url?: string): Promise<void> {
 				});
 				const dialog = new (<any>com).facebook.share.widget.ShareDialog(activity);
 				dialog.registerCallback(manager, callback);
+				const content = new (<any>com).facebook.share.model.ShareLinkContent.Builder();
+				if (url) {
+					content.setContentUrl(android.net.Uri.parse(url));
+				}
 				dialog.show(content.build());
 			}
 		} catch (e) {
