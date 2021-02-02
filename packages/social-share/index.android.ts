@@ -62,9 +62,84 @@ export function shareText(text, subject) {
 
 export function shareUrl(url, text, subject) {
 	const intent = getIntent('text/plain');
-
 	intent.putExtra(android.content.Intent.EXTRA_TEXT, url);
 	intent.putExtra(android.content.Intent.EXTRA_SUBJECT, text);
-
 	share(intent, subject);
+}
+
+export function shareViaTwitter(text?: string, url?: string): Promise<void> {
+	return new Promise((resolve, reject) => {
+		const activity = Application.android.foregroundActivity || Application.android.startActivity;
+		try {
+			// Check if the Twitter app is installed on the phone.
+			if (!activity) {
+				reject('No activity found.');
+			} else {
+				activity.getPackageManager().getPackageInfo('com.twitter.android', 0);
+				const intent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+				intent.setClassName('com.twitter.android', 'com.twitter.android.composer.ComposerActivity');
+				intent.setType('text/plain');
+				let value = `${text || ''}`;
+				if (url) {
+					value = `${value} ${url}`;
+				}
+				intent.putExtra(android.content.Intent.EXTRA_TEXT, java.net.URLEncoder.encode(value, 'UTF-8'));
+				activity.startActivity(intent);
+				resolve();
+			}
+		} catch (ex) {
+			// App not found fallback to browser ?
+			if (!activity) {
+				reject('No activity found.');
+			} else {
+				try {
+					const browserIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(`https://twitter.com/intent/tweet?text=${text || ''}&url=${url || ''}`));
+					activity.startActivity(browserIntent);
+					resolve();
+				} catch (e) {
+					reject(e);
+				}
+			}
+		}
+	});
+}
+
+export function shareViaFacebook(text?: string, url?: string): Promise<void> {
+	return new Promise((resolve, reject) => {
+		try {
+			const activity = Application.android.foregroundActivity || Application.android.startActivity;
+			if (!activity) {
+				reject('No activity found.');
+			} else {
+				let manager = (<any>com).facebook.CallbackManager.Factory.create();
+				Application.android.off('activityResult');
+				Application.android.on('activityResult', (args) => {
+					manager.onActivityResult(args.requestCode, args.resultCode, args.intent);
+				});
+				const callback = new (<any>com).facebook.FacebookCallback({
+					onSuccess(value) {
+						manager.unregisterCallback(callback);
+						resolve();
+					},
+					onError(error) {
+						manager.unregisterCallback(callback);
+						reject(error.getMessage());
+					},
+					onCancel() {
+						manager.unregisterCallback(callback);
+						reject('User cancelled');
+					},
+				});
+				const dialog = new (<any>com).facebook.share.widget.ShareDialog(activity);
+				dialog.registerCallback(manager, callback);
+				const content = new (<any>com).facebook.share.model.ShareLinkContent.Builder();
+				if (url) {
+					content.setContentUrl(android.net.Uri.parse(url));
+				}
+				dialog.show(content.build());
+			}
+		} catch (e) {
+			reject(e);
+		}
+	});
 }

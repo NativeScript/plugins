@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="_hello_world_Z2tF6Gu">"Bonjour le monde ! Hello world !"</string>
+  <string name="facebook_app_id">"680941809251035"</string>
+  <string name="_app_name_1k3Sbz">"Demo"</string>
+  <string name="app_name">"Demo"</string>
+  <string name="title_activity_kimera">"Demo"</string>
+  <string name="_hello_world_Z2tF6Gu">"Hello world!"</string>
   <string name="_not_found_in_en_default_8PvJR">"not found in en.default"</string>
-  <string name="app_name">NSPluginDemo</string>
-  <string name="title_activity_kimera">NSPluginDemo</string>
 </resources>

@@ -9,6 +9,8 @@
             <Button class="btn-outline btn-primary m-20 p-10" text="Share an image" tap="{{ doShareImage }}"></Button>
             <Button class="btn-outline btn-primary m-20 p-10" text="Share text" tap="{{ doShareText }}"></Button>
             <Button class="btn-outline btn-primary m-20 p-10" text="Share URL" tap="{{ doShareUrl }}"></Button>
+            <Button class="btn-outline btn-primary m-20 p-10" text="Share via Twitter" tap="{{ doShareTwitter }}"></Button>
+            <Button class="btn-outline btn-primary m-20 p-10" text="Share via Facebook" tap="{{ doShareFacebook }}"></Button>
 
           </StackLayout>
         </ScrollView>
