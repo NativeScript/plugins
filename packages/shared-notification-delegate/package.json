@@ -1,33 +1,33 @@
 {
-    "name": "@nativescript/shared-notification-delegate",
-    "version": "1.0.1",
-    "description": "Shared delegate helper for iOS.",
-    "main": "index",
-    "typings": "index.d.ts",
-    "nativescript": {
-        "platforms": {
-            "ios": "5.2.0"
-        }
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/edusperoni/nativescript-shared-notification-delegate.git"
-    },
-    "keywords": [
-        "NativeScript",
-        "JavaScript",
-        "TypeScript",
-        "iOS"
-    ],
-    "author": {
-        "name": "Eduardo Speroni",
-        "email": "edusperoni@gmail.com"
-    },
-    "bugs": {
-        "url": "https://github.com/edusperoni/nativescript-shared-notification-delegate/issues"
-    },
-    "license": "Apache-2.0",
-    "homepage": "https://github.com/edusperoni/nativescript-shared-notification-delegate",
-    "readmeFilename": "README.md",
-    "bootstrapper": "nativescript-plugin-seed"
+	"name": "@nativescript/shared-notification-delegate",
+	"version": "1.0.2",
+	"description": "Shared delegate helper for iOS.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "5.2.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/edusperoni/nativescript-shared-notification-delegate.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS"
+	],
+	"author": {
+		"name": "Eduardo Speroni",
+		"email": "edusperoni@gmail.com"
+	},
+	"bugs": {
+		"url": "https://github.com/edusperoni/nativescript-shared-notification-delegate/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/edusperoni/nativescript-shared-notification-delegate",
+	"readmeFilename": "README.md",
+	"bootstrapper": "nativescript-plugin-seed"
 }
