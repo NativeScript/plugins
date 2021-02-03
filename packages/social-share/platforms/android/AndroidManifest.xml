@@ -10,9 +10,5 @@
 				android:name="android.support.FILE_PROVIDER_PATHS"
 				android:resource="@xml/provider_paths"/>
 		</provider>
-
-		<provider android:authorities="com.facebook.app.FacebookContentProvider${applicationId}"
-          android:name="com.facebook.FacebookContentProvider"
-          android:exported="true"/>
 	</application>
 </manifest>

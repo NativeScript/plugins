@@ -111,6 +111,11 @@ export function shareViaFacebook(text?: string, url?: string): Promise<void> {
 			if (!activity) {
 				reject('No activity found.');
 			} else {
+				if (typeof (<any>com).facebook === 'undefined' || typeof (<any>com).facebook.CallbackManager === 'undefined' || typeof (<any>com).facebook.share === 'undefined') {
+					console.error('Please follow usage instructions to add facebook sdk.');
+					reject();
+					return;
+				}
 				let manager = (<any>com).facebook.CallbackManager.Factory.create();
 				Application.android.off('activityResult');
 				Application.android.on('activityResult', (args) => {
