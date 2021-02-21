@@ -82,7 +82,7 @@ export class ImagePickerControllerDelegate extends NSObject implements QBImagePi
 	qb_imagePickerControllerDidCancel?(imagePickerController: QBImagePickerController): void {
 		imagePickerController.dismissViewControllerAnimatedCompletion(true, () => {
 			if (this._reject) {
-				this._reject();
+				this._reject(new Error('Canceled'));
 			}
 
 			if (imagePicker) {
