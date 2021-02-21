@@ -2,7 +2,7 @@
   <Page.actionBar>
     <ActionBar title="Plugin Demos" icon="" class="action-bar"/>
   </Page.actionBar>
-  <StackLayout class="p-20">
+  <StackLayout class="p-t-20 p-x-20">
     <ScrollView class="h-full">
       <StackLayout>
         <Button text="animated-circle" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
