@@ -10,6 +10,10 @@ function share(thingsToShare) {
 			presentViewController.barButtonItem = page.ios.navigationItem.rightBarButtonItems[0];
 		} else {
 			presentViewController.sourceView = page.ios.view;
+			presentViewController.permittedArrowDirections = UIPopoverArrowDirection.Unknown;
+			if (page && page.ios && page.ios.view) {
+				presentViewController.sourceRect = CGRectMake(CGRectGetMidX(page.ios.view.bounds), CGRectGetMaxY(page.ios.view.bounds), 0, 0);
+			}
 		}
 	}
 
