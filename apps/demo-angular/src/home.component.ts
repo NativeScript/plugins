@@ -55,6 +55,9 @@ export class HomeComponent {
 			name: 'localize',
 		},
 		{
+			name: 'picker',
+		},
+		{
 			name: 'shared-notification-delegate',
 		},
 		{

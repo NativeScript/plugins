@@ -1,13 +1,5 @@
 # @nativescript/\* plugins
 
-```bash
-npm run setup
-npm start
-
-// Ensure all plugins build properly first
-> type "build-all" (and hit ENTER)
-```
-
 - [@nativescript/animated-circle](/packages/animated-circle/README.md)
 - [@nativescript/appavailability](/packages/appavailability/README.md)
 - [@nativescript/auto-fit-text](/packages/auto-fit-text/README.md)
@@ -24,6 +16,7 @@ npm start
 - [@nativescript/iqkeyboardmanager](/packages/iqkeyboardmanager/README.md)
 - [@nativescript/local-notifications](/packages/local-notifications/README.md)
 - [@nativescript/localize](/packages/localize/README.md)
+- [@nativescript/picker](/packages/picker/README.md)
 - [@nativescript/shared-notification-delegate](/packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](/packages/social-share/README.md)
 - [@nativescript/zip](/packages/zip/README.md)
@@ -31,6 +24,14 @@ npm start
 # How to use?
 
 This workspace manages the suite of plugins listed above.
+
+```bash
+npm run setup
+npm start
+
+// Ensure all plugins build properly first
+> type "build-all" (and hit ENTER)
+```
 
 In general, when in doubt with what to do, just `npm start`.
 

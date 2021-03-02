@@ -1,0 +1,16 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page" xmlns:picker="@nativescript/picker">
+    <Page.actionBar>
+        <ActionBar title="picker" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+              <picker:PickerField hint="Click here" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
+  								items="{{ pickerItems }}" >
+  		</picker:PickerField>
+
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>

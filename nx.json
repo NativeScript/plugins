@@ -79,6 +79,9 @@
 		},
 		"detox": {
 			"tags": []
+		},
+		"picker": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

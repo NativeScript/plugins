@@ -196,6 +196,13 @@ module.exports = {
 					description: '@nativescript/detox: Build',
 				},
 			},
+			// @nativescript/picker
+			picker: {
+				build: {
+					script: 'nx run picker:build.all',
+					description: '@nativescript/picker: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -281,6 +288,10 @@ module.exports = {
 			detox: {
 				script: 'nx run detox:focus',
 				description: 'Focus on @nativescript/detox',
+			},
+			picker: {
+				script: 'nx run picker:focus',
+				description: 'Focus on @nativescript/picker',
 			},
 			reset: {
 				script: 'nx run all:focus',
