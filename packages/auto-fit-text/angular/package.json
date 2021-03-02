@@ -9,7 +9,7 @@
 				"@nativescript/auto-fit-text": "ns-auto-fit-text"
 			}
 		},
-		"whitelistedNonPeerDependencies": [
+		"allowedNonPeerDependencies": [
 			"."
 		]
 	}

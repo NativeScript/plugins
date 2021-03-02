@@ -925,6 +925,47 @@
 					}
 				}
 			}
+		},
+		"picker": {
+			"projectType": "library",
+			"schematics": {},
+			"root": "packages/picker",
+			"sourceRoot": "packages/picker",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/picker",
+						"tsConfig": "packages/picker/tsconfig.json",
+						"packageJson": "packages/picker/package.json",
+						"main": "packages/picker/index.ts",
+						"assets": [
+							"packages/picker/*.md",
+							"packages/picker/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/picker/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run picker:build", "node tools/scripts/build-finish.ts picker"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages picker"],
+						"parallel": false
+					}
+				}
+			}
 		}
 	},
 	"cli": {

@@ -1,12 +1,12 @@
 {
-	"name": "nativescript-datetimepicker-angular",
+	"name": "nativescript-picker-angular",
 	"ngPackage": {
 		"lib": {
 			"entryFile": "index.ts",
 			"umdModuleIds": {
 				"@nativescript/core": "ns-core",
 				"@nativescript/angular": "ns-angular",
-				"@nativescript/datetimepicker": "ns-datetimepicker"
+				"@nativescript/picker": "ns-picker"
 			}
 		},
 		"allowedNonPeerDependencies": [

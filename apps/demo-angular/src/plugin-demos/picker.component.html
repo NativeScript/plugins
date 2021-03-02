@@ -1,0 +1,8 @@
+<ActionBar title="picker" class="action-bar"> </ActionBar>
+<StackLayout class="p-20">
+	<ScrollView class="h-full">
+		<StackLayout>
+			<PickerField hint="Click here" padding="10" (pickerOpened)="demoShared.pickerOpened($event)" (pickerClosed)="demoShared.pickerClosed($event)" [items]="demoShared.pickerItems"> </PickerField>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>

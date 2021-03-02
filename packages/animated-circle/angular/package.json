@@ -9,7 +9,7 @@
 				"@nativescript/animated-circle": "ns-animated-circle"
 			}
 		},
-		"whitelistedNonPeerDependencies": [
+		"allowedNonPeerDependencies": [
 			"."
 		]
 	}
