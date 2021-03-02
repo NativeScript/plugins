@@ -82,6 +82,9 @@
 		},
 		"picker": {
 			"tags": []
+		},
+		"ios-debug-flex": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

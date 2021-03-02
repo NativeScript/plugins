@@ -13,6 +13,7 @@
 - [@nativescript/fingerprint-auth](/packages/fingerprint-auth/README.md)
 - [@nativescript/geolocation](/packages/geolocation/README.md)
 - [@nativescript/imagepicker](/packages/imagepicker/README.md)
+- [@nativescript/ios-debug-flex](/packages/ios-debug-flex/README.md)
 - [@nativescript/iqkeyboardmanager](/packages/iqkeyboardmanager/README.md)
 - [@nativescript/local-notifications](/packages/local-notifications/README.md)
 - [@nativescript/localize](/packages/localize/README.md)

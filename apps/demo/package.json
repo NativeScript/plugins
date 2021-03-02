@@ -25,7 +25,8 @@
 		"@nativescript/localize": "file:../../dist/packages/localize",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/zip": "file:../../packages/zip",
-		"@nativescript/picker": "file:../../packages/picker"
+		"@nativescript/picker": "file:../../packages/picker",
+		"@nativescript/ios-debug-flex": "file:../../packages/ios-debug-flex"
 	},
 	"devDependencies": {
 		"@nativescript/android": "7.0.1",

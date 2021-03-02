@@ -203,6 +203,13 @@ module.exports = {
 					description: '@nativescript/picker: Build',
 				},
 			},
+			// @nativescript/ios-debug-flex
+			'ios-debug-flex': {
+				build: {
+					script: 'nx run ios-debug-flex:build.all',
+					description: '@nativescript/ios-debug-flex: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -292,6 +299,10 @@ module.exports = {
 			picker: {
 				script: 'nx run picker:focus',
 				description: 'Focus on @nativescript/picker',
+			},
+			'ios-debug-flex': {
+				script: 'nx run ios-debug-flex:focus',
+				description: 'Focus on @nativescript/ios-debug-flex',
 			},
 			reset: {
 				script: 'nx run all:focus',

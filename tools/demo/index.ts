@@ -12,6 +12,7 @@ export * from './email';
 export * from './fingerprint-auth';
 export * from './geolocation';
 export * from './imagepicker';
+export * from './ios-debug-flex';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';
 export * from './localize';

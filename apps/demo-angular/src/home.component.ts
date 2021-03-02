@@ -46,6 +46,9 @@ export class HomeComponent {
 			name: 'imagepicker',
 		},
 		{
+			name: 'ios-debug-flex',
+		},
+		{
 			name: 'iqkeyboardmanager',
 		},
 		{

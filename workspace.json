@@ -927,6 +927,47 @@
 				}
 			}
 		},
+		"ios-debug-flex": {
+			"projectType": "library",
+			"schematics": {},
+			"root": "packages/ios-debug-flex",
+			"sourceRoot": "packages/ios-debug-flex",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/ios-debug-flex",
+						"tsConfig": "packages/ios-debug-flex/tsconfig.json",
+						"packageJson": "packages/ios-debug-flex/package.json",
+						"main": "packages/ios-debug-flex/index.ts",
+						"assets": [
+							"packages/ios-debug-flex/*.md",
+							"packages/ios-debug-flex/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/ios-debug-flex/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run ios-debug-flex:build", "node tools/scripts/build-finish.ts ios-debug-flex"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages ios-debug-flex"],
+						"parallel": false
+					}
+				}
+			}
+		},
 		"picker": {
 			"projectType": "library",
 			"schematics": {},

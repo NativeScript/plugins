@@ -1,0 +1,21 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="iOS Interactive Debug Tools" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+            <GridLayout rows="auto,auto,auto" columns="*,auto,auto,auto,*">
+              <Label colSpan="5" text="iOS Debugging with Flex" class="text-center m-b-20"></Label>
+              <Label colSpan="5" row="1" text="Only enabled in debug - auto disabled in production builds."  class="text-center m-b-20" textWrap="true"></Label>
+              <Label row="2" col="1" text="🛑" class="m-x-4"></Label>
+              <Label row="2" col="2" text="🐛" class="m-x-4"></Label>
+              <Label row="2" col="3" text="🔥" class="m-x-4"></Label>
+            </GridLayout>
+            <Button text="Open Debug Tools" tap="{{ testIt }}" class="btn btn-primary m-t-20"/>
+
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>
