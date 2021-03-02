@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/picker",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "A NativeScript plugin that provides a custom TextField which lets you pick a value from a list opened in a modal popup.",
 	"main": "index",
 	"typings": "index.d.ts",

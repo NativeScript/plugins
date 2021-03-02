@@ -2,8 +2,16 @@ import { DemoSharedBase } from '../utils';
 import {} from '@nativescript/picker';
 import { EventData, ObservableArray } from '@nativescript/core';
 
+interface IDataItem {
+	name: string;
+	id: number;
+	description: string;
+	imageUrl: string;
+}
+
 export class DemoSharedPicker extends DemoSharedBase {
 	pickerItems: ObservableArray<string>;
+	observableDataItems: ObservableArray<IDataItem>;
 
 	constructor() {
 		super();
@@ -18,7 +26,7 @@ export class DemoSharedPicker extends DemoSharedBase {
 		console.log('Picker > Closed', (<any>args.object).className);
 	}
 
-	private getItems(size: number) {
+	getItems(size: number) {
 		let array = new ObservableArray<string>();
 
 		for (let i = 0; i < size; i++) {
@@ -26,5 +34,14 @@ export class DemoSharedPicker extends DemoSharedBase {
 		}
 
 		return array;
+	}
+
+	getDataItems(size: number): ObservableArray<IDataItem> {
+		const dataItems = new ObservableArray<IDataItem>();
+		for (let i = 0; i < size; i++) {
+			dataItems.push({ name: 'Item ' + i, id: i, description: 'Description ' + i, imageUrl: 'https://picsum.photos/150/70/?random' });
+		}
+
+		return dataItems;
 	}
 }
