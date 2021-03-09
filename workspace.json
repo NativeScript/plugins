@@ -221,7 +221,8 @@
 							"nx run auto-fit-text:build.all",
 							"nx run animated-circle:build.all",
 							"nx run localize:build.all",
-							"nx run detox:build.all"
+							"nx run detox:build.all",
+							"nx run picker:build.all"
 						],
 						"parallel": false
 					}
