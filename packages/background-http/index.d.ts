@@ -123,7 +123,7 @@ export interface Task {
      * @param handler A function that will be called with general event data upon successful completion
      * @event
      */
-    on(event: "complete", handler: (e: EventData) => void): void;
+    on(event: "complete", handler: (e: CompleteEventData) => void): void;
 }
 
 /**
