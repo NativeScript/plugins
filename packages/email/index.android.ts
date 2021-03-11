@@ -167,7 +167,7 @@ function _getContentUri(path, fileName, ctx) {
 		console.log('File not found: ' + file.getAbsolutePath());
 		return null;
 	} else {
-		return FileProviderPackageName.FileProvider.getUriForFile(Application.android.context, Application.android.nativeApp.getPackageName() + '.fileprovider', file);
+		return FileProviderPackageName.FileProvider.getUriForFile(Application.android.context, Application.android.nativeApp.getPackageName() + '.provider', file);
 	}
 }
 
