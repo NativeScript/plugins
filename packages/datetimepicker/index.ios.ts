@@ -44,7 +44,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		const pickerView = UIDatePicker.alloc().initWithFrame(CGRectZero);
 		pickerView.datePickerMode = UIDatePickerMode.Date;
 		if (this.SUPPORT_DATE_PICKER_STYLE) {
-			pickerView.preferredDatePickerStyle = this.DEFAULT_DATE_PICKER_STYLE;
+			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_DATE_PICKER_STYLE;
 		}
 		const date = options.date ? options.date : getDateToday();
 		pickerView.date = date;
@@ -64,7 +64,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		const pickerView = UIDatePicker.alloc().initWithFrame(CGRectZero);
 		pickerView.datePickerMode = UIDatePickerMode.Time;
 		if (this.SUPPORT_DATE_PICKER_STYLE) {
-			pickerView.preferredDatePickerStyle = this.DEFAULT_DATE_PICKER_STYLE;
+			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_DATE_PICKER_STYLE;
 		}
 		const time = options.time ? options.time : getDateNow();
 		pickerView.date = time;
