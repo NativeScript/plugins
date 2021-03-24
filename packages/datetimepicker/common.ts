@@ -21,6 +21,7 @@ export interface DatePickerOptions extends PickerOptions {
 	minDate?: Date;
 	maxDate?: Date;
 	iosPreferredDatePickerStyle?: number;
+	firstWeekday?: number;
 }
 
 export interface TimePickerOptions extends PickerOptions {

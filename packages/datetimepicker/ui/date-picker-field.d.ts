@@ -45,6 +45,12 @@ export class DatePickerField extends TextField {
 	locale: string;
 
 	/**
+	 * Gets or sets the first day of week for iOS 14+ DatePicker in calendar mode
+	 * Defaults to 1 (sunday)
+	 */
+	firstWeekday: number;
+
+	/**
 	 * Gets or sets the hint text. Hint is the text that is displayed in the field when {@link date} is null.
 	 */
 	hint: string;
@@ -108,6 +114,11 @@ export class DatePickerField extends TextField {
 	 * Identifies the {@link locale} dependency property.
 	 */
 	static localeProperty: Property<DatePickerField, string>;
+
+	/**
+	 * Identifies the {@link firstWeekday} dependency property.
+	 */
+	static firstWeekdayProperty: Property<DatePickerField, string>;
 
 	/**
 	 * Identifies the {@link hint} dependency property.

@@ -11,6 +11,7 @@ export class DatePickerFieldBase extends PickerFieldBase implements DatePickerFi
 	public minDate: Date;
 	public date: Date;
 	public dateFormat: string;
+	public firstWeekday: number;
 	public pickerDefaultDate: Date;
 	public iosPreferredDatePickerStyle: number | undefined;
 	public static datePickerOpenedEvent = 'datePickerOpened';
@@ -43,6 +44,10 @@ export class DatePickerFieldBase extends PickerFieldBase implements DatePickerFi
 		valueChanged: DatePickerFieldBase.dateFormatPropertyChanged,
 	});
 
+	public static firstWeekdayProperty = new Property<DatePickerFieldBase, number>({
+		name: 'firstWeekday',
+	});
+
 	public static pickerDefaultDateProperty = new Property<DatePickerFieldBase, Date>({
 		name: 'pickerDefaultDate',
 		defaultValue: getDateToday(),
@@ -63,6 +68,7 @@ export class DatePickerFieldBase extends PickerFieldBase implements DatePickerFi
 				locale: this.locale,
 				minDate: this.minDate,
 				maxDate: this.maxDate,
+				firstWeekday: this.firstWeekday,
 				iosPreferredDatePickerStyle: this.iosPreferredDatePickerStyle,
 				title: this.pickerTitle,
 				okButtonText: this.pickerOkText,

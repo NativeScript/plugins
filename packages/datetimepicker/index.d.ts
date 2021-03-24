@@ -38,6 +38,11 @@ export interface DatePickerOptions extends PickerOptions {
 	maxDate?: Date;
 
 	/**
+	 * First day of week
+	 */
+	firstWeekday?: number;
+
+	/**
 	 * iOS only: date picker style (from iOS 13.4)
 	 */
 	iosPreferredDatePickerStyle?: number;
