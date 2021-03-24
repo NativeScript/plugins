@@ -110,6 +110,14 @@ export function onApplePayTap() {
 }
 ```
 
+# API
+
+## Methods
+
+| Name                                           | Description                                                                         |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| createPaymentRequest(request: ApplePayRequest) | Creates the Apple Pay payment request and presents the user with the payment sheet. |
+
 ## Enums
 
 ### ApplePayEvents
