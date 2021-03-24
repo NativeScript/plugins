@@ -9,6 +9,7 @@ const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
 	{ path: 'animated-circle', loadChildren: () => import('./plugin-demos/animated-circle.module').then((m) => m.AnimatedCircleModule) },
 	{ path: 'appavailability', loadChildren: () => import('./plugin-demos/appavailability.module').then((m) => m.AppavailabilityModule) },
+	{ path: 'apple-pay', loadChildren: () => import('./plugin-demos/apple-pay.module').then((m) => m.ApplePayModule) },
 	{ path: 'auto-fit-text', loadChildren: () => import('./plugin-demos/auto-fit-text.module').then((m) => m.AutoFitTextModule) },
 	{ path: 'background-http', loadChildren: () => import('./plugin-demos/background-http.module').then((m) => m.BackgroundHttpModule) },
 	{ path: 'brightness', loadChildren: () => import('./plugin-demos/brightness.module').then((m) => m.BrightnessModule) },

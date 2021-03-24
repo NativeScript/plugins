@@ -13,6 +13,9 @@ export class HomeComponent {
 			name: 'appavailability',
 		},
 		{
+			name: 'apple-pay',
+		},
+		{
 			name: 'auto-fit-text',
 		},
 		{
