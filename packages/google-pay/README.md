@@ -4,6 +4,25 @@
 ns plugin add @nativescript/google-pay
 ```
 
+Before you get started, review the following prerequisites:
+
+- Install the Google Play services version 18.1.2 or greater (this should be installed on most Android devices by default).
+- [Install the Google Pay app and add a payment method.](https://support.google.com/pay/answer/7625139?visit_id=637522080332272855-2861547127&rd=1)
+- [Add a payment method to Google](https://support.google.com/pay/answer/7625139).
+- Adhere to the [Google Pay API Acceptable Use Policy](https://payments.developers.google.com/terms/aup) and the [Google Play developer policy](https://support.google.com/googleplay/android-developer/answer/9858738).
+
+### Important Note
+
+When moving to production and using a payment provider you will need a valid payment token. You can view the configuration for a number of [providers in the Google documentation.](https://developers.google.com/pay/api/android/guides/tutorial#tokenization)
+During development you can use the example below for the gateway token configuration when creating a payment request.
+
+```ts
+parameters: {
+    gateway: 'example', // in production replace with your gateway provider
+    gatewayMerchantId: 'exampleGatewayMerchantId' // in production replace with your gateway provider merchant ID
+}
+```
+
 ## Usage
 
 ```xml
@@ -110,8 +129,8 @@ async onGooglePayTap(args) {
             tokenizationSpecification: {
               type: TokenizationSpecificationType.PAYMENT_GATEWAY,
               parameters: {
-                gateway: 'example',
-                gatewayMerchantId: EXAMPLE_MERCHANT_ID
+                gateway: 'example', // in production replace with your gateway provider
+                gatewayMerchantId: 'exampleGatewayMerchantId' // in production replace with your gateway provider merchant ID
               }
             }
           },

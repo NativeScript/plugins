@@ -1,7 +1,7 @@
 {
 	"name": "@nativescript/google-pay",
-	"version": "1.0.0",
-	"description": "Add a plugin description",
+	"version": "0.1.0",
+	"description": "Plugin that provides Google Pay support for NativeScript Android applications.",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
