@@ -34,7 +34,8 @@
 		"@nativescript/localize": "file:../../dist/packages/localize",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/zip": "file:../../dist/packages/zip",
-		"@nativescript/picker": "file:../../dist/packages/picker"
+		"@nativescript/picker": "file:../../dist/packages/picker",
+		"@nativescript/apple-pay": "file:../../dist/packages/apple-pay"
 	},
 	"devDependencies": {
 		"@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",

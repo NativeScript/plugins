@@ -203,6 +203,13 @@ module.exports = {
 					description: '@nativescript/picker: Build',
 				},
 			},
+			// @nativescript/apple-pay
+			'apple-pay': {
+				build: {
+					script: 'nx run apple-pay:build.all',
+					description: '@nativescript/apple-pay: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -292,6 +299,10 @@ module.exports = {
 			picker: {
 				script: 'nx run picker:focus',
 				description: 'Focus on @nativescript/picker',
+			},
+			'apple-pay': {
+				script: 'nx run apple-pay:focus',
+				description: 'Focus on @nativescript/apple-pay',
 			},
 			reset: {
 				script: 'nx run all:focus',
