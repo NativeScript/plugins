@@ -11,6 +11,7 @@
 - @nativescript/email
 - @nativescript/fingerprint-auth
 - @nativescript/geolocation
+- @nativescript/google-pay
 - @nativescript/imagepicker
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
