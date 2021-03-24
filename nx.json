@@ -85,6 +85,9 @@
 		},
 		"apple-pay": {
 			"tags": []
+		},
+		"google-pay": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

@@ -12,6 +12,7 @@ export * from './directions';
 export * from './email';
 export * from './fingerprint-auth';
 export * from './geolocation';
+export * from './google-pay';
 export * from './imagepicker';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';

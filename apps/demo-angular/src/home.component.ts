@@ -46,6 +46,9 @@ export class HomeComponent {
 			name: 'geolocation',
 		},
 		{
+			name: 'google-pay',
+		},
+		{
 			name: 'imagepicker',
 		},
 		{

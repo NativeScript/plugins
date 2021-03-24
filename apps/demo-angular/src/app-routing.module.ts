@@ -20,6 +20,7 @@ const routes: Routes = [
 	{ path: 'email', loadChildren: () => import('./plugin-demos/email.module').then((m) => m.EmailModule) },
 	{ path: 'fingerprint-auth', loadChildren: () => import('./plugin-demos/fingerprint-auth.module').then((m) => m.FingerprintAuthModule) },
 	{ path: 'geolocation', loadChildren: () => import('./plugin-demos/geolocation.module').then((m) => m.GeolocationModule) },
+	{ path: 'google-pay', loadChildren: () => import('./plugin-demos/google-pay.module').then((m) => m.GooglePayModule) },
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then((m) => m.ImagepickerModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then((m) => m.IqkeyboardmanagerModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then((m) => m.LocalNotificationsModule) },
