@@ -134,6 +134,9 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			userInfoDict.setObjectForKey('nativescript-local-notifications', '__NotificationType');
 			userInfoDict.setObjectForKey(options.forceShowWhenInForeground, 'forceShowWhenInForeground');
 			userInfoDict.setObjectForKey(options.priority || 0, 'priority');
+			if ('payload' in options) {
+				userInfoDict.setObjectForKey(options.payload, 'payload');
+			}
 			content.userInfo = userInfoDict;
 
 			// Notification trigger and repeat
@@ -233,6 +236,9 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			userInfoDict.setObjectForKey(options.title, 'title');
 			userInfoDict.setObjectForKey(options.body, 'body');
 			userInfoDict.setObjectForKey(options.interval, 'interval');
+			if ('payload' in options) {
+				userInfoDict.setObjectForKey(options.payload, 'payload');
+			}
 			notification.userInfo = userInfoDict;
 
 			switch (options.sound) {
@@ -463,6 +469,7 @@ class LocalNotificationsDelegateObserverImpl implements DelegateObserver {
 			id: +request.identifier,
 			title: notificationContent.title,
 			body: notificationContent.body,
+			payload: notificationResponse.notification.request.content.userInfo.valueForKey('payload'),
 			foreground: this.receivedInForeground || UIApplication.sharedApplication.applicationState === UIApplicationState.Active,
 			event,
 			response,

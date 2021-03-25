@@ -187,6 +187,11 @@ export interface ScheduleOptions {
 	 * Buttons or text input.
 	 */
 	actions?: Array<NotificationAction>;
+
+	/**
+	 * A JSON object to pass data
+	 */
+	payload?: any;
 }
 
 export interface ReceivedNotification {
@@ -196,6 +201,7 @@ export interface ReceivedNotification {
 	body?: string;
 	event?: string;
 	response?: string;
+	payload?: any;
 }
 
 export interface LocalNotificationsApi {
