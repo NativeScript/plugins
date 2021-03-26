@@ -223,7 +223,7 @@ export function clearWatch(_watchId: number): void {
 
 export function enableLocationRequest(always?: boolean, iosOpenSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
 	return new Promise<void>(function (resolve, reject) {
-		const locationIsEnabled = _isEnabled();
+		const locationIsEnabled = _isEnabled(always);
 
 		if (locationIsEnabled) {
 			resolve();
@@ -251,7 +251,7 @@ export function enableLocationRequest(always?: boolean, iosOpenSettingsIfLocatio
 	});
 }
 
-function _isEnabled(): boolean {
+function _isEnabled(always?: boolean): boolean {
 	if (CLLocationManager.locationServicesEnabled()) {
 		const status = getIOSLocationManagerStatus();
 
@@ -259,7 +259,7 @@ function _isEnabled(): boolean {
 		// CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedAlways are options that are available in iOS 8.0+
 		// while CLAuthorizationStatus.kCLAuthorizationStatusAuthorized is here to support iOS 8.0-.
 		return (
-			status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse ||
+			(status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse && !always) ||
 			status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedAlways ||
 			// @ts-ignore: Types have no overlap error
 			status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorized
