@@ -135,7 +135,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			userInfoDict.setObjectForKey(options.forceShowWhenInForeground, 'forceShowWhenInForeground');
 			userInfoDict.setObjectForKey(options.priority || 0, 'priority');
 			if ('payload' in options) {
-				userInfoDict.setObjectForKey(options.payload, 'payload');
+				userInfoDict.setObjectForKey(JSON.stringify(options.payload), 'payload');
 			}
 			content.userInfo = userInfoDict;
 
@@ -237,7 +237,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			userInfoDict.setObjectForKey(options.body, 'body');
 			userInfoDict.setObjectForKey(options.interval, 'interval');
 			if ('payload' in options) {
-				userInfoDict.setObjectForKey(options.payload, 'payload');
+				userInfoDict.setObjectForKey(JSON.stringify(options.payload), 'payload');
 			}
 			notification.userInfo = userInfoDict;
 
@@ -469,7 +469,7 @@ class LocalNotificationsDelegateObserverImpl implements DelegateObserver {
 			id: +request.identifier,
 			title: notificationContent.title,
 			body: notificationContent.body,
-			payload: notificationResponse.notification.request.content.userInfo.valueForKey('payload'),
+			payload: JSON.parse(notificationResponse.notification.request.content.userInfo.valueForKey('payload')),
 			foreground: this.receivedInForeground || UIApplication.sharedApplication.applicationState === UIApplicationState.Active,
 			event,
 			response,
