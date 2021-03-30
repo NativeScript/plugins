@@ -9,14 +9,15 @@ export class DateTimePickerStyle extends DateTimePickerStyleBase {}
 export class DateTimePicker extends DateTimePickerBase {
 	private static readonly SUPPORT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0;
 	private static readonly SUPPORT_TEXT_COLOR = parseFloat(Device.osVersion) < 14.0;
-	private static readonly DEFAULT_DATE_PICKER_STYLE = 1;
+	private static readonly DEFAULT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0 ? 3 : 1;
 
-	public static PICKER_DEFAULT_MESSAGE_HEIGHT = 192;
+	public static PICKER_DEFAULT_MESSAGE_HEIGHT = parseFloat(Device.osVersion) >= 14.0 ? 300 : 192;
 	public static PICKER_WIDTH_INSETS = 16;
 	public static PICKER_WIDTH_PAD = 304;
+	public static PICKER_DEFAULT_OFFSET = 16;
 	public static PICKER_DEFAULT_TITLE_OFFSET = 26.5;
 	public static PICKER_DEFAULT_TITLE_HEIGHT = 16;
-	public static PICKER_DEFAULT_MESSAGE = '\n\n\n\n\n\n\n\n\n';
+	public static PICKER_DEFAULT_MESSAGE = parseFloat(Device.osVersion) >= 14.0 ? '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' : '\n\n\n\n\n\n\n\n\n';
 
 	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<Date> {
 		const pickDate = new Promise<Date>((resolve) => {
@@ -44,7 +45,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		const pickerView = UIDatePicker.alloc().initWithFrame(CGRectZero);
 		pickerView.datePickerMode = UIDatePickerMode.Date;
 		if (this.SUPPORT_DATE_PICKER_STYLE) {
-			pickerView.preferredDatePickerStyle = this.DEFAULT_DATE_PICKER_STYLE;
+			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_DATE_PICKER_STYLE;
 		}
 		const date = options.date ? options.date : getDateToday();
 		pickerView.date = date;
@@ -56,6 +57,9 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 		if (options.locale) {
 			pickerView.locale = LocalizationUtils.createNativeLocale(options.locale);
+			if (options.firstWeekday !== undefined) {
+				pickerView.calendar = LocalizationUtils.createNativeCalendar(options.locale, options.firstWeekday);
+			}
 		}
 		return pickerView;
 	}
@@ -64,7 +68,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		const pickerView = UIDatePicker.alloc().initWithFrame(CGRectZero);
 		pickerView.datePickerMode = UIDatePickerMode.Time;
 		if (this.SUPPORT_DATE_PICKER_STYLE) {
-			pickerView.preferredDatePickerStyle = this.DEFAULT_DATE_PICKER_STYLE;
+			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_DATE_PICKER_STYLE;
 		}
 		const time = options.time ? options.time : getDateNow();
 		pickerView.date = time;
@@ -77,10 +81,10 @@ export class DateTimePicker extends DateTimePickerBase {
 	static _createNativeDialog(nativePicker: UIDatePicker, options: PickerOptions, style: DateTimePickerStyle, callback: Function) {
 		const alertTitle = options.title ? options.title : '';
 		const alertController = UIAlertController.alertControllerWithTitleMessagePreferredStyle(alertTitle, DateTimePicker.PICKER_DEFAULT_MESSAGE, UIAlertControllerStyle.ActionSheet);
-		const alertSize = Math.min(alertController.view.frame.size.width, alertController.view.frame.size.height);
+		const alertSize = nativePicker.preferredDatePickerStyle === 3 ? 280 : Math.min(alertController.view.frame.size.width, alertController.view.frame.size.height);
 		const pickerViewWidth = UIDevice.currentDevice.userInterfaceIdiom === UIUserInterfaceIdiom.Pad ? DateTimePicker.PICKER_WIDTH_PAD : alertSize - DateTimePicker.PICKER_WIDTH_INSETS;
 
-		let pickerContainerFrameTop = DateTimePicker.PICKER_DEFAULT_TITLE_OFFSET;
+		let pickerContainerFrameTop = options.title ? DateTimePicker.PICKER_DEFAULT_TITLE_OFFSET : DateTimePicker.PICKER_DEFAULT_OFFSET;
 		if (options.title) {
 			pickerContainerFrameTop += DateTimePicker.PICKER_DEFAULT_TITLE_HEIGHT;
 		}
@@ -95,7 +99,8 @@ export class DateTimePicker extends DateTimePickerBase {
 		DateTimePicker._applyDialogSpinnersColors(nativePicker, pickerContainer, spinnersTextColor, spinnersBackgroundColor);
 
 		const pickerView = nativePicker;
-		pickerView.frame = CGRectMake(0, 0, pickerViewWidth, pickerViewHeight);
+		const left = (alertController.view.frame.size.width - pickerViewWidth) / 2 - DateTimePicker.PICKER_WIDTH_INSETS;
+		pickerView.frame = CGRectMake(left, 0, pickerViewWidth, pickerViewHeight);
 		pickerContainer.addSubview(pickerView);
 		DateTimePicker._clearVibrancyEffects(alertController.view);
 
@@ -110,8 +115,13 @@ export class DateTimePicker extends DateTimePickerBase {
 		pickerContainer.rightAnchor.constraintEqualToAnchor(alertController.view.rightAnchor).active = true;
 		pickerContainer.bottomAnchor.constraintEqualToAnchor(alertController.view.bottomAnchor).active = true;
 
-		pickerView.leftAnchor.constraintLessThanOrEqualToAnchorConstant(pickerContainer.leftAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
-		pickerView.rightAnchor.constraintLessThanOrEqualToAnchorConstant(pickerContainer.rightAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
+		if (nativePicker.preferredDatePickerStyle === 3) {
+			pickerView.centerXAnchor.constraintEqualToAnchor(pickerContainer.centerXAnchor).active = true;
+			// pickerView.leftAnchor.constraintEqualToAnchorConstant(pickerContainer.leftAnchor, left).active = true;
+		} else {
+			pickerView.leftAnchor.constraintLessThanOrEqualToAnchorConstant(pickerContainer.leftAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
+			pickerView.rightAnchor.constraintLessThanOrEqualToAnchorConstant(pickerContainer.rightAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
+		}
 
 		const cancelButtonText = options.cancelButtonText ? options.cancelButtonText : 'Cancel';
 		const okButtonText = options.okButtonText ? options.okButtonText : 'OK';
@@ -187,7 +197,9 @@ export class DateTimePicker extends DateTimePickerBase {
 			if (this.SUPPORT_TEXT_COLOR) {
 				nativePicker.setValueForKey(color.ios, 'textColor');
 			}
-			nativePicker.setValueForKey(false, 'highlightsToday');
+			if (nativePicker.preferredDatePickerStyle === 1) {
+				nativePicker.setValueForKey(false, 'highlightsToday');
+			}
 		}
 	}
 
