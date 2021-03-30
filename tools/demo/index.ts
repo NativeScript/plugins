@@ -1,6 +1,7 @@
 export * from './utils';
 export * from './animated-circle';
 export * from './appavailability';
+export * from './apple-pay';
 export * from './auto-fit-text';
 export * from './background-http';
 export * from './brightness';
@@ -13,6 +14,7 @@ export * from './directions';
 export * from './email';
 export * from './fingerprint-auth';
 export * from './geolocation';
+export * from './google-pay';
 export * from './imagepicker';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';

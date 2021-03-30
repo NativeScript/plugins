@@ -13,6 +13,9 @@ export class HomeComponent {
 			name: 'appavailability',
 		},
 		{
+			name: 'apple-pay',
+		},
+		{
 			name: 'auto-fit-text',
 		},
 		{
@@ -47,6 +50,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'geolocation',
+		},
+		{
+			name: 'google-pay',
 		},
 		{
 			name: 'imagepicker',

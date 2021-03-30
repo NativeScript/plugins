@@ -1,5 +1,6 @@
 - @nativescript/animated-circle
 - @nativescript/appavailability
+- @nativescript/apple-pay
 - @nativescript/auto-fit-text
 - @nativescript/background-http
 - @nativescript/brightness
@@ -12,6 +13,7 @@
 - @nativescript/email
 - @nativescript/fingerprint-auth
 - @nativescript/geolocation
+- @nativescript/google-pay
 - @nativescript/imagepicker
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
