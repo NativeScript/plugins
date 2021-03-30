@@ -1,7 +1,7 @@
 {
-	"name": "@nativescript/ios-debug-flex",
+	"name": "@nativescript/debug-android",
 	"version": "1.0.0",
-	"description": "NativeScript iOS Debugging tools with Flex.",
+	"description": "Add a plugin description",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {

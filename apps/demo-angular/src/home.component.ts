@@ -28,6 +28,12 @@ export class HomeComponent {
 			name: 'datetimepicker',
 		},
 		{
+			name: 'debug-android',
+		},
+		{
+			name: 'debug-ios',
+		},
+		{
 			name: 'detox',
 		},
 		{
@@ -44,9 +50,6 @@ export class HomeComponent {
 		},
 		{
 			name: 'imagepicker',
-		},
-		{
-			name: 'ios-debug-flex',
 		},
 		{
 			name: 'iqkeyboardmanager',

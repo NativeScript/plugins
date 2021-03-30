@@ -83,7 +83,10 @@
 		"picker": {
 			"tags": []
 		},
-		"ios-debug-flex": {
+		"debug-ios": {
+			"tags": []
+		},
+		"debug-android": {
 			"tags": []
 		}
 	},

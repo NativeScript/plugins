@@ -203,11 +203,18 @@ module.exports = {
 					description: '@nativescript/picker: Build',
 				},
 			},
-			// @nativescript/ios-debug-flex
-			'ios-debug-flex': {
+			// @nativescript/debug-ios
+			'debug-ios': {
 				build: {
-					script: 'nx run ios-debug-flex:build.all',
-					description: '@nativescript/ios-debug-flex: Build',
+					script: 'nx run debug-ios:build.all',
+					description: '@nativescript/debug-ios: Build',
+				},
+			},
+			// @nativescript/debug-android
+			'debug-android': {
+				build: {
+					script: 'nx run debug-android:build.all',
+					description: '@nativescript/debug-android: Build',
 				},
 			},
 			'build-all': {
@@ -300,9 +307,13 @@ module.exports = {
 				script: 'nx run picker:focus',
 				description: 'Focus on @nativescript/picker',
 			},
-			'ios-debug-flex': {
-				script: 'nx run ios-debug-flex:focus',
-				description: 'Focus on @nativescript/ios-debug-flex',
+			'debug-ios': {
+				script: 'nx run debug-ios:focus',
+				description: 'Focus on @nativescript/debug-ios',
+			},
+			'debug-android': {
+				script: 'nx run debug-android:focus',
+				description: 'Focus on @nativescript/debug-android',
 			},
 			reset: {
 				script: 'nx run all:focus',

@@ -1,7 +1,7 @@
-# @nativescript/ios-debug-flex
+# @nativescript/debug-ios
 
 ```javascript
-ns plugin add @nativescript/ios-debug-flex
+ns plugin add @nativescript/debug-ios
 ```
 
 ## Usage
