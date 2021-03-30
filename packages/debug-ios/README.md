@@ -1,12 +1,18 @@
 # @nativescript/debug-ios
 
+Advanced iOS debugging made possible via [Flex](https://github.com/FLEXTool/FLEX).
+
 ```javascript
-ns plugin add @nativescript/debug-ios
+npm install @nativescript/debug-ios -D
 ```
 
 ## Usage
 
-// TODO
+```
+import { NativeScriptDebugIOS } from '@nativescript/debug-ios';
+
+NativeScriptDebugIOS.show();
+```
 
 ## License
 
