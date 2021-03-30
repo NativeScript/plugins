@@ -114,9 +114,13 @@ export class DemoSharedLocalNotifications extends DemoSharedBase {
 				subtitle: 'Whatsubtitle',
 				image: 'https://2.bp.blogspot.com/-H_SZ3nAmNsI/VrJeARpbuSI/AAAAAAAABfc/szsV7_F609k/s200/emoji.jpg',
 				thumbnail: true,
+				forceShowWhenInForeground: true,
 				// body: 'You should see a \'3\' somewhere',
 				at: new Date(new Date().getTime() + 10 * 1000),
 				badge: 3,
+				payload: {
+					deeplink: 'test/test',
+				},
 			},
 		])
 			.then(() => {

@@ -7,15 +7,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
@@ -76,6 +80,17 @@ public final class Builder {
         if (thumbnail instanceof String) {
             builder.setLargeIcon(getBitmap(context, (String) thumbnail));
         }
+
+        final Object payload = options.opt("payload");
+
+        if (payload instanceof JSONObject) {
+					try {
+						final Bundle bundle = jsonToBundle((JSONObject) payload);
+						builder.addExtras(bundle);
+					} catch (JSONException e) {
+						Log.e(TAG, "Error parsing payload", e);
+					}
+				}
 
         // TODO sound preference is not doing anything
         // builder.setSound(options.has("sound") ? Uri.parse("android.resource://" + context.getPackageName() + "/raw/" + options.getString("sound")) : Uri.parse("android.resource://" + context.getPackageName() + "/raw/notify"))
@@ -300,4 +315,15 @@ public final class Builder {
             return DEFAULT_NOTIFICATION_COLOR;
         }
     }
+
+		private static Bundle jsonToBundle(JSONObject jsonObject) throws JSONException {
+			Bundle bundle = new Bundle();
+			Iterator iter = jsonObject.keys();
+			while(iter.hasNext()){
+				String key = (String)iter.next();
+				String value = jsonObject.getString(key);
+				bundle.putString(key,value);
+			}
+			return bundle;
+		}
 }
