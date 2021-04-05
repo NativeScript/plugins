@@ -10,6 +10,7 @@ export class DateTimePicker extends DateTimePickerBase {
 	private static readonly SUPPORT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0;
 	private static readonly SUPPORT_TEXT_COLOR = parseFloat(Device.osVersion) < 14.0;
 	private static readonly DEFAULT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0 ? 3 : 1;
+	private static readonly DEFAULT_TIME_PICKER_STYLE = 1;
 
 	public static PICKER_DEFAULT_MESSAGE_HEIGHT = parseFloat(Device.osVersion) >= 14.0 ? 300 : 192;
 	public static PICKER_WIDTH_INSETS = 16;
@@ -67,8 +68,11 @@ export class DateTimePicker extends DateTimePickerBase {
 	static _createNativeTimePicker(options: TimePickerOptions): UIDatePicker {
 		const pickerView = UIDatePicker.alloc().initWithFrame(CGRectZero);
 		pickerView.datePickerMode = UIDatePickerMode.Time;
+		if (options.timeInterval) {
+			pickerView.minuteInterval = options.timeInterval;
+		}
 		if (this.SUPPORT_DATE_PICKER_STYLE) {
-			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_DATE_PICKER_STYLE;
+			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_TIME_PICKER_STYLE;
 		}
 		const time = options.time ? options.time : getDateNow();
 		pickerView.date = time;
