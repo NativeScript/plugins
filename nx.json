@@ -83,6 +83,12 @@
 		"picker": {
 			"tags": []
 		},
+		"debug-ios": {
+			"tags": []
+		},
+		"debug-android": {
+			"tags": []
+		},
 		"apple-pay": {
 			"tags": []
 		},

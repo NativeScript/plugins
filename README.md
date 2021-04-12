@@ -6,6 +6,8 @@
 - @nativescript/brightness
 - @nativescript/camera
 - @nativescript/datetimepicker
+- @nativescript/debug-android
+- @nativescript/debug-ios
 - @nativescript/detox
 - @nativescript/directions
 - @nativescript/email

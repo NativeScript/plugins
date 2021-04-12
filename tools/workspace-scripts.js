@@ -203,6 +203,20 @@ module.exports = {
 					description: '@nativescript/picker: Build',
 				},
 			},
+			// @nativescript/debug-ios
+			'debug-ios': {
+				build: {
+					script: 'nx run debug-ios:build.all',
+					description: '@nativescript/debug-ios: Build',
+				},
+			},
+			// @nativescript/debug-android
+			'debug-android': {
+				build: {
+					script: 'nx run debug-android:build.all',
+					description: '@nativescript/debug-android: Build',
+				},
+			},
 			// @nativescript/apple-pay
 			'apple-pay': {
 				build: {
@@ -306,6 +320,14 @@ module.exports = {
 			picker: {
 				script: 'nx run picker:focus',
 				description: 'Focus on @nativescript/picker',
+			},
+			'debug-ios': {
+				script: 'nx run debug-ios:focus',
+				description: 'Focus on @nativescript/debug-ios',
+			},
+			'debug-android': {
+				script: 'nx run debug-android:focus',
+				description: 'Focus on @nativescript/debug-android',
 			},
 			'apple-pay': {
 				script: 'nx run apple-pay:focus',

@@ -15,6 +15,8 @@ const routes: Routes = [
 	{ path: 'brightness', loadChildren: () => import('./plugin-demos/brightness.module').then((m) => m.BrightnessModule) },
 	{ path: 'camera', loadChildren: () => import('./plugin-demos/camera.module').then((m) => m.CameraModule) },
 	{ path: 'datetimepicker', loadChildren: () => import('./plugin-demos/datetimepicker.module').then((m) => m.DatetimepickerModule) },
+	{ path: 'debug-android', loadChildren: () => import('./plugin-demos/debug-android.module').then((m) => m.DebugAndroidModule) },
+	{ path: 'debug-ios', loadChildren: () => import('./plugin-demos/debug-ios.module').then((m) => m.DebugIosModule) },
 	{ path: 'detox', loadChildren: () => import('./plugin-demos/detox.module').then((m) => m.DetoxModule) },
 	{ path: 'directions', loadChildren: () => import('./plugin-demos/directions.module').then((m) => m.DirectionsModule) },
 	{ path: 'email', loadChildren: () => import('./plugin-demos/email.module').then((m) => m.EmailModule) },

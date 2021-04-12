@@ -7,6 +7,8 @@ export * from './background-http';
 export * from './brightness';
 export * from './camera';
 export * from './datetimepicker';
+export * from './debug-android';
+export * from './debug-ios';
 export * from './detox';
 export * from './directions';
 export * from './email';

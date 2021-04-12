@@ -12,6 +12,8 @@
         <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="debug-android" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="debug-ios" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="detox" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="directions" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
