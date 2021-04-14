@@ -1,2 +1,4 @@
-<Frame defaultPage="main-page">
+<!-- <Frame defaultPage="main-page">
+</Frame> -->
+<Frame defaultPage="plugin-demos/inspector">
 </Frame>

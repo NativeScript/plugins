@@ -16,6 +16,7 @@ export * from './fingerprint-auth';
 export * from './geolocation';
 export * from './google-pay';
 export * from './imagepicker';
+export * from './inspector';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';
 export * from './localize';

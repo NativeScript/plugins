@@ -24,6 +24,7 @@ const routes: Routes = [
 	{ path: 'geolocation', loadChildren: () => import('./plugin-demos/geolocation.module').then((m) => m.GeolocationModule) },
 	{ path: 'google-pay', loadChildren: () => import('./plugin-demos/google-pay.module').then((m) => m.GooglePayModule) },
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then((m) => m.ImagepickerModule) },
+	{ path: 'inspector', loadChildren: () => import('./plugin-demos/inspector.module').then((m) => m.InspectorModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then((m) => m.IqkeyboardmanagerModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then((m) => m.LocalNotificationsModule) },
 	{ path: 'localize', loadChildren: () => import('./plugin-demos/localize.module').then((m) => m.LocalizeModule) },

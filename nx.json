@@ -94,6 +94,9 @@
 		},
 		"google-pay": {
 			"tags": []
+		},
+		"inspector": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

@@ -1133,6 +1133,47 @@
 					}
 				}
 			}
+		},
+		"inspector": {
+			"projectType": "library",
+			"schematics": {},
+			"root": "packages/inspector",
+			"sourceRoot": "packages/inspector",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/inspector",
+						"tsConfig": "packages/inspector/tsconfig.json",
+						"packageJson": "packages/inspector/package.json",
+						"main": "packages/inspector/index.ts",
+						"assets": [
+							"packages/inspector/*.md",
+							"packages/inspector/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/inspector/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run inspector:build", "node tools/scripts/build-finish.ts inspector"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages inspector"],
+						"parallel": false
+					}
+				}
+			}
 		}
 	},
 	"cli": {

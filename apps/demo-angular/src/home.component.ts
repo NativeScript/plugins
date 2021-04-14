@@ -58,6 +58,9 @@ export class HomeComponent {
 			name: 'imagepicker',
 		},
 		{
+			name: 'inspector',
+		},
+		{
 			name: 'iqkeyboardmanager',
 		},
 		{

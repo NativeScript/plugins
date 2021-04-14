@@ -15,6 +15,7 @@
 - @nativescript/geolocation
 - @nativescript/google-pay
 - @nativescript/imagepicker
+- @nativescript/inspector
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
 - @nativescript/localize

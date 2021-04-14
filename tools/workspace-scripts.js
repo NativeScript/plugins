@@ -231,6 +231,13 @@ module.exports = {
 					description: '@nativescript/google-pay: Build',
 				},
 			},
+			// @nativescript/inspector
+			inspector: {
+				build: {
+					script: 'nx run inspector:build.all',
+					description: '@nativescript/inspector: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -336,6 +343,10 @@ module.exports = {
 			'google-pay': {
 				script: 'nx run google-pay:focus',
 				description: 'Focus on @nativescript/google-pay',
+			},
+			inspector: {
+				script: 'nx run inspector:focus',
+				description: 'Focus on @nativescript/inspector',
 			},
 			reset: {
 				script: 'nx run all:focus',
