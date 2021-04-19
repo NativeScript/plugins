@@ -119,8 +119,8 @@ function _getLocationRequest(options: Options): any {
 	return mLocationRequest;
 }
 
-function _requestLocationPermissions(): Promise<any> {
-	return new Promise<any>(function (resolve, reject) {
+function _requestLocationPermissions(): Promise<void> {
+	return new Promise<void>(function (resolve, reject) {
 		if (LocationManager.shouldSkipChecks()) {
 			resolve();
 		} else {

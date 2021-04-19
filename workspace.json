@@ -224,7 +224,9 @@
 							"nx run detox:build.all",
 							"nx run picker:build.all",
 							"nx run debug-android:build.all",
-							"nx run debug-ios:build.all"
+							"nx run debug-ios:build.all",
+							"nx run google-pay:build.all",
+							"nx run apple-pay:build.all"
 						],
 						"parallel": false
 					}
