@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/apple-pay",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Plugin that provides Apple Pay support for NativeScript iOS applications.",
 	"main": "index",
 	"typings": "index.d.ts",
