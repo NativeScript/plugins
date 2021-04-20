@@ -245,7 +245,7 @@ export class DateTimePicker extends DateTimePickerBase {
 	}
 
 	private static _getLabelContainer(uiView: UIView) {
-		if (uiView.superview.class() === UIView.class()) {
+		if (uiView && uiView.superview instanceof UIView) {
 			return uiView.superview;
 		}
 		return DateTimePicker._getLabelContainer(uiView.superview);
