@@ -541,6 +541,11 @@ interface PaymentSuccessEventData extends EventData {
 					 * A JSON object serialized as a string that contains the encryptedMessage, ephemeralPublicKey, and tag. It's serialized to simplify the signature verification process.
 					 */
 					signedMessage: string;
+
+					/**
+					 * JSON object string that contains a chargeable token issued by your gateway
+					 */
+					rawToken: string;
 				};
 			};
 		};
