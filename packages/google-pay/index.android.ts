@@ -260,12 +260,22 @@ export class GooglePayBtn extends View {
 					const tokenType = tokenizationData.getString('type');
 					// https://developers.google.com/pay/api/web/guides/resources/payment-data-cryptography#payment-method-token-structure
 					const token = tokenizationData.getString('token');
-					// need it as JSONObject to grab the values
-					const tokenAsObject = new JSONObject(token);
 
-					const protocolVersion = tokenAsObject.getString('protocolVersion');
-					const signature = tokenAsObject.getString('signature');
-					const signedMessage = tokenAsObject.getString('signedMessage');
+					let protocolVersion: string;
+					let signature: string;
+					let signedMessage: string;
+
+					try {
+						// need it as JSONObject to grab the values
+						const tokenAsObject = new JSONObject(token);
+
+						protocolVersion = tokenAsObject.getString('protocolVersion');
+						signature = tokenAsObject.getString('signature');
+						signedMessage = tokenAsObject.getString('signedMessage');
+					} catch (error) {
+						// May not be able to parse the token OK if not
+						console.log('Unable to parse token:', error);
+					}
 
 					// https://developers.google.com/pay/api/web/reference/response-objects
 					this.notify(({
@@ -284,6 +294,7 @@ export class GooglePayBtn extends View {
 										protocolVersion,
 										signature,
 										signedMessage,
+										rawToken: token,
 									},
 								},
 							},
