@@ -62,6 +62,11 @@ export interface TimePickerOptions extends PickerOptions {
 	 * This value will be used only on Android to determine whether the picker will be in 12 or 24 hour format.
 	 */
 	is24Hours?: boolean;
+
+	/**
+	 * This value will be used on iOS for determine the minute interval of the picker
+	 */
+	timeInterval?: number;
 }
 
 /**

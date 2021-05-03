@@ -28,6 +28,7 @@ export interface TimePickerOptions extends PickerOptions {
 	time?: Date;
 	is24Hours?: boolean;
 	iosPreferredDatePickerStyle?: number;
+	timeInterval?: number;
 }
 
 export interface PickerOptions {
