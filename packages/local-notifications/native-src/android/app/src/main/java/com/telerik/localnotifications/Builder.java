@@ -12,6 +12,9 @@ import android.graphics.Color;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -54,7 +57,16 @@ public final class Builder {
                     channel.enableLights(true);
                     channel.setLightColor(getLedColor(options));
                 }
-                notificationManager.createNotificationChannel(channel);
+
+								if(options.has("sound") && options.optString("sound") != "default"){
+									AudioAttributes audioAttributes = new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+										.setUsage(AudioAttributes.USAGE_NOTIFICATION)
+										.build();
+									int soundIdentifier = context.getResources().getIdentifier(options.optString("sound"), "raw", context.getApplicationInfo().packageName);
+									channel.setSound(Uri.parse("android.resource://" + context.getApplicationInfo().packageName + "/" + soundIdentifier), audioAttributes);
+								}
+
+							notificationManager.createNotificationChannel(channel);
             }
         }
 
@@ -75,7 +87,14 @@ public final class Builder {
             .setPriority(options.optInt("priority", options.optBoolean("forceShowWhenInForeground") ? 1 : 0))
             .setTicker(options.optString("ticker", null)); // Let the OS handle the default value for the ticker.
 
-        final Object thumbnail = options.opt("thumbnail");
+				String soundFileName = options.optString("sound", null);
+				if(soundFileName != null && soundFileName != "default"){
+					int soundIdentifier = context.getResources().getIdentifier(options.optString("sound"), "raw", context.getApplicationInfo().packageName);
+					builder.setSound(Uri.parse("android.resource://" + context.getApplicationInfo().packageName + soundIdentifier));
+				}
+
+
+				final Object thumbnail = options.opt("thumbnail");
 
         if (thumbnail instanceof String) {
             builder.setLargeIcon(getBitmap(context, (String) thumbnail));
