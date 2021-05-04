@@ -15,9 +15,9 @@ export class DemoSharedBackgroundHttp extends DemoSharedBase {
 
 		this.tasks = new ObservableArray<Task>();
 		this.events = new ObservableArray();
-    this.counter = 0;
-    // NOTE: omitted this image due to file size (was 16.2 Mb) - to test you can use any large local image file you have
-		this.file = path.normalize(knownFolders.currentApp().path + '/home/bigpic.jpg');
+		this.counter = 0;
+		// NOTE: omitted this image due to file size (was 16.2 Mb) - to test you can use any large local image file you have
+		this.file = path.normalize(knownFolders.currentApp().path + '/images/bigpic.jpg');
 		if (global.isIOS) {
 			// NOTE: This works for emulator. Real device will need other address.
 			this.url = 'http://localhost:8080';

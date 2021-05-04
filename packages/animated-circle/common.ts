@@ -30,15 +30,6 @@ export class AnimatedCircleCommon extends ContentView {
 // register after class definition or we'll get an exception according to
 // https://docs.nativescript.org/core-concepts/properties#registering-the-property
 
-// augmenting style definition so it includes rimColor and barColor
-declare module '@nativescript/core/ui/styling/style' {
-	interface Style {
-		spinBarColor: Color | string;
-		rimColor: Color | string;
-		barColor: Color | string;
-	}
-}
-
 // defines 'spinBarColor' property on Style class
 spinBarColorProperty.register(Style);
 // defines 'rimColor' property on Style class

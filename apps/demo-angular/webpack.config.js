@@ -96,7 +96,7 @@ module.exports = (env) => {
 	const additionalLazyModuleResources = [];
 
 	const copyIgnore = { ignore: [`${relative(appPath, appResourcesFullPath)}/**`] };
-	const copyTargets = [{ from: { glob: 'assets/**', dot: false } }, { from: { glob: 'fonts/**', dot: false } }, ...copyReplacements];
+	const copyTargets = [{ from: '../../../tools/images', to: 'images' }, { from: { glob: 'assets/**', dot: false } }, { from: { glob: 'fonts/**', dot: false } }, ...copyReplacements];
 
 	if (!production) {
 		// for development purposes only
