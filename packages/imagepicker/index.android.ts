@@ -194,7 +194,6 @@ export class ImagePicker {
 					if (resultCode === android.app.Activity.RESULT_OK) {
 						try {
 							let results = [];
-
 							let clip = data.getClipData();
 							if (clip) {
 								let count = clip.getItemCount();
@@ -203,14 +202,14 @@ export class ImagePicker {
 									if (clipItem) {
 										let uri = clipItem.getUri();
 										if (uri) {
-											let selectedAsset = new ImageAsset(UriHelper._calculateFileUri(uri));
+											let selectedAsset = new ImageAsset(uri.toString());
 											results.push(selectedAsset);
 										}
 									}
 								}
 							} else {
-								let uri = data.getData();
-								let selectedAsset = new ImageAsset(UriHelper._calculateFileUri(uri));
+								const uri = data.getData();
+								const selectedAsset = new ImageAsset(uri.toString());
 								results.push(selectedAsset);
 							}
 
