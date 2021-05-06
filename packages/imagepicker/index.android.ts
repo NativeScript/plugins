@@ -195,6 +195,7 @@ export class ImagePicker {
 						try {
 							let results = [];
 							let clip = data.getClipData();
+							const useHelper = (<any>android).os.Build.VERSION.SDK_INT <= 28;
 							if (clip) {
 								let count = clip.getItemCount();
 								for (let i = 0; i < count; i++) {
@@ -202,14 +203,16 @@ export class ImagePicker {
 									if (clipItem) {
 										let uri = clipItem.getUri();
 										if (uri) {
-											let selectedAsset = new ImageAsset(uri.toString());
+											const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
+											const selectedAsset = new ImageAsset(val);
 											results.push(selectedAsset);
 										}
 									}
 								}
 							} else {
 								const uri = data.getData();
-								const selectedAsset = new ImageAsset(uri.toString());
+								const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
+								const selectedAsset = new ImageAsset(val);
 								results.push(selectedAsset);
 							}
 
