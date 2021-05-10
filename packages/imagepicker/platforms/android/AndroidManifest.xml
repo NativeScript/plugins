@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-	<!--Describe the permissions, features or other configurations required by your plugin for Android. 
-		To read more about android permissions go to https://developer.android.com/guide/topics/permissions/index.html -->
-	<!--EXAMPLE: uses-permission android:name="android.permission.INTERNET"/> -->
-
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-	<application android:requestLegacyExternalStorage="true" />
 </manifest>
