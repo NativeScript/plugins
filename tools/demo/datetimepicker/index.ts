@@ -3,12 +3,15 @@ import { DemoSharedBase } from '../utils';
 import { DateTimePicker } from '@nativescript/datetimepicker';
 
 export class DemoSharedDatetimepicker extends DemoSharedBase {
-  dateText = 'tap to select date';
-  timeText = 'tap to select time';
-  dateTimeText = 'tap to select date and time';
-  dateTime1 = new Date();
-  dateTime2 = new Date();
-  dateTime3 = new Date();
+	dateText = 'tap to select date';
+	timeText = 'tap to select time';
+	dateTimeText = 'tap to select date and time';
+	dateTime1 = new Date();
+	dateTime2 = new Date();
+	dateTime3 = new Date();
+	enabled1 = true;
+	enabled2 = true;
+	enabled3 = true;
 	private scrollView: ScrollView;
 
 	constructor() {

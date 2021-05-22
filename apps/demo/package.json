@@ -6,7 +6,7 @@
 	"dependencies": {
 		"nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/debug-ios": "file:../../packages/debug-ios",
+		"@nativescript/datetimepicker": "file:../../packages/datetimepicker",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-pay": "file:../../packages/apple-pay",
@@ -14,8 +14,8 @@
 		"@nativescript/background-http": "file:../../packages/background-http",
 		"@nativescript/brightness": "file:../../packages/brightness",
 		"@nativescript/camera": "file:../../packages/camera",
-		"@nativescript/datetimepicker": "file:../../packages/datetimepicker",
 		"@nativescript/debug-android": "file:../../packages/debug-android",
+		"@nativescript/debug-ios": "file:../../packages/debug-ios",
 		"@nativescript/detox": "file:../../packages/detox",
 		"@nativescript/directions": "file:../../packages/directions",
 		"@nativescript/email": "file:../../packages/email",
