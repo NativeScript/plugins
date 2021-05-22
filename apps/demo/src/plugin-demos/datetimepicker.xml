@@ -50,6 +50,11 @@
                 <Label text="{{ dateTime1 }}" color="#CBCBCB"/>
                 <datetime:DatePickerField date="{{ dateTime1 }}"/>
                 <StackLayout class="hr-light m-10" android:visibility="collapse"/>
+
+                <Label text="enabled" class="content"/>
+                <Switch checked="{{ enabled1 }}" horizontalAlignment="left" />
+                <datetime:DatePickerField date="{{ dateTime1 }}" isEnabled="{{ enabled1 }}"/>
+                <StackLayout class="hr-light m-10" android:visibility="collapse"/>
             </StackLayout>
 
             <Label text="TimePickerField" id="time" class="header" tap="{{ onHeaderTap }}" opacity="{{ timeOpacity }}"/>
@@ -96,6 +101,11 @@
                 <Label text="binding" class="content"/>
                 <Label text="{{ dateTime2 }}" color="#CBCBCB"/>
                 <datetime:TimePickerField time="{{ dateTime2 }}"/>
+                <StackLayout class="hr-light m-10" android:visibility="collapse"/>
+
+                <Label text="enabled" class="content"/>
+                <Switch checked="{{ enabled2 }}" horizontalAlignment="left" />
+                <datetime:TimePickerField time="{{ dateTime2 }}" isEnabled="{{ enabled2 }}"/>
                 <StackLayout class="hr-light m-10" android:visibility="collapse"/>
             </StackLayout>
 
@@ -154,6 +164,11 @@
                 <Label text="binding" class="content"/>
                 <Label text="{{ dateTime3 }}" color="#CBCBCB"/>
                 <datetime:DateTimePickerFields date="{{ dateTime3 }}"/>
+                <StackLayout class="hr-light m-10" android:visibility="collapse"/>
+
+                <Label text="enabled" class="content"/>
+                <Switch checked="{{ enabled3 }}" horizontalAlignment="left" />
+                <datetime:DateTimePickerFields date="{{ dateTime3 }}" isEnabled="{{ enabled3 }}"/>
                 <StackLayout class="hr-light m-10" android:visibility="collapse"/>
 
                 <Label text="vertical orientation" class="content"/>
