@@ -145,7 +145,7 @@ function _dataForAbsolutePath(path) {
 }
 
 @NativeClass()
-export class MFMailComposeViewControllerDelegateImpl extends NSObject {
+class MFMailComposeViewControllerDelegateImpl extends NSObject {
 	private _callback: (result: any, error: any) => void;
 	static ObjCProtocols = [MFMailComposeViewControllerDelegate];
 	static initWithCallback(callback: (result: any, error: any) => void) {
