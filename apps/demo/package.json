@@ -4,9 +4,6 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
-		"nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
-		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/datetimepicker": "file:../../packages/datetimepicker",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-pay": "file:../../packages/apple-pay",
@@ -14,6 +11,8 @@
 		"@nativescript/background-http": "file:../../packages/background-http",
 		"@nativescript/brightness": "file:../../packages/brightness",
 		"@nativescript/camera": "file:../../packages/camera",
+		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/datetimepicker": "file:../../packages/datetimepicker",
 		"@nativescript/debug-android": "file:../../packages/debug-android",
 		"@nativescript/debug-ios": "file:../../packages/debug-ios",
 		"@nativescript/detox": "file:../../packages/detox",
@@ -29,12 +28,13 @@
 		"@nativescript/picker": "file:../../packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",
-		"@nativescript/zip": "file:../../packages/zip"
+		"@nativescript/zip": "file:../../packages/zip",
+		"nativescript-theme-core": "file:../../node_modules/nativescript-theme-core"
 	},
 	"devDependencies": {
 		"@nativescript/android": "7.0.1",
 		"@nativescript/ios": "7.2.0",
 		"@nativescript/webpack": "~4.1.0",
-		"typescript": "file:../../node_modules/typescript"
+		"typescript": "~4.0.0"
 	}
 }

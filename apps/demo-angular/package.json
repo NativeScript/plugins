@@ -46,6 +46,6 @@
 		"@nativescript/ios": "7.2.0",
 		"@nativescript/webpack": "~4.1.0",
 		"@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",
-		"typescript": "file:../../node_modules/typescript"
+		"typescript": "~4.0.0"
 	}
 }
