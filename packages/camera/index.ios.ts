@@ -162,7 +162,7 @@ export let takePicture = function (options): Promise<any> {
 			imagePickerController.allowsEditing = allowsEditing;
 		}
 
-		imagePickerController.modalPresentationStyle = UIModalPresentationStyle.CurrentContext;
+		imagePickerController.modalPresentationStyle = UIModalPresentationStyle.FullScreen;
 
 		let topMostFrame = Frame.topmost();
 		if (topMostFrame) {
