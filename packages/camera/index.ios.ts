@@ -1,4 +1,5 @@
 import { Utils, ImageSource, ImageAsset, Trace, Frame } from '@nativescript/core';
+import { CameraOptions } from '.';
 
 @NativeClass()
 class UIImagePickerControllerDelegateImpl extends NSObject implements UIImagePickerControllerDelegate {
@@ -119,7 +120,7 @@ class UIImagePickerControllerDelegateImpl extends NSObject implements UIImagePic
 
 let listener;
 
-export let takePicture = function (options): Promise<any> {
+export let takePicture = function (options: CameraOptions): Promise<any> {
 	return new Promise((resolve, reject) => {
 		listener = null;
 		let imagePickerController = UIImagePickerController.new();
@@ -128,12 +129,17 @@ export let takePicture = function (options): Promise<any> {
 		let keepAspectRatio = true;
 		let saveToGallery = true;
 		let allowsEditing = false;
+		let modalPresentationStyle = UIModalPresentationStyle.FullScreen;
+
 		if (options) {
 			reqWidth = options.width || 0;
 			reqHeight = options.height || reqWidth;
 			keepAspectRatio = Utils.isNullOrUndefined(options.keepAspectRatio) ? keepAspectRatio : options.keepAspectRatio;
 			saveToGallery = Utils.isNullOrUndefined(options.saveToGallery) ? saveToGallery : options.saveToGallery;
 			allowsEditing = Utils.isNullOrUndefined(options.allowsEditing) ? allowsEditing : options.allowsEditing;
+			if (typeof options.modalPresentationStyle === 'number') {
+				modalPresentationStyle = options.modalPresentationStyle;
+			}
 		}
 
 		let authStatus = PHPhotoLibrary.authorizationStatus();
@@ -162,7 +168,7 @@ export let takePicture = function (options): Promise<any> {
 			imagePickerController.allowsEditing = allowsEditing;
 		}
 
-		imagePickerController.modalPresentationStyle = UIModalPresentationStyle.FullScreen;
+		imagePickerController.modalPresentationStyle = modalPresentationStyle;
 
 		let topMostFrame = Frame.topmost();
 		if (topMostFrame) {
