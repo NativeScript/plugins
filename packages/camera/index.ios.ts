@@ -197,7 +197,7 @@ export let requestPermissions = function () {
 };
 
 export let requestPhotosPermissions = function () {
-	return new Promise(function (resolve, reject) {
+	return new Promise<void>(function (resolve, reject) {
 		let authStatus = PHPhotoLibrary.authorizationStatus();
 		switch (authStatus) {
 			case PHAuthorizationStatus.NotDetermined: {
@@ -233,7 +233,7 @@ export let requestPhotosPermissions = function () {
 };
 
 export let requestCameraPermissions = function () {
-	return new Promise(function (resolve, reject) {
+	return new Promise<void>(function (resolve, reject) {
 		let cameraStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
 		switch (cameraStatus) {
 			case AVAuthorizationStatus.NotDetermined: {

@@ -1,4 +1,5 @@
-﻿@import '~nativescript-theme-core/css/core.light.css';
+﻿@import 'nativescript-theme-core/scss/light';
+  @import 'nativescript-theme-core/scss/index';
 
 button, label, stack-layout {
     horizontal-align: center;
