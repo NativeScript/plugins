@@ -257,11 +257,9 @@ export class DateTimePickerFields extends GridLayout {
 	}
 
 	public addEventListener(eventNames: string, callback: (data: EventData) => void, thisArg?: Object) {
-		try {
-			super.addEventListener(eventNames, callback, thisArg);
-			this.dateField.addEventListener(eventNames, callback, thisArg);
-			this.timeField.addEventListener(eventNames, callback, thisArg);
-		} catch (e) {}
+		super.addEventListener(eventNames, callback, thisArg);
+		this.dateField?.addEventListener(eventNames, callback, thisArg);
+		this.timeField?.addEventListener(eventNames, callback, thisArg);
 	}
 	public removeEventListener(eventNames: string, callback?: any, thisArg?: Object) {
 		super.removeEventListener(eventNames, callback, thisArg);
