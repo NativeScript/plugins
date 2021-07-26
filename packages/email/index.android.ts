@@ -7,7 +7,7 @@ import { Application, File, Folder } from '@nativescript/core';
 let useAndroidX = function () {
 	return global.androidx && global.androidx.appcompat;
 };
-const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : global.android.support.v4.content;
+const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : (<any>global.android.support.v4).content;
 
 const _determineAvailability = function () {
 	const uri = android.net.Uri.fromParts('mailto', '', null);

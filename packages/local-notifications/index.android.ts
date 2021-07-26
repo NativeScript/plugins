@@ -87,7 +87,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	addOnMessageReceivedCallback(onReceived: (data: ReceivedNotification) => void): Promise<any> {
+	addOnMessageReceivedCallback(onReceived: (data: ReceivedNotification) => void): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
 				// note that this is ONLY triggered when the user clicked the notification in the statusbar
@@ -106,7 +106,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	addOnMessageClearedCallback(onReceived: (data: ReceivedNotification) => void): Promise<any> {
+	addOnMessageClearedCallback(onReceived: (data: ReceivedNotification) => void): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
 				// note that this is ONLY triggered when the user clicked the notification in the statusbar

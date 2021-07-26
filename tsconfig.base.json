@@ -1,28 +1,38 @@
 {
-	"compilerOptions": {
-		"rootDir": ".",
-		"sourceMap": true,
-		"declaration": true,
-		"moduleResolution": "node",
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"noEmitHelpers": true,
-		"target": "es2017",
-		"module": "esnext",
-		"lib": ["es2017", "dom"],
-		"skipLibCheck": true,
-		"skipDefaultLibCheck": true,
-		"baseUrl": ".",
-		"plugins": [
-			{
-				"transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
-				"type": "raw"
-			}
-		],
-		"paths": {
-			"@nativescript/*": ["packages/*"],
-			"@demo/shared": ["tools/demo/index.ts"]
-		}
-	},
-	"exclude": ["node_modules", "tmp"]
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noEmitHelpers": true,
+    "target": "es2017",
+    "module": "esnext",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "plugins": [
+      {
+        "transform": "@nativescript/webpack/dist/transformers/NativeClass",
+        "type": "raw"
+      }
+    ],
+    "paths": {
+      "@nativescript/*": [
+        "packages/*"
+      ],
+      "@demo/shared": [
+        "tools/demo/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
