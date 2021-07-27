@@ -221,7 +221,7 @@ export function clearWatch(_watchId: number): void {
 	LocationMonitor.stopLocationMonitoring(_watchId);
 }
 
-export function enableLocationRequest(always?: boolean, iosOpenSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
+export function enableLocationRequest(always?: boolean, openSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
 	return new Promise<void>(function (resolve, reject) {
 		const locationIsEnabled = _isEnabled(always);
 
@@ -230,7 +230,7 @@ export function enableLocationRequest(always?: boolean, iosOpenSettingsIfLocatio
 			return;
 		} else {
 			const status = getIOSLocationManagerStatus();
-			if (status === CLAuthorizationStatus.kCLAuthorizationStatusDenied && iosOpenSettingsIfLocationHasBeenDenied) {
+			if (status === CLAuthorizationStatus.kCLAuthorizationStatusDenied && openSettingsIfLocationHasBeenDenied) {
 				// now open the Settings so the user can toggle the Location permission
 				UIApplication.sharedApplication.openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
 			} else {

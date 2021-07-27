@@ -1,4 +1,4 @@
-import { Enums, Application, UnhandledErrorEventData, AndroidApplication } from '@nativescript/core';
+import { Enums, Application, UnhandledErrorEventData, AndroidApplication, Device } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType } from '.';
 import * as permissions from 'nativescript-permissions';
@@ -119,12 +119,21 @@ function _getLocationRequest(options: Options): any {
 	return mLocationRequest;
 }
 
-function _requestLocationPermissions(): Promise<void> {
+function _requestLocationPermissions(always: boolean): Promise<void> {
 	return new Promise<void>(function (resolve, reject) {
 		if (LocationManager.shouldSkipChecks()) {
 			resolve();
 		} else {
-			permissions.requestPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION).then(resolve, reject);
+			if (always) {
+				permissions
+					.requestPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+					.then(resolve, reject)
+					.catch((e) => {
+						console.error('Failed to request Android background location permission due to: ' + e);
+					});
+			} else {
+				permissions.requestPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION).then(resolve, reject);
+			}
 		}
 	});
 }
@@ -194,37 +203,46 @@ export function clearWatch(watchId: number): void {
 	}
 }
 
-export function enableLocationRequest(always?: boolean): Promise<void> {
+export function enableLocationRequest(always?: boolean, openSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
 	return new Promise<void>(function (resolve, reject) {
-		_requestLocationPermissions().then(() => {
-			_makeGooglePlayServicesAvailable().then(() => {
-				_isLocationServiceEnabled().then(
-					() => {
-						resolve();
-					},
-					(ex) => {
-						if (typeof ex.getStatusCode === 'function') {
-							const statusCode = ex.getStatusCode();
-							if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-								try {
-									// cache resolve and reject callbacks in order to call them
-									// on REQUEST_ENABLE_LOCATION Activity Result
-									_onEnableLocationSuccess = resolve;
-									_onEnableLocationFail = reject;
-									return ex.startResolutionForResult(Application.android.foregroundActivity || Application.android.startActivity, REQUEST_ENABLE_LOCATION);
-								} catch (sendEx) {
-									// Ignore the error.
+		if (Device.sdkVersion >= '29' && androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(Application.android.foregroundActivity, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+			if (openSettingsIfLocationHasBeenDenied) {
+				resolve();
+				_goToPhoneSettings();
+			} else {
+				reject(new Error('User denied location permission previously'));
+			}
+		} else {
+			_requestLocationPermissions(always).then(() => {
+				_makeGooglePlayServicesAvailable().then(() => {
+					_isLocationServiceEnabled().then(
+						() => {
+							resolve();
+						},
+						(ex) => {
+							if (typeof ex.getStatusCode === 'function') {
+								const statusCode = ex.getStatusCode();
+								if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+									try {
+										// cache resolve and reject callbacks in order to call them
+										// on REQUEST_ENABLE_LOCATION Activity Result
+										_onEnableLocationSuccess = resolve;
+										_onEnableLocationFail = reject;
+										return ex.startResolutionForResult(Application.android.foregroundActivity || Application.android.startActivity, REQUEST_ENABLE_LOCATION);
+									} catch (sendEx) {
+										// Ignore the error.
+										return resolve();
+									}
+								} else if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE && isAirplaneModeOn() && isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
 									return resolve();
 								}
-							} else if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE && isAirplaneModeOn() && isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-								return resolve();
 							}
+							reject(new Error('Cannot enable the location service. ' + ex));
 						}
-						reject(new Error('Cannot enable the location service. ' + ex));
-					}
-				);
+					);
+				}, reject);
 			}, reject);
-		}, reject);
+		}
 	});
 }
 
@@ -272,6 +290,13 @@ function _isLocationServiceEnabled(options?: Options): Promise<boolean> {
 		let locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Application.android.context);
 		locationSettingsClient.checkLocationSettings(locationSettingsBuilder.build()).addOnSuccessListener(_getTaskSuccessListener(resolve)).addOnFailureListener(_getTaskFailListener(reject));
 	});
+}
+
+function _goToPhoneSettings() {
+	const intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts('package', Application.android.context.getPackageName(), null));
+	const activity = Application.android.foregroundActivity || Application.android.startActivity;
+	intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+	activity.startActivity(intent);
 }
 
 export function isEnabled(options?: Options): Promise<boolean> {
