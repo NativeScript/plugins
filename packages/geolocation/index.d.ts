@@ -141,7 +141,7 @@ export function clearWatch(watchId: number): void;
  * Read more on iOS: https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization.
  * Read more on Android: https://developer.android.com/training/location/permissions
  * @param always https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization
- * always permission on Android is only required on Android SDK >= 29.
+ * always permission on Android is only required on Android SDK >= 29
  * https://developer.android.com/training/location/permissions#request-background-location
  * @param openSettingsIfLocationHasBeenDenied if true and the user previously declined the always permission then the permission settings page for the app will be opened.
  */
