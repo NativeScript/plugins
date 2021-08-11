@@ -1,4 +1,4 @@
-import { Enums, Application, UnhandledErrorEventData, AndroidApplication } from '@nativescript/core';
+import { Enums, Application, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType } from '.';
 import * as permissions from 'nativescript-permissions';
@@ -53,7 +53,7 @@ function errorHandler(errData: UnhandledErrorEventData) {
 
 export function getCurrentLocation(options: Options): Promise<Location> {
 	return new Promise(function (resolve, reject) {
-		enableLocationRequest().then(() => {
+		enableLocationRequest(false, false).then(() => {
 			if (options.timeout === 0) {
 				// get last known
 				LocationManager.getLastLocation(options.maximumAge, resolve, reject);
@@ -119,12 +119,23 @@ function _getLocationRequest(options: Options): any {
 	return mLocationRequest;
 }
 
-function _requestLocationPermissions(): Promise<void> {
+function _requestLocationPermissions(always: boolean): Promise<void> {
 	return new Promise<void>(function (resolve, reject) {
 		if (LocationManager.shouldSkipChecks()) {
 			resolve();
 		} else {
-			permissions.requestPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION).then(resolve, reject);
+			if (always) {
+				ApplicationSettings.setBoolean('askedForAlwaysPermission', true);
+				permissions
+					.requestPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+					.then(resolve, reject)
+					.catch((e) => {
+						console.error('Failed to request Android background location permission due to: ' + e);
+					});
+			} else {
+				ApplicationSettings.setBoolean('askedForWhileUsePermission', true);
+				permissions.requestPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION).then(resolve, reject);
+			}
 		}
 	});
 }
@@ -194,37 +205,48 @@ export function clearWatch(watchId: number): void {
 	}
 }
 
-export function enableLocationRequest(always?: boolean): Promise<void> {
+export function enableLocationRequest(always?: boolean, openSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
 	return new Promise<void>(function (resolve, reject) {
-		_requestLocationPermissions().then(() => {
-			_makeGooglePlayServicesAvailable().then(() => {
-				_isLocationServiceEnabled().then(
-					() => {
-						resolve();
-					},
-					(ex) => {
-						if (typeof ex.getStatusCode === 'function') {
-							const statusCode = ex.getStatusCode();
-							if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-								try {
-									// cache resolve and reject callbacks in order to call them
-									// on REQUEST_ENABLE_LOCATION Activity Result
-									_onEnableLocationSuccess = resolve;
-									_onEnableLocationFail = reject;
-									return ex.startResolutionForResult(Application.android.foregroundActivity || Application.android.startActivity, REQUEST_ENABLE_LOCATION);
-								} catch (sendEx) {
-									// Ignore the error.
+		// on API level <29 there is no ACCESS_BACKGROUND_LOCATION permission
+		const _always = Device.sdkVersion >= '29' ? always : false;
+		if (!_systemDialogWillShow(_always) && !_permissionIsGiven(_always)) {
+			if (openSettingsIfLocationHasBeenDenied) {
+				reject(new Error('User needs to enable permission from settings'));
+				_goToPhoneSettings();
+			} else {
+				reject(new Error('User denied location permission previously'));
+			}
+		} else {
+			_requestLocationPermissions(_always).then(() => {
+				_makeGooglePlayServicesAvailable().then(() => {
+					_isLocationServiceEnabled().then(
+						() => {
+							resolve();
+						},
+						(ex) => {
+							if (typeof ex.getStatusCode === 'function') {
+								const statusCode = ex.getStatusCode();
+								if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+									try {
+										// cache resolve and reject callbacks in order to call them
+										// on REQUEST_ENABLE_LOCATION Activity Result
+										_onEnableLocationSuccess = resolve;
+										_onEnableLocationFail = reject;
+										return ex.startResolutionForResult(Application.android.foregroundActivity || Application.android.startActivity, REQUEST_ENABLE_LOCATION);
+									} catch (sendEx) {
+										// Ignore the error.
+										return resolve();
+									}
+								} else if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE && isAirplaneModeOn() && isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
 									return resolve();
 								}
-							} else if (statusCode === com.google.android.gms.location.LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE && isAirplaneModeOn() && isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-								return resolve();
 							}
+							reject(new Error('Cannot enable the location service. ' + ex));
 						}
-						reject(new Error('Cannot enable the location service. ' + ex));
-					}
-				);
+					);
+				}, reject);
 			}, reject);
-		}, reject);
+		}
 	});
 }
 
@@ -272,6 +294,37 @@ function _isLocationServiceEnabled(options?: Options): Promise<boolean> {
 		let locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Application.android.context);
 		locationSettingsClient.checkLocationSettings(locationSettingsBuilder.build()).addOnSuccessListener(_getTaskSuccessListener(resolve)).addOnFailureListener(_getTaskFailListener(reject));
 	});
+}
+
+function _goToPhoneSettings() {
+	const intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts('package', Application.android.context.getPackageName(), null));
+	const activity = Application.android.foregroundActivity || Application.android.startActivity;
+	intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+	activity.startActivity(intent);
+}
+
+/**
+ * The system dialog will not show if we asked for permission previously and the user denied permission with selecting don't ask again (API level <30).
+ * Starting on Android 11 (API level 30), there is no 'don't ask again' option. If the user taps Deny for a specific permission more than once during the app's lifetime,
+ * the user doesn't see the system permissions dialog if his app requests that permission again. The user's action implies "don't ask again."
+ * https://developer.android.com/training/permissions/requesting#one-time
+ * With API level 30 Android introduced the 'Only this time' or 'Ask every time' permission which will cause shouldShowRequestPermissionRationale() to return false as if the permission has not been requested yet.
+ * This makes it impossible to differentiate between the case where the user granted one time permission and the 'don't ask again' case. Therefore we always assume askedForPermission to be false for API level >= 30
+ * to ensure that the system popup is always shown when the user grants one time permission.
+ * https://github.com/Baseflow/flutter-geolocator/issues/662#issuecomment-778121610
+ * @param always if true then check will be done for ACCESS_BACKGROUND_LOCATION permission, if false then check will be done for ACCESS_FINE_LOCATION permission
+ * @returns true if the Android permission dialog will be shown to the user when the location permission is requested the next time, returns false otherwise
+ */
+function _systemDialogWillShow(always: boolean): boolean {
+	const permissionType = always ? (<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION : (<any>android).Manifest.permission.ACCESS_FINE_LOCATION;
+	const doNotAskAgain = !androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(Application.android.foregroundActivity, permissionType);
+	let askedForPermission = always ? ApplicationSettings.getBoolean('askedForAlwaysPermission', false) : ApplicationSettings.getBoolean('askedForWhileUsePermission', false);
+	askedForPermission = askedForPermission && Device.sdkVersion < '30';
+	return !(askedForPermission && doNotAskAgain);
+}
+
+function _permissionIsGiven(always: boolean): boolean {
+	return always ? permissions.hasPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION) : permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION);
 }
 
 export function isEnabled(options?: Options): Promise<boolean> {
