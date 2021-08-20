@@ -1,7 +1,7 @@
 {
 	"name": "@nativescript/fingerprint-auth",
-  "version": "7.0.0",
-  "description": "A fingerprint authentication plugin for use in NativeScript apps",
+  	"version": "8.0.0",
+  	"description": "A biometric authentication plugin for use in NativeScript apps",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
