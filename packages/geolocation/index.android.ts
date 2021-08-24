@@ -1,6 +1,6 @@
 import { Enums, Application, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
-import { Options, successCallbackType, errorCallbackType } from '.';
+import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 import * as permissions from 'nativescript-permissions';
 export * from './common';
 
@@ -195,6 +195,12 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 	LocationManager.requestLocationUpdates(locationRequest, locationCallback);
 
 	return watchId;
+}
+
+export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType) {
+	const zonedErrorCallback = zonedCallback(errorCallback);
+	zonedErrorCallback(new Error("watchPermissionStatus() is not available on Android"));
+	return null;
 }
 
 export function clearWatch(watchId: number): void {
