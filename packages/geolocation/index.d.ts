@@ -115,6 +115,7 @@ export interface Options {
 	openSettingsIfLocationHasBeenDenied?: boolean;
 }
 
+declare type permissionCallbackType = (permissionState: number) => void;
 declare type successCallbackType = (location: Location) => void;
 declare type errorCallbackType = (error: Error) => void;
 
@@ -129,6 +130,15 @@ export function getCurrentLocation(options: Options): Promise<Location>;
  * @returns {number} The watch id
  */
 export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options: Options): number;
+
+
+/**
+ * Monitor for location permission change. Only on iOS!
+ * @param permissionCallback gets called on location permission state change
+ * @param errorCallback gets called on error
+ * @returns {number} the watch id
+ */
+ export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType): number;
 
 /**
  * Stop monitoring for location change. Parameter expected is the watchId returned from `watchLocation`.

@@ -1,11 +1,12 @@
-import { Application, Enums, UnhandledErrorEventData, Device } from '@nativescript/core';
+import { Application, Enums, UnhandledErrorEventData, Device, ApplicationSettings } from '@nativescript/core';
 
 import { LocationBase, defaultGetLocationTimeout, minRangeUpdate } from './common';
-import { Options, successCallbackType, errorCallbackType } from '.';
+import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 export * from './common';
 
 const locationManagers = {};
 const locationListeners = {};
+const permissionListeners = {};
 let watchId = 0;
 let attachedForErrorHandling = false;
 
@@ -15,6 +16,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 
 	public authorizeAlways: boolean;
 	public id: number;
+	private _onPermissionChange: permissionCallbackType;
 	private _onLocation: successCallbackType;
 	private _onError: errorCallbackType;
 	private _resolve: () => void;
@@ -25,6 +27,16 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 		watchId++;
 		listener.id = watchId;
 		listener._onLocation = successCallback;
+		listener._onError = error;
+
+		return listener;
+	}
+
+	public static initWithPermissionError(permissionCallback: permissionCallbackType, error?: errorCallbackType): LocationListenerImpl {
+		let listener = <LocationListenerImpl>LocationListenerImpl.new();
+		watchId++;
+		listener.id = watchId;
+		listener._onPermissionChange = permissionCallback;
 		listener._onError = error;
 
 		return listener;
@@ -56,7 +68,28 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 		}
 	}
 
+	public locationManagerDidChangeAuthorization(manager: CLLocationManager) {
+		this._handleAuthorizationChange(getIOSLocationManagerStatus());
+	}
+
 	public locationManagerDidChangeAuthorizationStatus(manager: CLLocationManager, status: CLAuthorizationStatus) {
+		if (getVersionMaj() < 14) {
+			this._handleAuthorizationChange(status);
+		}
+	}
+
+	private _handleAuthorizationChange(status: CLAuthorizationStatus) {
+
+		// the permisssion listener doesn't resolve
+		if (this._onPermissionChange) {
+			this._onPermissionChange(status);
+			return;
+		}
+
+		if (this.authorizeAlways) {
+			ApplicationSettings.setBoolean('hasRequestedAlwaysAuthorization', true);
+		}
+
 		switch (status) {
 			case CLAuthorizationStatus.kCLAuthorizationStatusNotDetermined:
 				break;
@@ -72,8 +105,13 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 				break;
 
 			case CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedAlways:
-			case CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse:
 				if (this._resolve) {
+					LocationMonitor.stopLocationMonitoring(this.id);
+					this._resolve();
+				}
+				break;
+			case CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse:
+				if (this._resolve && !this.authorizeAlways) {
 					LocationMonitor.stopLocationMonitoring(this.id);
 					this._resolve();
 				}
@@ -217,6 +255,26 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 	}
 }
 
+export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType): number {
+	let zonedPermissionCallback = (<any>global).zonedCallback(permissionCallback);
+	let zonedErrorCallback = (<any>global).zonedCallback(errorCallback);
+	let permListener = LocationListenerImpl.initWithPermissionError(zonedPermissionCallback, zonedErrorCallback);
+
+	try {
+		let iosLocManager = new CLLocationManager();
+		iosLocManager.delegate = permListener;
+
+		locationManagers[permListener.id] = iosLocManager;
+		permissionListeners[permListener.id] = permListener;
+		zonedPermissionCallback(iosLocManager.authorizationStatus);
+		return permListener.id;
+	} catch (e) {
+		LocationMonitor.stopLocationMonitoring(permListener.id);
+		zonedErrorCallback(e);
+		return null;
+	}
+}
+
 export function clearWatch(_watchId: number): void {
 	LocationMonitor.stopLocationMonitoring(_watchId);
 }
@@ -230,9 +288,11 @@ export function enableLocationRequest(always?: boolean, openSettingsIfLocationHa
 			return;
 		} else {
 			const status = getIOSLocationManagerStatus();
-			if (status === CLAuthorizationStatus.kCLAuthorizationStatusDenied && openSettingsIfLocationHasBeenDenied) {
+			if ((status === CLAuthorizationStatus.kCLAuthorizationStatusDenied && openSettingsIfLocationHasBeenDenied) ||
+				(!_systemDialogWillShow(always, status) && openSettingsIfLocationHasBeenDenied)) {
 				// now open the Settings so the user can toggle the Location permission
 				UIApplication.sharedApplication.openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
+				reject();
 			} else {
 				let listener = LocationListenerImpl.initWithPromiseCallbacks(resolve, reject, always);
 				try {
@@ -249,6 +309,11 @@ export function enableLocationRequest(always?: boolean, openSettingsIfLocationHa
 			}
 		}
 	});
+}
+
+function _systemDialogWillShow(always: boolean, status: CLAuthorizationStatus): boolean {
+	// the system dialog for "always" permission will not show if we requested it previously and currently have "when use" permission
+	return !(status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse && always && ApplicationSettings.getBoolean('hasRequestedAlwaysAuthorization', false))
 }
 
 function _isEnabled(always?: boolean): boolean {
@@ -331,6 +396,7 @@ export class LocationMonitor {
 			locationManagers[iosLocManagerId].delegate = null;
 			delete locationManagers[iosLocManagerId];
 			delete locationListeners[iosLocManagerId];
+			delete permissionListeners[iosLocManagerId];
 		}
 	}
 
