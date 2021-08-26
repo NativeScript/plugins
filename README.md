@@ -1,3 +1,10 @@
+# @nativescript/\* plugins
+
+```
+npm run setup
+npm start
+```
+
 - @nativescript/animated-circle
 - @nativescript/appavailability
 - @nativescript/apple-pay
@@ -25,7 +32,9 @@
 
 # How to use?
 
-This workspace manages the suite of plugins listed above.
+This workspace manages the suite of plugins listed above. 
+
+In general, when in doubt with what to do, just `npm start`.
 
 ```bash
 npm run setup
