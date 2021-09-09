@@ -94,6 +94,9 @@
 		},
 		"google-pay": {
 			"tags": []
+		},
+		"ios-security": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {
