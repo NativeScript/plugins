@@ -209,6 +209,16 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 
+SWIFT_CLASS("_TtC23NativeScriptIosSecurity24FileIntegrityCheckFacade")
+@interface FileIntegrityCheckFacade : NSObject
+- (nonnull instancetype)initWithBundleID:(NSString * _Nonnull)bundleID OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithMobileProvision:(NSString * _Nonnull)mobileProvision OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithMachO:(NSString * _Nonnull)machO machO1:(NSString * _Nonnull)machO1 OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 SWIFT_CLASS("_TtC23NativeScriptIosSecurity14SecurityFacade")
 @interface SecurityFacade : NSObject
 + (BOOL)amIJailbroken SWIFT_WARN_UNUSED_RESULT;
@@ -217,6 +227,8 @@ SWIFT_CLASS("_TtC23NativeScriptIosSecurity14SecurityFacade")
 + (void)denyDebugger;
 + (BOOL)amIReverseEngineered SWIFT_WARN_UNUSED_RESULT;
 + (BOOL)amIProxied SWIFT_WARN_UNUSED_RESULT;
++ (NSArray * _Nonnull)amITampered:(NSArray<FileIntegrityCheckFacade *> * _Nonnull)checks SWIFT_WARN_UNUSED_RESULT;
++ (BOOL)amIRuntimeHookedWithDyldWhiteList:(NSArray<NSString *> * _Nonnull)dyldWhiteList detectionClass:(Class _Nonnull)detectionClass selector:(SEL _Nonnull)selector isClassMethod:(BOOL)isClassMethod SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -436,6 +448,16 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 
+SWIFT_CLASS("_TtC23NativeScriptIosSecurity24FileIntegrityCheckFacade")
+@interface FileIntegrityCheckFacade : NSObject
+- (nonnull instancetype)initWithBundleID:(NSString * _Nonnull)bundleID OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithMobileProvision:(NSString * _Nonnull)mobileProvision OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithMachO:(NSString * _Nonnull)machO machO1:(NSString * _Nonnull)machO1 OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 SWIFT_CLASS("_TtC23NativeScriptIosSecurity14SecurityFacade")
 @interface SecurityFacade : NSObject
 + (BOOL)amIJailbroken SWIFT_WARN_UNUSED_RESULT;
@@ -444,6 +466,8 @@ SWIFT_CLASS("_TtC23NativeScriptIosSecurity14SecurityFacade")
 + (void)denyDebugger;
 + (BOOL)amIReverseEngineered SWIFT_WARN_UNUSED_RESULT;
 + (BOOL)amIProxied SWIFT_WARN_UNUSED_RESULT;
++ (NSArray * _Nonnull)amITampered:(NSArray<FileIntegrityCheckFacade *> * _Nonnull)checks SWIFT_WARN_UNUSED_RESULT;
++ (BOOL)amIRuntimeHookedWithDyldWhiteList:(NSArray<NSString *> * _Nonnull)dyldWhiteList detectionClass:(Class _Nonnull)detectionClass selector:(SEL _Nonnull)selector isClassMethod:(BOOL)isClassMethod SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

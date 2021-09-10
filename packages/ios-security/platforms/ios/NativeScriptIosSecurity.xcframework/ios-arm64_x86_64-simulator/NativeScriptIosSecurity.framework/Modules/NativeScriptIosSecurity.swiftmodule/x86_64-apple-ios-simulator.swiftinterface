@@ -38,6 +38,14 @@ public enum JailbreakCheck : Swift.CaseIterable {
     get
   }
 }
+@objc public class FileIntegrityCheckFacade : ObjectiveC.NSObject {
+  public var origin: NativeScriptIosSecurity.FileIntegrityCheck
+  @objc public init(bundleID: Swift.String)
+  @objc public init(mobileProvision: Swift.String)
+  @objc public init(machO: Swift.String, machO1: Swift.String)
+  @objc deinit
+  @objc override dynamic public init()
+}
 @_inheritsConvenienceInitializers @objc public class SecurityFacade : ObjectiveC.NSObject {
   @objc public static func amIJailbroken() -> Swift.Bool
   @objc public static func amIDebugged() -> Swift.Bool
@@ -45,6 +53,8 @@ public enum JailbreakCheck : Swift.CaseIterable {
   @objc public static func denyDebugger()
   @objc public static func amIReverseEngineered() -> Swift.Bool
   @objc public static func amIProxied() -> Swift.Bool
+  @objc public static func amITampered(_ checks: [NativeScriptIosSecurity.FileIntegrityCheckFacade]) -> [Any]
+  @objc public static func amIRuntimeHooked(dyldWhiteList: [Swift.String], detectionClass: Swift.AnyClass, selector: ObjectiveC.Selector, isClassMethod: Swift.Bool) -> Swift.Bool
   @objc deinit
   @objc override dynamic public init()
 }

@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/NativeScriptIosSecurity-Swift.h</key>
 		<data>
-		lAy26Ay/1ZK0GTo3hpHMJLAbIYU=
+		Oj87zkpruHT5V+NQb6ZXmGG3lek=
 		</data>
 		<key>Headers/NativeScriptIosSecurity.h</key>
 		<data>
@@ -30,11 +30,11 @@
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		UPmgvSsKZmGq6Gs9YGETJdmkYwg=
+		Amruv5bJMlQk5+r3Q8MMG8z+Q90=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		I+tH5OoR54jRBixuuJCx5Mq6RJk=
+		Y82CKwtrGfGlwXBu0G91cj6RPTo=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -42,11 +42,11 @@
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		UPmgvSsKZmGq6Gs9YGETJdmkYwg=
+		Amruv5bJMlQk5+r3Q8MMG8z+Q90=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		I+tH5OoR54jRBixuuJCx5Mq6RJk=
+		Y82CKwtrGfGlwXBu0G91cj6RPTo=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -54,11 +54,11 @@
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		6Quu97j0dQ2SlB2TF9Nu4y0wJn0=
+		NN+qNgylo9t+Q5+jVA+6C8Vdfnw=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		q27Up2dFXL6IU/kZcGSRd+uC5gs=
+		YrhOTIMr/woWLstRgWlSn4Bq6UY=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -66,11 +66,11 @@
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		6Quu97j0dQ2SlB2TF9Nu4y0wJn0=
+		NN+qNgylo9t+Q5+jVA+6C8Vdfnw=
 		</data>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		q27Up2dFXL6IU/kZcGSRd+uC5gs=
+		YrhOTIMr/woWLstRgWlSn4Bq6UY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -90,7 +90,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			BohXQ24sROMW8OXt1YMreNf1RcPM+3sozE6EYBCuFVM=
+			VqXCYirmK+IDUErs80zOzi3jQ5w9W3O2UFeMcLaQoxQ=
 			</data>
 		</dict>
 		<key>Headers/NativeScriptIosSecurity.h</key>
@@ -118,14 +118,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NeIRl2gTd0seCrcG+Iw+gfhRlb8tO6bb1yKcodRCPus=
+			76+HoOa8BisZ+yr16p9xGRgu+5xVGuHIsCqe516TkmY=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Z/sN6mg7SZJwHDLmmqsXOO6Ury+Xro9NAhaSK7BmfLU=
+			u/yLp6/Xyp9mpw0oaqpvl09rCkqjGEkwS7l8NAQEOcM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64.swiftdoc</key>
@@ -139,14 +139,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NeIRl2gTd0seCrcG+Iw+gfhRlb8tO6bb1yKcodRCPus=
+			76+HoOa8BisZ+yr16p9xGRgu+5xVGuHIsCqe516TkmY=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Z/sN6mg7SZJwHDLmmqsXOO6Ury+Xro9NAhaSK7BmfLU=
+			u/yLp6/Xyp9mpw0oaqpvl09rCkqjGEkwS7l8NAQEOcM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -160,14 +160,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			1ll2nkWPBl834qhAh4jlzRjT48EKSvc7+ItA2D8395o=
+			BI8khszj2Nf9IjS9Xd3M7JptqCgbMOzO2ED7ln6qUNk=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			hZsmSZQrUfOiInXCZLSGvqznLdraqGK3NIJ+YQ5ZKRU=
+			aLU0G2/PuJSX9gK+AuAlfMiJDB+yGRzyDIx8Qxhm15k=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64.swiftdoc</key>
@@ -181,14 +181,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			1ll2nkWPBl834qhAh4jlzRjT48EKSvc7+ItA2D8395o=
+			BI8khszj2Nf9IjS9Xd3M7JptqCgbMOzO2ED7ln6qUNk=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIosSecurity.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			hZsmSZQrUfOiInXCZLSGvqznLdraqGK3NIJ+YQ5ZKRU=
+			aLU0G2/PuJSX9gK+AuAlfMiJDB+yGRzyDIx8Qxhm15k=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
