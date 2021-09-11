@@ -22,6 +22,17 @@ export class IosSecurity  {
     }
     
     static amIProxied(): boolean {
-        return SecurityFacade.amIProxied()
+        return SecurityFacade.amIProxied();
     }
+
+    // @ts-ignore
+    static amIRuntimeHookedWithDyldWhiteListDetectionClassSelectorIsClassMethod(dyldWhiteList: NSArray<string> | string[], detectionClass: typeof NSObject, selector: string, isClassMethod: boolean): boolean {
+        return SecurityFacade.amIRuntimeHookedWithDyldWhiteListDetectionClassSelectorIsClassMethod(dyldWhiteList, detectionClass, selector, isClassMethod);
+    }
+
+    // @ts-ignore
+	static amITampered(checks: NSArray<FileIntegrityCheckFacade> | FileIntegrityCheckFacade[]): NSArray<any> {
+        return SecurityFacade.amITampered(checks);
+    }
+
 }
