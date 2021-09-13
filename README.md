@@ -1,3 +1,10 @@
+# @nativescript/\* plugins
+
+```
+npm run setup
+npm start
+```
+
 - @nativescript/animated-circle
 - @nativescript/appavailability
 - @nativescript/apple-pay
@@ -26,7 +33,9 @@
 
 # How to use?
 
-This workspace manages the suite of plugins listed above.
+This workspace manages the suite of plugins listed above. 
+
+In general, when in doubt with what to do, just `npm start`.
 
 ```bash
 npm run setup
@@ -35,6 +44,10 @@ npm start
 // Ensure all plugins build properly first
 > type "build-all" (and hit ENTER)
 ```
+
+If you don't build all the plugins, you will at least need to build `localize` to run the demos because it contains `hooks` that need to be built first.
+
+If building only `localize`, type: `npm start` > `localize` (this will narrow down menu to `@nativescript.localize.build`) and then hit 'enter'. You can now run the demo apps.
 
 In general, when in doubt with what to do, just `npm start`.
 

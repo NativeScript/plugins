@@ -1,3 +1,5 @@
+import { isIOS, Utils } from '@nativescript/core';
+
 export interface AddressOptions {
 	/**
 	 * Use as 3,34523 with 'lng', ignored if 'address' is set as well.
@@ -53,6 +55,14 @@ export interface NavigateToOptions {
 		 */
 		newTask?: boolean;
 	};
+
+	/**
+	 * If true, this opens Google Maps using the universal syntax rather than the comgooglemaps:// url scheme.
+	 * Use this if Google Maps does not load correctly on iOS, the Universal Syntax is now preferred.
+	 *
+	 * Default false.
+	 */
+	useUniversalSyntax?: boolean;
 
 	type?: NavigateToOptionsType;
 }
@@ -114,5 +124,61 @@ export class DirectionsCommon {
 		else if (type === 'bicycling') return 'b';
 		else if (type === 'transit') return 'r';
 		else return 'd';
+	}
+
+	/**
+	 * Opens Google Maps using the Universal URL Scheme for the Directions API (Cross-platform)
+	 * See https://developers.google.com/maps/documentation/urls/get-started#directions-action for more info.
+	 * @param options The options to use
+	 */
+	static async openGoogleMapsUniversal(options: NavigateToOptions): Promise<void> {
+		const TO_MANDATORY = 'To Address or lat & lng is mandatory';
+		let finalUrl = `https://www.google.com/maps/dir/?api=1`;
+
+		if (options?.from) {
+			const origin = this.getAddress(options.from);
+			if (origin) {
+				finalUrl += `&origin=${origin}`;
+			}
+		}
+
+		if (!options?.to) {
+			throw new Error(TO_MANDATORY);
+		}
+
+		// To can be AddressOptions or AddressOptions[],
+		// with AddressOptions[] the first is the destination, the rest are waypoints
+		let destination: AddressOptions = options?.to as any;
+		let waypoints: AddressOptions[] = [];
+		if (options?.to instanceof Array) {
+			[destination, ...waypoints] = options?.to;
+		}
+
+		const destinationAddress = this.getAddress(destination);
+
+		finalUrl += `&destination=${destinationAddress}`;
+
+		const waypointAddresses = waypoints?.map((w) => this.getAddress(w))?.join(encodeURIComponent('|')) ?? '';
+
+		if (waypointAddresses) {
+			finalUrl += `&waypoints=${waypointAddresses}`;
+		}
+
+		finalUrl += this.getTypeString(options);
+
+		console.log('Final Url:', finalUrl);
+		Utils.openUrl(finalUrl);
+	}
+
+	private static getAddress(address: AddressOptions): string {
+		if (address?.lat && address?.lng) return `${address?.lat}${encodeURIComponent(',')}${address?.lng}`;
+		if (address?.address) return encodeURIComponent(address?.address);
+		return '';
+	}
+
+	private static getTypeString(options: NavigateToOptions): string {
+		if (!options?.type) return '';
+
+		return `&travelmode=${options?.type}`;
 	}
 }

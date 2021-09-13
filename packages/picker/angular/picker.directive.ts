@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, IterableDiffers, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
-import { TemplatedItemsComponent, TEMPLATED_ITEMS_COMPONENT } from '@nativescript/angular';
 import { PickerField } from '@nativescript/picker';
 import { PickerValueAccessor } from './picker.accessors';
 import { View } from '@nativescript/core';
@@ -10,9 +9,8 @@ import { View } from '@nativescript/core';
 		<Placeholder #loader></Placeholder>
 	</DetachedContainer>`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [{ provide: TEMPLATED_ITEMS_COMPONENT, useExisting: forwardRef(() => PickerFieldComponent) }],
 })
-export class PickerFieldComponent extends TemplatedItemsComponent implements AfterContentInit {
+export class PickerFieldComponent implements AfterContentInit {
 	private _className: string;
 
 	public get nativeElement(): PickerField {
@@ -26,11 +24,10 @@ export class PickerFieldComponent extends TemplatedItemsComponent implements Aft
 	protected templatedItemsView: PickerField;
 
 	constructor(_elementRef: ElementRef, _iterableDiffers: IterableDiffers, _ngZone: NgZone) {
-		super(_elementRef, _iterableDiffers, _ngZone);
+		
 	}
 
 	ngAfterContentInit() {
-		super.ngAfterContentInit();
 		this.nativeElement.on('classNameChange', this.onClassNameChange.bind(this));
 	}
 
@@ -38,8 +35,6 @@ export class PickerFieldComponent extends TemplatedItemsComponent implements Aft
 		if (this.nativeElement) {
 			this.nativeElement.off('classNameChange', this.onClassNameChange.bind(this));
 		}
-
-		super.ngOnDestroy();
 	}
 
 	private onClassNameChange(args) {

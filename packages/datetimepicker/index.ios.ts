@@ -10,6 +10,7 @@ export class DateTimePicker extends DateTimePickerBase {
 	private static readonly SUPPORT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0;
 	private static readonly SUPPORT_TEXT_COLOR = parseFloat(Device.osVersion) < 14.0;
 	private static readonly DEFAULT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0 ? 3 : 1;
+	private static readonly DEFAULT_TIME_PICKER_STYLE = 1;
 
 	public static PICKER_DEFAULT_MESSAGE_HEIGHT = parseFloat(Device.osVersion) >= 14.0 ? 300 : 192;
 	public static PICKER_WIDTH_INSETS = 16;
@@ -67,8 +68,11 @@ export class DateTimePicker extends DateTimePickerBase {
 	static _createNativeTimePicker(options: TimePickerOptions): UIDatePicker {
 		const pickerView = UIDatePicker.alloc().initWithFrame(CGRectZero);
 		pickerView.datePickerMode = UIDatePickerMode.Time;
+		if (options.timeInterval) {
+			pickerView.minuteInterval = options.timeInterval;
+		}
 		if (this.SUPPORT_DATE_PICKER_STYLE) {
-			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_DATE_PICKER_STYLE;
+			pickerView.preferredDatePickerStyle = options.iosPreferredDatePickerStyle !== undefined ? options.iosPreferredDatePickerStyle : this.DEFAULT_TIME_PICKER_STYLE;
 		}
 		const time = options.time ? options.time : getDateNow();
 		pickerView.date = time;
@@ -148,35 +152,21 @@ export class DateTimePicker extends DateTimePickerBase {
 	}
 
 	static _showNativeDialog(nativeDialog: UIAlertController, nativePicker: UIDatePicker, style: DateTimePickerStyle) {
-		let currentPage = getCurrentPage();
-		if (currentPage) {
-			let view: View = currentPage;
-			let viewController: UIViewController = currentPage.ios;
+		const app = UIApplication.sharedApplication;
+		const win = app.keyWindow || (app.windows && app.windows.count > 0 && app.windows.objectAtIndex(0));
+		let viewController = win.rootViewController;
+		while (viewController && viewController.presentedViewController) {
+			viewController = viewController.presentedViewController;
+		}
 
-			if (currentPage.modal) {
-				view = currentPage.modal;
-
-				if (view.ios instanceof UIViewController) {
-					viewController = view.ios;
-				} else {
-					const parentWithController = IOSHelper.getParentWithViewController(view);
-					viewController = parentWithController ? parentWithController.viewController : undefined;
-				}
-
-				while (viewController.presentedViewController) {
-					viewController = viewController.presentedViewController;
-				}
+		if (viewController) {
+			if (nativeDialog.popoverPresentationController) {
+				nativeDialog.popoverPresentationController.sourceView = viewController.view;
+				nativeDialog.popoverPresentationController.sourceRect = CGRectMake(viewController.view.bounds.size.width / 2.0, viewController.view.bounds.size.height / 2.0, 1.0, 1.0);
+				nativeDialog.popoverPresentationController.permittedArrowDirections = 0;
 			}
 
-			if (viewController) {
-				if (nativeDialog.popoverPresentationController) {
-					nativeDialog.popoverPresentationController.sourceView = viewController.view;
-					nativeDialog.popoverPresentationController.sourceRect = CGRectMake(viewController.view.bounds.size.width / 2.0, viewController.view.bounds.size.height / 2.0, 1.0, 1.0);
-					nativeDialog.popoverPresentationController.permittedArrowDirections = 0;
-				}
-
-				viewController.presentViewControllerAnimatedCompletion(nativeDialog, true, () => {});
-			}
+			viewController.presentViewControllerAnimatedCompletion(nativeDialog, true, () => {});
 		}
 	}
 
@@ -245,7 +235,7 @@ export class DateTimePicker extends DateTimePickerBase {
 	}
 
 	private static _getLabelContainer(uiView: UIView) {
-		if (uiView.superview.class() === UIView.class()) {
+		if (uiView && uiView.superview instanceof UIView) {
 			return uiView.superview;
 		}
 		return DateTimePicker._getLabelContainer(uiView.superview);

@@ -128,6 +128,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			if (options.sound === undefined || options.sound === 'default') {
 				content.sound = UNNotificationSound.defaultSound;
+			} else {
+				content.sound = UNNotificationSound.soundNamed(options.sound);
 			}
 
 			const userInfoDict = new NSMutableDictionary({ capacity: 3 });
@@ -358,7 +360,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	cancelAll(): Promise<any> {
+	cancelAll(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (LocalNotificationsImpl.isUNUserNotificationCenterAvailable()) {

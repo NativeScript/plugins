@@ -35,8 +35,7 @@ export class DemoSharedFingerprintAuth extends DemoSharedBase {
 		this.fingerprintAuth
 			.verifyFingerprint({
 				title: 'Enter your password',
-				message: 'Scan yer finger', // optional
-				authenticationValidityDuration: 10, // Android
+				message: 'Scan yer finger' // optional
 			})
 			.then(() => this.set('status', 'Biometric ID / passcode OK'))
 			.catch((err) => {
@@ -51,8 +50,8 @@ export class DemoSharedFingerprintAuth extends DemoSharedBase {
 	doVerifyFingerprintWithCustomUI(): void {
 		this.fingerprintAuth
 			.verifyFingerprint({
+				title: 'Enter your password',
 				message: 'Scan yer finger', // optional
-				useCustomAndroidUI: true, // Android
 			})
 			.then((enteredPassword?: string) => {
 				if (enteredPassword === undefined) {
@@ -72,10 +71,10 @@ export class DemoSharedFingerprintAuth extends DemoSharedBase {
 	doVerifyFingerprintWithCustomFallback(): void {
 		this.fingerprintAuth
 			.verifyFingerprintWithCustomFallback({
+				title: 'Enter your password',
 				message: 'Scan yer finger', // optional
-				fallbackMessage: 'Enter PIN', // optional
-				authenticationValidityDuration: 10, // Android
-			})
+				fallbackMessage: 'Enter PIN' // optional
+			}, true)
 			.then(() => this.set('status', 'Biometric ID OK'))
 			.catch((error) => {
 				this.set('status', 'Biometric ID NOT OK: ' + JSON.stringify(error));

@@ -4,6 +4,8 @@
 		<StackLayout>
       <Label [text]="demoShared.status" class="t-20 text-center c-black" textWrap="true"></Label>
 			<Button text="Test fingerprint-auth" (tap)="demoShared.doCheckAvailable()" class="btn btn-primary"></Button>
+			<Button text="Test Verify" (tap)="demoShared.doVerifyFingerprint()" class="btn btn-primary"></Button>
+			<Button text="Test Verify w/ PIN Fallback" (tap)="demoShared.doVerifyFingerprintWithCustomFallback()" class="btn btn-primary"></Button>
 		</StackLayout>
 	</ScrollView>
 </StackLayout>

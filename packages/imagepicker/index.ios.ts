@@ -74,7 +74,7 @@ export class ImagePicker extends Observable {
 }
 
 @NativeClass()
-export class ImagePickerControllerDelegate extends NSObject implements QBImagePickerControllerDelegate {
+class ImagePickerControllerDelegate extends NSObject implements QBImagePickerControllerDelegate {
 	_resolve: any;
 	_reject: any;
 	owner: WeakRef<ImagePicker>;
