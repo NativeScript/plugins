@@ -42,4 +42,7 @@ Thumbs.db
 
 *.tgz
 packages/**/angular/dist
+packages/shared-notification-delegate/common.d.ts
+packages/shared-notification-delegate/common.js
+packages/shared-notification-delegate/common.js.map
 *.aar

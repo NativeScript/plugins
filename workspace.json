@@ -230,8 +230,8 @@
       }
     },
     "all": {
-      "root": "packages/",
-      "projectType": "library",
+      "root": "",
+      "projectType": "application",
       "targets": {
         "build": {
           "outputs": [
@@ -280,7 +280,8 @@
           },
           "executor": "@nrwl/workspace:run-commands"
         }
-      }
+      },
+      "sourceRoot": ""
     },
     "imagepicker": {
       "root": "packages/imagepicker",
