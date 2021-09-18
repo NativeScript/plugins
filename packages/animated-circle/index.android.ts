@@ -311,7 +311,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 				this.android.setBarColor([(<Color>this.barColor).argb]);
 			}
 			if (this.fillColor) {
-				this.android.setFillCircleColor((<Color>this.barColor).argb);
+				this.android.setFillCircleColor((<Color>this.fillColor).argb);
 			}
 
 			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
