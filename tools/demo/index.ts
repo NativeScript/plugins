@@ -23,3 +23,4 @@ export * from './picker';
 export * from './shared-notification-delegate';
 export * from './social-share';
 export * from './zip';
+export * from './ios-security';

@@ -22,6 +22,7 @@ npm start
 - @nativescript/geolocation
 - @nativescript/google-pay
 - @nativescript/imagepicker
+- @nativescript/ios-security
 - @nativescript/iqkeyboardmanager
 - @nativescript/local-notifications
 - @nativescript/localize
