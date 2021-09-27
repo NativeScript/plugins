@@ -1,5 +1,3 @@
-declare var SecurityFacade;
-
 export class IOSSecurity  {
     static amIJailbroken(): boolean {
         return SecurityFacade.amIJailbroken();
@@ -31,7 +29,7 @@ export class IOSSecurity  {
     }
 
     // @ts-ignore
-	static amITampered(checks: NSArray<any> | any[]): NSArray<any> {
+	static amITampered(checks: NSArray<FileIntegrityCheckFacade> | FileIntegrityCheckFacade[]): NSArray<any> {
         return SecurityFacade.amITampered(checks);
     }
 
