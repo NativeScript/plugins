@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild, ElementRef } from '@angular/core';
-import { EventData, Button } from '@nativescript/core';
+import { Device, EventData, isIOS, Button } from '@nativescript/core';
 import { DateTimePicker } from '@nativescript/datetimepicker';
 
 @Component({
@@ -73,6 +73,7 @@ export class DatetimepickerComponent {
 	public timeVisibility: string;
 	public dateTimeVisibility: string;
 	public customVisibility: string;
+	public isIOS14plus = isIOS && parseFloat(Device.osVersion) >= 14.0;
 	private _expandedId: string;
 
 	@ViewChild('scrollView', { static: false }) scrollView: ElementRef;

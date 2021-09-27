@@ -17,6 +17,11 @@
 			<DatePickerField minDate="2020/02/02" maxDate="2021/02/02" hint="tap to select"></DatePickerField>
 			<StackLayout class="hr-light m-10" android:visibility="collapse"></StackLayout>
 
+			<!-- iOS 14+ defaults to calendar type so show example of spinner type also. -->
+			<Label text="Spinner type" class="content" *ngIf="isIOS14plus"></Label>
+			<DatePickerField hint="select date" iosPreferredDatePickerStyle="1" *ngIf="isIOS14plus"></DatePickerField>
+			<StackLayout class="hr-light m-10" android:visibility="collapse" *ngIf="isIOS14plus"></StackLayout>
+
 			<Label text="modified picker texts" class="content"></Label>
 			<DatePickerField hint="tap to choose" pickerOkText="Approve" pickerCancelText="Reject" pickerTitle="Confirm predefined date selection" pickerDefaultDate="2019/05/15"></DatePickerField>
 			<StackLayout class="hr-light m-10" android:visibility="collapse"></StackLayout>
