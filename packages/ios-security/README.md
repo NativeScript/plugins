@@ -1,22 +1,19 @@
 # @nativescript/ios-security
 
-[IOSSecuritySuite](https://github.com/securing/IOSSecuritySuite) for NativeScript.
+🔒 [IOSSecuritySuite](https://github.com/securing/IOSSecuritySuite) for NativeScript.
+
+> 🌏 iOS Security Suite is an advanced and easy-to-use platform security & anti-tampering library. If you are developing for iOS and you want to protect your app according to the OWASP [MASVS](https://github.com/OWASP/owasp-masvs) standard, chapter v8, then this library could save you a lot of time. 🚀
+> What ISS detects:
+> * Jailbreak (even the iOS 11+ with brand new indicators! 🔥)
+> * Attached debugger 👨🏻‍🚀
+> * If an app was run in an emulator 👽
+> * Common reverse engineering tools running on the device 🔭
 
 ```javascript
 ns plugin add @nativescript/ios-security
 ```
 
 ## Usage
-
-The best way to explore the usage of the plugin is to inspect both demo apps in the plugin repository. 
-In `demo` folder you can find the usage of the plugin for TypeScript non-Angular application. Refer to `demo/app/main-page.ts`.
-In `demo-angular` is the usage in an Angular app. Refer to `demo-angular/app/app.component.ts`.
-
-In addition to the plugin usage, both apps are webpack configured.
-
-In short here are the steps:
-
-### Import the plugin
 
 *TypeScript*
 ``` 

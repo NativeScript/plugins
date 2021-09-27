@@ -19,12 +19,18 @@
 		"JavaScript",
 		"TypeScript",
 		"iOS",
-		"Android"
+		"Security"
 	],
 	"author": {
 		"name": "NativeScript",
 		"email": "oss@nativescript.org"
 	},
+	"contributors": [
+		{
+			"name": "Teodor Dermendjiev",
+			"url": "https://github.com/tdermendjiev"
+		}
+	],
 	"bugs": {
 		"url": "https://github.com/NativeScript/plugins/issues"
 	},
