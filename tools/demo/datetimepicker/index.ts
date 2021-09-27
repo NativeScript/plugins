@@ -1,4 +1,4 @@
-import { EventData, ScrollView, Button } from '@nativescript/core';
+import { Device, EventData, isIOS, ScrollView, Button } from '@nativescript/core';
 import { DemoSharedBase } from '../utils';
 import { DateTimePicker } from '@nativescript/datetimepicker';
 
@@ -12,6 +12,7 @@ export class DemoSharedDatetimepicker extends DemoSharedBase {
 	enabled1 = true;
 	enabled2 = true;
 	enabled3 = true;
+	isIOS14plus = isIOS && parseFloat(Device.osVersion) >= 14.0;
 	private scrollView: ScrollView;
 
 	constructor() {
