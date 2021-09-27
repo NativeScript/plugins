@@ -1,7 +1,7 @@
 {
 	"name": "@nativescript/ios-security",
 	"version": "1.0.0",
-	"description": "Add a plugin description",
+	"description": "IOSSecuritySuite for NativeScript",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {

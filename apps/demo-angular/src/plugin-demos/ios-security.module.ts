@@ -1,10 +1,10 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NativeScriptCommonModule, NativeScriptRouterModule } from '@nativescript/angular';
-import { IosSecurityComponent } from './ios-security.component';
+import { IOSSecurityComponent } from './ios-security.component';
 
 @NgModule({
-	imports: [NativeScriptCommonModule, NativeScriptRouterModule.forChild([{ path: '', component: IosSecurityComponent }])],
-	declarations: [IosSecurityComponent],
+	imports: [NativeScriptCommonModule, NativeScriptRouterModule.forChild([{ path: '', component: IOSSecurityComponent }])],
+	declarations: [IOSSecurityComponent],
 	schemas: [NO_ERRORS_SCHEMA],
 })
-export class IosSecurityModule {}
+export class IOSSecurityModule {}

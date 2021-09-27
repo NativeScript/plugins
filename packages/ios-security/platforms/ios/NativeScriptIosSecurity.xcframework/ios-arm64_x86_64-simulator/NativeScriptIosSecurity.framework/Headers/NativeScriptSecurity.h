@@ -1,6 +1,6 @@
 //
 //  NativeScriptSecurity.h
-//  NativeScriptIosSecurity
+//  NativeScriptIOSSecurity
 //
 //  Created by Teodor Dermendzhiev on 8.09.21.
 //

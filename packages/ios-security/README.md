@@ -1,5 +1,7 @@
 # @nativescript/ios-security
 
+[IOSSecuritySuite](https://github.com/securing/IOSSecuritySuite) for NativeScript.
+
 ```javascript
 ns plugin add @nativescript/ios-security
 ```
@@ -18,16 +20,17 @@ In short here are the steps:
 
 *TypeScript*
 ``` 
-import * as IosSecurity from "@nativescript/ios-security";
+import { IOSSecurity } from "@nativescript/ios-security";
 ```
 
 *Javascript*
 ``` 
-var IosSecurity = require("@nativescript/ios-security");
+var IOSSecurity = require("@nativescript/ios-security").IOSSecurity;
 ```
 
 ### Update Info.plist
-After adding ios-security to your project, you will also need to update your main Info.plist. There is a check in jailbreak detection module that uses ```canOpenURL(_:)``` method and [requires](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) specifying URLs that will be queried.
+
+After adding ios-security to your project, you will also need to update your Info.plist. There is a check in jailbreak detection module that uses ```canOpenURL(_:)``` method and [requires](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) specifying URLs that will be queried.
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>
@@ -43,11 +46,11 @@ After adding ios-security to your project, you will also need to update your mai
 
 ### Jailbreak detector module
 
-* **The simplest method** returns True/False if you just want to know if the device is jailbroken or jailed
+* **The simplest method** returns true/false if you just want to know if the device is jailbroken or jailed
 
 *Javascript*
 ```
-if (IosSecurity.amIJailbroken()) {
+if (IOSSecurity.amIJailbroken()) {
 	console.log("This device is jailbroken");
 } else {
 	console.log("This device is not jailbroken");
@@ -56,27 +59,27 @@ if (IosSecurity.amIJailbroken()) {
 
 ### Debugger detector module
 ```
-let amIDebugged = IosSecurity.amIDebugged();
+const amIDebugged = IOSSecurity.amIDebugged();
 ```
 
 ### Deny debugger at all
 ```
-IosSecurity.denyDebugger();
+IOSSecurity.denyDebugger();
 ```
 
 ### Emulator detector module
 ```
-let runInEmulator = IosSecurity.amIRunInEmulator();
+const runInEmulator = IOSSecurity.amIRunInEmulator();
 ```
 
 ### Reverse engineering tools detector module
 ```
-let amIReverseEngineered = IosSecurity.amIReverseEngineered();
+const amIReverseEngineered = IOSSecurity.amIReverseEngineered();
 ```
 
 ### System proxy detector module
 ```
-let amIProxied = IosSecurity.amIProxied();
+const amIProxied = IOSSecurity.amIProxied();
 ```
 
 ## License

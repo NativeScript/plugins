@@ -54,5 +54,14 @@
       <key>NSAllowsArbitraryLoadsInWebContent</key>
       <true/>
     </dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>cydia</string>
+        <string>undecimus</string>
+        <string>sileo</string>
+        <string>zbra</string>
+        <string>filza</string>
+        <string>activator</string>
+    </array>
   </dict>
 </plist>

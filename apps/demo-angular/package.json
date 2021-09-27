@@ -19,6 +19,7 @@
     "@nativescript/geolocation": "file:../../dist/packages/geolocation",
     "@nativescript/google-pay": "file:../../dist/packages/google-pay",
     "@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
+    "@nativescript/ios-security": "file:../../dist/packages/ios-security",
     "@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
     "@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
     "@nativescript/localize": "file:../../dist/packages/localize",

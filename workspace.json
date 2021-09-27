@@ -73,6 +73,63 @@
         }
       }
     },
+    "ios-security": {
+      "projectType": "library",
+      "generators": {},
+      "root": "packages/ios-security",
+      "sourceRoot": "packages/ios-security",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/ios-security",
+            "tsConfig": "packages/ios-security/tsconfig.json",
+            "packageJson": "packages/ios-security/package.json",
+            "main": "packages/ios-security/index.d.ts",
+            "assets": [
+              "packages/ios-security/*.md",
+              "packages/ios-security/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/ios-security/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [
+            "dist/packages"
+          ],
+          "options": {
+            "commands": ["nx run ios-security:build.native", "nx run ios-security:build", "node tools/scripts/build-finish.ts ios-security"],
+            "parallel": false
+          }
+        },
+        "build.native": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "./build.ios.sh"
+            ],
+            "cwd": "packages/ios-security/native-src",
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [
+            "dist/packages"
+          ],
+          "options": {
+            "commands": ["nx g @nativescript/plugin-tools:focus-packages ios-security"],
+            "parallel": false
+          }
+        }
+      }
+    },
     "local-notifications": {
       "root": "packages/local-notifications",
       "sourceRoot": "packages/local-notifications",
@@ -1345,47 +1402,6 @@
             "parallel": false
           },
           "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    }
-  },
-  "ios-security": {
-    "projectType": "library",
-    "schematics": {},
-    "root": "packages/ios-security",
-    "sourceRoot": "packages/ios-security",
-    "architect": {
-      "build": {
-        "builder": "@nrwl/node:package",
-        "options": {
-          "outputPath": "dist/packages/ios-security",
-          "tsConfig": "packages/ios-security/tsconfig.json",
-          "packageJson": "packages/ios-security/package.json",
-          "main": "packages/ios-security/index.ts",
-          "assets": [
-            "packages/ios-security/*.md",
-            "packages/ios-security/index.d.ts",
-            "LICENSE",
-            {
-              "glob": "**/*",
-              "input": "packages/ios-security/platforms/",
-              "output": "./platforms/"
-            }
-          ]
-        }
-      },
-      "build.all": {
-        "builder": "@nrwl/workspace:run-commands",
-        "options": {
-          "commands": ["nx run ios-security:build", "node tools/scripts/build-finish.ts ios-security"],
-          "parallel": false
-        }
-      },
-      "focus": {
-        "builder": "@nrwl/workspace:run-commands",
-        "options": {
-          "commands": ["nx g @nativescript/plugin-tools:focus-packages ios-security"],
-          "parallel": false
         }
       }
     }

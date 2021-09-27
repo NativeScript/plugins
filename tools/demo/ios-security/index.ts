@@ -1,13 +1,13 @@
 import { DemoSharedBase } from '../utils';
-import { IosSecurity } from '@nativescript/ios-security';
+import { IOSSecurity } from '@nativescript/ios-security';
 
-export class DemoSharedIosSecurity extends DemoSharedBase {
+export class DemoSharedIOSSecurity extends DemoSharedBase {
 
 	testIt() {
-		console.log("jailbroken: " + IosSecurity.amIJailbroken());
-		console.log("debugged: " + IosSecurity.amIDebugged());
-		console.log("proxied: " + IosSecurity.amIProxied());
-		console.log("reverse engineered: " + IosSecurity.amIReverseEngineered());
-		console.log("run in emulator: " + IosSecurity.amIRunInEmulator());
+		console.log("jailbroken: " + IOSSecurity.amIJailbroken());
+		console.log("debugged: " + IOSSecurity.amIDebugged());
+		console.log("proxied: " + IOSSecurity.amIProxied());
+		console.log("reverse engineered: " + IOSSecurity.amIReverseEngineered());
+		console.log("run in emulator: " + IOSSecurity.amIRunInEmulator());
 	}
 }

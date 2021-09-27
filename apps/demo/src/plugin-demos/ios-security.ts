@@ -1,5 +1,5 @@
 import { Observable, EventData, Page } from '@nativescript/core';
-import { DemoSharedIosSecurity } from '@demo/shared';
+import { DemoSharedIOSSecurity } from '@demo/shared';
 import {} from '@nativescript/ios-security';
 
 export function navigatingTo(args: EventData) {
@@ -7,4 +7,4 @@ export function navigatingTo(args: EventData) {
 	page.bindingContext = new DemoModel();
 }
 
-export class DemoModel extends DemoSharedIosSecurity {}
+export class DemoModel extends DemoSharedIOSSecurity {}

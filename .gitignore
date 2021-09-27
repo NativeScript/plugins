@@ -46,3 +46,8 @@ packages/shared-notification-delegate/common.d.ts
 packages/shared-notification-delegate/common.js
 packages/shared-notification-delegate/common.js.map
 *.aar
+
+# iOS:
+packages/**/native-src/ios/**/xcuserdata/
+packages/**/native-src/ios/**/project.xcworkspace/
+packages/**/native-src/ios/**/build

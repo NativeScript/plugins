@@ -1,6 +1,6 @@
 declare var SecurityFacade;
 
-export class IosSecurity  {
+export class IOSSecurity  {
     static amIJailbroken(): boolean {
         return SecurityFacade.amIJailbroken();
     }
@@ -31,7 +31,7 @@ export class IosSecurity  {
     }
 
     // @ts-ignore
-	static amITampered(checks: NSArray<FileIntegrityCheckFacade> | FileIntegrityCheckFacade[]): NSArray<any> {
+	static amITampered(checks: NSArray<any> | any[]): NSArray<any> {
         return SecurityFacade.amITampered(checks);
     }
 
