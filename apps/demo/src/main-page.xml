@@ -7,7 +7,7 @@
       <StackLayout>
         <Button text="animated-circle" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="apple-pay" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        
         <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
@@ -20,7 +20,7 @@
         <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="google-pay" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

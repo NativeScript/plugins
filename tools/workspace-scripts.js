@@ -217,20 +217,6 @@ module.exports = {
 					description: '@nativescript/debug-android: Build',
 				},
 			},
-			// @nativescript/apple-pay
-			'apple-pay': {
-				build: {
-					script: 'nx run apple-pay:build.all',
-					description: '@nativescript/apple-pay: Build',
-				},
-			},
-			// @nativescript/google-pay
-			'google-pay': {
-				build: {
-					script: 'nx run google-pay:build.all',
-					description: '@nativescript/google-pay: Build',
-				},
-			},
 			// @nativescript/ios-security
 			'ios-security': {
 				build: {
@@ -335,14 +321,6 @@ module.exports = {
 			'debug-android': {
 				script: 'nx run debug-android:focus',
 				description: 'Focus on @nativescript/debug-android',
-			},
-			'apple-pay': {
-				script: 'nx run apple-pay:focus',
-				description: 'Focus on @nativescript/apple-pay',
-			},
-			'google-pay': {
-				script: 'nx run google-pay:focus',
-				description: 'Focus on @nativescript/google-pay',
 			},
 			'ios-security': {
 				script: 'nx run ios-security:focus',

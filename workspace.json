@@ -104,7 +104,11 @@
             "dist/packages"
           ],
           "options": {
-            "commands": ["nx run ios-security:build.native", "nx run ios-security:build", "node tools/scripts/build-finish.ts ios-security"],
+            "commands": [
+              "nx run ios-security:build.native",
+              "nx run ios-security:build",
+              "node tools/scripts/build-finish.ts ios-security"
+            ],
             "parallel": false
           }
         },
@@ -124,7 +128,9 @@
             "dist/packages"
           ],
           "options": {
-            "commands": ["nx g @nativescript/plugin-tools:focus-packages ios-security"],
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages ios-security"
+            ],
             "parallel": false
           }
         }
@@ -291,6 +297,7 @@
       "projectType": "application",
       "targets": {
         "build": {
+          "executor": "@nrwl/workspace:run-commands",
           "outputs": [
             "dist/packages"
           ],
@@ -317,13 +324,10 @@
               "nx run detox:build.all",
               "nx run picker:build.all",
               "nx run debug-android:build.all",
-              "nx run debug-ios:build.all",
-              "nx run google-pay:build.all",
-              "nx run apple-pay:build.all"
+              "nx run debug-ios:build.all"
             ],
             "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
+          }
         },
         "focus": {
           "outputs": [
@@ -1306,98 +1310,6 @@
           "options": {
             "commands": [
               "nx g @nativescript/plugin-tools:focus-packages debug-android"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "apple-pay": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/apple-pay",
-      "sourceRoot": "packages/apple-pay",
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/apple-pay",
-            "tsConfig": "packages/apple-pay/tsconfig.json",
-            "packageJson": "packages/apple-pay/package.json",
-            "main": "packages/apple-pay/index.d.ts",
-            "assets": [
-              "packages/apple-pay/*.md",
-              "packages/apple-pay/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/apple-pay/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "options": {
-            "commands": [
-              "nx run apple-pay:build",
-              "node tools/scripts/build-finish.ts apple-pay"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages apple-pay"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "google-pay": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/google-pay",
-      "sourceRoot": "packages/google-pay",
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/google-pay",
-            "tsConfig": "packages/google-pay/tsconfig.json",
-            "packageJson": "packages/google-pay/package.json",
-            "main": "packages/google-pay/index.d.ts",
-            "assets": [
-              "packages/google-pay/*.md",
-              "packages/google-pay/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/google-pay/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "options": {
-            "commands": [
-              "nx run google-pay:build",
-              "node tools/scripts/build-finish.ts google-pay"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages google-pay"
             ],
             "parallel": false
           },
