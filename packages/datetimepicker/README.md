@@ -13,22 +13,28 @@ ns plugin add @nativescript/datetimepicker
 ```
 
 ## Configuration
+
 No additional configuration required!
 
 ## Usage
+
 To use one of the UI elements `DatePickerField`, `TimePickerField` or `DateTimePickerFields` in markup you need to:
- - If you are developing a NativeScript Core app, you need to register the plugin namespace in the xml:
- ```xml
- <Page
-    xmlns="http://schemas.nativescript.org/tns.xsd"
-    xmlns:datetime="@nativescript/datetimepicker">
-    <datetime:DatePickerField hint="select date"/>
-    <datetime:TimePickerField hint="select time"/>
-    <datetime:DateTimePickerFields hintDate="select date" hintTime="select time"/>
+
+- If you are developing a NativeScript Core app, you need to register the plugin namespace in the xml:
+
+```xml
+<Page
+   xmlns="http://schemas.nativescript.org/tns.xsd"
+   xmlns:datetime="@nativescript/datetimepicker">
+   <datetime:DatePickerField hint="select date"/>
+   <datetime:TimePickerField hint="select time"/>
+   <datetime:DateTimePickerFields hintDate="select date" hintTime="select time"/>
 ...
- ```
- - If you are developing a NativeScript Angular app, you need to import the plugin module in the module of your component: 
-```ts
+```
+
+- If you are developing a NativeScript Angular app, you need to import the plugin module in the module of your component:
+
+```typescript
 import { NativeScriptDateTimePickerModule } from "@nativescript/datetimepicker/angular";
 ...
 @NgModule({
@@ -38,20 +44,26 @@ import { NativeScriptDateTimePickerModule } from "@nativescript/datetimepicker/a
         ...
     ],
     ...
- ```
- Then you will be able to declare the fields in the html of your component:
+```
+
+Then you will be able to declare the fields in the html of your component:
+
 ```html
 <DatePickerField hint="select date"></DatePickerField>
 <TimePickerField hint="select time"></TimePickerField>
 <DateTimePickerFields hintDate="select date" hintTime="select time"></DateTimePickerFields>
 ```
- - If you are developing a NativeScript Vue app, you need to install the plugin in you app.js file:
- ```js
-import Vue from "nativescript-vue";
-import DateTimePicker from "@nativescript/datetimepicker/vue";
+
+- If you are developing a NativeScript Vue app, you need to install the plugin in you app.js file:
+
+```javascript
+import Vue from 'nativescript-vue';
+import DateTimePicker from '@nativescript/datetimepicker/vue';
 Vue.use(DateTimePicker);
- ```
+```
+
 Then you will be able to decrare the fields in the template of your component:
+
 ```html
 <DatePickerField hint="select date"></DatePickerField>
 <TimePickerField hint="select time"></TimePickerField>
@@ -61,6 +73,7 @@ Then you will be able to decrare the fields in the template of your component:
 ## Features
 
 ### DatePickerField and TimePickerField
+
 The `DatePickerField` and the `TimePickerField` are NativeScript Views that extend `TextField`, when tapped, they open a picker dialog that allows date/time selection.
 
 - Getting/Setting Date and Time
@@ -100,6 +113,7 @@ You can use css to style the `DatePickerField` and the `TimePickerField`. The fi
 Here's the css used to achieve the above result, as used in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.css#L22), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.css#L22) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L350) applications.
 
 ### DateTimePickerFields
+
 The `DateTimePickerFields` extends `GridLayout` that contains instances of `DatePickerField` and `TimePickerField`, when tapped, they open a picker dialog that allows date/time selection.
 
 - Getting/Setting Date and Time
@@ -112,7 +126,7 @@ The `DateTimePickerFields` have an `orientation` property which allows changing 
 
 - Auto Pick Time
 
-When a date is picked with the date component of the  `DateTimePickerFields`, the value of the `date` property is updated with the value that is picked. Since the time component also controls the same property, it may be meaningful to display or not to display this value. The `autoPickTime` property controls whether the time component should display the time of the `date` property as soon as it is assigned (when date is picked). Default is `false`, which means that when the user selects a date, the time component will keep displaying its hint text until time is explicitly selected through the time spinners. Here's an example in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.xml#L126), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.html#L121) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L123) applications.
+When a date is picked with the date component of the `DateTimePickerFields`, the value of the `date` property is updated with the value that is picked. Since the time component also controls the same property, it may be meaningful to display or not to display this value. The `autoPickTime` property controls whether the time component should display the time of the `date` property as soon as it is assigned (when date is picked). Default is `false`, which means that when the user selects a date, the time component will keep displaying its hint text until time is explicitly selected through the time spinners. Here's an example in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.xml#L126), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.html#L121) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L123) applications.
 
 - Picker Texts
 
@@ -136,7 +150,7 @@ The time component will determine whether to use 12 or 24 hour format (for forma
 
 - CSS
 
-You can use css to style the `DateTimePickerFields`. The element can be styled like any other layout, additionally the `DatePickerField` and the `TimePickerField` that it contains can be styled as explained in their documentation section. 
+You can use css to style the `DateTimePickerFields`. The element can be styled like any other layout, additionally the `DatePickerField` and the `TimePickerField` that it contains can be styled as explained in their documentation section.
 
 ### DateTimePicker
 
@@ -146,99 +160,99 @@ Internally `DatePickerField` and `TimePickerField` call `DateTimePicker`'s `pick
 
 ### DatePickerField API
 
-| Property | Description |
-| --- | --- |
-| `date` | The date the picker field is currently displaying. Property is of type `Date`. When used in markup, the provided string will be passed to the [Date constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) to create a new `Date` object. |
-| `minDate` | The minimum date the picker field can select. Parsing of dates is handled similarly as with `date` property. |
-| `maxDate` | The maximum date the picker field can select. Parsing of dates is handled similarly as with `date` property.  |
-| `locale` | Identifier of a locale that will be used to localize the names of the month names and also the order of the spinners (with `en_GB` first spinner is day, with `en_US` first spinner is month) (default is based on the device’s locale settings). |
-| `dateFormat` | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the `locale` property). |
-| `pickerDefaultDate` | The date that will be displayed in the picker, if it is opened while date is undefined (if `pickerDefaultDate` is undefined, the picker will display today). Parsing of dates is handled similarly as with `date` property. |
-| `pickerTitle` | Text that will be displayed as title of the picker, default is undefined. |
-| `pickerOkText` | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)). |
-| `pickerCancelText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)). |
+| Property            | Description                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`              | The date the picker field is currently displaying. Property is of type `Date`. When used in markup, the provided string will be passed to the [Date constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) to create a new `Date` object.                                                                                 |
+| `minDate`           | The minimum date the picker field can select. Parsing of dates is handled similarly as with `date` property.                                                                                                                                                                                                                                                           |
+| `maxDate`           | The maximum date the picker field can select. Parsing of dates is handled similarly as with `date` property.                                                                                                                                                                                                                                                           |
+| `locale`            | Identifier of a locale that will be used to localize the names of the month names and also the order of the spinners (with `en_GB` first spinner is day, with `en_US` first spinner is month) (default is based on the device’s locale settings).                                                                                                                      |
+| `dateFormat`        | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the `locale` property). |
+| `pickerDefaultDate` | The date that will be displayed in the picker, if it is opened while date is undefined (if `pickerDefaultDate` is undefined, the picker will display today). Parsing of dates is handled similarly as with `date` property.                                                                                                                                            |
+| `pickerTitle`       | Text that will be displayed as title of the picker, default is undefined.                                                                                                                                                                                                                                                                                              |
+| `pickerOkText`      | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).                                                                                                                                                                                                                      |
+| `pickerCancelText`  | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                                                                                                                                                    |
 
 ### TimePickerField API
 
-| Property | Description |
-| --- | --- |
-| `time` | The time the picker field is currently displaying. Property is of type `Date`. When used in markup, the provided string will be parsed to a new `Date` object if it is in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Times) format. |
-| `locale` | Identifier of a locale that will be used to create locale-specific time formatter of the time (if the format is 12-Hour, with de_DE locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with en_US locale “am”/”pm” will be used) (default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format. |
-| `timeFormat` | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the locale property), the format will also be used on Android to determine whether the picker will be in 12 or 24 hour format. |
-| `pickerDefaultTime` | The time that will be displayed in the picker, if it is opened while time is undefined (if defaultTime is undefined, the picker will display now). Parsing is handled similarly as with `time` property. |
-| `pickerTitle` | Text that will be displayed as title of the picker, default is undefined. |
-| `pickerOkText` | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)). |
-| `pickerCancelText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)). |
+| Property            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `time`              | The time the picker field is currently displaying. Property is of type `Date`. When used in markup, the provided string will be parsed to a new `Date` object if it is in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Times) format.                                                                                                                                                                                                                                    |
+| `locale`            | Identifier of a locale that will be used to create locale-specific time formatter of the time (if the format is 12-Hour, with de_DE locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with en_US locale “am”/”pm” will be used) (default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format.                                                        |
+| `timeFormat`        | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the locale property), the format will also be used on Android to determine whether the picker will be in 12 or 24 hour format. |
+| `pickerDefaultTime` | The time that will be displayed in the picker, if it is opened while time is undefined (if defaultTime is undefined, the picker will display now). Parsing is handled similarly as with `time` property.                                                                                                                                                                                                                                                                      |
+| `pickerTitle`       | Text that will be displayed as title of the picker, default is undefined.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `pickerOkText`      | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).                                                                                                                                                                                                                                                                                                                             |
+| `pickerCancelText`  | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                                                                                                                                                                                                                                                           |
 
 ### DateTimePickerFields API
 
-| Property | Description |
-| --- | --- |
-| `date` | The date the picker fields are currently displaying. Property is of type `Date`. When used in markup, the provided string will be passed to the [Date constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) to create a new `Date` object. |
-| `minDate` | The minimum date the date component can select. Parsing of dates is handled similarly as with `date` property. |
-| `maxDate` | The maximum date the time component can select. Parsing of dates is handled similarly as with `date` property. |
-| `locale` | Identifier of a locale that will be used to localize the names of the month names, the order of the date spinners (with `en_GB` first spinner is day, with `en_US` first spinner is month), and to create locale-specific time formatter of the time (if the format is 12-Hour, with de_DE locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with en_US locale “am”/”pm” will be used) (default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format. |
-| `dateFormat` | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the `locale` property). |
-| `timeFormat` | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the locale property), the format will also be used on Android to determine whether the picker will be in 12 or 24 hour format. |
-| `pickerDefaultDate` | The date and time that will be displayed in the pickers, if opened while `date` is `undefined` (if `pickerDefaultDate` is undefined, the picker will display now). Parsing of dates is handled similarly as with `date` property. |
-| `pickerTitleDate` | Text that will be displayed as title of the picker, when the date component is tapped, default is undefined. |
-| `pickerTitleTime` | Text that will be displayed as title of the picker, when the time component is tapped, default is undefined. |
-| `pickerOkText` | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)). |
-| `pickerCancelText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)). |
-| `autoPickTime` | Value that indicates whether the time component should be assigned a value as soon as a date is picked by the date component, default is false. |
-| `orientation` | Value that indicates how the date and time components will be arranged, default is "horizontal", which means that they will be on the same row. |
-| `hintDate` | Text displayed in the date component when `date` is `null`. |
-| `hintTime` | Text displayed in the time component when `date` is `null`. |
+| Property            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`              | The date the picker fields are currently displaying. Property is of type `Date`. When used in markup, the provided string will be passed to the [Date constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) to create a new `Date` object.                                                                                                                                                                                                                                                                                      |
+| `minDate`           | The minimum date the date component can select. Parsing of dates is handled similarly as with `date` property.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `maxDate`           | The maximum date the time component can select. Parsing of dates is handled similarly as with `date` property.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `locale`            | Identifier of a locale that will be used to localize the names of the month names, the order of the date spinners (with `en_GB` first spinner is day, with `en_US` first spinner is month), and to create locale-specific time formatter of the time (if the format is 12-Hour, with de_DE locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with en_US locale “am”/”pm” will be used) (default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format. |
+| `dateFormat`        | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the `locale` property).                                                                                                                                                                                                        |
+| `timeFormat`        | Format used for the text in the picker field (on android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the locale property), the format will also be used on Android to determine whether the picker will be in 12 or 24 hour format.                                                                                                 |
+| `pickerDefaultDate` | The date and time that will be displayed in the pickers, if opened while `date` is `undefined` (if `pickerDefaultDate` is undefined, the picker will display now). Parsing of dates is handled similarly as with `date` property.                                                                                                                                                                                                                                                                                                                                             |
+| `pickerTitleDate`   | Text that will be displayed as title of the picker, when the date component is tapped, default is undefined.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `pickerTitleTime`   | Text that will be displayed as title of the picker, when the time component is tapped, default is undefined.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `pickerOkText`      | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `pickerCancelText`  | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `autoPickTime`      | Value that indicates whether the time component should be assigned a value as soon as a date is picked by the date component, default is false.                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `orientation`       | Value that indicates how the date and time components will be arranged, default is "horizontal", which means that they will be on the same row.                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `hintDate`          | Text displayed in the date component when `date` is `null`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `hintTime`          | Text displayed in the time component when `date` is `null`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ### DateTimePicker API
 
 **DateTimePicker**:
 
-| Method | Description |
-| --- | --- |
+| Method                                                                             | Description                                                                                                            |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<Date>` | picks a date from a dialog picker initialized with the provided options and styled with the optionally provided style. |
 | `pickTime(options: TimePickerOptions, style?: DateTimePickerStyle): Promise<Date>` | picks a time from a dialog picker initialized with the provided options and styled with the optionally provided style. |
 
 **DatePickerOptions**:
 
-| Property | Description |
-| --- | --- |
-| `context` | View's context. |
-| `date` | The date that will be displayed in the picker, (if not provided, the picker will display today). |
-| `minDate` | The minimum date that can be selected. |
-| `maxDate` | The maximum date that can be selected. |
-| `locale` | Identifier of a locale that will be used to localize the names of the month names and also the order of the spinners (with `en_GB` first spinner is day, with `en_US` first spinner is month, default is based on the device’s locale settings). |
-| `title` | Text that will be displayed as title of the picker, default is undefined. |
-| `okButtonText` | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)). |
-| `cancelButtonText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)). |
+| Property           | Description                                                                                                                                                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `context`          | View's context.                                                                                                                                                                                                                                  |
+| `date`             | The date that will be displayed in the picker, (if not provided, the picker will display today).                                                                                                                                                 |
+| `minDate`          | The minimum date that can be selected.                                                                                                                                                                                                           |
+| `maxDate`          | The maximum date that can be selected.                                                                                                                                                                                                           |
+| `locale`           | Identifier of a locale that will be used to localize the names of the month names and also the order of the spinners (with `en_GB` first spinner is day, with `en_US` first spinner is month, default is based on the device’s locale settings). |
+| `title`            | Text that will be displayed as title of the picker, default is undefined.                                                                                                                                                                        |
+| `okButtonText`     | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).                                                                                                |
+| `cancelButtonText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                              |
 
 **TimePickerOptions**:
 
-| Property | Description |
-| --- | --- |
-| `context` | View's context. |
-| `time` | The time that will be displayed in the picker, (if not provided, the picker will display now). |
-| `is24Hours` | This value will be used only on Android to determine whether the picker will be in 12 or 24 hour format. |
-| `locale` | Identifier of a locale that will be used to create locale-specific time formatter of the time (with `de_DE` locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with `en_US` locale “am”/”pm” will be used, default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format. |
-| `title` | Text that will be displayed as title of the picker, default is undefined. |
-| `okButtonText` | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)). |
-| `cancelButtonText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)). |
+| Property           | Description                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `context`          | View's context.                                                                                                                                                                                                                                                                                                                                                                                 |
+| `time`             | The time that will be displayed in the picker, (if not provided, the picker will display now).                                                                                                                                                                                                                                                                                                  |
+| `is24Hours`        | This value will be used only on Android to determine whether the picker will be in 12 or 24 hour format.                                                                                                                                                                                                                                                                                        |
+| `locale`           | Identifier of a locale that will be used to create locale-specific time formatter of the time (with `de_DE` locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with `en_US` locale “am”/”pm” will be used, default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format. |
+| `title`            | Text that will be displayed as title of the picker, default is undefined.                                                                                                                                                                                                                                                                                                                       |
+| `okButtonText`     | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).                                                                                                                                                                                                                                               |
+| `cancelButtonText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                                                                                                                                                                             |
 
 **DateTimePickerStyle**:
 
-| Property | Description |
-| --- | --- |
-| `titleTextColor` | Color to be used for the title text. |
-| `dialogBackgroundColor` | Color to be used as a background of the dialog picker. |
-| `spinnersTextColor` | Color to be used for the texts of the date/time spinners. |
-| `spinnersBackgroundColor` | Color to be used as a background of the date/time spinners. |
-| `buttonsTextColor` | Color to be used for the texts of the ok/cancel buttons. |
-| `buttonsBackgroundColor` | Color to be used as a background of the ok/cancel buttons. |
-| `buttonOkTextColor` | Color to be used for the texts of the ok button. |
-| `buttonOkBackgroundColor` | Color to be used as a background of the ok button. |
-| `buttonCancelTextColor` | Color to be used for the texts of the cancel button. |
-| `buttonCancelBackgroundColor` | Color to be used as a background of the cancel button. |
-| `create(view: View)` | Creates a style based on any css provided. The parameter is a View with the properly setup css class name. |
+| Property                      | Description                                                                                                |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `titleTextColor`              | Color to be used for the title text.                                                                       |
+| `dialogBackgroundColor`       | Color to be used as a background of the dialog picker.                                                     |
+| `spinnersTextColor`           | Color to be used for the texts of the date/time spinners.                                                  |
+| `spinnersBackgroundColor`     | Color to be used as a background of the date/time spinners.                                                |
+| `buttonsTextColor`            | Color to be used for the texts of the ok/cancel buttons.                                                   |
+| `buttonsBackgroundColor`      | Color to be used as a background of the ok/cancel buttons.                                                 |
+| `buttonOkTextColor`           | Color to be used for the texts of the ok button.                                                           |
+| `buttonOkBackgroundColor`     | Color to be used as a background of the ok button.                                                         |
+| `buttonCancelTextColor`       | Color to be used for the texts of the cancel button.                                                       |
+| `buttonCancelBackgroundColor` | Color to be used as a background of the cancel button.                                                     |
+| `create(view: View)`          | Creates a style based on any css provided. The parameter is a View with the properly setup css class name. |
 
 ## License
 

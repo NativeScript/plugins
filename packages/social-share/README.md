@@ -48,13 +48,13 @@ SocialShare.shareImage(image, "How would you like to share this image?");
 
 The `shareText()` method expects a simple string:
 
-```js
+```javascript
 SocialShare.shareText('I love NativeScript!');
 ```
 
 Like `shareImage()`, you can optionally pass `shareText()` a second argument to configure the subject on Android:
 
-```js
+```javascript
 SocialShare.shareText('I love NativeScript!', 'How would you like to share this text?');
 ```
 
@@ -62,13 +62,13 @@ SocialShare.shareText('I love NativeScript!', 'How would you like to share this 
 
 The `shareUrl()` method excepts a url and a string.
 
-```js
+```javascript
 SocialShare.shareUrl('https://www.nativescript.org/', 'Home of NativeScript');
 ```
 
 You can optionally pass `shareUrl()` a second argument to configure the subject on Android:
 
-```js
+```javascript
 SocialShare.shareUrl('https://www.nativescript.org/', 'Home of NativeScript', 'How would you like to share this url?');
 ```
 
@@ -83,7 +83,7 @@ Share text or url via Twitter.
 - @param {string} url - URL to share.
   \*/
 
-```js
+```javascript
 SocialShare.shareViaTwitter('Home of NativeScript', 'https://www.nativescript.org/');
 ```
 
@@ -91,7 +91,7 @@ SocialShare.shareViaTwitter('Home of NativeScript', 'https://www.nativescript.or
 
 Share url via Facebook. Note that `text` will usually be suppressed due to Facebook security/abuse prevention, but the url will come through.
 
-```js
+```javascript
 SocialShare.shareViaFacebook('Home of NativeScript', 'https://www.nativescript.org/');
 ```
 

@@ -57,30 +57,30 @@ In order to have a successful upload, the following must be taken into account:
 
 The request object parameter has the following properties:
 
-Name | Type | Description
---- | --- | ---
-url | `string` | The request url (e.g.`https://some.remote.service.com/path`).
-method | `string` | The request method (e.g. `POST`).
-headers | `object` | Used to specify additional headers.
-description | `string` | Used to help identify the upload task locally - not sent to the remote server.
-utf8 | `boolean` | (Android only/multipart only) If true, sets the charset for the multipart request to UTF-8. Default is false.
-androidDisplayNotificationProgress | `boolean` | (Android only) Used to set if progress notifications should be displayed or not. Please note that since API26, Android requires developers to use notifications when running background tasks. https://developer.android.com/about/versions/oreo/background
-androidNotificationTitle | `string` | (Android only) Used to set the title shown in the Android notifications center.
-androidAutoDeleteAfterUpload | `boolean` | (Android only) Used to set if files should be deleted automatically after upload.
-androidMaxRetries | `number` | (Android only) Used to set the maximum retry count. The default retry count is 0. https://github.com/gotev/android-upload-service/wiki/Recipes#backoff
-androidAutoClearNotification | `boolean` | (Android only) Used to set if notifications should be cleared automatically upon upload completion. Default is false. Please note that setting this to true will also disable the ringtones.
-androidRingToneEnabled | `boolean` | (Android only) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true.
-androidNotificationChannelID | `string` | (Android only) Used to set the channel ID for the notifications.
+| Name                               | Type      | Description                                                                                                                                                                                                                                                 |
+| ---------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| url                                | `string`  | The request url (e.g.`https://some.remote.service.com/path`).                                                                                                                                                                                               |
+| method                             | `string`  | The request method (e.g. `POST`).                                                                                                                                                                                                                           |
+| headers                            | `object`  | Used to specify additional headers.                                                                                                                                                                                                                         |
+| description                        | `string`  | Used to help identify the upload task locally - not sent to the remote server.                                                                                                                                                                              |
+| utf8                               | `boolean` | (Android only/multipart only) If true, sets the charset for the multipart request to UTF-8. Default is false.                                                                                                                                               |
+| androidDisplayNotificationProgress | `boolean` | (Android only) Used to set if progress notifications should be displayed or not. Please note that since API26, Android requires developers to use notifications when running background tasks. https://developer.android.com/about/versions/oreo/background |
+| androidNotificationTitle           | `string`  | (Android only) Used to set the title shown in the Android notifications center.                                                                                                                                                                             |
+| androidAutoDeleteAfterUpload       | `boolean` | (Android only) Used to set if files should be deleted automatically after upload.                                                                                                                                                                           |
+| androidMaxRetries                  | `number`  | (Android only) Used to set the maximum retry count. The default retry count is 0. https://github.com/gotev/android-upload-service/wiki/Recipes#backoff                                                                                                      |
+| androidAutoClearNotification       | `boolean` | (Android only) Used to set if notifications should be cleared automatically upon upload completion. Default is false. Please note that setting this to true will also disable the ringtones.                                                                |
+| androidRingToneEnabled             | `boolean` | (Android only) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true.                                                             |
+| androidNotificationChannelID       | `string`  | (Android only) Used to set the channel ID for the notifications.                                                                                                                                                                                            |
 
 The task object has the following properties and methods, that can be used to get information about the upload:
 
-Name | Type | Description
---- | --- | ---
-upload | `number` | Bytes uploaded.
-totalUpload | `number` | Total number of bytes to upload.
-status | `string` | One of the following: `error`, `uploading`, `complete`, `pending`, `cancelled`.
-description | `string` | The description set in the request used to create the upload task.
-cancel()| `void` | Call this method to cancel an upload in progress.
+| Name        | Type     | Description                                                                     |
+| ----------- | -------- | ------------------------------------------------------------------------------- |
+| upload      | `number` | Bytes uploaded.                                                                 |
+| totalUpload | `number` | Total number of bytes to upload.                                                |
+| status      | `string` | One of the following: `error`, `uploading`, `complete`, `pending`, `cancelled`. |
+| description | `string` | The description set in the request used to create the upload task.              |
+| cancel()    | `void`   | Call this method to cancel an upload in progress.                               |
 
 ### Handling upload events
 
@@ -144,7 +144,7 @@ function cancelledHandler(e) {
 
 In order to test the plugin, you must have a server instance to accept the uploads. There are online services that can be used for small file uploads - e.g. `http://httpbin.org/post` However, these cannot be used for large files. The plugin repository comes with a simple server you can run locally. Here is how to start it:
 
-```bash
+```cli
 cd demo-server
 npm i
 node server 8080
@@ -152,7 +152,7 @@ node server 8080
 
 The above commands will start a server listening on port 8080. Remember to update the URL in your app to match the address/port where the server is running.
 
->Note: If you are using the iOS simulator then `http://localhost:8080` should be used to upload to the demo server. If you are using an Android emulator, `http://10.0.2.2:8080` should be used instead.
+> Note: If you are using the iOS simulator then `http://localhost:8080` should be used to upload to the demo server. If you are using an Android emulator, `http://10.0.2.2:8080` should be used instead.
 
 ## License
 

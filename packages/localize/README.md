@@ -47,7 +47,7 @@ the [application name](#how-to-localize-the-application-name) to avoid any error
 
 #### app.module.ts
 
-```ts
+```typescript
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NativeScriptLocalizeModule } from '@nativescript/localize/angular';
 import { NativeScriptModule } from '@nativescript/angular';
@@ -72,7 +72,7 @@ export class AppModule {}
 
 #### Script
 
-```ts
+```typescript
 import { localize } from '@nativescript/localize';
 
 console.log(localize('Hello world !'));
@@ -82,7 +82,7 @@ console.log(localize('Hello world !'));
 
 #### app.js
 
-```js
+```javascript
 const application = require('application');
 const { localize } = require('@nativescript/localize');
 application.setResources({ L: localize });
@@ -97,7 +97,7 @@ application.setResources({ L: localize });
 
 #### Script
 
-```js
+```javascript
 const { localize } = require('@nativescript/localize');
 
 console.log(localize('Hello world !'));
@@ -108,7 +108,7 @@ console.log(localize('Hello world !'));
 ⚠️ If you notice translations work on your main XML page, but don't work on a page you
 navigate to, then add this little hack to the 'page loaded' function of that new page:
 
-```js
+```javascript
 const page = args.object;
 page.bindingContext = new Observable();
 ```
@@ -117,7 +117,7 @@ page.bindingContext = new Observable();
 
 #### app.js
 
-```js
+```javascript
 import { localize } from '@nativescript/localize';
 
 Vue.filter('L', localize);
@@ -135,7 +135,7 @@ Each file is imported using `require`, use the file format of your choice:
 
 #### JSON
 
-```json
+```javascripton
 {
 	"app.name": "My app",
 	"ios.info.plist": {
@@ -153,7 +153,7 @@ Each file is imported using `require`, use the file format of your choice:
 
 #### Javascript
 
-```js
+```javascript
 export const i18n = {
 	'app.name': 'My app',
 };
@@ -173,7 +173,7 @@ fr.default.json
 
 The `app.name` key is used to localize the application name:
 
-```json
+```javascripton
 {
 	"app.name": "My app"
 }
@@ -183,7 +183,7 @@ The `app.name` key is used to localize the application name:
 
 Keys starting with `ios.info.plist.` are used to localize iOS properties:
 
-```json
+```javascripton
 {
 	"ios.info.plist.NSLocationWhenInUseUsageDescription": "This will be added to InfoPlist.strings"
 }
@@ -204,7 +204,7 @@ const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc
 
 In your app.ts / main.ts / app.js
 
-```ts
+```typescript
 import { Application } from '@nativescript/core';
 import { androidLaunchEventLocalizationHandler } from '@nativescript/localize';
 
@@ -217,7 +217,7 @@ Application.on(Application.launchEvent, (args) => {
 
 And in your settings page where user chooses the language:
 
-```ts
+```typescript
 import { overrideLocale } from '@nativescript/localize';
 const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc (or even just the part before the hyphen)
 ```
@@ -226,7 +226,7 @@ const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc
 
 For Example:
 
-```ts
+```typescript
 import { Application } from '@nativescript/core';
 import { overrideLocale } from '@nativescript/localize';
 
@@ -262,7 +262,7 @@ android {
 
 > **Tip:** you can get the default language on user's phone by using this
 
-```ts
+```typescript
 import { Device } from '@nativescript/core';
 
 console.log("user's language is", Device.language.split('-')[0]);
@@ -271,7 +271,7 @@ console.log("user's language is", Device.language.split('-')[0]);
 > **Tip:** overrideLocale method stores the language in a special key in app-settings,
 > you can access it like this,
 
-```ts
+```typescript
 import { ApplicationSettings } from '@nativescript/core';
 
 console.log(ApplicationSettings.getString('__app__language__')); // only available after the first time you use overrideLocale(langName);
@@ -283,7 +283,7 @@ console.log(ApplicationSettings.getString('__app__language__')); // only availab
 
 As a workaround, you can trigger a change detection from within your component constructor:
 
-```ts
+```typescript
 constructor(
   private readonly params: ModalDialogParams,
   private readonly changeDetectorRef: ChangeDetectorRef,

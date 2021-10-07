@@ -27,7 +27,7 @@
 
 This workspace manages the suite of plugins listed above.
 
-```bash
+```cli
 npm run setup
 npm start
 
@@ -43,7 +43,7 @@ In general, when in doubt with what to do, just `npm start`.
 
 ## How to add a new package to workspace?
 
-```bash
+```cli
 npm run add
 ```
 
@@ -58,7 +58,7 @@ At the prompt, enter the name of the new package.
 
 ## How to add Angular compatibility to a package
 
-```bash
+```cli
 npm run add-angular
 ```
 
@@ -66,7 +66,7 @@ At the prompt, enter the name of the package to add an `angular` folder to it wi
 
 ## How to focus on just 1 package to develop in isolation
 
-```bash
+```cli
 npm start
 ```
 
@@ -77,7 +77,7 @@ Note: _good to always clean the demo you plan to run after focusing. (You can cl
 
 ## How to publish packages?
 
-```bash
+```cli
 npm run publish-packages
 ```
 

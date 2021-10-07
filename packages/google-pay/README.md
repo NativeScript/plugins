@@ -16,7 +16,7 @@ Before you get started, review the following prerequisites:
 When moving to production and using a payment provider you will need a valid payment token. You can view the configuration for a number of [providers in the Google documentation.](https://developers.google.com/pay/api/android/guides/tutorial#tokenization)
 During development you can use the example below for the gateway token configuration when creating a payment request.
 
-```ts
+```typescript
 parameters: {
     gateway: 'example', // in production replace with your gateway provider
     gatewayMerchantId: 'exampleGatewayMerchantId' // in production replace with your gateway provider merchant ID
@@ -38,7 +38,7 @@ parameters: {
 </android>
 ```
 
-```ts
+```typescript
 
 import {
   AllowedPaymentMethodsType,
@@ -249,7 +249,7 @@ async onGooglePayTap(args) {
 
 ### GooglePayRequest
 
-```ts
+```typescript
 interface GooglePayRequest {
 	/**
 	 * Sets the ENVIRONMENT for testing Google Pay
@@ -435,7 +435,7 @@ interface GooglePayRequest {
 
 ### PaymentCancelledEventData
 
-```ts
+```typescript
 interface PaymentCancelledEventData extends EventData {
 	eventName: string;
 	object: any;
@@ -444,7 +444,7 @@ interface PaymentCancelledEventData extends EventData {
 
 ### PaymentErrorEventData
 
-```ts
+```typescript
 interface PaymentErrorEventData extends EventData {
 	eventName: string;
 	object: any;
@@ -456,7 +456,7 @@ interface PaymentErrorEventData extends EventData {
 
 ### PaymentSuccessEventData
 
-```ts
+```typescript
 interface PaymentSuccessEventData extends EventData {
 	eventName: string;
 	object: any;
@@ -565,7 +565,7 @@ interface PaymentSuccessEventData extends EventData {
 
 ### Address
 
-```ts
+```typescript
 Address {
 	/**
 	 * The full name of the addressee.
@@ -621,7 +621,7 @@ Address {
 
 ### GooglePayDisplayItems
 
-```ts
+```typescript
 interface GoogelPayDisplayItems {
 	label: string;
 	type: string;

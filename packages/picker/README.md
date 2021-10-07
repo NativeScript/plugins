@@ -38,7 +38,7 @@ To use the `PickerField` in markup you need to:
 
 - If you are developing a NativeScript Angular app, you need to import the plugin module in the module of your component:
 
-```ts
+```typescript
 import { NativeScriptPickerModule } from "@nativescript/picker/angular";
 ...
 @NgModule({
@@ -57,7 +57,7 @@ Then you will be able to declare the fields in the html of your component:
 
 - If you are developing a NativeScript Vue app, you need to install the plugin in you app.js file:
 
-```js
+```javascript
 import Vue from 'nativescript-vue';
 import { PickerField } from '@nativescript/picker/vue';
 

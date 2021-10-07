@@ -12,7 +12,7 @@ This plugin requires `<uses-permission android:name="android.permission.WRITE_SE
 
 To use the brightness module you must first `require()` and instantiate it:
 
-```js
+```javascript
 // JavaScript
 var nativescriptBrightness = require('@nativescript/brightness');
 var brightness = new nativescriptBrightness.Brightness();
@@ -30,7 +30,7 @@ After you have a reference to the module you can then call its `get()` and `set(
 
 The `intensity` can be set to a value from 1 to 100.
 
-```js
+```javascript
 // TypeScript
 import { Brightness } from '@nativescript/brightness';
 const brightness = new Brightness();

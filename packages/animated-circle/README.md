@@ -1,6 +1,6 @@
 # Nativescript animated-circle
 
-```bash
+```cli
 ns plugin add @nativescript/animated-circle
 ```
 

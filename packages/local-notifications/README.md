@@ -16,13 +16,13 @@ From the command prompt go to your app's root folder and execute:
 
 #### NativeScript 7+:
 
-```bash
+```cli
 ns plugin add @nativescript/local-notifications
 ```
 
 #### NativeScript prior to 7:
 
-```bash
+```cli
 tns plugin add nativescript-local-notifications@4.2.1
 ```
 
@@ -99,7 +99,7 @@ You can pass several options to this function, everything is optional:
 | `submitLabel` | The submit button label for `type` = `input`.     |
 | `placeholder` | The placeholder text for `type` = `input`.        |
 
-```js
+```javascript
 LocalNotifications.schedule([
 	{
 		id: 1, // generated id if not set
@@ -157,7 +157,7 @@ But what if you scheduled two notifications and you want to know which one the u
 Use this function to have a callback invoked when a notification was used to launch your app.
 Note that on iOS it will even be triggered when your app is in the foreground and a notification is received.
 
-```js
+```javascript
 LocalNotifications.addOnMessageReceivedCallback((notification) => {
 	console.log('ID: ' + notification.id);
 	console.log('Title: ' + notification.title);
@@ -171,7 +171,7 @@ LocalNotifications.addOnMessageReceivedCallback((notification) => {
 
 If you want to know the ID's of all notifications which have been scheduled, do this:
 
-```js
+```javascript
 LocalNotifications.getScheduledIds().then((ids) => {
 	console.log("ID's: " + ids);
 });
@@ -181,7 +181,7 @@ LocalNotifications.getScheduledIds().then((ids) => {
 
 If you want to cancel a previously scheduled notification (and you know its ID), you can cancel it:
 
-```js
+```javascript
 LocalNotifications.cancel(5 /* the ID */).then((foundAndCanceled) => {
 	if (foundAndCanceled) {
 		console.log("OK, it's gone!");
@@ -195,7 +195,7 @@ LocalNotifications.cancel(5 /* the ID */).then((foundAndCanceled) => {
 
 If you just want to cancel all previously scheduled notifications, do this:
 
-```js
+```javascript
 LocalNotifications.cancelAll();
 ```
 
@@ -208,7 +208,7 @@ If the user granted permission this function returns `true`, but if he denied pe
 since an iOS can only request permission once. In which case the user needs to go to the iOS settings app and manually
 enable permissions for your app.
 
-```js
+```javascript
 LocalNotifications.requestPermission().then((granted) => {
 	console.log('Permission granted? ' + granted);
 });
@@ -220,7 +220,7 @@ On Android you don't need permission, but on iOS you do. Android will simply ret
 
 If the `requestPermission` or `schedule` functions previously ran you may want to check whether or not the user granted permission:
 
-```js
+```javascript
 LocalNotifications.hasPermission().then((granted) => {
 	console.log('Permission granted? ' + granted);
 });

@@ -1,6 +1,6 @@
 # Nativescript auto-fit-text
 
-```bash
+```cli
 ns plugin add @nativescript/auto-fit-text
 ```
 

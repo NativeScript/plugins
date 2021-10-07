@@ -15,6 +15,7 @@ That's it! IQKeyboardManager takes care of all initialization when your app star
 ## Advanced usage
 
 ### Grouping related textfields (previous / next buttons)
+
 If your UI layout has sibling text fields, then IQKeyboardManager is able to automatically
 add previous / next buttons to the accessory bar which the user can use to jump back and forth.
 See those < and > buttons in the video above.
@@ -23,6 +24,7 @@ In case those fields were not direct siblings, until version 1.3.0 of this plugi
 to force the previous / next buttons to appear. However, now you can:
 
 #### NativeScript /w XML usage
+
 Note in the example below that the two `<TextField>` controls are not siblings (both have parent `<StackLayout>` containers). Because of this, IQKeyboardManager will not automatically provide an optimized keyboard by default.
 
 However, if you surround the controls with this plugin's `<PreviousNextView>` control, as the example below shows, you will continue to get an optimized keyboard as expected.
@@ -45,39 +47,43 @@ However, if you surround the controls with this plugin's `<PreviousNextView>` co
 ```
 
 #### NativeScript /w Angular usage
+
 In the `.modules.ts` file where you want to use this feature (or the `app.module.ts`),
 register the `PreviousNextView` element:
 
 ```typescript
-import { registerElement } from "nativescript-angular";
-registerElement("PreviousNextView", () => require("@nativescript/iqkeyboardmanager").PreviousNextView);
+import { registerElement } from 'nativescript-angular';
+registerElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
 ```
 
 Then in the view, use that element like this (again, we went nuts with the `<StackLayout>`s:
 
 ```html
 <StackLayout>
-  <PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
-    <StackLayout>
-      <StackLayout>
-        <TextField hint="Email"></TextField>
-      </StackLayout>
-      <StackLayout>
-        <TextField hint="Password"></TextField>
-      </StackLayout>
-    </StackLayout>
-  </PreviousNextView>
-</Stacklayout>
+	<PreviousNextView
+		><!-- add this 'wrapper' to enable those previous / next buttons -->
+		<StackLayout>
+			<StackLayout>
+				<TextField hint="Email"></TextField>
+			</StackLayout>
+			<StackLayout>
+				<TextField hint="Password"></TextField>
+			</StackLayout>
+		</StackLayout>
+	</PreviousNextView>
+</StackLayout>
 ```
 
 #### NativeScript /w Vue usage
+
 Vue usage is very similar to Angular usage, the only difference is in how the element is registered. Open your app's entry file, and add this:
 
 ```javascript
-Vue.registerElement("PreviousNextView", () => require("@nativescript/iqkeyboardmanager"). PreviousNextView)
+Vue.registerElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
 ```
 
 ### Adding a placeholder/hint on a `TextView`'s accessory bar
+
 Looking at the gif above you may notice when focusing the Email address and password fields,
 the placeholder/hint of those `TextField`s is shown in the accessory bar above the keyboard.
 
@@ -98,28 +104,30 @@ use `TextViewWithHint` instead.
 ```
 
 #### NativeScript /w Angular usage
+
 In the `.modules.ts` file where you want to use this feature (or the `app.module.ts`),
 register the `TextViewWithHint` element:
 
 ```typescript
-import { registerElement } from "@nativescript/angular";
-registerElement("TextViewWithHint", () => require("@nativescript/iqkeyboardmanager").TextViewWithHint);
+import { registerElement } from '@nativescript/angular';
+registerElement('TextViewWithHint', () => require('@nativescript/iqkeyboardmanager').TextViewWithHint);
 ```
 
 Then in the view, use that element like this:
 
 ```html
 <StackLayout>
-  <TextView hint="Not working TextView hint"></TextView>
-  <TextViewWithHint hint="Working TextView hint 🤪"></TextViewWithHint>
-</Stacklayout>
+	<TextView hint="Not working TextView hint"></TextView>
+	<TextViewWithHint hint="Working TextView hint 🤪"></TextViewWithHint>
+</StackLayout>
 ```
 
 #### NativeScript /w Vue usage
+
 Vue usage is very similar to Angular usage, the only difference is in how the element is registered. Open your app's entry file, and add this:
 
 ```javascript
-Vue.registerElement("TextViewWithHint", () => require("@nativescript/iqkeyboardmanager").TextViewWithHint)
+Vue.registerElement('TextViewWithHint', () => require('@nativescript/iqkeyboardmanager').TextViewWithHint);
 ```
 
 ### Tweaking the appearance and behavior
@@ -158,9 +166,10 @@ While the following is not a feature specific to IQKeyboardManager, you are here
 iOS has a feature where a text field's QuickType search suggestion bar can suggest one-time code values for multi-factor authentication that were texted to your device.
 
 If the field is specially-identified as a one-time code field, the suggestion will appear for about 3 minutes after being received, and the user simply has to tap the suggestion to fill in the value—no short term memorization or copy/paste gestures required. Examples of message formats are:
-* 123456 is your App Name code.
-* 123456 is your App Name login code.
-* 123456 is your App Name verification code.
+
+- 123456 is your App Name code.
+- 123456 is your App Name login code.
+- 123456 is your App Name verification code.
 
 To implement this functionality in your own app, first declare `UITextContentTypeOneTimeCode` near your component imports:
 
@@ -174,7 +183,7 @@ Then, set the field's `ios.textContentType` property:
 // This code assumes this.page exists as a reference to the current Page.
 const mfaCodeField: TextField = this.page.getViewById(oneTimeCodeFieldName);
 if (mfaCodeField !== null && mfaCodeField.ios) {
-  mfaCodeField.ios.textContentType = UITextContentTypeOneTimeCode;
+	mfaCodeField.ios.textContentType = UITextContentTypeOneTimeCode;
 }
 ```
 
@@ -190,7 +199,7 @@ For maintainer’s of this plugin’s source code: when the [IQKeyboardManager P
 
 To do so, execute these commands.
 
-```bash
+```cli
 cd demo
 TNS_DEBUG_METADATA_PATH="$(pwd)/metadata" tns build ios
 TNS_TYPESCRIPT_DECLARATIONS_PATH="$(pwd)/typings" tns build ios

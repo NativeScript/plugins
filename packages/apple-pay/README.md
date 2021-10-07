@@ -38,7 +38,7 @@ Once that configuration is done for your Apple developer account, you will be ab
 </ios>
 ```
 
-```ts
+```typescript
 import { ApplePayBtn, ApplePayContactFields, ApplePayEvents, ApplePayItems, ApplePayMerchantCapability, ApplePayNetworks, ApplePayPaymentItemType, ApplePayRequest, ApplePayTransactionStatus, AuthorizePaymentEventData } from '@nativescript/apple-pay';
 
 export function onApplePayTap() {
@@ -214,7 +214,7 @@ export function onApplePayTap() {
 
 ### ApplePayRequest
 
-```ts
+```typescript
 interface ApplePayRequest {
 	paymentItems: Array<ApplePayItems>;
 	merchantId: string; // the merchant ID for this app
@@ -230,7 +230,7 @@ interface ApplePayRequest {
 
 ### ApplePayItems
 
-```ts
+```typescript
 interface ApplePayItems {
 	label: string;
 	amount: number;
@@ -240,7 +240,7 @@ interface ApplePayItems {
 
 ### AuthorizePaymentEventData
 
-```ts
+```typescript
 interface AuthorizePaymentEventData extends EventData {
 	eventName: string;
 	object: any;
@@ -260,7 +260,7 @@ interface AuthorizePaymentEventData extends EventData {
 
 ### AuthorizationDidFinishEventData
 
-```ts
+```typescript
 interface AuthorizationDidFinishEventData extends EventData {
 	eventName: string;
 	object: any;
@@ -269,7 +269,7 @@ interface AuthorizationDidFinishEventData extends EventData {
 
 ### ApplePayPaymentData
 
-```ts
+```typescript
 interface ApplePayPaymentData {
 	/**
 	 * Encrypted payment data.

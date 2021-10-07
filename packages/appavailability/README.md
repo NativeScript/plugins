@@ -38,7 +38,7 @@ appavailability.available('twitter://').then((avail: boolean) => {
 
 ### JavaScript
 
-```js
+```javascript
 var appAvailability = require('@nativescript/appavailability');
 
 // examples of what to pass:
