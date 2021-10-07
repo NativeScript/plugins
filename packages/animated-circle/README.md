@@ -1,4 +1,4 @@
-# Nativescript animated-circle
+# @nativescript/animated-circle
 
 ```bash
 ns plugin add @nativescript/animated-circle

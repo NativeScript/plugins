@@ -1,17 +1,17 @@
-# Nativescript Shared Notification Delegate
+# @nativescript/shared-notification-delegate
 
 This project aims to prevent the shortcomings that come from the iOS implementation of only allowing a single delegate.
 
 ## Installation
 
-```javascript
+```cli
 ns plugin add @nativescript/shared-notification-delegate
 ```
 
-## Usage 
+## Usage
 
 Import `SharedNotificationDelegate` and add Observers
-	
+
 ```typescript
 import { SharedNotificationDelegate } from '@nativescript/shared-notification-delegate';
 
@@ -38,11 +38,12 @@ SharedNotificationDelegate.addObserver({
 ## API
 
 #### SharedNotificationDelegate Methods
-| Method |  Description |
-| --- | --- |
+
+| Method                                                                 | Description                                                                                  |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | addObserver(observer: `DelegateObserver`, priority?: `number`): `void` | Adds a delegate observer of a certain priority (lower means first). Default priority is 100. |
-| removeObserver(observer: `DelegateObserver`) | removes a DelegateObserver |
-| removeObserverByUniqueKey(key: `any`) | removes a DelegateObserver by its unique key |
+| removeObserver(observer: `DelegateObserver`)                           | removes a DelegateObserver                                                                   |
+| removeObserverByUniqueKey(key: `any`)                                  | removes a DelegateObserver by its unique key                                                 |
 
 #### DelegateObserver Interface
 
@@ -50,13 +51,13 @@ A DelegateObserver can implement 3 methods from `UNUserNotificationCenterDelegat
 
 ```typescript
 interface DelegateObserver {
-    userNotificationCenterDidReceiveNotificationResponseWithCompletionHandler?(center: any /* UNUserNotificationCenter */, response: any /* UNNotificationResponse */, completionHandler: () => void, next: () => void): void;
-    userNotificationCenterOpenSettingsForNotification?(center: any /* UNUserNotificationCenter */, notification: any /* UNNotification */, stop: () => void, next: () => void): void;
-    userNotificationCenterWillPresentNotificationWithCompletionHandler?(center: any /* UNUserNotificationCenter */, notification: any /* UNNotification */, completionHandler: (p1: any /* UNNotificationPresentationOptions */) => void, next: () => void): void;
-    /**
-     * if set to not null/undefined, will ensure only one is registered
-     */
-    delegateUniqueKey?: any;
+	userNotificationCenterDidReceiveNotificationResponseWithCompletionHandler?(center: any /* UNUserNotificationCenter */, response: any /* UNNotificationResponse */, completionHandler: () => void, next: () => void): void;
+	userNotificationCenterOpenSettingsForNotification?(center: any /* UNUserNotificationCenter */, notification: any /* UNNotification */, stop: () => void, next: () => void): void;
+	userNotificationCenterWillPresentNotificationWithCompletionHandler?(center: any /* UNUserNotificationCenter */, notification: any /* UNNotification */, completionHandler: (p1: any /* UNNotificationPresentationOptions */) => void, next: () => void): void;
+	/**
+	 * if set to not null/undefined, will ensure only one is registered
+	 */
+	delegateUniqueKey?: any;
 }
 ```
 
@@ -70,7 +71,6 @@ Only one method will be processed at a time, this means you can take as long as 
 
 If a DelegateObserver has a `delegateUniqueKey`, the `SharedNotificationDelegate` will ensure only the latest copy of the observer is present. This is especially useful if debugging with HMR, which may add multiple observers on application reload.
 
-    
 ## License
 
 Apache License Version 2.0, January 2004

@@ -1,6 +1,6 @@
-# Nativescript directions
+# @nativescript/directions
 
-```javascript
+```cli
 ns plugin add @nativescript/directions
 ```
 

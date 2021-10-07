@@ -1,6 +1,6 @@
-# Nativescript brightness
+# @nativescript/brightness
 
-```javascript
+```cli
 ns plugin add @nativescript/brightness
 ```
 
@@ -12,7 +12,7 @@ This plugin requires `<uses-permission android:name="android.permission.WRITE_SE
 
 To use the brightness module you must first `require()` and instantiate it:
 
-```js
+```javascript
 // JavaScript
 var nativescriptBrightness = require('@nativescript/brightness');
 var brightness = new nativescriptBrightness.Brightness();
