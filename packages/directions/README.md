@@ -113,6 +113,7 @@ directions
 		ios: {
 			preferGoogleMaps: true, // If the Google Maps app is installed, use that one instead of Apple Maps, because it supports waypoints. Default true.
 			allowGoogleMapsWeb: true, // If waypoints are passed in and Google Maps is not installed, you can either open Apple Maps and the first waypoint is used as the to-address (the rest is ignored), or you can open Google Maps on web so all waypoints are shown (set this property to true). Default false.
+			useUniversalSyntax: true, // Prefer the Universal URL Syntax to the comgooglemaps:// url scheme. Useful if Google Maps does not load correctly.
 		},
 		android: {
 			newTask: true, // Start as new task. This means it will start a new history stack instead of using the current app. Default true.

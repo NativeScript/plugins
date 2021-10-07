@@ -1,0 +1,449 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B60E29026E8E0380035E6AE /* NativeScriptIOSSecurity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B60E28626E8E0370035E6AE /* NativeScriptIOSSecurity.framework */; };
+		2B60E29726E8E0380035E6AE /* NativeScriptIOSSecurity.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B60E28926E8E0370035E6AE /* NativeScriptIOSSecurity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B60E2AF26E8E08F0035E6AE /* EmulatorChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2A326E8E08E0035E6AE /* EmulatorChecker.swift */; };
+		2B60E2B026E8E08F0035E6AE /* FishHookChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2A426E8E08E0035E6AE /* FishHookChecker.swift */; };
+		2B60E2B126E8E08F0035E6AE /* JailbreakChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2A526E8E08E0035E6AE /* JailbreakChecker.swift */; };
+		2B60E2B226E8E08F0035E6AE /* ReverseEngineeringToolsChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2A626E8E08E0035E6AE /* ReverseEngineeringToolsChecker.swift */; };
+		2B60E2B326E8E08F0035E6AE /* RuntimeHookChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2A726E8E08E0035E6AE /* RuntimeHookChecker.swift */; };
+		2B60E2B426E8E08F0035E6AE /* IOSSecuritySuite.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B60E2A826E8E08E0035E6AE /* IOSSecuritySuite.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B60E2B526E8E08F0035E6AE /* IntegrityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2A926E8E08E0035E6AE /* IntegrityChecker.swift */; };
+		2B60E2B626E8E08F0035E6AE /* MSHookFunctionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2AA26E8E08E0035E6AE /* MSHookFunctionChecker.swift */; };
+		2B60E2B726E8E08F0035E6AE /* ProxyChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2AB26E8E08E0035E6AE /* ProxyChecker.swift */; };
+		2B60E2B826E8E08F0035E6AE /* IOSSecuritySuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2AC26E8E08E0035E6AE /* IOSSecuritySuite.swift */; };
+		2B60E2B926E8E08F0035E6AE /* DebuggerChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2AD26E8E08F0035E6AE /* DebuggerChecker.swift */; };
+		2B60E2D026E8E3000035E6AE /* SecurityFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2CF26E8E3000035E6AE /* SecurityFacade.swift */; };
+		2B60E2DF26E8E5710035E6AE /* NativeScriptSecurity.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B60E2DD26E8E5710035E6AE /* NativeScriptSecurity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2B60E2E026E8E5710035E6AE /* NativeScriptSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B60E2DE26E8E5710035E6AE /* NativeScriptSecurity.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2B60E29126E8E0380035E6AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B60E27D26E8E0370035E6AE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B60E28526E8E0370035E6AE;
+			remoteInfo = NativeScriptIOSSecurity;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2B60E28626E8E0370035E6AE /* NativeScriptIOSSecurity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NativeScriptIOSSecurity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B60E28926E8E0370035E6AE /* NativeScriptIOSSecurity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeScriptIOSSecurity.h; sourceTree = "<group>"; };
+		2B60E28A26E8E0370035E6AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B60E2A326E8E08E0035E6AE /* EmulatorChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulatorChecker.swift; sourceTree = "<group>"; };
+		2B60E2A426E8E08E0035E6AE /* FishHookChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FishHookChecker.swift; sourceTree = "<group>"; };
+		2B60E2A526E8E08E0035E6AE /* JailbreakChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JailbreakChecker.swift; sourceTree = "<group>"; };
+		2B60E2A626E8E08E0035E6AE /* ReverseEngineeringToolsChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverseEngineeringToolsChecker.swift; sourceTree = "<group>"; };
+		2B60E2A726E8E08E0035E6AE /* RuntimeHookChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuntimeHookChecker.swift; sourceTree = "<group>"; };
+		2B60E2A826E8E08E0035E6AE /* IOSSecuritySuite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSSecuritySuite.h; sourceTree = "<group>"; };
+		2B60E2A926E8E08E0035E6AE /* IntegrityChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegrityChecker.swift; sourceTree = "<group>"; };
+		2B60E2AA26E8E08E0035E6AE /* MSHookFunctionChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSHookFunctionChecker.swift; sourceTree = "<group>"; };
+		2B60E2AB26E8E08E0035E6AE /* ProxyChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyChecker.swift; sourceTree = "<group>"; };
+		2B60E2AC26E8E08E0035E6AE /* IOSSecuritySuite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IOSSecuritySuite.swift; sourceTree = "<group>"; };
+		2B60E2AD26E8E08F0035E6AE /* DebuggerChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebuggerChecker.swift; sourceTree = "<group>"; };
+		2B60E2AE26E8E08F0035E6AE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B60E2CF26E8E3000035E6AE /* SecurityFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityFacade.swift; sourceTree = "<group>"; };
+		2B60E2DD26E8E5710035E6AE /* NativeScriptSecurity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeScriptSecurity.h; sourceTree = "<group>"; };
+		2B60E2DE26E8E5710035E6AE /* NativeScriptSecurity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NativeScriptSecurity.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2B60E28326E8E0370035E6AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B60E28C26E8E0380035E6AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B60E29026E8E0380035E6AE /* NativeScriptIOSSecurity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B60E27C26E8E0370035E6AE = {
+			isa = PBXGroup;
+			children = (
+				2B60E28826E8E0370035E6AE /* NativeScriptIOSSecurity */,
+				2B60E28726E8E0370035E6AE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2B60E28726E8E0370035E6AE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B60E28626E8E0370035E6AE /* NativeScriptIOSSecurity.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B60E28826E8E0370035E6AE /* NativeScriptIOSSecurity */ = {
+			isa = PBXGroup;
+			children = (
+				2B60E2A226E8E08E0035E6AE /* IOSSecuritySuite */,
+				2B60E28926E8E0370035E6AE /* NativeScriptIOSSecurity.h */,
+				2B60E28A26E8E0370035E6AE /* Info.plist */,
+				2B60E2CF26E8E3000035E6AE /* SecurityFacade.swift */,
+				2B60E2DD26E8E5710035E6AE /* NativeScriptSecurity.h */,
+				2B60E2DE26E8E5710035E6AE /* NativeScriptSecurity.m */,
+			);
+			path = NativeScriptIOSSecurity;
+			sourceTree = "<group>";
+		};
+		2B60E2A226E8E08E0035E6AE /* IOSSecuritySuite */ = {
+			isa = PBXGroup;
+			children = (
+				2B60E2A326E8E08E0035E6AE /* EmulatorChecker.swift */,
+				2B60E2A426E8E08E0035E6AE /* FishHookChecker.swift */,
+				2B60E2A526E8E08E0035E6AE /* JailbreakChecker.swift */,
+				2B60E2A626E8E08E0035E6AE /* ReverseEngineeringToolsChecker.swift */,
+				2B60E2A726E8E08E0035E6AE /* RuntimeHookChecker.swift */,
+				2B60E2A826E8E08E0035E6AE /* IOSSecuritySuite.h */,
+				2B60E2A926E8E08E0035E6AE /* IntegrityChecker.swift */,
+				2B60E2AA26E8E08E0035E6AE /* MSHookFunctionChecker.swift */,
+				2B60E2AB26E8E08E0035E6AE /* ProxyChecker.swift */,
+				2B60E2AC26E8E08E0035E6AE /* IOSSecuritySuite.swift */,
+				2B60E2AD26E8E08F0035E6AE /* DebuggerChecker.swift */,
+				2B60E2AE26E8E08F0035E6AE /* Info.plist */,
+			);
+			path = IOSSecuritySuite;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2B60E28126E8E0370035E6AE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B60E2DF26E8E5710035E6AE /* NativeScriptSecurity.h in Headers */,
+				2B60E29726E8E0380035E6AE /* NativeScriptIOSSecurity.h in Headers */,
+				2B60E2B426E8E08F0035E6AE /* IOSSecuritySuite.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2B60E28526E8E0370035E6AE /* NativeScriptIOSSecurity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B60E29A26E8E0380035E6AE /* Build configuration list for PBXNativeTarget "NativeScriptIOSSecurity" */;
+			buildPhases = (
+				2B60E28126E8E0370035E6AE /* Headers */,
+				2B60E28226E8E0370035E6AE /* Sources */,
+				2B60E28326E8E0370035E6AE /* Frameworks */,
+				2B60E28426E8E0370035E6AE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NativeScriptIOSSecurity;
+			productName = NativeScriptIOSSecurity;
+			productReference = 2B60E28626E8E0370035E6AE /* NativeScriptIOSSecurity.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2B60E27D26E8E0370035E6AE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					2B60E28526E8E0370035E6AE = {
+						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
+					};
+					2B60E28E26E8E0380035E6AE = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = 2B60E28026E8E0370035E6AE /* Build configuration list for PBXProject "NativeScriptIOSSecurity" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2B60E27C26E8E0370035E6AE;
+			productRefGroup = 2B60E28726E8E0370035E6AE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B60E28526E8E0370035E6AE /* NativeScriptIOSSecurity */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2B60E28426E8E0370035E6AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B60E28D26E8E0380035E6AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2B60E28226E8E0370035E6AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B60E2B226E8E08F0035E6AE /* ReverseEngineeringToolsChecker.swift in Sources */,
+				2B60E2E026E8E5710035E6AE /* NativeScriptSecurity.m in Sources */,
+				2B60E2B526E8E08F0035E6AE /* IntegrityChecker.swift in Sources */,
+				2B60E2B026E8E08F0035E6AE /* FishHookChecker.swift in Sources */,
+				2B60E2AF26E8E08F0035E6AE /* EmulatorChecker.swift in Sources */,
+				2B60E2B926E8E08F0035E6AE /* DebuggerChecker.swift in Sources */,
+				2B60E2B726E8E08F0035E6AE /* ProxyChecker.swift in Sources */,
+				2B60E2B326E8E08F0035E6AE /* RuntimeHookChecker.swift in Sources */,
+				2B60E2B126E8E08F0035E6AE /* JailbreakChecker.swift in Sources */,
+				2B60E2D026E8E3000035E6AE /* SecurityFacade.swift in Sources */,
+				2B60E2B626E8E08F0035E6AE /* MSHookFunctionChecker.swift in Sources */,
+				2B60E2B826E8E08F0035E6AE /* IOSSecuritySuite.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B60E28B26E8E0380035E6AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2B60E29226E8E0380035E6AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B60E28526E8E0370035E6AE /* NativeScriptIOSSecurity */;
+			targetProxy = 2B60E29126E8E0380035E6AE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2B60E29826E8E0380035E6AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		2B60E29926E8E0380035E6AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2B60E29B26E8E0380035E6AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = H6KAAZFWNY;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = NativeScriptIOSSecurity/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tdermendjiev.NativeScriptIOSSecurity;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2B60E29C26E8E0380035E6AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = H6KAAZFWNY;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = NativeScriptIOSSecurity/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tdermendjiev.NativeScriptIOSSecurity;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B60E28026E8E0370035E6AE /* Build configuration list for PBXProject "NativeScriptIOSSecurity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B60E29826E8E0380035E6AE /* Debug */,
+				2B60E29926E8E0380035E6AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B60E29A26E8E0380035E6AE /* Build configuration list for PBXNativeTarget "NativeScriptIOSSecurity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B60E29B26E8E0380035E6AE /* Debug */,
+				2B60E29C26E8E0380035E6AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2B60E27D26E8E0370035E6AE /* Project object */;
+}

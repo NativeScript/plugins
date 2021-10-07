@@ -8,14 +8,16 @@ ns plugin add @nativescript/zip
 
 ### Zip
 
+see [ZipOptions](https://github.com/NativeScript/plugins/blob/master/packages/zip/index.d.ts#L1)
+
 ```typescript
 import { Zip } from '@nativescript/zip';
 import { path, knownFolders } from '@nativescript/core';
 let zipPath = path.join(knownFolders.temp().path, 'stuff.zip');
 let dest = path.join(knownFolders.documents().path, '/assets');
 Zip.zip({
-	folder: zipPath,
-	directory: dest,
+    directory: dest,
+		archive: zipPath
 });
 ```
 
@@ -27,17 +29,17 @@ import { path, knownFolders } from '@nativescript/core';
 let zipPath = path.join(knownFolders.temp().path, 'stuff.zip');
 let dest = path.join(knownFolders.documents().path, '/assets');
 Zip.zip({
-	folder: zipPath,
-	directory: dest,
-	onProgress: onZipProgress,
-});
-
 function onZipProgress(percent: number) {
 	console.log(`unzip progress: ${percent}`);
-}
+    directory: dest,
+		archive: zipPath,
+    onProgress: onZipProgress
+});
 ```
 
 ### Unzip
+
+see [UnzipOptions](https://github.com/NativeScript/plugins/blob/master/packages/zip/index.d.ts#L9)
 
 ```typescript
 import { Zip } from '@nativescript/zip';

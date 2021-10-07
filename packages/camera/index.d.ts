@@ -55,4 +55,10 @@ export interface CameraOptions {
      * The current implementation doesn't work on all Android devices, in which case it falls back to the default behavior.
      */
     cameraFacing?: "front" | "rear";
+
+
+    /**
+     * (iOS Only) Specify a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen)
+     */
+     modalPresentationStyle?: number;
 }

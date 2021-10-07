@@ -2,7 +2,7 @@
     navigatingTo="navigatingTo"
     xmlns="http://schemas.nativescript.org/tns.xsd"
     xmlns:datetime="@nativescript/datetimepicker">
-    
+
     <ActionBar class="action-bar">
         <Label class="action-bar-title" text="DateTimePicker Demo TS"></Label>
     </ActionBar>
@@ -22,6 +22,11 @@
                 <Label text="min and max date" class="content"/>
                 <datetime:DatePickerField minDate="2020/02/02" maxDate="2021/02/02" hint="tap to select"/>
                 <StackLayout class="hr-light m-10" android:visibility="collapse"/>
+
+								<!-- iOS 14+ defaults to calendar type so show example of spinner type also. -->
+								<Label text="Spinner type" class="content" visibility="{{ isIOS14plus ? 'visible' : 'collapsed' }}"/>
+                <datetime:DatePickerField hint="select date" iosPreferredDatePickerStyle="1" visibility="{{ isIOS14plus ? 'visible' : 'collapsed' }}"/>
+                <StackLayout class="hr-light m-10" android:visibility="collapse" visibility="{{ isIOS14plus ? 'visible' : 'collapsed' }}"/>
 
                 <Label text="modified picker texts" class="content"/>
                 <datetime:DatePickerField hint="tap to choose" pickerOkText="Approve" pickerCancelText="Reject"
