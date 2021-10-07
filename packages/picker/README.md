@@ -2,7 +2,7 @@
 
 A NativeScript plugin that provides ui element for picking an object/value from a list opened in a modal popup.
 
-```javascript
+```cli
 npm install @nativescript/picker
 ```
 

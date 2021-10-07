@@ -1,6 +1,6 @@
-# Nativescript directions
+# @nativescript/directions
 
-```javascript
+```cli
 ns plugin add @nativescript/directions
 ```
 
@@ -28,28 +28,27 @@ Not all devices have the Google (Android) or Apple (iOS) Maps app installed. Wel
 
 ```js
 // require the plugin
-var directions = require("@nativescript/directions");
+var directions = require('@nativescript/directions');
 
 // instantiate the plugin
 var directions = new directions.Directions();
 
-directions.Directions.available().then(
-  function(avail) {
-    console.log(avail ? "Yes" : "No");
-  }
-);
+directions.Directions.available().then(function (avail) {
+	console.log(avail ? 'Yes' : 'No');
+});
 ```
 
 ##### TypeScript
+
 ```typescript
 // require the plugin
-import { Directions } from "@nativescript/directions";
+import { Directions } from '@nativescript/directions';
 
 // instantiate the plugin
 let directions = new Directions();
 
-directions.available().then(avail => {
-    console.log(avail ? "Yes" : "No");
+directions.available().then((avail) => {
+	console.log(avail ? 'Yes' : 'No');
 });
 ```
 
@@ -66,56 +65,72 @@ If you pass in an Array of `to` addresses, then the last item is the destination
 Note that if there's an ocean in between `from` and `to` you won't be able to get directions, don't blame this plugin for that 😁
 
 ##### JavaScript
+
 ```js
-directions.navigate({
-  from: { // optional, default 'current location'
-    lat: 52.215987,
-    lng: 5.282764
-  },
-  to: { // either pass in a single object or an Array (see the TypeScript example below)
-    address: "Hof der Kolommen 34, Amersfoort, Netherlands"
-  }
-  // for platform-specific options, see the TypeScript example below.
-}).then(
-  function() {
-    console.log("Maps app launched.");
-  },
-  function(error) {
-    console.log(error);
-  }
-);
+directions
+	.navigate({
+		from: {
+			// optional, default 'current location'
+			lat: 52.215987,
+			lng: 5.282764,
+		},
+		to: {
+			// either pass in a single object or an Array (see the TypeScript example below)
+			address: 'Hof der Kolommen 34, Amersfoort, Netherlands',
+		},
+		// for platform-specific options, see the TypeScript example below.
+	})
+	.then(
+		function () {
+			console.log('Maps app launched.');
+		},
+		function (error) {
+			console.log(error);
+		}
+	);
 ```
 
 ##### TypeScript
+
 ```typescript
-directions.navigate({
-  from: { // optional, default 'current location'
-    lat: 52.215987,
-    lng: 5.282764
-  },
-  to: [{ // if an Array is passed (as in this example), the last item is the destination, the addresses in between are 'waypoints'.
-    address: "Hof der Kolommen 34, Amersfoort, Netherlands",
-  },
-  {
-    address: "Aak 98, Wieringerwerf, Netherlands"
-  }],
-  type: "walking", // optional, can be: driving, transit, bicycling or walking
-  ios: {
-    preferGoogleMaps: true, // If the Google Maps app is installed, use that one instead of Apple Maps, because it supports waypoints. Default true.
-    allowGoogleMapsWeb: true // If waypoints are passed in and Google Maps is not installed, you can either open Apple Maps and the first waypoint is used as the to-address (the rest is ignored), or you can open Google Maps on web so all waypoints are shown (set this property to true). Default false.
-  },
-  android: {
-    newTask: true // Start as new task. This means it will start a new history stack instead of using the current app. Default true.
-  }
-}).then(() => {
-    console.log("Maps app launched.");
-}, error => {
-    console.log(error);
-});
+directions
+	.navigate({
+		from: {
+			// optional, default 'current location'
+			lat: 52.215987,
+			lng: 5.282764,
+		},
+		to: [
+			{
+				// if an Array is passed (as in this example), the last item is the destination, the addresses in between are 'waypoints'.
+				address: 'Hof der Kolommen 34, Amersfoort, Netherlands',
+			},
+			{
+				address: 'Aak 98, Wieringerwerf, Netherlands',
+			},
+		],
+		type: 'walking', // optional, can be: driving, transit, bicycling or walking
+		ios: {
+			preferGoogleMaps: true, // If the Google Maps app is installed, use that one instead of Apple Maps, because it supports waypoints. Default true.
+			allowGoogleMapsWeb: true, // If waypoints are passed in and Google Maps is not installed, you can either open Apple Maps and the first waypoint is used as the to-address (the rest is ignored), or you can open Google Maps on web so all waypoints are shown (set this property to true). Default false.
+		},
+		android: {
+			newTask: true, // Start as new task. This means it will start a new history stack instead of using the current app. Default true.
+		},
+	})
+	.then(
+		() => {
+			console.log('Maps app launched.');
+		},
+		(error) => {
+			console.log(error);
+		}
+	);
 ```
 
 ## Future work
-* Perhaps add Android-specific options like opening the map in StreetView mode, or pre-defining the transportation type (walk/bike/car).
+
+- Perhaps add Android-specific options like opening the map in StreetView mode, or pre-defining the transportation type (walk/bike/car).
 
 ## License
 

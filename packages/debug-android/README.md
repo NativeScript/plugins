@@ -1,6 +1,6 @@
 # @nativescript/debug-android
 
-```javascript
+```cli
 ns plugin add @nativescript/debug-android
 ```
 
