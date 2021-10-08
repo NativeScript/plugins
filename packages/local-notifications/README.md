@@ -3,9 +3,9 @@
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][npm-url]
 
-[npm-image]: http://img.shields.io/npm/v/@nativescript/local-notifications.svg
+[npm-image]: https://img.shields.io/npm/v/@nativescript/local-notifications.svg
 [npm-url]: https://npmjs.org/package/@nativescript/local-notifications
-[downloads-image]: http://img.shields.io/npm/dm/@nativescript/local-notifications.svg
+[downloads-image]: https://img.shields.io/npm/dm/@nativescript/local-notifications.svg
 
 The Local Notifications plugin allows your app to show notifications when the app is not running.
 Just like remote push notifications, but a few orders of magnitude easier to set up.
