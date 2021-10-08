@@ -18,7 +18,7 @@ import * as SocialShare from "@nativescript/social-share";
 
 ## API
 
-### shareImage(ImageSource image, [optional] String subject)
+### shareImage(ImageSource image, \[optional\] String subject)
 
 The `shareImage()` method expects an [`ImageSource`](http://docs.nativescript.org/ApiReference/image-source/ImageSource.html) object. The code below loads an image from the app and invokes the share widget with it:
 
@@ -44,55 +44,52 @@ You can optionally provide a second argument to configure the subject on Android
 SocialShare.shareImage(image, "How would you like to share this image?");
 ```
 
-### shareText(String text, [optional] String subject)
+### shareText(String text, \[optional\] String subject)
 
 The `shareText()` method expects a simple string:
 
 ```js
-SocialShare.shareText('I love NativeScript!');
+SocialShare.shareText('I love NativeScript!')
 ```
 
 Like `shareImage()`, you can optionally pass `shareText()` a second argument to configure the subject on Android:
 
 ```js
-SocialShare.shareText('I love NativeScript!', 'How would you like to share this text?');
+SocialShare.shareText('I love NativeScript!', 'How would you like to share this text?')
 ```
 
-### shareUrl(String url, String text, [optional] String subject)
+### shareUrl(String url, String text, \[optional\] String subject)
 
 The `shareUrl()` method excepts a url and a string.
 
 ```js
-SocialShare.shareUrl('https://www.nativescript.org/', 'Home of NativeScript');
+SocialShare.shareUrl('https://www.nativescript.org/', 'Home of NativeScript')
 ```
 
 You can optionally pass `shareUrl()` a second argument to configure the subject on Android:
 
 ```js
-SocialShare.shareUrl('https://www.nativescript.org/', 'Home of NativeScript', 'How would you like to share this url?');
+SocialShare.shareUrl(
+  'https://www.nativescript.org/',
+  'Home of NativeScript',
+  'How would you like to share this url?'
+)
 ```
 
-### shareViaTwitter(text?: string, url?: string): Promise<void>;
+### shareViaTwitter(text?: string, url?: string): Promise\<void\>;
 
 Share text or url via Twitter.
 
-/\*\*
-
-- Share via Facebook
-- @param {string} text - Text to share with URL.
-- @param {string} url - URL to share.
-  \*/
-
 ```js
-SocialShare.shareViaTwitter('Home of NativeScript', 'https://www.nativescript.org/');
+SocialShare.shareViaTwitter('Home of NativeScript', 'https://www.nativescript.org/')
 ```
 
-### shareViaFacebook(text?: string, url?: string): Promise<void>;
+### shareViaFacebook(text?: string, url?: string): Promise\<void\>;
 
 Share url via Facebook. Note that `text` will usually be suppressed due to Facebook security/abuse prevention, but the url will come through.
 
 ```js
-SocialShare.shareViaFacebook('Home of NativeScript', 'https://www.nativescript.org/');
+SocialShare.shareViaFacebook('Home of NativeScript', 'https://www.nativescript.org/')
 ```
 
 - **Android Only NOTE**:
@@ -133,9 +130,9 @@ dependencies {
 - Create a file `facebooklogin.xml` in `App_Resources/Android/src/main/res/values/`. Add this to the file (replace the id):
 
 ```xml
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <resources>
-    <string name="facebook_app_id">126035687816994</string>
+  <string name="facebook_app_id">126035687816994</string>
 </resources>
 ```
 
