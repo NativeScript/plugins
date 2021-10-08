@@ -1,0 +1,11 @@
+framework module NativeScriptIOSSecurity {
+  umbrella header "NativeScriptIOSSecurity.h"
+
+  export *
+  module * { export * }
+}
+
+module NativeScriptIOSSecurity.Swift {
+    header "NativeScriptIOSSecurity-Swift.h"
+    requires objc
+}

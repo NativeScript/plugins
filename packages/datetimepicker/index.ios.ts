@@ -11,6 +11,7 @@ export class DateTimePicker extends DateTimePickerBase {
 	private static readonly SUPPORT_TEXT_COLOR = parseFloat(Device.osVersion) < 14.0;
 	private static readonly DEFAULT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0 ? 3 : 1;
 	private static readonly DEFAULT_TIME_PICKER_STYLE = 1;
+	private static readonly _isTablet = Device.deviceType === 'Tablet';
 
 	public static PICKER_DEFAULT_MESSAGE_HEIGHT = parseFloat(Device.osVersion) >= 14.0 ? 300 : 192;
 	public static PICKER_WIDTH_INSETS = 16;
@@ -103,14 +104,18 @@ export class DateTimePicker extends DateTimePickerBase {
 		DateTimePicker._applyDialogSpinnersColors(nativePicker, pickerContainer, spinnersTextColor, spinnersBackgroundColor);
 
 		const pickerView = nativePicker;
-		const left = (alertController.view.frame.size.width - pickerViewWidth) / 2 - DateTimePicker.PICKER_WIDTH_INSETS;
+		const left = this._isTablet ? 0 : (alertController.view.frame.size.width - pickerViewWidth) / 2 - DateTimePicker.PICKER_WIDTH_INSETS;
 		pickerView.frame = CGRectMake(left, 0, pickerViewWidth, pickerViewHeight);
 		pickerContainer.addSubview(pickerView);
 		DateTimePicker._clearVibrancyEffects(alertController.view);
 
 		const messageLabel = DateTimePicker._findLabelWithText(alertController.view, DateTimePicker.PICKER_DEFAULT_MESSAGE);
 		const messageLabelContainer = DateTimePicker._getLabelContainer(messageLabel);
-		messageLabelContainer.clipsToBounds = true;
+		if (this._isTablet) {
+			messageLabelContainer.clipsToBounds = false;
+		} else {
+			messageLabelContainer.clipsToBounds = true;
+		}
 		messageLabelContainer.addSubview(pickerContainer);
 
 		pickerContainer.translatesAutoresizingMaskIntoConstraints = false;

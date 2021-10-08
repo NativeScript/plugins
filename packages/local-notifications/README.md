@@ -1,4 +1,4 @@
-# NativeScript Local Notifications Plugin
+# @nativescript/local-notifications
 
 [![NPM version][npm-image]][npm-url]
 [![Downloads][downloads-image]][npm-url]
@@ -16,13 +16,13 @@ From the command prompt go to your app's root folder and execute:
 
 #### NativeScript 7+:
 
-```bash
+```cli
 ns plugin add @nativescript/local-notifications
 ```
 
 #### NativeScript prior to 7:
 
-```bash
+```cli
 tns plugin add nativescript-local-notifications@4.2.1
 ```
 

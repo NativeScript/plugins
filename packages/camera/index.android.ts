@@ -1,5 +1,6 @@
 import { Utils, Application, Device, Trace, ImageAsset } from '@nativescript/core';
 import * as permissions from 'nativescript-permissions';
+import { CameraOptions } from '.';
 
 let REQUEST_IMAGE_CAPTURE = 3453;
 declare let global: any;
@@ -9,7 +10,7 @@ let useAndroidX = function () {
 };
 const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : global.android.support.v4.content;
 
-export let takePicture = function (options?): Promise<any> {
+export let takePicture = function (options?: CameraOptions): Promise<any> {
 	return new Promise((resolve, reject) => {
 		try {
 			if (!permissions.hasPermission(android.Manifest.permission.CAMERA)) {

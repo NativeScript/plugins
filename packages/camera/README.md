@@ -1,4 +1,4 @@
-# NativeScript Camera
+# @nativescript/camera
 
 # Working with the camera plugin
 
@@ -9,7 +9,7 @@ The NativeScript camera plugin was designed for the first two parts of the job (
 
 ## Installation
 
-```
+```cli
 npm install @nativescript/camera --save
 ```
 
@@ -35,6 +35,7 @@ npm install @nativescript/camera --save
 | saveToGallery   | true    | Both     | Defines if camera picture should be copied to photo Gallery (Android) or Photos (iOS)                                                                                                                                                                                                                                                                                                    |
 | allowsEditing   | false   | iOS      | Defines if camera "Retake" or "Use Photo" screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                                                                                                                    |
 | cameraFacing    | rear    | Both     | The initial camera facing. Use `'front'` for selfies.                                                                                                                                                                                                                                                                                                                                    |
+| modalPresentationStyle    | 0    | iOS     | Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen)                                                                                                                                                                                                                                                                                                                                   |
 
 > Note: The `saveToGallery` option might have unexpected behavior on Android! Some vendor camera apps (e.g. LG) will save all captured images to the gallery regardless of what the value of `saveToGallery` is. This behavior cannot be controlled by the camera plugin and if you must exclude the captured image from the photo gallery, you will need to get a local storage read/write permission and write custom code to find the gallery location and delete the new image from there.
 

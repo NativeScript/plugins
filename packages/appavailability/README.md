@@ -1,8 +1,8 @@
-# Nativescript appavailability
+# @nativescript/app-availability
 
 A plugin to check for availability of other apps on the device.
 
-```javascript
+```cli
 ns plugin add @nativescript/appavailability
 ```
 
@@ -38,7 +38,7 @@ appavailability.available('twitter://').then((avail: boolean) => {
 
 ### JavaScript
 
-```js
+```javascript
 var appAvailability = require('@nativescript/appavailability');
 
 // examples of what to pass:

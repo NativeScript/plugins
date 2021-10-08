@@ -1,4 +1,4 @@
-# Nativescript localize
+# @nativescript/localize
 
 This is a plugin for NativeScript that implements internationalization (i18n) using the native capabilities of each platform. It is inspired from [nativescript-i18n](https://github.com/rborn/nativescript-i18n)
 
@@ -24,8 +24,8 @@ A lot of thanks goes out to [Ludovic Fabrèges (@lfabreges)](https://github.com/
 
 ## Installation
 
-```shell
-tns plugin add @nativescript/localize
+```cli
+ns plugin add @nativescript/localize
 ```
 
 ## Usage
