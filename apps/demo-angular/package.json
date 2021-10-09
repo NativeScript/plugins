@@ -24,7 +24,10 @@
     "@nativescript/picker": "file:../../dist/packages/picker",
     "@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
     "@nativescript/social-share": "file:../../dist/packages/social-share",
-    "@nativescript/zip": "file:../../dist/packages/zip"
+    "@nativescript/zip": "file:../../dist/packages/zip",
+    "@nativescript/facebook": "file:../../dist/packages/facebook",
+    "@nativescript/google-signin": "file:../../dist/packages/google-signin",
+    "@nativescript/twitter": "file:../../dist/packages/twitter"
   },
   "devDependencies": {
     "@nativescript/android": "~8.1.1",

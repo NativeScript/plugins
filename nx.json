@@ -91,6 +91,15 @@
     },
     "ios-security": {
       "tags": []
+    },
+    "facebook": {
+      "tags": []
+    },
+    "google-signin": {
+      "tags": []
+    },
+    "twitter": {
+      "tags": []
     }
   },
   "workspaceLayout": {

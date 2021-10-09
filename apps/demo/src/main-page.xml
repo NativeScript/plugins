@@ -30,6 +30,9 @@
         <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+<Button text="facebook" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+<Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+<Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>
