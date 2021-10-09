@@ -324,7 +324,10 @@
               "nx run detox:build.all",
               "nx run picker:build.all",
               "nx run debug-android:build.all",
-              "nx run debug-ios:build.all"
+              "nx run debug-ios:build.all",
+              "nx run facebook:build.all",
+              "nx run google-signin:build.all",
+              "nx run twitter:build.all"
             ],
             "parallel": false
           }
@@ -1314,6 +1317,141 @@
             "parallel": false
           },
           "executor": "@nrwl/workspace:run-commands"
+        }
+      }
+    },
+    "facebook": {
+      "root": "packages/facebook",
+      "projectType": "library",
+      "sourceRoot": "packages/facebook",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/facebook",
+            "tsConfig": "packages/facebook/tsconfig.json",
+            "packageJson": "packages/facebook/package.json",
+            "main": "packages/facebook/index.d.ts",
+            "assets": [
+              "packages/facebook/*.md",
+              "packages/facebook/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/facebook/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run facebook:build",
+              "node tools/scripts/build-finish.ts facebook"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages facebook"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "google-signin": {
+      "root": "packages/google-signin",
+      "projectType": "library",
+      "sourceRoot": "packages/google-signin",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/google-signin",
+            "tsConfig": "packages/google-signin/tsconfig.json",
+            "packageJson": "packages/google-signin/package.json",
+            "main": "packages/google-signin/index.d.ts",
+            "assets": [
+              "packages/google-signin/*.md",
+              "packages/google-signin/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/google-signin/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run google-signin:build",
+              "node tools/scripts/build-finish.ts google-signin"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages google-signin"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "twitter": {
+      "root": "packages/twitter",
+      "projectType": "library",
+      "sourceRoot": "packages/twitter",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/twitter",
+            "tsConfig": "packages/twitter/tsconfig.json",
+            "packageJson": "packages/twitter/package.json",
+            "main": "packages/twitter/index.d.ts",
+            "assets": [
+              "packages/twitter/*.md",
+              "packages/twitter/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/twitter/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run twitter:build",
+              "node tools/scripts/build-finish.ts twitter"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages twitter"
+            ],
+            "parallel": false
+          }
         }
       }
     }

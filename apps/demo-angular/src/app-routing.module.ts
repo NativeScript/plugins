@@ -19,8 +19,10 @@ const routes: Routes = [
 	{ path: 'detox', loadChildren: () => import('./plugin-demos/detox.module').then(m => m.DetoxModule) },
 	{ path: 'directions', loadChildren: () => import('./plugin-demos/directions.module').then(m => m.DirectionsModule) },
 	{ path: 'email', loadChildren: () => import('./plugin-demos/email.module').then(m => m.EmailModule) },
+	{ path: 'facebook', loadChildren: () => import('./plugin-demos/facebook.module').then(m => m.FacebookModule) },
 	{ path: 'fingerprint-auth', loadChildren: () => import('./plugin-demos/fingerprint-auth.module').then(m => m.FingerprintAuthModule) },
 	{ path: 'geolocation', loadChildren: () => import('./plugin-demos/geolocation.module').then(m => m.GeolocationModule) },
+	{ path: 'google-signin', loadChildren: () => import('./plugin-demos/google-signin.module').then(m => m.GoogleSigninModule) },
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then(m => m.ImagepickerModule) },
 	{ path: 'ios-security', loadChildren: () => import('./plugin-demos/ios-security.module').then(m => m.IosSecurityModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then(m => m.IqkeyboardmanagerModule) },
@@ -29,6 +31,7 @@ const routes: Routes = [
 	{ path: 'picker', loadChildren: () => import('./plugin-demos/picker.module').then(m => m.PickerModule) },
 	{ path: 'shared-notification-delegate', loadChildren: () => import('./plugin-demos/shared-notification-delegate.module').then(m => m.SharedNotificationDelegateModule) },
 	{ path: 'social-share', loadChildren: () => import('./plugin-demos/social-share.module').then(m => m.SocialShareModule) },
+	{ path: 'twitter', loadChildren: () => import('./plugin-demos/twitter.module').then(m => m.TwitterModule) },
 	{ path: 'zip', loadChildren: () => import('./plugin-demos/zip.module').then(m => m.ZipModule) }
 ];
 

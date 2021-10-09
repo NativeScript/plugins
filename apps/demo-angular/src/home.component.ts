@@ -43,10 +43,16 @@ export class HomeComponent {
 		name: 'email'
 	},
 	{
+		name: 'facebook'
+	},
+	{
 		name: 'fingerprint-auth'
 	},
 	{
 		name: 'geolocation'
+	},
+	{
+		name: 'google-signin'
 	},
 	{
 		name: 'imagepicker'
@@ -71,6 +77,9 @@ export class HomeComponent {
 	},
 	{
 		name: 'social-share'
+	},
+	{
+		name: 'twitter'
 	},
 	{
 		name: 'zip'
