@@ -155,7 +155,7 @@ iqKeyboard.overrideKeyboardAppearance = true;
 iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
 ```
 
-For more examples of what's possible, run the demo app (shown in the gif below) and check out the [app's `main-view-model.ts` file](apps/demo/src/plugin-demos/iqkeyboardmanager.ts).
+For more examples of what's possible, run the demo app (shown in the gif below) and check out the [app's `main-view-model.ts` file](https://github.com/NativeScript/plugins/blob/main/apps/demo/src/plugin-demos/iqkeyboardmanager.ts).
 
 <img src="https://github.com/tjvantoll/nativescript-IQKeyboardManager/raw/master/demo.gif" width="320px"/>
 
@@ -195,7 +195,7 @@ For more details on how IQKeyboardManager works, including more detailed API doc
 
 ## Maintainers
 
-For maintainer’s of this plugin’s source code: when the [IQKeyboardManager Podfile](platforms/ios/Podfile) updates, you should generate new typings for for this plugin to reflect those changes.
+For maintainer’s of this plugin’s source code: when the [IQKeyboardManager Podfile](https://github.com/NativeScript/plugins/blob/main/packages/iqkeyboardmanager/platforms/ios/Podfile) updates, you should generate new typings for for this plugin to reflect those changes.
 
 To do so, execute these commands.
 
