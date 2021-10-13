@@ -1,5 +1,5 @@
 import { Color } from '@nativescript/core';
-import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorProperty } from './common';
+import { AnimatedCircleCommon, barColorProperty, barWidthProperty, rimColorProperty, rimWidthProperty, spinBarColorProperty } from './common';
 
 declare const at;
 
@@ -68,8 +68,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set progress(value: number) {
-		this._progress = value;
-		this.android?.setValueAnimated(this._progress);
+		this._progress = Number(value);
+		this.updateAnimatedCircle();
 	}
 
 	get progress(): number {
@@ -104,8 +104,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set maxValue(value: number) {
-		this._maxValue = value;
-		this.android?.setMaxValue(this.maxValue);
+		this._maxValue = Number(value);
+		this.updateAnimatedCircle();
 	}
 
 	get maxValue(): number {
@@ -114,11 +114,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set rimColor(value: any) {
 		this._rimColor = value;
-		if (value instanceof Color) {
-			this.android?.setRimColor(value.argb);
-		} else {
-			this.android?.setRimColor(new Color(value).argb);
-		}
+		this.updateAnimatedCircle();
 	}
 
 	get rimColor() {
@@ -146,7 +142,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set rimWidth(value: number) {
 		this._rimWidth = Number(value);
-		this.android?.setRimWidth(this._rimWidth);
+		this.updateAnimatedCircle();
 	}
 
 	get rimWidth() {
@@ -155,11 +151,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set spinBarColor(value: any) {
 		this._spinBarColor = value;
-		if (value instanceof Color) {
-			this.android?.setSpinBarColor(value.argb);
-		} else {
-			this.android?.setSpinBarColor(new Color(this.spinBarColor).argb);
-		}
+		this.updateAnimatedCircle();
 	}
 
 	get spinBarColor() {
@@ -180,8 +172,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set startAngle(value: number) {
-		this._startAngle = value;
-		this.android?.setStartAngle(this._startAngle);
+		this._startAngle = Number(value);
+		this.updateAnimatedCircle();
 	}
 
 	get startAngle() {
@@ -189,15 +181,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set barWidth(value: number) {
-		this._barWidth = value;
-		if (this._barWidth) {
-			this.android?.setBarWidth(this._barWidth);
-		} else {
-			if (this._rimWidth) {
-				// set rim width to bar width if no bar width provided
-				this.android?.setBarWidth(this._rimWidth);
-			}
-		}
+		this._barWidth = Number(value);
+		this.updateAnimatedCircle();
 	}
 
 	get barWidth() {
@@ -206,7 +191,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set text(value: string) {
 		this._text = value;
-		this.android?.setText(this._text);
+		this.updateAnimatedCircle();
 	}
 
 	get text() {
@@ -215,12 +200,12 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set textColor(value: string) {
 		this._textColor = new Color(value);
-		this.android?.setTextColor(this._textColor.argb);
+		this.updateAnimatedCircle();
 	}
 
 	set textSize(value: number) {
 		this._textSize = value;
-		this.android?.setTextSize(value);
+		this.updateAnimatedCircle();
 	}
 
 	get textSize() {
@@ -236,6 +221,16 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		return this._clockwise;
 	}
 	// CSS Properties
+
+	[barWidthProperty.setNative](value: any) {
+		this._barWidth = value;
+		this.android?.setBarWidth(value);
+	}
+
+	[rimWidthProperty.setNative](value: any) {
+		this._rimWidth = value;
+		this.android?.setRimWidth(value);
+	}
 
 	[rimColorProperty.setNative](value: any) {
 		this._rimColor = value;

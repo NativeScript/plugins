@@ -1,5 +1,15 @@
 import { Color, ContentView, InheritedCssProperty, Style } from '@nativescript/core';
 
+export const rimWidthProperty = new InheritedCssProperty<Style, Number>({
+	name: 'rimWidth',
+	cssName: 'rim-width',
+});
+
+export const barWidthProperty = new InheritedCssProperty<Style, Number>({
+	name: 'barWidth',
+	cssName: 'bar-width',
+});
+
 export const spinBarColorProperty = new InheritedCssProperty<Style, Color>({
 	name: 'spinBarColor',
 	cssName: 'spin-bar-color',
@@ -30,6 +40,8 @@ export class AnimatedCircleCommon extends ContentView {
 // register after class definition or we'll get an exception according to
 // https://docs.nativescript.org/core-concepts/properties#registering-the-property
 
+rimWidthProperty.register(Style);
+barWidthProperty.register(Style);
 // defines 'spinBarColor' property on Style class
 spinBarColorProperty.register(Style);
 // defines 'rimColor' property on Style class
