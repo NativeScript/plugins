@@ -102,7 +102,7 @@ Note that if you forget this and set `useCustomAndroidUI: true` the plugin will 
 **Mandatory changes for webpack and snapshot builds (again, for NativeScript < 5.4.0 only)**
 
 If you are using Webpack with or without snapshot there are couple more changes required in order to make the custom UI work in your production builds.  
-First you need to edit your `vendor-platform.android.ts` file and add `require("nativescript-fingerprint-auth/appcompat-activity");`. You can see the changed file in the demo app [here](https://github.com/EddyVerbruggen/nativescript-fingerprint-auth/blob/master/demo/app/vendor-platform.android.ts#L9).  
+First you need to edit your `vendor-platform.android.ts` file and add `require("nativescript-fingerprint-auth/appcompat-activity");`. You can see the changed file in the demo app [here](https://github.com/EddyVerbruggen/nativescript-fingerprint-auth/blob/6.2.0/demo/app/vendor-platform.android.ts).  
 The second change should be made in your `webpack.config.js` file. Find the place where the `NativeScriptSnapshotPlugin` is pushed to the webpack plugins and add `"nativescript-fingerprint-auth"` in the `tnsJavaClassesOptions.packages` array. The result should look something like:
 
 ```js
@@ -163,7 +163,7 @@ You can provide this value (the reason for using Face ID) by adding something li
 
 Since iOS9 it's possible to check whether or not the list of enrolled fingerprints changed since
 the last time you checked it. It's recommended you add this check so you can counter hacker attacks
-to your app. See [this article](https://godpraksis.no/2016/03/fingerprint-trojan/) for more details.
+to your app. See [this article](https://www.linkedin.com/pulse/fingerprint-trojan-per-thorsheim/) for more details.
 
 So instead of checking the fingerprint after `available` add another check.
 In case `didFingerprintDatabaseChange` returns `true` you probably want to re-authenticate your user

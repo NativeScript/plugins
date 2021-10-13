@@ -12,11 +12,13 @@ Go to [Twitter Apps](https://apps.twitter.com/) to create your app so that you c
 - By default, Twitter won't allow you to grab user's email, so you have to apply for a permission for your app to retrieve user's email
 
 Here is how callbacks would look like:
+
 ![callback screenshot](https://raw.githubusercontent.com/NativeScript/plugins/main/packages/twitter/assets/images/callback.png)
 
 ## Usage
 
 ### iOS
+
 
 Configure Info.Plist like below, replace `consumerKey` tag with your own key:
 
