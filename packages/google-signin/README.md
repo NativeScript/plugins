@@ -61,6 +61,24 @@ try {
 } catch (e) {}
 ```
 
+### Button
+
+Ensure you've included xmlns:ui="@nativescript/google-signin" on the Page element
+
+```xml
+<ui:GoogleSigninButton tap="handleSignIn" />
+```
+
+```ts
+import { GoogleSignin } from '@nativescript/google-signin';
+export function handleSignIn(args){
+try {
+	await GoogleSignin.configure();
+	const user = await GoogleSignin.signIn();
+} catch (e) {}
+}
+```
+
 ## configure(options)
 
 It is mandatory to call this method before attempting to call signIn() and signInSilently(). In typical scenarios, configure needs to be called only once, after your app starts. All parameters are optional.

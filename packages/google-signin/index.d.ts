@@ -1,5 +1,7 @@
 import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
-import { Configuration, IUser } from './common';
+import { Configuration, IUser, GoogleSignInButtonBase, ColorStyleType, ColorSchemeType } from './common';
+
+export { colorSchemeProperty, colorStyleProperty } from './common';
 import { GoogleError } from './index.ios';
 
 declare class User implements IUser {
@@ -50,4 +52,9 @@ declare class GoogleSignin {
 	}>;
 
 	static playServicesAvailable(): Promise<boolean>;
+}
+
+declare class GoogleSignInButton extends GoogleSignInButtonBase {
+	colorScheme: ColorSchemeType;
+	colorStyle: ColorStyleType;
 }
