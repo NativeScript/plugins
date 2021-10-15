@@ -1,9 +1,19 @@
 import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
-import { Configuration, IUser } from './common';
+import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 import { GoogleError } from './index.ios';
+import lazy from '@nativescript/core/utils/lazy';
 
 const REQUEST_CODE_SIGNIN = 610210;
 const REQUEST_CODE_REQUEST_SCOPE = 610211;
+
+const STYLE_STANDARD = lazy(() => com.google.android.gms.common.SignInButton.SIZE_STANDARD);
+const STYLE_ICON = lazy(() => com.google.android.gms.common.SignInButton.SIZE_ICON_ONLY);
+const STYLE_WIDE = lazy(() => com.google.android.gms.common.SignInButton.SIZE_WIDE);
+
+const COLOR_DARK = lazy(() => com.google.android.gms.common.SignInButton.COLOR_DARK);
+const COLOR_LIGHT = lazy(() => com.google.android.gms.common.SignInButton.COLOR_LIGHT);
+const COLOR_AUTO = lazy(() => com.google.android.gms.common.SignInButton.COLOR_AUTO);
+
 export class User implements IUser {
 	#native: com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 	#grantedScopes: string[];
@@ -223,5 +233,41 @@ export class GoogleSignin {
 
 	static playServicesAvailable() {
 		return org.nativescript.plugins.googlesignin.GoogleSignIn.playServicesAvailable(false, Application.android.foregroundActivity || Application.android.startActivity);
+	}
+}
+
+export class GoogleSignInButton extends GoogleSignInButtonBase {
+	createNativeView() {
+		return new com.google.android.gms.common.SignInButton(this._context);
+	}
+
+	[colorSchemeProperty.setNative](value: ColorSchemeType) {
+		const nativeView: com.google.android.gms.common.SignInButton = this.nativeView;
+		switch (value) {
+			case 'dark':
+				nativeView.setColorScheme(COLOR_DARK());
+				break;
+			case 'light':
+				nativeView.setColorScheme(COLOR_LIGHT());
+				break;
+			default:
+				nativeView.setColorScheme(COLOR_AUTO());
+				break;
+		}
+	}
+
+	[colorStyleProperty.setNative](value: ColorStyleType) {
+		const nativeView: com.google.android.gms.common.SignInButton = this.nativeView;
+		switch (value) {
+			case 'wide':
+				nativeView.setSize(STYLE_WIDE());
+				break;
+			case 'icon':
+				nativeView.setSize(STYLE_ICON());
+				break;
+			default:
+				nativeView.setSize(STYLE_STANDARD());
+				break;
+		}
 	}
 }

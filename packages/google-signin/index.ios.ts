@@ -1,4 +1,5 @@
-import { Configuration, IUser } from './common';
+import { Application, Utils } from '@nativescript/core';
+import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 
 export class GoogleError extends Error {
 	#native: NSError;
@@ -253,6 +254,63 @@ export class GoogleSignin {
 			return this.findTopViewController(selected);
 		} else {
 			return root;
+		}
+	}
+}
+
+export class GoogleSignInButton extends GoogleSignInButtonBase {
+	createNativeView() {
+		return GIDSignInButton.new();
+	}
+
+	initNativeView() {
+		super.initNativeView();
+	}
+
+	[colorSchemeProperty.setNative](value: ColorSchemeType) {
+		const nativeView: GIDSignInButton = this.nativeView;
+		switch (value) {
+			case 'dark':
+				nativeView.colorScheme = GIDSignInButtonColorScheme.kGIDSignInButtonColorSchemeDark;
+				break;
+			case 'light':
+				nativeView.colorScheme = GIDSignInButtonColorScheme.kGIDSignInButtonColorSchemeLight;
+				break;
+			default:
+				const mode = Application.systemAppearance();
+				switch (mode) {
+					case 'dark':
+						nativeView.colorScheme = GIDSignInButtonColorScheme.kGIDSignInButtonColorSchemeDark;
+						break;
+					default:
+						nativeView.colorScheme = GIDSignInButtonColorScheme.kGIDSignInButtonColorSchemeLight;
+						break;
+				}
+				break;
+		}
+	}
+
+	[colorStyleProperty.setNative](value: ColorStyleType) {
+		const nativeView: GIDSignInButton = this.nativeView;
+		switch (value) {
+			case 'wide':
+				nativeView.style = GIDSignInButtonStyle.kGIDSignInButtonStyleWide;
+				break;
+			case 'icon':
+				nativeView.style = GIDSignInButtonStyle.kGIDSignInButtonStyleIconOnly;
+				break;
+			default:
+				nativeView.style = GIDSignInButtonStyle.kGIDSignInButtonStyleStandard;
+				break;
+		}
+	}
+
+	public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
+		const nativeView = this.nativeView;
+		if (nativeView) {
+			const width = Utils.layout.getMeasureSpecSize(widthMeasureSpec);
+			const height = Utils.layout.getMeasureSpecSize(heightMeasureSpec);
+			this.setMeasuredDimension(width, height);
 		}
 	}
 }
