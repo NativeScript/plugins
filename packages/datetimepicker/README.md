@@ -112,6 +112,52 @@ You can use css to style the `DatePickerField` and the `TimePickerField`. The fi
 
 Here's the css used to achieve the above result, as used in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.css#L22), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.css#L22) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L350) applications.
 
+To apply styles at runtime when opening the DateTimePicker you can do the following:
+
+```ts
+import { DateTimePicker, DateTimePickerStyle } from '@nativescript/datetimepicker';
+import { Application, Button } from '@nativescript/core';
+
+export function someButtonTapToOpenThePicker(args) {
+	const dateTimePickerStyle = DateTimePickerStyle.create(args.object as any);
+
+    // This example handles styling the calendar for light and dark mode of the device settings
+	if (Application.systemAppearance() === 'dark') {
+      // style for dark mode
+      dateTimePickerStyle.buttonsBackgroundColor = new Color('#202125');
+      dateTimePickerStyle.dialogBackgroundColor = new Color('#202125');
+      dateTimePickerStyle.titleTextColor = new Color('#fff');
+      dateTimePickerStyle.buttonsTextColor = new Color('#0067a6');
+      dateTimePickerStyle.spinnersBackgroundColor = new Color('#202125');
+      dateTimePickerStyle.spinnersTextColor = new Color('#fff');
+    } else {
+      // style for light mode
+      dateTimePickerStyle.buttonsBackgroundColor = new Color('#fff');
+      dateTimePickerStyle.dialogBackgroundColor = new Color('#fff');
+      dateTimePickerStyle.titleTextColor = new Color('#0067a6');
+      dateTimePickerStyle.buttonsTextColor = new Color('#0067a6');
+      dateTimePickerStyle.spinnersBackgroundColor = new Color('#fff');
+      dateTimePickerStyle.spinnersTextColor = new Color('#0067a6');
+    }
+
+     DateTimePicker.pickDate(
+      {
+        context: (args.object as Button)._context,
+        date: yourDateValue
+        minDate: subYears(new Date(), 10),
+        maxDate: new Date(),
+        title: 'DatePicker'
+        okButtonText: 'Okay',
+        cancelButtonText: 'Cancel',
+        locale: 'en'
+      },
+      dateTimePickerStyle
+    ).then((result) => {
+        // handle the result
+    })
+}
+```
+
 ### DateTimePickerFields
 
 The `DateTimePickerFields` extends `GridLayout` that contains instances of `DatePickerField` and `TimePickerField`, when tapped, they open a picker dialog that allows date/time selection.
