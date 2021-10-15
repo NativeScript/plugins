@@ -87,9 +87,10 @@ registerElement('GoogleSignInButton', () => require('@nativescript/google-signin
 
 And then it can be called from your `html` file choosing the desired option for colorScheme and colorStyle as:
 ```xml
-	<GoogleSignInButton colorScheme='dark' | 'light' | 'auto' colorStyle='standard' | 'wide' | 'icon' (tap)="googleSignin()"></GoogleSignInButton>
+	<GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
 ```
 
+`colorScheme` supports 'auto', 'dark' and 'light' options and `colorStyle`supports 'standard'. 'wide' and 'icon'. Since it's a button, you can also set some of its properties such as `height` or `width`.
 
 ## configure(options)
 
