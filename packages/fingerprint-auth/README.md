@@ -91,7 +91,7 @@ If you want to override the default texts of this popover screen, then drop a fi
 
 **Use plugin version < 7.0.0 to be able to use this feature with NativeScript < 5.4.0**
 
-> Skip this section if you're on NativeScript 5.4.0 or newer because it's all handled automatically!
+> **Note**: Skip this section if you're on NativeScript 5.4.0 or newer because it's all handled automatically!
 
 To be able to use this screen, a change to `App_Resources/Android/AndroidManifest.xml` is required as our NativeScript activity needs to extend AppCompatActivity (note that in the future this may become the default for NativeScript apps).
 

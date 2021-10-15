@@ -193,16 +193,16 @@ Keys starting with `ios.info.plist.` are used to localize iOS properties:
 
 This plugin uses the native capabilities of each platform, language selection is therefore made by the OS.
 
-## On iOS you can programmatically override this language since plugin version 4.2.0 by doing this:
+#### On iOS you can programmatically override this language since plugin version 4.2.0 by doing this:
 
 ```typescript
 import { overrideLocale } from '@nativescript/localize';
 const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc (or even just the part before the hyphen)
 ```
 
-## On Android you can programatically override this language since plugin version 4.2.1 by doing this:
+#### On Android you can programatically override this language since plugin version 4.2.1 by doing this:
 
-In your app.ts / main.ts / app.js
+In your `app.ts` / `main.ts` / `app.js`
 
 ```ts
 import { Application } from '@nativescript/core';
@@ -244,8 +244,7 @@ alert({
 });
 ```
 
-> **Important:** In case you are using [Android app bundle](https://docs.nativescript.org/tooling/publishing/android-app-bundle) to release your android app, add this to
-> App_Resources/Android/app.gradle to make sure all lanugages are bundled in the split apks
+> **Important:** In case you are using [Android app bundle](https://docs.nativescript.org/tooling/publishing/android-app-bundle) to release your android app, add this to `App_Resources/Android/app.gradle` to make sure all lanugages are bundled in the split apks
 
 ```groovy
 android {
@@ -268,8 +267,7 @@ import { Device } from '@nativescript/core';
 console.log("user's language is", Device.language.split('-')[0]);
 ```
 
-> **Tip:** overrideLocale method stores the language in a special key in app-settings,
-> you can access it like this,
+> **Tip:** overrideLocale method stores the language in a special key in app-settings, you can access it like this
 
 ```ts
 import { ApplicationSettings } from '@nativescript/core';

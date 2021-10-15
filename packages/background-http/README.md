@@ -151,7 +151,7 @@ node server 8080
 
 The above commands will start a server listening on port 8080. Remember to update the URL in your app to match the address/port where the server is running.
 
-> Note: If you are using the iOS simulator then `http://localhost:8080` should be used to upload to the demo server. If you are using an Android emulator, `http://10.0.2.2:8080` should be used instead.
+> **Note**: If you are using the iOS simulator then `http://localhost:8080` should be used to upload to the demo server. If you are using an Android emulator, `http://10.0.2.2:8080` should be used instead.
 
 ## License
 

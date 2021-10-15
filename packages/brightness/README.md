@@ -6,7 +6,7 @@ ns plugin add @nativescript/brightness
 
 This command automatically installs the necessary files, as well as stores @nativescript/brightness as a dependency in your project's `package.json` file.
 
-This plugin requires `<uses-permission android:name="android.permission.WRITE_SETTINGS"/>` to be added in the android manifest.
+> **Note:** This plugin requires `<uses-permission android:name="android.permission.WRITE_SETTINGS"/>` to be added in the android manifest.
 
 ## Usage
 
