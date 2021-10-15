@@ -54,7 +54,7 @@ declare class GoogleSignin {
 	static playServicesAvailable(): Promise<boolean>;
 }
 
-declare class GoogleSignInButton extends GoogleSignInButtonBase {
+export declare class GoogleSignInButton extends GoogleSignInButtonBase {
 	colorScheme: ColorSchemeType;
 	colorStyle: ColorStyleType;
 }

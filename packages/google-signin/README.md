@@ -78,6 +78,19 @@ try {
 } catch (e) {}
 }
 ```
+#### Angular usage
+On your `module.ts`
+```ts
+import { registerElement } from '@nativescript/angular';
+registerElement('GoogleSignInButton', () => require('@nativescript/google-signin').GoogleSignInButton);
+```
+
+And then it can be called from your `html` file choosing the desired option for colorScheme and colorStyle as:
+```xml
+	<GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
+```
+
+`colorScheme` supports 'auto', 'dark' and 'light' options and `colorStyle`supports 'standard'. 'wide' and 'icon'. Since it's a button, you can also set some of its properties such as `height` or `width`.
 
 ## configure(options)
 
