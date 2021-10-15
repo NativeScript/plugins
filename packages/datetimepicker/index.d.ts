@@ -1,6 +1,6 @@
 import { Color, View } from '@nativescript/core';
-export * from './utils';
 export * from './ui';
+export * from './utils';
 
 /**
  * Represents a class that provides methods for picking date and time.
@@ -15,6 +15,11 @@ export class DateTimePicker {
 	 * Picks a time from a dialog picker initialized with the provided options and styled with the optionally provided style.
 	 */
 	static pickTime(options: TimePickerOptions, style?: DateTimePickerStyle): Promise<Date>;
+
+	/**
+	 * Closes the currently presented dialog.
+	 */
+	static close();
 }
 
 /**
