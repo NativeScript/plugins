@@ -1,9 +1,9 @@
 import { IAccessToken, ILoginResult } from './common';
-declare class FacebookError extends Error {
+export declare class FacebookError extends Error {
 	readonly native: any;
 }
 
-declare class AccessToken implements IAccessToken {
+export declare class AccessToken implements IAccessToken {
 	readonly appID: string;
 
 	readonly dataAccessExpirationDate: Date;
@@ -39,7 +39,7 @@ declare class AccessToken implements IAccessToken {
 	readonly ios;
 }
 
-declare class LoginResult implements ILoginResult {
+export declare class LoginResult implements ILoginResult {
 	readonly declinedPermissions: string[];
 
 	readonly grantedPermissions: string[];
@@ -55,7 +55,7 @@ declare class LoginResult implements ILoginResult {
 	readonly ios;
 }
 
-declare class LoginManager implements ILoginManager {
+export declare class LoginManager implements ILoginManager {
 	static init();
 
 	static logInWithPermissions(permissions: string[]): Promise<LoginResult>;
