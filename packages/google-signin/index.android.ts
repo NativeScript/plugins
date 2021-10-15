@@ -1,6 +1,5 @@
 import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
-import { GoogleError } from './index.ios';
 import lazy from '@nativescript/core/utils/lazy';
 
 const REQUEST_CODE_SIGNIN = 610210;
@@ -13,6 +12,21 @@ const STYLE_WIDE = lazy(() => com.google.android.gms.common.SignInButton.SIZE_WI
 const COLOR_DARK = lazy(() => com.google.android.gms.common.SignInButton.COLOR_DARK);
 const COLOR_LIGHT = lazy(() => com.google.android.gms.common.SignInButton.COLOR_LIGHT);
 const COLOR_AUTO = lazy(() => com.google.android.gms.common.SignInButton.COLOR_AUTO);
+
+
+export class GoogleError extends Error {
+	#native: java.lang.Exception;
+	static fromNative(native: java.lang.Exception, message?: string) {
+		const error = new GoogleError(message || native?.getMessage?.());
+		error.#native = native;
+		return error;
+	}
+
+	get native() {
+		return this.#native;
+	}
+}
+
 
 export class User implements IUser {
 	#native: com.google.android.gms.auth.api.signin.GoogleSignInAccount;
