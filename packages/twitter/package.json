@@ -1,6 +1,6 @@
 {
     "name": "@nativescript/twitter",
-    "version": "1.0.0-alpha.1",
+    "version": "1.0.0-alpha.2",
     "description": "Twitter for your NativeScript applications",
     "main": "index",
     "typings": "index.d.ts",

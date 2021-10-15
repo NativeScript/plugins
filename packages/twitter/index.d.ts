@@ -1,10 +1,10 @@
 import { ISession, ITwitterUser } from './common';
 
-declare class TwitterError extends Error {
+export declare class TwitterError extends Error {
 	readonly native;
 }
 
-declare class TwitterUser implements ITwitterUser {
+export declare class TwitterUser implements ITwitterUser {
 	readonly formattedScreenName: string;
 
 	readonly isProtected: boolean;
@@ -22,7 +22,7 @@ declare class TwitterUser implements ITwitterUser {
 	readonly userId: string;
 }
 
-declare class Session implements ISession {
+export declare class Session implements ISession {
 	readonly authToken: string;
 
 	readonly authTokenSecret: string;
@@ -38,11 +38,11 @@ declare class Session implements ISession {
 	readonly android;
 }
 
-declare class Twitter {
+export declare class Twitter {
 	static init(consumerKey: string, consumerSecret: string);
 }
 
-declare class TwitterSignIn {
+export declare class TwitterSignIn {
 	static logIn(): Promise<Session>;
 	static logOut();
 	static getCurrentUser(): Promise<TwitterUser>
