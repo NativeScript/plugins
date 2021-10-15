@@ -258,6 +258,7 @@ Internally `DatePickerField` and `TimePickerField` call `DateTimePicker`'s `pick
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<Date>` | picks a date from a dialog picker initialized with the provided options and styled with the optionally provided style. |
 | `pickTime(options: TimePickerOptions, style?: DateTimePickerStyle): Promise<Date>` | picks a time from a dialog picker initialized with the provided options and styled with the optionally provided style. |
+| `close()`                                                                          | closes the presented dialog picker                                                                                     |
 
 **DatePickerOptions**:
 
