@@ -1,8 +1,8 @@
-import { Color, View, IOSHelper, Device } from '@nativescript/core';
-import { DateTimePickerBase, DateTimePickerStyleBase, getCurrentPage, DatePickerOptions, TimePickerOptions, PickerOptions } from './common';
+import { Color, Device } from '@nativescript/core';
+import { DatePickerOptions, DateTimePickerBase, DateTimePickerStyleBase, PickerOptions, TimePickerOptions } from './common';
 import { getDateNow, getDateToday, LocalizationUtils } from './utils';
-export * from './utils';
 export * from './ui';
+export * from './utils';
 
 export class DateTimePickerStyle extends DateTimePickerStyleBase {}
 
@@ -12,6 +12,7 @@ export class DateTimePicker extends DateTimePickerBase {
 	private static readonly DEFAULT_DATE_PICKER_STYLE = parseFloat(Device.osVersion) >= 14.0 ? 3 : 1;
 	private static readonly DEFAULT_TIME_PICKER_STYLE = 1;
 	private static readonly _isTablet = Device.deviceType === 'Tablet';
+	private static _nativeDialog: UIAlertController;
 
 	public static PICKER_DEFAULT_MESSAGE_HEIGHT = parseFloat(Device.osVersion) >= 14.0 ? 300 : 192;
 	public static PICKER_WIDTH_INSETS = 16;
@@ -24,10 +25,10 @@ export class DateTimePicker extends DateTimePickerBase {
 	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<Date> {
 		const pickDate = new Promise<Date>((resolve) => {
 			const nativeDatePicker = DateTimePicker._createNativeDatePicker(options);
-			const nativeDialog = DateTimePicker._createNativeDialog(nativeDatePicker, options, style, (result) => {
+			DateTimePicker._nativeDialog = DateTimePicker._createNativeDialog(nativeDatePicker, options, style, (result) => {
 				resolve(result);
 			});
-			DateTimePicker._showNativeDialog(nativeDialog, nativeDatePicker, style);
+			DateTimePicker._showNativeDialog(DateTimePicker._nativeDialog, nativeDatePicker, style);
 		});
 		return pickDate;
 	}
@@ -35,12 +36,18 @@ export class DateTimePicker extends DateTimePickerBase {
 	static pickTime(options: TimePickerOptions, style?: DateTimePickerStyle): Promise<Date> {
 		const pickTime = new Promise<Date>((resolve) => {
 			const nativeTimePicker = DateTimePicker._createNativeTimePicker(options);
-			const nativeDialog = DateTimePicker._createNativeDialog(nativeTimePicker, options, style, (result) => {
+			DateTimePicker._nativeDialog = DateTimePicker._createNativeDialog(nativeTimePicker, options, style, (result) => {
 				resolve(result);
 			});
-			DateTimePicker._showNativeDialog(nativeDialog, nativeTimePicker, style);
+			DateTimePicker._showNativeDialog(DateTimePicker._nativeDialog, nativeTimePicker, style);
 		});
 		return pickTime;
+	}
+
+	static close() {
+		if (DateTimePicker._nativeDialog) {
+			DateTimePicker._nativeDialog.dismissViewControllerAnimatedCompletion(true, null);
+		}
 	}
 
 	static _createNativeDatePicker(options: DatePickerOptions): UIDatePicker {
