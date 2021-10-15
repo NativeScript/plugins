@@ -4,7 +4,7 @@ import { Configuration, IUser, GoogleSignInButtonBase, ColorStyleType, ColorSche
 export { colorSchemeProperty, colorStyleProperty } from './common';
 import { GoogleError } from './index.ios';
 
-declare class User implements IUser {
+export declare class User implements IUser {
 	readonly id: string;
 
 	readonly displayName: string;
@@ -31,8 +31,8 @@ declare class User implements IUser {
 	readonly android;
 	readonly ios;
 }
-declare class GoogleSignin {
-	static configure(configuration: Configuration): Promise<void>;
+export declare class GoogleSignin {
+	static configure(configuration?: Configuration): Promise<void>;
 
 	static getCurrentUser(): User | null;
 
