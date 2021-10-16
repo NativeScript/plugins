@@ -8,7 +8,7 @@ ns plugin add @nativescript/appavailability
 
 ## Usage
 
-> Note that version 1.3.0 added a synchronous version of this method that doesn't return a Promise. Need that? Use `availableSync` instead of `available`.
+> **Note:** Version 1.3.0 added a synchronous version of this method that doesn't return a Promise. Need that? Use `availableSync` instead of `available`.
 
 ### TypeScript
 

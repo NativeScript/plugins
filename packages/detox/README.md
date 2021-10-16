@@ -116,7 +116,7 @@ Here is a full example of a Detox configuration:
 }
 ```
 
-**NOTE:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=18. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
+> **Note:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=18. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
 
 ## Usage
 
