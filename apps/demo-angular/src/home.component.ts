@@ -79,6 +79,9 @@ export class HomeComponent {
 		name: 'social-share'
 	},
 	{
+		name: 'theme-switcher'
+	},
+	{
 		name: 'twitter'
 	},
 	{

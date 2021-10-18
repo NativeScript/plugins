@@ -1,0 +1,13 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="theme-switcher" icon="" class="theme-action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+            <Button text="Test theme-switcher" tap="{{ testIt }}" class="theme-btn"/>
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>

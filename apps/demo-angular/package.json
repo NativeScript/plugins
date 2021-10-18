@@ -2,7 +2,7 @@
   "main": "./src/main.ts",
   "dependencies": {
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/debug-ios": "file:../../dist/packages/debug-ios",
+    "@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
     "@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
     "@nativescript/appavailability": "file:../../dist/packages/appavailability",
     "@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
@@ -11,11 +11,14 @@
     "@nativescript/camera": "file:../../dist/packages/camera",
     "@nativescript/datetimepicker": "file:../../dist/packages/datetimepicker",
     "@nativescript/debug-android": "file:../../dist/packages/debug-android",
+    "@nativescript/debug-ios": "file:../../dist/packages/debug-ios",
     "@nativescript/detox": "file:../../dist/packages/detox",
     "@nativescript/directions": "file:../../dist/packages/directions",
     "@nativescript/email": "file:../../dist/packages/email",
+    "@nativescript/facebook": "file:../../dist/packages/facebook",
     "@nativescript/fingerprint-auth": "file:../../dist/packages/fingerprint-auth",
     "@nativescript/geolocation": "file:../../dist/packages/geolocation",
+    "@nativescript/google-signin": "file:../../dist/packages/google-signin",
     "@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
     "@nativescript/ios-security": "file:../../dist/packages/ios-security",
     "@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
@@ -24,10 +27,8 @@
     "@nativescript/picker": "file:../../dist/packages/picker",
     "@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
     "@nativescript/social-share": "file:../../dist/packages/social-share",
-    "@nativescript/zip": "file:../../dist/packages/zip",
-    "@nativescript/facebook": "file:../../dist/packages/facebook",
-    "@nativescript/google-signin": "file:../../dist/packages/google-signin",
-    "@nativescript/twitter": "file:../../dist/packages/twitter"
+    "@nativescript/twitter": "file:../../dist/packages/twitter",
+    "@nativescript/zip": "file:../../dist/packages/zip"
   },
   "devDependencies": {
     "@nativescript/android": "~8.1.1",
