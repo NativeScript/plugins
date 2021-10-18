@@ -1,7 +1,7 @@
 import { addTaggedAdditionalCSS, removeTaggedAdditionalCSS, Application, ApplicationSettings } from '@nativescript/core';
 
 export interface ThemeDefinition {
-	[name: string]: () => string | any;
+	[name: string]: () => any;
 }
 
 export interface ThemeSwitcherOptions {
@@ -45,7 +45,7 @@ export class ThemeSwitcher {
 		});
 	}
 
-	async switchTheme(themeName) {
+	async switchTheme(themeName: string) {
 		console.log('SWITCHING THEME TO ', themeName);
 		if (!this.themes.has(themeName)) {
 			if (themeName !== 'default') {
