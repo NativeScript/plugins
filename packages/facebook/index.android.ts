@@ -183,7 +183,7 @@ export class LoginManager implements ILoginManager {
 
 	static init(){}
 
-	static logInWithPermissions(permissions: string[]): Promise<LoginResult> {
+	static logInWithPermissions(permissions: string[], context?: any): Promise<LoginResult> {
 		return new Promise((resolve, reject) => {
 			if (!this.#native) {
 				this.#native = com.facebook.login.LoginManager.getInstance();
@@ -206,7 +206,7 @@ export class LoginManager implements ILoginManager {
 					},
 				})
 			);
-			this.#native.logIn(Application.android.foregroundActivity || Application.android.startActivity, java.util.Arrays.asList(permissions));
+			this.#native.logIn(<android.app.Activity>context || Application.android.foregroundActivity || Application.android.startActivity, java.util.Arrays.asList(permissions));
 		});
 	}
 

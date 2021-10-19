@@ -151,6 +151,8 @@ declare class FBSDKLoginButton extends FBSDKButton {
 
 	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginButton; // inherited from UIAppearance
 
+	static buttonWithConfigurationPrimaryAction(configuration: UIButtonConfiguration, primaryAction: UIAction): FBSDKLoginButton; // inherited from UIButton
+
 	static buttonWithType(buttonType: UIButtonType): FBSDKLoginButton; // inherited from UIButton
 
 	static buttonWithTypePrimaryAction(buttonType: UIButtonType, primaryAction: UIAction): FBSDKLoginButton; // inherited from UIButton
@@ -273,10 +275,6 @@ declare const enum FBSDKLoginError {
 }
 
 declare var FBSDKLoginErrorDomain: string;
-
-declare var FBSDKLoginKitVersionNumber: number;
-
-declare var FBSDKLoginKitVersionString: interop.Reference<number>;
 
 declare class FBSDKLoginManager extends NSObject {
 
