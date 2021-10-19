@@ -7,7 +7,6 @@ ns plugin add @nativescript/theme-switcher
 ## Usage
 
 ```ts
-
 import { initThemes, switchTheme } from '@nativescript/theme-switcher'
 
 
@@ -25,6 +24,13 @@ switchTheme('green');
 ```
 
 > **Note**: The `theme-loader!` prefix is used to apply a custom loader that prevents the styles from being auto-applied, and instead applied on-demand by the theme switcher. It requires `@nativescript/webpack@5+` to work properly.
+
+
+> **Note for TypeScript users**: TypeScript does not know about `theme-loader` or `css/scss` files, in order to supress the type errors when calling `import('theme-loader!./path/to/theme.css')` you can add
+> ```ts
+> /// <reference path="./node_modules/@nativescript/theme-switcher/shims.d.ts" />
+> ```
+> To your `references.d.ts`, or use `// @ts-ignore` to supress the errors locally.
 
 ---
 

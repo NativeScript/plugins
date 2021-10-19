@@ -1471,7 +1471,9 @@
             "assets": [
               "packages/theme-switcher/*.md",
               "packages/theme-switcher/nativescript.webpack.js",
+              "packages/theme-switcher/theme-loader.js",
               "packages/theme-switcher/index.d.ts",
+              "packages/theme-switcher/shims.d.ts",
               "LICENSE",
               {
                 "glob": "**/*",

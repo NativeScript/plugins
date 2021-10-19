@@ -7,15 +7,19 @@ export interface ThemeDefinition {
 export interface ThemeSwitcherOptions {
 	persistent?: boolean;
 	persistenceKey?: string;
+	autoLoadThemeOnLaunch?: boolean;
 }
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export class ThemeSwitcher {
 	private themes: Map<string, Function>;
 	private cssTag: string;
 	private options: ThemeSwitcherOptions;
 
+	/**
+	 * Constructs a new ThemeSwitcher instance with an unique themeKey used to distinguish between different instances.
+	 *
+	 * @param themeKey unique string key for this ThemeSwitcher instance
+	 */
 	constructor(themeKey: string) {
 		this.themes = new Map();
 		this.cssTag = `__theme_switcher_${themeKey}`;
@@ -24,9 +28,16 @@ export class ThemeSwitcher {
 		this.options = {
 			persistent: true,
 			persistenceKey: this.cssTag,
+			autoLoadThemeOnLaunch: true,
 		};
 	}
 
+	/**
+	 * Initiializes the ThemeSwitcher themes and options.
+	 *
+	 * @param themes An object containing theme names as keys and a loader function as values.
+	 * @param options Optional options to configure the theme switcher.
+	 */
 	initThemes(themes: ThemeDefinition, options?: ThemeSwitcherOptions) {
 		if (options) {
 			// apply options to overriding the defaults
@@ -37,14 +48,26 @@ export class ThemeSwitcher {
 			this.themes.set(themeName, themeLoader);
 		});
 
-		// wait when loading the default theme
-		// todo: figure out a cleaner way
-		wait(100).then(() => {
-			const defaultTheme = this.options.persistent ? ApplicationSettings.getString(this.options.persistenceKey, 'default') : 'default';
-			this.switchTheme(defaultTheme);
-		});
+		if (this.options.autoLoadThemeOnLaunch) {
+			Application.on(Application.launchEvent, () => {
+				this.loadDefaultTheme();
+			});
+		}
 	}
 
+	/**
+	 * Loads the last selected theme if persistence is enabled, otherwise loads "default" if it exists.
+	 */
+	loadDefaultTheme() {
+		const defaultTheme = this.options.persistent ? ApplicationSettings.getString(this.options.persistenceKey, 'default') : 'default';
+		this.switchTheme(defaultTheme);
+	}
+
+	/**
+	 * Switches the current theme unloading the previously selected theme.
+	 *
+	 * @param themeName The name of the theme to switch to
+	 */
 	async switchTheme(themeName: string) {
 		console.log('SWITCHING THEME TO ', themeName);
 		if (!this.themes.has(themeName)) {
@@ -79,5 +102,6 @@ const defaultThemeSwitcher = new ThemeSwitcher('default');
 
 const initThemes: InstanceType<typeof ThemeSwitcher>['initThemes'] = defaultThemeSwitcher.initThemes.bind(defaultThemeSwitcher);
 const switchTheme: InstanceType<typeof ThemeSwitcher>['switchTheme'] = defaultThemeSwitcher.switchTheme.bind(defaultThemeSwitcher);
+const loadDefaultTheme: InstanceType<typeof ThemeSwitcher>['loadDefaultTheme'] = defaultThemeSwitcher.loadDefaultTheme.bind(defaultThemeSwitcher);
 
-export { initThemes, switchTheme };
+export { initThemes, switchTheme, loadDefaultTheme };
