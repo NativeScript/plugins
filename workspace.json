@@ -1454,6 +1454,52 @@
           }
         }
       }
+    },
+    "cloudinary": {
+      "projectType": "library",
+      "generators": {},
+      "root": "packages/cloudinary",
+      "sourceRoot": "packages/cloudinary",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/cloudinary",
+            "tsConfig": "packages/cloudinary/tsconfig.json",
+            "packageJson": "packages/cloudinary/package.json",
+            "main": "packages/cloudinary/index.ts",
+            "assets": [
+              "packages/cloudinary/*.md",
+              "packages/cloudinary/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/cloudinary/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run cloudinary:build",
+              "node tools/scripts/build-finish.ts cloudinary"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages cloudinary"
+            ],
+            "parallel": false
+          }
+        }
+      }
     }
   },
   "cli": {

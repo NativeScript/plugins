@@ -1,33 +1,34 @@
-- [@nativescript/animated-circle](packages/animated-circle/README.md)
-- [@nativescript/appavailability](packages/appavailability/README.md)
-- [@nativescript/auto-fit-text](packages/auto-fit-text/README.md)
-- [@nativescript/background-http](packages/background-http/README.md)
-- [@nativescript/brightness](packages/brightness/README.md)
-- [@nativescript/camera](packages/camera/README.md)
-- [@nativescript/datetimepicker](packages/datetimepicker/README.md)
-- [@nativescript/debug-android](packages/debug-android/README.md)
-- [@nativescript/debug-ios](packages/debug-ios/README.md)
-- [@nativescript/detox](packages/detox/README.md)
-- [@nativescript/directions](packages/directions/README.md)
-- [@nativescript/email](packages/email/README.md)
-- [@nativescript/facebook](packages/facebook/README.md)
-- [@nativescript/fingerprint-auth](packages/fingerprint-auth/README.md)
-- [@nativescript/geolocation](packages/geolocation/README.md)
-- [@nativescript/google-signin](packages/google-signin/README.md)
-- [@nativescript/imagepicker](packages/imagepicker/README.md)
-- [@nativescript/ios-security](packages/ios-security/README.md)
-- [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
-- [@nativescript/local-notifications](packages/local-notifications/README.md)
-- [@nativescript/localize](packages/localize/README.md)
-- [@nativescript/picker](packages/picker/README.md)
-- [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
-- [@nativescript/social-share](packages/social-share/README.md)
-- [@nativescript/twitter](packages/twitter/README.md)
-- [@nativescript/zip](packages/zip/README.md)
+- @nativescript/animated-circle
+- @nativescript/appavailability
+- @nativescript/auto-fit-text
+- @nativescript/background-http
+- @nativescript/brightness
+- @nativescript/camera
+- @nativescript/cloudinary
+- @nativescript/datetimepicker
+- @nativescript/debug-android
+- @nativescript/debug-ios
+- @nativescript/detox
+- @nativescript/directions
+- @nativescript/email
+- @nativescript/facebook
+- @nativescript/fingerprint-auth
+- @nativescript/geolocation
+- @nativescript/google-signin
+- @nativescript/imagepicker
+- @nativescript/ios-security
+- @nativescript/iqkeyboardmanager
+- @nativescript/local-notifications
+- @nativescript/localize
+- @nativescript/picker
+- @nativescript/shared-notification-delegate
+- @nativescript/social-share
+- @nativescript/twitter
+- @nativescript/zip
 
 # How to use?
 
-This workspace manages the suite of plugins listed above. 
+This workspace manages the suite of plugins listed above.
 
 In general, when in doubt with what to do, just `npm start`.
 

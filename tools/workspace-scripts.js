@@ -225,7 +225,7 @@ module.exports = {
 				},
 			},
 			// @nativescript/facebook
-			'facebook': {
+			facebook: {
 				build: {
 					script: 'nx run facebook:build.all',
 					description: '@nativescript/facebook: Build',
@@ -239,10 +239,17 @@ module.exports = {
 				},
 			},
 			// @nativescript/twitter
-			'twitter': {
+			twitter: {
 				build: {
 					script: 'nx run twitter:build.all',
 					description: '@nativescript/twitter: Build',
+				},
+			},
+			// @nativescript/cloudinary
+			cloudinary: {
+				build: {
+					script: 'nx run cloudinary:build.all',
+					description: '@nativescript/cloudinary: Build',
 				},
 			},
 			'build-all': {
@@ -347,7 +354,7 @@ module.exports = {
 				script: 'nx run ios-security:focus',
 				description: 'Focus on @nativescript/ios-security',
 			},
-			'facebook': {
+			facebook: {
 				script: 'nx run facebook:focus',
 				description: 'Focus on @nativescript/facebook',
 			},
@@ -355,9 +362,13 @@ module.exports = {
 				script: 'nx run google-signin:focus',
 				description: 'Focus on @nativescript/google-signin',
 			},
-			'twitter': {
+			twitter: {
 				script: 'nx run twitter:focus',
 				description: 'Focus on @nativescript/twitter',
+			},
+			cloudinary: {
+				script: 'nx run cloudinary:focus',
+				description: 'Focus on @nativescript/cloudinary',
 			},
 			reset: {
 				script: 'nx run all:focus',

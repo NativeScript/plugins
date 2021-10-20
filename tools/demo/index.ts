@@ -5,6 +5,7 @@ export * from './auto-fit-text';
 export * from './background-http';
 export * from './brightness';
 export * from './camera';
+export * from './cloudinary';
 export * from './datetimepicker';
 export * from './debug-android';
 export * from './debug-ios';
