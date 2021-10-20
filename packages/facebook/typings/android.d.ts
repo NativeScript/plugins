@@ -240,6 +240,194 @@ declare module com {
 
 declare module com {
 	export module facebook {
+		export class AuthenticationToken {
+			public static class: java.lang.Class<com.facebook.AuthenticationToken>;
+			public static AUTHENTICATION_TOKEN_KEY: string;
+			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationToken>;
+			public static Companion: com.facebook.AuthenticationToken.Companion;
+			public constructor(param0: string, param1: string);
+			public equals(param0: any): boolean;
+			public getHeader(): com.facebook.AuthenticationTokenHeader;
+			public getToken(): string;
+			public describeContents(): number;
+			public getSignature(): string;
+			public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+			public constructor(param0: globalAndroid.os.Parcel);
+			public getExpectedNonce(): string;
+			public getClaims(): com.facebook.AuthenticationTokenClaims;
+			public hashCode(): number;
+		}
+		export module AuthenticationToken {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AuthenticationToken.Companion>;
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export class AuthenticationTokenCache {
+			public static class: java.lang.Class<com.facebook.AuthenticationTokenCache>;
+			public static CACHED_AUTHENTICATION_TOKEN_KEY: string;
+			public static CACHED_AUTHENTICATION_TOKEN_NONCE_KEY: string;
+			public static Companion: com.facebook.AuthenticationTokenCache.Companion;
+			public save(param0: com.facebook.AuthenticationToken): void;
+			public clear(): void;
+			public load(): com.facebook.AuthenticationToken;
+			public constructor(param0: globalAndroid.content.SharedPreferences);
+			public constructor();
+		}
+		export module AuthenticationTokenCache {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenCache.Companion>;
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export class AuthenticationTokenClaims {
+			public static class: java.lang.Class<com.facebook.AuthenticationTokenClaims>;
+			public static MAX_TIME_SINCE_TOKEN_ISSUED: number;
+			public static JSON_KEY_JIT: string;
+			public static JSON_KEY_ISS: string;
+			public static JSON_KEY_AUD: string;
+			public static JSON_KEY_NONCE: string;
+			public static JSON_KEY_EXP: string;
+			public static JSON_KEY_IAT: string;
+			public static JSON_KEY_SUB: string;
+			public static JSON_KEY_NAME: string;
+			public static JSON_KEY_GIVEN_NAME: string;
+			public static JSON_KEY_MIDDLE_NAME: string;
+			public static JSON_KEY_FAMILY_NAME: string;
+			public static JSON_KEY_EMAIL: string;
+			public static JSON_KEY_PICTURE: string;
+			public static JSON_KEY_USER_FRIENDS: string;
+			public static JSON_KEY_USER_BIRTHDAY: string;
+			public static JSON_KEY_USER_AGE_RANGE: string;
+			public static JSON_KEY_USER_HOMETOWN: string;
+			public static JSON_KEY_USER_GENDER: string;
+			public static JSON_KEY_USER_LINK: string;
+			public static JSON_KEY_USER_LOCATION: string;
+			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationTokenClaims>;
+			public static Companion: com.facebook.AuthenticationTokenClaims.Companion;
+			public getNonce(): string;
+			public equals(param0: any): boolean;
+			public getFamilyName(): string;
+			public getJti(): string;
+			public getPicture(): string;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string);
+			public getUserHometown(): java.util.Map<string,string>;
+			public constructor(param0: string, param1: string);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string);
+			public getExp(): number;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string);
+			public getUserAgeRange(): java.util.Map<string,java.lang.Integer>;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string);
+			public getAud(): string;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>, param17: java.util.Map<string,string>, param18: string);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string);
+			public getUserLocation(): java.util.Map<string,string>;
+			public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+			public constructor(param0: globalAndroid.os.Parcel);
+			public getUserBirthday(): string;
+			public getUserLink(): string;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string);
+			public toJSONObject$facebook_core_release(): org.json.JSONObject;
+			public toString(): string;
+			public getName(): string;
+			public getMiddleName(): string;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>, param17: java.util.Map<string,string>);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>);
+			public getIat(): number;
+			public getSub(): string;
+			public describeContents(): number;
+			public getGivenName(): string;
+			public getIss(): string;
+			public toEnCodedString(): string;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>, param17: java.util.Map<string,string>, param18: string, param19: string);
+			public getUserGender(): string;
+			public getUserFriends(): java.util.Set<string>;
+			public getEmail(): string;
+			public hashCode(): number;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string);
+		}
+		export module AuthenticationTokenClaims {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenClaims.Companion>;
+				public getNullableString$facebook_core_release(param0: org.json.JSONObject, param1: string): string;
+				public createFromJSONObject$facebook_core_release(param0: org.json.JSONObject): com.facebook.AuthenticationTokenClaims;
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export class AuthenticationTokenHeader {
+			public static class: java.lang.Class<com.facebook.AuthenticationTokenHeader>;
+			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationTokenHeader>;
+			public static Companion: com.facebook.AuthenticationTokenHeader.Companion;
+			public equals(param0: any): boolean;
+			public getKid(): string;
+			public constructor(param0: string, param1: string, param2: string);
+			public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+			public constructor(param0: globalAndroid.os.Parcel);
+			public getAlg(): string;
+			public toJSONObject$facebook_core_release(): org.json.JSONObject;
+			public toString(): string;
+			public describeContents(): number;
+			public toEnCodedString(): string;
+			public getTyp(): string;
+			public constructor(param0: string);
+			public hashCode(): number;
+		}
+		export module AuthenticationTokenHeader {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenHeader.Companion>;
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export class AuthenticationTokenManager {
+			public static class: java.lang.Class<com.facebook.AuthenticationTokenManager>;
+			public static TAG: string;
+			public static ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED: string;
+			public static EXTRA_OLD_AUTHENTICATION_TOKEN: string;
+			public static EXTRA_NEW_AUTHENTICATION_TOKEN: string;
+			public static SHARED_PREFERENCES_NAME: string;
+			public static Companion: com.facebook.AuthenticationTokenManager.Companion;
+			public static getInstance(): com.facebook.AuthenticationTokenManager;
+			public getCurrentAuthenticationToken(): com.facebook.AuthenticationToken;
+			public setCurrentAuthenticationToken(param0: com.facebook.AuthenticationToken): void;
+			public loadCurrentAuthenticationToken(): boolean;
+			public constructor(param0: androidx.localbroadcastmanager.content.LocalBroadcastManager, param1: com.facebook.AuthenticationTokenCache);
+			public currentAuthenticationTokenChanged(): void;
+		}
+		export module AuthenticationTokenManager {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenManager.Companion>;
+				public getInstance(): com.facebook.AuthenticationTokenManager;
+			}
+			export class CurrentAuthenticationTokenChangedBroadcastReceiver {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenManager.CurrentAuthenticationTokenChangedBroadcastReceiver>;
+				public onReceive(param0: globalAndroid.content.Context, param1: globalAndroid.content.Intent): void;
+				public constructor();
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
 		export class CallbackManager {
 			public static class: java.lang.Class<com.facebook.CallbackManager>;
 			/**
@@ -348,6 +536,7 @@ declare module com {
 	export module facebook {
 		export abstract class FacebookButtonBase {
 			public static class: java.lang.Class<com.facebook.FacebookButtonBase>;
+			public getAndroidxActivityResultRegistryOwner(): androidx.activity.result.ActivityResultRegistryOwner;
 			public getFragment(): androidx.fragment.app.Fragment;
 			public getCompoundPaddingLeft(): number;
 			public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number, param4: string, param5: string);
@@ -568,6 +757,8 @@ declare module com {
 	export module facebook {
 		export class FacebookSdk {
 			public static class: java.lang.Class<com.facebook.FacebookSdk>;
+			public static CALLBACK_OFFSET_CHANGED_AFTER_INIT: string;
+			public static CALLBACK_OFFSET_NEGATIVE: string;
 			public static APP_EVENT_PREFERENCES: string;
 			public static DATA_PROCESSING_OPTIONS_PREFERENCES: string;
 			public static APPLICATION_ID_PROPERTY: string;
@@ -591,6 +782,7 @@ declare module com {
 			public static FACEBOOK_COM: string;
 			public static FB_GG: string;
 			public static INSTAGRAM_COM: string;
+			public static INSTANCE: com.facebook.FacebookSdk;
 			/** @deprecated */
 			public static sdkInitialize(param0: globalAndroid.content.Context, param1: number): void;
 			public static publishInstallAsync(param0: globalAndroid.content.Context, param1: string): void;
@@ -602,7 +794,6 @@ declare module com {
 			public static setExecutor(param0: java.util.concurrent.Executor): void;
 			public static setApplicationName(param0: string): void;
 			public static getCodelessSetupEnabled(): boolean;
-			public static setGraphRequestCreator(param0: com.facebook.FacebookSdk.GraphRequestCreator): void;
 			public static setAutoLogAppEventsEnabled(param0: boolean): void;
 			public static setOnProgressThreshold(param0: number): void;
 			public static isInitialized(): boolean;
@@ -610,13 +801,13 @@ declare module com {
 			public static setDataProcessingOptions(param0: androidNative.Array<string>): void;
 			public static getApplicationId(): string;
 			public static setDataProcessingOptions(param0: androidNative.Array<string>, param1: number, param2: number): void;
-			public constructor();
 			public static setAutoInitEnabled(param0: boolean): void;
 			public static setAdvertiserIDCollectionEnabled(param0: boolean): void;
 			public static addLoggingBehavior(param0: com.facebook.LoggingBehavior): void;
 			public static getAutoInitEnabled(): boolean;
 			public static setCodelessDebugLogEnabled(param0: boolean): void;
 			public static setMonitorEnabled(param0: boolean): void;
+			public static loadDefaultsFromMetadata$facebook_core_release(param0: globalAndroid.content.Context): void;
 			public static getAutoLogAppEventsEnabled(): boolean;
 			public static fullyInitialize(): void;
 			public static setCacheDir(param0: java.io.File): void;
@@ -643,6 +834,7 @@ declare module com {
 			public static getLoggingBehaviors(): java.util.Set<com.facebook.LoggingBehavior>;
 			public static getApplicationName(): string;
 			public static getMonitorEnabled(): boolean;
+			public static setGraphRequestCreator$facebook_core_release(param0: com.facebook.FacebookSdk.GraphRequestCreator): void;
 			public static getFacebookDomain(): string;
 			public static setApplicationId(param0: string): void;
 			public static getClientToken(): string;
@@ -650,8 +842,8 @@ declare module com {
 			public static getCacheDir(): java.io.File;
 			public static isLoggingBehaviorEnabled(param0: com.facebook.LoggingBehavior): boolean;
 			public static getSdkVersion(): string;
-			public static removeLoggingBehavior(param0: com.facebook.LoggingBehavior): void;
 			public static isLegacyTokenUpgradeSupported(): boolean;
+			public static removeLoggingBehavior(param0: com.facebook.LoggingBehavior): void;
 		}
 		export module FacebookSdk {
 			export class GraphRequestCreator {
@@ -1665,18 +1857,10 @@ declare module com {
 				public logPurchase(param0: java.math.BigDecimal, param1: java.util.Currency): void;
 				public isValidForAccessToken(param0: com.facebook.AccessToken): boolean;
 				public static initializeLib(param0: globalAndroid.content.Context, param1: string): void;
-				/** @deprecated */
-				public static activateApp(param0: globalAndroid.content.Context): void;
 				public logEvent(param0: string, param1: number): void;
 				public static newLogger(param0: globalAndroid.content.Context): com.facebook.appevents.AppEventsLogger;
 				public flush(): void;
-				/** @deprecated */
-				public static deactivateApp(param0: globalAndroid.content.Context): void;
 				public static setFlushBehavior(param0: com.facebook.appevents.AppEventsLogger.FlushBehavior): void;
-				/** @deprecated */
-				public static deactivateApp(param0: globalAndroid.content.Context, param1: string): void;
-				/** @deprecated */
-				public static setUserData(param0: globalAndroid.os.Bundle): void;
 				public static setUserID(param0: string): void;
 				public static getFlushBehavior(): com.facebook.appevents.AppEventsLogger.FlushBehavior;
 				public logProductItem(param0: string, param1: com.facebook.appevents.AppEventsLogger.ProductAvailability, param2: com.facebook.appevents.AppEventsLogger.ProductCondition, param3: string, param4: string, param5: string, param6: string, param7: java.math.BigDecimal, param8: java.util.Currency, param9: string, param10: string, param11: string, param12: globalAndroid.os.Bundle): void;
@@ -1688,27 +1872,17 @@ declare module com {
 				public static clearUserData(): void;
 				public logEvent(param0: string): void;
 				public static setPushNotificationsRegistrationId(param0: string): void;
-				/** @deprecated */
-				public logSdkEvent(param0: string, param1: java.lang.Double, param2: globalAndroid.os.Bundle): void;
-				/** @deprecated */
-				public static activateApp(param0: globalAndroid.content.Context, param1: string): void;
 				public static setInstallReferrer(param0: string): void;
 				public logPushNotificationOpen(param0: globalAndroid.os.Bundle): void;
 				public static augmentWebView(param0: globalAndroid.webkit.WebView, param1: globalAndroid.content.Context): void;
 				public logPushNotificationOpen(param0: globalAndroid.os.Bundle, param1: string): void;
 				public static getAnonymousAppDeviceGUID(param0: globalAndroid.content.Context): string;
-				/** @deprecated */
-				public static updateUserProperties(param0: globalAndroid.os.Bundle, param1: com.facebook.GraphRequest.Callback): void;
 				public logEvent(param0: string, param1: number, param2: globalAndroid.os.Bundle): void;
 				public static setUserData(param0: string, param1: string, param2: string, param3: string, param4: string, param5: string, param6: string, param7: string, param8: string, param9: string): void;
 				public static newLogger(param0: globalAndroid.content.Context, param1: string, param2: com.facebook.AccessToken): com.facebook.appevents.AppEventsLogger;
-				/** @deprecated */
-				public logPurchaseImplicitly(param0: java.math.BigDecimal, param1: java.util.Currency, param2: globalAndroid.os.Bundle): void;
 				public static activateApp(param0: globalAndroid.app.Application, param1: string): void;
 				public static getUserData(): string;
 				public static clearUserID(): void;
-				/** @deprecated */
-				public static updateUserProperties(param0: globalAndroid.os.Bundle, param1: string, param2: com.facebook.GraphRequest.Callback): void;
 				public static onContextStop(): void;
 				public logEvent(param0: string, param1: globalAndroid.os.Bundle): void;
 				public static newLogger(param0: globalAndroid.content.Context, param1: string): com.facebook.appevents.AppEventsLogger;
@@ -1716,40 +1890,26 @@ declare module com {
 			export module AppEventsLogger {
 				export class Companion {
 					public static class: java.lang.Class<com.facebook.appevents.AppEventsLogger.Companion>;
-					public getUserData(): string;
-					/** @deprecated */
-					public setUserData(param0: globalAndroid.os.Bundle): void;
-					public activateApp(param0: globalAndroid.app.Application, param1: string): void;
-					/** @deprecated */
-					public updateUserProperties(param0: globalAndroid.os.Bundle, param1: string, param2: com.facebook.GraphRequest.Callback): void;
-					public getAnonymousAppDeviceGUID(param0: globalAndroid.content.Context): string;
-					public clearUserID(): void;
-					/** @deprecated */
-					public activateApp(param0: globalAndroid.content.Context): void;
-					public setPushNotificationsRegistrationId(param0: string): void;
-					public activateApp(param0: globalAndroid.app.Application): void;
-					public newLogger(param0: globalAndroid.content.Context, param1: string, param2: com.facebook.AccessToken): com.facebook.appevents.AppEventsLogger;
-					public augmentWebView(param0: globalAndroid.webkit.WebView, param1: globalAndroid.content.Context): void;
-					/** @deprecated */
-					public deactivateApp(param0: globalAndroid.content.Context): void;
-					public newLogger(param0: globalAndroid.content.Context, param1: com.facebook.AccessToken): com.facebook.appevents.AppEventsLogger;
 					public getUserID(): string;
+					public getUserData(): string;
+					public activateApp(param0: globalAndroid.app.Application, param1: string): void;
 					public setUserData(param0: string, param1: string, param2: string, param3: string, param4: string, param5: string, param6: string, param7: string, param8: string, param9: string): void;
 					public initializeLib(param0: globalAndroid.content.Context, param1: string): void;
 					public setUserID(param0: string): void;
-					/** @deprecated */
-					public deactivateApp(param0: globalAndroid.content.Context, param1: string): void;
+					public getAnonymousAppDeviceGUID(param0: globalAndroid.content.Context): string;
 					public clearUserData(): void;
 					public onContextStop(): void;
+					public clearUserID(): void;
 					public newLogger(param0: globalAndroid.content.Context): com.facebook.appevents.AppEventsLogger;
 					public newLogger(param0: globalAndroid.content.Context, param1: string): com.facebook.appevents.AppEventsLogger;
-					/** @deprecated */
-					public updateUserProperties(param0: globalAndroid.os.Bundle, param1: com.facebook.GraphRequest.Callback): void;
 					public setInstallReferrer(param0: string): void;
 					public setFlushBehavior(param0: com.facebook.appevents.AppEventsLogger.FlushBehavior): void;
+					public setPushNotificationsRegistrationId(param0: string): void;
 					public getFlushBehavior(): com.facebook.appevents.AppEventsLogger.FlushBehavior;
-					/** @deprecated */
-					public activateApp(param0: globalAndroid.content.Context, param1: string): void;
+					public activateApp(param0: globalAndroid.app.Application): void;
+					public newLogger(param0: globalAndroid.content.Context, param1: string, param2: com.facebook.AccessToken): com.facebook.appevents.AppEventsLogger;
+					public augmentWebView(param0: globalAndroid.webkit.WebView, param1: globalAndroid.content.Context): void;
+					public newLogger(param0: globalAndroid.content.Context, param1: com.facebook.AccessToken): com.facebook.appevents.AppEventsLogger;
 				}
 				export class FlushBehavior {
 					public static class: java.lang.Class<com.facebook.appevents.AppEventsLogger.FlushBehavior>;
@@ -2079,7 +2239,7 @@ declare module com {
 			export module aam {
 				export class MetadataIndexer {
 					public static class: java.lang.Class<com.facebook.appevents.aam.MetadataIndexer>;
-					public constructor();
+					public static INSTANCE: com.facebook.appevents.aam.MetadataIndexer;
 					public static enable(): void;
 					public static onActivityResumed(param0: globalAndroid.app.Activity): void;
 				}
@@ -2094,6 +2254,11 @@ declare module com {
 			export module aam {
 				export class MetadataMatcher {
 					public static class: java.lang.Class<com.facebook.appevents.aam.MetadataMatcher>;
+					public static INSTANCE: com.facebook.appevents.aam.MetadataMatcher;
+					public static matchIndicator(param0: java.util.List<string>, param1: java.util.List<string>): boolean;
+					public static getCurrentViewIndicators(param0: globalAndroid.view.View): java.util.List<string>;
+					public static getAroundViewIndicators(param0: globalAndroid.view.View): java.util.List<string>;
+					public static matchValue(param0: string, param1: string): boolean;
 				}
 			}
 		}
@@ -2133,7 +2298,17 @@ declare module com {
 			export module aam {
 				export class MetadataViewObserver {
 					public static class: java.lang.Class<com.facebook.appevents.aam.MetadataViewObserver>;
+					public static Companion: com.facebook.appevents.aam.MetadataViewObserver.Companion;
+					public static startTrackingActivity(param0: globalAndroid.app.Activity): void;
+					public static stopTrackingActivity(param0: globalAndroid.app.Activity): void;
 					public onGlobalFocusChanged(param0: globalAndroid.view.View, param1: globalAndroid.view.View): void;
+				}
+				export module MetadataViewObserver {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.aam.MetadataViewObserver.Companion>;
+						public startTrackingActivity(param0: globalAndroid.app.Activity): void;
+						public stopTrackingActivity(param0: globalAndroid.app.Activity): void;
+					}
 				}
 			}
 		}
@@ -2146,21 +2321,26 @@ declare module com {
 			export module codeless {
 				export class CodelessLoggingEventListener {
 					public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessLoggingEventListener>;
-					public constructor();
-					public static getOnItemClickListener(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.widget.AdapterView): com.facebook.appevents.codeless.CodelessLoggingEventListener.AutoLoggingOnItemClickListener;
-					public static updateParameters(param0: globalAndroid.os.Bundle): void;
+					public static INSTANCE: com.facebook.appevents.codeless.CodelessLoggingEventListener;
+					public updateParameters$facebook_core_release(param0: globalAndroid.os.Bundle): void;
+					public static logEvent$facebook_core_release(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View): void;
 					public static getOnClickListener(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View): com.facebook.appevents.codeless.CodelessLoggingEventListener.AutoLoggingOnClickListener;
+					public static getOnItemClickListener(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.widget.AdapterView<any>): com.facebook.appevents.codeless.CodelessLoggingEventListener.AutoLoggingOnItemClickListener;
 				}
 				export module CodelessLoggingEventListener {
 					export class AutoLoggingOnClickListener {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessLoggingEventListener.AutoLoggingOnClickListener>;
 						public getSupportCodelessLogging(): boolean;
+						public setSupportCodelessLogging(param0: boolean): void;
+						public constructor(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View);
 						public onClick(param0: globalAndroid.view.View): void;
 					}
 					export class AutoLoggingOnItemClickListener {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessLoggingEventListener.AutoLoggingOnItemClickListener>;
 						public getSupportCodelessLogging(): boolean;
+						public setSupportCodelessLogging(param0: boolean): void;
 						public onItemClick(param0: globalAndroid.widget.AdapterView<any>, param1: globalAndroid.view.View, param2: number, param3: number): void;
+						public constructor(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.widget.AdapterView<any>);
 					}
 				}
 			}
@@ -2174,25 +2354,17 @@ declare module com {
 			export module codeless {
 				export class CodelessManager {
 					public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessManager>;
+					public static INSTANCE: com.facebook.appevents.codeless.CodelessManager;
 					public static disable(): void;
-					public constructor();
+					public static updateAppIndexing$facebook_core_release(param0: boolean): void;
+					public static isDebugOnEmulator$facebook_core_release(): boolean;
+					public static getCurrentDeviceSessionID$facebook_core_release(): string;
+					public static getIsAppIndexingEnabled$facebook_core_release(): boolean;
 					public static enable(): void;
 					public static onActivityDestroyed(param0: globalAndroid.app.Activity): void;
+					public static checkCodelessSession$facebook_core_release(param0: string): void;
 					public static onActivityResumed(param0: globalAndroid.app.Activity): void;
 					public static onActivityPaused(param0: globalAndroid.app.Activity): void;
-				}
-				export module CodelessManager {
-					export class CodelessSessionChecker {
-						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessManager.CodelessSessionChecker>;
-						/**
-						 * Constructs a new instance of the com.facebook.appevents.codeless.CodelessManager$CodelessSessionChecker interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-						 */
-						public constructor(implementation: {
-							checkCodelessSession(param0: string): void;
-						});
-						public constructor();
-						public checkCodelessSession(param0: string): void;
-					}
 				}
 			}
 		}
@@ -2205,6 +2377,7 @@ declare module com {
 			export module codeless {
 				export class CodelessMatcher {
 					public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessMatcher>;
+					public static Companion: com.facebook.appevents.codeless.CodelessMatcher.Companion;
 					public add(param0: globalAndroid.app.Activity): void;
 					public remove(param0: globalAndroid.app.Activity): void;
 					public static getParameters(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View): globalAndroid.os.Bundle;
@@ -2212,6 +2385,11 @@ declare module com {
 					public destroy(param0: globalAndroid.app.Activity): void;
 				}
 				export module CodelessMatcher {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessMatcher.Companion>;
+						public getParameters(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View): globalAndroid.os.Bundle;
+						public getInstance(): com.facebook.appevents.codeless.CodelessMatcher;
+					}
 					export class MatchedView {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessMatcher.MatchedView>;
 						public constructor(param0: globalAndroid.view.View, param1: string);
@@ -2220,12 +2398,18 @@ declare module com {
 					}
 					export class ViewMatcher {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessMatcher.ViewMatcher>;
+						public static Companion: com.facebook.appevents.codeless.CodelessMatcher.ViewMatcher.Companion;
 						public run(): void;
 						public onScrollChanged(): void;
 						public onGlobalLayout(): void;
 						public static findViewByPath(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: java.util.List<com.facebook.appevents.codeless.internal.PathComponent>, param3: number, param4: number, param5: string): java.util.List<com.facebook.appevents.codeless.CodelessMatcher.MatchedView>;
-						public findView(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View): void;
 						public constructor(param0: globalAndroid.view.View, param1: globalAndroid.os.Handler, param2: java.util.HashSet<string>, param3: string);
+					}
+					export module ViewMatcher {
+						export class Companion {
+							public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessMatcher.ViewMatcher.Companion>;
+							public findViewByPath(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: java.util.List<com.facebook.appevents.codeless.internal.PathComponent>, param3: number, param4: number, param5: string): java.util.List<com.facebook.appevents.codeless.CodelessMatcher.MatchedView>;
+						}
 					}
 				}
 			}
@@ -2239,13 +2423,14 @@ declare module com {
 			export module codeless {
 				export class RCTCodelessLoggingEventListener {
 					public static class: java.lang.Class<com.facebook.appevents.codeless.RCTCodelessLoggingEventListener>;
+					public static INSTANCE: com.facebook.appevents.codeless.RCTCodelessLoggingEventListener;
 					public static getOnTouchListener(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View): com.facebook.appevents.codeless.RCTCodelessLoggingEventListener.AutoLoggingOnTouchListener;
-					public constructor();
 				}
 				export module RCTCodelessLoggingEventListener {
 					export class AutoLoggingOnTouchListener {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.RCTCodelessLoggingEventListener.AutoLoggingOnTouchListener>;
 						public getSupportCodelessLogging(): boolean;
+						public setSupportCodelessLogging(param0: boolean): void;
 						public constructor(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.view.View);
 						public onTouch(param0: globalAndroid.view.View, param1: globalAndroid.view.MotionEvent): boolean;
 					}
@@ -2261,18 +2446,24 @@ declare module com {
 			export module codeless {
 				export class ViewIndexer {
 					public static class: java.lang.Class<com.facebook.appevents.codeless.ViewIndexer>;
+					public static Companion: com.facebook.appevents.codeless.ViewIndexer.Companion;
 					public unschedule(): void;
 					public static buildAppIndexingRequest(param0: string, param1: com.facebook.AccessToken, param2: string, param3: string): com.facebook.GraphRequest;
+					public processRequest(param0: com.facebook.GraphRequest, param1: string): void;
 					public static sendToServerUnityInstance(param0: string): void;
-					/** @deprecated */
-					public sendToServerUnity(param0: string): void;
-					public constructor(param0: globalAndroid.app.Activity);
 					public schedule(): void;
+					public constructor(param0: globalAndroid.app.Activity);
 				}
 				export module ViewIndexer {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.codeless.ViewIndexer.Companion>;
+						public buildAppIndexingRequest(param0: string, param1: com.facebook.AccessToken, param2: string, param3: string): com.facebook.GraphRequest;
+						public sendToServerUnityInstance(param0: string): void;
+					}
 					export class ScreenshotTaker extends java.util.concurrent.Callable<string> {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.ViewIndexer.ScreenshotTaker>;
 						public call(): string;
+						public constructor(param0: globalAndroid.view.View);
 					}
 				}
 			}
@@ -2286,11 +2477,16 @@ declare module com {
 			export module codeless {
 				export class ViewIndexingTrigger {
 					public static class: java.lang.Class<com.facebook.appevents.codeless.ViewIndexingTrigger>;
+					public static Companion: com.facebook.appevents.codeless.ViewIndexingTrigger.Companion;
 					public setOnShakeListener(param0: com.facebook.appevents.codeless.ViewIndexingTrigger.OnShakeListener): void;
 					public onSensorChanged(param0: globalAndroid.hardware.SensorEvent): void;
 					public onAccuracyChanged(param0: globalAndroid.hardware.Sensor, param1: number): void;
+					public constructor();
 				}
 				export module ViewIndexingTrigger {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.codeless.ViewIndexingTrigger.Companion>;
+					}
 					export class OnShakeListener {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.ViewIndexingTrigger.OnShakeListener>;
 						/**
@@ -2327,7 +2523,7 @@ declare module com {
 						public static EXTINFO: string;
 						public static APP_INDEXING: string;
 						public static BUTTON_SAMPLING: string;
-						public constructor();
+						public static INSTANCE: com.facebook.appevents.codeless.internal.Constants;
 					}
 				}
 			}
@@ -2342,17 +2538,18 @@ declare module com {
 				export module internal {
 					export class EventBinding {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.EventBinding>;
+						public static Companion: com.facebook.appevents.codeless.internal.EventBinding.Companion;
 						public getViewParameters(): java.util.List<com.facebook.appevents.codeless.internal.ParameterComponent>;
 						public getAppVersion(): string;
 						public getActivityName(): string;
 						public static getInstanceFromJson(param0: org.json.JSONObject): com.facebook.appevents.codeless.internal.EventBinding;
 						public getEventName(): string;
-						public static parseArray(param0: org.json.JSONArray): java.util.List<com.facebook.appevents.codeless.internal.EventBinding>;
 						public getMethod(): com.facebook.appevents.codeless.internal.EventBinding.MappingMethod;
+						public static parseArray(param0: org.json.JSONArray): java.util.List<com.facebook.appevents.codeless.internal.EventBinding>;
 						public getViewPath(): java.util.List<com.facebook.appevents.codeless.internal.PathComponent>;
 						public getComponentId(): string;
-						public constructor(param0: string, param1: com.facebook.appevents.codeless.internal.EventBinding.MappingMethod, param2: com.facebook.appevents.codeless.internal.EventBinding.ActionType, param3: string, param4: java.util.List<com.facebook.appevents.codeless.internal.PathComponent>, param5: java.util.List<com.facebook.appevents.codeless.internal.ParameterComponent>, param6: string, param7: string, param8: string);
 						public getPathType(): string;
+						public constructor(param0: string, param1: com.facebook.appevents.codeless.internal.EventBinding.MappingMethod, param2: com.facebook.appevents.codeless.internal.EventBinding.ActionType, param3: string, param4: java.util.List<com.facebook.appevents.codeless.internal.PathComponent>, param5: java.util.List<com.facebook.appevents.codeless.internal.ParameterComponent>, param6: string, param7: string, param8: string);
 						public getType(): com.facebook.appevents.codeless.internal.EventBinding.ActionType;
 					}
 					export module EventBinding {
@@ -2363,6 +2560,11 @@ declare module com {
 							public static TEXT_CHANGED: com.facebook.appevents.codeless.internal.EventBinding.ActionType;
 							public static valueOf(param0: string): com.facebook.appevents.codeless.internal.EventBinding.ActionType;
 							public static values(): androidNative.Array<com.facebook.appevents.codeless.internal.EventBinding.ActionType>;
+						}
+						export class Companion {
+							public static class: java.lang.Class<com.facebook.appevents.codeless.internal.EventBinding.Companion>;
+							public parseArray(param0: org.json.JSONArray): java.util.List<com.facebook.appevents.codeless.internal.EventBinding>;
+							public getInstanceFromJson(param0: org.json.JSONObject): com.facebook.appevents.codeless.internal.EventBinding;
 						}
 						export class MappingMethod {
 							public static class: java.lang.Class<com.facebook.appevents.codeless.internal.EventBinding.MappingMethod>;
@@ -2385,11 +2587,17 @@ declare module com {
 				export module internal {
 					export class ParameterComponent {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.ParameterComponent>;
-						public name: string;
-						public value: string;
-						public path: java.util.List<com.facebook.appevents.codeless.internal.PathComponent>;
-						public pathType: string;
+						public static Companion: com.facebook.appevents.codeless.internal.ParameterComponent.Companion;
+						public getValue(): string;
 						public constructor(param0: org.json.JSONObject);
+						public getPath(): java.util.List<com.facebook.appevents.codeless.internal.PathComponent>;
+						public getName(): string;
+						public getPathType(): string;
+					}
+					export module ParameterComponent {
+						export class Companion {
+							public static class: java.lang.Class<com.facebook.appevents.codeless.internal.ParameterComponent.Companion>;
+						}
 					}
 				}
 			}
@@ -2404,16 +2612,21 @@ declare module com {
 				export module internal {
 					export class PathComponent {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.PathComponent>;
-						public className: string;
-						public index: number;
-						public id: number;
-						public text: string;
-						public tag: string;
-						public description: string;
-						public hint: string;
-						public matchBitmask: number;
+						public static Companion: com.facebook.appevents.codeless.internal.PathComponent.Companion;
+						public getHint(): string;
+						public getMatchBitmask(): number;
+						public getTag(): string;
+						public constructor(param0: org.json.JSONObject);
+						public getClassName(): string;
+						public getIndex(): number;
+						public getDescription(): string;
+						public getText(): string;
+						public getId(): number;
 					}
 					export module PathComponent {
+						export class Companion {
+							public static class: java.lang.Class<com.facebook.appevents.codeless.internal.PathComponent.Companion>;
+						}
 						export class MatchBitmaskType {
 							public static class: java.lang.Class<com.facebook.appevents.codeless.internal.PathComponent.MatchBitmaskType>;
 							public static ID: com.facebook.appevents.codeless.internal.PathComponent.MatchBitmaskType;
@@ -2439,7 +2652,7 @@ declare module com {
 				export module internal {
 					export class SensitiveUserDataUtils {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.SensitiveUserDataUtils>;
-						public constructor();
+						public static INSTANCE: com.facebook.appevents.codeless.internal.SensitiveUserDataUtils;
 						public static isSensitiveUserData(param0: globalAndroid.view.View): boolean;
 					}
 				}
@@ -2455,7 +2668,7 @@ declare module com {
 				export module internal {
 					export class UnityReflection {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.UnityReflection>;
-						public constructor();
+						public static INSTANCE: com.facebook.appevents.codeless.internal.UnityReflection;
 						public static captureViewHierarchy(): void;
 						public static sendMessage(param0: string, param1: string, param2: string): void;
 						public static sendEventMapping(param0: string): void;
@@ -2473,20 +2686,16 @@ declare module com {
 				export module internal {
 					export class ViewHierarchy {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.ViewHierarchy>;
-						public constructor();
+						public static INSTANCE: com.facebook.appevents.codeless.internal.ViewHierarchy;
 						public static getDictionaryOfView(param0: globalAndroid.view.View): org.json.JSONObject;
-						public static isRCTTextView(param0: globalAndroid.view.View): boolean;
 						public static getClassTypeBitmask(param0: globalAndroid.view.View): number;
 						public static getTextOfView(param0: globalAndroid.view.View): string;
 						public static getExistingOnClickListener(param0: globalAndroid.view.View): globalAndroid.view.View.OnClickListener;
 						public static getExistingOnTouchListener(param0: globalAndroid.view.View): globalAndroid.view.View.OnTouchListener;
-						public static isRCTViewGroup(param0: globalAndroid.view.View): boolean;
-						public static isRCTButton(param0: globalAndroid.view.View, param1: globalAndroid.view.View): boolean;
 						public static setOnClickListener(param0: globalAndroid.view.View, param1: globalAndroid.view.View.OnClickListener): void;
 						public static updateBasicInfoOfView(param0: globalAndroid.view.View, param1: org.json.JSONObject): void;
-						public static isRCTRootView(param0: globalAndroid.view.View): boolean;
 						public static getChildrenOfView(param0: globalAndroid.view.View): java.util.List<globalAndroid.view.View>;
-						public static getTouchReactView(param0: androidNative.Array<number>, param1: globalAndroid.view.View): globalAndroid.view.View;
+						public isRCTButton(param0: globalAndroid.view.View, param1: globalAndroid.view.View): boolean;
 						public static getParentOfView(param0: globalAndroid.view.View): globalAndroid.view.ViewGroup;
 						public static getHintOfView(param0: globalAndroid.view.View): string;
 						public static findRCTRootView(param0: globalAndroid.view.View): globalAndroid.view.View;
@@ -2530,7 +2739,7 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseActivityLifecycleTracker {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseActivityLifecycleTracker>;
-					public constructor();
+					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseActivityLifecycleTracker;
 					public static startIapLogging(): void;
 				}
 			}
@@ -2544,7 +2753,7 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseAutoLogger {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseAutoLogger>;
-					public constructor();
+					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseAutoLogger;
 					public static startIapLogging(param0: globalAndroid.content.Context): void;
 				}
 			}
@@ -2558,33 +2767,43 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseBillingClientWrapper {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper>;
-					public static isServiceConnected: java.util.concurrent.atomic.AtomicBoolean;
-					public static purchaseDetailsMap: java.util.Map<string,org.json.JSONObject>;
-					public static skuDetailsMap: java.util.Map<string,org.json.JSONObject>;
-					public static getOrCreateInstance(param0: globalAndroid.content.Context): com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper;
+					public static Companion: com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.Companion;
 					public queryPurchase(param0: string, param1: java.lang.Runnable): void;
+					public static getOrCreateInstance(param0: globalAndroid.content.Context): com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper;
 					public queryPurchaseHistory(param0: string, param1: java.lang.Runnable): void;
 				}
 				export module InAppPurchaseBillingClientWrapper {
 					export class BillingClientStateListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.BillingClientStateListenerWrapper>;
-						public constructor();
 						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
+						public constructor();
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.Companion>;
+						public getSkuDetailsMap(): java.util.Map<string,org.json.JSONObject>;
+						public isServiceConnected(): java.util.concurrent.atomic.AtomicBoolean;
+						public getPurchaseDetailsMap(): java.util.Map<string,org.json.JSONObject>;
+						public getOrCreateInstance(param0: globalAndroid.content.Context): com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper;
 					}
 					export class PurchaseHistoryResponseListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.PurchaseHistoryResponseListenerWrapper>;
 						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
-						public constructor(param0: com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper, param1: java.lang.Runnable);
+						public getRunnable(): java.lang.Runnable;
+						public constructor(param0: java.lang.Runnable);
+						public setRunnable(param0: java.lang.Runnable): void;
 					}
 					export class PurchasesUpdatedListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.PurchasesUpdatedListenerWrapper>;
-						public constructor();
 						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
+						public constructor();
 					}
 					export class SkuDetailsResponseListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.SkuDetailsResponseListenerWrapper>;
 						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
-						public constructor(param0: com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper, param1: java.lang.Runnable);
+						public getRunnable(): java.lang.Runnable;
+						public parseSkuDetails(param0: java.util.List<any>): void;
+						public constructor(param0: java.lang.Runnable);
+						public setRunnable(param0: java.lang.Runnable): void;
 					}
 				}
 			}
@@ -2598,8 +2817,14 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseEventManager {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseEventManager>;
-					public static hasFreeTrialPeirod(param0: string): boolean;
-					public constructor();
+					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseEventManager;
+					public static asInterface(param0: globalAndroid.content.Context, param1: globalAndroid.os.IBinder): any;
+					public static getPurchasesInapp(param0: globalAndroid.content.Context, param1: any): java.util.ArrayList<string>;
+					public static getSkuDetails(param0: globalAndroid.content.Context, param1: java.util.ArrayList<string>, param2: any, param3: boolean): java.util.Map<string,string>;
+					public hasFreeTrialPeirod(param0: string): boolean;
+					public static getPurchasesSubs(param0: globalAndroid.content.Context, param1: any): java.util.ArrayList<string>;
+					public static clearSkuDetailsCache(): void;
+					public static getPurchaseHistoryInapp(param0: globalAndroid.content.Context, param1: any): java.util.ArrayList<string>;
 				}
 			}
 		}
@@ -2612,9 +2837,12 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseLoggerManager {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseLoggerManager>;
-					public constructor();
+					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseLoggerManager;
+					public static filterPurchaseLogging(param0: java.util.Map<string,org.json.JSONObject>, param1: java.util.Map<string,any>): void;
+					public cacheDeDupPurchase$facebook_core_release(param0: java.util.Map<string,org.json.JSONObject>): java.util.Map<string,org.json.JSONObject>;
 					public static eligibleQueryPurchaseHistory(): boolean;
-					public static filterPurchaseLogging(param0: java.util.Map<string,org.json.JSONObject>, param1: java.util.Map<string,org.json.JSONObject>): void;
+					public constructLoggingReadyMap$facebook_core_release(param0: java.util.Map<string,any>, param1: java.util.Map<string,any>): java.util.Map<string,string>;
+					public clearOutdatedProductInfoInCache$facebook_core_release(): void;
 				}
 			}
 		}
@@ -2627,8 +2855,8 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseManager {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseManager>;
+					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseManager;
 					public static startTracking(): void;
-					public constructor();
 					public static enableAutoLogging(): void;
 				}
 			}
@@ -2642,10 +2870,17 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseSkuDetailsWrapper {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseSkuDetailsWrapper>;
+					public static Companion: com.facebook.appevents.iap.InAppPurchaseSkuDetailsWrapper.Companion;
 					public constructor(param0: java.lang.Class<any>, param1: java.lang.Class<any>, param2: java.lang.reflect.Method, param3: java.lang.reflect.Method, param4: java.lang.reflect.Method, param5: java.lang.reflect.Method);
 					public static getOrCreateInstance(): com.facebook.appevents.iap.InAppPurchaseSkuDetailsWrapper;
 					public getSkuDetailsParams(param0: string, param1: java.util.List<string>): any;
 					public getSkuDetailsParamsClazz(): java.lang.Class<any>;
+				}
+				export module InAppPurchaseSkuDetailsWrapper {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseSkuDetailsWrapper.Companion>;
+						public getOrCreateInstance(): com.facebook.appevents.iap.InAppPurchaseSkuDetailsWrapper;
+					}
 				}
 			}
 		}
@@ -2658,8 +2893,8 @@ declare module com {
 			export module iap {
 				export class InAppPurchaseUtils {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseUtils>;
+					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseUtils;
 					public static getClass(param0: string): java.lang.Class<any>;
-					public constructor();
 					public static getMethod(param0: java.lang.Class<any>, param1: string, param2: androidNative.Array<java.lang.Class<any>>): java.lang.reflect.Method;
 					public static invokeMethod(param0: java.lang.Class<any>, param1: java.lang.reflect.Method, param2: any, param3: androidNative.Array<any>): any;
 				}
@@ -3273,6 +3508,11 @@ declare module com {
 			export module suggestedevents {
 				export class FeatureExtractor {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.FeatureExtractor>;
+					public static INSTANCE: com.facebook.appevents.suggestedevents.FeatureExtractor;
+					public static initialize(param0: java.io.File): void;
+					public static getTextFeature(param0: string, param1: string, param2: string): string;
+					public static isInitialized(): boolean;
+					public static getDenseFeatures(param0: org.json.JSONObject, param1: string): androidNative.Array<number>;
 				}
 			}
 		}
@@ -3285,6 +3525,10 @@ declare module com {
 			export module suggestedevents {
 				export class PredictionHistoryManager {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.PredictionHistoryManager>;
+					public static INSTANCE: com.facebook.appevents.suggestedevents.PredictionHistoryManager;
+					public static addPrediction(param0: string, param1: string): void;
+					public static getPathID(param0: globalAndroid.view.View, param1: string): string;
+					public static queryEvent(param0: string): string;
 				}
 			}
 		}
@@ -3297,6 +3541,11 @@ declare module com {
 			export module suggestedevents {
 				export class SuggestedEventViewHierarchy {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.SuggestedEventViewHierarchy>;
+					public static INSTANCE: com.facebook.appevents.suggestedevents.SuggestedEventViewHierarchy;
+					public static updateBasicInfo(param0: globalAndroid.view.View, param1: org.json.JSONObject): void;
+					public static getDictionaryOfView(param0: globalAndroid.view.View, param1: globalAndroid.view.View): org.json.JSONObject;
+					public static getAllClickableViews(param0: globalAndroid.view.View): java.util.List<globalAndroid.view.View>;
+					public static getTextOfViewRecursively(param0: globalAndroid.view.View): string;
 				}
 			}
 		}
@@ -3309,11 +3558,13 @@ declare module com {
 			export module suggestedevents {
 				export class SuggestedEventsManager {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.SuggestedEventsManager>;
+					public static INSTANCE: com.facebook.appevents.suggestedevents.SuggestedEventsManager;
 					public static isEnabled(): boolean;
-					public constructor();
+					public populateEventsFromRawJsonString$facebook_core_release(param0: string): void;
+					public static isProductionEvents$facebook_core_release(param0: string): boolean;
 					public static trackActivity(param0: globalAndroid.app.Activity): void;
 					public static enable(): void;
-					public static populateEventsFromRawJsonString(param0: string): void;
+					public static isEligibleEvents$facebook_core_release(param0: string): boolean;
 				}
 			}
 		}
@@ -3326,7 +3577,17 @@ declare module com {
 			export module suggestedevents {
 				export class ViewObserver {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.ViewObserver>;
+					public static Companion: com.facebook.appevents.suggestedevents.ViewObserver.Companion;
+					public static startTrackingActivity(param0: globalAndroid.app.Activity): void;
+					public static stopTrackingActivity(param0: globalAndroid.app.Activity): void;
 					public onGlobalLayout(): void;
+				}
+				export module ViewObserver {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.suggestedevents.ViewObserver.Companion>;
+						public startTrackingActivity(param0: globalAndroid.app.Activity): void;
+						public stopTrackingActivity(param0: globalAndroid.app.Activity): void;
+					}
 				}
 			}
 		}
@@ -3340,7 +3601,15 @@ declare module com {
 				export class ViewOnClickListener {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.ViewOnClickListener>;
 					public static OTHER_EVENT: string;
+					public static Companion: com.facebook.appevents.suggestedevents.ViewOnClickListener.Companion;
 					public onClick(param0: globalAndroid.view.View): void;
+					public static attachListener$facebook_core_release(param0: globalAndroid.view.View, param1: globalAndroid.view.View, param2: string): void;
+				}
+				export module ViewOnClickListener {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.appevents.suggestedevents.ViewOnClickListener.Companion>;
+						public attachListener$facebook_core_release(param0: globalAndroid.view.View, param1: globalAndroid.view.View, param2: string): void;
+					}
 				}
 			}
 		}
@@ -3371,14 +3640,20 @@ declare module com {
 		export module bolts {
 			export class AndroidExecutors {
 				public static class: java.lang.Class<com.facebook.bolts.AndroidExecutors>;
+				public static Companion: com.facebook.bolts.AndroidExecutors.Companion;
 				public static newCachedThreadPool(): java.util.concurrent.ExecutorService;
-				public static allowCoreThreadTimeout(param0: java.util.concurrent.ThreadPoolExecutor, param1: boolean): void;
 				public static uiThread(): java.util.concurrent.Executor;
 			}
 			export module AndroidExecutors {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.bolts.AndroidExecutors.Companion>;
+					public uiThread(): java.util.concurrent.Executor;
+					public newCachedThreadPool(): java.util.concurrent.ExecutorService;
+				}
 				export class UIThreadExecutor {
 					public static class: java.lang.Class<com.facebook.bolts.AndroidExecutors.UIThreadExecutor>;
 					public execute(param0: java.lang.Runnable): void;
+					public constructor();
 				}
 			}
 		}
@@ -3432,9 +3707,11 @@ declare module com {
 		export module bolts {
 			export class AppLinks {
 				public static class: java.lang.Class<com.facebook.bolts.AppLinks>;
+				public static KEY_NAME_APPLINK_DATA: string;
+				public static KEY_NAME_EXTRAS: string;
+				public static INSTANCE: com.facebook.bolts.AppLinks;
 				public static getAppLinkData(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 				public static getAppLinkExtras(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
-				public constructor();
 			}
 		}
 	}
@@ -3515,20 +3792,6 @@ declare module com {
 				public toString(): string;
 				public isCancellationRequested(): boolean;
 				public unregister$facebook_core_release(param0: com.facebook.bolts.CancellationTokenRegistration): void;
-				public constructor();
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module bolts {
-			export class Capture<T>  extends java.lang.Object {
-				public static class: java.lang.Class<com.facebook.bolts.Capture<any>>;
-				public constructor(param0: T);
-				public set(param0: T): void;
-				public get(): T;
 				public constructor();
 			}
 		}
@@ -3775,6 +4038,7 @@ declare module com {
 					public static DEVICE_INFO_PARAM: string;
 					public static DEVICE_TARGET_USER_ID: string;
 					public constructor();
+					public static getDeviceInfo(param0: java.util.Map<string,string>): string;
 					public static getDeviceInfo(): string;
 					public static generateQRCode(param0: string): globalAndroid.graphics.Bitmap;
 					public static cleanUpAdvertisementService(param0: string): void;
@@ -3877,6 +4141,10 @@ declare module com {
 				public static EVENT_FOA_DISAMBIGUATION_DIALOG_FB_DID_TAP: string;
 				public static EVENT_FOA_DISAMBIGUATION_DIALOG_IG_DID_TAP: string;
 				public static EVENT_FOA_DISAMBIGUATION_DIALOG_CANCELLED: string;
+				public static EVENT_FOA_FB_LOGIN_BUTTON_CREATE: string;
+				public static EVENT_FOA_FB_LOGIN_BUTTON_DID_TAP: string;
+				public static EVENT_FOA_IG_LOGIN_BUTTON_CREATE: string;
+				public static EVENT_FOA_IG_LOGIN_BUTTON_DID_TAP: string;
 				public static INSTANCE: com.facebook.internal.AnalyticsEvents;
 			}
 		}
@@ -4109,9 +4377,11 @@ declare module com {
 				public static setupAppCallForErrorResult(param0: com.facebook.internal.AppCall, param1: com.facebook.FacebookException): void;
 				public static canPresentNativeDialogWithFeature(param0: com.facebook.internal.DialogFeature): boolean;
 				public static canPresentWebFallbackDialogWithFeature(param0: com.facebook.internal.DialogFeature): boolean;
+				public static present(param0: com.facebook.internal.AppCall, param1: androidx.activity.result.ActivityResultRegistry, param2: com.facebook.CallbackManager): void;
 				public static logDialogActivity(param0: globalAndroid.content.Context, param1: string, param2: string): void;
 				public constructor();
 				public static present(param0: com.facebook.internal.AppCall, param1: com.facebook.internal.FragmentWrapper): void;
+				public static startActivityForResultWithAndroidX(param0: androidx.activity.result.ActivityResultRegistry, param1: com.facebook.CallbackManager, param2: globalAndroid.content.Intent, param3: number): void;
 				public static getProtocolVersionForNativeDialog(param0: com.facebook.internal.DialogFeature): com.facebook.internal.NativeProtocol.ProtocolVersionQueryResult;
 				public static setupAppCallForCustomTabDialog(param0: com.facebook.internal.AppCall, param1: string, param2: globalAndroid.os.Bundle): void;
 				public static setupAppCallForWebDialog(param0: com.facebook.internal.AppCall, param1: string, param2: globalAndroid.os.Bundle): void;
@@ -4145,6 +4415,7 @@ declare module com {
 				public static class: java.lang.Class<com.facebook.internal.FacebookDialogBase<any,any>>;
 				public static BASE_AUTOMATIC_MODE: any;
 				public constructor(param0: com.facebook.internal.FragmentWrapper, param1: number);
+				public setCallbackManager(param0: com.facebook.CallbackManager): void;
 				public showImpl(param0: any, param1: any): void;
 				public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<any>, param2: number): void;
 				public canShowImpl(param0: any, param1: any): boolean;
@@ -4916,6 +5187,7 @@ declare module com {
 				public static PROTOCOL_VERSION_20170411: number;
 				public static PROTOCOL_VERSION_20170417: number;
 				public static PROTOCOL_VERSION_20171115: number;
+				public static PROTOCOL_VERSION_20210906: number;
 				public static EXTRA_PROTOCOL_VERSION: string;
 				public static EXTRA_PROTOCOL_ACTION: string;
 				public static EXTRA_PROTOCOL_CALL_ID: string;
@@ -4958,9 +5230,11 @@ declare module com {
 				public static EXTRA_LOGGER_REF: string;
 				public static EXTRA_TOAST_DURATION_MS: string;
 				public static EXTRA_GRAPH_API_VERSION: string;
+				public static EXTRA_NONCE: string;
 				public static EXTRA_ACCESS_TOKEN: string;
 				public static EXTRA_EXPIRES_SECONDS_SINCE_EPOCH: string;
 				public static EXTRA_DATA_ACCESS_EXPIRATION_TIME: string;
+				public static EXTRA_AUTHENTICATION_TOKEN: string;
 				public static RESULT_ARGS_ACCESS_TOKEN: string;
 				public static RESULT_ARGS_GRAPH_DOMAIN: string;
 				public static RESULT_ARGS_SIGNED_REQUEST: string;
@@ -5004,19 +5278,19 @@ declare module com {
 				public static getErrorDataFromResultIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 				public static isVersionCompatibleWithBucketedIntent(param0: number): boolean;
 				public static updateAllAvailableProtocolVersionsAsync(): void;
-				public static createProxyAuthIntents(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: boolean, param10: string, param11: boolean, param12: boolean, param13: boolean): java.util.List<globalAndroid.content.Intent>;
 				public static createBundleForException(param0: com.facebook.FacebookException): globalAndroid.os.Bundle;
 				public static getMethodArgumentsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 				public static createProtocolResultIntent(param0: globalAndroid.content.Intent, param1: globalAndroid.os.Bundle, param2: com.facebook.FacebookException): globalAndroid.content.Intent;
+				public static createProxyAuthIntents(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: boolean, param10: string, param11: boolean, param12: boolean, param13: boolean, param14: string): java.util.List<globalAndroid.content.Intent>;
 				public static computeLatestAvailableVersionFromVersionSpec(param0: java.util.TreeSet<java.lang.Integer>, param1: number, param2: androidNative.Array<number>): number;
 				public static getCallIdFromIntent(param0: globalAndroid.content.Intent): java.util.UUID;
 				public static getBridgeArgumentsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
+				public static createInstagramIntent(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: string, param10: boolean, param11: boolean, param12: boolean): globalAndroid.content.Intent;
 				public static createTokenRefreshIntent(param0: globalAndroid.content.Context): globalAndroid.content.Intent;
 				public static getProtocolVersionFromIntent(param0: globalAndroid.content.Intent): number;
 				public static getExceptionFromErrorData(param0: globalAndroid.os.Bundle): com.facebook.FacebookException;
 				public static createPlatformServiceIntent(param0: globalAndroid.content.Context): globalAndroid.content.Intent;
 				public static isErrorResult(param0: globalAndroid.content.Intent): boolean;
-				public static createInstagramIntent(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: boolean, param10: boolean): globalAndroid.content.Intent;
 				public static getLatestKnownVersion(): number;
 				public static createPlatformActivityIntent(param0: globalAndroid.content.Context, param1: string, param2: string, param3: com.facebook.internal.NativeProtocol.ProtocolVersionQueryResult, param4: globalAndroid.os.Bundle): globalAndroid.content.Intent;
 			}
@@ -5053,6 +5327,7 @@ declare module com {
 					public getPackage(): string;
 					public constructor();
 					public getLoginActivity(): string;
+					public onAvailableVersionsNullOrEmpty(): void;
 				}
 				export class MessengerAppInfo extends com.facebook.internal.NativeProtocol.NativeAppInfo {
 					public static class: java.lang.Class<com.facebook.internal.NativeProtocol.MessengerAppInfo>;
@@ -5068,6 +5343,7 @@ declare module com {
 					public constructor();
 					public fetchAvailableVersions(param0: boolean): void;
 					public getLoginActivity(): string;
+					public onAvailableVersionsNullOrEmpty(): void;
 					public getAvailableVersions(): java.util.TreeSet<java.lang.Integer>;
 				}
 				export class ProtocolVersionQueryResult {
@@ -5105,10 +5381,11 @@ declare module com {
 				public onServiceConnected(param0: globalAndroid.content.ComponentName, param1: globalAndroid.os.IBinder): void;
 				public setCompletedListener(param0: com.facebook.internal.PlatformServiceClient.CompletedListener): void;
 				public handleMessage(param0: globalAndroid.os.Message): void;
-				public constructor(param0: globalAndroid.content.Context, param1: number, param2: number, param3: number, param4: string);
+				public constructor(param0: globalAndroid.content.Context, param1: number, param2: number, param3: number, param4: string, param5: string);
 				public getContext(): globalAndroid.content.Context;
 				public start(): boolean;
 				public cancel(): void;
+				public getNonce(): string;
 				public populateRequestBundle(param0: globalAndroid.os.Bundle): void;
 			}
 			export module PlatformServiceClient {
@@ -5159,6 +5436,7 @@ declare module com {
 				public static DIALOG_PARAM_IES: string;
 				public static DIALOG_PARAM_LEGACY_OVERRIDE: string;
 				public static DIALOG_PARAM_LOGIN_BEHAVIOR: string;
+				public static DIALOG_PARAM_NONCE: string;
 				public static DIALOG_PARAM_REDIRECT_URI: string;
 				public static DIALOG_PARAM_RESPONSE_TYPE: string;
 				public static DIALOG_PARAM_RETURN_SCOPES: string;
@@ -5176,6 +5454,7 @@ declare module com {
 				public static DIALOG_PARAM_SKIP_DEDUPE: string;
 				public static DIALOG_RESPONSE_TYPE_TOKEN_AND_SCOPES: string;
 				public static DIALOG_RESPONSE_TYPE_TOKEN_AND_SIGNED_REQUEST: string;
+				public static DIALOG_RESPONSE_TYPE_ID_TOKEN_AND_SIGNED_REQUEST: string;
 				public static DIALOG_RETURN_SCOPES_TRUE: string;
 				public static DIALOG_REDIRECT_URI: string;
 				public static DIALOG_REDIRECT_CHROME_OS_URI: string;
@@ -5615,9 +5894,9 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.internal.instrument.ExceptionAnalyzer>;
 					public static INSTANCE: com.facebook.internal.instrument.ExceptionAnalyzer;
 					public static execute(param0: java.lang.Throwable): void;
-					public static isDebug(): boolean;
+					public static isDebug$facebook_core_release(): boolean;
+					public sendExceptionAnalysisReports$facebook_core_release(): void;
 					public static enable(): void;
-					public sendExceptionAnalysisReports(): void;
 				}
 			}
 		}
@@ -6118,6 +6397,25 @@ declare module com {
 
 declare module com {
 	export module facebook {
+		export module internal {
+			export module security {
+				export class OidcSecurityUtil {
+					public static class: java.lang.Class<com.facebook.internal.security.OidcSecurityUtil>;
+					public static SIGNATURE_ALGORITHM_SHA256: string;
+					public static TIMEOUT_IN_MILLISECONDS: number;
+					public static INSTANCE: com.facebook.internal.security.OidcSecurityUtil;
+					public static verify(param0: java.security.PublicKey, param1: string, param2: string): boolean;
+					public getOPENID_KEYS_PATH(): string;
+					public static getRawKeyFromEndPoint(param0: string): string;
+					public static getPublicKeyFromString(param0: string): java.security.PublicKey;
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
 		export module login {
 			export class BuildConfig {
 				public static class: java.lang.Class<com.facebook.login.BuildConfig>;
@@ -6401,6 +6699,7 @@ declare module com {
 				export class Request {
 					public static class: java.lang.Class<com.facebook.login.LoginClient.Request>;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.LoginClient.Request>;
+					public getNonce(): string;
 					public getMessengerPageId(): string;
 					public setResetMessengerState(param0: boolean): void;
 					public describeContents(): number;
@@ -6425,6 +6724,27 @@ declare module com {
 						public static values(): androidNative.Array<com.facebook.login.LoginClient.Result.Code>;
 						public static valueOf(param0: string): com.facebook.login.LoginClient.Result.Code;
 					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export module login {
+			export class LoginConfiguration {
+				public static class: java.lang.Class<com.facebook.login.LoginConfiguration>;
+				public static OPENID: string;
+				public static Companion: com.facebook.login.LoginConfiguration.Companion;
+				public constructor(param0: java.util.Collection<string>);
+				public getPermissions(): java.util.Set<string>;
+				public constructor(param0: java.util.Collection<string>, param1: string);
+				public getNonce(): string;
+			}
+			export module LoginConfiguration {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginConfiguration.Companion>;
 				}
 			}
 		}
@@ -6484,52 +6804,73 @@ declare module com {
 			export class LoginManager {
 				public static class: java.lang.Class<com.facebook.login.LoginManager>;
 				public setLoginTargetApp(param0: com.facebook.login.LoginTargetApp): com.facebook.login.LoginManager;
-				public logIn(param0: com.facebook.internal.FragmentWrapper, param1: java.util.Collection<string>): void;
 				public setDefaultAudience(param0: com.facebook.login.DefaultAudience): com.facebook.login.LoginManager;
-				public reauthorizeDataAccess(param0: globalAndroid.app.Activity): void;
 				public logOut(): void;
-				public resolveError(param0: globalAndroid.app.Fragment, param1: com.facebook.GraphResponse): void;
+				public logIn(param0: globalAndroid.app.Activity, param1: com.facebook.login.LoginConfiguration): void;
 				public setShouldSkipAccountDeduplication(param0: boolean): com.facebook.login.LoginManager;
 				public logIn(param0: com.facebook.internal.FragmentWrapper, param1: java.util.Collection<string>, param2: string): void;
 				public isFamilyLogin(): boolean;
+				public logIn(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>, param3: string): void;
 				public retrieveLoginStatus(param0: globalAndroid.content.Context, param1: number, param2: com.facebook.LoginStatusCallback): void;
 				public getFacebookActivityIntent(param0: com.facebook.login.LoginClient.Request): globalAndroid.content.Intent;
-				public setMessengerPageId(param0: string): com.facebook.login.LoginManager;
-				public getAuthType(): string;
-				public createLoginRequest(param0: java.util.Collection<string>, param1: string): com.facebook.login.LoginClient.Request;
 				public setFamilyLogin(param0: boolean): com.facebook.login.LoginManager;
-				public static getInstance(): com.facebook.login.LoginManager;
-				public resolveError(param0: globalAndroid.app.Activity, param1: com.facebook.GraphResponse): void;
-				public logIn(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>, param2: string): void;
+				public resolveError(param0: androidx.fragment.app.Fragment, param1: com.facebook.CallbackManager, param2: com.facebook.GraphResponse): void;
+				public resolveError(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: com.facebook.GraphResponse): void;
 				public logIn(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>, param2: string): void;
-				public setLoginBehavior(param0: com.facebook.login.LoginBehavior): com.facebook.login.LoginManager;
-				public logInWithPublishPermissions(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>): void;
-				public getDefaultAudience(): com.facebook.login.DefaultAudience;
-				public retrieveLoginStatus(param0: globalAndroid.content.Context, param1: com.facebook.LoginStatusCallback): void;
+				public createLoginRequestWithConfig(param0: com.facebook.login.LoginConfiguration): com.facebook.login.LoginClient.Request;
 				public getLoginBehavior(): com.facebook.login.LoginBehavior;
 				public unregisterCallback(param0: com.facebook.CallbackManager): void;
 				public reauthorizeDataAccess(param0: androidx.fragment.app.Fragment): void;
 				public createReauthorizeRequest(): com.facebook.login.LoginClient.Request;
-				public getShouldSkipAccountDeduplication(): boolean;
+				public logInWithConfiguration(param0: androidx.fragment.app.Fragment, param1: com.facebook.login.LoginConfiguration): void;
 				public setAuthType(param0: string): com.facebook.login.LoginManager;
 				public logInWithReadPermissions(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
-				public logIn(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>): void;
-				public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
-				public logInWithPublishPermissions(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
+				public logInWithPublishPermissions(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
 				public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<com.facebook.login.LoginResult>): void;
-				public setResetMessengerState(param0: boolean): com.facebook.login.LoginManager;
-				public createLoginRequest(param0: java.util.Collection<string>): com.facebook.login.LoginClient.Request;
-				public logInWithReadPermissions(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
+				public logIn(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
 				public logInWithReadPermissions(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>): void;
-				public logIn(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
 				public logIn(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
 				public logIn(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>, param2: string): void;
+				public logInWithPublishPermissions(param0: androidx.fragment.app.Fragment, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
+				public logInWithReadPermissions(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
+				public logIn(param0: com.facebook.internal.FragmentWrapper, param1: java.util.Collection<string>): void;
+				public reauthorizeDataAccess(param0: globalAndroid.app.Activity): void;
+				/** @deprecated */
 				public resolveError(param0: androidx.fragment.app.Fragment, param1: com.facebook.GraphResponse): void;
+				public resolveError(param0: globalAndroid.app.Fragment, param1: com.facebook.GraphResponse): void;
+				public setMessengerPageId(param0: string): com.facebook.login.LoginManager;
+				public getAuthType(): string;
+				public createLoginRequest(param0: java.util.Collection<string>, param1: string): com.facebook.login.LoginClient.Request;
+				public static getInstance(): com.facebook.login.LoginManager;
+				public resolveError(param0: globalAndroid.app.Activity, param1: com.facebook.GraphResponse): void;
+				public logIn(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>, param2: string): void;
+				public setLoginBehavior(param0: com.facebook.login.LoginBehavior): com.facebook.login.LoginManager;
+				public logInWithPublishPermissions(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>): void;
+				public getDefaultAudience(): com.facebook.login.DefaultAudience;
+				public retrieveLoginStatus(param0: globalAndroid.content.Context, param1: com.facebook.LoginStatusCallback): void;
+				public getShouldSkipAccountDeduplication(): boolean;
+				public logInWithReadPermissions(param0: androidx.fragment.app.Fragment, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
+				public logIn(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>): void;
+				public logIn(param0: com.facebook.internal.FragmentWrapper, param1: com.facebook.login.LoginConfiguration): void;
+				public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
+				/** @deprecated */
+				public logInWithPublishPermissions(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
+				public setResetMessengerState(param0: boolean): com.facebook.login.LoginManager;
+				public createLoginRequest(param0: java.util.Collection<string>): com.facebook.login.LoginClient.Request;
+				/** @deprecated */
+				public logInWithReadPermissions(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
+				public loginWithConfiguration(param0: globalAndroid.app.Activity, param1: com.facebook.login.LoginConfiguration): void;
+				public logIn(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
 				public logInWithPublishPermissions(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
 			}
 			export module LoginManager {
 				export class ActivityStartActivityDelegate extends com.facebook.login.StartActivityDelegate {
 					public static class: java.lang.Class<com.facebook.login.LoginManager.ActivityStartActivityDelegate>;
+					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
+					public getActivityContext(): globalAndroid.app.Activity;
+				}
+				export class AndroidxActivityResultRegistryOwnerStartActivityDelegate extends com.facebook.login.StartActivityDelegate {
+					public static class: java.lang.Class<com.facebook.login.LoginManager.AndroidxActivityResultRegistryOwnerStartActivityDelegate>;
 					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
 					public getActivityContext(): globalAndroid.app.Activity;
 				}
@@ -6554,6 +6895,7 @@ declare module com {
 				public loginClient: com.facebook.login.LoginClient;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				public shouldKeepTrackOfMultipleIntents(): boolean;
+				public static createAuthenticationTokenFromWebBundle(param0: globalAndroid.os.Bundle, param1: string): com.facebook.AuthenticationToken;
 				public getClientState(param0: string): string;
 				public addLoggingExtra(param0: string, param1: any): void;
 				public logWebLoginCompleted(param0: string): void;
@@ -6568,10 +6910,20 @@ declare module com {
 		export module login {
 			export class LoginResult {
 				public static class: java.lang.Class<com.facebook.login.LoginResult>;
-				public constructor(param0: com.facebook.AccessToken, param1: java.util.Set<string>, param2: java.util.Set<string>);
+				public component3(): java.util.Set<string>;
+				public copy(param0: com.facebook.AccessToken, param1: com.facebook.AuthenticationToken, param2: java.util.Set<string>, param3: java.util.Set<string>): com.facebook.login.LoginResult;
 				public getRecentlyGrantedPermissions(): java.util.Set<string>;
-				public getRecentlyDeniedPermissions(): java.util.Set<string>;
 				public getAccessToken(): com.facebook.AccessToken;
+				public component1(): com.facebook.AccessToken;
+				public toString(): string;
+				public component4(): java.util.Set<string>;
+				public constructor(param0: com.facebook.AccessToken, param1: java.util.Set<string>, param2: java.util.Set<string>);
+				public getAuthenticationToken(): com.facebook.AuthenticationToken;
+				public hashCode(): number;
+				public component2(): com.facebook.AuthenticationToken;
+				public getRecentlyDeniedPermissions(): java.util.Set<string>;
+				public equals(param0: any): boolean;
+				public constructor(param0: com.facebook.AccessToken, param1: com.facebook.AuthenticationToken, param2: java.util.Set<string>, param3: java.util.Set<string>);
 			}
 		}
 	}
@@ -6623,6 +6975,18 @@ declare module com {
 				public handleResultError(param0: com.facebook.login.LoginClient.Request, param1: string, param2: string, param3: string): void;
 				public getError(param0: globalAndroid.os.Bundle): string;
 				public handleResultOk(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle): void;
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export module login {
+			export class NonceUtil {
+				public static class: java.lang.Class<com.facebook.login.NonceUtil>;
+				public static INSTANCE: com.facebook.login.NonceUtil;
+				public static isValidNonce(param0: string): boolean;
 			}
 		}
 	}
@@ -9070,7 +9434,6 @@ declare module com {
 //com.facebook.FacebookCallback:1
 //com.facebook.FacebookDialog:2
 //com.facebook.GraphRequest.ParcelableResourceWithMimeType:1
-//com.facebook.bolts.Capture:1
 //com.facebook.bolts.Continuation:2
 //com.facebook.bolts.Task:1
 //com.facebook.bolts.TaskCompletionSource:1

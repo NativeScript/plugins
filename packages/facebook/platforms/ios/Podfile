@@ -1,3 +1,3 @@
-pod 'FBSDKCoreKit', '~> 11.2'
-pod 'FBSDKLoginKit', '~> 11.2'
+pod 'FBSDKCoreKit', '~> 12.0.2'
+pod 'FBSDKLoginKit', '~> 12.0.2'
 pod 'GoogleUtilities', '~> 7.5'
