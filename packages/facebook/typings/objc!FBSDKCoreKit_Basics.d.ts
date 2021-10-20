@@ -1,26 +1,4 @@
 
-declare var FBSDKAppEventCity: string;
-
-declare var FBSDKAppEventCountry: string;
-
-declare var FBSDKAppEventDateOfBirth: string;
-
-declare var FBSDKAppEventEmail: string;
-
-declare var FBSDKAppEventExternalId: string;
-
-declare var FBSDKAppEventFirstName: string;
-
-declare var FBSDKAppEventGender: string;
-
-declare var FBSDKAppEventLastName: string;
-
-declare var FBSDKAppEventPhone: string;
-
-declare var FBSDKAppEventState: string;
-
-declare var FBSDKAppEventZip: string;
-
 declare class FBSDKBase64 extends NSObject {
 
 	static alloc(): FBSDKBase64; // inherited from NSObject
@@ -69,10 +47,6 @@ declare class FBSDKBasicUtility extends NSObject {
 	static queryStringWithDictionaryErrorInvalidObjectHandler(dictionary: NSDictionary<string, any>, errorRef: interop.Pointer | interop.Reference<NSError>, invalidObjectHandler: (p1: any, p2: interop.Pointer | interop.Reference<boolean>) => any): string;
 }
 
-declare var FBSDKCoreKit_BasicsVersionNumber: number;
-
-declare var FBSDKCoreKit_BasicsVersionString: interop.Reference<number>;
-
 declare class FBSDKCrashHandler extends NSObject implements FBSDKCrashHandlerProtocol {
 
 	static addObserver(observer: FBSDKCrashObserving): void;
@@ -93,12 +67,16 @@ declare class FBSDKCrashHandler extends NSObject implements FBSDKCrashHandlerPro
 
 	addObserver(observer: FBSDKCrashObserving): void;
 
+	clearCrashReportFiles(): void;
+
 	disable(): void;
 }
 
 interface FBSDKCrashHandlerProtocol {
 
 	addObserver(observer: FBSDKCrashObserving): void;
+
+	clearCrashReportFiles(): void;
 }
 declare var FBSDKCrashHandlerProtocol: {
 
@@ -256,13 +234,15 @@ declare class FBSDKTypeUtility extends NSObject {
 
 	static dataWithJSONObjectOptionsError(obj: any, opt: NSJSONWritingOptions): NSData;
 
-	static dictionaryEnumerateKeysAndObjectsUsingBlock(dictionary: NSDictionary<any, any>, block: (p1: any, p2: any, p3: interop.Pointer | interop.Reference<boolean>) => void): void;
+	static dictionaryEnumerateKeysAndObjectsUsingBlock(dictionary: NSDictionary<string, any>, block: (p1: any, p2: any, p3: interop.Pointer | interop.Reference<boolean>) => void): void;
 
-	static dictionaryObjectForKeyOfType(dictionary: NSDictionary<any, any>, key: string, type: typeof NSObject): any;
+	static dictionaryObjectForKeyOfType(dictionary: NSDictionary<string, any>, key: string, type: typeof NSObject): any;
 
 	static dictionarySetObjectForKey(dictionary: NSMutableDictionary<any, any>, object: any, key: any): void;
 
-	static dictionaryValue(object: any): NSDictionary<any, any>;
+	static dictionaryValue(object: any): NSDictionary<string, any>;
+
+	static doubleValue(object: any): number;
 
 	static integerValue(object: any): number;
 
@@ -331,23 +311,6 @@ declare class FBSDKURLSessionTask extends NSObject {
 	initWithRequestFromSessionCompletionHandler(request: NSURLRequest, session: FBSDKSessionProviding, handler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void): this;
 
 	start(): void;
-}
-
-declare class FBSDKUserDataStore extends NSObject {
-
-	static alloc(): FBSDKUserDataStore; // inherited from NSObject
-
-	static clearUserData(): void;
-
-	static clearUserDataForType(type: string): void;
-
-	static getUserData(): string;
-
-	static new(): FBSDKUserDataStore; // inherited from NSObject
-
-	static setUserDataForType(data: string, type: string): void;
-
-	static setUserEmailFirstNameLastNamePhoneDateOfBirthGenderCityStateZipCountryExternalId(email: string, firstName: string, lastName: string, phone: string, dateOfBirth: string, gender: string, city: string, state: string, zip: string, country: string, externalId: string): void;
 }
 
 declare function _FBSDKCastToClassOrNilUnsafeInternal(object: any, klass: typeof NSObject): any;

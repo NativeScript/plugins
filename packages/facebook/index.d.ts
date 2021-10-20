@@ -58,7 +58,7 @@ export declare class LoginResult implements ILoginResult {
 export declare class LoginManager implements ILoginManager {
 	static init();
 
-	static logInWithPermissions(permissions: string[]): Promise<LoginResult>;
+	static logInWithPermissions(permissions: string[], context?: any /* UIViewController to open from on iOS, Activity to open with on Android */): Promise<LoginResult>;
 
 	static logout();
 }
