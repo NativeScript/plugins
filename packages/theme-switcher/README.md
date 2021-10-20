@@ -4,6 +4,8 @@
 ns plugin add @nativescript/theme-switcher
 ```
 
+<image src="https://user-images.githubusercontent.com/879060/138103861-95e5bc19-85e1-44c3-9243-dd5a0cc854f8.gif" height="400"/>
+
 ## Usage
 
 ```ts
