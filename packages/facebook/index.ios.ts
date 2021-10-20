@@ -196,7 +196,7 @@ export class LoginManager implements ILoginManager {
 
 	static logInWithPermissions(permissions: string[], context?: any): Promise<LoginResult> {
 		return new Promise((resolve, reject) => {
-			this.#native.logInWithPermissionsFromViewControllerHandler(permissions, <UIViewController>context || this.topViewController, (result, error) => {
+			this.#native.logInWithPermissionsFromViewControllerHandler(NSArray.arrayWithArray(permissions), <UIViewController>context || this.topViewController, (result, error) => {
 				if (error) {
 					reject(FacebookError.fromNative(error));
 				} else {
