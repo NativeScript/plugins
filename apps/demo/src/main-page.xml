@@ -11,6 +11,7 @@
         <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="cloudinary" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="debug-android" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="debug-ios" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
@@ -31,7 +32,6 @@
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="cloudinary" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>

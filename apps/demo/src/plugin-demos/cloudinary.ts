@@ -1,6 +1,6 @@
 import { Observable, EventData, Page } from '@nativescript/core';
 import { DemoSharedCloudinary } from '@demo/shared';
-import {} from '@nativescript/cloudinary';
+// import {} from '@nativescript/cloudinary';
 
 export function navigatingTo(args: EventData) {
 	const page = <Page>args.object;

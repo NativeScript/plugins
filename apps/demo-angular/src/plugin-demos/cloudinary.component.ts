@@ -1,6 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { DemoSharedCloudinary } from '@demo/shared';
-import {} from '@nativescript/cloudinary';
+// import {} from '@nativescript/cloudinary';
 
 @Component({
 	selector: 'demo-cloudinary',
