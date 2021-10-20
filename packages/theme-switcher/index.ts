@@ -93,7 +93,12 @@ export class ThemeSwitcher {
 
 		removeTaggedAdditionalCSS(this.cssTag);
 		addTaggedAdditionalCSS(theme.default ?? theme, this.cssTag);
-		Application.getRootView()?._onCssStateChange();
+
+		const rootView = Application.getRootView();
+		rootView?._onCssStateChange();
+		rootView?._getRootModalViews()?.forEach((view) => {
+			view?._onCssStateChange();
+		});
 	}
 }
 
