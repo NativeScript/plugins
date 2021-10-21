@@ -5,7 +5,7 @@
   "repository": "<fill-your-repository-here>",
   "dependencies": {
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/facebook": "file:../../packages/facebook",
+    "@nativescript/theme-switcher": "file:../../packages/theme-switcher",
     "@nativescript/animated-circle": "file:../../packages/animated-circle",
     "@nativescript/appavailability": "file:../../packages/appavailability",
     "@nativescript/auto-fit-text": "file:../../packages/auto-fit-text",
@@ -18,6 +18,7 @@
     "@nativescript/detox": "file:../../packages/detox",
     "@nativescript/directions": "file:../../packages/directions",
     "@nativescript/email": "file:../../packages/email",
+    "@nativescript/facebook": "file:../../packages/facebook",
     "@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
     "@nativescript/geolocation": "file:../../packages/geolocation",
     "@nativescript/google-signin": "file:../../packages/google-signin",

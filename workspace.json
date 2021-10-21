@@ -1454,6 +1454,55 @@
           }
         }
       }
+    },
+    "theme-switcher": {
+      "projectType": "library",
+      "generators": {},
+      "root": "packages/theme-switcher",
+      "sourceRoot": "packages/theme-switcher",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/theme-switcher",
+            "tsConfig": "packages/theme-switcher/tsconfig.json",
+            "packageJson": "packages/theme-switcher/package.json",
+            "main": "packages/theme-switcher/index.ts",
+            "assets": [
+              "packages/theme-switcher/*.md",
+              "packages/theme-switcher/nativescript.webpack.js",
+              "packages/theme-switcher/theme-loader.js",
+              "packages/theme-switcher/index.d.ts",
+              "packages/theme-switcher/shims.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/theme-switcher/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run theme-switcher:build",
+              "node tools/scripts/build-finish.ts theme-switcher"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages theme-switcher"
+            ],
+            "parallel": false
+          }
+        }
+      }
     }
   },
   "cli": {

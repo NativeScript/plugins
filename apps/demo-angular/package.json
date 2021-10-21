@@ -2,7 +2,7 @@
   "main": "./src/main.ts",
   "dependencies": {
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/facebook": "file:../../dist/packages/facebook",
+    "@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
     "@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
     "@nativescript/appavailability": "file:../../dist/packages/appavailability",
     "@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
@@ -15,6 +15,7 @@
     "@nativescript/detox": "file:../../dist/packages/detox",
     "@nativescript/directions": "file:../../dist/packages/directions",
     "@nativescript/email": "file:../../dist/packages/email",
+    "@nativescript/facebook": "file:../../dist/packages/facebook",
     "@nativescript/fingerprint-auth": "file:../../dist/packages/fingerprint-auth",
     "@nativescript/geolocation": "file:../../dist/packages/geolocation",
     "@nativescript/google-signin": "file:../../dist/packages/google-signin",
