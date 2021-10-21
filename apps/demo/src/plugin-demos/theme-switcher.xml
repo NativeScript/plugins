@@ -6,7 +6,7 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-            <Button text="Test theme-switcher" tap="{{ testIt }}" class="theme-btn"/>
+            <Button text="Change Theme" tap="{{ testIt }}" class="theme-btn"/>
           </StackLayout>
         </ScrollView>
     </StackLayout>
