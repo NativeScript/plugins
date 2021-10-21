@@ -2,8 +2,8 @@ import { AndroidApplication, Application, AndroidActivityResultEventData, Utils 
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 import lazy from '@nativescript/core/utils/lazy';
 
-const REQUEST_CODE_SIGNIN = 610210;
-const REQUEST_CODE_REQUEST_SCOPE = 610211;
+const REQUEST_CODE_SIGNIN = 10210;
+const REQUEST_CODE_REQUEST_SCOPE = 10211;
 
 const STYLE_STANDARD = lazy(() => com.google.android.gms.common.SignInButton.SIZE_STANDARD);
 const STYLE_ICON = lazy(() => com.google.android.gms.common.SignInButton.SIZE_ICON_ONLY);
