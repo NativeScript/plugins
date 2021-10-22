@@ -1,16 +1,20 @@
 # @nativescript/theme-switcher
 
-```javascript
+```cli
 ns plugin add @nativescript/theme-switcher
 ```
 
-<table>
+<table style="width:auto;">
 	<tr>
 		<td>
-			<image src="https://user-images.githubusercontent.com/879060/138103861-95e5bc19-85e1-44c3-9243-dd5a0cc854f8.gif" height="400"/>
+			<image src="https://user-images.githubusercontent.com/879060/138103861-95e5bc19-85e1-44c3-9243-dd5a0cc854f8.gif" 
+			height="400"
+			style="border-width: 1px; max-height: 500px;"/>
 		</td>
 		<td>
-			<image src="https://user-images.githubusercontent.com/879060/138250899-3b774229-5348-4bbe-8856-3e1f157e6788.gif" height="400"/>
+			<image src="https://user-images.githubusercontent.com/879060/138250899-3b774229-5348-4bbe-8856-3e1f157e6788.gif" 
+			height="400"
+			style="border-width: 1px; max-height: 500px;"/>
 		</td>
 	</tr>
 </table>
