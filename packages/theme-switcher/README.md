@@ -60,7 +60,7 @@ Can be useful if your app can switch different parts of the theme individually. 
 import { ThemeSwitcher } from '@nativescript/theme-switcher'
 
 const switcher1 = new ThemeSwitcher('switcher1');
-const switcher2 = new ThemeSwitcher('switcher1');
+const switcher2 = new ThemeSwitcher('switcher2');
 
 switcher1.initThemes({ /* ... */})
 switcher2.initThemes({ /* ... */})
