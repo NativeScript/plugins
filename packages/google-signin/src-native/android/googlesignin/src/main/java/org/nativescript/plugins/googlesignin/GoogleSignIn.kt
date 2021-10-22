@@ -52,7 +52,7 @@ class GoogleSignIn {
 				}
 			}
 
-			const val REQUEST_CODE_REQUEST_SCOPE = 610211
+			const val REQUEST_CODE_REQUEST_SCOPE = 10211
 		}
 	}
 
@@ -82,7 +82,7 @@ class GoogleSignIn {
 
 			return if (status != ConnectionResult.SUCCESS) {
 				if (showPlayServicesUpdateDialog && availability.isUserResolvableError(status)) {
-					val requestCode = 90210
+					val requestCode = 210
 					availability.getErrorDialog(activity, status, requestCode)?.show()
 				}
 				false
@@ -338,6 +338,6 @@ class GoogleSignIn {
 			handler.post(runnable)
 		}
 
-		const val REQUEST_CODE_SIGNIN = 610210
+		const val REQUEST_CODE_SIGNIN = 10210
 	}
 }
