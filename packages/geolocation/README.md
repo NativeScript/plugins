@@ -6,6 +6,11 @@ Geolocation plugin to use for getting current location, monitor movement, etc.
 ns plugin add @nativescript/geolocation
 ```
 
+> **Important Breaking Change**
+> Version 8.0.0 of the plugin remove the Android permissions from the plugin.
+> The developer is now responsible for adding the permission(s) that their app needs.
+> More info below.
+
 ## Permissions Android
 
 In order to use geolocation on Android, you'll need to add the following permission(s) to your app's `AndroidManifest.xml` inside the `App_Resources/Android/src/main` dir:
