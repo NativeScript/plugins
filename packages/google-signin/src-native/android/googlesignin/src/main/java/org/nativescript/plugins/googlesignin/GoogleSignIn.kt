@@ -38,7 +38,7 @@ class GoogleSignIn {
 				try {
 					val values = JSONArray(scopes)
 					val parsedScopes = mutableListOf<Scope>()
-					for (i in 0..values.length()) {
+					for (i in 0 until values.length()) {
 						parsedScopes.add(
 							Scope(values.getString(i))
 						)
@@ -111,7 +111,7 @@ class GoogleSignIn {
 					}
 
 				parsedOptions.optJSONArray("scopes")?.let {
-					for (i in 0..it.length()) {
+					for(i in 0 until it.length()) {
 						builder.requestScopes(Scope(it.getString(i)))
 					}
 				}
