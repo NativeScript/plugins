@@ -111,7 +111,7 @@ class GoogleSignIn {
 					}
 
 				parsedOptions.optJSONArray("scopes")?.let {
-					for(i in 0 until it.length()) {
+					for (i in 0 until it.length()) {
 						builder.requestScopes(Scope(it.getString(i)))
 					}
 				}
@@ -267,6 +267,8 @@ class GoogleSignIn {
 			return getAccessToken(context, GoogleSignIn.getLastSignedInAccount(context))
 		}
 
+		private const val GET_TOKENS_ERROR = "getTokens requires a user to be signed in";
+
 		private fun getAccessToken(context: Context, account: GoogleSignInAccount?): String? {
 			if (account?.account != null) {
 				return GoogleAuthUtil.getToken(
@@ -275,7 +277,7 @@ class GoogleSignIn {
 					scopesToString(account.grantedScopes)
 				)
 			} else {
-				throw Exception("getTokens requires a user to be signed in")
+				throw Exception(GET_TOKENS_ERROR)
 			}
 		}
 
@@ -284,22 +286,29 @@ class GoogleSignIn {
 			executors.submit {
 				try {
 					val account = GoogleSignIn.getLastSignedInAccount(context)
-						?: throw Exception("getTokens requires a user to be signed in")
-					val token = getAccessToken(context)
-					val tokens = JSONObject()
-					tokens.put("idToken", account.idToken)
-					tokens.put("accessToken", token)
-					runOnMain {
-						callback.onSuccess(tokens.toString())
+					if (account != null) {
+						val token = getAccessToken(context)
+						val tokens = JSONObject()
+						tokens.put("idToken", account.idToken)
+						tokens.put("accessToken", token)
+
+						if (retrieveAccessToken) {
+							accessToken = token
+						}
+
+						runOnMain {
+							callback.onSuccess(tokens.toString())
+						}
+					} else {
+						callback.onError(Exception(GET_TOKENS_ERROR))
 					}
 				} catch (e: Exception) {
 					runOnMain {
-						callback.onError(Exception("getTokens requires a user to be signed in"))
+						callback.onError(Exception(GET_TOKENS_ERROR))
 					}
 				}
 			}
 		}
-
 
 		@JvmStatic
 		fun getSignedInAccountFromIntent(intent: Intent, callback: Callback<GoogleUser>) {
