@@ -21,20 +21,26 @@ class Twitter {
 			skipStatus: Boolean,
 			includeEmail: Boolean, callback: Callback<User>
 		) {
-			try {
-				val result = TwitterCore.getInstance().apiClient.accountService.verifyCredentials(
-					includeEntities, skipStatus, includeEmail
-				).execute()
-				if (result.isSuccessful) {
-					callback.onSuccess(result.body())
-				} else {
-					callback.onError(
-						Exception(result.message())
-					)
-				}
-			} catch (e: Exception) {
-				runOnMain {
-					callback.onError(e)
+			executors.execute {
+				try {
+					val result = TwitterCore.getInstance().apiClient.accountService.verifyCredentials(
+						includeEntities, skipStatus, includeEmail
+					).execute()
+					if (result.isSuccessful) {
+						runOnMain {
+							callback.onSuccess(result.body())
+						}
+					} else {
+						runOnMain {
+							callback.onError(
+								Exception(result.message())
+							)
+						}
+					}
+				} catch (e: Exception) {
+					runOnMain {
+						callback.onError(e)
+					}
 				}
 			}
 		}

@@ -48,6 +48,7 @@ packages/shared-notification-delegate/common.js.map
 *.aar
 
 !packages/google-signin/platforms/android/googlesignin-release.aar
+!packages/twitter/platforms/android/twitter-release.aar
 
 # iOS:
 packages/**/native-src/ios/**/xcuserdata/
