@@ -95,6 +95,10 @@ export class AccessToken {
 		return this.#expiredPermissions;
 	}
 
+	get graphDomain(): string {
+		return FBSDKAccessToken.tokenCache?.authenticationToken?.graphDomain;
+	}
+
 	get permissions(): string[] {
 		if (!this.#permissions) {
 			this.#permissions = setToArray(this.native.permissions);
@@ -112,6 +116,23 @@ export class AccessToken {
 
 	get userID(): string {
 		return this.native.userID;
+	}
+
+	toJSON() {
+		return {
+			appID: this.appID,
+			dataAccessExpirationDate: this.dataAccessExpirationDate,
+			dataAccessExpired: this.dataAccessExpired,
+			declinedPermissions: this.declinedPermissions,
+			expirationDate: this.expirationDate,
+			expired: this.expired,
+			expiredPermissions: this.expiredPermissions,
+			graphDomain: this.graphDomain,
+			permissions: this.permissions,
+			refreshDate: this.refreshDate,
+			tokenString: this.tokenString,
+			userID: this.userID
+		}
 	}
 
 	get native() {
@@ -169,6 +190,15 @@ export class LoginResult {
 			this.#token = AccessToken.fromNative(this.native.token);
 		}
 		return this.#token;
+	}
+
+	toJSON() {
+		return {
+			declinedPermissions: this.declinedPermissions,
+			grantedPermissions: this.grantedPermissions,
+			isCancelled: this.isCancelled,
+			token: this.token
+		}
 	}
 
 	get native() {
