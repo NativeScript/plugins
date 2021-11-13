@@ -3,5 +3,7 @@
 		"world": "Hello world!"
 	},
 	"app.name": "Demo",
-	"facebook_app_id": 680941809251035
+	"facebook_app_id": 680941809251035,
+	"fb_login_protocol_scheme": "fb680941809251035",
+	"facebook_client_token": "08e5dd2ed4a0130b2f4404448702f30d"
 }
