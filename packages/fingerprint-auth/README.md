@@ -4,8 +4,8 @@
 ns plugin add @nativescript/fingerprint-auth
 ```
 
-Then open `App_Resources/Android/AndroidManifest.xml` and look for `minSdkVersion`.
-If that's set to a version less than 23, add this `overrideLibrary` line:
+Then open `App_Resources/Android/app.gradle` and look for `minSdkVersion`.
+If that's set to a version less than 23, add this `overrideLibrary` line to `App_Resources/Android/src/main/AndroidManifest.xml`:
 
 ```xml
   <uses-sdk
