@@ -95,7 +95,7 @@ export class FingerprintAuth implements FingerprintAuthApi {
 	}
 
 	// Following: https://developer.android.com/training/sign-in/biometric-auth#java as a guide
-	verifyFingerprint(options: VerifyFingerprintOptions, pinFallback: boolean = false): Promise<void | string> {
+	verifyFingerprint(options: VerifyFingerprintWithCustomFallbackOptions, pinFallback: boolean = false): Promise<void | string> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (!this.keyguardManager) {
