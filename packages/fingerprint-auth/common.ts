@@ -26,11 +26,6 @@ export interface VerifyFingerprintOptions {
 	 */
 	message?: string;
 	/**
-	 * The optional negative button text in the fingerprint page for android.
-	 * Default: "Cancel"
-	 */
-	cancelText?: string;
-	/**
 	 * The optional confirm button after biometrics have been verified in the fingerprint page for android.
 	 * Default: False
 	 */

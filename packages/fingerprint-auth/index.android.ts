@@ -95,7 +95,7 @@ export class FingerprintAuth implements FingerprintAuthApi {
 	}
 
 	// Following: https://developer.android.com/training/sign-in/biometric-auth#java as a guide
-	verifyFingerprint(options: VerifyFingerprintOptions, pinFallback: boolean = false): Promise<void | string> {
+	verifyFingerprint(options: VerifyFingerprintWithCustomFallbackOptions, pinFallback: boolean = false): Promise<void | string> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (!this.keyguardManager) {
@@ -128,7 +128,7 @@ export class FingerprintAuth implements FingerprintAuthApi {
 
 				if (pinFallback) {
 					const info = new (<any>androidx).biometric.BiometricPrompt.PromptInfo.Builder()
-						.setTitle(options.title)
+						.setTitle(options.title ? options.title : "Login")
 						.setSubtitle(options.subTitle ? options.subTitle : null)
 						.setDescription(options.message ? options.message : null)
 						.setConfirmationRequired(options.confirm ? options.confirm : false) // Confirm button after verify biometrics=
@@ -138,11 +138,11 @@ export class FingerprintAuth implements FingerprintAuthApi {
 					this.biometricPrompt.authenticate(info, cryptoObject);
 				} else {
 					const info = new (<any>androidx).biometric.BiometricPrompt.PromptInfo.Builder()
-						.setTitle(options.title)
+						.setTitle(options.title ? options.title : "Login")
 						.setSubtitle(options.subTitle ? options.subTitle : null)
 						.setDescription(options.message ? options.message : null)
 						.setConfirmationRequired(options.confirm ? options.confirm : false) // Confirm button after verify biometrics=
-						.setNegativeButtonText(options.cancelText ? options.cancelText : 'Cancel') // PIN Fallback or Cancel
+						.setNegativeButtonText(options.fallbackMessage ? options.fallbackMessage : 'Enter your password') // PIN Fallback or Cancel
 						.setAllowedAuthenticators((<any>androidx).biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG) // PIN Fallback or Cancel
 						.build();
 
@@ -159,7 +159,7 @@ export class FingerprintAuth implements FingerprintAuthApi {
 	}
 
 	verifyFingerprintWithCustomFallback(options: VerifyFingerprintWithCustomFallbackOptions): Promise<any> {
-		return this.verifyFingerprint(options, true);
+		return this.verifyFingerprint(options, false);
 	}
 
 	close(): void {
