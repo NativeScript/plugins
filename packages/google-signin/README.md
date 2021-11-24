@@ -87,7 +87,7 @@ registerElement('GoogleSignInButton', () => require('@nativescript/google-signin
 
 And then it can be called from your `html` file choosing the desired option for colorScheme and colorStyle as:
 ```xml
-	<GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
+<GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
 ```
 
 `colorScheme` supports 'auto', 'dark' and 'light' options and `colorStyle`supports 'standard'. 'wide' and 'icon'. Since it's a button, you can also set some of its properties such as `height` or `width`.
@@ -108,11 +108,17 @@ This method returns the current user and rejects with an error otherwise.
 
 This method may be used to find out whether some user is currently signed in.
 
-## hasPlayServices
+## playServicesAvailable()
 
 Checks if device has Google Play Services installed. Always resolves to true on iOS.
 
 Presence of up-to-date Google Play Services is required to show the sign in modal, but it is not required to perform calls to configure and signInSilently. Therefore, we recommend to call hasPlayServices directly before signIn.
+
+``ts
+import { GoogleSignin } from "@nativescript/google-signin";
+
+playServicesAvailable: boolean = await GoogleSignin.playServicesAvailable();
+```
 
 ## signOut()
 
