@@ -73,7 +73,7 @@ There should also be a file called `.detoxrc.json` in your project root.
 
 Detox must be configued to know the location of the iOS and Android app binary as well as what emulator/simulator to use.
 
-Open `.detoxrc.json` and make the following modifications under `configurations` for iOS and Android.
+Open `.detoxrc.json` and make the following modifications under `apps` and `devices`.
 
 - `binaryPath`: Specify the location of the app binary (probably something like below).
 
@@ -85,38 +85,82 @@ Open `.detoxrc.json` and make the following modifications under `configurations`
   - iOS: `ns build ios`
   - Android: `ns build android --detox`
 
-- `device`:
+- `devices`:
   - iOS: `"type": "iPhone 11"`
-  - Android: `"avdName": "Pixel_3a_API_30_1"` (use `emulator -list-avds` to list Android emulators)
+  - Android: `"avdName": "Pixel_4_API_30"` (use `emulator -list-avds` to list Android emulators)
 
 Here is a full example of a Detox configuration:
 
 ```json
 {
-	"testRunner": "jest",
-	"runnerConfig": "e2e/config.json",
-	"configurations": {
-		"ios": {
-			"binaryPath": "platforms/ios/build/Debug-iphonesimulator/[APP_NAME].app",
-			"build": "ns build ios",
-			"type": "ios.simulator",
-			"device": {
-				"type": "iPhone 11"
-			}
-		},
-		"android": {
-			"binaryPath": "platforms/android/app/build/outputs/apk/debug/app-debug.apk",
-			"build": "ns build android --detox",
-			"type": "android.emulator",
-			"device": {
-				"avdName": "Pixel_3a_API_30_1"
-			}
+  "testRunner": "jest",
+  "runnerConfig": "e2e/config.json",
+  "skipLegacyWorkersInjection": true,
+  "apps": {
+	"ios": {
+		"type": "ios.app",
+		"binaryPath": "platforms/ios/build/Debug-iphonesimulator/[APP_NAME].app",
+		"build": "ns build ios"
+	},
+	"android": {
+		"type": "android.apk",
+		"binaryPath": "platforms/android/app/build/outputs/apk/debug/app-debug.apk",
+		"build": "ns build android --detox"
+	}
+  },
+  "devices": {
+	"simulator": {
+		"type": "ios.simulator",
+		"device": {
+            "type": "iPhone 11 Pro"
+		}
+	},
+	"emulator": {
+		"type": "android.emulator",
+		"device": {
+			"avdName": "Pixel_4_API_30"
 		}
 	}
+  },
+  "configurations": {
+    "ios": {
+        "device": "simulator",
+        "app": "ios"
+    },
+    "android": {
+        "device": "emulator",
+        "app": "android"
+    }
+  }
 }
 ```
 
-> **Note:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=18. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
+> **Note:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=21. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
+
+### Add Resource ID (**Android Only**)
+
+In order to use the `automationText` property in NativeScript it must be enabled by adding a custom resource ID.
+
+Create a file called `ids.xml` in `App_Resources/Android/src/main/res/values/` and add the following:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="nativescript_accessibility_id"/>
+</resources>
+```
+
+### Allow Local Networking (**iOS Only**)
+
+Dependending on your setup iOS may not be able to communicate with Detox off the bat. In that case, you need to add the following to your `Info.plist` file to allow for local networking requests.
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
+</dict>
+```
 
 ## Usage
 
@@ -140,18 +184,18 @@ This example creates a testing scenario called `Example` and has a single test i
 
 ### Matchers
 
-Detox uses [matchers](https://github.com/wix/Detox/blob/master/docs/APIRef.Matchers.md) to find elements in your UI to interact with such as `by.label()` or `by.text()`.
+Detox uses [matchers](https://github.com/wix/Detox/blob/master/docs/APIRef.Matchers.md) to find elements in your UI to interact with.
 
-You can use the `automationText` property to find your UI elements by a unique label in NativeScript.
+You can use NativeScript's `automationText` property to find your UI elements using Detox's `by.id()` matcher.
 
-Example `by.label()`:
+Example:
 
 ```xml
 <Button text="Tap Me!" automationText="testButton"></Button>
 ```
 
 ```javascript
-await element(by.label('testButton')).tap();
+await element(by.id('testButton')).tap();
 ```
 
 ### Actions
@@ -211,13 +255,13 @@ npm run e2e:ios:test
 
 ## Troubleshooting
 
-Detox requires a minimum SDK version of 18, so if you get the following error, change the `minSdkVersion` to 18 in `App_Resources/Android/app.gradle`.
+Detox requires a minimum SDK version of 21, so if you get the following error, change the `minSdkVersion` to 21 in `App_Resources/Android/app.gradle`.
 
 ```bash
 Execution failed for task ':app:processDebugAndroidTestManifest'.
 Manifest merger failed : uses-sdk:minSdkVersion 17 cannot be smaller than version 18 declared in library [com.wix:detox:17.6.1] /Users/user/.gradle/caches/transforms-2/files-2.1/91a3acd87d710d1913b266ac114d7001/jetified-detox-17.6.1/AndroidManifest.xml as the library might be using APIs not available in 17
         Suggestion: use a compatible library with a minSdk of at most 17,
-                or increase this project's minSdk version to at least 18,
+                or increase this project's minSdk version to at least 21,
                 or use tools:overrideLibrary="com.wix.detox" to force usage (may lead to runtime failures)
 
 Command ./gradlew failed with exit code 1
