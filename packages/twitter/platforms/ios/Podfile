@@ -1,2 +1,3 @@
-pod 'TwitterKit5'
+platform :ios, '10.0'
+pod 'Swifter', :git => 'https://github.com/mattdonnelly/Swifter.git', :tag => "2.5.0"
 pod 'GoogleUtilities', '~> 7.5'

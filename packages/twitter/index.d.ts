@@ -39,6 +39,7 @@ export declare class Session implements ISession {
 }
 
 export declare class Twitter {
+	static callback: string;
 	static init(consumerKey: string, consumerSecret: string);
 }
 

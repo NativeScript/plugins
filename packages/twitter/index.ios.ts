@@ -1,3 +1,4 @@
+import { Application, Device } from '@nativescript/core';
 import { ISession, ITwitterUser } from './common';
 
 export class TwitterError extends Error {
@@ -14,9 +15,10 @@ export class TwitterError extends Error {
 }
 
 let appDelegateInitialized = false;
-let appDelegate: TwitterAppDelegateImpl;
-@NativeClass
+let appDelegate;
+
 @ObjCClass(UIApplicationDelegate)
+@NativeClass
 class TwitterAppDelegateImpl extends UIResponder implements UIApplicationDelegate {
 	static get sharedInstance() {
 		if (!appDelegate) {
@@ -26,14 +28,27 @@ class TwitterAppDelegateImpl extends UIResponder implements UIApplicationDelegat
 	}
 
 	applicationOpenURLOptions(app: UIApplication, url: NSURL, options: NSDictionary<string, any>): boolean {
-		return TWTRTwitter.sharedInstance().applicationOpenURLOptions(app, url, options);
+		TNSTwitter.handleOpenURL(url.absoluteString, Twitter.callback, false);
+		return true;
+	}
+
+}
+
+
+if (parseFloat(Device.sdkVersion) >= 13) {
+	(<any>TwitterAppDelegateImpl).prototype.applicationConfigurationForConnectingSceneSessionOptions = (application: UIApplication, connectingSceneSession: UISceneSession, options: UISceneConnectionOptions) => {
+		return UISceneConfiguration.configurationWithNameSessionRole(
+			"Default Configuration",
+			connectingSceneSession.role
+		)
 	}
 }
 
+
 export class TwitterUser implements ITwitterUser {
-	#native: TWTRUser;
-	static fromNative(user: TWTRUser) {
-		if (user instanceof TWTRUser) {
+	#native: any;
+	static fromNative(user: any) {
+		if (user) {
 			const usr = new TwitterUser();
 			usr.#native = user;
 			return usr;
@@ -42,15 +57,15 @@ export class TwitterUser implements ITwitterUser {
 	}
 
 	get formattedScreenName(): string {
-		return this.native.formattedScreenName;
+		return this.native.screen_name;
 	}
 
 	get isProtected(): boolean {
-		return this.native.isProtected;
+		return this.native.protected;
 	}
 
 	get isVerified(): boolean {
-		return this.isVerified;
+		return this.native.verified;
 	}
 
 	get name(): string {
@@ -58,19 +73,19 @@ export class TwitterUser implements ITwitterUser {
 	}
 
 	get profileImageUrl(): string {
-		return this.native.profileImageURL;
+		return this.native.profile_image_url_https;
 	}
 
 	get profileUrl(): string {
-		return this.native.profileURL?.absoluteString;
+		return this.native.url;
 	}
 
 	get screenName(): string {
-		return this.native.screenName;
+		return this.native.screen_name;
 	}
 
 	get userId(): string {
-		return this.native.userID;
+		return this.native.id_str;
 	}
 
 	get native() {
@@ -80,12 +95,26 @@ export class TwitterUser implements ITwitterUser {
 	get ios() {
 		return this.native;
 	}
+
+
+	toJSON() {
+		return {
+			formattedScreenName: this.formattedScreenName,
+			isProtected: this.isProtected,
+			isVerified: this.isVerified,
+			name: this.name,
+			profileImageUrl: this.profileImageUrl,
+			profileUrl: this.profileUrl,
+			screenName: this.screenName,
+			userId: this.userId
+		}
+	}
 }
 
 export class Session implements ISession {
-	#native: TWTRSession;
-	static fromNative(ts: TWTRSession) {
-		if (ts instanceof TWTRSession) {
+	#native: any;
+	static fromNative(ts) {
+		if (ts) {
 			const session = new Session();
 			session.#native = ts;
 			return session;
@@ -117,9 +146,12 @@ export class Session implements ISession {
 	}
 }
 
+
 export class Twitter {
+	static _twitter: TNSTwitter;
+	static callback: string;
 	static init(consumerKey: string, consumerSecret: string) {
-		TWTRTwitter.sharedInstance().startWithConsumerKeyConsumerSecret(consumerKey, consumerSecret);
+		this._twitter = TNSTwitter.alloc().init(consumerKey, consumerSecret);
 
 		if (!appDelegateInitialized) {
 			GULAppDelegateSwizzler.proxyOriginalDelegate();
@@ -132,38 +164,79 @@ export class Twitter {
 export class TwitterSignIn {
 	static logIn() {
 		return new Promise((resolve, reject) => {
-			TWTRTwitter.sharedInstance().logInWithCompletion((session, error) => {
-				if (session) {
-					resolve(Session.fromNative(session));
+			Twitter._twitter.authorizeWithBrowser(this.topViewController, Twitter.callback, (user, error) => {
+				if (user) {
+					try {
+						resolve(Session.fromNative(JSON.parse(user)));
+					} catch (e) {
+						reject(TwitterError.fromNative(e));
+					}
 				} else {
 					reject(TwitterError.fromNative(error));
 				}
-			});
+			})
 		});
 	}
-	static logOut() {
-		const store = TWTRTwitter.sharedInstance().sessionStore;
-		if (store) {
-			const userId = store.session()?.userID;
-			store.logOutUserID?.(userId);
-		}
-	}
+
+	static logOut() { }
 
 	static getCurrentUser(): Promise<TwitterUser> {
 		return new Promise((resolve, reject) => {
-			const store = TWTRTwitter.sharedInstance().sessionStore;
-			if (store) {
-				const userId = store.session()?.userID || '';
-				TWTRAPIClient.clientWithCurrentUser().loadUserWithIDCompletion(userId, (user, error) => {
-					if (error) {
-						reject(TwitterError.fromNative(error));
-					} else {
-						resolve(TwitterUser.fromNative(user));
+			Twitter._twitter.verifyUser(false, false, true, (user, error) => {
+				if (error) {
+					reject(TwitterError.fromNative(error));
+				} else {
+					try {
+						resolve(TwitterUser.fromNative(JSON.parse(user)));
+					} catch (e) {
+						reject(TwitterError.fromNative(e));
 					}
-				});
-			} else {
-				resolve(null);
-			}
+
+				}
+			})
 		});
+	}
+
+
+
+	private static get topViewController(): UIViewController | undefined {
+		const root = this.rootViewController;
+		if (!root) {
+			return undefined;
+		}
+		return this.findTopViewController(root);
+	}
+
+	private static get rootViewController(): UIViewController | undefined {
+		const keyWindow = UIApplication.sharedApplication.keyWindow;
+		return keyWindow ? keyWindow.rootViewController : undefined;
+	}
+
+	private static findTopViewController(root: UIViewController): UIViewController | undefined {
+		const presented = root.presentedViewController;
+		if (presented != null) {
+			return this.findTopViewController(presented);
+		}
+		if (root instanceof UISplitViewController) {
+			const last = root.viewControllers.lastObject;
+			if (last == null) {
+				return root;
+			}
+			return this.findTopViewController(last);
+		} else if (root instanceof UINavigationController) {
+			const top = root.topViewController;
+			if (top == null) {
+				return root;
+			}
+			return this.findTopViewController(top);
+		} else if (root instanceof UITabBarController) {
+			const selected = root.selectedViewController;
+			if (selected == null) {
+				return root;
+			}
+			return this.findTopViewController(selected);
+		} else {
+			return root;
+		}
 	}
 }

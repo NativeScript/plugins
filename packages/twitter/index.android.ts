@@ -63,6 +63,19 @@ export class TwitterUser implements ITwitterUser {
 	get android() {
 		return this.native;
 	}
+
+	toJSON() {
+		return {
+			formattedScreenName: this.formattedScreenName,
+			isProtected: this.isProtected,
+			isVerified: this.isVerified,
+			name: this.name,
+			profileImageUrl: this.profileImageUrl,
+			profileUrl: this.profileUrl,
+			screenName: this.screenName,
+			userId: this.userId
+		}
+	}
 }
 
 export class Twitter {
@@ -180,7 +193,7 @@ export class TwitterSignIn {
 			}
 
 			sessionManager.clearActiveSession();
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	static getCurrentUser() {

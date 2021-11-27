@@ -19,32 +19,26 @@ Here is how callbacks would look like:
 
 ### iOS
 
-
-Configure Info.Plist like below, replace `consumerKey` tag with your own key:
-
 ```xml
 <key>CFBundleURLTypes</key>
 <array>
   <dict>
     <key>CFBundleURLSchemes</key>
     <array>
-      <string>twitterkit-<consumerKey></string>
+      <string>yourscheme></string>
     </array>
   </dict>
-</array>
-<key>LSApplicationQueriesSchemes</key>
-<array>
-    <string>twitter</string>
-    <string>twitterauth</string>
 </array>
 ```
 
 ```ts
 import { Twitter, TwitterSignIn } from '@nativescript/twitter';
 
-TwitterSignIn.init(TWITTER_COMSUMER_KEY, TWITTER_CONSUMER_SECRET);
+Twitter.callback = 'yourscheme://';
 
-Twitter.logIn()
+Twitter.init(TWITTER_COMSUMER_KEY, TWITTER_CONSUMER_SECRET);
+
+TwitterSignIn.logIn()
 	.then((session) => {
 		// session.authToken
 		// session.authTokenSecret
