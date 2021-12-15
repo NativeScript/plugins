@@ -7,21 +7,21 @@
             <StackLayout class="tab-content">
               <Label text="{{ status }}" class="status" textWrap="true" style="text-align: center"/>
               <Label text="Checking availability" class="title"/>
-              <Button text="available?" tap="{{ doCheckAvailable }}" class="button" />
+              <Button text="available?" tap="{{ doCheckAvailable }}" class="btn btn-primary" />
 
               <Label text="Detect changes in the device biometric database. For best security you want to have the user reauth whenever this method returns true." textWrap="true"/>
-              <Button text="Biometric ID changed?" tap="{{ doCheckFingerprintsChanged }}" class="button" />
+              <Button text="Biometric ID changed?" tap="{{ doCheckFingerprintsChanged }}" class="btn btn-primary" />
 
               <Label text="Scanning the fingerprint / face" class="title"/>
               <Label text="When scanning fails or is not possible, you can either use the built-in passcode fallback or handle it yourself (custom fallback)." textWrap="true"/>
-              <Button text="verify with passcode fallback" tap="{{ doVerifyFingerprintWithPinFallBack }}" class="button" />
+              <Button text="verify with passcode fallback" tap="{{ doVerifyFingerprintWithPinFallBack }}" class="btn btn-primary" />
               <iOS>
-                <Button text="verify with custom fallback" tap="{{ doVerifyFingerprintWithCustomFallback }}" class="button" />
+                <Button text="verify with custom fallback" tap="{{ doVerifyFingerprintWithCustomFallback }}" class="btn btn-primary" />
               </iOS>
               <Android>
                 
-                <Button text="verify with encryption" tap="{{ doVerifyFingerprintWithEncrypt }}" class="button" />
-                 <Button text="verify with decryption" tap="{{ doVerifyFingerprintWithDecrypt }}" class="button" />
+                <Button text="verify with encryption" tap="{{ doVerifyFingerprintWithEncrypt }}" class="btn btn-primary" />
+                 <Button text="verify with decryption" tap="{{ doVerifyFingerprintWithDecrypt }}" class="btn btn-primary" />
                  	<TextField text="{{ encryptedPassword }}" ></TextField>
                   <TextField text="{{ IV }}"></TextField>
                   <TextField text="{{ decryptedPassword }}"></TextField>

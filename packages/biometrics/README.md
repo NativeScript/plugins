@@ -10,7 +10,7 @@ This plugin superceeds [@nativescript/fingerprint-auth](../fingerprint-auth)
 
 ## API
 
-Compatibility: API 23+
+Android Compatibility: API 23+
 
 ### `available`
 
@@ -48,7 +48,8 @@ class MyClass {
 
 ### `verifyBiometric`
 
-Note that on the iOS simulator this will just `resolve()`. TODO - is this true
+Note that on the iOS simulator use Features->Face ID  menu items to enroll a face and signal successs/failure to recognize a face.
+verifyBiometric will fail on IOS simulator.
 
 ```typescript
 biometricAuth

@@ -20,7 +20,7 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 			.then((result: BiometricIDAvailableResult) => {
 				console.log('doCheckAvailable result: ' + JSON.stringify(result));
 
-				let availbleBio: string;
+				let availbleBio: string = 'None';
 				if (result.face) {
 					availbleBio = 'Face';
 				} else if (result.touch) {
