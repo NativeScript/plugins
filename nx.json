@@ -103,6 +103,9 @@
 		},
 		"theme-switcher": {
 			"tags": []
+		},
+		"biometrics": {
+			"tags": []
 		}
 	},
 	"workspaceLayout": {

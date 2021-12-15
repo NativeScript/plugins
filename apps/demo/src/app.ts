@@ -1,6 +1,6 @@
 import { Application } from '@nativescript/core';
-import { LoginManager } from '@nativescript/facebook';
+//import { LoginManager } from '@nativescript/facebook';
 
-LoginManager.init();
+//LoginManager.init();
 
 Application.run({ moduleName: 'app-root' });

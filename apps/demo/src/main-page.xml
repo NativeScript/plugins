@@ -9,6 +9,7 @@
         <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="biometrics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

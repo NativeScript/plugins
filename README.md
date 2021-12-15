@@ -2,6 +2,7 @@
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/auto-fit-text](packages/auto-fit-text/README.md)
 - [@nativescript/background-http](packages/background-http/README.md)
+- [@nativescript/biometrics](packages/biometrics/README.md)
 - [@nativescript/brightness](packages/brightness/README.md)
 - [@nativescript/camera](packages/camera/README.md)
 - [@nativescript/datetimepicker](packages/datetimepicker/README.md)
@@ -22,6 +23,7 @@
 - [@nativescript/picker](packages/picker/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
+- [@nativescript/theme-switcher](packages/theme-switcher/README.md)
 - [@nativescript/twitter](packages/twitter/README.md)
 - [@nativescript/zip](packages/zip/README.md)
 
