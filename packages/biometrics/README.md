@@ -10,7 +10,7 @@ This plugin superceeds [@nativescript/fingerprint-auth](../fingerprint-auth)
 
 ## API
 
-Want a nicer guide than these raw code samples? Read [Nic Raboy's blog post about this plugin](https://www.thepolyglotdeveloper.com/2016/03/add-touch-id-authentication-support-to-your-nativescript-app/).
+Compatibility: API 23+
 
 ### `available`
 
