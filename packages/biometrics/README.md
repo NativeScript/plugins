@@ -120,22 +120,22 @@ The best practice is to use the options to encrypt some secret that is validated
 
 	```ts
 	biometricAuth
-				.verifyBiometric({
-					title: 'Enter your password',
-					message: 'Scan yer finger', // optional
-					pinFallback: false, // do not allow pnFallback to enable crypto operations
-					keyName: 'MySecretKeyName', // The name of the key that will be created/used
-					secret: 'The Secret I want encrypted' }
-					)
-				.then((result) => {
-					var encryptedText= result.encrypted  // The text encrypted with a key named "MySecretKeyName" (Android Only)
-					var IV = result.iv // the  initialization vector used to encrypt (Android Only)
+		.verifyBiometric({
+			title: 'Enter your password',
+			message: 'Scan yer finger', // optional
+			pinFallback: false, // do not allow pnFallback to enable crypto operations
+			keyName: 'MySecretKeyName', // The name of the key that will be created/used
+			secret: 'The Secret I want encrypted' }
+			)
+		.then((result) => {
+			var encryptedText= result.encrypted  // The text encrypted with a key named "MySecretKeyName" (Android Only)
+			var IV = result.iv // the  initialization vector used to encrypt (Android Only)
 
-					// For IOS the secret is stored in the keycain 
-					
-					
-				})
-				.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
+			// For IOS the secret is stored in the keycain 
+			
+			
+		})
+		.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
 
 	```
 
@@ -144,25 +144,25 @@ The best practice is to use the options to encrypt some secret that is validated
 1.  Decrypt your secret
 	```ts
 	biometricAuth
-				.verifyBiometric({
-					title: 'Enter your password',
-					message: 'Scan yer finger', // optional
-					keyName: 'MySecretKeyName', // The name of the key that will be created/used
-					pinFallback: false, // do not allow pnFallback to enable crypto operations
-					android: { 
-							
-							decryptText: 'The encrypted text retrieved previously',
-							iv: 'The IV retrieved previously` },
-					ios: { fetchSecret: true } // Tell IOS to fetch the secret
+		.verifyBiometric({
+			title: 'Enter your password',
+			message: 'Scan yer finger', // optional
+			keyName: 'MySecretKeyName', // The name of the key that will be created/used
+			pinFallback: false, // do not allow pnFallback to enable crypto operations
+			android: { 
+					
+					decryptText: 'The encrypted text retrieved previously',
+					iv: 'The IV retrieved previously` },
+			ios: { fetchSecret: true } // Tell IOS to fetch the secret
 
-				})
-				.then((result) => {
-					var decryptedText= result.decrypted  // The unencrypted secret 
-					verifyMySecret(decryptedText) // verify the secret by some means, e.g. a call to a back end server.
-					
-					
-				})
-				.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
+		})
+		.then((result) => {
+			var decryptedText= result.decrypted  // The unencrypted secret 
+			verifyMySecret(decryptedText) // verify the secret by some means, e.g. a call to a back end server.
+			
+			
+		})
+		.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
 
 	```
 
@@ -174,22 +174,22 @@ Also on android for phones running API < 30 only fingerprint is used, because th
 
 e.g.
 
-	```ts
-	biometricAuth
-				.verifyBiometric({
-					title: 'Enter your password',
-					message: 'Scan yer finger', // optional
-					fallbackMessage: 'Enter PIN', // optional
-					pinFallback: true, // allow pnFallback to enable crypto operations
-					ios: { customFallback: false }, // passing true here will show the fallback message and allow you to handle this in a custom manner.
-				})
-				.then((result) => {
-					console.log('Fingerprint/ PIN was OK');
-					
-				})
-				.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
+```ts
+biometricAuth
+	.verifyBiometric({
+		title: 'Enter your password',
+		message: 'Scan yer finger', // optional
+		fallbackMessage: 'Enter PIN', // optional
+		pinFallback: true, // allow pnFallback to enable crypto operations
+		ios: { customFallback: false }, // passing true here will show the fallback message and allow you to handle this in a custom manner.
+	})
+	.then((result) => {
+		console.log('Fingerprint/ PIN was OK');
+		
+	})
+	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
 
-	```
+```
 
 
 ## License
