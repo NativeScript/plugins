@@ -65,29 +65,6 @@ biometricAuth
 	.catch((err) => console.log(`Biometric ID NOT OK: ${JSON.stringify(err)}`));
 ```
 
-### `verifyBiometricWithCustomFallback` (iOS only, falls back to `verifyBiometric` on Android)
-
-Instead of falling back to the default Passcode UI of iOS you can roll your own.
-Just show that when the error callback is invoked.
-
-```typescript
-biometricAuth
-	.verifyBiometricWithCustomFallback({
-		message: 'Scan yer finger', // optional, shown in the fingerprint dialog (default: 'Scan your finger').
-		fallbackMessage: 'Enter PIN' // optional, the button label when scanning fails (default: 'Enter password').
-		
-	})
-	.then(
-		() => {
-			console.log('Fingerprint was OK');
-		},
-		(error) => {
-			// when error.code === -3, the user pressed the button labeled with your fallbackMessage
-			console.log('Fingerprint NOT OK. Error code: ' + error.code + '. Error message: ' + error.message);
-		}
-	);
-```
-
 ## Face ID (iOS)
 
 iOS 11 added support for Face ID and was first supported by the iPhone X.
@@ -125,17 +102,17 @@ biometricAuth.available().then((avail) => {
 });
 ```
 
-## Biometrics android
+## Biometrics and cryptography
 
 ### Normal operation
 
-If you do not pass any of the android options to the verify methods then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text.  The idea being that the key will not be accessable unless the user has successfully authenticated.
+If you do not pass any of the options (pinFallback / keyName) to the verify method then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text.  The idea being that the key will not be accessable unless the user has successfully authenticated.
 
-This however is not foolproof and the most secure method is to pass the android options to encrypt/decrypt text.
+This however is not foolproof and the most secure method is to pass the  ```secret```  and ```Keyname```options to encrypt/decrypt text.
 
 ### Encrypting/Decrypting with Authentication
 
-The best practice is to use the android specific options to encrypt some secret that is validated independantly, this is more secure because the key used for decryption cannot be accessed without proper authentication,  therefor your secret cannot be decrypted properly.
+The best practice is to use the options to encrypt some secret that is validated independently, this is more secure because the key used for decryption cannot be accessed without proper authentication,  therefor your secret cannot be decrypted properly.
 
 1.  Encrypt your secret
 
@@ -146,13 +123,15 @@ The best practice is to use the android specific options to encrypt some secret 
 				.verifyBiometric({
 					title: 'Enter your password',
 					message: 'Scan yer finger', // optional
-					android: { pinFallback: false, // do not allow pnFallback to enable crypto operations
-							keyName: 'MySecretKeyName', // The name of the key that will be created/used
-							encryptText: 'The Secret I want encrypted' },
-				})
+					pinFallback: false, // do not allow pnFallback to enable crypto operations
+					keyName: 'MySecretKeyName', // The name of the key that will be created/used
+					secret: 'The Secret I want encrypted' }
+					)
 				.then((result) => {
-					var encryptedText= result.encrypted  // The text encrypted with a key named "MySecretKeyName"
-					var IV = result.iv // the  initialization vector used to encrypt
+					var encryptedText= result.encrypted  // The text encrypted with a key named "MySecretKeyName" (Android Only)
+					var IV = result.iv // the  initialization vector used to encrypt (Android Only)
+
+					// For IOS the secret is stored in the keycain 
 					
 					
 				})
@@ -160,7 +139,7 @@ The best practice is to use the android specific options to encrypt some secret 
 
 	```
 
-	The encrypted result and vector would then be stored in your app and used the next time the user logged in be calling the ```verifyBiometric``` again:
+	For Android the encrypted result and vector would then be stored in your app and used the next time the user logged in be calling the ```verifyBiometric``` again:
 
 1.  Decrypt your secret
 	```ts
@@ -168,10 +147,14 @@ The best practice is to use the android specific options to encrypt some secret 
 				.verifyBiometric({
 					title: 'Enter your password',
 					message: 'Scan yer finger', // optional
-					android: { pinFallback: false, // do not allow pnFallback to enable crypto operations
-							keyName: 'MySecretKeyName', // The name of the key that will be created/used
+					keyName: 'MySecretKeyName', // The name of the key that will be created/used
+					pinFallback: false, // do not allow pnFallback to enable crypto operations
+					android: { 
+							
 							decryptText: 'The encrypted text retrieved previously',
-							iv: 'The IV retrieved previously` }
+							iv: 'The IV retrieved previously` },
+					ios: { fetchSecret: true } // Tell IOS to fetch the secret
+
 				})
 				.then((result) => {
 					var decryptedText= result.decrypted  // The unencrypted secret 
@@ -187,7 +170,7 @@ The best practice is to use the android specific options to encrypt some secret 
 
 Allowing the user to fallback on lock screen credentials ( pin etc. ) disables cryptography.  
 
-Also for phones running API < 30 only fingerprint is used, because the old fingerprint api is called.
+Also on android for phones running API < 30 only fingerprint is used, because the old fingerprint api is called.
 
 e.g.
 
@@ -196,8 +179,9 @@ e.g.
 				.verifyBiometric({
 					title: 'Enter your password',
 					message: 'Scan yer finger', // optional
-					android: { pinFallback: true, // allow pnFallback to enable crypto operations
-					 }
+					fallbackMessage: 'Enter PIN', // optional
+					pinFallback: true, // allow pnFallback to enable crypto operations
+					ios: { customFallback: false }, // passing true here will show the fallback message and allow you to handle this in a custom manner.
 				})
 				.then((result) => {
 					console.log('Fingerprint/ PIN was OK');
