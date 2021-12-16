@@ -49,7 +49,7 @@ class MyClass {
 ### `verifyBiometric`
 
 Note that on the iOS simulator use Features->Face ID  menu items to enroll a face and signal successs/failure to recognize a face.
-verifyBiometric will fail on IOS simulator.
+verifyBiometric will fail on IOS simulator unless pinfallBack is used.
 
 ```typescript
 biometricAuth
