@@ -3,6 +3,7 @@
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
 		"@nativescript/biometrics": "file:../../dist/packages/biometrics",
+		"@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
@@ -27,7 +28,6 @@
 		"@nativescript/picker": "file:../../dist/packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",
-		"@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
 		"@nativescript/twitter": "file:../../dist/packages/twitter",
 		"@nativescript/zip": "file:../../dist/packages/zip"
 	},
