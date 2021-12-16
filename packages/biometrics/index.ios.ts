@@ -88,16 +88,22 @@ export class BiometricAuth implements BiometricApi {
 				query.setObjectForKey(kSecClassGenericPassword, kSecClass);
 				query.setObjectForKey(keychainItemIdentifier, kSecAttrAccount);
 				query.setObjectForKey(keychainItemServiceName, kSecAttrService);
+				query.setObjectForKey(true, kSecReturnData);
 
 				// Note that you can only do this for Touch ID; for Face ID you need to tweak the plist value of NSFaceIDUsageDescription
 				query.setObjectForKey((options !== null && options.message) || 'Scan your finger', kSecUseOperationPrompt);
 
 				// Start the query and the fingerprint scan and/or device passcode validation
-				const res = SecItemCopyMatching(query, null);
+				let data: NSData;
+				const valuePointer = new interop.Reference<NSData>(data);
+				const res = SecItemCopyMatching(query, valuePointer);
 				if (res === 0) {
+					const code = NSUTF8StringEncoding;
+					let stringValue = NSString.alloc().initWithDataEncoding(valuePointer.value, code);
+					let jsString: string = stringValue.toString();
 					resolve({
 						code: ERROR_CODES.SUCCESS,
-						message: 'All OK',
+						message: 'All OK' + jsString,
 					});
 				} else {
 					reject({
