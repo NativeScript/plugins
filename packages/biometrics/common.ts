@@ -25,15 +25,13 @@ export interface VerifyBiometricOptions {
 	 * The optional message in the fingerprint dialog on ios and page description on android.
 	 * Default: 'Scan your finger' on iOS and the device default on Android (which is likely 'Enter your device password to continue').
 	 */
-	message?: string;
+	message?: string; // Used IOS
 	/**
 	 * The optional confirm button after biometrics have been verified in the fingerprint page for android.
 	 * Default: False
 	 */
 	confirm?: boolean;
-}
 
-export interface VerifyBiometricWithCustomFallbackOptions extends VerifyBiometricOptions {
 	/**
 	 * The optional button label when scanning the fingerprint fails.
 	 * Default: 'Enter password'.
@@ -41,16 +39,12 @@ export interface VerifyBiometricWithCustomFallbackOptions extends VerifyBiometri
 	 * Android:  When pinFallback is true this will be the text displayed on the pin dialog.
 	 * 			 When pinFallback is false this will be the Negative button text on the Biometric Prompt.
 	 */
-	fallbackMessage?: string;
-	android?: AndroidOptions;
-}
+	fallbackMessage?: string; // Used IOS
 
-export interface AndroidOptions {
 	/***
-	 * Allow Fallback to Pin on Android - note if true no cryptographic operations will happen and face id is not available.
+	 * Allow Fallback to Pin - note if true no cryptographic operations will happen and face id is not available on android.
 	 */
 	pinFallback?: boolean;
-
 	/**
 	 * Name of the key to use for crypto operations.
 	 *
@@ -60,10 +54,22 @@ export interface AndroidOptions {
 	keyName?: string;
 
 	/**
-	 * If set and pinFallback is true, and keyName is set then this string will be encrypted via the Biometric controlled Key.
+	 * If set and pinFallback is true, and keyName is set then this string will be encrypted via the Biometric controlled Key (Android ) or stored (IOS).
 	 */
-	encryptText?: string;
+	secret?: string;
 
+	android?: AndroidOptions;
+	ios?: IOSOptions;
+}
+
+export interface IOSOptions {
+	/** Allow the system handle fallback from biometrics */
+	systemFallback?: boolean;
+
+	/** Attempt to fetch secret from the specified key */
+	fetchSecret?: boolean;
+}
+export interface AndroidOptions {
 	/**
 	 * If set and pinFallback is true, and keyName is set then this string will be decrypted via the Biometric controlled Key.
 	 */
@@ -109,12 +115,6 @@ export interface BiometricApi {
 	 * this method may return a string (the entered password) for you to compare to the actual password.
 	 */
 	verifyBiometric(options: VerifyBiometricOptions): Promise<BiometricResult>;
-
-	/**
-	 * This implementation uses LocalAuthentication and has no built-in passcode fallback on iOS.
-	 * On Android this is exactly the same as 'verifyFingerprint'
-	 */
-	verifyBiometricWithCustomFallback(options: VerifyBiometricWithCustomFallbackOptions): Promise<BiometricResult>;
 
 	/**
 	 * Note will not do anyting on android if using pin fallback.

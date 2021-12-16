@@ -1,5 +1,5 @@
 export * from './common';
-import { BiometricIDAvailableResult, BiometricApi, VerifyBiometricOptions, VerifyBiometricWithCustomFallbackOptions, BiometricResult, ERROR_CODES } from './common';
+import { BiometricIDAvailableResult, BiometricApi, VerifyBiometricOptions, BiometricResult, ERROR_CODES } from './common';
 export declare class BiometricAuth implements BiometricApi {
 	available(): Promise<BiometricIDAvailableResult>;
 	didBiometricDatabaseChange(): Promise<boolean>;
@@ -10,16 +10,8 @@ export declare class BiometricAuth implements BiometricApi {
 	 *
 	 * @param options options as to what to show.
 	 */
-	verifyBiometric(options: VerifyBiometricWithCustomFallbackOptions): Promise<BiometricResult>;
-	/**
-	 * IOS: This implementation uses LocalAuthentication and has no built-in passcode fallback
-	 *
-	 * Android: This is a passthrough to verifyFingerprint usePasscodeFallback is ignored.
-	 *
-	 * @param options options as to what to show.
-	 * @param usePasscodeFallback indicate fallback to passcode for ios only, ignored by android use options.android.
-	 */
-	verifyBiometricWithCustomFallback(options: VerifyBiometricWithCustomFallbackOptions, usePasscodeFallback?: boolean): Promise<BiometricResult>;
+	verifyBiometric(options: VerifyBiometricOptions): Promise<BiometricResult>;
+
 	close(): void;
 }
 export { BiometricResult, ERROR_CODES };

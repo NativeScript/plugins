@@ -1,5 +1,5 @@
 import { Utils } from '@nativescript/core';
-import { BiometricIDAvailableResult, BiometricResult, ERROR_CODES, BiometricApi, VerifyBiometricOptions, VerifyBiometricWithCustomFallbackOptions } from './common';
+import { BiometricIDAvailableResult, BiometricResult, ERROR_CODES, BiometricApi, VerifyBiometricOptions } from './common';
 
 const keychainItemIdentifier = 'TouchIDKey';
 let keychainItemServiceName = null;
@@ -74,19 +74,26 @@ export class BiometricAuth implements BiometricApi {
 	verifyBiometric(options: VerifyBiometricOptions): Promise<BiometricResult> {
 		return new Promise((resolve, reject) => {
 			try {
-				if (keychainItemServiceName === null) {
-					const bundleID = NSBundle.mainBundle.infoDictionary.objectForKey('CFBundleIdentifier');
-					keychainItemServiceName = `${bundleID}.TouchID`;
-				}
-
-				if (!BiometricAuth.createKeyChainEntry()) {
+				if (options.pinFallback) {
 					this.verifyBiometricWithCustomFallback(options, true).then(resolve, reject);
 					return;
 				}
 
+				if (keychainItemServiceName === null) {
+					const bundleID = NSBundle.mainBundle.infoDictionary.objectForKey('CFBundleIdentifier');
+					keychainItemServiceName = `${bundleID}.TouchID`;
+				}
+				if (!options.ios?.fetchSecret) {
+					if (!BiometricAuth.createKeyChainEntry(options)) {
+						reject({
+							code: ERROR_CODES.UNEXPECTED_ERROR,
+							message: 'Unable to create KeyChain Entry',
+						});
+					}
+				}
 				const query = NSMutableDictionary.alloc().init();
 				query.setObjectForKey(kSecClassGenericPassword, kSecClass);
-				query.setObjectForKey(keychainItemIdentifier, kSecAttrAccount);
+				query.setObjectForKey(options.keyName ?? keychainItemIdentifier, kSecAttrAccount);
 				query.setObjectForKey(keychainItemServiceName, kSecAttrService);
 				query.setObjectForKey(true, kSecReturnData);
 
@@ -104,6 +111,7 @@ export class BiometricAuth implements BiometricApi {
 					resolve({
 						code: ERROR_CODES.SUCCESS,
 						message: 'All OK' + jsString,
+						decrypted: jsString,
 					});
 				} else {
 					reject({
@@ -124,7 +132,7 @@ export class BiometricAuth implements BiometricApi {
 	/**
 	 * This implementation uses LocalAuthentication and has no built-in passcode fallback
 	 */
-	verifyBiometricWithCustomFallback(options: VerifyBiometricWithCustomFallbackOptions, usePasscodeFallback = false): Promise<BiometricResult> {
+	private verifyBiometricWithCustomFallback(options: VerifyBiometricOptions, usePasscodeFallback = false): Promise<BiometricResult> {
 		return new Promise((resolve, reject) => {
 			try {
 				this.laContext = LAContext.new();
@@ -137,7 +145,7 @@ export class BiometricAuth implements BiometricApi {
 				if (options !== null && options.fallbackMessage) {
 					this.laContext.localizedFallbackTitle = options.fallbackMessage;
 				}
-				this.laContext.evaluatePolicyLocalizedReasonReply(usePasscodeFallback ? LAPolicy.DeviceOwnerAuthentication : LAPolicy.DeviceOwnerAuthenticationWithBiometrics, message, (ok, error) => {
+				this.laContext.evaluatePolicyLocalizedReasonReply(options.ios?.systemFallback ? LAPolicy.DeviceOwnerAuthentication : LAPolicy.DeviceOwnerAuthenticationWithBiometrics, message, (ok, error) => {
 					if (ok) {
 						resolve({
 							code: ERROR_CODES.SUCCESS,
@@ -157,10 +165,15 @@ export class BiometricAuth implements BiometricApi {
 		});
 	}
 
-	private static createKeyChainEntry(): boolean {
+	private static createKeyChainEntry(options: VerifyBiometricOptions): boolean {
+		const customSecret = options.keyName && options.secret;
+
+		const keyName = customSecret ? options.keyName : keychainItemIdentifier;
+		const secret = customSecret ? options.secret : 'dummy content';
+
 		const attributes = NSMutableDictionary.new();
 		attributes.setObjectForKey(kSecClassGenericPassword, kSecClass);
-		attributes.setObjectForKey(keychainItemIdentifier, kSecAttrAccount);
+		attributes.setObjectForKey(keyName, kSecAttrAccount);
 		attributes.setObjectForKey(keychainItemServiceName, kSecAttrService);
 
 		const accessControlRef = SecAccessControlCreateWithFlags(
@@ -170,12 +183,12 @@ export class BiometricAuth implements BiometricApi {
 			null
 		);
 		if (accessControlRef === null) {
-			console.log(`Can't store identifier '${keychainItemIdentifier}' in the KeyChain.`);
+			console.log(`Can't store identifier '${keyName}' in the KeyChain.`);
 			return false;
 		} else {
 			attributes.setObjectForKey(accessControlRef, kSecAttrAccessControl);
 			// The content of the password is not important
-			const content = NSString.stringWithString('dummy content');
+			const content = NSString.stringWithString(secret);
 			const nsData = content.dataUsingEncoding(NSUTF8StringEncoding);
 			attributes.setObjectForKey(nsData, kSecValueData);
 

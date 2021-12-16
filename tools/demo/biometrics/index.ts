@@ -66,7 +66,8 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 			.verifyBiometric({
 				title: 'Enter your password',
 				message: 'Scan yer finger', // optional
-				android: { pinFallback: true },
+				pinFallback: true,
+				ios: { systemFallback: true },
 			})
 			.then(() => {
 				this.set('status', 'Biometric ID OK');
@@ -76,14 +77,12 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 
 	doVerifyFingerprintWithCustomFallback(): void {
 		this.fingerprintAuth
-			.verifyBiometricWithCustomFallback(
-				{
-					title: 'Enter your password',
-					message: 'Scan yer finger', // optional
-					fallbackMessage: 'Enter PIN', // optional
-				},
-				true
-			)
+			.verifyBiometric({
+				title: 'Enter your password',
+				message: 'Scan yer finger', // optional
+				fallbackMessage: 'Enter PIN', // optional
+				pinFallback: true,
+			})
 			.then(() => this.set('status', 'Biometric ID OK'))
 			.catch((error) => {
 				this.set('status', 'Biometric ID NOT OK: ' + JSON.stringify(error));
@@ -100,7 +99,9 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 			.verifyBiometric({
 				title: 'Enter your password',
 				message: 'Scan yer finger', // optional
-				android: { pinFallback: false, keyName: 'MySecretKeyName', encryptText: this.decryptedPassword },
+				pinFallback: false,
+				keyName: 'MySecretKeyName',
+				secret: this.decryptedPassword,
 			})
 			.then((result) => {
 				this.setProperty('encryptedPassword', result.encrypted);
@@ -114,7 +115,10 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 			.verifyBiometric({
 				title: 'Enter your password',
 				message: 'Scan yer finger', // optional
-				android: { pinFallback: false, keyName: 'MySecretKeyName', decryptText: this.encryptedPassword, iv: this.IV },
+				pinFallback: false,
+				keyName: 'MySecretKeyName',
+				android: { decryptText: this.encryptedPassword, iv: this.IV },
+				ios: { fetchSecret: true },
 			})
 			.then((result) => {
 				if (result.decrypted === this.decryptedPassword) {

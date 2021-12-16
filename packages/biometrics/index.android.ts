@@ -1,4 +1,4 @@
-import { BiometricIDAvailableResult, ERROR_CODES, BiometricApi, VerifyBiometricWithCustomFallbackOptions, BiometricResult, AndroidOptions } from './common';
+import { BiometricIDAvailableResult, ERROR_CODES, BiometricApi, BiometricResult, VerifyBiometricOptions } from './common';
 import { Application, AndroidActivityResultEventData, Utils, AndroidApplication } from '@nativescript/core';
 
 declare const com: any;
@@ -150,7 +150,7 @@ export class BiometricAuth implements BiometricApi {
 	}
 
 	// Following: https://developer.android.com/training/sign-in/biometric-auth#java as a guide
-	verifyBiometric(options: VerifyBiometricWithCustomFallbackOptions): Promise<BiometricResult> {
+	verifyBiometric(options: VerifyBiometricOptions): Promise<BiometricResult> {
 		return new Promise<BiometricResult>((resolve, reject) => {
 			try {
 				if (!this.keyguardManager) {
@@ -166,14 +166,14 @@ export class BiometricAuth implements BiometricApi {
 						message: 'Secure lock screen hasn\'t been set up.\n Go to "Settings -> Security -> Screenlock" to set up a lock screen.',
 					});
 				}
-				const pinFallback = options?.android?.pinFallback;
+				const pinFallback = options?.pinFallback;
 
 				let cryptoObject;
 
 				if (!pinFallback) {
-					BiometricAuth.generateSecretKey(options?.android, reject);
+					BiometricAuth.generateSecretKey(options, reject);
 
-					const cipher = this.getAndInitSecretKey(options?.android, reject);
+					const cipher = this.getAndInitSecretKey(options, reject);
 					cryptoObject = org.nativescript.plugins.fingerprint.Utils.createCryptoObject(cipher);
 				}
 
@@ -181,7 +181,7 @@ export class BiometricAuth implements BiometricApi {
 				let authCallback = new AuthenticationCallback();
 				authCallback.resolve = resolve;
 				authCallback.reject = reject;
-				authCallback.toEncrypt = options?.android?.encryptText;
+				authCallback.toEncrypt = options?.secret;
 				authCallback.toDecrypt = options?.android?.decryptText;
 				authCallback.pinFallBack = pinFallback;
 				this.biometricPrompt = new androidx.biometric.BiometricPrompt(this.getActivity(), executor, authCallback);
@@ -218,13 +218,13 @@ export class BiometricAuth implements BiometricApi {
 		});
 	}
 
-	getAndInitSecretKey(options: AndroidOptions, reject, doNotRetry: boolean = false) {
+	getAndInitSecretKey(options: VerifyBiometricOptions, reject, doNotRetry: boolean = false) {
 		const cipher = this.getCipher();
-		const secretKey = this.getSecretKey(options?.keyName);
-		const keyMode = options?.decryptText ? javax.crypto.Cipher.DECRYPT_MODE : javax.crypto.Cipher.ENCRYPT_MODE;
+		const secretKey = this.getSecretKey(options?.keyName ?? KEY_NAME);
+		const keyMode = options?.android?.decryptText ? javax.crypto.Cipher.DECRYPT_MODE : javax.crypto.Cipher.ENCRYPT_MODE;
 
 		if (keyMode === javax.crypto.Cipher.DECRYPT_MODE) {
-			const initializationVector = android.util.Base64.decode(options.iv, android.util.Base64.DEFAULT);
+			const initializationVector = android.util.Base64.decode(options.android?.iv, android.util.Base64.DEFAULT);
 			cipher.init(keyMode, secretKey, new javax.crypto.spec.IvParameterSpec(initializationVector));
 		} else {
 			cipher.init(keyMode, secretKey);
@@ -232,7 +232,7 @@ export class BiometricAuth implements BiometricApi {
 		return cipher;
 	}
 
-	verifyBiometricWithCustomFallback(options: VerifyBiometricWithCustomFallbackOptions): Promise<BiometricResult> {
+	verifyBiometricWithCustomFallback(options: VerifyBiometricOptions): Promise<BiometricResult> {
 		return this.verifyBiometric(options);
 	}
 
@@ -244,18 +244,18 @@ export class BiometricAuth implements BiometricApi {
 	 * Creates a symmetric key in the Android Key Store which can only be used after the user has
 	 * authenticated with device credentials within the last X seconds.
 	 */
-	private static generateSecretKey(options: AndroidOptions, reject): void {
+	private static generateSecretKey(options: VerifyBiometricOptions, reject): void {
 		const keyStore = java.security.KeyStore.getInstance('AndroidKeyStore');
 		keyStore.load(null);
 
 		const keyName = options?.keyName ?? KEY_NAME;
-		if (options?.keyName && (options?.decryptText || options?.encryptText)) {
+		if (options.keyName && (options.android?.decryptText || options.secret)) {
 			const key = keyStore.getKey(keyName, null);
 			if (key) return;
 			// key already exists
 			else {
 				// need to reject as can neve decrypt without a key.
-				if (options.decryptText) {
+				if (options.android?.decryptText) {
 					reject({
 						code: ERROR_CODES.UNEXPECTED_ERROR,
 						message: `Key not available: ${keyName}`,
