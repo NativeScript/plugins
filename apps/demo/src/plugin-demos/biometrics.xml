@@ -18,14 +18,14 @@
               <iOS>
                 <Button text="verify with custom fallback" tap="{{ doVerifyFingerprintWithCustomFallback }}" class="btn btn-primary" />
               </iOS>
-              <Android>
+              
                 
                 <Button text="verify with encryption" tap="{{ doVerifyFingerprintWithEncrypt }}" class="btn btn-primary" />
                  <Button text="verify with decryption" tap="{{ doVerifyFingerprintWithDecrypt }}" class="btn btn-primary" />
                  	<TextField text="{{ encryptedPassword }}" ></TextField>
                   <TextField text="{{ IV }}"></TextField>
                   <TextField text="{{ decryptedPassword }}"></TextField>
-              </Android>
+              
             </StackLayout>
           </ScrollView>
         </TabViewItem.view>

@@ -105,9 +105,12 @@ export class BiometricAuth implements BiometricApi {
 				const valuePointer = new interop.Reference<NSData>(data);
 				const res = SecItemCopyMatching(query, valuePointer);
 				if (res === 0) {
-					const code = NSUTF8StringEncoding;
-					let stringValue = NSString.alloc().initWithDataEncoding(valuePointer.value, code);
-					let jsString: string = stringValue.toString();
+					let jsString: string;
+					if (options.ios?.fetchSecret) {
+						const code = NSUTF8StringEncoding;
+						let stringValue = NSString.alloc().initWithDataEncoding(valuePointer.value, code);
+						jsString = stringValue.toString();
+					}
 					resolve({
 						code: ERROR_CODES.SUCCESS,
 						message: 'All OK' + jsString,
@@ -145,22 +148,44 @@ export class BiometricAuth implements BiometricApi {
 				if (options !== null && options.fallbackMessage) {
 					this.laContext.localizedFallbackTitle = options.fallbackMessage;
 				}
-				this.laContext.evaluatePolicyLocalizedReasonReply(options.ios?.systemFallback ? LAPolicy.DeviceOwnerAuthentication : LAPolicy.DeviceOwnerAuthenticationWithBiometrics, message, (ok, error) => {
+				this.laContext.evaluatePolicyLocalizedReasonReply(options.ios?.customFallback ? LAPolicy.DeviceOwnerAuthenticationWithBiometrics : LAPolicy.DeviceOwnerAuthentication, message, (ok, error) => {
 					if (ok) {
 						resolve({
 							code: ERROR_CODES.SUCCESS,
 							message: 'All OK',
 						});
 					} else {
+						let returnCode: ERROR_CODES;
+						let message: string;
+
+						switch (error.code) {
+							case LAError.UserCancel: {
+								returnCode = ERROR_CODES.USER_CANCELLED;
+								message = 'User Canceled';
+								break;
+							}
+							case LAError.UserFallback: {
+								returnCode = ERROR_CODES.PASSWORD_FALLBACK_SELECTED;
+								message = 'Fallback Button Pressed';
+								break;
+							}
+							default: {
+								returnCode = ERROR_CODES.UNEXPECTED_ERROR;
+								message = error?.localizedDescription;
+							}
+						}
 						reject({
-							code: error.code,
-							message: error.localizedDescription,
+							code: returnCode,
+							message: message,
 						});
 					}
 				});
 			} catch (ex) {
 				console.log(`Error in biometric-auth.verifyBiometricWithCustomFallback: ${ex}`);
-				reject(ex);
+				reject({
+					code: ERROR_CODES.UNEXPECTED_ERROR,
+					message: ex,
+				});
 			}
 		});
 	}

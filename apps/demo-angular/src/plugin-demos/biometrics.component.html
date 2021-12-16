@@ -6,6 +6,7 @@
 			<Button text="Test biometrics" (tap)="demoShared.doCheckAvailable()" class="btn btn-primary"></Button>
 			<Button text="Test Verify" (tap)="demoShared.doVerifyFingerprint()" class="btn btn-primary"></Button>
 			<Button text="Test Verify w/ PIN Fallback" (tap)="demoShared.doVerifyFingerprintWithPinFallBack()" class="btn btn-primary"></Button>
+			<Button text="verify with ios custom fallback" (tap)="demoShared.doVerifyFingerprintWithCustomFallback()" class="btn btn-primary"></Button>
 			<Button text="Android Only Encrypt secret" (tap)="demoShared.doVerifyFingerprintWithEncrypt()" class="btn btn-primary"></Button>
 			<Button text="Android Only Decrypt secret" (tap)="demoShared.doVerifyFingerprintWithDecrypt()" class="btn btn-primary"></Button>
 			<TextField [(ngModel)]="demoShared.encryptedPassword"></TextField>

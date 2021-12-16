@@ -67,7 +67,6 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 				title: 'Enter your password',
 				message: 'Scan yer finger', // optional
 				pinFallback: true,
-				ios: { systemFallback: true },
 			})
 			.then(() => {
 				this.set('status', 'Biometric ID OK');
@@ -82,6 +81,7 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 				message: 'Scan yer finger', // optional
 				fallbackMessage: 'Enter PIN', // optional
 				pinFallback: true,
+				ios: { customFallback: true },
 			})
 			.then(() => this.set('status', 'Biometric ID OK'))
 			.catch((error) => {

@@ -63,8 +63,8 @@ export interface VerifyBiometricOptions {
 }
 
 export interface IOSOptions {
-	/** Allow the system handle fallback from biometrics */
-	systemFallback?: boolean;
+	/** Allow a custom fallback from biometrics */
+	customFallback?: boolean;
 
 	/** Attempt to fetch secret from the specified key */
 	fetchSecret?: boolean;
