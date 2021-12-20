@@ -8,4 +8,7 @@ export default {
 		markingMode: 'none',
 	},
 	appPath: 'src',
+	cli: {
+		packageManager: 'npm'
+	}
 } as NativeScriptConfig;
