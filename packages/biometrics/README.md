@@ -1,7 +1,7 @@
 # @nativescript/biometrics
 
 ```cli
-ns plugin add @nativescript/biometrics
+npm install @nativescript/biometrics
 ```
 
 ## Replaces @nativescript/fingerprint-auth
