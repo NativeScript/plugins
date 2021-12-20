@@ -1,0 +1,47 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+  <TabView>
+    <TabView.items>
+      <TabViewItem title="Demo">
+        <TabViewItem.view>
+          <ScrollView>
+            <StackLayout class="tab-content">
+              <Label text="{{ status }}" class="status" textWrap="true" style="text-align: center"/>
+              <Label text="Checking availability" class="title"/>
+              <Button text="available?" tap="{{ doCheckAvailable }}" class="btn btn-primary" />
+
+              <Label text="Detect changes in the device biometric database. For best security you want to have the user reauth whenever this method returns true." textWrap="true"/>
+              <Button text="Biometric ID changed?" tap="{{ doCheckFingerprintsChanged }}" class="btn btn-primary" />
+
+              <Label text="Scanning the fingerprint / face" class="title"/>
+              <Label text="When scanning fails or is not possible, you can either use the built-in passcode fallback or handle it yourself (custom fallback)." textWrap="true"/>
+              <Button text="verify with passcode fallback" tap="{{ doVerifyFingerprintWithPinFallBack }}" class="btn btn-primary" />
+              <iOS>
+                <Button text="verify with custom fallback" tap="{{ doVerifyFingerprintWithCustomFallback }}" class="btn btn-primary" />
+              </iOS>
+              
+                
+                <Button text="verify with encryption" tap="{{ doVerifyFingerprintWithEncrypt }}" class="btn btn-primary" />
+                 <Button text="verify with decryption" tap="{{ doVerifyFingerprintWithDecrypt }}" class="btn btn-primary" />
+                 	<TextField text="{{ encryptedPassword }}" ></TextField>
+                  <TextField text="{{ IV }}"></TextField>
+                  <TextField text="{{ decryptedPassword }}"></TextField>
+              
+            </StackLayout>
+          </ScrollView>
+        </TabViewItem.view>
+      </TabViewItem>
+      <TabViewItem title="About">
+        <TabViewItem.view>
+          <StackLayout class="tab-content">
+            <Image margin="10" src="~/res/telerik-logo.png" />
+            <Label text="Biometrics plugin demo" class="title"/>
+            <Label text="The Biometrics plugin allows you to use the fingerprint / face scanner of your mobile device." textWrap="true"/>
+            <Label text=" "/>
+            <!-- poor mans line break, lol -->
+            <Label text="With this plugin you can replace traditional password / pincode login forms by a convenient and secure biometric authentication mechanism." textWrap="true"/>
+          </StackLayout>
+        </TabViewItem.view>
+      </TabViewItem>
+    </TabView.items>
+  </TabView>
+</Page>

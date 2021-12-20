@@ -252,6 +252,13 @@ module.exports = {
 					description: '@nativescript/theme-switcher: Build',
 				},
 			},
+			// @nativescript/biometrics
+			biometrics: {
+				build: {
+					script: 'nx run biometrics:build.all',
+					description: '@nativescript/biometrics: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -369,6 +376,10 @@ module.exports = {
 			'theme-switcher': {
 				script: 'nx run theme-switcher:focus',
 				description: 'Focus on @nativescript/theme-switcher',
+			},
+			biometrics: {
+				script: 'nx run biometrics:focus',
+				description: 'Focus on @nativescript/biometrics',
 			},
 			reset: {
 				script: 'nx run all:focus',

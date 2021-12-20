@@ -1,1511 +1,1327 @@
 {
-  "version": 2,
-  "projects": {
-    "demo": {
-      "root": "apps/demo/",
-      "sourceRoot": "apps/demo/src",
-      "projectType": "application",
-      "prefix": "demo",
-      "targets": {
-        "build": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "noHmr": true,
-            "production": true,
-            "uglify": true,
-            "release": true,
-            "forDevice": true
-          }
-        },
-        "ios": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "platform": "ios"
-          }
-        },
-        "android": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "platform": "android"
-          }
-        },
-        "clean": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "clean": true
-          }
-        }
-      }
-    },
-    "demo-angular": {
-      "root": "apps/demo-angular/",
-      "sourceRoot": "apps/demo-angular/src",
-      "projectType": "application",
-      "prefix": "demo",
-      "targets": {
-        "build": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "noHmr": true,
-            "production": true,
-            "uglify": true,
-            "release": true,
-            "forDevice": true
-          }
-        },
-        "ios": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "platform": "ios"
-          }
-        },
-        "android": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "platform": "android"
-          }
-        },
-        "clean": {
-          "executor": "@nativescript/nx:build",
-          "options": {
-            "clean": true
-          }
-        }
-      }
-    },
-    "ios-security": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/ios-security",
-      "sourceRoot": "packages/ios-security",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/packages/ios-security",
-            "tsConfig": "packages/ios-security/tsconfig.json",
-            "packageJson": "packages/ios-security/package.json",
-            "main": "packages/ios-security/index.d.ts",
-            "assets": [
-              "packages/ios-security/*.md",
-              "packages/ios-security/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/ios-security/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          }
-        },
-        "build.all": {
-          "executor": "@nrwl/workspace:run-commands",
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run ios-security:build.native",
-              "nx run ios-security:build",
-              "node tools/scripts/build-finish.ts ios-security"
-            ],
-            "parallel": false
-          }
-        },
-        "build.native": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "./build.ios.sh"
-            ],
-            "cwd": "packages/ios-security/native-src",
-            "parallel": false
-          }
-        },
-        "focus": {
-          "executor": "@nrwl/workspace:run-commands",
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages ios-security"
-            ],
-            "parallel": false
-          }
-        }
-      }
-    },
-    "local-notifications": {
-      "root": "packages/local-notifications",
-      "sourceRoot": "packages/local-notifications",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/local-notifications",
-            "tsConfig": "packages/local-notifications/tsconfig.json",
-            "packageJson": "packages/local-notifications/package.json",
-            "main": "packages/local-notifications/index.d.ts",
-            "assets": [
-              "packages/local-notifications/*.md",
-              "packages/local-notifications/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/local-notifications/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run local-notifications:build",
-              "node tools/scripts/build-finish.ts local-notifications"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages local-notifications"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "shared-notification-delegate": {
-      "root": "packages/shared-notification-delegate",
-      "sourceRoot": "packages/shared-notification-delegate",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/shared-notification-delegate",
-            "tsConfig": "packages/shared-notification-delegate/tsconfig.json",
-            "packageJson": "packages/shared-notification-delegate/package.json",
-            "main": "packages/shared-notification-delegate/index.d.ts",
-            "assets": [
-              "packages/shared-notification-delegate/*.md",
-              "packages/shared-notification-delegate/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/shared-notification-delegate/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run shared-notification-delegate:build",
-              "node tools/scripts/build-finish.ts shared-notification-delegate"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages shared-notification-delegate"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "email": {
-      "root": "packages/email",
-      "sourceRoot": "packages/email",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/email",
-            "tsConfig": "packages/email/tsconfig.json",
-            "packageJson": "packages/email/package.json",
-            "main": "packages/email/index.d.ts",
-            "assets": [
-              "packages/email/*.md",
-              "packages/email/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/email/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run email:build",
-              "node tools/scripts/build-finish.ts email"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages email"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "all": {
-      "root": "",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/workspace:run-commands",
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run email:build.all",
-              "nx run shared-notification-delegate:build.all",
-              "nx run appavailability:build.all",
-              "nx run local-notifications:build.all",
-              "nx run imagepicker:build.all",
-              "nx run datetimepicker:build.all",
-              "nx run camera:build.all",
-              "nx run zip:build.all",
-              "nx run directions:build.all",
-              "nx run iqkeyboardmanager:build.all",
-              "nx run geolocation:build.all",
-              "nx run fingerprint-auth:build.all",
-              "nx run brightness:build.all",
-              "nx run background-http:build.all",
-              "nx run social-share:build.all",
-              "nx run auto-fit-text:build.all",
-              "nx run animated-circle:build.all",
-              "nx run localize:build.all",
-              "nx run detox:build.all",
-              "nx run picker:build.all",
-              "nx run debug-android:build.all",
-              "nx run debug-ios:build.all",
-              "nx run facebook:build.all",
-              "nx run google-signin:build.all",
-              "nx run twitter:build.all"
-            ],
-            "parallel": false
-          }
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      },
-      "sourceRoot": ""
-    },
-    "imagepicker": {
-      "root": "packages/imagepicker",
-      "sourceRoot": "packages/imagepicker",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/imagepicker",
-            "tsConfig": "packages/imagepicker/tsconfig.json",
-            "packageJson": "packages/imagepicker/package.json",
-            "main": "packages/imagepicker/index.d.ts",
-            "assets": [
-              "packages/imagepicker/*.md",
-              "packages/imagepicker/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/imagepicker/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run imagepicker:build",
-              "node tools/scripts/build-finish.ts imagepicker"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages imagepicker"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "datetimepicker": {
-      "root": "packages/datetimepicker",
-      "sourceRoot": "packages/datetimepicker",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/datetimepicker",
-            "tsConfig": "packages/datetimepicker/tsconfig.json",
-            "packageJson": "packages/datetimepicker/package.json",
-            "main": "packages/datetimepicker/index.d.ts",
-            "assets": [
-              "packages/datetimepicker/*.md",
-              "packages/datetimepicker/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/datetimepicker/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run datetimepicker:build",
-              "node tools/scripts/build-finish.ts datetimepicker"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages datetimepicker"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "camera": {
-      "root": "packages/camera",
-      "sourceRoot": "packages/camera",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/camera",
-            "tsConfig": "packages/camera/tsconfig.json",
-            "packageJson": "packages/camera/package.json",
-            "main": "packages/camera/index.d.ts",
-            "assets": [
-              "packages/camera/*.md",
-              "packages/camera/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/camera/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run camera:build",
-              "node tools/scripts/build-finish.ts camera"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages camera"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "zip": {
-      "root": "packages/zip",
-      "sourceRoot": "packages/zip",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/zip",
-            "tsConfig": "packages/zip/tsconfig.json",
-            "packageJson": "packages/zip/package.json",
-            "main": "packages/zip/index.d.ts",
-            "assets": [
-              "packages/zip/*.md",
-              "packages/zip/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/zip/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run zip:build",
-              "node tools/scripts/build-finish.ts zip"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages zip"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "directions": {
-      "root": "packages/directions",
-      "sourceRoot": "packages/directions",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/directions",
-            "tsConfig": "packages/directions/tsconfig.json",
-            "packageJson": "packages/directions/package.json",
-            "main": "packages/directions/index.d.ts",
-            "assets": [
-              "packages/directions/*.md",
-              "packages/directions/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/directions/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run directions:build",
-              "node tools/scripts/build-finish.ts directions"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages directions"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "iqkeyboardmanager": {
-      "root": "packages/iqkeyboardmanager",
-      "sourceRoot": "packages/iqkeyboardmanager",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/iqkeyboardmanager",
-            "tsConfig": "packages/iqkeyboardmanager/tsconfig.json",
-            "packageJson": "packages/iqkeyboardmanager/package.json",
-            "main": "packages/iqkeyboardmanager/index.d.ts",
-            "assets": [
-              "packages/iqkeyboardmanager/*.md",
-              "packages/iqkeyboardmanager/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/iqkeyboardmanager/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run iqkeyboardmanager:build",
-              "node tools/scripts/build-finish.ts iqkeyboardmanager"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages iqkeyboardmanager"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "geolocation": {
-      "root": "packages/geolocation",
-      "sourceRoot": "packages/geolocation",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/geolocation",
-            "tsConfig": "packages/geolocation/tsconfig.json",
-            "packageJson": "packages/geolocation/package.json",
-            "main": "packages/geolocation/index.d.ts",
-            "assets": [
-              "packages/geolocation/*.md",
-              "packages/geolocation/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/geolocation/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run geolocation:build",
-              "node tools/scripts/build-finish.ts geolocation"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages geolocation"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "fingerprint-auth": {
-      "root": "packages/fingerprint-auth",
-      "sourceRoot": "packages/fingerprint-auth",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/fingerprint-auth",
-            "tsConfig": "packages/fingerprint-auth/tsconfig.json",
-            "packageJson": "packages/fingerprint-auth/package.json",
-            "main": "packages/fingerprint-auth/index.d.ts",
-            "assets": [
-              "packages/fingerprint-auth/*.md",
-              "packages/fingerprint-auth/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/fingerprint-auth/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run fingerprint-auth:build",
-              "node tools/scripts/build-finish.ts fingerprint-auth"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages fingerprint-auth"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "appavailability": {
-      "root": "packages/appavailability",
-      "sourceRoot": "packages/appavailability",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/appavailability",
-            "tsConfig": "packages/appavailability/tsconfig.json",
-            "packageJson": "packages/appavailability/package.json",
-            "main": "packages/appavailability/index.d.ts",
-            "assets": [
-              "packages/appavailability/*.md",
-              "packages/appavailability/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/appavailability/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run appavailability:build",
-              "node tools/scripts/build-finish.ts appavailability"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages appavailability"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "brightness": {
-      "root": "packages/brightness",
-      "sourceRoot": "packages/brightness",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/brightness",
-            "tsConfig": "packages/brightness/tsconfig.json",
-            "packageJson": "packages/brightness/package.json",
-            "main": "packages/brightness/index.d.ts",
-            "assets": [
-              "packages/brightness/*.md",
-              "packages/brightness/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/brightness/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run brightness:build",
-              "node tools/scripts/build-finish.ts brightness"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages brightness"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "background-http": {
-      "root": "packages/background-http",
-      "sourceRoot": "packages/background-http",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/background-http",
-            "tsConfig": "packages/background-http/tsconfig.json",
-            "packageJson": "packages/background-http/package.json",
-            "main": "packages/background-http/index.d.ts",
-            "assets": [
-              "packages/background-http/*.md",
-              "packages/background-http/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/background-http/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run background-http:build",
-              "node tools/scripts/build-finish.ts background-http"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages background-http"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "social-share": {
-      "root": "packages/social-share",
-      "sourceRoot": "packages/social-share",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/social-share",
-            "tsConfig": "packages/social-share/tsconfig.json",
-            "packageJson": "packages/social-share/package.json",
-            "main": "packages/social-share/index.d.ts",
-            "assets": [
-              "packages/social-share/*.md",
-              "packages/social-share/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/social-share/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run social-share:build",
-              "node tools/scripts/build-finish.ts social-share"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages social-share"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "auto-fit-text": {
-      "root": "packages/auto-fit-text",
-      "sourceRoot": "packages/auto-fit-text",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/auto-fit-text",
-            "tsConfig": "packages/auto-fit-text/tsconfig.json",
-            "packageJson": "packages/auto-fit-text/package.json",
-            "main": "packages/auto-fit-text/index.d.ts",
-            "assets": [
-              "packages/auto-fit-text/*.md",
-              "packages/auto-fit-text/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/auto-fit-text/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run auto-fit-text:build",
-              "node tools/scripts/build-finish.ts auto-fit-text"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages auto-fit-text"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "animated-circle": {
-      "root": "packages/animated-circle",
-      "sourceRoot": "packages/animated-circle",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/animated-circle",
-            "tsConfig": "packages/animated-circle/tsconfig.json",
-            "packageJson": "packages/animated-circle/package.json",
-            "main": "packages/animated-circle/index.d.ts",
-            "assets": [
-              "packages/animated-circle/*.md",
-              "packages/animated-circle/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/animated-circle/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run animated-circle:build",
-              "node tools/scripts/build-finish.ts animated-circle"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages animated-circle"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "localize": {
-      "root": "packages/localize",
-      "sourceRoot": "packages/localize",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/localize",
-            "tsConfig": "packages/localize/tsconfig.json",
-            "packageJson": "packages/localize/package.json",
-            "main": "packages/localize/index.d.ts",
-            "assets": [
-              "packages/localize/*.md",
-              "packages/localize/index.d.ts",
-              "packages/localize/postinstall.js",
-              "packages/localize/preuninstall.js",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/localize/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run localize:build",
-              "./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json",
-              "node tools/scripts/build-finish.ts localize"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages localize"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "detox": {
-      "root": "packages/detox",
-      "sourceRoot": "packages/detox",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/detox",
-            "tsConfig": "packages/detox/tsconfig.json",
-            "packageJson": "packages/detox/package.json",
-            "main": "packages/detox/index.d.ts",
-            "assets": [
-              "packages/detox/*.md",
-              "packages/detox/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/detox/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx run detox:build",
-              "node tools/scripts/build-finish.ts detox"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "outputs": [
-            "dist/packages"
-          ],
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages detox"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "debug-ios": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/debug-ios",
-      "sourceRoot": "packages/debug-ios",
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/debug-ios",
-            "tsConfig": "packages/debug-ios/tsconfig.json",
-            "packageJson": "packages/debug-ios/package.json",
-            "main": "packages/debug-ios/index.d.ts",
-            "assets": [
-              "packages/debug-ios/*.md",
-              "packages/debug-ios/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/debug-ios/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "options": {
-            "commands": [
-              "nx run debug-ios:build",
-              "node tools/scripts/build-finish.ts debug-ios"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages debug-ios"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "picker": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/picker",
-      "sourceRoot": "packages/picker",
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/picker",
-            "tsConfig": "packages/picker/tsconfig.json",
-            "packageJson": "packages/picker/package.json",
-            "main": "packages/picker/index.d.ts",
-            "assets": [
-              "packages/picker/*.md",
-              "packages/picker/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/picker/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "options": {
-            "commands": [
-              "nx run picker:build",
-              "node tools/scripts/build-finish.ts picker"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages picker"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "debug-android": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/debug-android",
-      "sourceRoot": "packages/debug-android",
-      "targets": {
-        "build": {
-          "options": {
-            "outputPath": "dist/packages/debug-android",
-            "tsConfig": "packages/debug-android/tsconfig.json",
-            "packageJson": "packages/debug-android/package.json",
-            "main": "packages/debug-android/index.d.ts",
-            "assets": [
-              "packages/debug-android/*.md",
-              "packages/debug-android/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/debug-android/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          },
-          "executor": "@nrwl/node:package"
-        },
-        "build.all": {
-          "options": {
-            "commands": [
-              "nx run debug-android:build",
-              "node tools/scripts/build-finish.ts debug-android"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        },
-        "focus": {
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages debug-android"
-            ],
-            "parallel": false
-          },
-          "executor": "@nrwl/workspace:run-commands"
-        }
-      }
-    },
-    "facebook": {
-      "root": "packages/facebook",
-      "projectType": "library",
-      "sourceRoot": "packages/facebook",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/packages/facebook",
-            "tsConfig": "packages/facebook/tsconfig.json",
-            "packageJson": "packages/facebook/package.json",
-            "main": "packages/facebook/index.d.ts",
-            "assets": [
-              "packages/facebook/*.md",
-              "packages/facebook/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/facebook/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          }
-        },
-        "build.all": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx run facebook:build",
-              "node tools/scripts/build-finish.ts facebook"
-            ],
-            "parallel": false
-          }
-        },
-        "focus": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages facebook"
-            ],
-            "parallel": false
-          }
-        }
-      }
-    },
-    "google-signin": {
-      "root": "packages/google-signin",
-      "projectType": "library",
-      "sourceRoot": "packages/google-signin",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/packages/google-signin",
-            "tsConfig": "packages/google-signin/tsconfig.json",
-            "packageJson": "packages/google-signin/package.json",
-            "main": "packages/google-signin/index.d.ts",
-            "assets": [
-              "packages/google-signin/*.md",
-              "packages/google-signin/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/google-signin/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          }
-        },
-        "build.all": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx run google-signin:build",
-              "node tools/scripts/build-finish.ts google-signin"
-            ],
-            "parallel": false
-          }
-        },
-        "focus": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages google-signin"
-            ],
-            "parallel": false
-          }
-        }
-      }
-    },
-    "twitter": {
-      "root": "packages/twitter",
-      "projectType": "library",
-      "sourceRoot": "packages/twitter",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/packages/twitter",
-            "tsConfig": "packages/twitter/tsconfig.json",
-            "packageJson": "packages/twitter/package.json",
-            "main": "packages/twitter/index.d.ts",
-            "assets": [
-              "packages/twitter/*.md",
-              "packages/twitter/index.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/twitter/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          }
-        },
-        "build.all": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx run twitter:build",
-              "node tools/scripts/build-finish.ts twitter"
-            ],
-            "parallel": false
-          }
-        },
-        "focus": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages twitter"
-            ],
-            "parallel": false
-          }
-        }
-      }
-    },
-    "theme-switcher": {
-      "projectType": "library",
-      "generators": {},
-      "root": "packages/theme-switcher",
-      "sourceRoot": "packages/theme-switcher",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/packages/theme-switcher",
-            "tsConfig": "packages/theme-switcher/tsconfig.json",
-            "packageJson": "packages/theme-switcher/package.json",
-            "main": "packages/theme-switcher/index.ts",
-            "assets": [
-              "packages/theme-switcher/*.md",
-              "packages/theme-switcher/nativescript.webpack.js",
-              "packages/theme-switcher/theme-loader.js",
-              "packages/theme-switcher/index.d.ts",
-              "packages/theme-switcher/shims.d.ts",
-              "LICENSE",
-              {
-                "glob": "**/*",
-                "input": "packages/theme-switcher/platforms/",
-                "output": "./platforms/"
-              }
-            ]
-          }
-        },
-        "build.all": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx run theme-switcher:build",
-              "node tools/scripts/build-finish.ts theme-switcher"
-            ],
-            "parallel": false
-          }
-        },
-        "focus": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "nx g @nativescript/plugin-tools:focus-packages theme-switcher"
-            ],
-            "parallel": false
-          }
-        }
-      }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nstudio/xplat"
-  }
+	"version": 2,
+	"projects": {
+		"demo": {
+			"root": "apps/demo/",
+			"sourceRoot": "apps/demo/src",
+			"projectType": "application",
+			"prefix": "demo",
+			"targets": {
+				"build": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"noHmr": true,
+						"production": true,
+						"uglify": true,
+						"release": true,
+						"forDevice": true
+					}
+				},
+				"ios": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"platform": "ios"
+					}
+				},
+				"android": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"platform": "android"
+					}
+				},
+				"clean": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"clean": true
+					}
+				}
+			}
+		},
+		"demo-angular": {
+			"root": "apps/demo-angular/",
+			"sourceRoot": "apps/demo-angular/src",
+			"projectType": "application",
+			"prefix": "demo",
+			"targets": {
+				"build": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"noHmr": true,
+						"production": true,
+						"uglify": true,
+						"release": true,
+						"forDevice": true
+					}
+				},
+				"ios": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"platform": "ios"
+					}
+				},
+				"android": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"platform": "android"
+					}
+				},
+				"clean": {
+					"executor": "@nativescript/nx:build",
+					"options": {
+						"clean": true
+					}
+				}
+			}
+		},
+		"ios-security": {
+			"projectType": "library",
+			"generators": {},
+			"root": "packages/ios-security",
+			"sourceRoot": "packages/ios-security",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/ios-security",
+						"tsConfig": "packages/ios-security/tsconfig.json",
+						"packageJson": "packages/ios-security/package.json",
+						"main": "packages/ios-security/index.d.ts",
+						"assets": [
+							"packages/ios-security/*.md",
+							"packages/ios-security/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/ios-security/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"executor": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run ios-security:build.native", "nx run ios-security:build", "node tools/scripts/build-finish.ts ios-security"],
+						"parallel": false
+					}
+				},
+				"build.native": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["./build.ios.sh"],
+						"cwd": "packages/ios-security/native-src",
+						"parallel": false
+					}
+				},
+				"focus": {
+					"executor": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages ios-security"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"local-notifications": {
+			"root": "packages/local-notifications",
+			"sourceRoot": "packages/local-notifications",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/local-notifications",
+						"tsConfig": "packages/local-notifications/tsconfig.json",
+						"packageJson": "packages/local-notifications/package.json",
+						"main": "packages/local-notifications/index.d.ts",
+						"assets": [
+							"packages/local-notifications/*.md",
+							"packages/local-notifications/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/local-notifications/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run local-notifications:build", "node tools/scripts/build-finish.ts local-notifications"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages local-notifications"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"shared-notification-delegate": {
+			"root": "packages/shared-notification-delegate",
+			"sourceRoot": "packages/shared-notification-delegate",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/shared-notification-delegate",
+						"tsConfig": "packages/shared-notification-delegate/tsconfig.json",
+						"packageJson": "packages/shared-notification-delegate/package.json",
+						"main": "packages/shared-notification-delegate/index.d.ts",
+						"assets": [
+							"packages/shared-notification-delegate/*.md",
+							"packages/shared-notification-delegate/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/shared-notification-delegate/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run shared-notification-delegate:build", "node tools/scripts/build-finish.ts shared-notification-delegate"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages shared-notification-delegate"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"email": {
+			"root": "packages/email",
+			"sourceRoot": "packages/email",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/email",
+						"tsConfig": "packages/email/tsconfig.json",
+						"packageJson": "packages/email/package.json",
+						"main": "packages/email/index.d.ts",
+						"assets": [
+							"packages/email/*.md",
+							"packages/email/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/email/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run email:build", "node tools/scripts/build-finish.ts email"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages email"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"all": {
+			"root": "",
+			"projectType": "application",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/workspace:run-commands",
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": [
+							"nx run email:build.all",
+							"nx run shared-notification-delegate:build.all",
+							"nx run appavailability:build.all",
+							"nx run local-notifications:build.all",
+							"nx run imagepicker:build.all",
+							"nx run datetimepicker:build.all",
+							"nx run camera:build.all",
+							"nx run zip:build.all",
+							"nx run directions:build.all",
+							"nx run iqkeyboardmanager:build.all",
+							"nx run geolocation:build.all",
+							"nx run fingerprint-auth:build.all",
+							"nx run brightness:build.all",
+							"nx run background-http:build.all",
+							"nx run social-share:build.all",
+							"nx run auto-fit-text:build.all",
+							"nx run animated-circle:build.all",
+							"nx run localize:build.all",
+							"nx run detox:build.all",
+							"nx run picker:build.all",
+							"nx run debug-android:build.all",
+							"nx run debug-ios:build.all",
+							"nx run facebook:build.all",
+							"nx run google-signin:build.all",
+							"nx run twitter:build.all",
+							"nx run biometrics:build.all"
+						],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			},
+			"sourceRoot": ""
+		},
+		"imagepicker": {
+			"root": "packages/imagepicker",
+			"sourceRoot": "packages/imagepicker",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/imagepicker",
+						"tsConfig": "packages/imagepicker/tsconfig.json",
+						"packageJson": "packages/imagepicker/package.json",
+						"main": "packages/imagepicker/index.d.ts",
+						"assets": [
+							"packages/imagepicker/*.md",
+							"packages/imagepicker/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/imagepicker/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run imagepicker:build", "node tools/scripts/build-finish.ts imagepicker"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages imagepicker"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"datetimepicker": {
+			"root": "packages/datetimepicker",
+			"sourceRoot": "packages/datetimepicker",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/datetimepicker",
+						"tsConfig": "packages/datetimepicker/tsconfig.json",
+						"packageJson": "packages/datetimepicker/package.json",
+						"main": "packages/datetimepicker/index.d.ts",
+						"assets": [
+							"packages/datetimepicker/*.md",
+							"packages/datetimepicker/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/datetimepicker/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run datetimepicker:build", "node tools/scripts/build-finish.ts datetimepicker"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages datetimepicker"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"camera": {
+			"root": "packages/camera",
+			"sourceRoot": "packages/camera",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/camera",
+						"tsConfig": "packages/camera/tsconfig.json",
+						"packageJson": "packages/camera/package.json",
+						"main": "packages/camera/index.d.ts",
+						"assets": [
+							"packages/camera/*.md",
+							"packages/camera/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/camera/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run camera:build", "node tools/scripts/build-finish.ts camera"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages camera"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"zip": {
+			"root": "packages/zip",
+			"sourceRoot": "packages/zip",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/zip",
+						"tsConfig": "packages/zip/tsconfig.json",
+						"packageJson": "packages/zip/package.json",
+						"main": "packages/zip/index.d.ts",
+						"assets": [
+							"packages/zip/*.md",
+							"packages/zip/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/zip/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run zip:build", "node tools/scripts/build-finish.ts zip"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages zip"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"directions": {
+			"root": "packages/directions",
+			"sourceRoot": "packages/directions",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/directions",
+						"tsConfig": "packages/directions/tsconfig.json",
+						"packageJson": "packages/directions/package.json",
+						"main": "packages/directions/index.d.ts",
+						"assets": [
+							"packages/directions/*.md",
+							"packages/directions/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/directions/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run directions:build", "node tools/scripts/build-finish.ts directions"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages directions"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"iqkeyboardmanager": {
+			"root": "packages/iqkeyboardmanager",
+			"sourceRoot": "packages/iqkeyboardmanager",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/iqkeyboardmanager",
+						"tsConfig": "packages/iqkeyboardmanager/tsconfig.json",
+						"packageJson": "packages/iqkeyboardmanager/package.json",
+						"main": "packages/iqkeyboardmanager/index.d.ts",
+						"assets": [
+							"packages/iqkeyboardmanager/*.md",
+							"packages/iqkeyboardmanager/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/iqkeyboardmanager/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run iqkeyboardmanager:build", "node tools/scripts/build-finish.ts iqkeyboardmanager"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages iqkeyboardmanager"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"geolocation": {
+			"root": "packages/geolocation",
+			"sourceRoot": "packages/geolocation",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/geolocation",
+						"tsConfig": "packages/geolocation/tsconfig.json",
+						"packageJson": "packages/geolocation/package.json",
+						"main": "packages/geolocation/index.d.ts",
+						"assets": [
+							"packages/geolocation/*.md",
+							"packages/geolocation/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/geolocation/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run geolocation:build", "node tools/scripts/build-finish.ts geolocation"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages geolocation"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"fingerprint-auth": {
+			"root": "packages/fingerprint-auth",
+			"sourceRoot": "packages/fingerprint-auth",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/fingerprint-auth",
+						"tsConfig": "packages/fingerprint-auth/tsconfig.json",
+						"packageJson": "packages/fingerprint-auth/package.json",
+						"main": "packages/fingerprint-auth/index.d.ts",
+						"assets": [
+							"packages/fingerprint-auth/*.md",
+							"packages/fingerprint-auth/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/fingerprint-auth/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run fingerprint-auth:build", "node tools/scripts/build-finish.ts fingerprint-auth"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages fingerprint-auth"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"appavailability": {
+			"root": "packages/appavailability",
+			"sourceRoot": "packages/appavailability",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/appavailability",
+						"tsConfig": "packages/appavailability/tsconfig.json",
+						"packageJson": "packages/appavailability/package.json",
+						"main": "packages/appavailability/index.d.ts",
+						"assets": [
+							"packages/appavailability/*.md",
+							"packages/appavailability/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/appavailability/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run appavailability:build", "node tools/scripts/build-finish.ts appavailability"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages appavailability"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"brightness": {
+			"root": "packages/brightness",
+			"sourceRoot": "packages/brightness",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/brightness",
+						"tsConfig": "packages/brightness/tsconfig.json",
+						"packageJson": "packages/brightness/package.json",
+						"main": "packages/brightness/index.d.ts",
+						"assets": [
+							"packages/brightness/*.md",
+							"packages/brightness/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/brightness/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run brightness:build", "node tools/scripts/build-finish.ts brightness"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages brightness"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"background-http": {
+			"root": "packages/background-http",
+			"sourceRoot": "packages/background-http",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/background-http",
+						"tsConfig": "packages/background-http/tsconfig.json",
+						"packageJson": "packages/background-http/package.json",
+						"main": "packages/background-http/index.d.ts",
+						"assets": [
+							"packages/background-http/*.md",
+							"packages/background-http/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/background-http/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run background-http:build", "node tools/scripts/build-finish.ts background-http"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages background-http"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"social-share": {
+			"root": "packages/social-share",
+			"sourceRoot": "packages/social-share",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/social-share",
+						"tsConfig": "packages/social-share/tsconfig.json",
+						"packageJson": "packages/social-share/package.json",
+						"main": "packages/social-share/index.d.ts",
+						"assets": [
+							"packages/social-share/*.md",
+							"packages/social-share/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/social-share/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run social-share:build", "node tools/scripts/build-finish.ts social-share"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages social-share"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"auto-fit-text": {
+			"root": "packages/auto-fit-text",
+			"sourceRoot": "packages/auto-fit-text",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/auto-fit-text",
+						"tsConfig": "packages/auto-fit-text/tsconfig.json",
+						"packageJson": "packages/auto-fit-text/package.json",
+						"main": "packages/auto-fit-text/index.d.ts",
+						"assets": [
+							"packages/auto-fit-text/*.md",
+							"packages/auto-fit-text/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/auto-fit-text/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run auto-fit-text:build", "node tools/scripts/build-finish.ts auto-fit-text"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages auto-fit-text"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"animated-circle": {
+			"root": "packages/animated-circle",
+			"sourceRoot": "packages/animated-circle",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/animated-circle",
+						"tsConfig": "packages/animated-circle/tsconfig.json",
+						"packageJson": "packages/animated-circle/package.json",
+						"main": "packages/animated-circle/index.d.ts",
+						"assets": [
+							"packages/animated-circle/*.md",
+							"packages/animated-circle/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/animated-circle/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run animated-circle:build", "node tools/scripts/build-finish.ts animated-circle"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages animated-circle"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"localize": {
+			"root": "packages/localize",
+			"sourceRoot": "packages/localize",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/localize",
+						"tsConfig": "packages/localize/tsconfig.json",
+						"packageJson": "packages/localize/package.json",
+						"main": "packages/localize/index.d.ts",
+						"assets": [
+							"packages/localize/*.md",
+							"packages/localize/index.d.ts",
+							"packages/localize/postinstall.js",
+							"packages/localize/preuninstall.js",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/localize/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run localize:build", "./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages localize"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"detox": {
+			"root": "packages/detox",
+			"sourceRoot": "packages/detox",
+			"projectType": "library",
+			"generators": {},
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/detox",
+						"tsConfig": "packages/detox/tsconfig.json",
+						"packageJson": "packages/detox/package.json",
+						"main": "packages/detox/index.d.ts",
+						"assets": [
+							"packages/detox/*.md",
+							"packages/detox/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/detox/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx run detox:build", "node tools/scripts/build-finish.ts detox"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"outputs": ["dist/packages"],
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages detox"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"debug-ios": {
+			"projectType": "library",
+			"generators": {},
+			"root": "packages/debug-ios",
+			"sourceRoot": "packages/debug-ios",
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/debug-ios",
+						"tsConfig": "packages/debug-ios/tsconfig.json",
+						"packageJson": "packages/debug-ios/package.json",
+						"main": "packages/debug-ios/index.d.ts",
+						"assets": [
+							"packages/debug-ios/*.md",
+							"packages/debug-ios/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/debug-ios/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"options": {
+						"commands": ["nx run debug-ios:build", "node tools/scripts/build-finish.ts debug-ios"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages debug-ios"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"picker": {
+			"projectType": "library",
+			"generators": {},
+			"root": "packages/picker",
+			"sourceRoot": "packages/picker",
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/picker",
+						"tsConfig": "packages/picker/tsconfig.json",
+						"packageJson": "packages/picker/package.json",
+						"main": "packages/picker/index.d.ts",
+						"assets": [
+							"packages/picker/*.md",
+							"packages/picker/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/picker/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"options": {
+						"commands": ["nx run picker:build", "node tools/scripts/build-finish.ts picker"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages picker"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"debug-android": {
+			"projectType": "library",
+			"generators": {},
+			"root": "packages/debug-android",
+			"sourceRoot": "packages/debug-android",
+			"targets": {
+				"build": {
+					"options": {
+						"outputPath": "dist/packages/debug-android",
+						"tsConfig": "packages/debug-android/tsconfig.json",
+						"packageJson": "packages/debug-android/package.json",
+						"main": "packages/debug-android/index.d.ts",
+						"assets": [
+							"packages/debug-android/*.md",
+							"packages/debug-android/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/debug-android/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					},
+					"executor": "@nrwl/node:package"
+				},
+				"build.all": {
+					"options": {
+						"commands": ["nx run debug-android:build", "node tools/scripts/build-finish.ts debug-android"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				},
+				"focus": {
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages debug-android"],
+						"parallel": false
+					},
+					"executor": "@nrwl/workspace:run-commands"
+				}
+			}
+		},
+		"facebook": {
+			"root": "packages/facebook",
+			"projectType": "library",
+			"sourceRoot": "packages/facebook",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/facebook",
+						"tsConfig": "packages/facebook/tsconfig.json",
+						"packageJson": "packages/facebook/package.json",
+						"main": "packages/facebook/index.d.ts",
+						"assets": [
+							"packages/facebook/*.md",
+							"packages/facebook/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/facebook/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run facebook:build", "node tools/scripts/build-finish.ts facebook"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages facebook"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"google-signin": {
+			"root": "packages/google-signin",
+			"projectType": "library",
+			"sourceRoot": "packages/google-signin",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/google-signin",
+						"tsConfig": "packages/google-signin/tsconfig.json",
+						"packageJson": "packages/google-signin/package.json",
+						"main": "packages/google-signin/index.d.ts",
+						"assets": [
+							"packages/google-signin/*.md",
+							"packages/google-signin/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/google-signin/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run google-signin:build", "node tools/scripts/build-finish.ts google-signin"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages google-signin"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"twitter": {
+			"root": "packages/twitter",
+			"projectType": "library",
+			"sourceRoot": "packages/twitter",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/twitter",
+						"tsConfig": "packages/twitter/tsconfig.json",
+						"packageJson": "packages/twitter/package.json",
+						"main": "packages/twitter/index.d.ts",
+						"assets": [
+							"packages/twitter/*.md",
+							"packages/twitter/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/twitter/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run twitter:build", "node tools/scripts/build-finish.ts twitter"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages twitter"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"theme-switcher": {
+			"projectType": "library",
+			"generators": {},
+			"root": "packages/theme-switcher",
+			"sourceRoot": "packages/theme-switcher",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/theme-switcher",
+						"tsConfig": "packages/theme-switcher/tsconfig.json",
+						"packageJson": "packages/theme-switcher/package.json",
+						"main": "packages/theme-switcher/index.ts",
+						"assets": [
+							"packages/theme-switcher/*.md",
+							"packages/theme-switcher/nativescript.webpack.js",
+							"packages/theme-switcher/theme-loader.js",
+							"packages/theme-switcher/index.d.ts",
+							"packages/theme-switcher/shims.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/theme-switcher/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run theme-switcher:build", "node tools/scripts/build-finish.ts theme-switcher"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages theme-switcher"],
+						"parallel": false
+					}
+				}
+			}
+		},
+		"biometrics": {
+			"root": "packages/biometrics",
+			"projectType": "library",
+			"sourceRoot": "packages/biometrics",
+			"targets": {
+				"build": {
+					"executor": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/biometrics",
+						"tsConfig": "packages/biometrics/tsconfig.json",
+						"packageJson": "packages/biometrics/package.json",
+						"main": "packages/biometrics/index.d.ts",
+						"assets": [
+							"packages/biometrics/*.md",
+							"packages/biometrics/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/biometrics/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run biometrics:build", "node tools/scripts/build-finish.ts biometrics"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"executor": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages biometrics"],
+						"parallel": false
+					}
+				}
+			}
+		}
+	},
+	"cli": {
+		"defaultCollection": "@nstudio/xplat"
+	}
 }
