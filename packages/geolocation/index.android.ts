@@ -323,7 +323,7 @@ function _goToPhoneSettings() {
  */
 function _systemDialogWillShow(always: boolean): boolean {
 	const permissionType = always ? (<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION : (<any>android).Manifest.permission.ACCESS_FINE_LOCATION;
-	const doNotAskAgain = !androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(Application.android.foregroundActivity, permissionType);
+	const doNotAskAgain = !androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale(Application.android.foregroundActivity || Application.android.startActivity, permissionType);
 	let askedForPermission = always ? ApplicationSettings.getBoolean('askedForAlwaysPermission', false) : ApplicationSettings.getBoolean('askedForWhileUsePermission', false);
 	askedForPermission = askedForPermission && Device.sdkVersion < '30';
 	return !(askedForPermission && doNotAskAgain);
