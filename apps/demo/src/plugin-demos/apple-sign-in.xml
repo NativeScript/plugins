@@ -1,0 +1,9 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:ui="@nativescript/apple-sign-in" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="apple-sign-in" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ui:SignInButton tap="{{ login }}"/>
+    </StackLayout>
+</Page>

@@ -259,6 +259,13 @@ module.exports = {
 					description: '@nativescript/biometrics: Build',
 				},
 			},
+			// @nativescript/apple-sign-in
+			'apple-sign-in': {
+				build: {
+					script: 'nx run apple-sign-in:build.all',
+					description: '@nativescript/apple-sign-in: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -380,6 +387,10 @@ module.exports = {
 			biometrics: {
 				script: 'nx run biometrics:focus',
 				description: 'Focus on @nativescript/biometrics',
+			},
+			'apple-sign-in': {
+				script: 'nx run apple-sign-in:focus',
+				description: 'Focus on @nativescript/apple-sign-in',
 			},
 			reset: {
 				script: 'nx run all:focus',
