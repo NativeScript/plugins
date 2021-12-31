@@ -109,6 +109,9 @@
     },
     "apple-sign-in": {
       "tags": []
+    },
+    "ionic-portals": {
+      "tags": []
     }
   },
   "workspaceLayout": {

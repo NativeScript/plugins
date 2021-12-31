@@ -18,6 +18,7 @@ export * from './fingerprint-auth';
 export * from './geolocation';
 export * from './google-signin';
 export * from './imagepicker';
+export * from './ionic-portals';
 export * from './ios-security';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';

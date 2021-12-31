@@ -20,13 +20,15 @@
         "ios": {
           "executor": "@nativescript/nx:build",
           "options": {
-            "platform": "ios"
+            "platform": "ios",
+            "noHmr": true
           }
         },
         "android": {
           "executor": "@nativescript/nx:build",
           "options": {
-            "platform": "android"
+            "platform": "android",
+            "noHmr": true
           }
         },
         "clean": {
@@ -56,13 +58,15 @@
         "ios": {
           "executor": "@nativescript/nx:build",
           "options": {
-            "platform": "ios"
+            "platform": "ios",
+            "noHmr": true
           }
         },
         "android": {
           "executor": "@nativescript/nx:build",
           "options": {
-            "platform": "android"
+            "platform": "android",
+            "noHmr": true
           }
         },
         "clean": {
@@ -329,7 +333,8 @@
               "nx run google-signin:build.all",
               "nx run twitter:build.all",
               "nx run biometrics:build.all",
-              "nx run apple-sign-in:build.all"
+              "nx run apple-sign-in:build.all",
+              "nx run ionic-portals:build.all"
             ],
             "parallel": false
           }
@@ -1451,6 +1456,51 @@
           "options": {
             "commands": [
               "nx g @nativescript/plugin-tools:focus-packages twitter"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "ionic-portals": {
+      "root": "packages/ionic-portals",
+      "projectType": "library",
+      "sourceRoot": "packages/ionic-portals",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/ionic-portals",
+            "tsConfig": "packages/ionic-portals/tsconfig.json",
+            "packageJson": "packages/ionic-portals/package.json",
+            "main": "packages/ionic-portals/index.d.ts",
+            "assets": [
+              "packages/ionic-portals/*.md",
+              "packages/ionic-portals/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/ionic-portals/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run ionic-portals:build",
+              "node tools/scripts/build-finish.ts ionic-portals"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages ionic-portals"
             ],
             "parallel": false
           }

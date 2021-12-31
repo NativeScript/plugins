@@ -1,0 +1,9 @@
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.ionic:portals:0.3.1'
+}

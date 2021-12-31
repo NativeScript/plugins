@@ -4,6 +4,7 @@
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
     "@nativescript/biometrics": "file:../../dist/packages/biometrics",
     "@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
+    "@nativescript/ionic-portals": "file:../../dist/packages/ionic-portals",
     "@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
     "@nativescript/appavailability": "file:../../dist/packages/appavailability",
     "@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
