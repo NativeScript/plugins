@@ -1,5 +1,7 @@
 import { EventData } from "@nativescript/core";
 
+export function init();
+
 /**
  * Get or create a background download/upload session by id.
  * @param id The session id.
