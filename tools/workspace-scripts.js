@@ -266,6 +266,13 @@ module.exports = {
 					description: '@nativescript/apple-sign-in: Build',
 				},
 			},
+			// @nativescript/google-maps
+			'google-maps': {
+				build: {
+					script: 'nx run google-maps:build.all',
+					description: '@nativescript/google-maps: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -391,6 +398,10 @@ module.exports = {
 			'apple-sign-in': {
 				script: 'nx run apple-sign-in:focus',
 				description: 'Focus on @nativescript/apple-sign-in',
+			},
+			'google-maps': {
+				script: 'nx run google-maps:focus',
+				description: 'Focus on @nativescript/google-maps',
 			},
 			reset: {
 				script: 'nx run all:focus',

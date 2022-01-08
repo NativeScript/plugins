@@ -34,6 +34,7 @@
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
 <Button text="apple-sign-in" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+<Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>

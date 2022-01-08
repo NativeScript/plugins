@@ -109,6 +109,9 @@
     },
     "apple-sign-in": {
       "tags": []
+    },
+    "google-maps": {
+      "tags": []
     }
   },
   "workspaceLayout": {

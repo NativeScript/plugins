@@ -15,6 +15,7 @@
 - [@nativescript/facebook](packages/facebook/README.md)
 - [@nativescript/fingerprint-auth](packages/fingerprint-auth/README.md)
 - [@nativescript/geolocation](packages/geolocation/README.md)
+- [@nativescript/google-maps](packages/google-maps/README.md)
 - [@nativescript/google-signin](packages/google-signin/README.md)
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)

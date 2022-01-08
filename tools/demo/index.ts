@@ -16,6 +16,7 @@ export * from './email';
 export * from './facebook';
 export * from './fingerprint-auth';
 export * from './geolocation';
+export * from './google-maps';
 export * from './google-signin';
 export * from './imagepicker';
 export * from './ios-security';

@@ -30,7 +30,8 @@
     "@nativescript/social-share": "file:../../dist/packages/social-share",
     "@nativescript/twitter": "file:../../dist/packages/twitter",
     "@nativescript/zip": "file:../../dist/packages/zip",
-    "@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in"
+    "@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
+    "@nativescript/google-maps": "file:../../dist/packages/google-maps"
   },
   "devDependencies": {
     "@nativescript/android": "~8.1.1",

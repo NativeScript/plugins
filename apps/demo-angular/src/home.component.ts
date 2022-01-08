@@ -58,6 +58,9 @@ export class HomeComponent {
 		name: 'geolocation'
 	},
 	{
+		name: 'google-maps'
+	},
+	{
 		name: 'google-signin'
 	},
 	{

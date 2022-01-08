@@ -1,0 +1,16 @@
+{
+	"name": "@nativescript/google-maps-angular",
+	"ngPackage": {
+		"lib": {
+			"entryFile": "index.ts",
+			"umdModuleIds": {
+				"@nativescript/core": "ns-core",
+				"@nativescript/angular": "ns-angular",
+				"@nativescript/google-maps": "ns-google-maps"
+			}
+		},
+		"allowedNonPeerDependencies": [
+			"."
+		]
+	}
+}
