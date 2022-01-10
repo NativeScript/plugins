@@ -329,7 +329,8 @@
               "nx run google-signin:build.all",
               "nx run twitter:build.all",
               "nx run biometrics:build.all",
-              "nx run apple-sign-in:build.all"
+              "nx run apple-sign-in:build.all",
+              "nx run google-maps:build.all"
             ],
             "parallel": false
           }
@@ -1590,6 +1591,51 @@
           "options": {
             "commands": [
               "nx g @nativescript/plugin-tools:focus-packages apple-sign-in"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "google-maps": {
+      "root": "packages/google-maps",
+      "projectType": "library",
+      "sourceRoot": "packages/google-maps",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/google-maps",
+            "tsConfig": "packages/google-maps/tsconfig.json",
+            "packageJson": "packages/google-maps/package.json",
+            "main": "packages/google-maps/index.d.ts",
+            "assets": [
+              "packages/google-maps/*.md",
+              "packages/google-maps/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/google-maps/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run google-maps:build",
+              "node tools/scripts/build-finish.ts google-maps"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages google-maps"
             ],
             "parallel": false
           }
