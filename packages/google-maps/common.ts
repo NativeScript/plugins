@@ -1,4 +1,5 @@
-import {ContentView} from '@nativescript/core';
+import { ContentView, Property } from '@nativescript/core';
+import { Coordinate } from '.';
 
 export enum MapType {
   None = 'none',
@@ -13,6 +14,26 @@ export enum JointType {
   Bevel = 'bevel',
   Default = 'default'
 }
+
+export const latProperty = new Property<MapViewBase, number>({
+  name: "lat"
+});
+
+export const lngProperty = new Property<MapViewBase, number>({
+  name: "lng"
+});
+
+export const zoomProperty = new Property<MapViewBase, number>({
+  name: "zoom"
+});
+
+export const bearingProperty = new Property<MapViewBase, number>({
+  name: 'bearing'
+})
+
+export const tiltProperty = new Property<MapViewBase, number>({
+  name: 'tilt'
+})
 
 export class MapViewBase extends ContentView {
   static readyEvent = 'ready';
@@ -48,4 +69,16 @@ export class MapViewBase extends ContentView {
   static activeBuildingEvent = 'activeBuilding';
   static activeLevelEvent = 'activeLevel';
 
+  lat: number;
+  lng: number;
+  zoom: number;
+  bearing: number;
+  tilt: number;
+
 }
+
+latProperty.register(MapViewBase);
+lngProperty.register(MapViewBase);
+zoomProperty.register(MapViewBase);
+bearingProperty.register(MapViewBase);
+tiltProperty.register(MapViewBase);

@@ -245,7 +245,7 @@ export class CameraPosition implements ICameraPosition, Partial<NativeObject> {
 	zoom: number;
 }
 
-export interface IMapView {
+export class MapView extends MapViewBase {
 	on(event: 'ready', callback: (args: MapReadyEvent) => void, thisArg?: any);
 
 	on(event: 'mapTap', callback: (args: MapTapEvent) => void, thisArg?: any);
@@ -270,9 +270,29 @@ export interface IMapView {
 
 	on(event: 'cameraPosition', callback: (args: CameraPositionEvent) => void, thisArg?: any);
 
-}
+	on(event: 'circle', callback: (args: CircleTapEvent) => void, thisArg?: any);
 
-export class MapView extends MapViewBase implements IMapView {
+	on(event: 'polygon', callback: (args: PolygonTapEvent) => void, thisArg?: any);
+
+	on(event: 'polyline', callback: (args: PolylineTapEvent) => void, thisArg?: any);
+
+	on(event: 'poi', callback: (args: PoiTapEvent) => void, thisArg?: any);
+
+	on(event: 'groundOverlay', callback: (args: GroundOverlayTapEvent) => void, thisArg?: any);
+
+	on(event: 'infoWindowTap', callback: (args: InfoWindowEvent) => void, thisArg?: any);
+
+	on(event: 'infoWindowLongPress', callback: (args: InfoWindowEvent) => void, thisArg?: any);
+
+	on(event: 'infoWindowClose', callback: (args: InfoWindowEvent) => void, thisArg?: any);
+
+	on(event: 'markerInfoContents', callback: (args: MarkerInfoEvent) => void, thisArg?: any);
+
+	on(event: 'markerInfoWindow', callback: (args: MarkerInfoEvent) => void, thisArg?: any);
+
+	on(event: 'activeBuilding', callback: (args: ActiveBuildingEvent) => void, thisArg?: any);
+
+	on(event: 'activeLevel', callback: (args: ActiveLevelEvent) => void, thisArg?: any);
 }
 
 export interface Coordinate {
@@ -312,6 +332,10 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	rotation: number;
 	flat: boolean;
 	zIndex: number;
+
+	hideInfoWindow(): void;
+
+	showInfoWindow(): void;
 }
 
 export interface ILocationSource {

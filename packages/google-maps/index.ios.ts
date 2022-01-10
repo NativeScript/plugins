@@ -1,4 +1,5 @@
-import {Color, EventData, ImageSource, Utils, View} from "@nativescript/core";
+import { Color, EventData, ImageSource, Utils, View } from "@nativescript/core";
+import { isNullOrUndefined } from "@nativescript/core/utils/types";
 import {
 	ActiveBuildingEvent, ActiveLevelEvent,
 	CameraPositionEvent, CameraPositionStartEvent, CircleOptions,
@@ -15,7 +16,7 @@ import {
 	MarkerDragEvent, MarkerInfoEvent, MarkerOptions,
 	MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions
 } from ".";
-import {JointType, MapViewBase} from "./common";
+import { bearingProperty, JointType, latProperty, lngProperty, MapViewBase, tiltProperty, zoomProperty } from "./common";
 import {
 	intoNativeCircleOptions,
 	intoNativeGroundOverlayOptions,
@@ -179,7 +180,7 @@ export class CameraPosition implements ICameraPosition {
 		return this.native.viewingAngle;
 	}
 
-	set title(value) {
+	set tilt(value) {
 		this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(
 			this.native.target, this.native.zoom, this.native.bearing, value
 		);
@@ -503,13 +504,119 @@ export class MapView extends MapViewBase {
 		this.nativeView.indoorDisplay.delegate = this.#indoorDelegate;
 	}
 
+	#isReady = false;
 	public onLoaded(): void {
 		super.onLoaded();
-		this.notify({
-			eventName: 'ready',
-			object: this,
-			map: GoogleMap.fromNative(this.nativeView)
-		})
+		if (this.#isReady) {
+		
+			this._updateCamera(this.nativeView, {
+				lat: this.lat,
+				lng: this.lng,
+				bearing: this.bearing,
+				tilt: this.tilt,
+				zoom: this.zoom
+			})
+
+			this.notify({
+				eventName: 'ready',
+				object: this,
+				map: GoogleMap.fromNative(this.nativeView)
+			});
+			this.#isReady = true;
+		}
+	}
+
+	[latProperty.setNative](value) {
+		if (this.nativeView) {
+			this._updateCamera(this.nativeView, {
+				lat: value
+			})
+		}
+	}
+
+	[lngProperty.setNative](value) {
+		if (this.nativeView) {
+			this._updateCamera(this.nativeView, {
+				lng: value
+			})
+		}
+	}
+
+
+	[zoomProperty.setNative](value) {
+		if (this.nativeView) {
+			this._updateCamera(this.nativeView, {
+				zoom: value
+			})
+		}
+	}
+
+	[tiltProperty.setNative](value) {
+		if (this.nativeView) {
+			this._updateCamera(this.nativeView, {
+				tilt: value
+			})
+		}
+	}
+
+
+	[bearingProperty.setNative](value) {
+		if (this.nativeView) {
+			this._updateCamera(this.nativeView, {
+				bearing: value
+			})
+		}
+	}
+
+
+	_updateCamera(map: GMSMapView, owner: {
+		lat?,
+		lng?,
+		zoom?,
+		tilt?,
+		bearing?
+	}) {
+		const googleMap = GoogleMap.fromNative(map);
+		if (googleMap) {
+			const position = CameraPosition.fromNative(map.camera);
+
+			let changed = false;
+			if (!isNullOrUndefined(owner.lat)) {
+				position.target = {
+					lat: typeof owner.lat === 'string' ? parseFloat(owner.lat) : owner.lat,
+					lng: position.target.lng
+				}
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.lng)) {
+				position.target = {
+					lat: position.target.lat,
+					lng: typeof owner.lng === 'string' ? parseFloat(owner.lng) : owner.lng
+				}
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.zoom)) {
+				position.zoom = typeof owner.zoom === 'string' ? parseFloat(owner.zoom) : owner.zoom;
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.tilt)) {
+				position.tilt = typeof owner.tilt === 'string' ? parseFloat(owner.tilt) : owner.tilt;
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.bearing)) {
+				position.bearing = typeof owner.bearing === 'string' ? parseFloat(owner.bearing) : owner.bearing;
+				changed = true;
+			}
+
+			if (changed) {
+				googleMap.cameraPosition = position;
+			}
+
+		}
 	}
 
 	public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
@@ -984,6 +1091,20 @@ export class Marker implements IMarker {
 
 	get zIndex() {
 		return this.native.zIndex;
+	}
+
+	hideInfoWindow() {
+		const map = this.native.map;
+		if (map?.selectedMarker === this.native) {
+			map.selectedMarker = null;
+		}
+	}
+
+	showInfoWindow() {
+		const map = this.native.map;
+		if (map) {
+			map.selectedMarker = this.native;
+		}
 	}
 }
 
@@ -1636,7 +1757,7 @@ export class Projection implements IProjection {
 				coordinate.lng
 			)
 		);
-		return {x: point.x, y: point.y};
+		return { x: point.x, y: point.y };
 	}
 }
 
