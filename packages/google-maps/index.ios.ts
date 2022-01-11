@@ -889,7 +889,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addMarker(options: MarkerOptions) {
-		const marker = intoNativeMarkerOptions(options);
+		const marker = Marker.fromNative(intoNativeMarkerOptions(options));
 		marker.native.map = this.native;
 		return marker;
 	}
@@ -899,25 +899,25 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addCircle(options: CircleOptions): Circle {
-		const circle = intoNativeCircleOptions(options);
+		const circle = Circle.fromNative(intoNativeCircleOptions(options));
 		circle.native.map = this.native;
 		return circle;
 	}
 
 	addGroundOverlay(options: GroundOverlayOptions): GroundOverlay {
-		const groundOverlay = intoNativeGroundOverlayOptions(options);
+		const groundOverlay = GroundOverlay.fromNative(intoNativeGroundOverlayOptions(options));
 		groundOverlay.native.map = this.native;
 		return groundOverlay;
 	}
 
 	addPolygon(options: PolygonOptions): Polygon {
-		const polygon = intoNativePolygonOptions(options);
+		const polygon = Polygon.fromNative(intoNativePolygonOptions(options));
 		polygon.native.map = this.native;
 		return polygon;
 	}
 
 	addPolyline(options: PolylineOptions): Polyline {
-		const polyline = intoNativePolylineOptions(options);
+		const polyline = Polyline.fromNative(intoNativePolylineOptions(options));
 		polyline.native.map = this.native;
 		return polyline;
 	}
