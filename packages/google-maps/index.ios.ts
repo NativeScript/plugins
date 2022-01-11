@@ -507,7 +507,7 @@ export class MapView extends MapViewBase {
 	#isReady = false;
 	public onLoaded(): void {
 		super.onLoaded();
-		if (this.#isReady) {
+		if (!this.#isReady) {
 		
 			this._updateCamera(this.nativeView, {
 				lat: this.lat,
