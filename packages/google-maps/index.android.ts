@@ -1,4 +1,5 @@
-import {Application, Color, EventData, ImageSource, Utils, View} from "@nativescript/core";
+import { Application, Color, EventData, ImageSource, Utils, View } from "@nativescript/core";
+import { isNullOrUndefined } from "@nativescript/core/utils/types";
 import {
 	ActiveBuildingEvent,
 	ActiveLevelEvent,
@@ -43,7 +44,7 @@ import {
 	Style,
 	TileOverlayOptions
 } from ".";
-import {JointType, MapType, MapViewBase} from "./common";
+import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from "./common";
 
 import {
 	intoNativeMarkerOptions,
@@ -84,7 +85,7 @@ export class MapView extends MapViewBase {
 	createdBundle = null;
 	savedBundle = null;
 	#listener: com.google.android.gms.maps.OnMapReadyCallback;
-
+	_map: com.google.android.gms.maps.GoogleMap;
 	constructor() {
 		super();
 		const ref = new WeakRef(this);
@@ -158,6 +159,7 @@ export class MapView extends MapViewBase {
 		const ref = new WeakRef(this);
 		this.#listener = new com.google.android.gms.maps.OnMapReadyCallback({
 			onMapReady(map: com.google.android.gms.maps.GoogleMap): void {
+				const owner = ref.get?.();
 				(<any>org).nativescript.plugins.google_maps.GoogleMaps.registerMapListeners(map, new (<any>org).nativescript.plugins.google_maps.GoogleMaps.Callback({
 					onCameraEvent(position: com.google.android.gms.maps.model.CameraPosition, event: string, isGesture: boolean) {
 						if (event === 'start') {
@@ -309,28 +311,42 @@ export class MapView extends MapViewBase {
 
 					},
 					onInfoWindowAdapterEvent(marker: com.google.android.gms.maps.model.Marker, event: string) {
-						let info = <MarkerInfoEvent>{
-							eventName: '',
-							object: ref?.get?.(),
-							marker: Marker.fromNative(marker),
-							view: null
-						};
+						const owner: MapView = ref.get?.();
+						if (owner) {
+							let info = <MarkerInfoEvent>{
+								eventName: '',
+								object: ref?.get?.(),
+								marker: Marker.fromNative(marker),
+								view: null
+							};
 
-						if (event === 'contents') {
-							info.eventName = MapView.markerInfoContentsEvent;
-						} else if (event === 'window') {
-							info.eventName = MapView.markerInfoWindowEvent;
-						} else {
-							info = null;
-						}
+							if (event === 'contents') {
+								info.eventName = MapView.markerInfoContentsEvent;
+							} else if (event === 'window') {
+								info.eventName = MapView.markerInfoWindowEvent;
+							} else {
+								info = null;
+							}
 
-						if (info) {
-							ref?.get?.().notify?.(info);
-							if (info.view instanceof View) {
-								if (!info.view?.nativeView) {
-									ref?.get?.()._addView?.(info.view);
+							if (info) {
+								owner.notify(info);
+								if (info.view instanceof View) {
+									if (!info.view.parent && !info.view?.nativeView) {
+										owner._addView(info.view);
+									}
+									if (info.view.nativeView && !(<any>marker)._view) {
+										(<any>marker)._view = new android.widget.RelativeLayout(owner._context);
+									}
+									const parent = info.view.nativeView?.getParent?.();
+									if (info.view.nativeView && parent !== (<any>marker)._view) {
+										if (parent && parent.removeView) {
+											parent.removeView(info.view.nativeView);
+										}
+										const container: android.widget.RelativeLayout = (<any>marker)._view;
+										container.addView(info.view.nativeView);
+									}
+									return (<any>marker)?._view ?? null;
 								}
-								return info.view?.nativeView ?? null;
 							}
 						}
 
@@ -355,6 +371,18 @@ export class MapView extends MapViewBase {
 						}
 					},
 				}));
+
+				if (owner) {
+					owner._map = map;
+					owner._updateCamera(map, {
+						lat: owner.lat,
+						lng: owner.lng,
+						bearing: owner.bearing,
+						tilt: owner.tilt,
+						zoom: owner.zoom
+					})
+				}
+				
 				ref.get?.().notify?.({
 					eventName: 'ready',
 					object: ref.get?.(),
@@ -367,6 +395,99 @@ export class MapView extends MapViewBase {
 		nativeView.onResume();
 		nativeView.getMapAsync(this.#listener);
 		return nativeView;
+	}
+
+	[latProperty.setNative](value) {
+		if (this._map) {
+			this._updateCamera(this._map, {
+				lat: value
+			})
+		}
+	}
+
+	[lngProperty.setNative](value) {
+		if (this._map) {
+			this._updateCamera(this._map, {
+				lng: value
+			})
+		}
+	}
+
+
+	[zoomProperty.setNative](value) {
+		if (this._map) {
+			this._updateCamera(this._map, {
+				zoom: value
+			})
+		}
+	}
+
+	[tiltProperty.setNative](value) {
+		if (this._map) {
+			this._updateCamera(this._map, {
+				tilt: value
+			})
+		}
+	}
+
+
+	[bearingProperty.setNative](value) {
+		if (this._map) {
+			this._updateCamera(this._map, {
+				bearing: value
+			})
+		}
+	}
+
+
+	_updateCamera(map, owner: {
+		lat?,
+		lng?,
+		zoom?,
+		tilt?,
+		bearing?
+	}) {
+		const googleMap = GoogleMap.fromNative(map);
+		if (googleMap) {
+			const position = CameraPosition.fromNative(map.getCameraPosition());
+
+			let changed = false;
+			if (!isNullOrUndefined(owner.lat)) {
+				position.target = {
+					lat: typeof owner.lat === 'string' ? parseFloat(owner.lat) : owner.lat,
+					lng: position.target.lng
+				}
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.lng)) {
+				position.target = {
+					lat: position.target.lat,
+					lng: typeof owner.lng === 'string' ? parseFloat(owner.lng) : owner.lng
+				}
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.zoom)) {
+				position.zoom = typeof owner.zoom === 'string' ? parseFloat(owner.zoom) : owner.zoom;
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.tilt)) {
+				position.tilt = typeof owner.tilt === 'string' ? parseFloat(owner.tilt) : owner.tilt;
+				changed = true;
+			}
+
+			if (!isNullOrUndefined(owner.bearing)) {
+				position.bearing = typeof owner.bearing === 'string' ? parseFloat(owner.bearing) : owner.bearing;
+				changed = true;
+			}
+
+			if (changed) {
+				googleMap.cameraPosition = position;
+			}
+
+		}
 	}
 }
 
@@ -559,7 +680,7 @@ export class GoogleMap implements IGoogleMap {
 
 	set cameraPosition(value) {
 		this.native.moveCamera(
-			CameraUpdate.fromCameraPosition(value)
+			CameraUpdate.fromCameraPosition(value).native
 		)
 	}
 
@@ -1055,6 +1176,13 @@ export class Marker implements IMarker {
 		this.native.setZIndex(value);
 	}
 
+	hideInfoWindow() {
+		this.native.hideInfoWindow();
+	}
+
+	showInfoWindow() {
+		this.native.showInfoWindow();
+	}
 }
 
 export class Circle implements ICircle {
@@ -1817,7 +1945,7 @@ export class Projection implements IProjection {
 				coordinate.lng
 			)
 		);
-		return {x: point.x, y: point.y};
+		return { x: point.x, y: point.y };
 	}
 }
 
