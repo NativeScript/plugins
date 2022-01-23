@@ -1,3 +1,7 @@
+## Replacement notice
+
+This plugin is replaced by [@nativescript/biometrics](../biometrics)
+
 # @nativescript/fingerprint-auth
 
 ```cli
