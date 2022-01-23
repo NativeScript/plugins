@@ -7,6 +7,7 @@
       <StackLayout>
         <Button text="animated-circle" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="apple-sign-in" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="biometrics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
@@ -34,7 +35,6 @@
         <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="apple-sign-in" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>

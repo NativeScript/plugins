@@ -5,12 +5,13 @@
   "repository": "<fill-your-repository-here>",
   "dependencies": {
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/biometrics": "file:../../packages/biometrics",
     "@nativescript/ionic-portals": "file:../../packages/ionic-portals",
     "@nativescript/animated-circle": "file:../../packages/animated-circle",
     "@nativescript/appavailability": "file:../../packages/appavailability",
+    "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
     "@nativescript/auto-fit-text": "file:../../packages/auto-fit-text",
     "@nativescript/background-http": "file:../../packages/background-http",
+    "@nativescript/biometrics": "file:../../packages/biometrics",
     "@nativescript/brightness": "file:../../packages/brightness",
     "@nativescript/camera": "file:../../packages/camera",
     "@nativescript/datetimepicker": "file:../../packages/datetimepicker",
@@ -33,8 +34,7 @@
     "@nativescript/social-share": "file:../../packages/social-share",
     "@nativescript/theme-switcher": "file:../../packages/theme-switcher",
     "@nativescript/twitter": "file:../../packages/twitter",
-    "@nativescript/zip": "file:../../packages/zip",
-    "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in"
+    "@nativescript/zip": "file:../../packages/zip"
   },
   "devDependencies": {
     "@nativescript/android": "~8.1.1",
