@@ -8,6 +8,10 @@ export declare class Contacts {
     static getContactById(id: string, contactFields?: Array<string>): Promise<any>;
     static getContactsByName(searchPredicate: any, contactFields?: Array<string>): Promise<any>;
     static getAllContacts(contactFields?: Array<string>): Promise<any>;
+    /**
+     * Android only
+     */
+    static getAllContactsWithoutWorker(contactFields?: Array<string>): Promise<any>;
     static getGroups(name: string): Promise<any>;
     static getContactsInGroup(groupId: string): Promise<any>;
 }

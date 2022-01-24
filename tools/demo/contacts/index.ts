@@ -1,6 +1,7 @@
 import { DemoSharedBase } from '../utils';
 import { Contacts } from '@nativescript/contacts';
 import { requestPermissions } from 'nativescript-permissions';
+import { isIOS } from '@nativescript/core';
 
 export class DemoSharedContacts extends DemoSharedBase {
 	result = `Chosen results will display here...`;
@@ -52,7 +53,8 @@ export class DemoSharedContacts extends DemoSharedBase {
 	}
 
 	getAllContacts() {
-		Contacts.getAllContacts().then(
+		const promise = isIOS ? Contacts.getAllContacts : Contacts.getAllContactsWithoutWorker;
+		promise().then(
 			(result) => {
 				this._updateResult(result.data);
 			},

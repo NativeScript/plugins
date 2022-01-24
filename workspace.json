@@ -1657,6 +1657,7 @@
             "main": "packages/contacts/index.d.ts",
             "assets": [
               "packages/contacts/*.md",
+              "packages/contacts/getAllContacts.d.ts",
               "packages/contacts/helper.d.ts",
               "packages/contacts/index.d.ts",
               "LICENSE",

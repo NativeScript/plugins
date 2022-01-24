@@ -1,6 +1,5 @@
 require('@nativescript/core/globals')
 var Contact = require("./models/contact").Contact;
-var helper = require("./helper");
 
 /* pass debug messages to main thread since web workers do not have console access */
 // function console_log(msg) { postMessage({ type: 'debug', message: msg }); }

@@ -1,20 +1,11 @@
 import { AndroidApplication, Application, Utils } from '@nativescript/core';
 import { ContactHelper } from './helper';
 import { Contact, Group } from './models';
+// fetches without worker as additional option:
+import { getAllContacts } from './getAllContacts';
 
 export * from './common';
 export * from './models';
-
-function getContext() {
-	if (Utils.android.getApplicationContext()) {
-		return Utils.android.getApplicationContext();
-	}
-	var ctx = java.lang.Class.forName('android.app.AppGlobals').getMethod('getInitialApplication', null).invoke(null, null);
-	if (ctx) return ctx;
-
-	ctx = java.lang.Class.forName('android.app.ActivityThread').getMethod('currentApplication', null).invoke(null, null);
-	return ctx;
-}
 
 export class Contacts {
 	static getContact() {
@@ -38,7 +29,7 @@ export class Contacts {
 							Application.android.off('activityResult', handleActivityResult);
 
 							if (resultCode === android.app.Activity.RESULT_OK && data != null) {
-								var contentResolver = getContext().getContentResolver();
+								var contentResolver = ContactHelper.android.getContext().getContentResolver();
 								var pickedContactData = data.getData();
 								var mainCursor = contentResolver.query(pickedContactData, null, null, null, null);
 								mainCursor.moveToFirst();
@@ -98,7 +89,7 @@ export class Contacts {
 				} else if (event.data.type == 'result') {
 					worker.terminate();
 					// add nativescript image-source object to photo property since it does not work inside web worker
-					if (contactFields.indexOf('photo') > -1) {
+					if (contactFields?.indexOf('photo') > -1) {
 						resolve(ContactHelper.android.addImageSources(event.data.message));
 					} else {
 						resolve(event.data.message);
@@ -138,7 +129,7 @@ export class Contacts {
 					event.data.message.data = _contacts;
 
 					// add nativescript image-source object to photo property since it does not work inside web worker
-					if (contactFields.indexOf('photo') > -1) {
+					if (contactFields?.indexOf('photo') > -1) {
 						resolve(ContactHelper.android.addImageSources(event.data.message));
 					} else {
 						resolve(event.data.message);
@@ -153,8 +144,8 @@ export class Contacts {
 
 	static getAllContactsWithoutWorker(contactFields) {
 		return new Promise(function (resolve, reject) {
-			var result = Contacts.getAllContacts(contactFields);
-			if (contactFields.indexOf('photo') > -1) {
+			var result = getAllContacts(contactFields);
+			if (contactFields?.indexOf('photo') > -1) {
 				resolve(ContactHelper.android.addImageSources(result));
 			} else {
 				resolve(result);
@@ -169,12 +160,12 @@ export class Contacts {
 				groupCursor;
 
 			if (name) {
-				groupCursor = helper
+				groupCursor = ContactHelper.android
 					.getContext()
 					.getContentResolver()
 					.query(aGroups.CONTENT_URI, null, aGroupColumns.TITLE + '=?', [name], null);
 			} else {
-				groupCursor = getContext().getContentResolver().query(aGroups.CONTENT_URI, null, null, null, null);
+				groupCursor = ContactHelper.android.getContext().getContentResolver().query(aGroups.CONTENT_URI, null, null, null, null);
 			}
 
 			if (groupCursor.getCount() > 0) {
@@ -206,7 +197,7 @@ export class Contacts {
 		return new Promise(function (resolve, reject) {
 			var where = android.provider.ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + '=?' + ' AND ' + android.provider.ContactsContract.DataColumns.MIMETYPE + '=?',
 				whereArgs = [g.id.toString(), android.provider.ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE],
-				groupCursor = getContext().getContentResolver().query(android.provider.ContactsContract.Data.CONTENT_URI, null, where, whereArgs, null);
+				groupCursor = ContactHelper.android.getContext().getContentResolver().query(android.provider.ContactsContract.Data.CONTENT_URI, null, where, whereArgs, null);
 
 			if (groupCursor.getCount() > 0) {
 				var cts = [];
@@ -215,7 +206,7 @@ export class Contacts {
 					var Contacts = android.provider.ContactsContract.Contacts,
 						SELECTION = '_id',
 						rawId = groupCursor.getString(groupCursor.getColumnIndex('raw_contact_id')),
-						c = helper
+						c = ContactHelper.android
 							.getContext()
 							.getContentResolver()
 							.query(Contacts.CONTENT_URI, null, SELECTION + ' = ?', [rawId], null);

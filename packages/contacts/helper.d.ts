@@ -25,6 +25,7 @@ export declare class ContactHelper {
         getNativeEmailType: (label) => any,
         getNativeAddressType: (label) => any,
         getNativeWebsiteType: (label) => any,
-
+        getContext: () => any;
+        getActivity: () => any;
     }
 }

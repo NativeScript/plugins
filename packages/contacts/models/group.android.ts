@@ -5,10 +5,6 @@ import { GroupCommon } from './group.common';
 const ACCOUNT_TYPE = 'account_type'; // android.provider.ContactsContract.Groups.ACCOUNT_TYPE
 const ACCOUNT_NAME = 'account_name'; // android.provider.ContactsContract.Groups.ACCOUNT_NAME
 
-function getActivity() {
-	return Application.android.foregroundActivity || Application.android.startActivity;
-}
-
 export class Group extends GroupCommon {
 	initializeFromNative(groupData) {
 		var mainCursorJson = ContactHelper.android.convertNativeCursorToJson(groupData);
@@ -19,13 +15,13 @@ export class Group extends GroupCommon {
 
 	save(useDefault) {
 		//Android will always use the default account.
-		var mgr = android.accounts.AccountManager.get(getActivity());
+		var mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity());
 		var accounts = mgr.getAccounts();
 		var accountName = null;
 		var accountType = null;
 		var id = this.id;
 		var rawId: any = 0;
-		var contentResolver = getActivity().getContentResolver();
+		var contentResolver = ContactHelper.android.getActivity().getContentResolver();
 		var ops = new java.util.ArrayList();
 		var aGroupColumns = android.provider.ContactsContract.GroupsColumns;
 
@@ -63,11 +59,11 @@ export class Group extends GroupCommon {
 	}
 
 	delete() {
-		var mgr = android.accounts.AccountManager.get(getActivity()),
+		var mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity()),
 			accounts = mgr.getAccounts(),
 			id = this.id,
 			rawId: any = 0,
-			contentResolver = getActivity().getContentResolver(),
+			contentResolver = ContactHelper.android.getActivity().getContentResolver(),
 			ops = new java.util.ArrayList();
 
 		if (accounts.length === 0) {
@@ -97,7 +93,7 @@ export class Group extends GroupCommon {
 
 	addMember(contact) {
 		if (contact.id && contact.id !== '' && this.id && this.id !== '') {
-			var contentResolver = getActivity().getContentResolver(),
+			var contentResolver = ContactHelper.android.getActivity().getContentResolver(),
 				ops = new java.util.ArrayList();
 
 			ops.add(android.content.ContentProviderOperation.newInsert(android.provider.ContactsContract.Data.CONTENT_URI).withValue(android.provider.ContactsContract.DataColumns.MIMETYPE, android.provider.ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE).withValue(android.provider.ContactsContract.DataColumns.RAW_CONTACT_ID, contact.id.toString()).withValue(android.provider.ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, this.id.toString()).build());
@@ -108,7 +104,7 @@ export class Group extends GroupCommon {
 
 	removeMember(contact) {
 		if (contact.id && contact.id !== '' && this.id && this.id !== '') {
-			var contentResolver = getActivity().getContentResolver(),
+			var contentResolver = ContactHelper.android.getActivity().getContentResolver(),
 				ops = new java.util.ArrayList(),
 				SELECTION = android.provider.ContactsContract.DataColumns.MIMETYPE + '=? AND ' + android.provider.ContactsContract.DataColumns.RAW_CONTACT_ID + '=? AND ' + android.provider.ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + '=?';
 
