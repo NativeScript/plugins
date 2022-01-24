@@ -334,6 +334,8 @@
               "nx run twitter:build.all",
               "nx run biometrics:build.all",
               "nx run apple-sign-in:build.all",
+              "nx run google-maps:build.all",
+              "nx run contacts:build.all",
               "nx run ionic-portals:build.all"
             ],
             "parallel": false
@@ -1640,6 +1642,107 @@
           "options": {
             "commands": [
               "nx g @nativescript/plugin-tools:focus-packages apple-sign-in"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "google-maps": {
+      "root": "packages/google-maps",
+      "projectType": "library",
+      "sourceRoot": "packages/google-maps",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/google-maps",
+            "tsConfig": "packages/google-maps/tsconfig.json",
+            "packageJson": "packages/google-maps/package.json",
+            "main": "packages/google-maps/index.d.ts",
+            "assets": [
+              "packages/google-maps/*.md",
+              "packages/google-maps/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/google-maps/platforms/",
+                "output": "./platforms/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run google-maps:build",
+              "node tools/scripts/build-finish.ts google-maps"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages google-maps"
+            ],
+            "parallel": false
+          }
+        }
+      }
+    },
+    "contacts": {
+      "root": "packages/contacts",
+      "projectType": "library",
+      "sourceRoot": "packages/contacts",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/packages/contacts",
+            "tsConfig": "packages/contacts/tsconfig.json",
+            "packageJson": "packages/contacts/package.json",
+            "main": "packages/contacts/index.d.ts",
+            "assets": [
+              "packages/contacts/*.md",
+              "packages/contacts/helper.d.ts",
+              "packages/contacts/index.d.ts",
+              "LICENSE",
+              {
+                "glob": "**/*",
+                "input": "packages/contacts/platforms/",
+                "output": "./platforms/"
+              },
+              {
+                "glob": "contact.d.ts",
+                "input": "packages/contacts/models/",
+                "output": "./models/"
+              },
+              {
+                "glob": "group.d.ts",
+                "input": "packages/contacts/models/",
+                "output": "./models/"
+              }
+            ]
+          }
+        },
+        "build.all": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run contacts:build",
+              "node tools/scripts/build-finish.ts contacts"
+            ],
+            "parallel": false
+          }
+        },
+        "focus": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx g @nativescript/plugin-tools:focus-packages contacts"
             ],
             "parallel": false
           }

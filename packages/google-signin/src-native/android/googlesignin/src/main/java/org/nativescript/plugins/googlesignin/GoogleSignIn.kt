@@ -251,9 +251,9 @@ class GoogleSignIn {
 		private fun scopesToString(scopes: Set<Scope>): String {
 			val sb = StringBuilder("oauth2:")
 			for (scope in scopes) {
-				sb.append(scopes.toString()).append(" ")
+				sb.append(scope.toString()).append(" ")
 			}
-			return sb.toString().trim { it <= ' ' }
+			return sb.toString().trim()
 		}
 
 		@Throws(
@@ -304,7 +304,7 @@ class GoogleSignIn {
 					}
 				} catch (e: Exception) {
 					runOnMain {
-						callback.onError(Exception(GET_TOKENS_ERROR))
+						callback.onError(e)
 					}
 				}
 			}

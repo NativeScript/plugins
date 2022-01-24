@@ -1,4 +1,4 @@
-import { EventData, ImageAsset } from '@nativescript/core';
+import { Dialogs, EventData, ImageAsset } from '@nativescript/core';
 import { requestPermissions, takePicture } from '@nativescript/camera';
 import { DemoSharedBase } from '../utils';
 
@@ -42,7 +42,7 @@ export class DemoSharedCamera extends DemoSharedBase {
 					}
 				);
 			},
-			() => alert('permissions rejected')
+			() => Dialogs.alert('permissions rejected')
 		);
 	}
 }

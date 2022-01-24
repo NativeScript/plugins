@@ -130,7 +130,7 @@ Disconnects the current user.
 
 ## getTokens()
 
-Resolves with an object containing { idToken: string, accessToken: string, } or rejects with an error. Note that using accessToken for identity assertion on your backend server is discouraged.
+Resolves with an object containing { idToken: string, accessToken: string, } or rejects with an error. Note that using accessToken for identity assertion on your backend server is [discouraged](https://developers.google.com/identity/sign-in/android/migration-guide).
 
 ## getCurrentUser()
 

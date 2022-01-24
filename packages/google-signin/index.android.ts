@@ -246,7 +246,9 @@ export class GoogleSignin {
 	}
 
 	static playServicesAvailable() {
-		return org.nativescript.plugins.googlesignin.GoogleSignIn.playServicesAvailable(false, Application.android.foregroundActivity || Application.android.startActivity);
+		return new Promise((resolve, reject) => {
+			resolve(org.nativescript.plugins.googlesignin.GoogleSignIn.playServicesAvailable(false, Application.android.foregroundActivity || Application.android.startActivity));
+		})
 	}
 }
 

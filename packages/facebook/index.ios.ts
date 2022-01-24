@@ -1,3 +1,4 @@
+import { Application } from '@nativescript/core';
 import { ILoginManager } from './common';
 
 function setToArray<T>(value: NSSet<T>): T[] {
@@ -218,6 +219,9 @@ export class LoginManager implements ILoginManager {
 		}
 
 		if (!appDelegateInitialized) {
+			if (!Application.ios.delegate) {
+				Application.ios.delegate = FacebookAppDelegateImpl;
+			}
 			GULAppDelegateSwizzler.proxyOriginalDelegate();
 			GULAppDelegateSwizzler.registerAppDelegateInterceptor(FacebookAppDelegateImpl.sharedInstance);
 			appDelegateInitialized = true;

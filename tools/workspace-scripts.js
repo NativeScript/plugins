@@ -266,6 +266,20 @@ module.exports = {
 					description: '@nativescript/apple-sign-in: Build',
 				},
 			},
+			// @nativescript/google-maps
+			'google-maps': {
+				build: {
+					script: 'nx run google-maps:build.all',
+					description: '@nativescript/google-maps: Build',
+				},
+			},
+			// @nativescript/contacts
+			'contacts': {
+				build: {
+					script: 'nx run contacts:build.all',
+					description: '@nativescript/contacts: Build',
+				},
+			},
 			// @nativescript/ionic-portals
 			'ionic-portals': {
 				build: {
@@ -398,6 +412,14 @@ module.exports = {
 			'apple-sign-in': {
 				script: 'nx run apple-sign-in:focus',
 				description: 'Focus on @nativescript/apple-sign-in',
+			},
+			'google-maps': {
+				script: 'nx run google-maps:focus',
+				description: 'Focus on @nativescript/google-maps',
+			},
+			'contacts': {
+				script: 'nx run contacts:focus',
+				description: 'Focus on @nativescript/contacts',
 			},
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',

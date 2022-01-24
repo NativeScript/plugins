@@ -13,6 +13,7 @@
         <Button text="biometrics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="contacts" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="debug-android" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="debug-ios" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
@@ -22,6 +23,7 @@
         <Button text="facebook" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ionic-portals" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
