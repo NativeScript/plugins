@@ -5,11 +5,13 @@
   "repository": "<fill-your-repository-here>",
   "dependencies": {
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/biometrics": "file:../../packages/biometrics",
+    "@nativescript/contacts": "file:../../packages/contacts",
     "@nativescript/animated-circle": "file:../../packages/animated-circle",
     "@nativescript/appavailability": "file:../../packages/appavailability",
+    "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
     "@nativescript/auto-fit-text": "file:../../packages/auto-fit-text",
     "@nativescript/background-http": "file:../../packages/background-http",
+    "@nativescript/biometrics": "file:../../packages/biometrics",
     "@nativescript/brightness": "file:../../packages/brightness",
     "@nativescript/camera": "file:../../packages/camera",
     "@nativescript/datetimepicker": "file:../../packages/datetimepicker",
@@ -21,6 +23,7 @@
     "@nativescript/facebook": "file:../../packages/facebook",
     "@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
     "@nativescript/geolocation": "file:../../packages/geolocation",
+    "@nativescript/google-maps": "file:../../packages/google-maps",
     "@nativescript/google-signin": "file:../../packages/google-signin",
     "@nativescript/imagepicker": "file:../../packages/imagepicker",
     "@nativescript/ios-security": "file:../../packages/ios-security",
@@ -32,9 +35,7 @@
     "@nativescript/social-share": "file:../../packages/social-share",
     "@nativescript/theme-switcher": "file:../../packages/theme-switcher",
     "@nativescript/twitter": "file:../../packages/twitter",
-    "@nativescript/zip": "file:../../packages/zip",
-    "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
-    "@nativescript/google-maps": "file:../../packages/google-maps"
+    "@nativescript/zip": "file:../../packages/zip"
   },
   "devDependencies": {
     "@nativescript/android": "~8.1.1",

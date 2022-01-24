@@ -7,6 +7,7 @@ export * from './background-http';
 export * from './biometrics';
 export * from './brightness';
 export * from './camera';
+export * from './contacts';
 export * from './datetimepicker';
 export * from './debug-android';
 export * from './debug-ios';

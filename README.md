@@ -6,6 +6,7 @@
 - [@nativescript/biometrics](packages/biometrics/README.md)
 - [@nativescript/brightness](packages/brightness/README.md)
 - [@nativescript/camera](packages/camera/README.md)
+- [@nativescript/contacts](packages/contacts/README.md)
 - [@nativescript/datetimepicker](packages/datetimepicker/README.md)
 - [@nativescript/debug-android](packages/debug-android/README.md)
 - [@nativescript/debug-ios](packages/debug-ios/README.md)

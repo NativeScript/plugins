@@ -112,6 +112,9 @@
     },
     "google-maps": {
       "tags": []
+    },
+    "contacts": {
+      "tags": []
     }
   },
   "workspaceLayout": {
