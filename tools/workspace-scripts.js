@@ -273,6 +273,13 @@ module.exports = {
 					description: '@nativescript/google-maps: Build',
 				},
 			},
+			// @nativescript/contacts
+			'contacts': {
+				build: {
+					script: 'nx run contacts:build.all',
+					description: '@nativescript/contacts: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -402,6 +409,10 @@ module.exports = {
 			'google-maps': {
 				script: 'nx run google-maps:focus',
 				description: 'Focus on @nativescript/google-maps',
+			},
+			'contacts': {
+				script: 'nx run contacts:focus',
+				description: 'Focus on @nativescript/contacts',
 			},
 			reset: {
 				script: 'nx run all:focus',

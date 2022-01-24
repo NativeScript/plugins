@@ -31,6 +31,9 @@ export class HomeComponent {
 		name: 'camera'
 	},
 	{
+		name: 'contacts'
+	},
+	{
 		name: 'datetimepicker'
 	},
 	{

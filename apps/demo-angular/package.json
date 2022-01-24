@@ -2,12 +2,13 @@
   "main": "./src/main.ts",
   "dependencies": {
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/biometrics": "file:../../dist/packages/biometrics",
-    "@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
+    "@nativescript/contacts": "file:../../dist/packages/contacts",
     "@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
     "@nativescript/appavailability": "file:../../dist/packages/appavailability",
+    "@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
     "@nativescript/auto-fit-text": "file:../../dist/packages/auto-fit-text",
     "@nativescript/background-http": "file:../../dist/packages/background-http",
+    "@nativescript/biometrics": "file:../../dist/packages/biometrics",
     "@nativescript/brightness": "file:../../dist/packages/brightness",
     "@nativescript/camera": "file:../../dist/packages/camera",
     "@nativescript/datetimepicker": "file:../../dist/packages/datetimepicker",
@@ -19,6 +20,7 @@
     "@nativescript/facebook": "file:../../dist/packages/facebook",
     "@nativescript/fingerprint-auth": "file:../../dist/packages/fingerprint-auth",
     "@nativescript/geolocation": "file:../../dist/packages/geolocation",
+    "@nativescript/google-maps": "file:../../dist/packages/google-maps",
     "@nativescript/google-signin": "file:../../dist/packages/google-signin",
     "@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
     "@nativescript/ios-security": "file:../../dist/packages/ios-security",
@@ -28,10 +30,9 @@
     "@nativescript/picker": "file:../../dist/packages/picker",
     "@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
     "@nativescript/social-share": "file:../../dist/packages/social-share",
+    "@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
     "@nativescript/twitter": "file:../../dist/packages/twitter",
-    "@nativescript/zip": "file:../../dist/packages/zip",
-    "@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
-    "@nativescript/google-maps": "file:../../dist/packages/google-maps"
+    "@nativescript/zip": "file:../../dist/packages/zip"
   },
   "devDependencies": {
     "@nativescript/android": "~8.1.1",

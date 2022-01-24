@@ -7,11 +7,13 @@
       <StackLayout>
         <Button text="animated-circle" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="apple-sign-in" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="biometrics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="contacts" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="debug-android" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="debug-ios" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
@@ -21,6 +23,7 @@
         <Button text="facebook" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
@@ -33,8 +36,6 @@
         <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="apple-sign-in" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>
