@@ -75,7 +75,7 @@ export class Contacts {
 	}
 	static getContactsByName(searchPredicate, contactFields?: Array<string>) {
 		return new Promise((resolve, reject) => {
-			const worker = new Worker('./worker-get-contacts-by-name.js'); // relative for caller script path
+			const worker = new Worker('./worker-get-contacts-by-name'); // relative for caller script path
 			worker.postMessage({
 				searchPredicate: searchPredicate,
 				contactFields: contactFields,
@@ -99,7 +99,7 @@ export class Contacts {
 	}
 	static getAllContacts(contactFields?: Array<string>) {
 		return new Promise((resolve, reject) => {
-			const worker = new Worker('./worker-get-all-contacts.js'); // relative for caller script path
+			const worker = new Worker('./worker-get-all-contacts'); // relative for caller script path
 			worker.postMessage({ contactFields: contactFields });
 			worker.onmessage = function (event) {
 				var _contacts = [];

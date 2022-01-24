@@ -53,8 +53,10 @@ export class DemoSharedContacts extends DemoSharedBase {
 	}
 
 	getAllContacts() {
-		const promise = isIOS ? Contacts.getAllContacts : Contacts.getAllContactsWithoutWorker;
-		promise().then(
+		// uncomment the following and comment the original to test android's all without worker
+		// const promise = isIOS ? Contacts.getAllContacts : Contacts.getAllContactsWithoutWorker;
+		// promise().then(
+		Contacts.getAllContacts().then(
 			(result) => {
 				this._updateResult(result.data);
 			},
