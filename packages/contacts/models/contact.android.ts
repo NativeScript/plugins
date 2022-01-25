@@ -250,7 +250,7 @@ export class Contact extends ContactCommon {
 
 		// Add/Update Names
 		ops.add(
-			helper
+			ContactHelper.android
 				.getContactBuilder(id, android.provider.ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
 				.withValue(android.provider.ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, this.name.displayname)
 				.withValue(android.provider.ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, this.name.given)
@@ -272,7 +272,7 @@ export class Contact extends ContactCommon {
 			var nativePhoneType = ContactHelper.android.getNativePhoneType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativePhoneType))
 					.withValue(LABEL, nativePhoneType ? '' : item.label)
@@ -286,7 +286,7 @@ export class Contact extends ContactCommon {
 			var nativeEmailType = ContactHelper.android.getNativeEmailType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativeEmailType))
 					.withValue(LABEL, nativeEmailType ? '' : item.label)
@@ -300,7 +300,7 @@ export class Contact extends ContactCommon {
 			var nativeAddressType = ContactHelper.android.getNativeAddressType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativeAddressType))
 					.withValue(LABEL, nativeAddressType ? '' : item.label)
@@ -322,7 +322,7 @@ export class Contact extends ContactCommon {
 			var nativeWebsiteType = ContactHelper.android.getNativeWebsiteType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativeWebsiteType))
 					.withValue(LABEL, nativeWebsiteType ? '' : item.label)
@@ -334,7 +334,7 @@ export class Contact extends ContactCommon {
 		// Add Organization
 		var nativeOrgType = ContactHelper.android.getNativeOrgType(this.organization.type);
 		ops.add(
-			helper
+			ContactHelper.android
 				.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
 				.withValue(TYPE, new java.lang.Integer(nativeOrgType))
 				.withValue(LABEL, nativeOrgType ? '' : this.organization.type)
