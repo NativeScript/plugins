@@ -76,7 +76,7 @@ export class Contacts {
 
 	static getContactsByName(searchPredicate, contactFields) {
 		return new Promise(function (resolve, reject) {
-			var worker = new Worker('./worker-get-contacts-by-name');
+			var worker = new Worker(new URL('./worker-get-contacts-by-name', import.meta.url));
 			worker.postMessage({
 				searchPredicate: searchPredicate,
 				contactFields: contactFields,
@@ -104,7 +104,7 @@ export class Contacts {
 
 	static getAllContacts(contactFields) {
 		return new Promise(function (resolve, reject) {
-			var worker = new Worker('./worker-get-all-contacts');
+			var worker = new Worker(new URL('./worker-get-all-contacts', import.meta.url));
 			
 			worker.postMessage({ contactFields: contactFields });
 			worker.onmessage = function (event) {

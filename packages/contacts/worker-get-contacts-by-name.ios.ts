@@ -8,7 +8,6 @@ import { Contact } from './models/contact';
 
 let contactFields;
 self.onmessage = function (event) {
-	// console.log('GET CONTACTS BY NAME WORKER');
 	// prettier-ignore
 	contactFields = event.data.contactFields ?? [
     'name',
@@ -27,17 +26,7 @@ self.onmessage = function (event) {
 
 	const keysToFetch = []; // All Properties that we are using in the Model
 	if (contactFields.indexOf('name') > -1) {
-		// prettier-ignore
-		keysToFetch.push(
-      "givenName",
-      "familyName",
-      "middleName",
-      "namePrefix",
-      "nameSuffix", 
-      "phoneticGivenName", 
-      "phoneticMiddleName",
-      "phoneticFamilyName"
-    );
+		keysToFetch.push('givenName', 'familyName', 'middleName', 'namePrefix', 'nameSuffix', 'phoneticGivenName', 'phoneticMiddleName', 'phoneticFamilyName');
 	}
 
 	if (contactFields.indexOf('organization') > -1) {
@@ -66,11 +55,14 @@ self.onmessage = function (event) {
 	}
 
 	const store = new CNContactStore();
-	const foundContacts = store.unifiedContactsMatchingPredicateKeysToFetchError(CNContact.predicateForContactsMatchingName(event.data.searchPredicate), keysToFetch);
+	let error;
 
-	// if (error) {
-	// 	postMessage({ type: 'error', message: error });
-	// }
+	// @ts-ignore
+	const foundContacts = store.unifiedContactsMatchingPredicateKeysToFetchError(CNContact.predicateForContactsMatchingName(event.data.searchPredicate), NSArray.arrayWithArray(keysToFetch), error);
+
+	if (error) {
+		postMessage({ type: 'error', message: error });
+	}
 
 	// console.log('foundContacts', foundContacts);
 	if (foundContacts.count > 0) {

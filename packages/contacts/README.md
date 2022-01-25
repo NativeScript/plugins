@@ -19,6 +19,19 @@ Add following key to Info.plist often found in `App_Resources/iOS/Info.plist`
 
 User will be asked for permissions when contacts are accessed by the app.
 
+Since iOS 13, you will also [need entitlements](https://developer.apple.com/documentation/contacts/requesting_authorization_to_access_contacts). If you do not have `App_Resources/iOS/app.entitlements` yet, you can add the file with at least these contents:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>com.apple.developer.contacts.notes</key>
+    <true/>
+  </dict>
+</plist>
+```
+
 ### Android Settings
 
 From API level 23 on you need to check for the appropriate permissions to access the contacts. So not only do you need these permissions in your `AndroidManifest.xml`:
