@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/contacts",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Easy access to iOS and Android contact directory. Pick a contact, update date, or add a new one!",
   "main": "index",
   "typings": "index.d.ts",

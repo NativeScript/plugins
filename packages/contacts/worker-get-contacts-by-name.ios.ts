@@ -8,7 +8,7 @@ import { Contact } from './models/contact';
 
 let contactFields;
 self.onmessage = function (event) {
-	console.log('GET CONTACTS BY NAME WORKER');
+	// console.log('GET CONTACTS BY NAME WORKER');
 	// prettier-ignore
 	contactFields = event.data.contactFields ?? [
     'name',
@@ -22,8 +22,8 @@ self.onmessage = function (event) {
     'postalAddresses'
   ];
 
-	console.log('contactFields', contactFields);
-	console.log('event.data.searchPredicate', event.data.searchPredicate);
+	// console.log('contactFields', contactFields);
+	// console.log('event.data.searchPredicate', event.data.searchPredicate);
 
 	const keysToFetch = []; // All Properties that we are using in the Model
 	if (contactFields.indexOf('name') > -1) {
@@ -72,7 +72,7 @@ self.onmessage = function (event) {
 	// 	postMessage({ type: 'error', message: error });
 	// }
 
-	console.log('foundContacts', foundContacts);
+	// console.log('foundContacts', foundContacts);
 	if (foundContacts.count > 0) {
 		const cts = [];
 		for (let i = 0; i < foundContacts.count; i++) {
