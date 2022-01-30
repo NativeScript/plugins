@@ -1,6 +1,7 @@
 import { DemoSharedBase } from '../utils';
 import { Contacts } from '@nativescript/contacts';
 import { requestPermissions } from 'nativescript-permissions';
+import { isIOS } from '@nativescript/core';
 
 export class DemoSharedContacts extends DemoSharedBase {
 	result = `Chosen results will display here...`;
@@ -10,11 +11,15 @@ export class DemoSharedContacts extends DemoSharedBase {
 	constructor() {
 		super();
 		if (global.isAndroid) {
-			requestPermissions([android.Manifest.permission.GET_ACCOUNTS, android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.WRITE_CONTACTS, android.Manifest.permission.GLOBAL_SEARCH], "I need these permissions because I'm cool").then(() => {}, () => {});
+			requestPermissions([android.Manifest.permission.GET_ACCOUNTS, android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.WRITE_CONTACTS, android.Manifest.permission.GLOBAL_SEARCH], "I need these permissions because I'm cool").then(
+				() => {},
+				() => {}
+			);
 		}
 	}
 
 	getContact() {
+		console.log('getContact');
 		Contacts.getContact().then((result) => {
 			// console.log('result:', result)
 			this._updateResult(result.data);
@@ -22,6 +27,8 @@ export class DemoSharedContacts extends DemoSharedBase {
 	}
 
 	getContactById() {
+		console.log('getContactById', this.contactId);
+
 		Contacts.getContactById(this.contactId).then(
 			(result) => {
 				this._updateResult(result.data[0]);
@@ -37,6 +44,7 @@ export class DemoSharedContacts extends DemoSharedBase {
 	}
 
 	getContactsByName() {
+		console.log('getContactsByName', this.contactName);
 		Contacts.getContactsByName(this.contactName).then(
 			(result) => {
 				this._updateResult(result.data[0]);
@@ -52,6 +60,11 @@ export class DemoSharedContacts extends DemoSharedBase {
 	}
 
 	getAllContacts() {
+		console.log('getAllContacts');
+
+		// uncomment the following and comment the original to test android's all without worker
+		// const promise = isIOS ? Contacts.getAllContacts : Contacts.getAllContactsWithoutWorker;
+		// promise().then(
 		Contacts.getAllContacts().then(
 			(result) => {
 				this._updateResult(result.data);

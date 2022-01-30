@@ -10,7 +10,7 @@ The below attached code snippets demonstrate how to use `@nativescript/backgroun
 
 ### Uploading files
 
-Sample code for configuring the upload session. Each session must have a unique `id`, but it can have multiple tasks running simultaneously. The `id` is passed as a parameter when creating the session (the `image-upload` string in the code bellow):
+Sample code for configuring the upload session. Each session must have a unique `id`, but it can have multiple tasks running simultaneously. The `id` is passed as a parameter when creating the session (the `image-upload` string in the code below):
 
 ```javascript
 // file path and url

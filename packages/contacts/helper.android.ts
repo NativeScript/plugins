@@ -7,19 +7,21 @@ const RAW_CONTACT_ID = 'raw_contact_id'; // android.provider.ContactsContract.Da
 const CONTACT_ID = 'contact_id'; // android.provider.ContactsContract.Data.CONTACT_ID
 const MIMETYPE = 'mimetype'; // android.provider.ContactsContract.Data.MIMETYPE
 
-function getContext() {
-	if (Utils.android.getApplicationContext()) {
-		return Utils.android.getApplicationContext();
-	}
-	var ctx = java.lang.Class.forName('android.app.AppGlobals').getMethod('getInitialApplication', null).invoke(null, null);
-	if (ctx) return ctx;
-
-	ctx = java.lang.Class.forName('android.app.ActivityThread').getMethod('currentApplication', null).invoke(null, null);
-	return ctx;
-}
-
 export class ContactHelper {
 	static android = {
+		getContext() {
+			if (Utils.android.getApplicationContext()) {
+				return Utils.android.getApplicationContext();
+			}
+			let ctx = java.lang.Class.forName('android.app.AppGlobals').getMethod('getInitialApplication', null).invoke(null, null);
+			if (ctx) return ctx;
+		
+			ctx = java.lang.Class.forName('android.app.ActivityThread').getMethod('currentApplication', null).invoke(null, null);
+			return ctx;
+		},
+		getActivity() {
+			return Application.android.foregroundActivity || Application.android.startActivity;
+		},
 		/*
 		 * add nativescript image-source object to photo property - does not work from inside a web worker
 		 */
@@ -43,7 +45,7 @@ export class ContactHelper {
 		//Query Sample:
 		//query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
 		getBasicCursor(uri, id) {
-			var contentResolver = getContext().getContentResolver();
+			var contentResolver = ContactHelper.android.getContext().getContentResolver();
 			var cursor = contentResolver.query(uri, null, CONTACT_ID + '=' + id, null, null);
 			//cursor.moveToFirst();
 
@@ -53,7 +55,7 @@ export class ContactHelper {
 		//projection: String[]
 		//parameters: String[]
 		getComplexCursor(id, uri, projection, parameters) {
-			var contentResolver = getContext().getContentResolver();
+			var contentResolver = ContactHelper.android.getContext().getContentResolver();
 			var cursor = contentResolver.query(uri, projection, CONTACT_ID + '=? AND ' + MIMETYPE + '=?', parameters, null);
 
 			return cursor;

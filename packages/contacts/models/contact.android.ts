@@ -10,24 +10,6 @@ var LABEL = 'data3';
 var PHOTO_URI = 'photo_uri'; // android.provider.ContactsContract.CommonDataKinds.Phone.PHOTO_URI
 var IS_SUPER_PRIMARY = 'is_super_primary'; // android.provider.ContactsContract.Data.IS_SUPER_PRIMARY
 
-const getAndroidContext = () => {
-	if (Utils.android.getApplicationContext()) {
-		return Utils.android.getApplicationContext();
-	}
-
-	var ctx = java.lang.Class.forName('android.app.AppGlobals').getMethod('getInitialApplication', null).invoke(null, null);
-	if (ctx) {
-		return ctx;
-	}
-
-	ctx = java.lang.Class.forName('android.app.ActivityThread').getMethod('currentApplication', null).invoke(null, null);
-	return ctx;
-};
-
-function getActivity() {
-	return Application.android.foregroundActivity || Application.android.startActivity;
-}
-
 export class Contact extends ContactCommon {
 	constructor() {
 		super();
@@ -45,7 +27,7 @@ export class Contact extends ContactCommon {
 		this.id = mainCursorJson['_id'];
 
 		if (contactFields.indexOf('photo') > -1 && mainCursorJson[PHOTO_URI]) {
-			var bitmap = android.provider.MediaStore.Images.Media.getBitmap(getAndroidContext().getContentResolver(), android.net.Uri.parse(mainCursorJson[PHOTO_URI]));
+			var bitmap = android.provider.MediaStore.Images.Media.getBitmap(ContactHelper.android.getContext().getContentResolver(), android.net.Uri.parse(mainCursorJson[PHOTO_URI]));
 			// this.photo = imageSource.fromNativeSource(bitmap);
 			this.photo = 'data:image/png;base64,' + new ImageSource(bitmap).toBase64String('png');
 		} else {
@@ -229,7 +211,7 @@ export class Contact extends ContactCommon {
 	}
 
 	save() {
-		var mgr = android.accounts.AccountManager.get(getActivity());
+		var mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity());
 		var accounts = mgr.getAccounts();
 		var accountName = null;
 		var accountType = null;
@@ -268,7 +250,7 @@ export class Contact extends ContactCommon {
 
 		// Add/Update Names
 		ops.add(
-			helper
+			ContactHelper.android
 				.getContactBuilder(id, android.provider.ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
 				.withValue(android.provider.ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, this.name.displayname)
 				.withValue(android.provider.ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, this.name.given)
@@ -290,7 +272,7 @@ export class Contact extends ContactCommon {
 			var nativePhoneType = ContactHelper.android.getNativePhoneType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativePhoneType))
 					.withValue(LABEL, nativePhoneType ? '' : item.label)
@@ -304,7 +286,7 @@ export class Contact extends ContactCommon {
 			var nativeEmailType = ContactHelper.android.getNativeEmailType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativeEmailType))
 					.withValue(LABEL, nativeEmailType ? '' : item.label)
@@ -318,7 +300,7 @@ export class Contact extends ContactCommon {
 			var nativeAddressType = ContactHelper.android.getNativeAddressType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativeAddressType))
 					.withValue(LABEL, nativeAddressType ? '' : item.label)
@@ -340,7 +322,7 @@ export class Contact extends ContactCommon {
 			var nativeWebsiteType = ContactHelper.android.getNativeWebsiteType(item.label);
 
 			ops.add(
-				helper
+				ContactHelper.android
 					.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE)
 					.withValue(TYPE, new java.lang.Integer(nativeWebsiteType))
 					.withValue(LABEL, nativeWebsiteType ? '' : item.label)
@@ -352,7 +334,7 @@ export class Contact extends ContactCommon {
 		// Add Organization
 		var nativeOrgType = ContactHelper.android.getNativeOrgType(this.organization.type);
 		ops.add(
-			helper
+			ContactHelper.android
 				.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
 				.withValue(TYPE, new java.lang.Integer(nativeOrgType))
 				.withValue(LABEL, nativeOrgType ? '' : this.organization.type)
@@ -384,11 +366,11 @@ export class Contact extends ContactCommon {
 	}
 
 	delete() {
-		let mgr = android.accounts.AccountManager.get(getActivity()),
+		let mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity()),
 			accounts = mgr.getAccounts(),
 			id = this.id,
 			rawId: any = 0,
-			contentResolver = getActivity().getContentResolver(),
+			contentResolver = ContactHelper.android.getActivity().getContentResolver(),
 			ops = new java.util.ArrayList();
 
 		if (accounts.length === 0) {

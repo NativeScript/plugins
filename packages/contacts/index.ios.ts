@@ -21,6 +21,7 @@ export class Contacts {
 		return new Promise((resolve, reject) => {
 			if (!id) {
 				reject('Missing Contact Identifier');
+				return;
 			}
 			contactFields = contactFields || ['name', 'organization', 'nickname', 'photo', 'urls', 'phoneNumbers', 'emailAddresses', 'postalAddresses'];
 			const store = CNContactStore.new();
@@ -75,7 +76,7 @@ export class Contacts {
 	}
 	static getContactsByName(searchPredicate, contactFields?: Array<string>) {
 		return new Promise((resolve, reject) => {
-			const worker = new Worker('./worker-get-contacts-by-name.js'); // relative for caller script path
+			const worker = new Worker('./worker-get-contacts-by-name');
 			worker.postMessage({
 				searchPredicate: searchPredicate,
 				contactFields: contactFields,
@@ -99,7 +100,7 @@ export class Contacts {
 	}
 	static getAllContacts(contactFields?: Array<string>) {
 		return new Promise((resolve, reject) => {
-			const worker = new Worker('./worker-get-all-contacts.js'); // relative for caller script path
+			const worker = new Worker('./worker-get-all-contacts');
 			worker.postMessage({ contactFields: contactFields });
 			worker.onmessage = function (event) {
 				var _contacts = [];
