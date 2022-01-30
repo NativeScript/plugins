@@ -13,33 +13,39 @@ export class IonicPortalManager {
 }
 
 export class IonicPortal extends IonicPortalCommon {
+
+	private _androidViewId = -1;
+
 	// @ts-ignore
-	get android(): io.ionic.portals.Portal {
-		return this.nativeView;
+	get android(): io.ionic.portals.PortalView {
+		return this.nativeViewProtected;
 	}
 
 	createNativeView() {
-		console.log('createNativeView', this.id);
 		if (!this.id) {
 			throw new Error(`IonicPortal requires an 'id' property.`);
 		}
 
-		// TODO: need Osei help here
+		
 		const portalWebView = new io.ionic.portals.PortalView(this._context);
+		
+
 		portalWebView.setPortalId(this.id);
 
-		const relativeLayout = new android.widget.RelativeLayout(this._context);
-		relativeLayout.addView(<any>portalWebView, new android.widget.RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, android.widget.RelativeLayout.LayoutParams.MATCH_PARENT));
+		return portalWebView;
+	}
 
-		relativeLayout.setClipChildren(false);
-		relativeLayout.setClipToPadding(false);
-		const parent = relativeLayout.getParent() as any;
-		if (parent && parent.setClipToPadding) {
-			parent.setClipToPadding(false);
+	public initNativeView(): void {
+		super.initNativeView();
+		if (this._androidViewId < 0) {
+			this._androidViewId = android.view.View.generateViewId();
 		}
-		if (parent && parent.setClipChildren) {
-			parent.setClipChildren(false);
-		}
-		return relativeLayout;
+
+		this.nativeViewProtected.setId(this._androidViewId);
+	}
+
+	public onLoaded(): void {
+		super.onLoaded();
+		this.nativeViewProtected.loadPortal(this._context, null);
 	}
 }

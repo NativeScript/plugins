@@ -5,5 +5,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.ionic:portals:0.4.1'
+    // implementation ('io.ionic:portals:0.4.1'){
+    //     transitive = true
+    // }
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.capacitorjs:core:3.4.0'
 }
