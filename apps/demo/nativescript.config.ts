@@ -10,5 +10,11 @@ export default {
 	appPath: 'src',
 	cli: {
 		packageManager: 'npm'
-	}
+	},
+	hooks: [
+		{
+		  type: 'before-prepare',
+		  script: '../../tools/scripts/before-prepare.js',
+		}
+	  ],
 } as NativeScriptConfig;

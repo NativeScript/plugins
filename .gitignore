@@ -55,3 +55,8 @@ packages/shared-notification-delegate/common.js.map
 packages/**/native-src/ios/**/xcuserdata/
 packages/**/native-src/ios/**/project.xcworkspace/
 packages/**/native-src/ios/**/build
+
+# Ionic Portals and testing
+!packages/ionic-portals/platforms/android/IonicPortals-release.aar
+tools/assets/App_Resources/iOS/ionicWebPortalSample
+tools/assets/App_Resources/Android/src/main/assets/ionicWebPortalSample

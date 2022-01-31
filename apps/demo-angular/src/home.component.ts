@@ -70,6 +70,9 @@ export class HomeComponent {
 		name: 'imagepicker'
 	},
 	{
+		name: 'ionic-portals'
+	},
+	{
 		name: 'ios-security'
 	},
 	{

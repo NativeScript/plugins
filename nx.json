@@ -115,6 +115,9 @@
     },
     "contacts": {
       "tags": []
+    },
+    "ionic-portals": {
+      "tags": []
     }
   },
   "workspaceLayout": {

@@ -19,6 +19,7 @@
 - [@nativescript/google-maps](packages/google-maps/README.md)
 - [@nativescript/google-signin](packages/google-signin/README.md)
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
+- [@nativescript/ionic-portals](packages/ionic-portals/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)
 - [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)

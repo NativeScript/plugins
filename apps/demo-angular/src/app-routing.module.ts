@@ -28,6 +28,7 @@ const routes: Routes = [
 	{ path: 'google-maps', loadChildren: () => import('./plugin-demos/google-maps.module').then(m => m.GoogleMapsModule) },
 	{ path: 'google-signin', loadChildren: () => import('./plugin-demos/google-signin.module').then(m => m.GoogleSigninModule) },
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then(m => m.ImagepickerModule) },
+	{ path: 'ionic-portals', loadChildren: () => import('./plugin-demos/ionic-portals.module').then(m => m.IonicPortalsModule) },
 	{ path: 'ios-security', loadChildren: () => import('./plugin-demos/ios-security.module').then(m => m.IosSecurityModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then(m => m.IqkeyboardmanagerModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then(m => m.LocalNotificationsModule) },

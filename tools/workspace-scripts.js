@@ -280,6 +280,13 @@ module.exports = {
 					description: '@nativescript/contacts: Build',
 				},
 			},
+			// @nativescript/ionic-portals
+			'ionic-portals': {
+				build: {
+					script: 'nx run ionic-portals:build.all',
+					description: '@nativescript/ionic-portals: Build',
+				}
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -413,6 +420,10 @@ module.exports = {
 			'contacts': {
 				script: 'nx run contacts:focus',
 				description: 'Focus on @nativescript/contacts',
+			},
+			'ionic-portals': {
+				script: 'nx run ionic-portals:focus',
+				description: 'Focus on @nativescript/ionic-portals',
 			},
 			reset: {
 				script: 'nx run all:focus',
