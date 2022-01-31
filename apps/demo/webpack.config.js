@@ -17,13 +17,5 @@ module.exports = (env) => {
 	//   context: __dirname
 	// });
 
-  // TODO: Ask Igor about this - does not seem to work
-  // Also ask Osei about android/src/main/assets? - not sure if that's right location
-	// webpack.Utils.addCopyRule({
-	//   from: '../../tools/assets/ionicWebPortalSample',
-	// 	 to: webpack.Utils.platform.getPlatformName() === 'android' ? '' : '../Resources/ionicWebPortalSample',
-	//   context: __dirname
-	// });
-
 	return webpack.resolveConfig();
 };
