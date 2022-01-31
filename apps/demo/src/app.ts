@@ -13,8 +13,7 @@ import { Application } from '@nativescript/core';
 //     IonicPortalManager.register(portalApiKey);
 
 //     // Create as many Portals as you need to use in your app
-//     IonicPortalManager.create('ionicWebStart');
-// 	IonicPortalManager.create('ionicWebModal');
+//     IonicPortalManager.create('ionicWebPortalSample');
 // };
 
 // if (global.isIOS) {
@@ -24,7 +23,6 @@ import { Application } from '@nativescript/core';
 // 		static ObjCProtocols = [UIApplicationDelegate];
 
 // 		applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>) {
-// 			console.log('applicationDidFinishLaunchingWithOptions');
 // 			setupIonicPortals();
 			
 // 			return true;

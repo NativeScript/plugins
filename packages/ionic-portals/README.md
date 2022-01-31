@@ -2,19 +2,17 @@
 
 https://ionic.io/docs/portals
 
-> Ionic Portals is a supercharged native WebView component for iOS and Android that lets you add web-based experiences to native mobile apps.
+> Ionic Portals are supercharged native WebView components for iOS and Android that let you add web-based experiences to native mobile apps.
 
-```javascript
+```cli
 npm install @nativescript/ionic-portals
 ```
 
 ## Usage
 
-Usage follows Ionic docs: https://ionic.io/docs/portals/getting-started/guide
-
 1. Register and create portals on app boot:
 
-```
+```ts
 import { Application } from '@nativescript/core';
 import { IonicPortalManager } from '@nativescript/ionic-portals';
 
@@ -38,14 +36,14 @@ if (global.isIOS) {
 
 		applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>) {
 			
-            setupIonicPortals();
+      setupIonicPortals();
             
 			return true;
 		}
 	}
 	Application.ios.delegate = CustomAppDelegate;
 } else {
-    Application.on(Application.launchEvent, () => {
+  Application.on(Application.launchEvent, () => {
 		setupIonicPortals();
 	});
 }
@@ -58,7 +56,7 @@ Application.run({ moduleName: 'app-root' });
 
 ### Vanilla/Plain/Core
 
-```
+```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
   xmlns:ionic="@nativescript/ionic-portals">
   <StackLayout class="p-20">
@@ -70,7 +68,7 @@ Application.run({ moduleName: 'app-root' });
 
 ### Angular
 
-```
+```ts
 import { registerElement } from '@nativescript/angular';
 import { IonicPortal } from '@nativescript/ionic-portals';
 registerElement('IonicPortal', () => IonicPortal);
