@@ -1,0 +1,7 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" shownModally="onShownModally" class="page"
+  xmlns:ionic="@nativescript/ionic-portals">
+  <GridLayout>
+    <ionic:IonicPortal id="ionicWebModal" iosOverflowSafeArea="true">
+    </ionic:IonicPortal>
+  </GridLayout>
+</Page>

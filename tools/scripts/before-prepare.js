@@ -7,30 +7,30 @@ module.exports = function (hookArgs, $logger, $projectData) {
     // console.log('preparing platform:', platform);
     const packagePath = $projectData.projectFilePath;
 
-    const ionicPortalName = 'ionicWebPortalSample';
-    const configAppResourcesPath = path.join(packagePath, '../../../tools/assets', ionicPortalName);
-    console.log('configAppResourcesPath:', configAppResourcesPath)
+    const ionicPortalName1 = 'ionicWebStart';
+    const configAppResourcesPath1 = path.join(packagePath, '../../../tools/assets', ionicPortalName1);
+    const ionicPortalName2 = 'ionicWebModal';
+    const configAppResourcesPath2 = path.join(packagePath, '../../../tools/assets', ionicPortalName2);
+    
+    // console.log('configAppResourcesPath:', configAppResourcesPath1)
  
     return new Promise(function (resolve, reject) {
         try{
             //copy files
             const resourcesPath = path.join(packagePath, '../../../tools/assets/App_Resources', platform === 'ios' ? 'iOS' : 'Android/src/main/assets');
-            const copyRecursive = (contents, subPath = '') => {
+            const copyRecursive = (contents, subPath = '', ionicResourcePath = '') => {
                 contents.forEach( function ( contentPath ) {
-                    const fullFilePath = path.join( configAppResourcesPath, subPath, contentPath );
-                    console.log('fullFilePath:', fullFilePath)
+                    const fullFilePath = path.join( ionicResourcePath, subPath, contentPath );
+                    // console.log('fullFilePath:', fullFilePath)
                     const filePath = fullFilePath.split('tools/assets')[1];
                     if ( fs.lstatSync( fullFilePath ).isDirectory() ) {
-                        // if (!filePath) {
-                        //     filePath = ionicPortalName;
-                        // }
                         if (filePath) {
                             const copyToFolder = path.join(resourcesPath, filePath);
                             if ( !fs.existsSync( copyToFolder ) ) {
                                 fs.mkdirSync( copyToFolder );
                             }
                         }
-                        copyRecursive(fs.readdirSync( fullFilePath ), (subPath ? subPath + '/' : '') + contentPath);
+                        copyRecursive(fs.readdirSync( fullFilePath ), (subPath ? subPath + '/' : '') + contentPath, ionicResourcePath);
                     } else {
                         const filePath = fullFilePath.split('tools/assets')[1];
                         if (filePath) {
@@ -39,17 +39,23 @@ module.exports = function (hookArgs, $logger, $projectData) {
                             // console.log('to:', copyTo)
                             fs.writeFileSync(copyTo, fs.readFileSync(fullFilePath));
                         } else {
-                            copyRecursive(fs.readdirSync( fullFilePath ), contentPath);
+                            copyRecursive(fs.readdirSync( fullFilePath ), contentPath, ionicResourcePath);
                         }
                     }
                 });
             };
-            const portalFolderPath = path.join(resourcesPath, ionicPortalName);
+            let portalFolderPath = path.join(resourcesPath, ionicPortalName1);
             if ( !fs.existsSync( portalFolderPath ) ) {
                 fs.mkdirSync( portalFolderPath );
             }
-            const contents = fs.readdirSync( configAppResourcesPath );
-            copyRecursive(contents);
+            portalFolderPath = path.join(resourcesPath, ionicPortalName2);
+            if ( !fs.existsSync( portalFolderPath ) ) {
+                fs.mkdirSync( portalFolderPath );
+            }
+            let contents = fs.readdirSync( configAppResourcesPath1 );
+            copyRecursive(contents, '', configAppResourcesPath1);
+            contents = fs.readdirSync( configAppResourcesPath2 );
+            copyRecursive(contents, '', configAppResourcesPath2);
 
             resolve();
         } catch (err) {

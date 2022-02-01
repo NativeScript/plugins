@@ -2,7 +2,7 @@ import { DemoSharedBase } from '../utils';
 import {  } from '@nativescript/ionic-portals';
 import { CoreTypes, Page, View } from '@nativescript/core';
 
-const ionicWebPortalSampleId = 'ionicWebPortalSample';
+const ionicWebStartId = 'ionicWebStart';
 
 export class DemoSharedIonicPortals extends DemoSharedBase {
 
@@ -18,12 +18,12 @@ export class DemoSharedIonicPortals extends DemoSharedBase {
 
   private _bounce() {
     return new Promise<void>(resolve => {
-      (<View>this.page.getViewById(ionicWebPortalSampleId)).animate({
+      (<View>this.page.getViewById(ionicWebStartId)).animate({
         translate: { x: 0, y: 75 },
         duration: 500,
         curve: CoreTypes.AnimationCurve.easeInOut
       }).then(() => {
-        (<View>this.page.getViewById(ionicWebPortalSampleId)).animate({
+        (<View>this.page.getViewById(ionicWebStartId)).animate({
           translate: { x: 0, y: 0 },
           duration: 500,
           curve: CoreTypes.AnimationCurve.easeInOut

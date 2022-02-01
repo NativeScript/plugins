@@ -60,3 +60,7 @@ packages/**/native-src/ios/**/build
 !packages/ionic-portals/platforms/android/IonicPortals-release.aar
 tools/assets/App_Resources/iOS/ionicWebPortalSample
 tools/assets/App_Resources/Android/src/main/assets/ionicWebPortalSample
+tools/assets/App_Resources/iOS/ionicWebModal
+tools/assets/App_Resources/Android/src/main/assets/ionicWebModal
+tools/assets/App_Resources/iOS/ionicWebStart
+tools/assets/App_Resources/Android/src/main/assets/ionicWebStart

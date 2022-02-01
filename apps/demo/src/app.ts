@@ -4,35 +4,35 @@ import { Application } from '@nativescript/core';
 // LoginManager.init();
 
 // uncomment to test Ionic Portals
-// import { IonicPortalManager } from '@nativescript/ionic-portals';
+import { IonicPortalManager } from '@nativescript/ionic-portals';
 
-// const portalApiKey = `<insert your own ionic portal api key here>`;
+const portalApiKey = `<insert your own ionic portal api key here>`;
 
-// const setupIonicPortals = () => {
-//     // Register IonicPortals
-//     IonicPortalManager.register(portalApiKey);
+const setupIonicPortals = () => {
+	// Register IonicPortals
+	IonicPortalManager.register(portalApiKey);
 
-//     // Create as many Portals as you need to use in your app
-//     IonicPortalManager.create('ionicWebPortalSample');
-// };
+	// Create as many Portals as you need to use in your app
+	IonicPortalManager.create('ionicWebStart');
+	IonicPortalManager.create('ionicWebModal');
+};
 
-// if (global.isIOS) {
+if (global.isIOS) {
+	@NativeClass()
+	class CustomAppDelegate extends NSObject implements UIApplicationDelegate {
+		static ObjCProtocols = [UIApplicationDelegate];
 
-// 	@NativeClass()
-// 	class CustomAppDelegate extends NSObject implements UIApplicationDelegate {
-// 		static ObjCProtocols = [UIApplicationDelegate];
+		applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>) {
+			setupIonicPortals();
 
-// 		applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>) {
-// 			setupIonicPortals();
-			
-// 			return true;
-// 		}
-// 	}
-// 	Application.ios.delegate = CustomAppDelegate;
-// } else {
-// 	Application.on(Application.launchEvent, () => {
-// 		setupIonicPortals();
-// 	});
-// }
+			return true;
+		}
+	}
+	Application.ios.delegate = CustomAppDelegate;
+} else {
+	Application.on(Application.launchEvent, () => {
+		setupIonicPortals();
+	});
+}
 
 Application.run({ moduleName: 'app-root' });

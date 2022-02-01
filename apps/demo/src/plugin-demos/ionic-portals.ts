@@ -8,5 +8,7 @@ export function navigatingTo(args: EventData) {
 }
 
 export class DemoModel extends DemoSharedIonicPortals {
-
+	openModal() {
+		this.page.showModal('modals/ionic-portals-modal');
+	}
 }
