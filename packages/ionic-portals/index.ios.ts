@@ -2,6 +2,8 @@ import { Application, OrientationChangedEventData } from '@nativescript/core';
 import { IonicPortalCommon } from './common';
 
 export class IonicPortalManager {
+	static registeredPlugins: Array<string>;
+
 	static register(apiKey: string) {
 		PortalManager.register(apiKey);
 	}
@@ -10,6 +12,13 @@ export class IonicPortalManager {
 		return PortalManager.newPortal(portalId)
 			.setStartDir(startDir || portalId)
 			.create();
+	}
+
+	static registerPlugins(names: Array<string>) {
+		if (!IonicPortalManager.registeredPlugins) {
+			IonicPortalManager.registeredPlugins = [];
+		}
+		IonicPortalManager.registeredPlugins = names.filter(name => !IonicPortalManager.registeredPlugins.includes(name));
 	}
 }
 
@@ -32,6 +41,11 @@ export class IonicPortal extends IonicPortalCommon {
 	}
 
 	initNativeView() {
+		if (IonicPortalManager.registeredPlugins) {
+			for (const plugin of IonicPortalManager.registeredPlugins) {
+				this.ios.bridge.pluginWithName(plugin);
+			}
+		}
 		// auto-handle orientation
 		this._handleOrientationFn = this._updateWebViewSize.bind(this);
 		Application.on(Application.orientationChangedEvent, this._handleOrientationFn);
@@ -44,6 +58,7 @@ export class IonicPortal extends IonicPortalCommon {
 
 	onLoaded() {
 		super.onLoaded();
+		
 		this._updateWebViewSize();
 	}
 
