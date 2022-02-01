@@ -18,12 +18,9 @@ module.exports = function (hookArgs, $logger, $projectData) {
             const copyRecursive = (contents, subPath = '') => {
                 contents.forEach( function ( contentPath ) {
                     const fullFilePath = path.join( configAppResourcesPath, subPath, contentPath );
-                    console.log('fullFilePath:', fullFilePath)
+                    // console.log('fullFilePath:', fullFilePath)
                     const filePath = fullFilePath.split('tools/assets')[1];
                     if ( fs.lstatSync( fullFilePath ).isDirectory() ) {
-                        // if (!filePath) {
-                        //     filePath = ionicPortalName;
-                        // }
                         if (filePath) {
                             const copyToFolder = path.join(resourcesPath, filePath);
                             if ( !fs.existsSync( copyToFolder ) ) {
