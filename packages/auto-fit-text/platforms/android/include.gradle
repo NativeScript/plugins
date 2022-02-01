@@ -5,5 +5,5 @@ android {
 }
 
 dependencies {
-	 compile 'me.grantland:autofittextview:0.2.+'
+	 implementation 'me.grantland:autofittextview:0.2.+'
 }
