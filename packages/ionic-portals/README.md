@@ -10,45 +10,24 @@ npm install @nativescript/ionic-portals
 
 ## Usage
 
-1. Register and create portals on app boot:
+1. Register and create portals on app boot - [Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide):
 
 ```ts
 import { Application } from '@nativescript/core';
 import { IonicPortalManager } from '@nativescript/ionic-portals';
 
-const portalApiKey = '<portal-api-key>';
-
-const setupIonicPortals = () => {
+Application.on(Application.launchEvent, () => {
     // Register IonicPortals
-    IonicPortalManager.register(portalApiKey);
+    IonicPortalManager.register('<portal-api-key>');
 
     // Create as many Portals as you need to use in your app
     // By default, the app will look for folders equal to the portal id you use here
     // For iOS: App_Resources/iOS/webPortal
     // For Android: App_Resources/Android/src/main/asssets/webPortal 
     IonicPortalManager.create('webPortal');
-};
+});
 
-if (global.isIOS) {
-	@NativeClass()
-	class CustomAppDelegate extends NSObject implements UIApplicationDelegate {
-		static ObjCProtocols = [UIApplicationDelegate];
-
-		applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>) {
-			
-      setupIonicPortals();
-            
-			return true;
-		}
-	}
-	Application.ios.delegate = CustomAppDelegate;
-} else {
-  Application.on(Application.launchEvent, () => {
-		setupIonicPortals();
-	});
-}
-
-// boot app here, e.g.
+// boot app here, for example:
 Application.run({ moduleName: 'app-root' });
 ```
 
