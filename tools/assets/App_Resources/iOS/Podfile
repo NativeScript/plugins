@@ -1,0 +1,3 @@
+pod 'CapacitorStorage', '~> 1.2.0'
+pod 'CapacitorCamera', '~> 1.2.0'
+pod 'CapacitorFilesystem', '~> 1.1.0'

@@ -4,12 +4,12 @@
     <ActionBar title="Ionic Portals" icon="" class="action-bar">
     </ActionBar>
   </Page.actionBar>
-  <GridLayout rows="auto,*">
+  <GridLayout rows="auto,*"><!--backgroundColor="rgb(236,236,236)"-->
     <StackLayout row="0" class="p-t-20 p-l-20 p-r-20">
-      <Label text="Ionic Portal inside NativeScript" class="text-center font-weight-bold m-b-5" fontSize="22"></Label>
+      <Label text="Ionic Portal inside NativeScript" class="text-center font-weight-bold m-b-5 c-black" fontSize="22"></Label>
       <Label text="Mix native and webviews for unlimited creativity" fontSize="15" class="font-italic m-b-10 text-center" color="green"></Label>
-      <Button text="Bounce with Joy 🎉" tap="{{ testIt }}" class="btn btn-primary m-b-5"/>
-      <Button text="Open Ionic Portal in Modal" tap="{{ openModal }}" class="btn btn-primary m-b-20"/>
+      <Button text="Bounce with Joy 🎉" tap="{{ testIt }}" class="btn btn-primary" height="41" marginBottom="13"/>
+      <Button text="Open Ionic Portal in Modal" tap="{{ openModal }}" class="btn btn-primary m-b-20" height="41"/>
     </StackLayout>
 
     <ionic:IonicPortal row="1" id="ionicWebStart">

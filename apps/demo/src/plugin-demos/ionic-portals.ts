@@ -1,4 +1,4 @@
-import { Observable, EventData, Page } from '@nativescript/core';
+import { Observable, EventData, Page, isAndroid } from '@nativescript/core';
 import { DemoSharedIonicPortals } from '@demo/shared';
 import { } from '@nativescript/ionic-portals';
 
@@ -14,7 +14,7 @@ export class DemoModel extends DemoSharedIonicPortals {
 			closeCallback: () => {
 
 			},
-			fullscreen:true
+			fullscreen: isAndroid
 		});
 	}
 }

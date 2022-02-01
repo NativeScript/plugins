@@ -65,5 +65,11 @@
     </array>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Upload photos/videos directly from your camera to update your profile picture.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Upload photos directly from your photo library to update your profile picture.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Upload photos directly from your photo library to update your profile picture.</string>
   </dict>
 </plist>

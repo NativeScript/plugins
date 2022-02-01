@@ -13,6 +13,12 @@ Application.on(Application.launchEvent, () => {
 	// Create as many Portals as you need to use in your app
 	IonicPortalManager.create('ionicWebStart');
 	IonicPortalManager.create('ionicWebModal');
+
+	IonicPortalManager.registerPlugins([
+		'CapacitorStorage',
+		'CapacitorCamera',
+		'CapacitorFilesystem'
+	]);
 });
 
 Application.run({ moduleName: 'app-root' });
