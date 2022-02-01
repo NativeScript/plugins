@@ -28,6 +28,8 @@ declare class PortalBuilder extends NSObject {
 
 	setInitialContext(initialContext: NSDictionary<string, any>): PortalBuilder;
 
+	setLiveUpdateConfigWithLiveUpdateConfigUpdateOnAppLoad(liveUpdateConfig: IONLiveUpdate, updateOnAppLoad: boolean): PortalBuilder;
+
 	setStartDir(startDir: string): PortalBuilder;
 }
 
@@ -68,9 +70,13 @@ declare class PortalWebView extends UIView {
 
 	static new(): PortalWebView; // inherited from NSObject
 
+	bridge: CAPBridgeProtocol;
+
 	constructor(o: { frame: CGRect; portal: Portal; });
 
 	initWithFramePortal(frame: CGRect, portal: Portal): this;
+
+	reload(): void;
 }
 
 declare class PortalsPlugin extends CAPPlugin {
