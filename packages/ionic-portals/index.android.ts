@@ -42,10 +42,7 @@ export class IonicPortal extends IonicPortalCommon {
 		}
 
 		this.nativeViewProtected.setId(this._androidViewId);
-	}
 
-	public onLoaded(): void {
-		super.onLoaded();
-		this.nativeViewProtected.loadPortal(this._context, null);
+		this.nativeViewProtected.loadPortal(this._getFragmentManager() ?? this._context, null);
 	}
 }
