@@ -10,10 +10,13 @@ export declare class IonicPortalManager {
     /**
      * Create a Portal
      * @param portalId The portal id to register
-     * @param startDir Set the web applications directory. By default it will look for a folder named the same as the portalId as the location of the web assets.
-     * @returns
+     * @param startDir Set the web application directory. By default it will look for a folder named the same as the portalId as the location of the web assets.
+     * @returns platform native Portal
+     * For example if you created a Portal with id 'webPortal':
+     * iOS: App_Resources/iOS/webPortal
+     * Android: App_Resources/Android/src/main/asssets/webPortal 
      */
-    static create(portalId: string, startDir?: string): Portal;
+    static create(portalId: string, startDir?: string): any;
 }
 export declare class IonicPortal extends IonicPortalCommon {
     
