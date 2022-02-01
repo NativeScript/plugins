@@ -13,7 +13,6 @@ export class IonicPortalManager {
 }
 
 export class IonicPortal extends IonicPortalCommon {
-
 	private _androidViewId = -1;
 
 	// @ts-ignore
@@ -26,9 +25,7 @@ export class IonicPortal extends IonicPortalCommon {
 			throw new Error(`IonicPortal requires an 'id' property.`);
 		}
 
-		
 		const portalWebView = new io.ionic.portals.PortalView(this._context);
-		
 
 		portalWebView.setPortalId(this.id);
 

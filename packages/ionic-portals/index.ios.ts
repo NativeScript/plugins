@@ -15,14 +15,13 @@ export class IonicPortalManager {
 
 export class IonicPortal extends IonicPortalCommon {
 	private _handleOrientationFn: (args: OrientationChangedEventData) => void;
-	
+
 	// @ts-ignore
 	get ios(): PortalWebView {
 		return this.nativeView;
 	}
 
 	createNativeView() {
-		console.log('createNativeView', this.id);
 		if (!this.id) {
 			throw new Error(`IonicPortal requires an 'id' property.`);
 		}
