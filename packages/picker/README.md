@@ -55,6 +55,43 @@ Then you will be able to declare the fields in the html of your component:
 <PickerField hint="Click here" [items]="pickerItems"></PickerField>
 ```
 
+### Custom item template
+
+You can also define your own item template in the list that is opened:
+
+```html
+<PickerField hint="Click here" class="picker-field" textField="name" [pickerTitle]="'Select item from list'" [items]="items">
+	<ng-template let-item="item">
+		<GridLayout columns="auto, *" rows="auto, *">
+			<Label text="Static text:" col="0"></Label>
+			<Label [text]="item?.name" col="0" row="1"></Label>
+			<Image [src]="item?.imageUrl" col="1" row="0" rowSpan="2"></Image>
+		</GridLayout>
+	</ng-template>
+</PickerField>
+```
+
+With the following bindings:
+
+```ts
+interface IDataItem {
+	name: string;
+	id: number;
+	description: string;
+	imageUrl: string;
+}
+
+this.items = new ObservableArray<IDataItem>();
+for (let i = 0; i < 20; i++) {
+	this.items.push({
+		name: 'Item ' + i,
+		id: i,
+		description: 'Description ' + i,
+		imageUrl: 'https://picsum.photos/150/70/?random',
+	});
+}
+```
+
 - If you are developing a NativeScript Vue app, you need to install the plugin in you app.js file:
 
 ```js
