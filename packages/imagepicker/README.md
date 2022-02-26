@@ -1,15 +1,11 @@
-# @nativescript/imagepicker ![apple](https://cdn3.iconfinder.com/data/icons/picons-social/57/16-apple-32.png) ![android](https://cdn4.iconfinder.com/data/icons/logos-3/228/android-32.png)
-
-[![npm](https://img.shields.io/npm/v/nativescript-imagepicker.svg)](https://www.npmjs.com/package/nativescript-imagepicker)
-[![npm](https://img.shields.io/npm/dm/nativescript-imagepicker.svg)](https://www.npmjs.com/package/nativescript-imagepicker)
-[![Build Status](https://travis-ci.org/NativeScript/nativescript-imagepicker.svg?branch=master)](https://travis-ci.org/NativeScript/nativescript-imagepicker)
+# @nativescript/imagepicker
 
 Imagepicker plugin supporting both single and multiple selection.
 <br />Plugin supports **iOS8+** and uses [QBImagePicker](https://github.com/questbeat/QBImagePicker) cocoa pod.
 <br />For **Android** it uses Intents to open the stock images or file pickers. For Android 6 (API 23) and above the permissions to read file storage should be explicitly required. See demo for implementation details.
 
 ```cli
-ns plugin add @nativescript/imagepicker
+npm install @nativescript/imagepicker
 ```
 
 ## Usage
