@@ -14,7 +14,7 @@ Add following key to Info.plist often found in `App_Resources/iOS/Info.plist`
 
 ```
 <key>NSContactsUsageDescription</key>
-<string>Kindly provide permission to access contact on your device.</string>
+<string>Kindly provide permission to access contacts on your device.</string>
 ```
 
 User will be asked for permissions when contacts are accessed by the app.
