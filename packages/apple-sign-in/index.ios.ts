@@ -63,6 +63,15 @@ function randomNonce(length: number) {
     return result;
 }
 
+function sha256Hash(input: string): string {
+    const sha256buffer = CC_SHA256(interop.handleof(NSString.stringWithString(input).UTF8String), input.length, interop.alloc(input.length));
+    let inputHashed = '';
+    for (let i = 0; i < input.length; i++) {
+        inputHashed += parseInt(sha256buffer[i], 10).toString(16).padStart(2, '0');
+    }
+    return inputHashed;
+}
+
 export class SignIn {
     static #controller: ASAuthorizationController;
     static #delegate: ASAuthorizationControllerDelegate;
@@ -100,10 +109,10 @@ export class SignIn {
 
             if (options?.useNonce) {
                 if (options.nonce) {
-                    request.nonce = options.nonce;
+                    request.nonce = sha256Hash(options.nonce);
                 } else {
                     const nonce = randomNonce(32);
-                    request.nonce = nonce;
+                    request.nonce = sha256Hash(nonce);
                     (this.#delegate as any)._options.nonce = nonce;
                 }
             }
