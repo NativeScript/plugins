@@ -10,8 +10,8 @@
     "target": "es2017",
     "module": "esnext",
     "lib": [
-      "es2017",
-      "dom"
+      "es2019",
+      "WebWorker"
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,

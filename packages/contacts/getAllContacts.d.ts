@@ -1,0 +1,1 @@
+export declare function getAllContacts(contactFields?: Array<string>): any;

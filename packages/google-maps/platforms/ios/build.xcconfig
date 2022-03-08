@@ -1,0 +1,2 @@
+
+OTHER_LDFLAGS = $(inherited) -framework "Accelerate" -framework "CoreData" -framework "CoreGraphics" -framework "CoreImage" -framework "CoreLocation" -framework "CoreTelephony" -framework "CoreText" -framework "GLKit" -framework "ImageIO" -framework "Metal" -framework "OpenGLES" -framework "QuartzCore" -framework "SystemConfiguration" -framework "UIKit" -lc++ -lz -ObjC

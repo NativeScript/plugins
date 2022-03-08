@@ -213,7 +213,7 @@ export class GoogleSignin {
 	}
 
 	static playServicesAvailable() {
-		return true;
+		return Promise.resolve(true);
 	}
 
 	static get topViewController(): UIViewController | undefined {

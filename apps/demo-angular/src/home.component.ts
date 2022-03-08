@@ -31,6 +31,9 @@ export class HomeComponent {
 		name: 'camera'
 	},
 	{
+		name: 'contacts'
+	},
+	{
 		name: 'datetimepicker'
 	},
 	{
@@ -58,10 +61,16 @@ export class HomeComponent {
 		name: 'geolocation'
 	},
 	{
+		name: 'google-maps'
+	},
+	{
 		name: 'google-signin'
 	},
 	{
 		name: 'imagepicker'
+	},
+	{
+		name: 'ionic-portals'
 	},
 	{
 		name: 'ios-security'

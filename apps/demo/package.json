@@ -4,6 +4,7 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
+    "@nativescript/ionic-portals": "file:../../packages/ionic-portals",
     "@nativescript/animated-circle": "file:../../packages/animated-circle",
     "@nativescript/appavailability": "file:../../packages/appavailability",
     "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -13,6 +14,7 @@
     "@nativescript/brightness": "file:../../packages/brightness",
     "@nativescript/camera": "file:../../packages/camera",
     "@nativescript/core": "file:../../node_modules/@nativescript/core",
+    "@nativescript/contacts": "file:../../packages/contacts",
     "@nativescript/datetimepicker": "file:../../packages/datetimepicker",
     "@nativescript/debug-android": "file:../../packages/debug-android",
     "@nativescript/debug-ios": "file:../../packages/debug-ios",
@@ -22,6 +24,7 @@
     "@nativescript/facebook": "file:../../packages/facebook",
     "@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
     "@nativescript/geolocation": "file:../../packages/geolocation",
+    "@nativescript/google-maps": "file:../../packages/google-maps",
     "@nativescript/google-signin": "file:../../packages/google-signin",
     "@nativescript/imagepicker": "file:../../packages/imagepicker",
     "@nativescript/ios-security": "file:../../packages/ios-security",
