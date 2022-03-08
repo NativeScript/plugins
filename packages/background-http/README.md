@@ -8,6 +8,15 @@ ns plugin add @nativescript/background-http
 
 The below attached code snippets demonstrate how to use `@nativescript/background-http` to upload single or multiple files.
 
+##### Note
+
+Call `init` before the app starts to initialize the http background service
+
+```typescript
+import { init } from '@nativescript/background-http';
+init();
+```
+
 ### Uploading files
 
 Sample code for configuring the upload session. Each session must have a unique `id`, but it can have multiple tasks running simultaneously. The `id` is passed as a parameter when creating the session (the `image-upload` string in the code bellow):
@@ -56,20 +65,35 @@ In order to have a successful upload, the following must be taken into account:
 
 The request object parameter has the following properties:
 
-| Name                               | Type      | Description                                                                                                                                                                                                                                                 |
-| ---------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| url                                | `string`  | The request url (e.g.`https://some.remote.service.com/path`).                                                                                                                                                                                               |
-| method                             | `string`  | The request method (e.g. `POST`).                                                                                                                                                                                                                           |
-| headers                            | `object`  | Used to specify additional headers.                                                                                                                                                                                                                         |
-| description                        | `string`  | Used to help identify the upload task locally - not sent to the remote server.                                                                                                                                                                              |
-| utf8                               | `boolean` | (Android only/multipart only) If true, sets the charset for the multipart request to UTF-8. Default is false.                                                                                                                                               |
-| androidDisplayNotificationProgress | `boolean` | (Android only) Used to set if progress notifications should be displayed or not. Please note that since API26, Android requires developers to use notifications when running background tasks. https://developer.android.com/about/versions/oreo/background |
-| androidNotificationTitle           | `string`  | (Android only) Used to set the title shown in the Android notifications center.                                                                                                                                                                             |
-| androidAutoDeleteAfterUpload       | `boolean` | (Android only) Used to set if files should be deleted automatically after upload.                                                                                                                                                                           |
-| androidMaxRetries                  | `number`  | (Android only) Used to set the maximum retry count. The default retry count is 0. https://github.com/gotev/android-upload-service/wiki/Recipes#backoff                                                                                                      |
-| androidAutoClearNotification       | `boolean` | (Android only) Used to set if notifications should be cleared automatically upon upload completion. Default is false. Please note that setting this to true will also disable the ringtones.                                                                |
-| androidRingToneEnabled             | `boolean` | (Android only) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true.                                                             |
-| androidNotificationChannelID       | `string`  | (Android only) Used to set the channel ID for the notifications.                                                                                                                                                                                            |
+| Name                                  | Type      | Description                                                                                                                                                                                     |
+| ------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| url                                   | `string`  | The request url (e.g.`https://some.remote.service.com/path`).                                                                                                                                   |
+| method                                | `string`  | The request method (e.g. `POST`).                                                                                                                                                               |
+| headers                               | `object`  | Used to specify additional headers.                                                                                                                                                             |
+| description                           | `string`  | Used to help identify the upload task locally - not sent to the remote server.                                                                                                                  |
+| utf8                                  | `boolean` | (Android only/multipart only) If true, sets the charset for the multipart request to UTF-8. Default is false.                                                                                   |
+| androidNotificationOnProgressTitle    | `string`  | Use this to set the on progress title shown in the Android notifications center.                                                                                                                |
+| androidNotificationOnProgressMessage  | `string`  | Use this to set the on progress message shown in the Android notifications center.                                                                                                              |
+| androidNotificationOnCompleteTitle    | `string`  | Use this to set the on complete message shown in the Android notifications center.                                                                                                              |
+| androidNotificationOnCompleteMessage  | `string`  | Use this to set the on error title shown in the Android notifications center.                                                                                                                   |
+| androidNotificationOnErrorTitle       | `string`  | Use this to set the on error title shown in the Android notifications center.                                                                                                                   |
+| androidNotificationOnErrorMessage     | `string`  | Use this to set the on error message shown in the Android notifications center.                                                                                                                 |
+| androidNotificationOnCancelledTitle   | `string`  | Use this to set the on cancelled title shown in the Android notifications center.                                                                                                               |
+| androidNotificationOnCancelledMessage | `string`  | Use this to set the on cancelled message shown in the Android notifications center.                                                                                                             |
+| androidAutoDeleteAfterUpload          | `boolean` | (Android only) Used to set if files should be deleted automatically after upload.                                                                                                               |
+| androidMaxRetries                     | `number`  | (Android only) Used to set the maximum retry count. The default retry count is 0. https://github.com/gotev/android-upload-service/wiki/Recipes#backoff                                          |
+| androidAutoClearNotification          | `boolean` | (Android only) Used to set if notifications should be cleared automatically upon upload completion. Default is false. Please note that setting this to true will also disable the ringtones.    |
+| androidRingToneEnabled                | `boolean` | (Android only) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true. |
+| androidNotificationChannelID          | `string`  | (Android only) Used to set the channel ID for the notifications.                                                                                                                                |
+
+**Note** :- Android Notification titles/messages can be constructed with one of the following placeholder which will be replaced by the system .
+
+Replaced with the current upload rate/speed `[upload_rate]`
+
+Replaced with the current upload progress `[upload_progress]`
+
+Replaced with the elapsed time `[upload_elapsed_time]`
+
 
 The task object has the following properties and methods, that can be used to get information about the upload:
 

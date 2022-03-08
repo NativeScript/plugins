@@ -4,14 +4,15 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "@nativescript/core": "file:../../node_modules/@nativescript/core",
-    "@nativescript/biometrics": "file:../../packages/biometrics",
     "@nativescript/animated-circle": "file:../../packages/animated-circle",
     "@nativescript/appavailability": "file:../../packages/appavailability",
+    "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
     "@nativescript/auto-fit-text": "file:../../packages/auto-fit-text",
     "@nativescript/background-http": "file:../../packages/background-http",
+    "@nativescript/biometrics": "file:../../packages/biometrics",
     "@nativescript/brightness": "file:../../packages/brightness",
     "@nativescript/camera": "file:../../packages/camera",
+    "@nativescript/core": "file:../../node_modules/@nativescript/core",
     "@nativescript/datetimepicker": "file:../../packages/datetimepicker",
     "@nativescript/debug-android": "file:../../packages/debug-android",
     "@nativescript/debug-ios": "file:../../packages/debug-ios",
@@ -32,11 +33,10 @@
     "@nativescript/social-share": "file:../../packages/social-share",
     "@nativescript/theme-switcher": "file:../../packages/theme-switcher",
     "@nativescript/twitter": "file:../../packages/twitter",
-    "@nativescript/zip": "file:../../packages/zip",
-    "@nativescript/apple-sign-in": "file:../../packages/apple-sign-in"
+    "@nativescript/zip": "file:../../packages/zip"
   },
   "devDependencies": {
-    "@nativescript/android": "~8.1.1",
+    "@nativescript/android": "8.2.0",
     "@nativescript/ios": "~8.1.0"
   }
 }

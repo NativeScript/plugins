@@ -12,11 +12,11 @@ module.exports = (env) => {
   });
 
   // Example if you need to share images across demo apps:
-  // webpack.Utils.addCopyRule({
-  //   from: '../../../tools/images', 
-	// 	to: 'images',
-  //   context: webpack.Utils.project.getProjectFilePath('node_modules')
-  // });
+  webpack.Utils.addCopyRule({
+    from: '../../../tools/images', 
+		to: 'images',
+    context: webpack.Utils.project.getProjectFilePath('node_modules')
+  });
 
   return webpack.resolveConfig();
 };
