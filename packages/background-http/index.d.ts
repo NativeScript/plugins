@@ -1,5 +1,7 @@
 import { EventData } from "@nativescript/core";
 
+export function init();
+
 /**
  * Get or create a background download/upload session by id.
  * @param id The session id.
@@ -173,16 +175,56 @@ export interface Request {
     utf8?: boolean;
 
     /*
-     * Use this to set if progress notification should be displayed or not.
-     * Please note that since API26, Android requires developers to use notifications
-     * when running background tasks. https://developer.android.com/about/versions/oreo/background
+     * Use this to set the on progress title shown in the Android notifications center.
      */
-    androidDisplayNotificationProgress?: boolean;
+
+    androidNotificationOnProgressTitle?: string;
 
     /*
-     * Use this to set the title shown in the Android notifications center.
+     * Use this to set the on progress message shown in the Android notifications center.
      */
-    androidNotificationTitle?: string;
+
+    androidNotificationOnProgressMessage?: string;
+
+
+    /*
+     * Use this to set the on complete title shown in the Android notifications center.
+     */
+
+    androidNotificationOnCompleteTitle?: string;
+
+     /*
+     * Use this to set the on complete message shown in the Android notifications center.
+     */
+
+    androidNotificationOnCompleteMessage?: string;
+
+
+    /*
+     * Use this to set the on error title shown in the Android notifications center.
+     */
+
+    androidNotificationOnErrorTitle?: string;
+
+     /*
+     * Use this to set the on error message shown in the Android notifications center.
+     */
+
+    androidNotificationOnErrorMessage?: string;
+
+
+    /*
+     * Use this to set the on cancelled title shown in the Android notifications center.
+     */
+
+    androidNotificationOnCancelledTitle?: string;
+
+     /*
+     * Use this to set the on cancelled message shown in the Android notifications center.
+     */
+
+    androidNotificationOnCancelledMessage?: string;
+
 
     /*
      * Use this to set if files should be deleted automatically after upload

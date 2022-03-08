@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/background-http",
-	"version": "5.0.2",
+	"version": "6.0.0",
 	"description": "Background upload for iOS and Android",
 	"main": "index",
 	"typings": "index.d.ts",

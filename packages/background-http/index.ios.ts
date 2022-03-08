@@ -5,6 +5,8 @@ const main_queue = dispatch_get_current_queue();
 let zonedOnProgress = null;
 let zonedOnError = null;
 
+export function init(){}
+
 function onProgress(nsSession, nsTask, sent, expectedTotal) {
     const task = Task.getTask(nsSession, nsTask);
     task.notifyPropertyChange("upload", task.upload);
