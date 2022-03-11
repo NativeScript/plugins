@@ -82,8 +82,8 @@ Open `.detoxrc.json` and make the following modifications under `apps` and `devi
 
 - `build`: Specify the build command for iOS and Android.
 
-  - iOS: `ns build ios`
-  - Android: `ns build android --detox`
+  - iOS: `ns build ios --env.e2e`
+  - Android: `ns build android --detox --env.e2e`
 
 - `devices`:
   - iOS: `"type": "iPhone 11"`
@@ -137,18 +137,6 @@ Here is a full example of a Detox configuration:
 
 > **Note:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=21. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
 
-### Add Resource ID (**Android Only**)
-
-In order to use the `automationText` property in NativeScript it must be enabled by adding a custom resource ID.
-
-Create a file called `ids.xml` in `App_Resources/Android/src/main/res/values/` and add the following:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item type="id" name="nativescript_accessibility_id"/>
-</resources>
-```
 
 ### Allow Local Networking (**iOS Only**)
 
@@ -186,12 +174,12 @@ This example creates a testing scenario called `Example` and has a single test i
 
 Detox uses [matchers](https://github.com/wix/Detox/blob/master/docs/APIRef.Matchers.md) to find elements in your UI to interact with.
 
-You can use NativeScript's `automationText` property to find your UI elements using Detox's `by.id()` matcher.
+You can use [NativeScript's `testID` property](https://blog.nativescript.org/nativescript-8-2-announcement/#testid) to find your UI elements using Detox's `by.id()` matcher.
 
 Example:
 
 ```xml
-<Button text="Tap Me!" automationText="testButton"></Button>
+<Button text="Tap Me!" testID="testButton"></Button>
 ```
 
 ```javascript
@@ -265,6 +253,22 @@ Manifest merger failed : uses-sdk:minSdkVersion 17 cannot be smaller than versio
                 or use tools:overrideLibrary="com.wix.detox" to force usage (may lead to runtime failures)
 
 Command ./gradlew failed with exit code 1
+```
+
+---
+
+### Elements can not be found during test
+In NativeScript <8.2, the `testID` property was not available. Instead, you were supposed to use the `automationText` property. 
+
+**Add Resource ID (**Android Only**) **
+In order to use the `automationText` property in NativeScript it must be enabled by adding a custom resource ID.
+Create a file called `ids.xml` in `App_Resources/Android/src/main/res/values/` and add the following:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="nativescript_accessibility_id"/>
+</resources>
 ```
 
 ## License
