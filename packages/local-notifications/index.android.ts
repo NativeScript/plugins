@@ -1,4 +1,4 @@
-import { Application, Utils } from '@nativescript/core';
+import { Application, Device, Utils } from '@nativescript/core';
 import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
 
 declare const com, global: any;
@@ -55,7 +55,11 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 	private static cancelById(id: number): void {
 		const context = Utils.android.getApplicationContext();
 		const notificationIntent = new android.content.Intent(context, com.telerik.localnotifications.NotificationAlarmReceiver.class).setAction('' + id);
-		const pendingIntent = android.app.PendingIntent.getBroadcast(context, 0, notificationIntent, 0);
+		let flags = 0;
+		if (parseInt(Device.sdkVersion) >= 31) {
+			flags |= 33554432;
+		}
+		const pendingIntent = android.app.PendingIntent.getBroadcast(context, 0, notificationIntent, flags);
 		const alarmManager = context.getSystemService(android.content.Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
 		const notificationManager = context.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
