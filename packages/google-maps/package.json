@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/google-maps",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Google Maps SDK",
 	"main": "index",
 	"typings": "index.d.ts",
@@ -19,7 +19,11 @@
 		"JavaScript",
 		"TypeScript",
 		"iOS",
-		"Android"
+		"Android",
+		"Google",
+		"Maps",
+		"API",
+		"SDK"
 	],
 	"author": {
 		"name": "NativeScript",
