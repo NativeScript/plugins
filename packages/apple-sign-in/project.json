@@ -1,0 +1,63 @@
+{
+	"root": "packages/apple-sign-in",
+	"projectType": "library",
+	"sourceRoot": "packages/apple-sign-in",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/apple-sign-in",
+				"tsConfig": "packages/apple-sign-in/tsconfig.json",
+				"packageJson": "packages/apple-sign-in/package.json",
+				"main": "packages/apple-sign-in/index.d.ts",
+				"assets": [
+					"packages/apple-sign-in/*.md",
+					"packages/apple-sign-in/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/apple-sign-in/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts apple-sign-in"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/apple-sign-in"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages apple-sign-in"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/apple-sign-in/**/*.ts"]
+			}
+		}
+	}
+}

@@ -5,6 +5,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@nativescript/localize": ["../../../dist/packages/localize"]
-		}
-	}
+		},
+		"outDir": "../../../dist/out-tsc",
+		"declarationDir": "../../../dist/out-tsc"
+	},
+	"files": ["index.ts"]
 }

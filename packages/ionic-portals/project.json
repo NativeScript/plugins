@@ -1,0 +1,63 @@
+{
+	"root": "packages/ionic-portals",
+	"projectType": "library",
+	"sourceRoot": "packages/ionic-portals",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/ionic-portals",
+				"tsConfig": "packages/ionic-portals/tsconfig.json",
+				"packageJson": "packages/ionic-portals/package.json",
+				"main": "packages/ionic-portals/index.d.ts",
+				"assets": [
+					"packages/ionic-portals/*.md",
+					"packages/ionic-portals/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/ionic-portals/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts ionic-portals"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/ionic-portals"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages ionic-portals"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/ionic-portals/**/*.ts"]
+			}
+		}
+	}
+}

@@ -1,0 +1,76 @@
+{
+	"projectType": "library",
+	"generators": {},
+	"root": "packages/ios-security",
+	"sourceRoot": "packages/ios-security",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/ios-security",
+				"tsConfig": "packages/ios-security/tsconfig.json",
+				"packageJson": "packages/ios-security/package.json",
+				"main": "packages/ios-security/index.d.ts",
+				"assets": [
+					"packages/ios-security/*.md",
+					"packages/ios-security/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/ios-security/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"outputs": ["dist/packages/ios-security"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts ios-security"],
+				"parallel": false
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build.native",
+					"projects": "self"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"build.native": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["./build.ios.sh"],
+				"cwd": "packages/ios-security/native-src",
+				"parallel": false
+			}
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages ios-security"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/ios-security/**/*.ts"]
+			}
+		}
+	}
+}

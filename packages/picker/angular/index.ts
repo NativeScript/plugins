@@ -3,6 +3,9 @@ import { registerElement } from '@nativescript/angular';
 import { PickerField } from '@nativescript/picker';
 import { DIRECTIVES } from './picker.directive';
 
+export * from './picker.directive';
+export * from './picker.accessors';
+
 @NgModule({
 	declarations: [DIRECTIVES],
 	exports: [DIRECTIVES],

@@ -1,0 +1,64 @@
+{
+	"root": "packages/fingerprint-auth",
+	"sourceRoot": "packages/fingerprint-auth",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/fingerprint-auth",
+				"tsConfig": "packages/fingerprint-auth/tsconfig.json",
+				"packageJson": "packages/fingerprint-auth/package.json",
+				"main": "packages/fingerprint-auth/index.d.ts",
+				"assets": [
+					"packages/fingerprint-auth/*.md",
+					"packages/fingerprint-auth/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/fingerprint-auth/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/fingerprint-auth"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts fingerprint-auth"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages fingerprint-auth"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/fingerprint-auth/**/*.ts"]
+			}
+		}
+	}
+}

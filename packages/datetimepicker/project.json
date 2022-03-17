@@ -1,0 +1,64 @@
+{
+	"root": "packages/datetimepicker",
+	"sourceRoot": "packages/datetimepicker",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/datetimepicker",
+				"tsConfig": "packages/datetimepicker/tsconfig.json",
+				"packageJson": "packages/datetimepicker/package.json",
+				"main": "packages/datetimepicker/index.d.ts",
+				"assets": [
+					"packages/datetimepicker/*.md",
+					"packages/datetimepicker/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/datetimepicker/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/datetimepicker"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts datetimepicker"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages datetimepicker"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/datetimepicker/**/*.ts"]
+			}
+		}
+	}
+}

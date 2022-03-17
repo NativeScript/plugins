@@ -1,0 +1,64 @@
+{
+	"root": "packages/background-http",
+	"sourceRoot": "packages/background-http",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/background-http",
+				"tsConfig": "packages/background-http/tsconfig.json",
+				"packageJson": "packages/background-http/package.json",
+				"main": "packages/background-http/index.d.ts",
+				"assets": [
+					"packages/background-http/*.md",
+					"packages/background-http/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/background-http/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/background-http"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts background-http"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages background-http"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/background-http/**/*.ts"]
+			}
+		}
+	}
+}

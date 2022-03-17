@@ -274,7 +274,7 @@ module.exports = {
 				},
 			},
 			// @nativescript/contacts
-			'contacts': {
+			contacts: {
 				build: {
 					script: 'nx run contacts:build.all',
 					description: '@nativescript/contacts: Build',
@@ -285,10 +285,10 @@ module.exports = {
 				build: {
 					script: 'nx run ionic-portals:build.all',
 					description: '@nativescript/ionic-portals: Build',
-				}
+				},
 			},
 			'build-all': {
-				script: 'nx run all:build',
+				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
 			},
 		},
@@ -417,7 +417,7 @@ module.exports = {
 				script: 'nx run google-maps:focus',
 				description: 'Focus on @nativescript/google-maps',
 			},
-			'contacts': {
+			contacts: {
 				script: 'nx run contacts:focus',
 				description: 'Focus on @nativescript/contacts',
 			},
@@ -426,7 +426,7 @@ module.exports = {
 				description: 'Focus on @nativescript/ionic-portals',
 			},
 			reset: {
-				script: 'nx run all:focus',
+				script: 'nx g @nativescript/plugin-tools:focus-packages',
 				description: 'Reset Focus',
 			},
 		},

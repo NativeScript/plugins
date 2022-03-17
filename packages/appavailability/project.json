@@ -1,0 +1,64 @@
+{
+	"root": "packages/appavailability",
+	"sourceRoot": "packages/appavailability",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/appavailability",
+				"tsConfig": "packages/appavailability/tsconfig.json",
+				"packageJson": "packages/appavailability/package.json",
+				"main": "packages/appavailability/index.d.ts",
+				"assets": [
+					"packages/appavailability/*.md",
+					"packages/appavailability/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/appavailability/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/appavailability"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts appavailability"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages appavailability"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/appavailability/**/*.ts"]
+			}
+		}
+	}
+}

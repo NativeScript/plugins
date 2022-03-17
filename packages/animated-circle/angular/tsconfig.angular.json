@@ -5,6 +5,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@nativescript/animated-circle": ["../../../dist/packages/animated-circle"]
-		}
-	}
+		},
+		"outDir": "../../../dist/out-tsc",
+		"declarationDir": "../../../dist/out-tsc"
+	},
+	"files": ["index.ts"]
 }
