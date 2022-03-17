@@ -1,0 +1,63 @@
+{
+	"root": "packages/google-signin",
+	"projectType": "library",
+	"sourceRoot": "packages/google-signin",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/google-signin",
+				"tsConfig": "packages/google-signin/tsconfig.json",
+				"packageJson": "packages/google-signin/package.json",
+				"main": "packages/google-signin/index.d.ts",
+				"assets": [
+					"packages/google-signin/*.md",
+					"packages/google-signin/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/google-signin/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts google-signin"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/google-signin"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages google-signin"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/google-signin/**/*.ts"]
+			}
+		}
+	}
+}

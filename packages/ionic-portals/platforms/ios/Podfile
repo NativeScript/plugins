@@ -1,3 +1,1 @@
-platform :ios, '13.0'
-
-pod 'IonicPortals', '~> 0.4.1'
+pod 'IonicPortals', '~> 0.5.1'

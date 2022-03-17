@@ -1,0 +1,64 @@
+{
+	"root": "packages/camera",
+	"sourceRoot": "packages/camera",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/camera",
+				"tsConfig": "packages/camera/tsconfig.json",
+				"packageJson": "packages/camera/package.json",
+				"main": "packages/camera/index.d.ts",
+				"assets": [
+					"packages/camera/*.md",
+					"packages/camera/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/camera/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/camera"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts camera"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages camera"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/camera/**/*.ts"]
+			}
+		}
+	}
+}

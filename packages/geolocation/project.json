@@ -1,0 +1,64 @@
+{
+	"root": "packages/geolocation",
+	"sourceRoot": "packages/geolocation",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/geolocation",
+				"tsConfig": "packages/geolocation/tsconfig.json",
+				"packageJson": "packages/geolocation/package.json",
+				"main": "packages/geolocation/index.d.ts",
+				"assets": [
+					"packages/geolocation/*.md",
+					"packages/geolocation/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/geolocation/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/geolocation"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts geolocation"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages geolocation"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/geolocation/**/*.ts"]
+			}
+		}
+	}
+}

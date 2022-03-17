@@ -1,0 +1,64 @@
+{
+	"root": "packages/shared-notification-delegate",
+	"sourceRoot": "packages/shared-notification-delegate",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/shared-notification-delegate",
+				"tsConfig": "packages/shared-notification-delegate/tsconfig.json",
+				"packageJson": "packages/shared-notification-delegate/package.json",
+				"main": "packages/shared-notification-delegate/index.d.ts",
+				"assets": [
+					"packages/shared-notification-delegate/*.md",
+					"packages/shared-notification-delegate/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/shared-notification-delegate/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/shared-notification-delegate"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts shared-notification-delegate"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages shared-notification-delegate"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/shared-notification-delegate/**/*.ts"]
+			}
+		}
+	}
+}

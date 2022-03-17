@@ -1,0 +1,64 @@
+{
+	"root": "packages/animated-circle",
+	"sourceRoot": "packages/animated-circle",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/animated-circle",
+				"tsConfig": "packages/animated-circle/tsconfig.json",
+				"packageJson": "packages/animated-circle/package.json",
+				"main": "packages/animated-circle/index.d.ts",
+				"assets": [
+					"packages/animated-circle/*.md",
+					"packages/animated-circle/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/animated-circle/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/animated-circle"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts animated-circle"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages animated-circle"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/animated-circle/**/*.ts"]
+			}
+		}
+	}
+}

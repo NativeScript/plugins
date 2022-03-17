@@ -5,6 +5,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@nativescript/picker": ["../../../dist/packages/picker"]
-		}
-	}
+		},
+		"outDir": "../../../dist/out-tsc",
+		"declarationDir": "../../../dist/out-tsc"
+	},
+	"files": ["index.ts"]
 }

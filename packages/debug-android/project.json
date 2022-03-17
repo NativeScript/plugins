@@ -1,0 +1,64 @@
+{
+	"projectType": "library",
+	"generators": {},
+	"root": "packages/debug-android",
+	"sourceRoot": "packages/debug-android",
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/debug-android",
+				"tsConfig": "packages/debug-android/tsconfig.json",
+				"packageJson": "packages/debug-android/package.json",
+				"main": "packages/debug-android/index.d.ts",
+				"assets": [
+					"packages/debug-android/*.md",
+					"packages/debug-android/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/debug-android/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts debug-android"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"outputs": ["dist/packages/debug-android"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages debug-android"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/debug-android/**/*.ts"]
+			}
+		}
+	}
+}

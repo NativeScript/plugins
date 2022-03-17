@@ -1,0 +1,64 @@
+{
+	"root": "packages/detox",
+	"sourceRoot": "packages/detox",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/detox",
+				"tsConfig": "packages/detox/tsconfig.json",
+				"packageJson": "packages/detox/package.json",
+				"main": "packages/detox/index.d.ts",
+				"assets": [
+					"packages/detox/*.md",
+					"packages/detox/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/detox/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/detox"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts detox"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages detox"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/detox/**/*.ts"]
+			}
+		}
+	}
+}

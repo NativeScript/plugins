@@ -1,0 +1,63 @@
+{
+	"root": "packages/twitter",
+	"projectType": "library",
+	"sourceRoot": "packages/twitter",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/twitter",
+				"tsConfig": "packages/twitter/tsconfig.json",
+				"packageJson": "packages/twitter/package.json",
+				"main": "packages/twitter/index.d.ts",
+				"assets": [
+					"packages/twitter/*.md",
+					"packages/twitter/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/twitter/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts twitter"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/twitter"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages twitter"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/twitter/**/*.ts"]
+			}
+		}
+	}
+}

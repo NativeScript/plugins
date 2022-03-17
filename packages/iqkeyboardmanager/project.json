@@ -1,0 +1,64 @@
+{
+	"root": "packages/iqkeyboardmanager",
+	"sourceRoot": "packages/iqkeyboardmanager",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/iqkeyboardmanager",
+				"tsConfig": "packages/iqkeyboardmanager/tsconfig.json",
+				"packageJson": "packages/iqkeyboardmanager/package.json",
+				"main": "packages/iqkeyboardmanager/index.d.ts",
+				"assets": [
+					"packages/iqkeyboardmanager/*.md",
+					"packages/iqkeyboardmanager/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/iqkeyboardmanager/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/iqkeyboardmanager"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts iqkeyboardmanager"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages iqkeyboardmanager"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/iqkeyboardmanager/**/*.ts"]
+			}
+		}
+	}
+}
