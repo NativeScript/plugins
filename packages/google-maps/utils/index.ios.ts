@@ -347,7 +347,7 @@ export function serialize(data: any): any {
 			let node = {} as any;
 			Object.keys(data).forEach(function (key) {
 				let value = data[key];
-				node[key] = serialize(value, wrapPrimitives);
+				node[key] = serialize(value);
 			});
 			return NSDictionary.dictionaryWithDictionary(node);
 		}

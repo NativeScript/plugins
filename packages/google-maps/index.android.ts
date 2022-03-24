@@ -1508,6 +1508,7 @@ export class GroundOverlay extends OverLayBase implements IGroundOverlay {
 	#native: com.google.android.gms.maps.model.GroundOverlay;
 
 	constructor() {
+		super();
 		this.#image = new ImageSource();
 	}
 
