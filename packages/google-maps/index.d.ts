@@ -1,50 +1,17 @@
-import {Color, ImageSource, EventData, View} from "@nativescript/core";
-import {JointType, MapViewBase} from "./common";
+import { Color, ImageSource, EventData, View } from '@nativescript/core';
+import { JointType, MapViewBase } from './common';
 
+export type FeatureTypeAdministrative = 'administrative' | 'administrative.country' | 'administrative.land_parcel' | 'administrative.locality' | 'administrative.neighborhood' | 'administrative.province';
 
-export type FeatureTypeAdministrative =
-	'administrative'
-	| 'administrative.country'
-	| 'administrative.land_parcel'
-	| 'administrative.locality'
-	| 'administrative.neighborhood'
-	| 'administrative.province';
+export type FeatureTypeLandscape = 'landscape' | 'landscape.man_made' | 'landscape.natural' | 'landscape.natural.landcover' | 'landscape.natural.terrain';
 
-export type FeatureTypeLandscape =
-	'landscape'
-	| 'landscape.man_made'
-	| 'landscape.natural'
-	| 'landscape.natural.landcover'
-	| 'landscape.natural.terrain';
+export type FeatureTypePoi = 'poi' | 'poi.attraction' | 'poi.business' | 'poi.government' | 'poi.medical' | 'poi.park' | 'poi.place_of_worship' | 'poi.school' | 'poi.sports_complex';
 
-export type FeatureTypePoi =
-	'poi'
-	| 'poi.attraction'
-	| 'poi.business'
-	| 'poi.government'
-	| 'poi.medical'
-	| 'poi.park'
-	| 'poi.place_of_worship'
-	| 'poi.school'
-	| 'poi.sports_complex';
+export type FeatureTypeRoad = 'road' | 'road.arterial' | 'road.highway' | 'road.highway.controlled_access' | 'road.local';
 
-export type FeatureTypeRoad =
-	'road'
-	| 'road.arterial'
-	| 'road.highway'
-	| 'road.highway.controlled_access'
-	| 'road.local';
-
-export type FeatureTypeTransit =
-	'transit'
-	| 'transit.line'
-	| 'transit.station'
-	| 'transit.station.airport'
-	| 'transit.station.bus'
-	| 'transit.station.rail';
+export type FeatureTypeTransit = 'transit' | 'transit.line' | 'transit.station' | 'transit.station.airport' | 'transit.station.bus' | 'transit.station.rail';
 
 export type FeatureTypeWater = 'water';
-
 
 export type ElementTypeGeometry = 'geometry' | 'geometry.fill' | 'geometry.stroke';
 
@@ -64,7 +31,7 @@ export interface Stylers {
 export interface Style {
 	featureType?: 'all' | FeatureTypeAdministrative | FeatureTypeLandscape | FeatureTypePoi | FeatureTypeRoad | FeatureTypeTransit | FeatureTypeWater;
 	elementType?: 'all' | ElementTypeGeometry | ElementTypeLabels;
-	stylers: Stylers[]
+	stylers: Stylers[];
 }
 
 export interface LocationTapEvent extends EventData {
@@ -93,23 +60,23 @@ export interface CameraPositionStartEvent extends CameraPositionEvent {
 }
 
 export interface CircleTapEvent extends EventData {
-	circle: Circle
+	circle: Circle;
 }
 
 export interface PolygonTapEvent extends EventData {
-	polygon: Polygon
+	polygon: Polygon;
 }
 
 export interface PolylineTapEvent extends EventData {
-	polyline: Polyline
+	polyline: Polyline;
 }
 
 export interface PoiTapEvent extends EventData {
-	poi: Poi
+	poi: Poi;
 }
 
 export interface GroundOverlayTapEvent extends EventData {
-	groundOverlay: GroundOverlay
+	groundOverlay: GroundOverlay;
 }
 
 export interface InfoWindowEvent extends EventData {
@@ -118,7 +85,7 @@ export interface InfoWindowEvent extends EventData {
 
 export interface MarkerInfoEvent extends EventData {
 	marker: Marker;
-	view?: View;
+	view?: any;
 }
 
 export interface NativeObject {
@@ -162,15 +129,15 @@ export class UISettings implements IUISettings, NativeObject {
 }
 
 export interface MapReadyEvent extends EventData {
-	map: GoogleMap
+	map: GoogleMap;
 }
 
 export interface ActiveBuildingEvent extends EventData {
-	building: IndoorBuilding
+	building: IndoorBuilding;
 }
 
 export interface ActiveLevelEvent extends EventData {
-	level: IndoorLevel
+	level: IndoorLevel;
 }
 
 export interface IIndoorLevel {
@@ -208,10 +175,19 @@ export interface ILocation {
 }
 
 export class Location implements ILocation, NativeObject {
+	ios: any;
+	android: any;
+	native: any;
+	accuracy: number;
+	altitudeAccuracy: number;
+	coordinate: Coordinate;
+	timestamp: Date;
+	altitude: number;
+	speed: number;
+	heading: number;
 }
 
-export interface ICameraUpdate {
-}
+export interface ICameraUpdate {}
 
 export class CameraUpdate implements ICameraUpdate {
 	static fromCoordinate(coordinate: Coordinate, zoom: number): CameraUpdate;
@@ -224,7 +200,7 @@ export class CameraUpdate implements ICameraUpdate {
 
 	static zoomTo(value: number): CameraUpdate;
 
-	static zoomBy(amount: number, point?: { x: number, y: number }): CameraUpdate;
+	static zoomBy(amount: number, point?: { x: number; y: number }): CameraUpdate;
 
 	static scrollBy(x: number, y: number): CameraUpdate;
 }
@@ -243,6 +219,7 @@ export class CameraPosition implements ICameraPosition, Partial<NativeObject> {
 	target: Coordinate;
 	tilt: number;
 	zoom: number;
+	native?: any;
 }
 
 export class MapView extends MapViewBase {
@@ -307,14 +284,15 @@ export interface CoordinateBounds {
 
 export interface IMarker {
 	draggable: boolean;
-	position: Coordinate
+	position: Coordinate;
 	title: string;
 	snippet: string;
-	icon: any; /* Image, ImageSource, UIImage & Bitmap */
+	icon: any /* Image, ImageSource, UIImage & Bitmap */;
 	color: Color | string;
 	rotation: number;
 	flat: boolean;
 	zIndex: number;
+	userData: { [key: string]: any };
 }
 
 export interface MarkerOptions extends Partial<IMarker> {
@@ -323,8 +301,9 @@ export interface MarkerOptions extends Partial<IMarker> {
 }
 
 export class Marker implements IMarker, Partial<NativeObject> {
+	native?: any;
 	draggable: boolean;
-	position: Coordinate
+	position: Coordinate;
 	title: string;
 	snippet: string;
 	icon: any; /* Image, ImageSource, UIImage & Bitmap */
@@ -332,17 +311,15 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	rotation: number;
 	flat: boolean;
 	zIndex: number;
-
+	userData: { [key: string]: any };
 	hideInfoWindow(): void;
 
 	showInfoWindow(): void;
 }
 
-export interface ILocationSource {
-}
+export interface ILocationSource {}
 
-export class LocationSource implements ILocationSource {
-}
+export class LocationSource implements ILocationSource {}
 
 export interface IVisibleRegion {
 	nearLeft: Coordinate;
@@ -358,12 +335,10 @@ export class VisibleRegion implements IVisibleRegion {
 	nearRight: Coordinate;
 }
 
-
 export interface IProjection {
+	coordinateForPoint(point: { x: number; y: number }): Coordinate;
 
-	coordinateForPoint(point: { x: number, y: number }): Coordinate;
-
-	pointForCoordinate(coordinate: Coordinate): { x: number, y: number };
+	pointForCoordinate(coordinate: Coordinate): { x: number; y: number };
 
 	visibleRegion(): VisibleRegion;
 }
@@ -376,12 +351,9 @@ export class Projection implements IProjection {
 	visibleRegion(): VisibleRegion;
 }
 
+export interface TileOverlayOptions extends ITileOverlay {}
 
-export interface TileOverlayOptions extends ITileOverlay {
-}
-
-export class TileOverlay implements Partial<ITileOverlay>, Partial<NativeObject> {
-}
+export class TileOverlay implements Partial<ITileOverlay>, Partial<NativeObject> {}
 
 export interface IGoogleMap {
 	readonly uiSettings: IUISettings;
@@ -404,7 +376,7 @@ export interface IGoogleMap {
 
 	snapshot(): Promise<ImageSource>;
 
-	animateCamera(update: CameraUpdate)
+	animateCamera(update: CameraUpdate);
 
 	clear();
 
@@ -431,10 +403,12 @@ export interface IGoogleMap {
 	addGroundOverlay(options: GroundOverlayOptions): GroundOverlay;
 
 	removeGroundOverlay(groundOverlay: GroundOverlay);
-
 }
 
 export class GoogleMap implements IGoogleMap {
+	mapStyle: Style;
+	addTileOverlay(options: TileOverlayOptions): TileOverlay;
+	removeTileOverlay(overlay: TileOverlay);
 	buildingsEnabled: boolean;
 	maxZoomLevel: number;
 	minZoomLevel: number;
@@ -481,10 +455,10 @@ export interface ICircle {
 	center: Coordinate;
 	strokePattern: PatternItem & Partial<NativeObject>[];
 	zIndex: number;
+	userData: { [key: string]: any };
 }
 
-export interface CircleOptions extends Partial<ICircle> {
-}
+export interface CircleOptions extends Partial<ICircle> {}
 
 export class Circle implements ICircle {
 	center: Coordinate;
@@ -496,6 +470,7 @@ export class Circle implements ICircle {
 	tappable: boolean;
 	visible: boolean;
 	zIndex: number;
+	userData: { [key: string]: any };
 }
 
 export interface IPolygon {
@@ -510,10 +485,10 @@ export interface IPolygon {
 	geodesic: boolean;
 	strokeJointType: JointType;
 	visible: boolean;
+	userData: { [key: string]: any };
 }
 
-export interface PolygonOptions extends Partial<IPolygon> {
-}
+export interface PolygonOptions extends Partial<IPolygon> {}
 
 export class Polygon implements IPolygon {
 	fillColor: Color | string;
@@ -527,8 +502,8 @@ export class Polygon implements IPolygon {
 	tappable: boolean;
 	visible: boolean;
 	zIndex: number;
+	userData: { [key: string]: any };
 }
-
 
 export interface IPolyline {
 	width: number;
@@ -542,12 +517,24 @@ export interface IPolyline {
 	color: Color | string;
 	startCap: Cap & Partial<NativeObject>;
 	endCap: Cap & Partial<NativeObject>;
+	userData: { [key: string]: any };
 }
 
-export interface PolylineOptions extends Partial<IPolyline> {
-}
+export interface PolylineOptions extends Partial<IPolyline> {}
 
 export class Polyline implements IPolyline {
+	width: number;
+	points: Coordinate[];
+	tappable: boolean;
+	geodesic: boolean;
+	visible: boolean;
+	zIndex: number;
+	jointType: JointType;
+	pattern: PatternItem & Partial<NativeObject>[];
+	color: string | Color;
+	startCap: Cap & Partial<NativeObject>;
+	endCap: Cap & Partial<NativeObject>;
+	userData: { [key: string]: any };
 }
 
 export interface IGroundOverlay {
@@ -561,6 +548,7 @@ export interface IGroundOverlay {
 	image: ImageSource;
 	readonly width: number;
 	readonly height: number;
+	userData: { [key: string]: any };
 }
 
 export interface GroundOverlayOptions extends Partial<IGroundOverlay> {
@@ -571,6 +559,17 @@ export interface GroundOverlayOptions extends Partial<IGroundOverlay> {
 }
 
 export class GroundOverlay implements IGroundOverlay {
+	zIndex: number;
+	visible: boolean;
+	transparency: number;
+	position: Coordinate;
+	bounds: CoordinateBounds;
+	tappable: boolean;
+	bearing: number;
+	image: ImageSource;
+	width: number;
+	height: number;
+	userData: { [key: string]: any };
 }
 
 export interface IPoi {
@@ -580,31 +579,26 @@ export interface IPoi {
 }
 
 export class Poi implements IPoi {
+	coordinate: Coordinate;
+	placeId: string;
+	name: string;
 }
 
-export interface ICap {
-}
+export interface ICap {}
 
-export class Cap implements ICap {
-}
+export class Cap implements ICap {}
 
-export class ButtCap extends Cap {
-}
+export class ButtCap extends Cap {}
 
-export class RoundCap extends Cap {
-}
+export class RoundCap extends Cap {}
 
-export class SquareCap extends Cap {
-}
+export class SquareCap extends Cap {}
 
-export class CustomCap extends Cap {
-}
+export class CustomCap extends Cap {}
 
-export interface IPatternItem {
-}
+export interface IPatternItem {}
 
-export class PatternItem implements IPatternItem {
-}
+export class PatternItem implements IPatternItem {}
 
 export class Dash extends PatternItem {
 	constructor(width: number);
@@ -614,8 +608,7 @@ export class Gap extends PatternItem {
 	constructor(width: number);
 }
 
-export class Dot extends PatternItem {
-}
+export class Dot extends PatternItem {}
 
 export interface ITileOverlay {
 	fadeIn: boolean;
@@ -625,8 +618,7 @@ export interface ITileOverlay {
 	zIndex: number;
 }
 
-export interface ITileProvider {
-}
+export interface ITileProvider {}
 
 export class TileProvider implements ITileProvider {
 	constructor(size?: number);

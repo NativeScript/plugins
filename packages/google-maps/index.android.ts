@@ -1,5 +1,5 @@
-import { Application, Color, EventData, ImageSource, Utils, View } from "@nativescript/core";
-import { isNullOrUndefined } from "@nativescript/core/utils/types";
+import { Application, Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
 	ActiveLevelEvent,
@@ -30,7 +30,6 @@ import {
 	ITileProvider,
 	IUISettings,
 	IVisibleRegion,
-	LocationTapEvent,
 	MapTapEvent,
 	MarkerDragEvent,
 	MarkerInfoEvent,
@@ -42,29 +41,17 @@ import {
 	PolylineOptions,
 	PolylineTapEvent,
 	Style,
-	TileOverlayOptions
-} from ".";
-import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from "./common";
+	TileOverlayOptions,
+} from '.';
+import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 
-import {
-	intoNativeMarkerOptions,
-	intoNativeCircleOptions,
-	intoNativePolygonOptions,
-	intoNativeGroundOverlayOptions,
-	intoNativePolylineOptions,
-	hueFromColor,
-	intoNativeJointType,
-	toJointType,
-	intoNativeTileOverlayOptions
-} from './utils';
+import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, deserialize, serialize } from './utils';
 
 function fromPatternImages(pattern: java.util.List<com.google.android.gms.maps.model.PatternItem>) {
 	const images: PatternItem[] = [];
 	const array = <androidNative.Array<com.google.android.gms.maps.model.PatternItem>>pattern.toArray();
 	for (let i = 0; i < array.length; i++) {
-		images.push(
-			PatternItem.fromNative(array[i])
-		)
+		images.push(PatternItem.fromNative(array[i]));
 	}
 	return images;
 }
@@ -72,9 +59,7 @@ function fromPatternImages(pattern: java.util.List<com.google.android.gms.maps.m
 function intoPatternImages(pattern: PatternItem[]) {
 	const array = new java.util.ArrayList<com.google.android.gms.maps.model.PatternItem>();
 	for (let i = 0; i < pattern.length; i++) {
-		array.add(
-			pattern[i].native
-		)
+		array.add(pattern[i].native);
 	}
 	return array;
 }
@@ -160,217 +145,215 @@ export class MapView extends MapViewBase {
 		this.#listener = new com.google.android.gms.maps.OnMapReadyCallback({
 			onMapReady(map: com.google.android.gms.maps.GoogleMap): void {
 				const owner = ref.get?.();
-				(<any>org).nativescript.plugins.google_maps.GoogleMaps.registerMapListeners(map, new (<any>org).nativescript.plugins.google_maps.GoogleMaps.Callback({
-					onCameraEvent(position: com.google.android.gms.maps.model.CameraPosition, event: string, isGesture: boolean) {
-						if (event === 'start') {
-							ref?.get?.().notify(<CameraPositionStartEvent>{
-								eventName: MapView.cameraPositionEvent,
-								object: ref?.get?.(),
-								cameraPosition: CameraPosition.fromNative(position),
-								state: event,
-								isGesture
-							});
-						} else {
-							ref?.get?.().notify(<CameraPositionEvent>{
-								eventName: MapView.cameraPositionEvent,
-								object: ref?.get?.(),
-								cameraPosition: CameraPosition.fromNative(position),
-								state: event
-							});
-						}
-					},
-					onMarkerEvent(marker: com.google.android.gms.maps.model.Marker, event: string) {
-						switch (event) {
-							case 'drag':
-								ref?.get?.().notify(<MarkerDragEvent>{
-									eventName: MapView.markerDraggingEvent,
+				container.addView(nativeView as any);
+				(<any>org).nativescript.plugins.google_maps.GoogleMaps.registerMapListeners(
+					map,
+					new (<any>org).nativescript.plugins.google_maps.GoogleMaps.Callback({
+						onCameraEvent(position: com.google.android.gms.maps.model.CameraPosition, event: string, isGesture: boolean) {
+							if (event === 'start') {
+								ref?.get?.().notify(<CameraPositionStartEvent>{
+									eventName: MapView.cameraPositionEvent,
 									object: ref?.get?.(),
-									marker: Marker.fromNative(marker)
+									cameraPosition: CameraPosition.fromNative(position),
+									state: event,
+									isGesture,
 								});
-								break;
-							case 'start':
-								ref?.get?.().notify(<MarkerTapEvent>{
-									eventName: MapView.markerDragStartEvent,
+							} else {
+								ref?.get?.().notify(<CameraPositionEvent>{
+									eventName: MapView.cameraPositionEvent,
 									object: ref?.get?.(),
-									marker: Marker.fromNative(marker)
+									cameraPosition: CameraPosition.fromNative(position),
+									state: event,
 								});
-								break;
-							case 'end':
-								ref?.get?.().notify(<MarkerTapEvent>{
-									eventName: MapView.markerDragEndEvent,
-									object: ref?.get?.(),
-									marker: Marker.fromNative(marker)
-								});
-								break;
-							case 'click':
-								ref?.get?.().notify(<MarkerTapEvent>{
-									eventName: MapView.markerTapEvent,
-									object: ref?.get?.(),
-									marker: Marker.fromNative(marker)
-								});
-								break;
-						}
-					},
-					onMapClickEvent(latLng: com.google.android.gms.maps.model.LatLng, isLongClick: boolean) {
-						if (isLongClick) {
-							ref?.get?.().notify(<MapTapEvent>{
-								eventName: MapView.mapLongPressEvent,
-								object: ref?.get?.(),
-								coordinate: {
-									lat: latLng.latitude,
-									lng: latLng.longitude
-								}
-							});
-						} else {
-							ref?.get?.().notify(<MapTapEvent>{
-								eventName: MapView.mapTapEvent,
-								object: ref?.get?.(),
-								coordinate: {
-									lat: latLng.latitude,
-									lng: latLng.longitude
-								}
-							});
-						}
-					},
-					onMyLocationEvent(location?: android.location.Location) {
-						if (location) {
-							ref?.get?.().notify(<LocationTapEvent>{
-								eventName: MapView.myLocationTapEvent,
-								object: ref?.get?.(),
-								location: {
-									lng: location.getLongitude(),
-									lat: location.getLatitude()
-								}
-							});
-						} else {
-							ref?.get?.().notify(<EventData>{
-								eventName: MapView.myLocationButtonTapEvent,
-								object: ref?.get?.()
-							});
-						}
-					},
-					onItemClickEvent(item, name: string) {
-						switch (name) {
-							case 'circle':
-								ref?.get?.().notify(<CircleTapEvent>{
-									eventName: MapView.circleTapEvent,
-									object: ref?.get?.(),
-									circle: Circle.fromNative(item)
-								});
-								break;
-							case 'polygon':
-								ref?.get?.().notify(<PolygonTapEvent>{
-									eventName: MapView.polygonTapEvent,
-									object: ref?.get?.(),
-									polygon: Polygon.fromNative(item)
-								});
-								break;
-							case 'polyline':
-								ref?.get?.().notify(<PolylineTapEvent>{
-									eventName: MapView.polylineTapEvent,
-									object: ref?.get?.(),
-									polyline: Polyline.fromNative(item)
-								});
-								break;
-							case 'poi':
-								ref?.get?.().notify(<PoiTapEvent>{
-									eventName: MapView.poiTapEvent,
-									object: ref?.get?.(),
-									poi: Poi.fromNative(item)
-								});
-								break;
-							case 'groundOverlay':
-								ref?.get?.().notify(<GroundOverlayTapEvent>{
-									eventName: MapView.groundOverlayTapEvent,
-									object: ref?.get?.(),
-									groundOverlay: GroundOverlay.fromNative(item)
-								});
-								break;
-						}
-					},
-					onInfoWindowEvent(marker: com.google.android.gms.maps.model.Marker, event: string, isLongClick: boolean) {
-						let info = <InfoWindowEvent>{
-							eventName: MapView.infoWindowTapEvent,
-							object: ref?.get?.(),
-							marker: Marker.fromNative(marker)
-						};
-
-						if (event === 'click') {
-							if (isLongClick) {
-								info.eventName = MapView.infoWindowLongPressEvent;
 							}
-						} else if (event === 'close') {
-							info.eventName = MapView.infoWindowCloseEvent;
-						} else {
-							info = null;
-						}
-
-						if (info) {
-							ref?.get?.().notify?.(info);
-						}
-
-					},
-					onInfoWindowAdapterEvent(marker: com.google.android.gms.maps.model.Marker, event: string) {
-						const owner: MapView = ref.get?.();
-						if (owner) {
-							let info = <MarkerInfoEvent>{
-								eventName: '',
+						},
+						onMarkerEvent(marker: com.google.android.gms.maps.model.Marker, event: string) {
+							switch (event) {
+								case 'drag':
+									ref?.get?.().notify(<MarkerDragEvent>{
+										eventName: MapView.markerDraggingEvent,
+										object: ref?.get?.(),
+										marker: Marker.fromNative(marker),
+									});
+									break;
+								case 'start':
+									ref?.get?.().notify(<MarkerTapEvent>{
+										eventName: MapView.markerDragStartEvent,
+										object: ref?.get?.(),
+										marker: Marker.fromNative(marker),
+									});
+									break;
+								case 'end':
+									ref?.get?.().notify(<MarkerTapEvent>{
+										eventName: MapView.markerDragEndEvent,
+										object: ref?.get?.(),
+										marker: Marker.fromNative(marker),
+									});
+									break;
+								case 'click':
+									ref?.get?.().notify(<MarkerTapEvent>{
+										eventName: MapView.markerTapEvent,
+										object: ref?.get?.(),
+										marker: Marker.fromNative(marker),
+									});
+									break;
+							}
+						},
+						onMapClickEvent(latLng: com.google.android.gms.maps.model.LatLng, isLongClick: boolean) {
+							if (isLongClick) {
+								ref?.get?.().notify(<MapTapEvent>{
+									eventName: MapView.mapLongPressEvent,
+									object: ref?.get?.(),
+									coordinate: {
+										lat: latLng.latitude,
+										lng: latLng.longitude,
+									},
+								});
+							} else {
+								ref?.get?.().notify(<MapTapEvent>{
+									eventName: MapView.mapTapEvent,
+									object: ref?.get?.(),
+									coordinate: {
+										lat: latLng.latitude,
+										lng: latLng.longitude,
+									},
+								});
+							}
+						},
+						onMyLocationEvent(location?: android.location.Location) {
+							if (location) {
+								ref?.get?.().notify({
+									eventName: MapView.myLocationButtonTapEvent,
+									object: ref?.get?.(),
+								});
+							} else {
+								ref?.get?.().notify(<EventData>{
+									eventName: MapView.myLocationButtonTapEvent,
+									object: ref?.get?.(),
+								});
+							}
+						},
+						onItemClickEvent(item, name: string) {
+							switch (name) {
+								case 'circle':
+									ref?.get?.().notify(<CircleTapEvent>{
+										eventName: MapView.circleTapEvent,
+										object: ref?.get?.(),
+										circle: Circle.fromNative(item),
+									});
+									break;
+								case 'polygon':
+									ref?.get?.().notify(<PolygonTapEvent>{
+										eventName: MapView.polygonTapEvent,
+										object: ref?.get?.(),
+										polygon: Polygon.fromNative(item),
+									});
+									break;
+								case 'polyline':
+									ref?.get?.().notify(<PolylineTapEvent>{
+										eventName: MapView.polylineTapEvent,
+										object: ref?.get?.(),
+										polyline: Polyline.fromNative(item),
+									});
+									break;
+								case 'poi':
+									ref?.get?.().notify(<PoiTapEvent>{
+										eventName: MapView.poiTapEvent,
+										object: ref?.get?.(),
+										poi: Poi.fromNative(item),
+									});
+									break;
+								case 'groundOverlay':
+									ref?.get?.().notify(<GroundOverlayTapEvent>{
+										eventName: MapView.groundOverlayTapEvent,
+										object: ref?.get?.(),
+										groundOverlay: GroundOverlay.fromNative(item),
+									});
+									break;
+							}
+						},
+						onInfoWindowEvent(marker: com.google.android.gms.maps.model.Marker, event: string, isLongClick: boolean) {
+							let info = <InfoWindowEvent>{
+								eventName: MapView.infoWindowTapEvent,
 								object: ref?.get?.(),
 								marker: Marker.fromNative(marker),
-								view: null
 							};
 
-							if (event === 'contents') {
-								info.eventName = MapView.markerInfoContentsEvent;
-							} else if (event === 'window') {
-								info.eventName = MapView.markerInfoWindowEvent;
+							if (event === 'click') {
+								if (isLongClick) {
+									info.eventName = MapView.infoWindowLongPressEvent;
+								}
+							} else if (event === 'close') {
+								info.eventName = MapView.infoWindowCloseEvent;
 							} else {
 								info = null;
 							}
 
 							if (info) {
-								owner.notify(info);
-								if (info.view instanceof View) {
-									if (!info.view.parent && !info.view?.nativeView) {
-										owner._addView(info.view);
-									}
-									if (info.view.nativeView && !(<any>marker)._view) {
-										(<any>marker)._view = new android.widget.RelativeLayout(owner._context);
-									}
-									const parent = info.view.nativeView?.getParent?.();
-									if (info.view.nativeView && parent !== (<any>marker)._view) {
-										if (parent && parent.removeView) {
-											parent.removeView(info.view.nativeView);
+								ref?.get?.().notify?.(info);
+							}
+						},
+						onInfoWindowAdapterEvent(marker: com.google.android.gms.maps.model.Marker, event: string) {
+							const owner: MapView = ref.get?.();
+							if (owner) {
+								let info = <MarkerInfoEvent>{
+									eventName: '',
+									object: ref?.get?.(),
+									marker: Marker.fromNative(marker),
+									view: null,
+								};
+
+								if (event === 'contents') {
+									info.eventName = MapView.markerInfoContentsEvent;
+								} else if (event === 'window') {
+									info.eventName = MapView.markerInfoWindowEvent;
+								} else {
+									info = null;
+								}
+
+								if (info) {
+									owner.notify(info);
+									if (info.view instanceof View) {
+										if (!info.view.parent && !info.view?.nativeView) {
+											owner._addView(info.view);
 										}
-										const container: android.widget.RelativeLayout = (<any>marker)._view;
-										container.addView(info.view.nativeView);
+										if (info.view.nativeView && !(<any>marker)._view) {
+											(<any>marker)._view = new android.widget.RelativeLayout(owner._context);
+										}
+										const parent = info.view.nativeView?.getParent?.();
+										if (info.view.nativeView && parent !== (<any>marker)._view) {
+											if (parent && parent.removeView) {
+												parent.removeView(info.view.nativeView);
+											}
+											const container: android.widget.RelativeLayout = (<any>marker)._view;
+											container.addView(info.view.nativeView);
+										}
+										return (<any>marker)?._view ?? null;
 									}
-									return (<any>marker)?._view ?? null;
 								}
 							}
-						}
 
-						return null;
-					},
-
-					onIndoorEvent(object, name: string) {
-						if (name === 'buildingFocused') {
-							ref?.get?.().notify(<ActiveBuildingEvent>{
-								eventName: MapView.activeBuildingEvent,
-								object: ref?.get?.(),
-								building: IndoorBuilding.fromNative(object)
-							});
-						} else if (name === 'levelActivated') {
-							const building: com.google.android.gms.maps.model.IndoorBuilding = object;
-							const level = building.getLevels().get(building.getActiveLevelIndex());
-							ref?.get?.().notify(<ActiveLevelEvent>{
-								eventName: MapView.activeLevelEvent,
-								object: ref?.get?.(),
-								level: IndoorLevel.fromNative(level)
-							});
-						}
-					},
-				}));
+							return null;
+						},
+						onIndoorEvent(object, name: string) {
+							if (name === 'buildingFocused') {
+								ref?.get?.().notify(<ActiveBuildingEvent>{
+									eventName: MapView.activeBuildingEvent,
+									object: ref?.get?.(),
+									building: IndoorBuilding.fromNative(object),
+								});
+							} else if (name === 'levelActivated') {
+								const building: com.google.android.gms.maps.model.IndoorBuilding = object;
+								const level = building.getLevels().get(building.getActiveLevelIndex());
+								ref?.get?.().notify(<ActiveLevelEvent>{
+									eventName: MapView.activeLevelEvent,
+									object: ref?.get?.(),
+									level: IndoorLevel.fromNative(level),
+								});
+							}
+						},
+					})
+				);
 
 				if (owner) {
 					owner._map = map;
@@ -379,74 +362,82 @@ export class MapView extends MapViewBase {
 						lng: owner.lng,
 						bearing: owner.bearing,
 						tilt: owner.tilt,
-						zoom: owner.zoom
-					})
+						zoom: owner.zoom,
+					});
 				}
-				
+
 				ref.get?.().notify?.({
 					eventName: 'ready',
 					object: ref.get?.(),
-					map: GoogleMap.fromNative(map)
+					map: GoogleMap.fromNative(map),
 				});
-			}
+			},
 		});
+		const container = new android.widget.LinearLayout(this._context);
 		const nativeView = new com.google.android.gms.maps.MapView(this._context);
 		nativeView.onCreate(this.createdBundle);
 		nativeView.onResume();
 		nativeView.getMapAsync(this.#listener);
-		return nativeView;
+		this.mapView = nativeView;
+		nativeView.onCreate(null);
+		nativeView.onResume();
+		return container;
+	}
+	initNativeView(): void {
+		super.initNativeView();
+		console.log('initNativeView');
 	}
 
 	[latProperty.setNative](value) {
 		if (this._map) {
 			this._updateCamera(this._map, {
-				lat: value
-			})
+				lat: value,
+			});
 		}
 	}
 
 	[lngProperty.setNative](value) {
 		if (this._map) {
 			this._updateCamera(this._map, {
-				lng: value
-			})
+				lng: value,
+			});
 		}
 	}
-
 
 	[zoomProperty.setNative](value) {
 		if (this._map) {
 			this._updateCamera(this._map, {
-				zoom: value
-			})
+				zoom: value,
+			});
 		}
 	}
 
 	[tiltProperty.setNative](value) {
 		if (this._map) {
 			this._updateCamera(this._map, {
-				tilt: value
-			})
+				tilt: value,
+			});
 		}
 	}
-
 
 	[bearingProperty.setNative](value) {
 		if (this._map) {
 			this._updateCamera(this._map, {
-				bearing: value
-			})
+				bearing: value,
+			});
 		}
 	}
 
-
-	_updateCamera(map, owner: {
-		lat?,
-		lng?,
-		zoom?,
-		tilt?,
-		bearing?
-	}) {
+	_updateCamera(
+		map,
+		owner: {
+			lat?;
+			lng?;
+			zoom?;
+			tilt?;
+			bearing?;
+		}
+	) {
 		const googleMap = GoogleMap.fromNative(map);
 		if (googleMap) {
 			const position = CameraPosition.fromNative(map.getCameraPosition());
@@ -455,16 +446,16 @@ export class MapView extends MapViewBase {
 			if (!isNullOrUndefined(owner.lat)) {
 				position.target = {
 					lat: typeof owner.lat === 'string' ? parseFloat(owner.lat) : owner.lat,
-					lng: position.target.lng
-				}
+					lng: position.target.lng,
+				};
 				changed = true;
 			}
 
 			if (!isNullOrUndefined(owner.lng)) {
 				position.target = {
 					lat: position.target.lat,
-					lng: typeof owner.lng === 'string' ? parseFloat(owner.lng) : owner.lng
-				}
+					lng: typeof owner.lng === 'string' ? parseFloat(owner.lng) : owner.lng,
+				};
 				changed = true;
 			}
 
@@ -486,7 +477,6 @@ export class MapView extends MapViewBase {
 			if (changed) {
 				googleMap.cameraPosition = position;
 			}
-
 		}
 	}
 }
@@ -548,11 +538,7 @@ export class IndoorBuilding implements IIndoorBuilding {
 		const result: IndoorLevel[] = [];
 		const levels = this.native.getLevels().toArray();
 		for (let i = 0; i < levels.length; i++) {
-			result.push(
-				IndoorLevel.fromNative(
-					levels[i]
-				)
-			)
+			result.push(IndoorLevel.fromNative(levels[i]));
 		}
 
 		return result;
@@ -582,7 +568,6 @@ export class UISettings implements IUISettings {
 	get android() {
 		return this.native;
 	}
-
 
 	get mapToolbarEnabled(): boolean {
 		return this.native.isMapToolbarEnabled();
@@ -651,7 +636,6 @@ export class UISettings implements IUISettings {
 	get scrollGesturesEnabled(): boolean {
 		return this.native.isScrollGesturesEnabled();
 	}
-
 }
 
 export class GoogleMap implements IGoogleMap {
@@ -675,41 +659,29 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	get cameraPosition() {
-		return CameraPosition.fromNative(this.native.getCameraPosition())
+		return CameraPosition.fromNative(this.native.getCameraPosition());
 	}
 
 	set cameraPosition(value) {
-		this.native.moveCamera(
-			CameraUpdate.fromCameraPosition(value).native
-		)
+		this.native.moveCamera(CameraUpdate.fromCameraPosition(value).native);
 	}
 
 	set mapType(type: MapType) {
 		switch (type) {
 			case MapType.None:
-				this.native.setMapType(
-					com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE
-				);
+				this.native.setMapType(com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE);
 				break;
 			case MapType.Normal:
-				this.native.setMapType(
-					com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL
-				);
+				this.native.setMapType(com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL);
 				break;
 			case MapType.Satellite:
-				this.native.setMapType(
-					com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE
-				);
+				this.native.setMapType(com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE);
 				break;
 			case MapType.Terrain:
-				this.native.setMapType(
-					com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN
-				);
+				this.native.setMapType(com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN);
 				break;
 			case MapType.Hybrid:
-				this.native.setMapType(
-					com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID
-				);
+				this.native.setMapType(com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID);
 				break;
 		}
 	}
@@ -730,7 +702,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	get uiSettings() {
-		return UISettings.fromNative(this.native.getUiSettings())
+		return UISettings.fromNative(this.native.getUiSettings());
 	}
 
 	get trafficEnabled(): boolean {
@@ -774,7 +746,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	get projection(): Projection {
-		return Projection.fromNative(this.native.getProjection())
+		return Projection.fromNative(this.native.getProjection());
 	}
 
 	#mapStyle: Style;
@@ -841,26 +813,23 @@ export class GoogleMap implements IGoogleMap {
 
 	snapshot(): Promise<ImageSource> {
 		return new Promise((resolve, reject) => {
-			this.native.snapshot(new com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback({
-				onSnapshotReady(ss: android.graphics.Bitmap): void {
-					resolve(new ImageSource(ss))
-				}
-			}))
+			this.native.snapshot(
+				new com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback({
+					onSnapshotReady(ss: android.graphics.Bitmap): void {
+						resolve(new ImageSource(ss));
+					},
+				})
+			);
 		});
 	}
 
 	addTileOverlay(options: TileOverlayOptions): TileOverlay {
-		return TileOverlay.fromNative(
-			this.native.addTileOverlay(
-				intoNativeTileOverlayOptions(options)
-			)
-		)
+		return TileOverlay.fromNative(this.native.addTileOverlay(intoNativeTileOverlayOptions(options)));
 	}
 
 	removeTileOverlay(overlay: TileOverlay) {
 		overlay?.native?.remove?.();
 	}
-
 }
 
 export class CameraUpdate implements ICameraUpdate {
@@ -877,64 +846,38 @@ export class CameraUpdate implements ICameraUpdate {
 
 	static fromCoordinate(coordinate: Coordinate, zoom?: number) {
 		if (typeof zoom === 'number') {
-			return CameraUpdate.fromNative(
-				com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
-					new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng),
-					zoom
-				)
-			)
+			return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng), zoom));
 		} else {
-			return CameraUpdate.fromNative(
-				com.google.android.gms.maps.CameraUpdateFactory.newLatLng(
-					new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng)
-				)
-			)
+			return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.newLatLng(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng)));
 		}
-
 	}
 
 	static fromCameraPosition(position: CameraPosition) {
-		return CameraUpdate.fromNative(
-			com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(
-				position.native
-			)
-		)
+		return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(position.native));
 	}
 
 	static zoomIn() {
-		return CameraUpdate.fromNative(
-			com.google.android.gms.maps.CameraUpdateFactory.zoomIn()
-		)
+		return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.zoomIn());
 	}
 
 	static zoomOut() {
-		return CameraUpdate.fromNative(
-			com.google.android.gms.maps.CameraUpdateFactory.zoomOut()
-		)
+		return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.zoomOut());
 	}
 
 	static zoomTo(value: number) {
-		return CameraUpdate.fromNative(
-			com.google.android.gms.maps.CameraUpdateFactory.zoomTo(value)
-		)
+		return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.zoomTo(value));
 	}
 
-	static zoomBy(amount: number, point?: { x: number, y: number }) {
+	static zoomBy(amount: number, point?: { x: number; y: number }) {
 		if (typeof point?.x === 'number' && typeof point.y === 'number') {
-			return CameraUpdate.fromNative(
-				com.google.android.gms.maps.CameraUpdateFactory.zoomBy(amount, new android.graphics.Point(point.x, point.y))
-			)
+			return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.zoomBy(amount, new android.graphics.Point(point.x, point.y)));
 		} else {
-			return CameraUpdate.fromNative(
-				com.google.android.gms.maps.CameraUpdateFactory.zoomBy(amount)
-			)
+			return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.zoomBy(amount));
 		}
 	}
 
 	static scrollBy(x: number, y: number) {
-		return CameraUpdate.fromNative(
-			com.google.android.gms.maps.CameraUpdateFactory.scrollBy(x, y)
-		)
+		return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.scrollBy(x, y));
 	}
 
 	get native() {
@@ -953,16 +896,12 @@ export class CameraPosition implements ICameraPosition {
 		if (target && typeof zoom === 'number') {
 			const builder = com.google.android.gms.maps.model.CameraPosition.builder();
 
-			builder.target(
-				new com.google.android.gms.maps.model.LatLng(
-					target.lat, target.lng
-				)
-			);
+			builder.target(new com.google.android.gms.maps.model.LatLng(target.lat, target.lng));
 
 			builder.zoom(zoom);
 
 			if (typeof bearing === 'number') {
-				builder.bearing(bearing)
+				builder.bearing(bearing);
 			}
 
 			if (typeof tilt === 'number') {
@@ -995,24 +934,18 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set bearing(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(
-			this.native.target, this.native.zoom, this.native.tilt, value
-		);
+		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, this.native.zoom, this.native.tilt, value);
 	}
 
 	get target(): Coordinate {
 		return {
 			lat: this.native.target.latitude,
-			lng: this.native.target.longitude
-		}
+			lng: this.native.target.longitude,
+		};
 	}
 
 	set target(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(
-			new com.google.android.gms.maps.model.LatLng(
-				value.lat, value.lng
-			), this.native.zoom, this.native.tilt, this.native.bearing
-		);
+		this.#native = new com.google.android.gms.maps.model.CameraPosition(new com.google.android.gms.maps.model.LatLng(value.lat, value.lng), this.native.zoom, this.native.tilt, this.native.bearing);
 	}
 
 	get tilt(): number {
@@ -1020,9 +953,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set tilt(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(
-			this.native.target, this.native.zoom, value, this.native.bearing
-		);
+		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, this.native.zoom, value, this.native.bearing);
 	}
 
 	get zoom(): number {
@@ -1030,18 +961,37 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set zoom(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(
-			this.native.target, value, this.native.tilt, this.native.bearing
-		);
+		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, value, this.native.tilt, this.native.bearing);
 	}
 }
 
-export class Marker implements IMarker {
+abstract class OverLayBase {
+	abstract readonly native;
+	get userData(): { [key: string]: any } {
+		const userData = this.native.getUserData();
+		if (userData instanceof java.util.HashMap) {
+			return deserialize(userData);
+		}
+
+		return {};
+	}
+
+	set userData(data: { [key: string]: any }) {
+		if (data && typeof data === 'object') {
+			this.native.setUserData(serialize(data));
+		} else {
+			this.native.setUserData(null);
+		}
+	}
+}
+
+export class Marker extends OverLayBase implements IMarker {
 	#native: com.google.android.gms.maps.model.Marker;
 	#color: Color;
 	#icon: ImageSource;
 
 	constructor() {
+		super();
 		this.#icon = new ImageSource();
 		this.#color = new Color('red');
 	}
@@ -1086,18 +1036,10 @@ export class Marker implements IMarker {
 	set color(value: string | Color) {
 		if (value instanceof Color) {
 			this.#color = value;
-			this.native.setIcon(
-				com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-					hueFromColor(this.#color)
-				)
-			)
+			this.native.setIcon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(this.#color)));
 		} else if (typeof value === 'string') {
 			this.#color = new Color(value);
-			this.native.setIcon(
-				com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-					hueFromColor(this.#color)
-				)
-			)
+			this.native.setIcon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(this.#color)));
 		}
 	}
 
@@ -1137,18 +1079,12 @@ export class Marker implements IMarker {
 		const position = this.native.getPosition();
 		return {
 			lat: position.latitude,
-			lng: position.longitude
-		}
+			lng: position.longitude,
+		};
 	}
 
-	set position(latlng: {
-		lat: number,
-		lng: number
-	}) {
-		const position = new com.google.android.gms.maps.model.LatLng(
-			latlng.lat,
-			latlng.lng
-		);
+	set position(latlng: { lat: number; lng: number }) {
+		const position = new com.google.android.gms.maps.model.LatLng(latlng.lat, latlng.lng);
 		this.native.setPosition(position);
 	}
 
@@ -1185,7 +1121,7 @@ export class Marker implements IMarker {
 	}
 }
 
-export class Circle implements ICircle {
+export class Circle extends OverLayBase implements ICircle {
 	#native: com.google.android.gms.maps.model.Circle;
 
 	static fromNative(nativeCircle: com.google.android.gms.maps.model.Circle) {
@@ -1210,7 +1146,7 @@ export class Circle implements ICircle {
 	}
 
 	set radius(value) {
-		this.native.setRadius(value)
+		this.native.setRadius(value);
 	}
 
 	get strokeColor(): Color {
@@ -1221,27 +1157,20 @@ export class Circle implements ICircle {
 		if (value instanceof Color) {
 			this.native.setStrokeColor(value.android);
 		} else if (typeof value === 'string') {
-			this.native.setStrokeColor(
-				new Color(value).android
-			)
+			this.native.setStrokeColor(new Color(value).android);
 		}
-
 	}
 
 	get center(): Coordinate {
 		const center = this.native.getCenter();
 		return {
 			lat: center.latitude,
-			lng: center.longitude
-		}
+			lng: center.longitude,
+		};
 	}
 
 	set center(value) {
-		this.native.setCenter(
-			new com.google.android.gms.maps.model.LatLng(
-				value.lat, value.lng
-			)
-		);
+		this.native.setCenter(new com.google.android.gms.maps.model.LatLng(value.lat, value.lng));
 	}
 
 	get fillColor(): Color {
@@ -1252,9 +1181,7 @@ export class Circle implements ICircle {
 		if (value instanceof Color) {
 			this.native.setFillColor(value.android);
 		} else if (typeof value === 'string') {
-			this.native.setFillColor(
-				new Color(value).android
-			)
+			this.native.setFillColor(new Color(value).android);
 		}
 	}
 
@@ -1287,9 +1214,7 @@ export class Circle implements ICircle {
 	}
 
 	set strokePattern(value) {
-		this.native.setStrokePattern(
-			intoPatternImages(value)
-		)
+		this.native.setStrokePattern(intoPatternImages(value));
 	}
 
 	get zIndex(): number {
@@ -1301,7 +1226,7 @@ export class Circle implements ICircle {
 	}
 }
 
-export class Polygon implements IPolygon {
+export class Polygon extends OverLayBase implements IPolygon {
 	#native: com.google.android.gms.maps.model.Polygon;
 
 	static fromNative(nativePolygon: com.google.android.gms.maps.model.Polygon) {
@@ -1326,12 +1251,10 @@ export class Polygon implements IPolygon {
 		const points: Coordinate[] = [];
 		for (let i = 0; i < array.length; i++) {
 			const point = array[i];
-			points.push(
-				{
-					lat: point.latitude,
-					lng: point.longitude
-				}
-			)
+			points.push({
+				lat: point.latitude,
+				lng: point.longitude,
+			});
 		}
 		return points;
 	}
@@ -1339,13 +1262,8 @@ export class Polygon implements IPolygon {
 	set points(value) {
 		if (Array.isArray(value)) {
 			const nativeArray = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
-			value.forEach(point => {
-				nativeArray.add(
-					new com.google.android.gms.maps.model.LatLng(
-						point.lat,
-						point.lng
-					)
-				);
+			value.forEach((point) => {
+				nativeArray.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
 			});
 			this.native.setPoints(nativeArray);
 		}
@@ -1356,12 +1274,10 @@ export class Polygon implements IPolygon {
 		const holes: Coordinate[] = [];
 		for (let i = 0; i < array.length; i++) {
 			const hole = array[i];
-			holes.push(
-				{
-					lat: hole.latitude,
-					lng: hole.longitude
-				}
-			)
+			holes.push({
+				lat: hole.latitude,
+				lng: hole.longitude,
+			});
 		}
 		return holes;
 	}
@@ -1369,13 +1285,8 @@ export class Polygon implements IPolygon {
 	set holes(value) {
 		if (Array.isArray(value)) {
 			const nativeArray = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
-			value.forEach(hole => {
-				nativeArray.add(
-					new com.google.android.gms.maps.model.LatLng(
-						hole.lat,
-						hole.lng
-					)
-				);
+			value.forEach((hole) => {
+				nativeArray.add(new com.google.android.gms.maps.model.LatLng(hole.lat, hole.lng));
 			});
 			this.native.setHoles(nativeArray);
 		}
@@ -1398,16 +1309,14 @@ export class Polygon implements IPolygon {
 	}
 
 	get strokeColor(): Color {
-		return new Color(this.native.getStrokeColor())
+		return new Color(this.native.getStrokeColor());
 	}
 
 	set strokeColor(value: Color | string) {
 		if (value instanceof Color) {
 			this.native.setStrokeColor(value.android);
 		} else if (typeof value === 'string') {
-			this.native.setStrokeColor(
-				new Color(value).android
-			);
+			this.native.setStrokeColor(new Color(value).android);
 		}
 	}
 
@@ -1416,9 +1325,7 @@ export class Polygon implements IPolygon {
 	}
 
 	set strokePattern(value) {
-		this.native.setStrokePattern(
-			intoPatternImages(value)
-		)
+		this.native.setStrokePattern(intoPatternImages(value));
 	}
 
 	get zIndex(): number {
@@ -1461,21 +1368,19 @@ export class Polygon implements IPolygon {
 	}
 
 	get fillColor(): Color {
-		return new Color(this.native.getFillColor())
+		return new Color(this.native.getFillColor());
 	}
 
 	set fillColor(value: Color | string) {
 		if (value instanceof Color) {
 			this.native.setFillColor(value.android);
 		} else if (typeof value === 'string') {
-			this.native.setFillColor(
-				new Color(value).android
-			);
+			this.native.setFillColor(new Color(value).android);
 		}
 	}
 }
 
-export class Polyline implements IPolyline {
+export class Polyline extends OverLayBase implements IPolyline {
 	#native: com.google.android.gms.maps.model.Polyline;
 
 	static fromNative(nativePolyline: com.google.android.gms.maps.model.Polyline) {
@@ -1504,12 +1409,10 @@ export class Polyline implements IPolyline {
 		const points: Coordinate[] = [];
 		for (let i = 0; i < array.length; i++) {
 			const point = array[i];
-			points.push(
-				{
-					lat: point.latitude,
-					lng: point.longitude
-				}
-			)
+			points.push({
+				lat: point.latitude,
+				lng: point.longitude,
+			});
 		}
 		return points;
 	}
@@ -1517,13 +1420,8 @@ export class Polyline implements IPolyline {
 	set points(value) {
 		if (Array.isArray(value)) {
 			const nativeArray = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
-			value.forEach(point => {
-				nativeArray.add(
-					new com.google.android.gms.maps.model.LatLng(
-						point.lat,
-						point.lng
-					)
-				);
+			value.forEach((point) => {
+				nativeArray.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
 			});
 			this.native.setPoints(nativeArray);
 		}
@@ -1574,13 +1472,11 @@ export class Polyline implements IPolyline {
 	}
 
 	set pattern(value) {
-		this.native.setPattern(
-			intoPatternImages(value)
-		)
+		this.native.setPattern(intoPatternImages(value));
 	}
 
 	get color(): Color {
-		return new Color(this.native.getColor())
+		return new Color(this.native.getColor());
 	}
 
 	set color(value: string | Color) {
@@ -1608,7 +1504,7 @@ export class Polyline implements IPolyline {
 	}
 }
 
-export class GroundOverlay implements IGroundOverlay {
+export class GroundOverlay extends OverLayBase implements IGroundOverlay {
 	#native: com.google.android.gms.maps.model.GroundOverlay;
 
 	constructor() {
@@ -1657,20 +1553,15 @@ export class GroundOverlay implements IGroundOverlay {
 	}
 
 	set position(value) {
-		this.native.setPosition(
-			new com.google.android.gms.maps.model.LatLng(
-				value.lat,
-				value.lng
-			)
-		)
+		this.native.setPosition(new com.google.android.gms.maps.model.LatLng(value.lat, value.lng));
 	}
 
 	get position(): Coordinate {
 		const coord = this.native.getPosition();
 		return {
 			lat: coord.latitude,
-			lng: coord.longitude
-		}
+			lng: coord.longitude,
+		};
 	}
 
 	get width(): number {
@@ -1686,13 +1577,13 @@ export class GroundOverlay implements IGroundOverlay {
 		return {
 			southwest: {
 				lat: bounds.southwest.latitude,
-				lng: bounds.southwest.longitude
+				lng: bounds.southwest.longitude,
 			},
 			northeast: {
 				lat: bounds.northeast.latitude,
-				lng: bounds.northeast.longitude
-			}
-		}
+				lng: bounds.northeast.longitude,
+			},
+		};
 	}
 
 	get tappable(): boolean {
@@ -1741,8 +1632,8 @@ export class Poi implements IPoi {
 		const coord = this.native.latLng;
 		return {
 			lat: coord.latitude,
-			lng: coord.longitude
-		}
+			lng: coord.longitude,
+		};
 	}
 
 	get name(): string {
@@ -1756,7 +1647,6 @@ export class Poi implements IPoi {
 
 export class TileOverlay implements Partial<ITileOverlay> {
 	#native: com.google.android.gms.maps.model.TileOverlay;
-
 
 	static fromNative(nativeOverlay: com.google.android.gms.maps.model.TileOverlay) {
 		if (nativeOverlay instanceof com.google.android.gms.maps.model.TileOverlay) {
@@ -1814,7 +1704,7 @@ export class Tile {
 
 	static get NONE() {
 		if (!this.#NONE) {
-			this.#NONE = Tile.fromNative(com.google.android.gms.maps.model.TileProvider.NO_TILE)
+			this.#NONE = Tile.fromNative(com.google.android.gms.maps.model.TileProvider.NO_TILE);
 		}
 		return this.#NONE;
 	}
@@ -1849,13 +1739,12 @@ export class TileProvider implements ITileProvider {
 				getTile(x: number, y: number, zoom: number): com.google.android.gms.maps.model.Tile {
 					const owner = ref.get();
 					if (owner) {
-						return owner.#callback(x, y, zoom)?.native || null
+						return owner.#callback(x, y, zoom)?.native || null;
 					}
 					return null;
-				}
+				},
 			});
 		}
-
 	}
 
 	static fromNative(nativeTileProvider: com.google.android.gms.maps.model.TileProvider) {
@@ -1889,10 +1778,10 @@ export class UrlTileProvider extends TileProvider {
 			getTileUrl(x: number, y: number, zoom: number): java.net.URL {
 				const owner = ref.get();
 				if (owner) {
-					return new java.net.URL(owner.#callback(x, y, zoom) || null)
+					return new java.net.URL(owner.#callback(x, y, zoom) || null);
 				}
 				return null;
-			}
+			},
 		});
 		this.#native = new provider(size, size);
 	}
@@ -1922,29 +1811,20 @@ export class Projection implements IProjection {
 		return this.native;
 	}
 
-	coordinateForPoint(point: { x: number, y: number }): Coordinate {
-		const location = this.native.fromScreenLocation(
-			new android.graphics.Point(point.x, point.y)
-		);
+	coordinateForPoint(point: { x: number; y: number }): Coordinate {
+		const location = this.native.fromScreenLocation(new android.graphics.Point(point.x, point.y));
 		return {
 			lat: location.latitude,
-			lng: location.longitude
-		}
-	};
+			lng: location.longitude,
+		};
+	}
 
 	visibleRegion(): VisibleRegion {
-		return VisibleRegion.fromNative(
-			this.native.getVisibleRegion()
-		)
+		return VisibleRegion.fromNative(this.native.getVisibleRegion());
 	}
 
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number } {
-		const point = this.native.toScreenLocation(
-			new com.google.android.gms.maps.model.LatLng(
-				coordinate.lat,
-				coordinate.lng
-			)
-		);
+		const point = this.native.toScreenLocation(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
 		return { x: point.x, y: point.y };
 	}
 }
@@ -1972,29 +1852,29 @@ export class VisibleRegion implements IVisibleRegion {
 	get farLeft(): Coordinate {
 		return {
 			lat: this.native.farLeft.latitude,
-			lng: this.native.farLeft.longitude
-		}
+			lng: this.native.farLeft.longitude,
+		};
 	}
 
 	get farRight(): Coordinate {
 		return {
 			lat: this.native.farRight.latitude,
-			lng: this.native.farRight.longitude
-		}
+			lng: this.native.farRight.longitude,
+		};
 	}
 
 	get nearLeft(): Coordinate {
 		return {
 			lat: this.native.nearLeft.latitude,
-			lng: this.native.nearLeft.longitude
-		}
+			lng: this.native.nearLeft.longitude,
+		};
 	}
 
 	get nearRight(): Coordinate {
 		return {
 			lat: this.native.nearRight.latitude,
-			lng: this.native.nearRight.longitude
-		}
+			lng: this.native.nearRight.longitude,
+		};
 	}
 }
 
@@ -2017,7 +1897,6 @@ export class Cap implements ICap {
 	get android() {
 		return this.native;
 	}
-
 }
 
 export class ButtCap extends Cap {
@@ -2089,18 +1968,9 @@ export class CustomCap extends Cap {
 	constructor(image?: ImageSource, width?: number) {
 		super();
 		if (typeof width === 'number') {
-			this.#native = new com.google.android.gms.maps.model.CustomCap(
-				com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(
-					image.android
-				),
-				Utils.layout.toDevicePixels(width)
-			);
+			this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(image.android), Utils.layout.toDevicePixels(width));
 		} else if (image) {
-			this.#native = new com.google.android.gms.maps.model.CustomCap(
-				com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(
-					image.android
-				)
-			);
+			this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(image.android));
 		}
 	}
 
@@ -2144,14 +2014,11 @@ export class PatternItem implements IPatternItem {
 }
 
 export class Dash extends PatternItem {
-
 	#native: com.google.android.gms.maps.model.Dash;
 
 	constructor(length: number) {
 		super();
-		this.#native = new com.google.android.gms.maps.model.Dash(
-			Utils.layout.toDevicePixels(length)
-		)
+		this.#native = new com.google.android.gms.maps.model.Dash(Utils.layout.toDevicePixels(length));
 	}
 
 	get native() {
@@ -2164,14 +2031,11 @@ export class Dash extends PatternItem {
 }
 
 export class Gap extends PatternItem {
-
 	#native: com.google.android.gms.maps.model.Gap;
 
 	constructor(length: number) {
 		super();
-		this.#native = new com.google.android.gms.maps.model.Gap(
-			Utils.layout.toDevicePixels(length)
-		)
+		this.#native = new com.google.android.gms.maps.model.Gap(Utils.layout.toDevicePixels(length));
 	}
 
 	get native() {
@@ -2184,7 +2048,6 @@ export class Gap extends PatternItem {
 }
 
 export class Dot extends PatternItem {
-
 	#native: com.google.android.gms.maps.model.Dot;
 
 	constructor(length: number) {
