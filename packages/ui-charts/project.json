@@ -1,0 +1,64 @@
+{
+	"root": "packages/ui-charts",
+	"projectType": "library",
+	"sourceRoot": "packages/ui-charts",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/ui-charts",
+				"tsConfig": "packages/ui-charts/tsconfig.json",
+				"packageJson": "packages/ui-charts/package.json",
+				"main": "packages/ui-charts/index.d.ts",
+				"assets": [
+					"packages/ui-charts/*.md",
+					"packages/ui-charts/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/ui-charts/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts ui-charts"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/ui-charts"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages ui-charts"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/ui-charts/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

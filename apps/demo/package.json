@@ -4,8 +4,8 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
-		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/ui-charts": "file:../../packages/ui-charts",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -27,6 +27,7 @@
 		"@nativescript/google-maps": "file:../../packages/google-maps",
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/imagepicker": "file:../../packages/imagepicker",
+		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",

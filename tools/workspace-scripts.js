@@ -287,6 +287,13 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/ui-charts
+			'ui-charts': {
+				build: {
+					script: 'nx run ui-charts:build.all',
+					description: '@nativescript/ui-charts: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -424,6 +431,10 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			'ui-charts': {
+				script: 'nx run ui-charts:focus',
+				description: 'Focus on @nativescript/ui-charts',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

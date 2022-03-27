@@ -30,4 +30,5 @@ export * from './shared-notification-delegate';
 export * from './social-share';
 export * from './theme-switcher';
 export * from './twitter';
+export * from './ui-charts';
 export * from './zip';
