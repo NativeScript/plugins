@@ -26,7 +26,7 @@ export class IonicPortal extends IonicPortalCommon {
 			throw new Error(`IonicPortal requires an 'id' property.`);
 		}
 		const portal = PortalManager.getPortalError(this.id);
-		const portalWebView = PortalWebView.alloc().initWithFramePortal(CGRectMake(0, 0, this.parent.ios.bounds.size.width, this.parent.ios.bounds.size.height), portal);
+		const portalWebView = PortalWebView.alloc().initWithPortal(portal);
 		return portalWebView;
 	}
 
