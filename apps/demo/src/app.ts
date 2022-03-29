@@ -9,23 +9,17 @@ import { Application } from '@nativescript/core';
 // LoginManager.init();
 
 // uncomment to test Ionic Portals
-// import { IonicPortalManager } from '@nativescript/ionic-portals';
+import { IonicPortalManager } from '@nativescript/ionic-portals';
 
-// Application.on(Application.launchEvent, () => {
-// 	// Register IonicPortals
-// 	IonicPortalManager.register('<portal-api-key>');
+Application.on(Application.launchEvent, () => {
+	// Register IonicPortals
+	IonicPortalManager.register('<portal-api-key>');
 
-// 	// Create as many Portals as you need to use in your app
-// 	IonicPortalManager.create('ionicWebPortalSample');
+	// Create as many Portals as you need to use in your app
+	// IonicPortalManager.create('ionicWebPortalSample');
 
-//  IonicPortalManager.create('ionicWebStart');
-//  IonicPortalManager.create('ionicWebModal');
-
-//  IonicPortalManager.registerPlugins([
-//      'CapacitorStorage',
-//      'CapacitorCamera',
-//      'CapacitorFilesystem'
-//  ]);
-// });
+	IonicPortalManager.create('ionicWebStart');
+	IonicPortalManager.create('ionicWebModal');
+});
 
 Application.run({ moduleName: 'app-root' });

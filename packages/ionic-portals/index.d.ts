@@ -2,10 +2,6 @@ import { IonicPortalCommon } from './common';
 
 export declare class IonicPortalManager {
 	/**
-	 * Names of registered Capacitor plugins for use within your portals
-	 */
-	static registeredPlugins: Array<string>;
-	/**
 	 * Register Portals when your app boots
 	 * https://ionic.io/docs/portals/getting-started/guide#configure
 	 * @param apiKey your portal api key
@@ -21,11 +17,5 @@ export declare class IonicPortalManager {
 	 * Android: App_Resources/Android/src/main/asssets/webPortal
 	 */
 	static create(portalId: string, startDir?: string): any;
-
-	/**
-	 * Register Capacitor plugins by name to make available to your portals
-	 * @param names names of Capacitor plugins
-	 */
-	static registerPlugins(names: Array<string>): void;
 }
 export declare class IonicPortal extends IonicPortalCommon {}

@@ -70,34 +70,11 @@ pod 'CapacitorCamera', '~> 1.2.0'
 pod 'CapacitorFilesystem', '~> 1.1.0'
 ```
 
-You can then ensure they are registered after creating your portals:
-
-```
-Application.on(Application.launchEvent, () => {
-	// Register IonicPortals
-	IonicPortalManager.register('<portal-api-key>');
-
-	// Create as many Portals as you need to use in your app
-	IonicPortalManager.create('ionicWebStart');
-	IonicPortalManager.create('ionicWebModal');
-
-  // Register any Capacitor plugins your Portals would like to use
-	IonicPortalManager.registerPlugins([
-		'CapacitorStorage',
-		'CapacitorCamera',
-		'CapacitorFilesystem'
-	]);
-});
-```
-
 
 ### API
 
 * `IonicPortalManager.register(apiKey: string)`: Register Portals when your app boots
     * https://ionic.io/docs/portals/getting-started/guide#configure
-
-* `IonicPortalManager.registerPlugins(names: Array<string>)`: Register Capacitor plugins to make available to your Portals
-    * https://ionic.io/docs/portals/how-to/using-a-capacitor-plugin
 
 * `IonicPortalManager.create(portalId: string, startDir?: string)`: Create a Portal
     * `portalId`: The portal id to register
