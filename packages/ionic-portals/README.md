@@ -33,6 +33,8 @@ Application.run({ moduleName: 'app-root' });
 
 2. Use in your views
 
+> Note: You may need to add `IPHONEOS_DEPLOYMENT_TARGET = 12.0` to your `App_Resources/iOS/build.xcconfig` file.
+
 ### Vanilla/Plain/Core
 
 ```xml
