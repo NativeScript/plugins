@@ -1,0 +1,64 @@
+{
+	"root": "packages/auto-fit-text",
+	"sourceRoot": "packages/auto-fit-text",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/auto-fit-text",
+				"tsConfig": "packages/auto-fit-text/tsconfig.json",
+				"packageJson": "packages/auto-fit-text/package.json",
+				"main": "packages/auto-fit-text/index.d.ts",
+				"assets": [
+					"packages/auto-fit-text/*.md",
+					"packages/auto-fit-text/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/auto-fit-text/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/auto-fit-text"],
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts auto-fit-text"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages auto-fit-text"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/auto-fit-text/**/*.ts"]
+			}
+		}
+	}
+}

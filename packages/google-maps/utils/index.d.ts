@@ -1,12 +1,5 @@
-import {
-  CircleOptions,
-  GroundOverlayOptions,
-  PolygonOptions,
-  PolylineOptions,
-  MarkerOptions,
-  TileOverlayOptions
-} from ".";
-import {JointType} from "../common";
+import { CircleOptions, GroundOverlayOptions, PolygonOptions, PolylineOptions, MarkerOptions, TileOverlayOptions } from '.';
+import { JointType } from '../common';
 
 export function intoNativeMarkerOptions(options: MarkerOptions);
 
@@ -26,3 +19,6 @@ export function intoNativeJointType(type: JointType): number;
 
 export function hueFromColor(color: any): number;
 
+export function deserialize(data): any;
+
+export function serialize(data: any): any;

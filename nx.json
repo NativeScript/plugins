@@ -1,127 +1,32 @@
 {
-  "npmScope": "nativescript",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "implicitDependencies": {
-    "workspace.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
-  },
-  "projects": {
-    "local-notifications": {
-      "tags": []
-    },
-    "shared-notification-delegate": {
-      "tags": []
-    },
-    "demo": {
-      "tags": []
-    },
-    "demo-angular": {
-      "tags": []
-    },
-    "email": {
-      "tags": []
-    },
-    "all": {
-      "tags": []
-    },
-    "imagepicker": {
-      "tags": []
-    },
-    "datetimepicker": {
-      "tags": []
-    },
-    "camera": {
-      "tags": []
-    },
-    "zip": {
-      "tags": []
-    },
-    "directions": {
-      "tags": []
-    },
-    "iqkeyboardmanager": {
-      "tags": []
-    },
-    "geolocation": {
-      "tags": []
-    },
-    "fingerprint-auth": {
-      "tags": []
-    },
-    "appavailability": {
-      "tags": []
-    },
-    "brightness": {
-      "tags": []
-    },
-    "background-http": {
-      "tags": []
-    },
-    "social-share": {
-      "tags": []
-    },
-    "auto-fit-text": {
-      "tags": []
-    },
-    "animated-circle": {
-      "tags": []
-    },
-    "localize": {
-      "tags": []
-    },
-    "detox": {
-      "tags": []
-    },
-    "picker": {
-      "tags": []
-    },
-    "debug-ios": {
-      "tags": []
-    },
-    "debug-android": {
-      "tags": []
-    },
-    "ios-security": {
-      "tags": []
-    },
-    "facebook": {
-      "tags": []
-    },
-    "google-signin": {
-      "tags": []
-    },
-    "twitter": {
-      "tags": []
-    },
-    "theme-switcher": {
-      "tags": []
-    },
-    "biometrics": {
-      "tags": []
-    },
-    "apple-sign-in": {
-      "tags": []
-    },
-    "google-maps": {
-      "tags": []
-    },
-    "contacts": {
-      "tags": []
-    },
-    "ionic-portals": {
-      "tags": []
-    }
-  },
-  "workspaceLayout": {
-    "appsDir": "apps",
-    "libsDir": "packages"
-  }
+	"npmScope": "nativescript",
+	"affected": {
+		"defaultBase": "master"
+	},
+	"implicitDependencies": {
+		"workspace.json": "*",
+		"package.json": {
+			"dependencies": "*",
+			"devDependencies": "*"
+		},
+		"tsconfig.base.json": "*",
+		"tslint.json": "*",
+		"nx.json": "*"
+	},
+	"workspaceLayout": {
+		"appsDir": "apps",
+		"libsDir": "packages"
+	},
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "@nrwl/workspace/tasks-runners/default",
+			"options": {
+				"cacheableOperations": ["build", "build.all", "lint", "test", "e2e"],
+				"runtimeCacheInputs": ["node -v"]
+			}
+		}
+	},
+	"cli": {
+		"defaultCollection": "@nstudio/xplat"
+	}
 }

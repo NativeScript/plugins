@@ -1,16 +1,3 @@
 {
-	"name": "nativescript-picker-angular",
-	"ngPackage": {
-		"lib": {
-			"entryFile": "index.ts",
-			"umdModuleIds": {
-				"@nativescript/core": "ns-core",
-				"@nativescript/angular": "ns-angular",
-				"@nativescript/picker": "ns-picker"
-			}
-		},
-		"allowedNonPeerDependencies": [
-			"."
-		]
-	}
+	"name": "nativescript-picker-angular"
 }

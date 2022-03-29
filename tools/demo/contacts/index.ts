@@ -17,7 +17,7 @@ export class DemoSharedContacts extends DemoSharedBase {
 			);
 		}
 	}
-
+	testIt() {}
 	getContact() {
 		console.log('getContact');
 		Contacts.getContact().then((result) => {

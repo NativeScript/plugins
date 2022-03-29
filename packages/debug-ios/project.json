@@ -1,0 +1,64 @@
+{
+	"projectType": "library",
+	"generators": {},
+	"root": "packages/debug-ios",
+	"sourceRoot": "packages/debug-ios",
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/debug-ios",
+				"tsConfig": "packages/debug-ios/tsconfig.json",
+				"packageJson": "packages/debug-ios/package.json",
+				"main": "packages/debug-ios/index.d.ts",
+				"assets": [
+					"packages/debug-ios/*.md",
+					"packages/debug-ios/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/debug-ios/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts debug-ios"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"outputs": ["dist/packages/debug-ios"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages debug-ios"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/debug-ios/**/*.ts"]
+			}
+		}
+	}
+}

@@ -18,25 +18,24 @@ export class IonicPortalManager {
 		if (!IonicPortalManager.registeredPlugins) {
 			IonicPortalManager.registeredPlugins = [];
 		}
-		IonicPortalManager.registeredPlugins = names.filter(name => !IonicPortalManager.registeredPlugins.includes(name));
+		IonicPortalManager.registeredPlugins = names.filter((name) => !IonicPortalManager.registeredPlugins.includes(name));
 	}
 }
 
 export class IonicPortal extends IonicPortalCommon {
 	private _handleOrientationFn: (args: OrientationChangedEventData) => void;
-	
+
 	// @ts-ignore
 	get ios(): PortalWebView {
 		return this.nativeView;
 	}
 
 	createNativeView() {
-		console.log('createNativeView', this.id);
 		if (!this.id) {
 			throw new Error(`IonicPortal requires an 'id' property.`);
 		}
 		const portal = PortalManager.getPortalError(this.id);
-		const portalWebView = PortalWebView.alloc().initWithFramePortal(CGRectMake(0, 0, this.parent.ios.bounds.size.width, this.parent.ios.bounds.size.height), portal);
+		const portalWebView = PortalWebView.alloc().initWithPortal(portal);
 		return portalWebView;
 	}
 
@@ -58,7 +57,7 @@ export class IonicPortal extends IonicPortalCommon {
 
 	onLoaded() {
 		super.onLoaded();
-		
+
 		this._updateWebViewSize();
 	}
 

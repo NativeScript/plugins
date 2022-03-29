@@ -5,6 +5,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@nativescript/auto-fit-text": ["../../../dist/packages/auto-fit-text"]
-		}
-	}
+		},
+		"outDir": "../../../dist/out-tsc",
+		"declarationDir": "../../../dist/out-tsc"
+	},
+	"files": ["index.ts"]
 }

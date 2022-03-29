@@ -1,0 +1,64 @@
+{
+	"projectType": "library",
+	"generators": {},
+	"root": "packages/picker",
+	"sourceRoot": "packages/picker",
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/picker",
+				"tsConfig": "packages/picker/tsconfig.json",
+				"packageJson": "packages/picker/package.json",
+				"main": "packages/picker/index.d.ts",
+				"assets": [
+					"packages/picker/*.md",
+					"packages/picker/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/picker/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts picker"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"outputs": ["dist/packages/picker"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages picker"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/picker/**/*.ts"]
+			}
+		}
+	}
+}

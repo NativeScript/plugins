@@ -53,8 +53,8 @@ In short here are the steps:
 
 ```typescript
 import * as geolocation from '@nativescript/geolocation';
-import { Utils } from '@nativescript/core';
-Utils.Accuracy; // used to describe at what accuracy the location should be get
+import { CoreTypes } from '@nativescript/core'
+CoreTypes.Accuracy; // used to describe at what accuracy the location should be get
 ```
 
 ### Request permissions

@@ -1,0 +1,66 @@
+{
+	"root": "packages/localize",
+	"sourceRoot": "packages/localize",
+	"projectType": "library",
+	"generators": {},
+	"targets": {
+		"build": {
+			"options": {
+				"outputPath": "dist/packages/localize",
+				"tsConfig": "packages/localize/tsconfig.json",
+				"packageJson": "packages/localize/package.json",
+				"main": "packages/localize/index.d.ts",
+				"assets": [
+					"packages/localize/*.md",
+					"packages/localize/index.d.ts",
+					"packages/localize/postinstall.js",
+					"packages/localize/preuninstall.js",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/localize/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"executor": "@nrwl/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"outputs": ["dist/packages/localize"],
+			"options": {
+				"commands": ["./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages localize"],
+				"parallel": false
+			},
+			"executor": "@nrwl/workspace:run-commands"
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/localize/**/*.ts"]
+			}
+		}
+	}
+}

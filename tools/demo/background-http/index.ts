@@ -1,5 +1,5 @@
 import { DemoSharedBase } from '../utils';
-import { Task, session } from '@nativescript/background-http';
+import { Task, session, Request } from '@nativescript/background-http';
 import { ObservableArray, path, knownFolders } from '@nativescript/core';
 
 export class DemoSharedBackgroundHttp extends DemoSharedBase {
@@ -45,7 +45,7 @@ export class DemoSharedBackgroundHttp extends DemoSharedBase {
 
 		const name = this.file.substr(this.file.lastIndexOf('/') + 1);
 		const description = `${name} (${++this.counter})`;
-		const request = {
+		const request: Request = {
 			url: this.url,
 			method: 'POST',
 			headers: {
@@ -54,7 +54,8 @@ export class DemoSharedBackgroundHttp extends DemoSharedBase {
 			},
 			description: description,
 			androidAutoDeleteAfterUpload: false,
-			androidNotificationTitle: 'NativeScript HTTP background',
+			androidNotificationOnProgressTitle: 'NativeScript HTTP background',
+			androidNotificationOnProgressMessage: 'Downloading .... [upload_progress] at [upload_rate]',
 		};
 
 		if (should_fail) {

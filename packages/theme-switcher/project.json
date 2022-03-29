@@ -1,0 +1,67 @@
+{
+	"projectType": "library",
+	"generators": {},
+	"root": "packages/theme-switcher",
+	"sourceRoot": "packages/theme-switcher",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/theme-switcher",
+				"tsConfig": "packages/theme-switcher/tsconfig.json",
+				"packageJson": "packages/theme-switcher/package.json",
+				"main": "packages/theme-switcher/index.ts",
+				"assets": [
+					"packages/theme-switcher/*.md",
+					"packages/theme-switcher/nativescript.webpack.js",
+					"packages/theme-switcher/theme-loader.js",
+					"packages/theme-switcher/index.d.ts",
+					"packages/theme-switcher/shims.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/theme-switcher/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts theme-switcher"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/theme-switcher"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages theme-switcher"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/theme-switcher/**/*.ts"]
+			}
+		}
+	}
+}

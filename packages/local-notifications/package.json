@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/local-notifications",
-	"version": "5.0.3",
+	"version": "5.0.4",
 	"description": "The Local Notifications plugin allows your app to show notifications when the app is not running.",
 	"main": "index",
 	"typings": "index.d.ts",

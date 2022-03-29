@@ -1,0 +1,63 @@
+{
+	"root": "packages/biometrics",
+	"projectType": "library",
+	"sourceRoot": "packages/biometrics",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/biometrics",
+				"tsConfig": "packages/biometrics/tsconfig.json",
+				"packageJson": "packages/biometrics/package.json",
+				"main": "packages/biometrics/index.d.ts",
+				"assets": [
+					"packages/biometrics/*.md",
+					"packages/biometrics/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/biometrics/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts biometrics"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/biometrics"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages biometrics"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/biometrics/**/*.ts"]
+			}
+		}
+	}
+}

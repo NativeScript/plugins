@@ -1,0 +1,63 @@
+{
+	"root": "packages/facebook",
+	"projectType": "library",
+	"sourceRoot": "packages/facebook",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/facebook",
+				"tsConfig": "packages/facebook/tsconfig.json",
+				"packageJson": "packages/facebook/package.json",
+				"main": "packages/facebook/index.d.ts",
+				"assets": [
+					"packages/facebook/*.md",
+					"packages/facebook/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/facebook/platforms/",
+						"output": "./platforms/"
+					}
+				]
+			},
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				}
+			]
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts facebook"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/facebook"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages facebook"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/facebook/**/*.ts"]
+			}
+		}
+	}
+}

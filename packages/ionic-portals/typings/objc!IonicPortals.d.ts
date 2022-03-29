@@ -1,4 +1,3 @@
-
 declare var IonicPortalsVersionNumber: number;
 
 declare var IonicPortalsVersionNumberVar: number;
@@ -8,14 +7,12 @@ declare var IonicPortalsVersionString: interop.Reference<number>;
 declare var IonicPortalsVersionStringVar: interop.Reference<number>;
 
 declare class Portal extends NSObject {
-
 	static alloc(): Portal; // inherited from NSObject
 
 	static new(): Portal; // inherited from NSObject
 }
 
 declare class PortalBuilder extends NSObject {
-
 	static alloc(): PortalBuilder; // inherited from NSObject
 
 	static new(): PortalBuilder; // inherited from NSObject
@@ -34,7 +31,6 @@ declare class PortalBuilder extends NSObject {
 }
 
 declare class PortalManager extends NSObject {
-
 	static addPortal(portal: Portal): void;
 
 	static alloc(): PortalManager; // inherited from NSObject
@@ -53,7 +49,6 @@ declare class PortalManager extends NSObject {
 }
 
 declare class PortalWebView extends UIView {
-
 	static alloc(): PortalWebView; // inherited from NSObject
 
 	static appearance(): PortalWebView; // inherited from UIAppearance
@@ -70,24 +65,18 @@ declare class PortalWebView extends UIView {
 
 	static new(): PortalWebView; // inherited from NSObject
 
-	bridge: CAPBridgeProtocol;
+	constructor(o: { portal: Portal });
 
-	constructor(o: { frame: CGRect; portal: Portal; });
-
-	initWithFramePortal(frame: CGRect, portal: Portal): this;
-
-	reload(): void;
+	initWithPortal(portal: Portal): this;
 }
 
 declare class PortalsPlugin extends CAPPlugin {
-
 	static alloc(): PortalsPlugin; // inherited from NSObject
 
 	static new(): PortalsPlugin; // inherited from NSObject
 }
 
 declare class UnregisteredView extends UIView {
-
 	static alloc(): UnregisteredView; // inherited from NSObject
 
 	static appearance(): UnregisteredView; // inherited from UIAppearance
