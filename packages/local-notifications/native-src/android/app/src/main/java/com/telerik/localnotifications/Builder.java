@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -62,7 +61,7 @@ public final class Builder {
                     channel.setLightColor(getLedColor(options));
                 }
 
-								if(options.has("sound") && options.optString("sound") != "default"){
+								if(options.has("sound") && !options.optString("sound").equals("default")){
 									AudioAttributes audioAttributes = new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
 										.setUsage(AudioAttributes.USAGE_NOTIFICATION)
 										.build();
@@ -92,7 +91,7 @@ public final class Builder {
             .setTicker(options.optString("ticker", null)); // Let the OS handle the default value for the ticker.
 
 				String soundFileName = options.optString("sound", null);
-				if(soundFileName != null && soundFileName != "default"){
+				if(soundFileName != null && !soundFileName.equals("default")){
 					int soundIdentifier = context.getResources().getIdentifier(options.optString("sound"), "raw", context.getApplicationInfo().packageName);
 					builder.setSound(Uri.parse("android.resource://" + context.getApplicationInfo().packageName + soundIdentifier));
 				}
