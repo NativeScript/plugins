@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.Date;
@@ -79,7 +80,12 @@ public class NotificationRestoreReceiver extends BroadcastReceiver {
           .setAction(options.getString("id"))
           .putExtra(Builder.NOTIFICATION_ID, notificationID);
 
-      final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+      final PendingIntent pendingIntent = PendingIntent.getBroadcast(
+      	context,
+				0,
+				notificationIntent,
+				Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_CANCEL_CURRENT
+			);
 
       if (interval > 0) {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerTime, interval, pendingIntent);

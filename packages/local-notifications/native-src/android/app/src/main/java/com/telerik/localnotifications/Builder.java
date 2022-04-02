@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.app.PendingIntent.FLAG_MUTABLE;
 
 public final class Builder {
 
@@ -222,7 +224,7 @@ public final class Builder {
             context,
             notificationID,
             intent,
-            FLAG_UPDATE_CURRENT
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE : FLAG_UPDATE_CURRENT
         ));
     }
 
@@ -238,8 +240,8 @@ public final class Builder {
             context,
             notificationID,
             intent,
-            FLAG_UPDATE_CURRENT
-        ));
+						Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE : FLAG_UPDATE_CURRENT
+				));
     }
 
     private static void applyActions(JSONObject options, NotificationCompat.Builder builder, Context context, int notificationID) {
@@ -297,7 +299,12 @@ public final class Builder {
                 .setAction(action.getId())
                 .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-        return PendingIntent.getService(context, notificationID, intent, FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(
+        	context,
+					notificationID,
+					intent,
+					Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_MUTABLE : FLAG_UPDATE_CURRENT
+				);
     }
 
     // Utility methods:
