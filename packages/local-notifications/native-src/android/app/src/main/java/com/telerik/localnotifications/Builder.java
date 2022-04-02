@@ -4,8 +4,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -121,7 +123,7 @@ public final class Builder {
 
         applyNotificationLed(options, builder);
         applyStyle(options, builder, context);
-        applyTapReceiver(options, builder, context, notificationID);
+        applyTapReceiver(builder, context, notificationID);
         applyClearReceiver(builder, context, notificationID);
         applyActions(options, builder, context, notificationID);
 
@@ -213,14 +215,16 @@ public final class Builder {
     /**
      * Add the intent that handles the event when the notification is clicked (which should launch the app).
      */
-    private static void applyTapReceiver(JSONObject options, NotificationCompat.Builder builder, Context context, int notificationID) {
-        final Intent intent = new Intent(context, NotificationActionReceiver.class)
+    private static void applyTapReceiver(NotificationCompat.Builder builder, Context context, int notificationID) {
+    		PackageManager packageManager = context.getPackageManager();
+    		Intent launchIntent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+				ComponentName mainActivityRef = launchIntent.getComponent();
+        final Intent intent = new Intent()
+								.setComponent(mainActivityRef)
                 .putExtra(NOTIFICATION_ID, notificationID)
-                .putExtra("NOTIFICATION_LAUNCH", options.optBoolean("launch", true))
-                .setAction(Action.CLICK_ACTION_ID)
-                .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        builder.setContentIntent(PendingIntent.getService(
+        builder.setContentIntent(PendingIntent.getActivity(
             context,
             notificationID,
             intent,
