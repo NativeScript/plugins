@@ -1,5 +1,8 @@
 import { Application } from '@nativescript/core';
 
+// uncomment to test local notifications
+// import "@nativescript/local-notifications";
+
 // uncomment to test background http
 // import { init } from '@nativescript/background-http';
 // init();
