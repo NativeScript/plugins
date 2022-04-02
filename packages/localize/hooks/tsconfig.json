@@ -10,7 +10,8 @@
 		"emitDecoratorMetadata": true,
 		"noEmitHelpers": false,
 		"noEmitOnError": true,
-		"removeComments": true
+		"removeComments": true,
+		"skipLibCheck": true
 	},
 	"include": ["../typings/**/*.d.ts"],
 	"files": ["index.ts"]
