@@ -92,7 +92,7 @@ function getColorsForClassName(view: View, className: string): { color: Color; b
 	if (vueKey) {
 		tempView[vueKey] = view[vueKey];
 	}
-	if (view.cssClasses && view.cssClasses.length > 0) {
+	if (view.cssClasses && view.cssClasses.size > 0) {
 		view.cssClasses.forEach((element) => {
 			tempView.cssClasses.add(element);
 		});
