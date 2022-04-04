@@ -4,10 +4,11 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -26,6 +27,8 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.app.PendingIntent.FLAG_MUTABLE;
 
 public final class Builder {
 
@@ -58,7 +61,7 @@ public final class Builder {
                     channel.setLightColor(getLedColor(options));
                 }
 
-								if(options.has("sound") && options.optString("sound") != "default"){
+								if(options.has("sound") && !options.optString("sound").equals("default")){
 									AudioAttributes audioAttributes = new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
 										.setUsage(AudioAttributes.USAGE_NOTIFICATION)
 										.build();
@@ -88,7 +91,7 @@ public final class Builder {
             .setTicker(options.optString("ticker", null)); // Let the OS handle the default value for the ticker.
 
 				String soundFileName = options.optString("sound", null);
-				if(soundFileName != null && soundFileName != "default"){
+				if(soundFileName != null && !soundFileName.equals("default")){
 					int soundIdentifier = context.getResources().getIdentifier(options.optString("sound"), "raw", context.getApplicationInfo().packageName);
 					builder.setSound(Uri.parse("android.resource://" + context.getApplicationInfo().packageName + soundIdentifier));
 				}
@@ -119,7 +122,7 @@ public final class Builder {
 
         applyNotificationLed(options, builder);
         applyStyle(options, builder, context);
-        applyTapReceiver(options, builder, context, notificationID);
+        applyTapReceiver(builder, context, notificationID);
         applyClearReceiver(builder, context, notificationID);
         applyActions(options, builder, context, notificationID);
 
@@ -211,18 +214,20 @@ public final class Builder {
     /**
      * Add the intent that handles the event when the notification is clicked (which should launch the app).
      */
-    private static void applyTapReceiver(JSONObject options, NotificationCompat.Builder builder, Context context, int notificationID) {
-        final Intent intent = new Intent(context, NotificationActionReceiver.class)
+    private static void applyTapReceiver(NotificationCompat.Builder builder, Context context, int notificationID) {
+    		PackageManager packageManager = context.getPackageManager();
+    		Intent launchIntent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+				ComponentName mainActivityRef = launchIntent.getComponent();
+        final Intent intent = new Intent()
+								.setComponent(mainActivityRef)
                 .putExtra(NOTIFICATION_ID, notificationID)
-                .putExtra("NOTIFICATION_LAUNCH", options.optBoolean("launch", true))
-                .setAction(Action.CLICK_ACTION_ID)
-                .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        builder.setContentIntent(PendingIntent.getService(
+        builder.setContentIntent(PendingIntent.getActivity(
             context,
             notificationID,
             intent,
-            FLAG_UPDATE_CURRENT
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE : FLAG_UPDATE_CURRENT
         ));
     }
 
@@ -238,8 +243,8 @@ public final class Builder {
             context,
             notificationID,
             intent,
-            FLAG_UPDATE_CURRENT
-        ));
+						Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE : FLAG_UPDATE_CURRENT
+				));
     }
 
     private static void applyActions(JSONObject options, NotificationCompat.Builder builder, Context context, int notificationID) {
@@ -297,7 +302,12 @@ public final class Builder {
                 .setAction(action.getId())
                 .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-        return PendingIntent.getService(context, notificationID, intent, FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(
+        	context,
+					notificationID,
+					intent,
+					Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_MUTABLE : FLAG_UPDATE_CURRENT
+				);
     }
 
     // Utility methods:
