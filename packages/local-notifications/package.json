@@ -29,6 +29,10 @@
 		{
 			"name": "Dani Gámez Franco",
 			"url": "https://github.com/Danziger"
+		},
+		{
+			"name": "NativeScript",
+			"email": "oss@nativescript.org"
 		}
 	],
 	"license": "MIT",

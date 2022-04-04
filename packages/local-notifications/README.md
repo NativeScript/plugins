@@ -17,13 +17,13 @@ From the command prompt go to your app's root folder and execute:
 #### NativeScript 7+:
 
 ```cli
-ns plugin add @nativescript/local-notifications
+npm install @nativescript/local-notifications
 ```
 
 #### NativeScript prior to 7:
 
 ```cli
-tns plugin add nativescript-local-notifications@4.2.1
+tnpm install nativescript-local-notifications@4.2.1
 ```
 
 ## Setup
@@ -53,16 +53,6 @@ import '@nativescript/local-notifications';
 
 // ... Bootstrap application
 ```
-
-### NativeScript-Angular
-
-This plugin is part of the [plugin showcase app](https://github.com/EddyVerbruggen/nativescript-pluginshowcase/tree/master/app/feedback) I built using Angular.
-
-There's also a simple Angular [demo in this repo](https://github.com/EddyVerbruggen/nativescript-local-notifications/tree/master/demo-ng):
-
-### NativeScript-Vue
-
-There is a [Vue demo](https://github.com/EddyVerbruggen/nativescript-local-notifications/tree/master/demo-vue):
 
 ## Plugin API
 
