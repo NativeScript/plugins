@@ -375,17 +375,15 @@ export class MapView extends MapViewBase {
 		});
 		const container = new android.widget.LinearLayout(this._context);
 		const nativeView = new com.google.android.gms.maps.MapView(this._context);
-		nativeView.onCreate(this.createdBundle);
-		nativeView.onResume();
 		nativeView.getMapAsync(this.#listener);
 		this.mapView = nativeView;
-		nativeView.onCreate(null);
+		nativeView.onCreate(this.createdBundle);
 		nativeView.onResume();
 		return container;
 	}
+
 	initNativeView(): void {
 		super.initNativeView();
-		console.log('initNativeView');
 	}
 
 	[latProperty.setNative](value) {
@@ -962,6 +960,15 @@ export class CameraPosition implements ICameraPosition {
 
 	set zoom(value) {
 		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, value, this.native.tilt, this.native.bearing);
+	}
+
+	toJSON() {
+		return {
+			target: this.target,
+			tilt: this.tilt,
+			bearing: this.bearing,
+			zoom: this.zoom,
+		};
 	}
 }
 

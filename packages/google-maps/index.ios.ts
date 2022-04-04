@@ -131,6 +131,15 @@ export class CameraPosition implements ICameraPosition {
 	set zoom(value) {
 		this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, value, this.native.bearing, this.native.viewingAngle);
 	}
+
+	toJSON() {
+		return {
+			target: this.target,
+			tilt: this.tilt,
+			bearing: this.bearing,
+			zoom: this.zoom,
+		};
+	}
 }
 
 @ObjCClass(GMSMapViewDelegate)
