@@ -17,16 +17,17 @@ From the command prompt go to your app's root folder and execute:
 #### NativeScript 7+:
 
 ```cli
-ns plugin add @nativescript/local-notifications
+npm install @nativescript/local-notifications
 ```
 
 #### NativeScript prior to 7:
 
 ```cli
-tns plugin add nativescript-local-notifications@4.2.1
+tnpm install nativescript-local-notifications@4.2.1
 ```
 
-## Setup (since plugin version 3.0.0)
+## Setup
+### Since plugin version 3.0.0
 
 Add this so for iOS 10+ we can do some wiring (set the iOS `UNUserNotificationCenter.delegate`, to be precise).
 Not needed if your app loads the plugin on startup anyway.
@@ -43,15 +44,15 @@ import * as LocalNotifications from '@nativescript/local-notifications';
 LocalNotifications.hasPermission();
 ```
 
-### NativeScript-Angular
+### Since plugin version 6.0.0
 
-This plugin is part of the [plugin showcase app](https://github.com/EddyVerbruggen/nativescript-pluginshowcase/tree/master/app/feedback) I built using Angular.
+Both iOS and Android have to register their delegates and lifecycle callbacks respectively. Hence, if your app does not load this plugin at startup you will have to add the following to your app's `app.ts`/`main.ts` file:
 
-There's also a simple Angular [demo in this repo](https://github.com/EddyVerbruggen/nativescript-local-notifications/tree/master/demo-ng):
+```typescript
+import '@nativescript/local-notifications';
 
-### NativeScript-Vue
-
-There is a [Vue demo](https://github.com/EddyVerbruggen/nativescript-local-notifications/tree/master/demo-vue):
+// ... Bootstrap application
+```
 
 ## Plugin API
 
@@ -63,7 +64,7 @@ You can have the `schedule` funtion do that for you automatically (the notificat
 You can pass several options to this function, everything is optional:
 
 | option                      | description                                                                                                                                                                                                                                                                                                                                        |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `id`                        | A number so you can easily distinguish your notifications. Will be generated if not set.                                                                                                                                                                                                                                                           |
 | `title`                     | The title which is shown in the statusbar. Default not set.                                                                                                                                                                                                                                                                                        |
 | `subtitle`                  | Shown below the title on iOS, and next to the App name on Android. Default not set. All android and iOS >= 10 only.                                                                                                                                                                                                                                |
@@ -90,14 +91,14 @@ You can pass several options to this function, everything is optional:
 
 #### `NotificationAction`
 
-| option        | description                                       |
-| ------------- | ------------------------------------------------- |
-| `id`          | An id so you can easily distinguish your actions. |
-| `type`        | Either `button` or `input`.                       |
-| `title`       | The label for `type` = `button`.                  |
-| `launch`      | Launch the app when the action completes.         |
-| `submitLabel` | The submit button label for `type` = `input`.     |
-| `placeholder` | The placeholder text for `type` = `input`.        |
+| option        | description                                                                                                            |
+|---------------|------------------------------------------------------------------------------------------------------------------------|
+| `id`          | An id so you can easily distinguish your actions.                                                                      |
+| `type`        | Either `button` or `input`.                                                                                            |
+| `title`       | The label for `type` = `button`.                                                                                       |
+| `launch`      | Launch the app when the action completes. This will only work in apps targeting Android 11 or lower (target SDK < 31). |
+| `submitLabel` | The submit button label for `type` = `input`.                                                                          |
+| `placeholder` | The placeholder text for `type` = `input`.                                                                             |
 
 ```js
 LocalNotifications.schedule([
@@ -139,7 +140,7 @@ These options default to `res://ic_stat_notify` and `res://ic_stat_notify_silhou
 and [here's a great guide on how to easily create these icons on Android](https://developer.android.com/studio/write/image-asset-studio).
 
 | Density qualifier | px      | dpi         |
-| ----------------- | ------- | ----------- |
+|-------------------|---------|-------------|
 | ldpi              | 18 × 18 | 120         |
 | mdpi              | 24 × 24 | 160         |
 | hdpi              | 36 × 36 | 240         |
