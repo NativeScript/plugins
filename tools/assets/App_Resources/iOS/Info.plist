@@ -65,5 +65,7 @@
     </array>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
+    <key>TNSGoogleMapsAPIKey</key>
+    <string>yourKey</string>
   </dict>
 </plist>

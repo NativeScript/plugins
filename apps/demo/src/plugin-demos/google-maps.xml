@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:map="@nativescript/google-maps" navigatingTo="navigatingTo" class="page">
     <Page.actionBar>
         <ActionBar title="google-maps" icon="" class="action-bar">
         </ActionBar>
@@ -6,8 +6,15 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-            <Button text="Test google-maps" tap="{{ testIt }}" class="btn btn-primary"/>
 
+            <map:MapView
+              width="300"
+              height="300"
+              ready="{{onReady}}"
+              mapTap="{{onTap}}"
+              mapLongPress="{{onLongPress}}"
+              markerTap="{{onMarkerTap}}"
+            />
           </StackLayout>
         </ScrollView>
     </StackLayout>
