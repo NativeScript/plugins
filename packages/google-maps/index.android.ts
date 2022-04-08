@@ -770,7 +770,11 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addMarker(options: MarkerOptions) {
-		return Marker.fromNative(this.native.addMarker(intoNativeMarkerOptions(options)));
+		const marker = Marker.fromNative(this.native.addMarker(intoNativeMarkerOptions(options)));
+		if (options?.userData) {
+			marker.userData = options.userData;
+		}
+		return marker;
 	}
 
 	removeMarker(marker: Marker) {

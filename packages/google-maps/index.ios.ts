@@ -821,6 +821,9 @@ export class GoogleMap implements IGoogleMap {
 
 	addMarker(options: MarkerOptions) {
 		const marker = Marker.fromNative(intoNativeMarkerOptions(options));
+		if (options?.userData) {
+			marker.userData = options.userData;
+		}
 		marker.native.map = this.native;
 		return marker;
 	}
