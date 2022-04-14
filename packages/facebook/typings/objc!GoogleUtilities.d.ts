@@ -1,6 +1,4 @@
-
 declare class GULAppDelegateSwizzler extends NSProxy {
-
 	static alloc(): GULAppDelegateSwizzler; // inherited from NSProxy
 
 	static isAppDelegateProxyEnabled(): boolean;
@@ -17,7 +15,6 @@ declare class GULAppDelegateSwizzler extends NSProxy {
 }
 
 declare class GULAppEnvironmentUtil extends NSObject {
-
 	static alloc(): GULAppEnvironmentUtil; // inherited from NSObject
 
 	static applePlatform(): string;
@@ -44,18 +41,15 @@ declare class GULAppEnvironmentUtil extends NSObject {
 }
 
 interface GULHeartbeatDateStorable extends NSObjectProtocol {
-
 	heartbeatDateForTag(tag: string): Date;
 
 	setHearbeatDateForTag(date: Date, tag: string): boolean;
 }
 declare var GULHeartbeatDateStorable: {
-
 	prototype: GULHeartbeatDateStorable;
 };
 
 declare class GULHeartbeatDateStorage extends NSObject implements GULHeartbeatDateStorable {
-
 	static alloc(): GULHeartbeatDateStorage; // inherited from NSObject
 
 	static new(): GULHeartbeatDateStorage; // inherited from NSObject
@@ -72,9 +66,9 @@ declare class GULHeartbeatDateStorage extends NSObject implements GULHeartbeatDa
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { fileName: string; });
+	constructor(o: { fileName: string });
 
 	class(): typeof NSObject;
 
@@ -106,7 +100,6 @@ declare class GULHeartbeatDateStorage extends NSObject implements GULHeartbeatDa
 }
 
 declare class GULHeartbeatDateStorageUserDefaults extends NSObject implements GULHeartbeatDateStorable {
-
 	static alloc(): GULHeartbeatDateStorageUserDefaults; // inherited from NSObject
 
 	static new(): GULHeartbeatDateStorageUserDefaults; // inherited from NSObject
@@ -121,9 +114,9 @@ declare class GULHeartbeatDateStorageUserDefaults extends NSObject implements GU
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { defaults: NSUserDefaults; key: string; });
+	constructor(o: { defaults: NSUserDefaults; key: string });
 
 	class(): typeof NSObject;
 
@@ -157,12 +150,11 @@ declare class GULHeartbeatDateStorageUserDefaults extends NSObject implements GU
 declare function GULIsLoggableLevel(loggerLevel: GULLoggerLevel): boolean;
 
 declare class GULKeychainStorage extends NSObject {
-
 	static alloc(): GULKeychainStorage; // inherited from NSObject
 
 	static new(): GULKeychainStorage; // inherited from NSObject
 
-	constructor(o: { service: string; });
+	constructor(o: { service: string });
 
 	getObjectForKeyObjectClassAccessGroup(key: string, objectClass: typeof NSObject, accessGroup: string): FBLPromise<NSSecureCoding>;
 
@@ -174,7 +166,6 @@ declare class GULKeychainStorage extends NSObject {
 }
 
 declare class GULKeychainUtils extends NSObject {
-
 	static alloc(): GULKeychainUtils; // inherited from NSObject
 
 	static getItemWithQueryError(query: NSDictionary<any, any>): NSData;
@@ -193,7 +184,6 @@ declare function GULLoggerForceDebug(): void;
 declare function GULLoggerInitializeASL(): void;
 
 declare const enum GULLoggerLevel {
-
 	Error = 3,
 
 	Warning = 4,
@@ -206,20 +196,18 @@ declare const enum GULLoggerLevel {
 
 	Min = 3,
 
-	Max = 7
+	Max = 7,
 }
 
 declare function GULLoggerRegisterVersion(version: string): void;
 
 declare class GULLoggerWrapper extends NSObject {
-
 	static alloc(): GULLoggerWrapper; // inherited from NSObject
 
 	static new(): GULLoggerWrapper; // inherited from NSObject
 }
 
 declare class GULMutableDictionary extends NSObject {
-
 	static alloc(): GULMutableDictionary; // inherited from NSObject
 
 	static new(): GULMutableDictionary; // inherited from NSObject
@@ -242,12 +230,11 @@ declare class GULMutableDictionary extends NSObject {
 }
 
 declare const enum GULNSDataZlibError {
-
 	GreaterThan32BitsToCompress = 1024,
 
 	Internal = 1025,
 
-	DataRemaining = 1026
+	DataRemaining = 1026,
 }
 
 declare var GULNSDataZlibErrorDomain: string;
@@ -257,7 +244,6 @@ declare var GULNSDataZlibErrorKey: string;
 declare var GULNSDataZlibRemainingBytesKey: string;
 
 declare class GULNetwork extends NSObject {
-
 	static alloc(): GULNetwork; // inherited from NSObject
 
 	static handleEventsForBackgroundURLSessionIDCompletionHandler(sessionID: string, completionHandler: () => void): void;
@@ -276,7 +262,7 @@ declare class GULNetwork extends NSObject {
 
 	readonly uploadInProgress: boolean;
 
-	constructor(o: { reachabilityHost: string; });
+	constructor(o: { reachabilityHost: string });
 
 	getURLHeadersQueueUsingBackgroundSessionCompletionHandler(url: NSURL, headers: NSDictionary<any, any>, queue: NSObject, usingBackgroundSession: boolean, handler: (p1: NSHTTPURLResponse, p2: NSData, p3: NSError) => void): string;
 
@@ -286,7 +272,6 @@ declare class GULNetwork extends NSObject {
 }
 
 declare const enum GULNetworkErrorCode {
-
 	NetworkErrorCodeUnknown = 0,
 
 	ErrorCodeNetworkInvalidURL = 1,
@@ -297,22 +282,20 @@ declare const enum GULNetworkErrorCode {
 
 	ErrorCodeNetworkSessionTaskCreation = 4,
 
-	ErrorCodeNetworkInvalidResponse = 5
+	ErrorCodeNetworkInvalidResponse = 5,
 }
 
 declare const enum GULNetworkLogLevel {
-
 	kGULNetworkLogLevelError = 3,
 
 	kGULNetworkLogLevelWarning = 4,
 
 	kGULNetworkLogLevelInfo = 6,
 
-	kGULNetworkLogLevelDebug = 7
+	kGULNetworkLogLevelDebug = 7,
 }
 
 interface GULNetworkLoggerDelegate extends NSObjectProtocol {
-
 	GULNetwork_logWithLevelMessageCodeMessage(logLevel: GULNetworkLogLevel, messageCode: GULNetworkMessageCode, message: string): void;
 
 	GULNetwork_logWithLevelMessageCodeMessageContext(logLevel: GULNetworkLogLevel, messageCode: GULNetworkMessageCode, message: string, context: any): void;
@@ -320,12 +303,10 @@ interface GULNetworkLoggerDelegate extends NSObjectProtocol {
 	GULNetwork_logWithLevelMessageCodeMessageContexts(logLevel: GULNetworkLogLevel, messageCode: GULNetworkMessageCode, message: string, contexts: NSArray<any> | any[]): void;
 }
 declare var GULNetworkLoggerDelegate: {
-
 	prototype: GULNetworkLoggerDelegate;
 };
 
 declare const enum GULNetworkMessageCode {
-
 	kGULNetworkMessageCodeNetwork000 = 900000,
 
 	kGULNetworkMessageCodeNetwork001 = 900001,
@@ -372,20 +353,17 @@ declare const enum GULNetworkMessageCode {
 
 	kGULNetworkMessageCodeURLSession018 = 901018,
 
-	kGULNetworkMessageCodeURLSession019 = 901019
+	kGULNetworkMessageCodeURLSession019 = 901019,
 }
 
 interface GULNetworkReachabilityDelegate {
-
 	reachabilityDidChange(): void;
 }
 declare var GULNetworkReachabilityDelegate: {
-
 	prototype: GULNetworkReachabilityDelegate;
 };
 
 declare class GULNetworkURLSession extends NSObject {
-
 	static alloc(): GULNetworkURLSession; // inherited from NSObject
 
 	static handleEventsForBackgroundURLSessionIDCompletionHandler(sessionID: string, completionHandler: () => void): void;
@@ -396,7 +374,7 @@ declare class GULNetworkURLSession extends NSObject {
 
 	loggerDelegate: GULNetworkLoggerDelegate;
 
-	constructor(o: { networkLoggerDelegate: GULNetworkLoggerDelegate; });
+	constructor(o: { networkLoggerDelegate: GULNetworkLoggerDelegate });
 
 	initWithNetworkLoggerDelegate(networkLoggerDelegate: GULNetworkLoggerDelegate): this;
 
@@ -406,7 +384,6 @@ declare class GULNetworkURLSession extends NSObject {
 }
 
 declare class GULObjectSwizzler extends NSObject {
-
 	static alloc(): GULObjectSwizzler; // inherited from NSObject
 
 	static getAssociatedObjectKey(object: any, key: string): any;
@@ -417,7 +394,7 @@ declare class GULObjectSwizzler extends NSObject {
 
 	readonly generatedClass: typeof NSObject;
 
-	constructor(o: { object: any; });
+	constructor(o: { object: any });
 
 	copySelectorFromClassIsClassSelector(selector: string, aClass: typeof NSObject, isClassSelector: boolean): void;
 
@@ -433,7 +410,6 @@ declare class GULObjectSwizzler extends NSObject {
 }
 
 declare class GULReachabilityChecker extends NSObject {
-
 	static alloc(): GULReachabilityChecker; // inherited from NSObject
 
 	static new(): GULReachabilityChecker; // inherited from NSObject
@@ -446,7 +422,7 @@ declare class GULReachabilityChecker extends NSObject {
 
 	readonly reachabilityStatus: GULReachabilityStatus;
 
-	constructor(o: { reachabilityDelegate: GULReachabilityDelegate; withHost: string; });
+	constructor(o: { reachabilityDelegate: GULReachabilityDelegate; withHost: string });
 
 	initWithReachabilityDelegateWithHost(reachabilityDelegate: GULReachabilityDelegate, host: string): this;
 
@@ -456,29 +432,25 @@ declare class GULReachabilityChecker extends NSObject {
 }
 
 interface GULReachabilityDelegate {
-
 	reachabilityStatusChanged(reachability: GULReachabilityChecker, status: GULReachabilityStatus): void;
 }
 declare var GULReachabilityDelegate: {
-
 	prototype: GULReachabilityDelegate;
 };
 
 declare const enum GULReachabilityStatus {
-
 	kGULReachabilityUnknown = 0,
 
 	kGULReachabilityNotReachable = 1,
 
 	kGULReachabilityViaWifi = 2,
 
-	kGULReachabilityViaCellular = 3
+	kGULReachabilityViaCellular = 3,
 }
 
 declare function GULReachabilityStatusString(status: GULReachabilityStatus): string;
 
 declare class GULSceneDelegateSwizzler extends NSProxy {
-
 	static alloc(): GULSceneDelegateSwizzler; // inherited from NSProxy
 
 	static isSceneDelegateProxyEnabled(): boolean;
@@ -491,7 +463,6 @@ declare class GULSceneDelegateSwizzler extends NSProxy {
 }
 
 declare class GULSecureCoding extends NSObject {
-
 	static alloc(): GULSecureCoding; // inherited from NSObject
 
 	static archivedDataWithRootObjectError(object: NSCoding): NSData;
@@ -506,7 +477,6 @@ declare class GULSecureCoding extends NSObject {
 declare function GULSetLoggerLevel(loggerLevel: GULLoggerLevel): void;
 
 declare class GULSwizzledObject extends NSObject {
-
 	static alloc(): GULSwizzledObject; // inherited from NSObject
 
 	static copyDonorSelectorsUsingObjectSwizzler(objectSwizzler: GULObjectSwizzler): void;
@@ -519,7 +489,6 @@ declare class GULSwizzledObject extends NSObject {
 }
 
 declare class GULSwizzler extends NSObject {
-
 	static alloc(): GULSwizzler; // inherited from NSObject
 
 	static currentImplementationForClassSelectorIsClassSelector(aClass: typeof NSObject, selector: string, isClassSelector: boolean): interop.FunctionReference<() => void>;
@@ -528,13 +497,16 @@ declare class GULSwizzler extends NSObject {
 
 	static new(): GULSwizzler; // inherited from NSObject
 
+	static originalImplementationForClassSelectorIsClassSelector(aClass: typeof NSObject, selector: string, isClassSelector: boolean): interop.FunctionReference<() => void>;
+
 	static selectorExistsInClassIsClassSelector(selector: string, aClass: typeof NSObject, isClassSelector: boolean): boolean;
 
 	static swizzleClassSelectorIsClassSelectorWithBlock(aClass: typeof NSObject, selector: string, isClassSelector: boolean, block: any): void;
+
+	static unswizzleClassSelectorIsClassSelector(aClass: typeof NSObject, selector: string, isClassSelector: boolean): void;
 }
 
 declare class GULURLSessionDataResponse extends NSObject {
-
 	static alloc(): GULURLSessionDataResponse; // inherited from NSObject
 
 	static new(): GULURLSessionDataResponse; // inherited from NSObject
@@ -543,20 +515,19 @@ declare class GULURLSessionDataResponse extends NSObject {
 
 	readonly HTTPResponse: NSHTTPURLResponse;
 
-	constructor(o: { response: NSHTTPURLResponse; HTTPBody: NSData; });
+	constructor(o: { response: NSHTTPURLResponse; HTTPBody: NSData });
 
 	initWithResponseHTTPBody(response: NSHTTPURLResponse, body: NSData): this;
 }
 
 declare class GULUserDefaults extends NSObject {
-
 	static alloc(): GULUserDefaults; // inherited from NSObject
 
 	static new(): GULUserDefaults; // inherited from NSObject
 
 	static standardUserDefaults(): GULUserDefaults;
 
-	constructor(o: { suiteName: string; });
+	constructor(o: { suiteName: string });
 
 	arrayForKey(defaultName: string): NSArray<any>;
 
@@ -592,7 +563,6 @@ declare class GULUserDefaults extends NSObject {
 }
 
 declare const enum GUL_ASSOCIATION {
-
 	ASSIGN = 0,
 
 	RETAIN_NONATOMIC = 1,
@@ -601,7 +571,7 @@ declare const enum GUL_ASSOCIATION {
 
 	RETAIN = 3,
 
-	COPY = 4
+	COPY = 4,
 }
 
 declare var GoogleUtilitiesVersionNumber: number;
