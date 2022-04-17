@@ -96,7 +96,7 @@ for (let i = 0; i < 20; i++) {
 
 ```js
 import Vue from 'nativescript-vue';
-import { PickerField } from '@nativescript/picker/vue';
+import PickerField from '@nativescript/picker/vue';
 
 Vue.use(PickerField);
 ```
