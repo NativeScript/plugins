@@ -1,7 +1,7 @@
 import { ILoginManager } from './common';
 import { AndroidActivityResultEventData, AndroidApplication, Application } from '@nativescript/core';
 
-function setToArray<T>(value: java.util.Set<T>, type: "string" | "number" | "boolean"): T[] {
+function setToArray<T>(value: java.util.Set<T>, type: 'string' | 'number' | 'boolean'): T[] {
 	const result = [];
 	const count = value.size();
 	const nativeObjects = value.toArray();
@@ -68,7 +68,7 @@ export class AccessToken {
 
 	get declinedPermissions() {
 		if (!this.#declinedPermissions) {
-			this.#declinedPermissions = setToArray(this.native.getDeclinedPermissions(), "string");
+			this.#declinedPermissions = setToArray(this.native.getDeclinedPermissions(), 'string');
 		}
 		return this.#declinedPermissions;
 	}
@@ -83,7 +83,7 @@ export class AccessToken {
 
 	get expiredPermissions(): string[] {
 		if (!this.#expiredPermissions) {
-			this.#expiredPermissions = setToArray(this.native.getExpiredPermissions(), "string");
+			this.#expiredPermissions = setToArray(this.native.getExpiredPermissions(), 'string');
 		}
 		return this.#expiredPermissions;
 	}
@@ -94,7 +94,7 @@ export class AccessToken {
 
 	get permissions(): string[] {
 		if (!this.#permissions) {
-			this.#permissions = setToArray(this.native.getPermissions(), "string");
+			this.#permissions = setToArray(this.native.getPermissions(), 'string');
 		}
 		return this.#permissions;
 	}
@@ -119,7 +119,6 @@ export class AccessToken {
 		return com.facebook.AccessToken.isCurrentAccessTokenActive();
 	}
 
-
 	toJSON() {
 		return {
 			appID: this.appID,
@@ -133,8 +132,8 @@ export class AccessToken {
 			permissions: this.permissions,
 			refreshDate: this.refreshDate,
 			tokenString: this.tokenString,
-			userID: this.userID
-		}
+			userID: this.userID,
+		};
 	}
 
 	get native() {
@@ -172,7 +171,7 @@ export class LoginResult {
 			return [];
 		}
 		if (!this.#declinedPermissions) {
-			this.#declinedPermissions = setToArray(this.native.getRecentlyDeniedPermissions(), "string");
+			this.#declinedPermissions = setToArray(this.native.getRecentlyDeniedPermissions(), 'string');
 		}
 		return this.#declinedPermissions;
 	}
@@ -182,7 +181,7 @@ export class LoginResult {
 			return [];
 		}
 		if (!this.#grantedPermissions) {
-			this.#grantedPermissions = setToArray(this.native.getRecentlyGrantedPermissions(), "string");
+			this.#grantedPermissions = setToArray(this.native.getRecentlyGrantedPermissions(), 'string');
 		}
 		return this.#grantedPermissions;
 	}
@@ -206,8 +205,8 @@ export class LoginResult {
 			declinedPermissions: this.declinedPermissions,
 			grantedPermissions: this.grantedPermissions,
 			isCancelled: this.isCancelled,
-			token: this.token
-		}
+			token: this.token,
+		};
 	}
 
 	get native() {
@@ -222,13 +221,20 @@ export class LoginResult {
 export class LoginManager implements ILoginManager {
 	static #native: com.facebook.login.LoginManager;
 	static #callbackManager: com.facebook.CallbackManager;
+	private static ensureNative() {
+		if (!LoginManager.#native) {
+			LoginManager.#native = com.facebook.login.LoginManager.getInstance();
+		}
+	}
 
-	static init() { }
+	static init() {
+		LoginManager.ensureNative();
+	}
 
 	static logInWithPermissions(permissions: string[], context?: any): Promise<LoginResult> {
 		return new Promise((resolve, reject) => {
-			if (!this.#native) {
-				this.#native = com.facebook.login.LoginManager.getInstance();
+			LoginManager.ensureNative();
+			if (!this.#callbackManager) {
 				this.#callbackManager = com.facebook.CallbackManager.Factory.create();
 				Application.android.on(AndroidApplication.activityResultEvent, (data: AndroidActivityResultEventData) => {
 					this.#callbackManager.onActivityResult(data.requestCode, data.resultCode, data.intent);
@@ -253,6 +259,7 @@ export class LoginManager implements ILoginManager {
 	}
 
 	static logout() {
+		LoginManager.ensureNative();
 		this.#native.logOut();
 	}
 }

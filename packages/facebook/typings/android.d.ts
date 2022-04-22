@@ -1,7 +1,10 @@
+/// <reference path="android-declarations.d.ts"/>
+
 declare module com {
 	export module facebook {
 		export class AccessToken {
 			public static class: java.lang.Class<com.facebook.AccessToken>;
+			public static Companion: com.facebook.AccessToken.Companion;
 			public static ACCESS_TOKEN_KEY: string;
 			public static EXPIRES_IN_KEY: string;
 			public static USER_ID_KEY: string;
@@ -9,7 +12,6 @@ declare module com {
 			public static GRAPH_DOMAIN: string;
 			public static DEFAULT_GRAPH_DOMAIN: string;
 			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AccessToken>;
-			public static Companion: com.facebook.AccessToken.Companion;
 			public equals(param0: any): boolean;
 			public getPermissions(): java.util.Set<string>;
 			public isDataAccessExpired(): boolean;
@@ -53,10 +55,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.AccessToken$AccessTokenCreationCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onSuccess(param0: com.facebook.AccessToken): void;
-					onError(param0: com.facebook.FacebookException): void;
-				});
+				public constructor(implementation: { onSuccess(param0: com.facebook.AccessToken): void; onError(param0: com.facebook.FacebookException): void });
 				public constructor();
 				public onSuccess(param0: com.facebook.AccessToken): void;
 				public onError(param0: com.facebook.FacebookException): void;
@@ -66,10 +65,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.AccessToken$AccessTokenRefreshCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					OnTokenRefreshed(param0: com.facebook.AccessToken): void;
-					OnTokenRefreshFailed(param0: com.facebook.FacebookException): void;
-				});
+				public constructor(implementation: { OnTokenRefreshed(param0: com.facebook.AccessToken): void; OnTokenRefreshFailed(param0: com.facebook.FacebookException): void });
 				public constructor();
 				public OnTokenRefreshFailed(param0: com.facebook.FacebookException): void;
 				public OnTokenRefreshed(param0: com.facebook.AccessToken): void;
@@ -102,8 +98,8 @@ declare module com {
 	export module facebook {
 		export class AccessTokenCache {
 			public static class: java.lang.Class<com.facebook.AccessTokenCache>;
-			public static CACHED_ACCESS_TOKEN_KEY: string;
 			public static Companion: com.facebook.AccessTokenCache.Companion;
+			public static CACHED_ACCESS_TOKEN_KEY: string;
 			public clear(): void;
 			public constructor();
 			public load(): com.facebook.AccessToken;
@@ -127,12 +123,12 @@ declare module com {
 	export module facebook {
 		export class AccessTokenManager {
 			public static class: java.lang.Class<com.facebook.AccessTokenManager>;
+			public static Companion: com.facebook.AccessTokenManager.Companion;
 			public static TAG: string;
 			public static ACTION_CURRENT_ACCESS_TOKEN_CHANGED: string;
 			public static EXTRA_OLD_ACCESS_TOKEN: string;
 			public static EXTRA_NEW_ACCESS_TOKEN: string;
 			public static SHARED_PREFERENCES_NAME: string;
-			public static Companion: com.facebook.AccessTokenManager.Companion;
 			public loadCurrentAccessToken(): boolean;
 			public currentAccessTokenChanged(): void;
 			public constructor(param0: androidx.localbroadcastmanager.content.LocalBroadcastManager, param1: com.facebook.AccessTokenCache);
@@ -169,19 +165,16 @@ declare module com {
 				public getAccessToken(): string;
 				public setDataAccessExpirationTime(param0: java.lang.Long): void;
 				public setExpiresIn(param0: number): void;
+				public constructor();
 				public getDataAccessExpirationTime(): java.lang.Long;
 				public setGraphDomain(param0: string): void;
-				public constructor();
 			}
 			export class RefreshTokenInfo {
 				public static class: java.lang.Class<com.facebook.AccessTokenManager.RefreshTokenInfo>;
 				/**
 				 * Constructs a new instance of the com.facebook.AccessTokenManager$RefreshTokenInfo interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					getGraphPath(): string;
-					getGrantType(): string;
-				});
+				public constructor(implementation: { getGraphPath(): string; getGrantType(): string });
 				public constructor();
 				public getGrantType(): string;
 				public getGraphPath(): string;
@@ -223,6 +216,7 @@ declare module com {
 	export module facebook {
 		export abstract class AccessTokenTracker {
 			public static class: java.lang.Class<com.facebook.AccessTokenTracker>;
+			public static Companion: com.facebook.AccessTokenTracker.Companion;
 			public onCurrentAccessTokenChanged(param0: com.facebook.AccessToken, param1: com.facebook.AccessToken): void;
 			public startTracking(): void;
 			public stopTracking(): void;
@@ -230,8 +224,12 @@ declare module com {
 			public isTracking(): boolean;
 		}
 		export module AccessTokenTracker {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AccessTokenTracker.Companion>;
+			}
 			export class CurrentAccessTokenBroadcastReceiver {
 				public static class: java.lang.Class<com.facebook.AccessTokenTracker.CurrentAccessTokenBroadcastReceiver>;
+				public constructor(param0: com.facebook.AccessTokenTracker);
 				public onReceive(param0: globalAndroid.content.Context, param1: globalAndroid.content.Intent): void;
 			}
 		}
@@ -242,24 +240,30 @@ declare module com {
 	export module facebook {
 		export class AuthenticationToken {
 			public static class: java.lang.Class<com.facebook.AuthenticationToken>;
+			public static Companion: com.facebook.AuthenticationToken.Companion;
 			public static AUTHENTICATION_TOKEN_KEY: string;
 			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationToken>;
-			public static Companion: com.facebook.AuthenticationToken.Companion;
-			public constructor(param0: string, param1: string);
 			public equals(param0: any): boolean;
 			public getHeader(): com.facebook.AuthenticationTokenHeader;
 			public getToken(): string;
-			public describeContents(): number;
-			public getSignature(): string;
+			public static getCurrentAuthenticationToken(): com.facebook.AuthenticationToken;
 			public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 			public constructor(param0: globalAndroid.os.Parcel);
 			public getExpectedNonce(): string;
+			public static setCurrentAuthenticationToken(param0: com.facebook.AuthenticationToken): void;
+			public constructor(param0: string, param1: string);
+			public toJSONObject$facebook_core_release(): org.json.JSONObject;
+			public constructor(param0: org.json.JSONObject);
+			public describeContents(): number;
+			public getSignature(): string;
 			public getClaims(): com.facebook.AuthenticationTokenClaims;
 			public hashCode(): number;
 		}
 		export module AuthenticationToken {
 			export class Companion {
 				public static class: java.lang.Class<com.facebook.AuthenticationToken.Companion>;
+				public setCurrentAuthenticationToken(param0: com.facebook.AuthenticationToken): void;
+				public getCurrentAuthenticationToken(): com.facebook.AuthenticationToken;
 			}
 		}
 	}
@@ -269,9 +273,8 @@ declare module com {
 	export module facebook {
 		export class AuthenticationTokenCache {
 			public static class: java.lang.Class<com.facebook.AuthenticationTokenCache>;
-			public static CACHED_AUTHENTICATION_TOKEN_KEY: string;
-			public static CACHED_AUTHENTICATION_TOKEN_NONCE_KEY: string;
 			public static Companion: com.facebook.AuthenticationTokenCache.Companion;
+			public static CACHED_AUTHENTICATION_TOKEN_KEY: string;
 			public save(param0: com.facebook.AuthenticationToken): void;
 			public clear(): void;
 			public load(): com.facebook.AuthenticationToken;
@@ -290,6 +293,7 @@ declare module com {
 	export module facebook {
 		export class AuthenticationTokenClaims {
 			public static class: java.lang.Class<com.facebook.AuthenticationTokenClaims>;
+			public static Companion: com.facebook.AuthenticationTokenClaims.Companion;
 			public static MAX_TIME_SINCE_TOKEN_ISSUED: number;
 			public static JSON_KEY_JIT: string;
 			public static JSON_KEY_ISS: string;
@@ -312,26 +316,26 @@ declare module com {
 			public static JSON_KEY_USER_LINK: string;
 			public static JSON_KEY_USER_LOCATION: string;
 			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationTokenClaims>;
-			public static Companion: com.facebook.AuthenticationTokenClaims.Companion;
 			public getNonce(): string;
 			public equals(param0: any): boolean;
 			public getFamilyName(): string;
 			public getJti(): string;
 			public getPicture(): string;
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string);
-			public getUserHometown(): java.util.Map<string,string>;
+			public static createFromJSONObject$facebook_core_release(param0: org.json.JSONObject): com.facebook.AuthenticationTokenClaims;
+			public getUserHometown(): java.util.Map<string, string>;
 			public constructor(param0: string, param1: string);
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string);
 			public getExp(): number;
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string);
-			public getUserAgeRange(): java.util.Map<string,java.lang.Integer>;
+			public getUserAgeRange(): java.util.Map<string, java.lang.Integer>;
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string);
 			public getAud(): string;
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>);
-			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>, param17: java.util.Map<string,string>, param18: string);
-			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string, java.lang.Integer>, param16: java.util.Map<string, string>, param17: java.util.Map<string, string>, param18: string);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string, java.lang.Integer>);
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string);
-			public getUserLocation(): java.util.Map<string,string>;
+			public getUserLocation(): java.util.Map<string, string>;
 			public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 			public constructor(param0: globalAndroid.os.Parcel);
 			public getUserBirthday(): string;
@@ -341,16 +345,16 @@ declare module com {
 			public toString(): string;
 			public getName(): string;
 			public getMiddleName(): string;
-			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>, param17: java.util.Map<string,string>);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string, java.lang.Integer>, param16: java.util.Map<string, string>, param17: java.util.Map<string, string>);
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string);
-			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>);
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string, java.lang.Integer>, param16: java.util.Map<string, string>);
 			public getIat(): number;
 			public getSub(): string;
 			public describeContents(): number;
 			public getGivenName(): string;
 			public getIss(): string;
+			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string, java.lang.Integer>, param16: java.util.Map<string, string>, param17: java.util.Map<string, string>, param18: string, param19: string);
 			public toEnCodedString(): string;
-			public constructor(param0: string, param1: string, param2: string, param3: string, param4: number, param5: number, param6: string, param7: string, param8: string, param9: string, param10: string, param11: string, param12: string, param13: java.util.Collection<string>, param14: string, param15: java.util.Map<string,java.lang.Integer>, param16: java.util.Map<string,string>, param17: java.util.Map<string,string>, param18: string, param19: string);
 			public getUserGender(): string;
 			public getUserFriends(): java.util.Set<string>;
 			public getEmail(): string;
@@ -371,8 +375,8 @@ declare module com {
 	export module facebook {
 		export class AuthenticationTokenHeader {
 			public static class: java.lang.Class<com.facebook.AuthenticationTokenHeader>;
-			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationTokenHeader>;
 			public static Companion: com.facebook.AuthenticationTokenHeader.Companion;
+			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.AuthenticationTokenHeader>;
 			public equals(param0: any): boolean;
 			public getKid(): string;
 			public constructor(param0: string, param1: string, param2: string);
@@ -381,6 +385,7 @@ declare module com {
 			public getAlg(): string;
 			public toJSONObject$facebook_core_release(): org.json.JSONObject;
 			public toString(): string;
+			public constructor(param0: org.json.JSONObject);
 			public describeContents(): number;
 			public toEnCodedString(): string;
 			public getTyp(): string;
@@ -399,17 +404,17 @@ declare module com {
 	export module facebook {
 		export class AuthenticationTokenManager {
 			public static class: java.lang.Class<com.facebook.AuthenticationTokenManager>;
+			public static Companion: com.facebook.AuthenticationTokenManager.Companion;
 			public static TAG: string;
 			public static ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED: string;
 			public static EXTRA_OLD_AUTHENTICATION_TOKEN: string;
 			public static EXTRA_NEW_AUTHENTICATION_TOKEN: string;
 			public static SHARED_PREFERENCES_NAME: string;
-			public static Companion: com.facebook.AuthenticationTokenManager.Companion;
 			public static getInstance(): com.facebook.AuthenticationTokenManager;
 			public getCurrentAuthenticationToken(): com.facebook.AuthenticationToken;
 			public setCurrentAuthenticationToken(param0: com.facebook.AuthenticationToken): void;
-			public loadCurrentAuthenticationToken(): boolean;
 			public constructor(param0: androidx.localbroadcastmanager.content.LocalBroadcastManager, param1: com.facebook.AuthenticationTokenCache);
+			public loadCurrentAuthenticationToken(): boolean;
 			public currentAuthenticationTokenChanged(): void;
 		}
 		export module AuthenticationTokenManager {
@@ -428,14 +433,36 @@ declare module com {
 
 declare module com {
 	export module facebook {
+		export abstract class AuthenticationTokenTracker {
+			public static class: java.lang.Class<com.facebook.AuthenticationTokenTracker>;
+			public static Companion: com.facebook.AuthenticationTokenTracker.Companion;
+			public startTracking(): void;
+			public onCurrentAuthenticationTokenChanged(param0: com.facebook.AuthenticationToken, param1: com.facebook.AuthenticationToken): void;
+			public stopTracking(): void;
+			public constructor();
+			public isTracking(): boolean;
+		}
+		export module AuthenticationTokenTracker {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenTracker.Companion>;
+			}
+			export class CurrentAuthenticationTokenBroadcastReceiver {
+				public static class: java.lang.Class<com.facebook.AuthenticationTokenTracker.CurrentAuthenticationTokenBroadcastReceiver>;
+				public onReceive(param0: globalAndroid.content.Context, param1: globalAndroid.content.Intent): void;
+				public constructor(param0: com.facebook.AuthenticationTokenTracker);
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
 		export class CallbackManager {
 			public static class: java.lang.Class<com.facebook.CallbackManager>;
 			/**
 			 * Constructs a new instance of the com.facebook.CallbackManager interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 			 */
-			public constructor(implementation: {
-				onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
-			});
+			public constructor(implementation: { onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean });
 			public constructor();
 			public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
 		}
@@ -463,12 +490,18 @@ declare module com {
 	export module facebook {
 		export class CustomTabActivity {
 			public static class: java.lang.Class<com.facebook.CustomTabActivity>;
+			public static Companion: com.facebook.CustomTabActivity.Companion;
 			public static CUSTOM_TAB_REDIRECT_ACTION: string;
 			public static DESTROY_ACTION: string;
 			public onCreate(param0: globalAndroid.os.Bundle): void;
 			public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): void;
 			public constructor();
 			public onDestroy(): void;
+		}
+		export module CustomTabActivity {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.CustomTabActivity.Companion>;
+			}
 		}
 	}
 }
@@ -477,6 +510,7 @@ declare module com {
 	export module facebook {
 		export class CustomTabMainActivity {
 			public static class: java.lang.Class<com.facebook.CustomTabMainActivity>;
+			public static Companion: com.facebook.CustomTabMainActivity.Companion;
 			public static EXTRA_ACTION: string;
 			public static EXTRA_PARAMS: string;
 			public static EXTRA_CHROME_PACKAGE: string;
@@ -489,6 +523,14 @@ declare module com {
 			public constructor();
 			public onNewIntent(param0: globalAndroid.content.Intent): void;
 		}
+		export module CustomTabMainActivity {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.CustomTabMainActivity.Companion>;
+			}
+			export class WhenMappings {
+				public static class: java.lang.Class<com.facebook.CustomTabMainActivity.WhenMappings>;
+			}
+		}
 	}
 }
 
@@ -496,6 +538,7 @@ declare module com {
 	export module facebook {
 		export class FacebookActivity {
 			public static class: java.lang.Class<com.facebook.FacebookActivity>;
+			public static Companion: com.facebook.FacebookActivity.Companion;
 			public static PASS_THROUGH_CANCEL_ACTION: string;
 			public getFragment(): androidx.fragment.app.Fragment;
 			public onCreate(param0: globalAndroid.os.Bundle): void;
@@ -504,6 +547,11 @@ declare module com {
 			public constructor();
 			public getCurrentFragment(): androidx.fragment.app.Fragment;
 		}
+		export module FacebookActivity {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.FacebookActivity.Companion>;
+			}
+		}
 	}
 }
 
@@ -511,11 +559,18 @@ declare module com {
 	export module facebook {
 		export class FacebookAuthorizationException extends com.facebook.FacebookException {
 			public static class: java.lang.Class<com.facebook.FacebookAuthorizationException>;
+			public static Companion: com.facebook.FacebookAuthorizationException.Companion;
+			public static serialVersionUID: number;
 			public constructor(param0: java.lang.Throwable);
 			public constructor(param0: string, param1: java.lang.Throwable);
 			public constructor();
 			public constructor(param0: string);
 			public constructor(param0: string, param1: androidNative.Array<any>);
+		}
+		export module FacebookAuthorizationException {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.FacebookAuthorizationException.Companion>;
+			}
 		}
 	}
 }
@@ -541,11 +596,15 @@ declare module com {
 			public getCompoundPaddingLeft(): number;
 			public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number, param4: string, param5: string);
 			public getRequestCode(): number;
+			public logButtonTapped(param0: globalAndroid.content.Context): void;
 			public onDraw(param0: globalAndroid.graphics.Canvas): void;
 			public getCompoundPaddingRight(): number;
 			public configureButton(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number): void;
+			public logButtonCreated(param0: globalAndroid.content.Context): void;
+			public getAnalyticsButtonTappedEventName(): string;
 			public measureTextWidth(param0: string): number;
 			public setFragment(param0: androidx.fragment.app.Fragment): void;
+			public getAnalyticsButtonCreatedEventName(): string;
 			public getDefaultRequestCode(): number;
 			public getActivity(): globalAndroid.app.Activity;
 			public setInternalOnClickListener(param0: globalAndroid.view.View.OnClickListener): void;
@@ -561,16 +620,12 @@ declare module com {
 
 declare module com {
 	export module facebook {
-		export class FacebookCallback<RESULT>  extends java.lang.Object {
+		export class FacebookCallback<RESULT> extends java.lang.Object {
 			public static class: java.lang.Class<com.facebook.FacebookCallback<any>>;
 			/**
 			 * Constructs a new instance of the com.facebook.FacebookCallback<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 			 */
-			public constructor(implementation: {
-				onSuccess(param0: RESULT): void;
-				onCancel(): void;
-				onError(param0: com.facebook.FacebookException): void;
-			});
+			public constructor(implementation: { onSuccess(param0: RESULT): void; onCancel(): void; onError(param0: com.facebook.FacebookException): void });
 			public constructor();
 			public onCancel(): void;
 			public onSuccess(param0: RESULT): void;
@@ -587,8 +642,8 @@ declare module com {
 			public onCreate(): boolean;
 			public update(param0: globalAndroid.net.Uri, param1: globalAndroid.content.ContentValues, param2: string, param3: androidNative.Array<string>): number;
 			public openFile(param0: globalAndroid.net.Uri, param1: string): globalAndroid.os.ParcelFileDescriptor;
-			public delete(param0: globalAndroid.net.Uri, param1: string, param2: androidNative.Array<string>): number;
 			public constructor();
+			public delete(param0: globalAndroid.net.Uri, param1: string, param2: androidNative.Array<string>): number;
 			public insert(param0: globalAndroid.net.Uri, param1: globalAndroid.content.ContentValues): globalAndroid.net.Uri;
 			public static getAttachmentUrl(param0: string, param1: java.util.UUID, param2: string): string;
 			public query(param0: globalAndroid.net.Uri, param1: androidNative.Array<string>, param2: string, param3: androidNative.Array<string>, param4: string): globalAndroid.database.Cursor;
@@ -605,17 +660,12 @@ declare module com {
 
 declare module com {
 	export module facebook {
-		export class FacebookDialog<CONTENT, RESULT>  extends java.lang.Object {
-			public static class: java.lang.Class<com.facebook.FacebookDialog<any,any>>;
+		export class FacebookDialog<CONTENT, RESULT> extends java.lang.Object {
+			public static class: java.lang.Class<com.facebook.FacebookDialog<any, any>>;
 			/**
 			 * Constructs a new instance of the com.facebook.FacebookDialog<any,any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 			 */
-			public constructor(implementation: {
-				canShow(param0: CONTENT): boolean;
-				show(param0: CONTENT): void;
-				registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<RESULT>): void;
-				registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<RESULT>, param2: number): void;
-			});
+			public constructor(implementation: { canShow(param0: CONTENT): boolean; show(param0: CONTENT): void; registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<RESULT>): void; registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<RESULT>, param2: number): void });
 			public constructor();
 			public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<RESULT>, param2: number): void;
 			public canShow(param0: CONTENT): boolean;
@@ -629,6 +679,8 @@ declare module com {
 	export module facebook {
 		export class FacebookDialogException extends com.facebook.FacebookException {
 			public static class: java.lang.Class<com.facebook.FacebookDialogException>;
+			public static Companion: com.facebook.FacebookDialogException.Companion;
+			public static serialVersionUID: number;
 			public constructor(param0: string, param1: number, param2: string);
 			public getErrorCode(): number;
 			public toString(): string;
@@ -639,6 +691,11 @@ declare module com {
 			public constructor(param0: string);
 			public constructor(param0: string, param1: androidNative.Array<any>);
 		}
+		export module FacebookDialogException {
+			export class Companion {
+				public static class: java.lang.Class<com.facebook.FacebookDialogException.Companion>;
+			}
+		}
 	}
 }
 
@@ -646,8 +703,8 @@ declare module com {
 	export module facebook {
 		export class FacebookException {
 			public static class: java.lang.Class<com.facebook.FacebookException>;
-			public static serialVersionUID: number;
 			public static Companion: com.facebook.FacebookException.Companion;
+			public static serialVersionUID: number;
 			public toString(): string;
 			public constructor(param0: java.lang.Throwable);
 			public constructor(param0: string, param1: java.lang.Throwable);
@@ -667,14 +724,14 @@ declare module com {
 	export module facebook {
 		export class FacebookGraphResponseException extends com.facebook.FacebookException {
 			public static class: java.lang.Class<com.facebook.FacebookGraphResponseException>;
-			public toString(): string;
 			public constructor(param0: com.facebook.GraphResponse, param1: string);
+			public toString(): string;
 			public constructor(param0: java.lang.Throwable);
 			public constructor(param0: string, param1: java.lang.Throwable);
 			public constructor();
 			public constructor(param0: string);
-			public getGraphResponse(): com.facebook.GraphResponse;
 			public constructor(param0: string, param1: androidNative.Array<any>);
+			public getGraphResponse(): com.facebook.GraphResponse;
 		}
 	}
 }
@@ -683,8 +740,8 @@ declare module com {
 	export module facebook {
 		export class FacebookOperationCanceledException extends com.facebook.FacebookException {
 			public static class: java.lang.Class<com.facebook.FacebookOperationCanceledException>;
-			public static serialVersionUID: number;
 			public static Companion: com.facebook.FacebookOperationCanceledException.Companion;
+			public static serialVersionUID: number;
 			public constructor(param0: java.lang.Throwable);
 			public constructor(param0: string, param1: java.lang.Throwable);
 			public constructor();
@@ -703,10 +760,10 @@ declare module com {
 	export module facebook {
 		export class FacebookRequestError {
 			public static class: java.lang.Class<com.facebook.FacebookRequestError>;
+			public static Companion: com.facebook.FacebookRequestError.Companion;
 			public static INVALID_ERROR_CODE: number;
 			public static INVALID_HTTP_STATUS_CODE: number;
 			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.FacebookRequestError>;
-			public static Companion: com.facebook.FacebookRequestError.Companion;
 			public constructor(param0: number, param1: string, param2: string);
 			public getErrorCode(): number;
 			public getCategory(): com.facebook.FacebookRequestError.Category;
@@ -722,9 +779,9 @@ declare module com {
 			public getErrorMessage(): string;
 			public toString(): string;
 			public describeContents(): number;
-			public getErrorRecoveryMessage(): string;
 			public getErrorType(): string;
 			public getErrorUserTitle(): string;
+			public getErrorRecoveryMessage(): string;
 			public getRequestStatusCode(): number;
 			public getRequestResultBody(): org.json.JSONObject;
 			public getException(): com.facebook.FacebookException;
@@ -757,6 +814,7 @@ declare module com {
 	export module facebook {
 		export class FacebookSdk {
 			public static class: java.lang.Class<com.facebook.FacebookSdk>;
+			public static INSTANCE: com.facebook.FacebookSdk;
 			public static CALLBACK_OFFSET_CHANGED_AFTER_INIT: string;
 			public static CALLBACK_OFFSET_NEGATIVE: string;
 			public static APP_EVENT_PREFERENCES: string;
@@ -782,7 +840,6 @@ declare module com {
 			public static FACEBOOK_COM: string;
 			public static FB_GG: string;
 			public static INSTAGRAM_COM: string;
-			public static INSTANCE: com.facebook.FacebookSdk;
 			/** @deprecated */
 			public static sdkInitialize(param0: globalAndroid.content.Context, param1: number): void;
 			public static publishInstallAsync(param0: globalAndroid.content.Context, param1: string): void;
@@ -851,9 +908,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.FacebookSdk$GraphRequestCreator interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					createPostRequest(param0: com.facebook.AccessToken, param1: string, param2: org.json.JSONObject, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
-				});
+				public constructor(implementation: { createPostRequest(param0: com.facebook.AccessToken, param1: string, param2: org.json.JSONObject, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest });
 				public constructor();
 				public createPostRequest(param0: com.facebook.AccessToken, param1: string, param2: org.json.JSONObject, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 			}
@@ -862,9 +917,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.FacebookSdk$InitializeCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onInitialized(): void;
-				});
+				public constructor(implementation: { onInitialized(): void });
 				public constructor();
 				public onInitialized(): void;
 			}
@@ -876,8 +929,8 @@ declare module com {
 	export module facebook {
 		export class FacebookSdkNotInitializedException extends com.facebook.FacebookException {
 			public static class: java.lang.Class<com.facebook.FacebookSdkNotInitializedException>;
-			public static serialVersionUID: number;
 			public static Companion: com.facebook.FacebookSdkNotInitializedException.Companion;
+			public static serialVersionUID: number;
 			public constructor(param0: java.lang.Throwable);
 			public constructor(param0: string, param1: java.lang.Throwable);
 			public constructor();
@@ -896,8 +949,8 @@ declare module com {
 	export module facebook {
 		export class FacebookSdkVersion {
 			public static class: java.lang.Class<com.facebook.FacebookSdkVersion>;
-			public static BUILD: string;
 			public static INSTANCE: com.facebook.FacebookSdkVersion;
+			public static BUILD: string;
 		}
 	}
 }
@@ -913,8 +966,8 @@ declare module com {
 			public constructor(param0: string, param1: java.lang.Throwable);
 			public constructor();
 			public constructor(param0: string);
-			public getRequestError(): com.facebook.FacebookRequestError;
 			public constructor(param0: string, param1: androidNative.Array<any>);
+			public getRequestError(): com.facebook.FacebookRequestError;
 		}
 		export module FacebookServiceException {
 			export class Companion {
@@ -928,11 +981,11 @@ declare module com {
 	export module facebook {
 		export class GraphRequest {
 			public static class: java.lang.Class<com.facebook.GraphRequest>;
+			public static Companion: com.facebook.GraphRequest.Companion;
 			public static MAXIMUM_BATCH_SIZE: number;
 			public static TAG: string;
 			public static ACCESS_TOKEN_PARAM: string;
 			public static FIELDS_PARAM: string;
-			public static Companion: com.facebook.GraphRequest.Companion;
 			public constructor(param0: com.facebook.AccessToken, param1: java.net.URL);
 			public static toHttpConnection(param0: androidNative.Array<com.facebook.GraphRequest>): java.net.HttpURLConnection;
 			public constructor(param0: com.facebook.AccessToken);
@@ -944,7 +997,6 @@ declare module com {
 			public static executeBatchAndWait(param0: androidNative.Array<com.facebook.GraphRequest>): java.util.List<com.facebook.GraphResponse>;
 			public static newMyFriendsRequest(param0: com.facebook.AccessToken, param1: com.facebook.GraphRequest.GraphJSONArrayCallback): com.facebook.GraphRequest;
 			public static runCallbacks$facebook_core_release(param0: com.facebook.GraphRequestBatch, param1: java.util.List<com.facebook.GraphResponse>): void;
-			public static shouldWarnOnMissingFieldsParam$facebook_core_release(param0: com.facebook.GraphRequest): boolean;
 			public getTag(): any;
 			public setCallback(param0: com.facebook.GraphRequest.Callback): void;
 			public static newUploadPhotoRequest(param0: com.facebook.AccessToken, param1: string, param2: globalAndroid.graphics.Bitmap, param3: string, param4: globalAndroid.os.Bundle, param5: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
@@ -963,8 +1015,6 @@ declare module com {
 			public static executeAndWait(param0: com.facebook.GraphRequest): com.facebook.GraphResponse;
 			public static executeConnectionAsync(param0: java.net.HttpURLConnection, param1: com.facebook.GraphRequestBatch): com.facebook.GraphRequestAsyncTask;
 			public static getDefaultBatchApplicationId(): string;
-			/** @deprecated */
-			public setSkipClientToken(param0: boolean): void;
 			public static newGraphPathRequest(param0: com.facebook.AccessToken, param1: string, param2: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 			public static executeBatchAndWait(param0: java.util.Collection<com.facebook.GraphRequest>): java.util.List<com.facebook.GraphResponse>;
 			public static newPostRequest(param0: com.facebook.AccessToken, param1: string, param2: org.json.JSONObject, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
@@ -996,6 +1046,7 @@ declare module com {
 			public getAccessToken(): com.facebook.AccessToken;
 			public setGraphObject(param0: org.json.JSONObject): void;
 			public getHttpMethod(): com.facebook.HttpMethod;
+			public static newPostRequestWithBundle(param0: com.facebook.AccessToken, param1: string, param2: globalAndroid.os.Bundle, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 			public static newUploadPhotoRequest(param0: com.facebook.AccessToken, param1: string, param2: java.io.File, param3: string, param4: globalAndroid.os.Bundle, param5: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 			public getBatchEntryName(): string;
 			public getVersion(): string;
@@ -1015,9 +1066,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequest$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onCompleted(param0: com.facebook.GraphResponse): void;
-				});
+				public constructor(implementation: { onCompleted(param0: com.facebook.GraphResponse): void });
 				public constructor();
 				public onCompleted(param0: com.facebook.GraphResponse): void;
 			}
@@ -1050,7 +1099,7 @@ declare module com {
 				public executeConnectionAsync(param0: java.net.HttpURLConnection, param1: com.facebook.GraphRequestBatch): com.facebook.GraphRequestAsyncTask;
 				public setDefaultBatchApplicationId(param0: string): void;
 				public newMyFriendsRequest(param0: com.facebook.AccessToken, param1: com.facebook.GraphRequest.GraphJSONArrayCallback): com.facebook.GraphRequest;
-				public shouldWarnOnMissingFieldsParam$facebook_core_release(param0: com.facebook.GraphRequest): boolean;
+				public newPostRequestWithBundle(param0: com.facebook.AccessToken, param1: string, param2: globalAndroid.os.Bundle, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 				public newPostRequest(param0: com.facebook.AccessToken, param1: string, param2: org.json.JSONObject, param3: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 				public executeConnectionAndWait(param0: java.net.HttpURLConnection, param1: java.util.Collection<com.facebook.GraphRequest>): java.util.List<com.facebook.GraphResponse>;
 				public executeAndWait(param0: com.facebook.GraphRequest): com.facebook.GraphResponse;
@@ -1060,9 +1109,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequest$GraphJSONArrayCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onCompleted(param0: org.json.JSONArray, param1: com.facebook.GraphResponse): void;
-				});
+				public constructor(implementation: { onCompleted(param0: org.json.JSONArray, param1: com.facebook.GraphResponse): void });
 				public constructor();
 				public onCompleted(param0: org.json.JSONArray, param1: com.facebook.GraphResponse): void;
 			}
@@ -1071,9 +1118,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequest$GraphJSONObjectCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onCompleted(param0: org.json.JSONObject, param1: com.facebook.GraphResponse): void;
-				});
+				public constructor(implementation: { onCompleted(param0: org.json.JSONObject, param1: com.facebook.GraphResponse): void });
 				public constructor();
 				public onCompleted(param0: org.json.JSONObject, param1: com.facebook.GraphResponse): void;
 			}
@@ -1082,9 +1127,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequest$KeyValueSerializer interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					writeString(param0: string, param1: string): void;
-				});
+				public constructor(implementation: { writeString(param0: string, param1: string): void });
 				public constructor();
 				public writeString(param0: string, param1: string): void;
 			}
@@ -1093,18 +1136,15 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequest$OnProgressCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onProgress(param0: number, param1: number): void;
-					onCompleted(param0: com.facebook.GraphResponse): void;
-				});
+				public constructor(implementation: { onProgress(param0: number, param1: number): void; onCompleted(param0: com.facebook.GraphResponse): void });
 				public constructor();
 				public onCompleted(param0: com.facebook.GraphResponse): void;
 				public onProgress(param0: number, param1: number): void;
 			}
-			export class ParcelableResourceWithMimeType<RESOURCE>  extends globalAndroid.os.Parcelable {
+			export class ParcelableResourceWithMimeType<RESOURCE> extends globalAndroid.os.Parcelable {
 				public static class: java.lang.Class<com.facebook.GraphRequest.ParcelableResourceWithMimeType<any>>;
-				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.GraphRequest.ParcelableResourceWithMimeType<any>>;
 				public static Companion: com.facebook.GraphRequest.ParcelableResourceWithMimeType.Companion;
+				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.GraphRequest.ParcelableResourceWithMimeType<any>>;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				public constructor(param0: any, param1: string);
 				public getResource(): any;
@@ -1137,7 +1177,7 @@ declare module com {
 
 declare module com {
 	export module facebook {
-		export class GraphRequestAsyncTask extends globalAndroid.os.AsyncTask<java.lang.Void,java.lang.Void,java.util.List<any>> {
+		export class GraphRequestAsyncTask extends globalAndroid.os.AsyncTask<java.lang.Void, java.lang.Void, java.util.List<any>> {
 			public static class: java.lang.Class<com.facebook.GraphRequestAsyncTask>;
 			public static Companion: com.facebook.GraphRequestAsyncTask.Companion;
 			public constructor(param0: androidNative.Array<com.facebook.GraphRequest>);
@@ -1148,8 +1188,8 @@ declare module com {
 			public doInBackground(param0: androidNative.Array<java.lang.Void>): java.util.List<com.facebook.GraphResponse>;
 			public constructor(param0: java.net.HttpURLConnection, param1: com.facebook.GraphRequestBatch);
 			public constructor(param0: java.net.HttpURLConnection, param1: androidNative.Array<com.facebook.GraphRequest>);
-			public onPreExecute(): void;
 			public getRequests(): com.facebook.GraphRequestBatch;
+			public onPreExecute(): void;
 			public constructor(param0: java.util.Collection<com.facebook.GraphRequest>);
 			public constructor(param0: com.facebook.GraphRequestBatch);
 		}
@@ -1189,16 +1229,16 @@ declare module com {
 			public constructor();
 			public executeAsync(): com.facebook.GraphRequestAsyncTask;
 			public constructor(param0: java.util.Collection<com.facebook.GraphRequest>);
-			public remove(param0: any): boolean;
 			public contains(param0: com.facebook.GraphRequest): boolean;
+			public remove(param0: any): boolean;
 			public getId(): string;
 			public lastIndexOf(param0: any): number;
 			public setBatchApplicationId(param0: string): void;
 			public remove(param0: number): com.facebook.GraphRequest;
 			public indexOf(param0: any): number;
 			public getRequests(): java.util.List<com.facebook.GraphRequest>;
-			public executeAndWait(): java.util.List<com.facebook.GraphResponse>;
 			public constructor(param0: com.facebook.GraphRequestBatch);
+			public executeAndWait(): java.util.List<com.facebook.GraphResponse>;
 			public setCallbackHandler(param0: globalAndroid.os.Handler): void;
 		}
 		export module GraphRequestBatch {
@@ -1207,9 +1247,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequestBatch$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onBatchCompleted(param0: com.facebook.GraphRequestBatch): void;
-				});
+				public constructor(implementation: { onBatchCompleted(param0: com.facebook.GraphRequestBatch): void });
 				public constructor();
 				public onBatchCompleted(param0: com.facebook.GraphRequestBatch): void;
 			}
@@ -1221,10 +1259,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.GraphRequestBatch$OnProgressCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					onBatchProgress(param0: com.facebook.GraphRequestBatch, param1: number, param2: number): void;
-					onBatchCompleted(param0: com.facebook.GraphRequestBatch): void;
-				});
+				public constructor(implementation: { onBatchProgress(param0: com.facebook.GraphRequestBatch, param1: number, param2: number): void; onBatchCompleted(param0: com.facebook.GraphRequestBatch): void });
 				public constructor();
 				public onBatchProgress(param0: com.facebook.GraphRequestBatch, param1: number, param2: number): void;
 				public onBatchCompleted(param0: com.facebook.GraphRequestBatch): void;
@@ -1237,9 +1272,9 @@ declare module com {
 	export module facebook {
 		export class GraphResponse {
 			public static class: java.lang.Class<com.facebook.GraphResponse>;
+			public static Companion: com.facebook.GraphResponse.Companion;
 			public static NON_JSON_RESPONSE_PROPERTY: string;
 			public static SUCCESS_KEY: string;
-			public static Companion: com.facebook.GraphResponse.Companion;
 			public getRequestForPagedResults(param0: com.facebook.GraphResponse.PagingDirection): com.facebook.GraphRequest;
 			public getJSONArray(): org.json.JSONArray;
 			public getRequest(): com.facebook.GraphRequest;
@@ -1251,9 +1286,9 @@ declare module com {
 			public getJSONObject(): org.json.JSONObject;
 			public constructor(param0: com.facebook.GraphRequest, param1: java.net.HttpURLConnection, param2: string, param3: org.json.JSONObject, param4: org.json.JSONArray, param5: com.facebook.FacebookRequestError);
 			public constructor(param0: com.facebook.GraphRequest, param1: java.net.HttpURLConnection, param2: string, param3: org.json.JSONArray);
+			public constructor(param0: com.facebook.GraphRequest, param1: java.net.HttpURLConnection, param2: com.facebook.FacebookRequestError);
 			public getJsonObject(): org.json.JSONObject;
 			public toString(): string;
-			public constructor(param0: com.facebook.GraphRequest, param1: java.net.HttpURLConnection, param2: com.facebook.FacebookRequestError);
 			public constructor(param0: com.facebook.GraphRequest, param1: java.net.HttpURLConnection, param2: string, param3: org.json.JSONObject);
 			public static createResponsesFromStream$facebook_core_release(param0: java.io.InputStream, param1: java.net.HttpURLConnection, param2: com.facebook.GraphRequestBatch): java.util.List<com.facebook.GraphResponse>;
 			public getError(): com.facebook.FacebookRequestError;
@@ -1295,6 +1330,7 @@ declare module com {
 	export module facebook {
 		export class LegacyTokenHelper {
 			public static class: java.lang.Class<com.facebook.LegacyTokenHelper>;
+			public static Companion: com.facebook.LegacyTokenHelper.Companion;
 			public static TOKEN_KEY: string;
 			public static EXPIRATION_DATE_KEY: string;
 			public static LAST_REFRESH_DATE_KEY: string;
@@ -1304,7 +1340,6 @@ declare module com {
 			public static EXPIRED_PERMISSIONS_KEY: string;
 			public static APPLICATION_ID_KEY: string;
 			public static DEFAULT_CACHE_KEY: string;
-			public static Companion: com.facebook.LegacyTokenHelper.Companion;
 			public clear(): void;
 			public static putLastRefreshDate(param0: globalAndroid.os.Bundle, param1: java.util.Date): void;
 			public static putSource(param0: globalAndroid.os.Bundle, param1: com.facebook.AccessTokenSource): void;
@@ -1382,11 +1417,7 @@ declare module com {
 			/**
 			 * Constructs a new instance of the com.facebook.LoginStatusCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 			 */
-			public constructor(implementation: {
-				onCompleted(param0: com.facebook.AccessToken): void;
-				onFailure(): void;
-				onError(param0: java.lang.Exception): void;
-			});
+			public constructor(implementation: { onCompleted(param0: com.facebook.AccessToken): void; onFailure(): void; onError(param0: java.lang.Exception): void });
 			public constructor();
 			public onCompleted(param0: com.facebook.AccessToken): void;
 			public onFailure(): void;
@@ -1399,21 +1430,21 @@ declare module com {
 	export module facebook {
 		export class Profile {
 			public static class: java.lang.Class<com.facebook.Profile>;
-			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.Profile>;
 			public static Companion: com.facebook.Profile.Companion;
+			public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.Profile>;
 			public static fetchProfileForCurrentAccessToken(): void;
 			public equals(param0: any): boolean;
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: string, param5: globalAndroid.net.Uri);
-			public getProfilePictureUri(param0: number, param1: number): globalAndroid.net.Uri;
 			public constructor(param0: string, param1: string, param2: string, param3: string, param4: string, param5: globalAndroid.net.Uri, param6: globalAndroid.net.Uri);
+			public getProfilePictureUri(param0: number, param1: number): globalAndroid.net.Uri;
 			public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 			public toJSONObject(): org.json.JSONObject;
 			public getId(): string;
 			public getMiddleName(): string;
 			public getName(): string;
 			public getFirstName(): string;
-			public describeContents(): number;
 			public constructor(param0: org.json.JSONObject);
+			public describeContents(): number;
 			public getLastName(): string;
 			public static getCurrentProfile(): com.facebook.Profile;
 			public getLinkUri(): globalAndroid.net.Uri;
@@ -1436,9 +1467,9 @@ declare module com {
 	export module facebook {
 		export class ProfileCache {
 			public static class: java.lang.Class<com.facebook.ProfileCache>;
+			public static Companion: com.facebook.ProfileCache.Companion;
 			public static CACHED_PROFILE_KEY: string;
 			public static SHARED_PREFERENCES_NAME: string;
-			public static Companion: com.facebook.ProfileCache.Companion;
 			public clear(): void;
 			public save(param0: com.facebook.Profile): void;
 			public load(): com.facebook.Profile;
@@ -1456,10 +1487,10 @@ declare module com {
 	export module facebook {
 		export class ProfileManager {
 			public static class: java.lang.Class<com.facebook.ProfileManager>;
+			public static Companion: com.facebook.ProfileManager.Companion;
 			public static ACTION_CURRENT_PROFILE_CHANGED: string;
 			public static EXTRA_OLD_PROFILE: string;
 			public static EXTRA_NEW_PROFILE: string;
-			public static Companion: com.facebook.ProfileManager.Companion;
 			public constructor(param0: androidx.localbroadcastmanager.content.LocalBroadcastManager, param1: com.facebook.ProfileCache);
 			public setCurrentProfile(param0: com.facebook.Profile): void;
 			public static getInstance(): com.facebook.ProfileManager;
@@ -1500,9 +1531,9 @@ declare module com {
 		export class ProgressNoopOutputStream implements com.facebook.RequestOutputStream {
 			public static class: java.lang.Class<com.facebook.ProgressNoopOutputStream>;
 			public setCurrentRequest(param0: com.facebook.GraphRequest): void;
-			public getProgressMap(): java.util.Map<com.facebook.GraphRequest,com.facebook.RequestProgress>;
-			public write(param0: number): void;
+			public getProgressMap(): java.util.Map<com.facebook.GraphRequest, com.facebook.RequestProgress>;
 			public constructor(param0: globalAndroid.os.Handler);
+			public write(param0: number): void;
 			public getMaxProgress(): number;
 			public write(param0: androidNative.Array<number>): void;
 			public write(param0: androidNative.Array<number>, param1: number, param2: number): void;
@@ -1519,7 +1550,7 @@ declare module com {
 			public write(param0: number): void;
 			public getMaxProgress(): number;
 			public getBatchProgress(): number;
-			public constructor(param0: java.io.OutputStream, param1: com.facebook.GraphRequestBatch, param2: java.util.Map<com.facebook.GraphRequest,com.facebook.RequestProgress>, param3: number);
+			public constructor(param0: java.io.OutputStream, param1: com.facebook.GraphRequestBatch, param2: java.util.Map<com.facebook.GraphRequest, com.facebook.RequestProgress>, param3: number);
 			public close(): void;
 			public write(param0: androidNative.Array<number>): void;
 			public write(param0: androidNative.Array<number>, param1: number, param2: number): void;
@@ -1534,9 +1565,7 @@ declare module com {
 			/**
 			 * Constructs a new instance of the com.facebook.RequestOutputStream interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 			 */
-			public constructor(implementation: {
-				setCurrentRequest(param0: com.facebook.GraphRequest): void;
-			});
+			public constructor(implementation: { setCurrentRequest(param0: com.facebook.GraphRequest): void });
 			public constructor();
 			public setCurrentRequest(param0: com.facebook.GraphRequest): void;
 		}
@@ -1553,16 +1582,6 @@ declare module com {
 			public constructor(param0: globalAndroid.os.Handler, param1: com.facebook.GraphRequest);
 			public addToMax(param0: number): void;
 			public addProgress(param0: number): void;
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export class ShareGraphRequest {
-			public static class: java.lang.Class<com.facebook.ShareGraphRequest>;
-			public static createOpenGraphObject(param0: com.facebook.share.model.ShareOpenGraphObject): com.facebook.GraphRequest;
-			public constructor();
 		}
 	}
 }
@@ -1589,13 +1608,13 @@ declare module com {
 				public setDefaultVal(param0: boolean): void;
 				public setValue(param0: java.lang.Boolean): void;
 				public setLastTS(param0: number): void;
-				public getDefaultVal(): boolean;
 				public constructor(param0: boolean, param1: string);
+				public getDefaultVal(): boolean;
 				public getValue(): java.lang.Boolean;
 				public setKey(param0: string): void;
+				public getKey(): string;
 				public getLastTS(): number;
 				public getValue(): boolean;
-				public getKey(): string;
 			}
 		}
 	}
@@ -1605,6 +1624,7 @@ declare module com {
 	export module facebook {
 		export class WebDialog {
 			public static class: java.lang.Class<com.facebook.WebDialog>;
+			public static INSTANCE: com.facebook.WebDialog;
 			public static setWebDialogTheme(param0: number): void;
 			public static getWebDialogTheme(): number;
 		}
@@ -1620,8 +1640,8 @@ declare module com {
 				public constructor(param0: com.facebook.AccessToken);
 				public getAccessTokenString(): string;
 				public hashCode(): number;
-				public equals(param0: any): boolean;
 				public getApplicationId(): string;
+				public equals(param0: any): boolean;
 				public constructor(param0: string, param1: string);
 			}
 			export module AccessTokenAppIdPair {
@@ -1663,8 +1683,8 @@ declare module com {
 			export class AppEvent {
 				public static class: java.lang.Class<com.facebook.appevents.AppEvent>;
 				public static Companion: com.facebook.appevents.AppEvent.Companion;
-				public getJSONObject(): org.json.JSONObject;
 				public constructor(param0: string, param1: string, param2: java.lang.Double, param3: globalAndroid.os.Bundle, param4: boolean, param5: boolean, param6: java.util.UUID);
+				public getJSONObject(): org.json.JSONObject;
 				public isImplicit(): boolean;
 				public getJsonObject(): org.json.JSONObject;
 				public getIsImplicit(): boolean;
@@ -1760,6 +1780,7 @@ declare module com {
 		export module appevents {
 			export class AppEventsConstants {
 				public static class: java.lang.Class<com.facebook.appevents.AppEventsConstants>;
+				public static INSTANCE: com.facebook.appevents.AppEventsConstants;
 				public static EVENT_NAME_ACTIVATED_APP: string;
 				public static EVENT_NAME_DEACTIVATED_APP: string;
 				public static EVENT_NAME_SESSION_INTERRUPTIONS: string;
@@ -1839,7 +1860,6 @@ declare module com {
 				public static EVENT_PARAM_PRODUCT_APPLINK_WINDOWS_PHONE_URL: string;
 				public static EVENT_PARAM_PRODUCT_APPLINK_WINDOWS_PHONE_APP_ID: string;
 				public static EVENT_PARAM_PRODUCT_APPLINK_WINDOWS_PHONE_APP_NAME: string;
-				public static INSTANCE: com.facebook.appevents.AppEventsConstants;
 			}
 		}
 	}
@@ -1850,10 +1870,10 @@ declare module com {
 		export module appevents {
 			export class AppEventsLogger {
 				public static class: java.lang.Class<com.facebook.appevents.AppEventsLogger>;
+				public static Companion: com.facebook.appevents.AppEventsLogger.Companion;
 				public static ACTION_APP_EVENTS_FLUSHED: string;
 				public static APP_EVENTS_EXTRA_NUM_EVENTS_FLUSHED: string;
 				public static APP_EVENTS_EXTRA_FLUSH_RESULT: string;
-				public static Companion: com.facebook.appevents.AppEventsLogger.Companion;
 				public logPurchase(param0: java.math.BigDecimal, param1: java.util.Currency): void;
 				public isValidForAccessToken(param0: com.facebook.AccessToken): boolean;
 				public static initializeLib(param0: globalAndroid.content.Context, param1: string): void;
@@ -2106,44 +2126,25 @@ declare module com {
 				public logEventImplicitly(param0: string, param1: globalAndroid.os.Bundle): void;
 				public static getAnalyticsExecutor(): java.util.concurrent.Executor;
 				public static getFlushBehavior(): com.facebook.appevents.AppEventsLogger.FlushBehavior;
-				public logEventFromSE(param0: string, param1: string): void;
 				public constructor(param0: globalAndroid.content.Context);
-				public static setInternalUserData(param0: java.util.Map<string,string>): void;
+				public logEventFromSE(param0: string, param1: string): void;
+				public static createInstance(param0: globalAndroid.content.Context): com.facebook.appevents.InternalAppEventsLogger;
+				public static setInternalUserData(param0: java.util.Map<string, string>): void;
+				public static createInstance(param0: globalAndroid.content.Context, param1: string): com.facebook.appevents.InternalAppEventsLogger;
+				public static createInstance(param0: string, param1: string, param2: com.facebook.AccessToken): com.facebook.appevents.InternalAppEventsLogger;
 				public logEvent(param0: string, param1: globalAndroid.os.Bundle): void;
 			}
 			export module InternalAppEventsLogger {
 				export class Companion {
 					public static class: java.lang.Class<com.facebook.appevents.InternalAppEventsLogger.Companion>;
+					public createInstance(param0: globalAndroid.content.Context): com.facebook.appevents.InternalAppEventsLogger;
 					public getPushNotificationsRegistrationId(): string;
+					public createInstance(param0: string, param1: string, param2: com.facebook.AccessToken): com.facebook.appevents.InternalAppEventsLogger;
 					public getAnalyticsExecutor(): java.util.concurrent.Executor;
+					public createInstance(param0: globalAndroid.content.Context, param1: string): com.facebook.appevents.InternalAppEventsLogger;
 					public setUserData(param0: globalAndroid.os.Bundle): void;
 					public getFlushBehavior(): com.facebook.appevents.AppEventsLogger.FlushBehavior;
-					public setInternalUserData(param0: java.util.Map<string,string>): void;
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module appevents {
-			export class PerformanceGuardian {
-				public static class: java.lang.Class<com.facebook.appevents.PerformanceGuardian>;
-				public static INSTANCE: com.facebook.appevents.PerformanceGuardian;
-				public static isBannedActivity(param0: string, param1: com.facebook.appevents.PerformanceGuardian.UseCase): boolean;
-				public static limitProcessTime(param0: string, param1: com.facebook.appevents.PerformanceGuardian.UseCase, param2: number, param3: number): void;
-			}
-			export module PerformanceGuardian {
-				export class UseCase {
-					public static class: java.lang.Class<com.facebook.appevents.PerformanceGuardian.UseCase>;
-					public static CODELESS: com.facebook.appevents.PerformanceGuardian.UseCase;
-					public static SUGGESTED_EVENT: com.facebook.appevents.PerformanceGuardian.UseCase;
-					public static values(): androidNative.Array<com.facebook.appevents.PerformanceGuardian.UseCase>;
-					public static valueOf(param0: string): com.facebook.appevents.PerformanceGuardian.UseCase;
-				}
-				export class WhenMappings {
-					public static class: java.lang.Class<com.facebook.appevents.PerformanceGuardian.WhenMappings>;
+					public setInternalUserData(param0: java.util.Map<string, string>): void;
 				}
 			}
 		}
@@ -2158,8 +2159,9 @@ declare module com {
 				public static Companion: com.facebook.appevents.PersistedEvents.Companion;
 				public keySet(): java.util.Set<com.facebook.appevents.AccessTokenAppIdPair>;
 				public containsKey(param0: com.facebook.appevents.AccessTokenAppIdPair): boolean;
+				public entrySet(): java.util.Set<java.util.Map.Entry<com.facebook.appevents.AccessTokenAppIdPair, java.util.List<com.facebook.appevents.AppEvent>>>;
 				public get(param0: com.facebook.appevents.AccessTokenAppIdPair): java.util.List<com.facebook.appevents.AppEvent>;
-				public constructor(param0: java.util.HashMap<com.facebook.appevents.AccessTokenAppIdPair,java.util.List<com.facebook.appevents.AppEvent>>);
+				public constructor(param0: java.util.HashMap<com.facebook.appevents.AccessTokenAppIdPair, java.util.List<com.facebook.appevents.AppEvent>>);
 				public addEvents(param0: com.facebook.appevents.AccessTokenAppIdPair, param1: java.util.List<com.facebook.appevents.AppEvent>): void;
 				public constructor();
 			}
@@ -2170,7 +2172,7 @@ declare module com {
 				export class SerializationProxyV1 {
 					public static class: java.lang.Class<com.facebook.appevents.PersistedEvents.SerializationProxyV1>;
 					public static Companion: com.facebook.appevents.PersistedEvents.SerializationProxyV1.Companion;
-					public constructor(param0: java.util.HashMap<com.facebook.appevents.AccessTokenAppIdPair,java.util.List<com.facebook.appevents.AppEvent>>);
+					public constructor(param0: java.util.HashMap<com.facebook.appevents.AccessTokenAppIdPair, java.util.List<com.facebook.appevents.AppEvent>>);
 				}
 				export module SerializationProxyV1 {
 					export class Companion {
@@ -2210,6 +2212,7 @@ declare module com {
 		export module appevents {
 			export class UserDataStore {
 				public static class: java.lang.Class<com.facebook.appevents.UserDataStore>;
+				public static INSTANCE: com.facebook.appevents.UserDataStore;
 				public static EMAIL: string;
 				public static FIRST_NAME: string;
 				public static LAST_NAME: string;
@@ -2220,12 +2223,11 @@ declare module com {
 				public static STATE: string;
 				public static ZIP: string;
 				public static COUNTRY: string;
-				public static INSTANCE: com.facebook.appevents.UserDataStore;
 				public static getHashedUserData$facebook_core_release(): string;
 				public static setUserDataAndHash(param0: string, param1: string, param2: string, param3: string, param4: string, param5: string, param6: string, param7: string, param8: string, param9: string): void;
 				public static clear(): void;
 				public static initStore(): void;
-				public static setInternalUd(param0: java.util.Map<string,string>): void;
+				public static setInternalUd(param0: java.util.Map<string, string>): void;
 				public static setUserDataAndHash(param0: globalAndroid.os.Bundle): void;
 				public static getAllHashedUserData(): string;
 			}
@@ -2339,8 +2341,8 @@ declare module com {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.CodelessLoggingEventListener.AutoLoggingOnItemClickListener>;
 						public getSupportCodelessLogging(): boolean;
 						public setSupportCodelessLogging(param0: boolean): void;
-						public onItemClick(param0: globalAndroid.widget.AdapterView<any>, param1: globalAndroid.view.View, param2: number, param3: number): void;
 						public constructor(param0: com.facebook.appevents.codeless.internal.EventBinding, param1: globalAndroid.view.View, param2: globalAndroid.widget.AdapterView<any>);
+						public onItemClick(param0: globalAndroid.widget.AdapterView<any>, param1: globalAndroid.view.View, param2: number, param3: number): void;
 					}
 				}
 			}
@@ -2357,12 +2359,10 @@ declare module com {
 					public static INSTANCE: com.facebook.appevents.codeless.CodelessManager;
 					public static disable(): void;
 					public static updateAppIndexing$facebook_core_release(param0: boolean): void;
-					public static isDebugOnEmulator$facebook_core_release(): boolean;
 					public static getCurrentDeviceSessionID$facebook_core_release(): string;
 					public static getIsAppIndexingEnabled$facebook_core_release(): boolean;
 					public static enable(): void;
 					public static onActivityDestroyed(param0: globalAndroid.app.Activity): void;
-					public static checkCodelessSession$facebook_core_release(param0: string): void;
 					public static onActivityResumed(param0: globalAndroid.app.Activity): void;
 					public static onActivityPaused(param0: globalAndroid.app.Activity): void;
 				}
@@ -2451,8 +2451,8 @@ declare module com {
 					public static buildAppIndexingRequest(param0: string, param1: com.facebook.AccessToken, param2: string, param3: string): com.facebook.GraphRequest;
 					public processRequest(param0: com.facebook.GraphRequest, param1: string): void;
 					public static sendToServerUnityInstance(param0: string): void;
-					public schedule(): void;
 					public constructor(param0: globalAndroid.app.Activity);
+					public schedule(): void;
 				}
 				export module ViewIndexer {
 					export class Companion {
@@ -2492,9 +2492,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.appevents.codeless.ViewIndexingTrigger$OnShakeListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onShake(): void;
-						});
+						public constructor(implementation: { onShake(): void });
 						public constructor();
 						public onShake(): void;
 					}
@@ -2511,6 +2509,7 @@ declare module com {
 				export module internal {
 					export class Constants {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.Constants>;
+						public static INSTANCE: com.facebook.appevents.codeless.internal.Constants;
 						public static MAX_TREE_DEPTH: number;
 						public static IS_CODELESS_EVENT_KEY: string;
 						public static EVENT_MAPPING_PATH_TYPE_KEY: string;
@@ -2523,7 +2522,6 @@ declare module com {
 						public static EXTINFO: string;
 						public static APP_INDEXING: string;
 						public static BUTTON_SAMPLING: string;
-						public static INSTANCE: com.facebook.appevents.codeless.internal.Constants;
 					}
 				}
 			}
@@ -2539,17 +2537,17 @@ declare module com {
 					export class EventBinding {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.EventBinding>;
 						public static Companion: com.facebook.appevents.codeless.internal.EventBinding.Companion;
-						public getViewParameters(): java.util.List<com.facebook.appevents.codeless.internal.ParameterComponent>;
 						public getAppVersion(): string;
+						public getViewParameters(): java.util.List<com.facebook.appevents.codeless.internal.ParameterComponent>;
 						public getActivityName(): string;
 						public static getInstanceFromJson(param0: org.json.JSONObject): com.facebook.appevents.codeless.internal.EventBinding;
 						public getEventName(): string;
 						public getMethod(): com.facebook.appevents.codeless.internal.EventBinding.MappingMethod;
 						public static parseArray(param0: org.json.JSONArray): java.util.List<com.facebook.appevents.codeless.internal.EventBinding>;
-						public getViewPath(): java.util.List<com.facebook.appevents.codeless.internal.PathComponent>;
 						public getComponentId(): string;
-						public getPathType(): string;
+						public getViewPath(): java.util.List<com.facebook.appevents.codeless.internal.PathComponent>;
 						public constructor(param0: string, param1: com.facebook.appevents.codeless.internal.EventBinding.MappingMethod, param2: com.facebook.appevents.codeless.internal.EventBinding.ActionType, param3: string, param4: java.util.List<com.facebook.appevents.codeless.internal.PathComponent>, param5: java.util.List<com.facebook.appevents.codeless.internal.ParameterComponent>, param6: string, param7: string, param8: string);
+						public getPathType(): string;
 						public getType(): com.facebook.appevents.codeless.internal.EventBinding.ActionType;
 					}
 					export module EventBinding {
@@ -2588,8 +2586,8 @@ declare module com {
 					export class ParameterComponent {
 						public static class: java.lang.Class<com.facebook.appevents.codeless.internal.ParameterComponent>;
 						public static Companion: com.facebook.appevents.codeless.internal.ParameterComponent.Companion;
-						public getValue(): string;
 						public constructor(param0: org.json.JSONObject);
+						public getValue(): string;
 						public getPath(): java.util.List<com.facebook.appevents.codeless.internal.PathComponent>;
 						public getName(): string;
 						public getPathType(): string;
@@ -2715,7 +2713,7 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.appevents.eventdeactivation.EventDeactivationManager>;
 					public static INSTANCE: com.facebook.appevents.eventdeactivation.EventDeactivationManager;
 					public static processEvents(param0: java.util.List<com.facebook.appevents.AppEvent>): void;
-					public static processDeprecatedParameters(param0: java.util.Map<string,string>, param1: string): void;
+					public static processDeprecatedParameters(param0: java.util.Map<string, string>, param1: string): void;
 					public static enable(): void;
 				}
 				export module EventDeactivationManager {
@@ -2723,8 +2721,8 @@ declare module com {
 						public static class: java.lang.Class<com.facebook.appevents.eventdeactivation.EventDeactivationManager.DeprecatedParamFilter>;
 						public setDeprecateParams(param0: java.util.List<string>): void;
 						public getEventName(): string;
-						public setEventName(param0: string): void;
 						public constructor(param0: string, param1: java.util.List<string>);
+						public setEventName(param0: string): void;
 						public getDeprecateParams(): java.util.List<string>;
 					}
 				}
@@ -2775,14 +2773,14 @@ declare module com {
 				export module InAppPurchaseBillingClientWrapper {
 					export class BillingClientStateListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.BillingClientStateListenerWrapper>;
-						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
 						public constructor();
+						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
 					}
 					export class Companion {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.Companion>;
-						public getSkuDetailsMap(): java.util.Map<string,org.json.JSONObject>;
+						public getSkuDetailsMap(): java.util.Map<string, org.json.JSONObject>;
 						public isServiceConnected(): java.util.concurrent.atomic.AtomicBoolean;
-						public getPurchaseDetailsMap(): java.util.Map<string,org.json.JSONObject>;
+						public getPurchaseDetailsMap(): java.util.Map<string, org.json.JSONObject>;
 						public getOrCreateInstance(param0: globalAndroid.content.Context): com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper;
 					}
 					export class PurchaseHistoryResponseListenerWrapper {
@@ -2794,8 +2792,8 @@ declare module com {
 					}
 					export class PurchasesUpdatedListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.PurchasesUpdatedListenerWrapper>;
-						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
 						public constructor();
+						public invoke(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
 					}
 					export class SkuDetailsResponseListenerWrapper {
 						public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseBillingClientWrapper.SkuDetailsResponseListenerWrapper>;
@@ -2820,7 +2818,7 @@ declare module com {
 					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseEventManager;
 					public static asInterface(param0: globalAndroid.content.Context, param1: globalAndroid.os.IBinder): any;
 					public static getPurchasesInapp(param0: globalAndroid.content.Context, param1: any): java.util.ArrayList<string>;
-					public static getSkuDetails(param0: globalAndroid.content.Context, param1: java.util.ArrayList<string>, param2: any, param3: boolean): java.util.Map<string,string>;
+					public static getSkuDetails(param0: globalAndroid.content.Context, param1: java.util.ArrayList<string>, param2: any, param3: boolean): java.util.Map<string, string>;
 					public hasFreeTrialPeirod(param0: string): boolean;
 					public static getPurchasesSubs(param0: globalAndroid.content.Context, param1: any): java.util.ArrayList<string>;
 					public static clearSkuDetailsCache(): void;
@@ -2838,10 +2836,10 @@ declare module com {
 				export class InAppPurchaseLoggerManager {
 					public static class: java.lang.Class<com.facebook.appevents.iap.InAppPurchaseLoggerManager>;
 					public static INSTANCE: com.facebook.appevents.iap.InAppPurchaseLoggerManager;
-					public static filterPurchaseLogging(param0: java.util.Map<string,org.json.JSONObject>, param1: java.util.Map<string,any>): void;
-					public cacheDeDupPurchase$facebook_core_release(param0: java.util.Map<string,org.json.JSONObject>): java.util.Map<string,org.json.JSONObject>;
+					public static filterPurchaseLogging(param0: java.util.Map<string, org.json.JSONObject>, param1: java.util.Map<string, any>): void;
+					public cacheDeDupPurchase$facebook_core_release(param0: java.util.Map<string, org.json.JSONObject>): java.util.Map<string, org.json.JSONObject>;
 					public static eligibleQueryPurchaseHistory(): boolean;
-					public constructLoggingReadyMap$facebook_core_release(param0: java.util.Map<string,any>, param1: java.util.Map<string,any>): java.util.Map<string,string>;
+					public constructLoggingReadyMap$facebook_core_release(param0: java.util.Map<string, any>, param1: java.util.Map<string, any>): java.util.Map<string, string>;
 					public clearOutdatedProductInfoInCache$facebook_core_release(): void;
 				}
 			}
@@ -2909,11 +2907,11 @@ declare module com {
 			export module integrity {
 				export class IntegrityManager {
 					public static class: java.lang.Class<com.facebook.appevents.integrity.IntegrityManager>;
+					public static INSTANCE: com.facebook.appevents.integrity.IntegrityManager;
 					public static INTEGRITY_TYPE_NONE: string;
 					public static INTEGRITY_TYPE_ADDRESS: string;
 					public static INTEGRITY_TYPE_HEALTH: string;
-					public static INSTANCE: com.facebook.appevents.integrity.IntegrityManager;
-					public static processParameters(param0: java.util.Map<string,string>): void;
+					public static processParameters(param0: java.util.Map<string, string>): void;
 					public static enable(): void;
 				}
 			}
@@ -3003,8 +3001,8 @@ declare module com {
 						public getCurrency(): java.util.Currency;
 						public getParam(): globalAndroid.os.Bundle;
 						public setPurchaseAmount(param0: java.math.BigDecimal): void;
-						public setParam(param0: globalAndroid.os.Bundle): void;
 						public constructor(param0: java.math.BigDecimal, param1: java.util.Currency, param2: globalAndroid.os.Bundle);
+						public setParam(param0: globalAndroid.os.Bundle): void;
 						public setCurrency(param0: java.util.Currency): void;
 					}
 				}
@@ -3019,6 +3017,7 @@ declare module com {
 			export module internal {
 				export class Constants {
 					public static class: java.lang.Class<com.facebook.appevents.internal.Constants>;
+					public static INSTANCE: com.facebook.appevents.internal.Constants;
 					public static LOG_TIME_APP_EVENT_KEY: string;
 					public static EVENT_NAME_EVENT_KEY: string;
 					public static EVENT_NAME_MD5_EVENT_KEY: string;
@@ -3048,7 +3047,6 @@ declare module com {
 					public static EVENT_PARAM_PRODUCT_BRAND: string;
 					public static EVENT_PARAM_PRODUCT_PRICE_AMOUNT: string;
 					public static EVENT_PARAM_PRODUCT_PRICE_CURRENCY: string;
-					public static INSTANCE: com.facebook.appevents.internal.Constants;
 					public static getDefaultAppEventsSessionTimeoutInSeconds(): number;
 				}
 			}
@@ -3060,7 +3058,7 @@ declare module com {
 	export module facebook {
 		export module appevents {
 			export module internal {
-				export class FileDownloadTask extends globalAndroid.os.AsyncTask<string,java.lang.Void,java.lang.Boolean> {
+				export class FileDownloadTask extends globalAndroid.os.AsyncTask<string, java.lang.Void, java.lang.Boolean> {
 					public static class: java.lang.Class<com.facebook.appevents.internal.FileDownloadTask>;
 					public onPostExecute(param0: boolean): void;
 					public constructor(param0: string, param1: java.io.File, param2: com.facebook.appevents.internal.FileDownloadTask.Callback);
@@ -3072,9 +3070,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.appevents.internal.FileDownloadTask$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onComplete(param0: java.io.File): void;
-						});
+						public constructor(implementation: { onComplete(param0: java.io.File): void });
 						public constructor();
 						public onComplete(param0: java.io.File): void;
 					}
@@ -3144,7 +3140,6 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.appevents.internal.SessionLogger>;
 					public static INSTANCE: com.facebook.appevents.internal.SessionLogger;
 					public static logDeactivateApp(param0: string, param1: com.facebook.appevents.internal.SessionInfo, param2: string): void;
-					public computePackageChecksum(param0: globalAndroid.content.Context): string;
 					public static logActivateApp(param0: string, param1: com.facebook.appevents.internal.SourceApplicationInfo, param2: string, param3: globalAndroid.content.Context): void;
 					public static getQuantaIndex(param0: number): number;
 				}
@@ -3190,6 +3185,7 @@ declare module com {
 			export module internal {
 				export class ViewHierarchyConstants {
 					public static class: java.lang.Class<com.facebook.appevents.internal.ViewHierarchyConstants>;
+					public static INSTANCE: com.facebook.appevents.internal.ViewHierarchyConstants;
 					public static ID_KEY: string;
 					public static CLASS_NAME_KEY: string;
 					public static CLASS_TYPE_BITMASK_KEY: string;
@@ -3246,7 +3242,6 @@ declare module com {
 					public static RADIO_GROUP_BITMASK: number;
 					public static CHECKBOX_BITMASK: number;
 					public static RATINGBAR_BITMASK: number;
-					public static INSTANCE: com.facebook.appevents.internal.ViewHierarchyConstants;
 				}
 			}
 		}
@@ -3326,17 +3321,17 @@ declare module com {
 						public static class: java.lang.Class<com.facebook.appevents.ml.ModelManager.TaskHandler>;
 						public static Companion: com.facebook.appevents.ml.ModelManager.TaskHandler.Companion;
 						public setVersionId(param0: number): void;
-						public getRuleFile(): java.io.File;
 						public getRuleUri(): string;
+						public getRuleFile(): java.io.File;
 						public getThresholds(): androidNative.Array<number>;
 						public getModel(): com.facebook.appevents.ml.Model;
 						public setUseCase(param0: string): void;
 						public setModel(param0: com.facebook.appevents.ml.Model): void;
 						public setOnPostExecute(param0: java.lang.Runnable): com.facebook.appevents.ml.ModelManager.TaskHandler;
-						public setRuleFile(param0: java.io.File): void;
 						public getUseCase(): string;
-						public getVersionId(): number;
+						public setRuleFile(param0: java.io.File): void;
 						public constructor(param0: string, param1: string, param2: string, param3: number, param4: androidNative.Array<number>);
+						public getVersionId(): number;
 						public getAssetUri(): string;
 						public setRuleUri(param0: string): void;
 						public setThresholds(param0: androidNative.Array<number>): void;
@@ -3392,7 +3387,7 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.appevents.ml.Utils>;
 					public static INSTANCE: com.facebook.appevents.ml.Utils;
 					public vectorize(param0: string, param1: number): androidNative.Array<number>;
-					public static parseModelWeights(param0: java.io.File): java.util.Map<string,com.facebook.appevents.ml.MTensor>;
+					public static parseModelWeights(param0: java.io.File): java.util.Map<string, com.facebook.appevents.ml.MTensor>;
 					public normalizeString(param0: string): string;
 					public static getMlDir(): java.io.File;
 				}
@@ -3437,10 +3432,10 @@ declare module com {
 			export module ondeviceprocessing {
 				export class RemoteServiceWrapper {
 					public static class: java.lang.Class<com.facebook.appevents.ondeviceprocessing.RemoteServiceWrapper>;
+					public static INSTANCE: com.facebook.appevents.ondeviceprocessing.RemoteServiceWrapper;
 					public static RECEIVER_SERVICE_ACTION: string;
 					public static RECEIVER_SERVICE_PACKAGE: string;
 					public static RECEIVER_SERVICE_PACKAGE_WAKIZASHI: string;
-					public static INSTANCE: com.facebook.appevents.ondeviceprocessing.RemoteServiceWrapper;
 					public static isServiceAvailable(): boolean;
 					public static sendCustomEvents(param0: string, param1: java.util.List<com.facebook.appevents.AppEvent>): com.facebook.appevents.ondeviceprocessing.RemoteServiceWrapper.ServiceResult;
 					public static sendInstallEvent(param0: string): com.facebook.appevents.ondeviceprocessing.RemoteServiceWrapper.ServiceResult;
@@ -3456,8 +3451,8 @@ declare module com {
 					}
 					export class RemoteServiceConnection {
 						public static class: java.lang.Class<com.facebook.appevents.ondeviceprocessing.RemoteServiceWrapper.RemoteServiceConnection>;
-						public onNullBinding(param0: globalAndroid.content.ComponentName): void;
 						public constructor();
+						public onNullBinding(param0: globalAndroid.content.ComponentName): void;
 						public onServiceConnected(param0: globalAndroid.content.ComponentName, param1: globalAndroid.os.IBinder): void;
 						public getBinder(): globalAndroid.os.IBinder;
 						public onServiceDisconnected(param0: globalAndroid.content.ComponentName): void;
@@ -3483,18 +3478,18 @@ declare module com {
 				export class RestrictiveDataManager {
 					public static class: java.lang.Class<com.facebook.appevents.restrictivedatafilter.RestrictiveDataManager>;
 					public static INSTANCE: com.facebook.appevents.restrictivedatafilter.RestrictiveDataManager;
-					public static processParameters(param0: java.util.Map<string,string>, param1: string): void;
+					public static processParameters(param0: java.util.Map<string, string>, param1: string): void;
 					public static enable(): void;
 					public static processEvent(param0: string): string;
 				}
 				export module RestrictiveDataManager {
 					export class RestrictiveParamFilter {
 						public static class: java.lang.Class<com.facebook.appevents.restrictivedatafilter.RestrictiveDataManager.RestrictiveParamFilter>;
-						public getRestrictiveParams(): java.util.Map<string,string>;
+						public getRestrictiveParams(): java.util.Map<string, string>;
 						public getEventName(): string;
-						public setRestrictiveParams(param0: java.util.Map<string,string>): void;
+						public setRestrictiveParams(param0: java.util.Map<string, string>): void;
 						public setEventName(param0: string): void;
-						public constructor(param0: string, param1: java.util.Map<string,string>);
+						public constructor(param0: string, param1: java.util.Map<string, string>);
 					}
 				}
 			}
@@ -3600,8 +3595,8 @@ declare module com {
 			export module suggestedevents {
 				export class ViewOnClickListener {
 					public static class: java.lang.Class<com.facebook.appevents.suggestedevents.ViewOnClickListener>;
-					public static OTHER_EVENT: string;
 					public static Companion: com.facebook.appevents.suggestedevents.ViewOnClickListener.Companion;
+					public static OTHER_EVENT: string;
 					public onClick(param0: globalAndroid.view.View): void;
 					public static attachListener$facebook_core_release(param0: globalAndroid.view.View, param1: globalAndroid.view.View, param2: string): void;
 				}
@@ -3692,9 +3687,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.bolts.AppLinkResolver interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					getAppLinkFromUrlInBackground(param0: globalAndroid.net.Uri): com.facebook.bolts.Task<com.facebook.bolts.AppLink>;
-				});
+				public constructor(implementation: { getAppLinkFromUrlInBackground(param0: globalAndroid.net.Uri): com.facebook.bolts.Task<com.facebook.bolts.AppLink> });
 				public constructor();
 				public getAppLinkFromUrlInBackground(param0: globalAndroid.net.Uri): com.facebook.bolts.Task<com.facebook.bolts.AppLink>;
 			}
@@ -3707,9 +3700,9 @@ declare module com {
 		export module bolts {
 			export class AppLinks {
 				public static class: java.lang.Class<com.facebook.bolts.AppLinks>;
+				public static INSTANCE: com.facebook.bolts.AppLinks;
 				public static KEY_NAME_APPLINK_DATA: string;
 				public static KEY_NAME_EXTRAS: string;
-				public static INSTANCE: com.facebook.bolts.AppLinks;
 				public static getAppLinkData(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 				public static getAppLinkExtras(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 			}
@@ -3723,16 +3716,16 @@ declare module com {
 			export class BoltsExecutors {
 				public static class: java.lang.Class<com.facebook.bolts.BoltsExecutors>;
 				public static Companion: com.facebook.bolts.BoltsExecutors.Companion;
-				public static immediate$facebook_core_release(): java.util.concurrent.Executor;
+				public static immediate$facebook_bolts_release(): java.util.concurrent.Executor;
 				public static background(): java.util.concurrent.ExecutorService;
-				public static scheduled$facebook_core_release(): java.util.concurrent.ScheduledExecutorService;
+				public static scheduled$facebook_bolts_release(): java.util.concurrent.ScheduledExecutorService;
 			}
 			export module BoltsExecutors {
 				export class Companion {
 					public static class: java.lang.Class<com.facebook.bolts.BoltsExecutors.Companion>;
-					public scheduled$facebook_core_release(): java.util.concurrent.ScheduledExecutorService;
+					public scheduled$facebook_bolts_release(): java.util.concurrent.ScheduledExecutorService;
+					public immediate$facebook_bolts_release(): java.util.concurrent.Executor;
 					public background(): java.util.concurrent.ExecutorService;
-					public immediate$facebook_core_release(): java.util.concurrent.Executor;
 				}
 				export class ImmediateExecutor {
 					public static class: java.lang.Class<com.facebook.bolts.BoltsExecutors.ImmediateExecutor>;
@@ -3745,6 +3738,20 @@ declare module com {
 						public static class: java.lang.Class<com.facebook.bolts.BoltsExecutors.ImmediateExecutor.Companion>;
 					}
 				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export module bolts {
+			export class BuildConfig {
+				public static class: java.lang.Class<com.facebook.bolts.BuildConfig>;
+				public static DEBUG: boolean;
+				public static LIBRARY_PACKAGE_NAME: string;
+				public static BUILD_TYPE: string;
+				public constructor();
 			}
 		}
 	}
@@ -3771,8 +3778,8 @@ declare module com {
 			export class CancellationTokenRegistration {
 				public static class: java.lang.Class<com.facebook.bolts.CancellationTokenRegistration>;
 				public close(): void;
+				public runAction$facebook_bolts_release(): void;
 				public constructor(param0: com.facebook.bolts.CancellationTokenSource, param1: java.lang.Runnable);
-				public runAction$facebook_core_release(): void;
 			}
 		}
 	}
@@ -3786,13 +3793,13 @@ declare module com {
 				public getToken(): com.facebook.bolts.CancellationToken;
 				public close(): void;
 				public cancelAfter(param0: number): void;
-				public register$facebook_core_release(param0: java.lang.Runnable): com.facebook.bolts.CancellationTokenRegistration;
 				public cancel(): void;
-				public throwIfCancellationRequested$facebook_core_release(): void;
+				public register$facebook_bolts_release(param0: java.lang.Runnable): com.facebook.bolts.CancellationTokenRegistration;
 				public toString(): string;
-				public isCancellationRequested(): boolean;
-				public unregister$facebook_core_release(param0: com.facebook.bolts.CancellationTokenRegistration): void;
+				public throwIfCancellationRequested$facebook_bolts_release(): void;
+				public unregister$facebook_bolts_release(param0: com.facebook.bolts.CancellationTokenRegistration): void;
 				public constructor();
+				public isCancellationRequested(): boolean;
 			}
 		}
 	}
@@ -3801,14 +3808,12 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module bolts {
-			export class Continuation<TTaskResult, TContinuationResult>  extends java.lang.Object {
-				public static class: java.lang.Class<com.facebook.bolts.Continuation<any,any>>;
+			export class Continuation<TTaskResult, TContinuationResult> extends java.lang.Object {
+				public static class: java.lang.Class<com.facebook.bolts.Continuation<any, any>>;
 				/**
 				 * Constructs a new instance of the com.facebook.bolts.Continuation<any,any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					then(param0: com.facebook.bolts.Task<TTaskResult>): TContinuationResult;
-				});
+				public constructor(implementation: { then(param0: com.facebook.bolts.Task<TTaskResult>): TContinuationResult });
 				public constructor();
 				public then(param0: com.facebook.bolts.Task<TTaskResult>): TContinuationResult;
 			}
@@ -3830,68 +3835,67 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module bolts {
-			export class Task<TResult>  extends java.lang.Object {
+			export class Task<TResult> extends java.lang.Object {
 				public static class: java.lang.Class<com.facebook.bolts.Task<any>>;
+				public static Companion: com.facebook.bolts.Task.Companion;
 				public static BACKGROUND_EXECUTOR: java.util.concurrent.ExecutorService;
 				public static UI_THREAD_EXECUTOR: java.util.concurrent.Executor;
-				public static Companion: com.facebook.bolts.Task.Companion;
 				public getResult(): TResult;
-				public continueWhile(param0: java.util.concurrent.Callable<java.lang.Boolean>, param1: com.facebook.bolts.Continuation<java.lang.Void,com.facebook.bolts.Task<java.lang.Void>>, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
+				public continueWhile(param0: java.util.concurrent.Callable<java.lang.Boolean>, param1: com.facebook.bolts.Continuation<java.lang.Void, com.facebook.bolts.Task<java.lang.Void>>, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
 				public static delay(param0: number): com.facebook.bolts.Task<java.lang.Void>;
 				public static call(param0: java.util.concurrent.Callable, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public static call(param0: java.util.concurrent.Callable, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
-				public continueWith(param0: com.facebook.bolts.Continuation<any,any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public continueWith(param0: com.facebook.bolts.Continuation<any, any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public constructor();
-				public continueWithTask(param0: com.facebook.bolts.Continuation<any,any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public continueWithTask(param0: com.facebook.bolts.Continuation<any, any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public isCompleted(): boolean;
 				public cast(): com.facebook.bolts.Task<any>;
 				public static delay(param0: number, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
 				public static forError(param0: java.lang.Exception): com.facebook.bolts.Task<any>;
-				public onSuccess(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public onSuccess(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public trySetResult(param0: TResult): boolean;
 				public static callInBackground(param0: java.util.concurrent.Callable, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public waitForCompletion(param0: number, param1: java.util.concurrent.TimeUnit): boolean;
-				public onSuccess(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
+				public onSuccess(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
 				public static getUnobservedExceptionHandler(): com.facebook.bolts.Task.UnobservedExceptionHandler;
-				public continueWithTask(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
+				public continueWithTask(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
 				public static call(param0: java.util.concurrent.Callable): com.facebook.bolts.Task<any>;
-				public continueWithTask(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public continueWithTask(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public static call(param0: java.util.concurrent.Callable, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public static whenAllResult(param0: java.util.Collection): com.facebook.bolts.Task<any>;
 				public static setUnobservedExceptionHandler(param0: com.facebook.bolts.Task.UnobservedExceptionHandler): void;
-				public continueWhile(param0: java.util.concurrent.Callable<java.lang.Boolean>, param1: com.facebook.bolts.Continuation<java.lang.Void,com.facebook.bolts.Task<java.lang.Void>>, param2: java.util.concurrent.Executor, param3: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
+				public continueWhile(param0: java.util.concurrent.Callable<java.lang.Boolean>, param1: com.facebook.bolts.Continuation<java.lang.Void, com.facebook.bolts.Task<java.lang.Void>>, param2: java.util.concurrent.Executor, param3: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
 				public static whenAll(param0: java.util.Collection<any>): com.facebook.bolts.Task<java.lang.Void>;
 				public trySetError(param0: java.lang.Exception): boolean;
-				public onSuccessTask(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
-				public continueWhile(param0: java.util.concurrent.Callable<java.lang.Boolean>, param1: com.facebook.bolts.Continuation<java.lang.Void,com.facebook.bolts.Task<java.lang.Void>>): com.facebook.bolts.Task<java.lang.Void>;
-				public onSuccess(param0: com.facebook.bolts.Continuation<any,any>): com.facebook.bolts.Task<any>;
+				public onSuccessTask(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public continueWhile(param0: java.util.concurrent.Callable<java.lang.Boolean>, param1: com.facebook.bolts.Continuation<java.lang.Void, com.facebook.bolts.Task<java.lang.Void>>): com.facebook.bolts.Task<java.lang.Void>;
+				public onSuccess(param0: com.facebook.bolts.Continuation<any, any>): com.facebook.bolts.Task<any>;
 				public static forResult(param0: any): com.facebook.bolts.Task<any>;
 				public getError(): java.lang.Exception;
 				public static callInBackground(param0: java.util.concurrent.Callable): com.facebook.bolts.Task<any>;
 				public isFaulted(): boolean;
-				public static delay$facebook_core_release(param0: number, param1: java.util.concurrent.ScheduledExecutorService, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
-				public onSuccessTask(param0: com.facebook.bolts.Continuation<any,any>): com.facebook.bolts.Task<any>;
-				public onSuccessTask(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
-				public onSuccessTask(param0: com.facebook.bolts.Continuation<any,any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
-				public continueWith(param0: com.facebook.bolts.Continuation<any,any>): com.facebook.bolts.Task<any>;
-				public continueWith(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
+				public onSuccessTask(param0: com.facebook.bolts.Continuation<any, any>): com.facebook.bolts.Task<any>;
+				public onSuccessTask(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
+				public onSuccessTask(param0: com.facebook.bolts.Continuation<any, any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public continueWith(param0: com.facebook.bolts.Continuation<any, any>): com.facebook.bolts.Task<any>;
+				public continueWith(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor): com.facebook.bolts.Task<any>;
 				public static cancelled(): com.facebook.bolts.Task<any>;
-				public continueWith(param0: com.facebook.bolts.Continuation<any,any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public continueWith(param0: com.facebook.bolts.Continuation<any, any>, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 				public makeVoid(): com.facebook.bolts.Task<java.lang.Void>;
 				public static whenAny(param0: java.util.Collection<any>): com.facebook.bolts.Task<com.facebook.bolts.Task<any>>;
 				public trySetCancelled(): boolean;
 				public static whenAnyResult(param0: java.util.Collection): com.facebook.bolts.Task<any>;
+				public static delay$facebook_bolts_release(param0: number, param1: java.util.concurrent.ScheduledExecutorService, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
 				public waitForCompletion(): void;
-				public continueWithTask(param0: com.facebook.bolts.Continuation<any,any>): com.facebook.bolts.Task<any>;
+				public continueWithTask(param0: com.facebook.bolts.Continuation<any, any>): com.facebook.bolts.Task<any>;
 				public isCancelled(): boolean;
-				public onSuccess(param0: com.facebook.bolts.Continuation<any,any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+				public onSuccess(param0: com.facebook.bolts.Continuation<any, any>, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
 			}
 			export module Task {
 				export class Companion {
 					public static class: java.lang.Class<com.facebook.bolts.Task.Companion>;
 					public call(param0: java.util.concurrent.Callable): com.facebook.bolts.Task<any>;
 					public call(param0: java.util.concurrent.Callable, param1: java.util.concurrent.Executor, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
-					public delay$facebook_core_release(param0: number, param1: java.util.concurrent.ScheduledExecutorService, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
 					public whenAll(param0: java.util.Collection<any>): com.facebook.bolts.Task<java.lang.Void>;
 					public delay(param0: number): com.facebook.bolts.Task<java.lang.Void>;
 					public callInBackground(param0: java.util.concurrent.Callable, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
@@ -3900,6 +3904,7 @@ declare module com {
 					public whenAny(param0: java.util.Collection<any>): com.facebook.bolts.Task<com.facebook.bolts.Task<any>>;
 					public whenAnyResult(param0: java.util.Collection): com.facebook.bolts.Task<any>;
 					public call(param0: java.util.concurrent.Callable, param1: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<any>;
+					public delay$facebook_bolts_release(param0: number, param1: java.util.concurrent.ScheduledExecutorService, param2: com.facebook.bolts.CancellationToken): com.facebook.bolts.Task<java.lang.Void>;
 					public callInBackground(param0: java.util.concurrent.Callable): com.facebook.bolts.Task<any>;
 					public whenAllResult(param0: java.util.Collection): com.facebook.bolts.Task<any>;
 					public getUnobservedExceptionHandler(): com.facebook.bolts.Task.UnobservedExceptionHandler;
@@ -3918,9 +3923,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.bolts.Task$UnobservedExceptionHandler interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						unobservedException(param0: com.facebook.bolts.Task<any>, param1: com.facebook.bolts.UnobservedTaskException): void;
-					});
+					public constructor(implementation: { unobservedException(param0: com.facebook.bolts.Task<any>, param1: com.facebook.bolts.UnobservedTaskException): void });
 					public constructor();
 					public unobservedException(param0: com.facebook.bolts.Task<any>, param1: com.facebook.bolts.UnobservedTaskException): void;
 				}
@@ -3932,7 +3935,7 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module bolts {
-			export class TaskCompletionSource<TResult>  extends java.lang.Object {
+			export class TaskCompletionSource<TResult> extends java.lang.Object {
 				public static class: java.lang.Class<com.facebook.bolts.TaskCompletionSource<any>>;
 				public getTask(): com.facebook.bolts.Task<TResult>;
 				public trySetResult(param0: TResult): boolean;
@@ -3978,11 +3981,7 @@ declare module com {
 				public static class: java.lang.Class<com.facebook.common.BuildConfig>;
 				public static DEBUG: boolean;
 				public static LIBRARY_PACKAGE_NAME: string;
-				public static APPLICATION_ID: string;
 				public static BUILD_TYPE: string;
-				public static FLAVOR: string;
-				public static VERSION_CODE: number;
-				public static VERSION_NAME: string;
 				public constructor();
 			}
 		}
@@ -4007,11 +4006,7 @@ declare module com {
 				public static class: java.lang.Class<com.facebook.core.BuildConfig>;
 				public static DEBUG: boolean;
 				public static LIBRARY_PACKAGE_NAME: string;
-				public static APPLICATION_ID: string;
 				public static BUILD_TYPE: string;
-				public static FLAVOR: string;
-				public static VERSION_CODE: number;
-				public static VERSION_NAME: string;
 				public constructor();
 			}
 		}
@@ -4038,7 +4033,7 @@ declare module com {
 					public static DEVICE_INFO_PARAM: string;
 					public static DEVICE_TARGET_USER_ID: string;
 					public constructor();
-					public static getDeviceInfo(param0: java.util.Map<string,string>): string;
+					public static getDeviceInfo(param0: java.util.Map<string, string>): string;
 					public static getDeviceInfo(): string;
 					public static generateQRCode(param0: string): globalAndroid.graphics.Bitmap;
 					public static cleanUpAdvertisementService(param0: string): void;
@@ -4055,6 +4050,7 @@ declare module com {
 		export module internal {
 			export class AnalyticsEvents {
 				public static class: java.lang.Class<com.facebook.internal.AnalyticsEvents>;
+				public static INSTANCE: com.facebook.internal.AnalyticsEvents;
 				public static EVENT_NATIVE_LOGIN_DIALOG_COMPLETE: string;
 				public static EVENT_NATIVE_LOGIN_DIALOG_START: string;
 				public static EVENT_WEB_LOGIN_COMPLETE: string;
@@ -4145,7 +4141,6 @@ declare module com {
 				public static EVENT_FOA_FB_LOGIN_BUTTON_DID_TAP: string;
 				public static EVENT_FOA_IG_LOGIN_BUTTON_CREATE: string;
 				public static EVENT_FOA_IG_LOGIN_BUTTON_DID_TAP: string;
-				public static INSTANCE: com.facebook.internal.AnalyticsEvents;
 			}
 		}
 	}
@@ -4156,16 +4151,23 @@ declare module com {
 		export module internal {
 			export class AppCall {
 				public static class: java.lang.Class<com.facebook.internal.AppCall>;
-				public static getCurrentPendingCall(): com.facebook.internal.AppCall;
+				public static Companion: com.facebook.internal.AppCall.Companion;
 				public static finishPendingCall(param0: java.util.UUID, param1: number): com.facebook.internal.AppCall;
-				public getCallId(): java.util.UUID;
 				public setRequestCode(param0: number): void;
+				public getCallId(): java.util.UUID;
 				public setRequestIntent(param0: globalAndroid.content.Intent): void;
-				public constructor(param0: number);
 				public constructor(param0: number, param1: java.util.UUID);
+				public constructor(param0: number);
 				public getRequestCode(): number;
 				public setPending(): boolean;
 				public getRequestIntent(): globalAndroid.content.Intent;
+			}
+			export module AppCall {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.AppCall.Companion>;
+					public finishPendingCall(param0: java.util.UUID, param1: number): com.facebook.internal.AppCall;
+					public getCurrentPendingCall(): com.facebook.internal.AppCall;
+				}
 			}
 		}
 	}
@@ -4176,8 +4178,9 @@ declare module com {
 		export module internal {
 			export class AttributionIdentifiers {
 				public static class: java.lang.Class<com.facebook.internal.AttributionIdentifiers>;
-				public static cachedIdentifiers: com.facebook.internal.AttributionIdentifiers;
 				public static Companion: com.facebook.internal.AttributionIdentifiers.Companion;
+				public static ATTRIBUTION_ID_CONTENT_PROVIDER: string;
+				public static cachedIdentifiers: com.facebook.internal.AttributionIdentifiers;
 				public static isTrackingLimited(param0: globalAndroid.content.Context): boolean;
 				public getAndroidInstallerPackage(): string;
 				public getAndroidAdvertiserId(): string;
@@ -4208,8 +4211,8 @@ declare module com {
 				export class GoogleAdServiceConnection {
 					public static class: java.lang.Class<com.facebook.internal.AttributionIdentifiers.GoogleAdServiceConnection>;
 					public onServiceConnected(param0: globalAndroid.content.ComponentName, param1: globalAndroid.os.IBinder): void;
-					public getBinder(): globalAndroid.os.IBinder;
 					public constructor();
+					public getBinder(): globalAndroid.os.IBinder;
 					public onServiceDisconnected(param0: globalAndroid.content.ComponentName): void;
 				}
 			}
@@ -4253,10 +4256,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.BundleJSONConverter$Setter interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						setOnBundle(param0: globalAndroid.os.Bundle, param1: string, param2: any): void;
-						setOnJSON(param0: org.json.JSONObject, param1: string, param2: any): void;
-					});
+					public constructor(implementation: { setOnBundle(param0: globalAndroid.os.Bundle, param1: string, param2: any): void; setOnJSON(param0: org.json.JSONObject, param1: string, param2: any): void });
 					public constructor();
 					public setOnJSON(param0: org.json.JSONObject, param1: string, param2: any): void;
 					public setOnBundle(param0: globalAndroid.os.Bundle, param1: string, param2: any): void;
@@ -4273,9 +4273,9 @@ declare module com {
 				public static class: java.lang.Class<com.facebook.internal.CallbackManagerImpl>;
 				public static Companion: com.facebook.internal.CallbackManagerImpl.Companion;
 				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
+				public constructor();
 				public registerCallback(param0: number, param1: com.facebook.internal.CallbackManagerImpl.Callback): void;
 				public unregisterCallback(param0: number): void;
-				public constructor();
 				public static registerStaticCallback(param0: number, param1: com.facebook.internal.CallbackManagerImpl.Callback): void;
 			}
 			export module CallbackManagerImpl {
@@ -4284,9 +4284,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.CallbackManagerImpl$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onActivityResult(param0: number, param1: globalAndroid.content.Intent): boolean;
-					});
+					public constructor(implementation: { onActivityResult(param0: number, param1: globalAndroid.content.Intent): boolean });
 					public constructor();
 					public onActivityResult(param0: number, param1: globalAndroid.content.Intent): boolean;
 				}
@@ -4308,6 +4306,10 @@ declare module com {
 					public static GamingFriendFinder: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
 					public static GamingGroupIntegration: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
 					public static Referral: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
+					public static GamingContextCreate: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
+					public static GamingContextSwitch: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
+					public static GamingContextChoose: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
+					public static TournamentShareDialog: com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
 					public static values(): androidNative.Array<com.facebook.internal.CallbackManagerImpl.RequestCodeOffset>;
 					public toRequestCode(): number;
 					public static valueOf(param0: string): com.facebook.internal.CallbackManagerImpl.RequestCodeOffset;
@@ -4322,10 +4324,18 @@ declare module com {
 		export module internal {
 			export class CustomTab {
 				public static class: java.lang.Class<com.facebook.internal.CustomTab>;
-				public uri: globalAndroid.net.Uri;
+				public static Companion: com.facebook.internal.CustomTab.Companion;
+				public getUri(): globalAndroid.net.Uri;
 				public constructor(param0: string, param1: globalAndroid.os.Bundle);
 				public static getURIForAction(param0: string, param1: globalAndroid.os.Bundle): globalAndroid.net.Uri;
 				public openCustomTab(param0: globalAndroid.app.Activity, param1: string): boolean;
+				public setUri(param0: globalAndroid.net.Uri): void;
+			}
+			export module CustomTab {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.CustomTab.Companion>;
+					public getURIForAction(param0: string, param1: globalAndroid.os.Bundle): globalAndroid.net.Uri;
+				}
 			}
 		}
 	}
@@ -4336,10 +4346,10 @@ declare module com {
 		export module internal {
 			export class CustomTabUtils {
 				public static class: java.lang.Class<com.facebook.internal.CustomTabUtils>;
+				public static INSTANCE: com.facebook.internal.CustomTabUtils;
 				public static getChromePackage(): string;
 				public static getValidRedirectURI(param0: string): string;
 				public static getDefaultRedirectURI(): string;
-				public constructor();
 			}
 		}
 	}
@@ -4353,15 +4363,16 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.internal.DialogFeature interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					getAction(): string;
-					getMinVersion(): number;
-					name(): string;
-				});
+				public constructor(implementation: { getAction(): string; getMinVersion(): number; name(): string });
 				public constructor();
 				public getMinVersion(): number;
 				public name(): string;
 				public getAction(): string;
+			}
+			export module DialogFeature {
+				export class DefaultImpls {
+					public static class: java.lang.Class<com.facebook.internal.DialogFeature.DefaultImpls>;
+				}
 			}
 		}
 	}
@@ -4372,6 +4383,7 @@ declare module com {
 		export module internal {
 			export class DialogPresenter {
 				public static class: java.lang.Class<com.facebook.internal.DialogPresenter>;
+				public static INSTANCE: com.facebook.internal.DialogPresenter;
 				public static setupAppCallForNativeDialog(param0: com.facebook.internal.AppCall, param1: com.facebook.internal.DialogPresenter.ParameterProvider, param2: com.facebook.internal.DialogFeature): void;
 				public static setupAppCallForWebFallbackDialog(param0: com.facebook.internal.AppCall, param1: globalAndroid.os.Bundle, param2: com.facebook.internal.DialogFeature): void;
 				public static setupAppCallForErrorResult(param0: com.facebook.internal.AppCall, param1: com.facebook.FacebookException): void;
@@ -4379,7 +4391,6 @@ declare module com {
 				public static canPresentWebFallbackDialogWithFeature(param0: com.facebook.internal.DialogFeature): boolean;
 				public static present(param0: com.facebook.internal.AppCall, param1: androidx.activity.result.ActivityResultRegistry, param2: com.facebook.CallbackManager): void;
 				public static logDialogActivity(param0: globalAndroid.content.Context, param1: string, param2: string): void;
-				public constructor();
 				public static present(param0: com.facebook.internal.AppCall, param1: com.facebook.internal.FragmentWrapper): void;
 				public static startActivityForResultWithAndroidX(param0: androidx.activity.result.ActivityResultRegistry, param1: com.facebook.CallbackManager, param2: globalAndroid.content.Intent, param3: number): void;
 				public static getProtocolVersionForNativeDialog(param0: com.facebook.internal.DialogFeature): com.facebook.internal.NativeProtocol.ProtocolVersionQueryResult;
@@ -4395,10 +4406,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.DialogPresenter$ParameterProvider interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						getParameters(): globalAndroid.os.Bundle;
-						getLegacyParameters(): globalAndroid.os.Bundle;
-					});
+					public constructor(implementation: { getParameters(): globalAndroid.os.Bundle; getLegacyParameters(): globalAndroid.os.Bundle });
 					public constructor();
 					public getParameters(): globalAndroid.os.Bundle;
 					public getLegacyParameters(): globalAndroid.os.Bundle;
@@ -4411,8 +4419,9 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module internal {
-			export abstract class FacebookDialogBase<CONTENT, RESULT>  extends com.facebook.FacebookDialog<any,any> {
-				public static class: java.lang.Class<com.facebook.internal.FacebookDialogBase<any,any>>;
+			export abstract class FacebookDialogBase<CONTENT, RESULT> extends com.facebook.FacebookDialog<any, any> {
+				public static class: java.lang.Class<com.facebook.internal.FacebookDialogBase<any, any>>;
+				public static Companion: com.facebook.internal.FacebookDialogBase.Companion;
 				public static BASE_AUTOMATIC_MODE: any;
 				public constructor(param0: com.facebook.internal.FragmentWrapper, param1: number);
 				public setCallbackManager(param0: com.facebook.CallbackManager): void;
@@ -4423,6 +4432,8 @@ declare module com {
 				public constructor(param0: globalAndroid.app.Activity, param1: number);
 				public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<any>): void;
 				public getOrderedModeHandlers(): java.util.List<com.facebook.internal.FacebookDialogBase.ModeHandler>;
+				public getCallbackManager$facebook_common_release(): com.facebook.CallbackManager;
+				public setCallbackManager$facebook_common_release(param0: com.facebook.CallbackManager): void;
 				public registerCallbackImpl(param0: com.facebook.internal.CallbackManagerImpl, param1: com.facebook.FacebookCallback<any>): void;
 				public setRequestCode(param0: number): void;
 				public show(param0: any): void;
@@ -4432,12 +4443,16 @@ declare module com {
 				public getRequestCode(): number;
 			}
 			export module FacebookDialogBase {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.FacebookDialogBase.Companion>;
+				}
 				export abstract class ModeHandler {
 					public static class: java.lang.Class<com.facebook.internal.FacebookDialogBase.ModeHandler>;
 					public getMode(): any;
+					public setMode(param0: any): void;
 					public canShow(param0: any, param1: boolean): boolean;
 					public createAppCall(param0: any): com.facebook.internal.AppCall;
-					public constructor(param0: com.facebook.internal.FacebookDialogBase<any,any>);
+					public constructor(param0: com.facebook.internal.FacebookDialogBase<any, any>);
 				}
 			}
 		}
@@ -4449,14 +4464,22 @@ declare module com {
 		export module internal {
 			export class FacebookDialogFragment {
 				public static class: java.lang.Class<com.facebook.internal.FacebookDialogFragment>;
+				public static Companion: com.facebook.internal.FacebookDialogFragment.Companion;
 				public static TAG: string;
-				public setDialog(param0: globalAndroid.app.Dialog): void;
+				public getInnerDialog(): globalAndroid.app.Dialog;
 				public onCreate(param0: globalAndroid.os.Bundle): void;
+				public initDialog$facebook_common_release(): void;
 				public onResume(): void;
+				public setInnerDialog(param0: globalAndroid.app.Dialog): void;
 				public onConfigurationChanged(param0: globalAndroid.content.res.Configuration): void;
 				public onDestroyView(): void;
 				public onCreateDialog(param0: globalAndroid.os.Bundle): globalAndroid.app.Dialog;
 				public constructor();
+			}
+			export module FacebookDialogFragment {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.FacebookDialogFragment.Companion>;
+				}
 			}
 		}
 	}
@@ -4490,6 +4513,7 @@ declare module com {
 		export module internal {
 			export class FacebookRequestErrorClassification {
 				public static class: java.lang.Class<com.facebook.internal.FacebookRequestErrorClassification>;
+				public static Companion: com.facebook.internal.FacebookRequestErrorClassification.Companion;
 				public static EC_SERVICE_UNAVAILABLE: number;
 				public static EC_APP_TOO_MANY_CALLS: number;
 				public static EC_RATE: number;
@@ -4505,14 +4529,13 @@ declare module com {
 				public static KEY_OTHER: string;
 				public static KEY_TRANSIENT: string;
 				public static KEY_LOGIN_RECOVERABLE: string;
-				public static Companion: com.facebook.internal.FacebookRequestErrorClassification.Companion;
-				public getLoginRecoverableErrors(): java.util.Map<java.lang.Integer,java.util.Set<java.lang.Integer>>;
+				public getLoginRecoverableErrors(): java.util.Map<java.lang.Integer, java.util.Set<java.lang.Integer>>;
 				public static getDefaultErrorClassification(): com.facebook.internal.FacebookRequestErrorClassification;
-				public getTransientErrors(): java.util.Map<java.lang.Integer,java.util.Set<java.lang.Integer>>;
-				public getOtherErrors(): java.util.Map<java.lang.Integer,java.util.Set<java.lang.Integer>>;
+				public getTransientErrors(): java.util.Map<java.lang.Integer, java.util.Set<java.lang.Integer>>;
+				public getOtherErrors(): java.util.Map<java.lang.Integer, java.util.Set<java.lang.Integer>>;
 				public classify(param0: number, param1: number, param2: boolean): com.facebook.FacebookRequestError.Category;
+				public constructor(param0: java.util.Map<java.lang.Integer, any>, param1: java.util.Map<java.lang.Integer, any>, param2: java.util.Map<java.lang.Integer, any>, param3: string, param4: string, param5: string);
 				public getRecoveryMessage(param0: com.facebook.FacebookRequestError.Category): string;
-				public constructor(param0: java.util.Map<java.lang.Integer,any>, param1: java.util.Map<java.lang.Integer,any>, param2: java.util.Map<java.lang.Integer,any>, param3: string, param4: string, param5: string);
 				public static createFromJSON(param0: org.json.JSONArray): com.facebook.internal.FacebookRequestErrorClassification;
 			}
 			export module FacebookRequestErrorClassification {
@@ -4546,11 +4569,18 @@ declare module com {
 		export module internal {
 			export class FacebookWebFallbackDialog extends com.facebook.internal.WebDialog {
 				public static class: java.lang.Class<com.facebook.internal.FacebookWebFallbackDialog>;
+				public static Companion: com.facebook.internal.FacebookWebFallbackDialog.Companion;
 				public static newInstance(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle, param3: number, param4: com.facebook.login.LoginTargetApp, param5: com.facebook.internal.WebDialog.OnCompleteListener): com.facebook.internal.WebDialog;
 				public cancel(): void;
-				public static newInstance(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle, param3: number, param4: com.facebook.internal.WebDialog.OnCompleteListener): com.facebook.internal.WebDialog;
 				public parseResponseUri(param0: string): globalAndroid.os.Bundle;
+				public static newInstance(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle, param3: number, param4: com.facebook.internal.WebDialog.OnCompleteListener): com.facebook.internal.WebDialog;
 				public static newInstance(param0: globalAndroid.content.Context, param1: string, param2: string): com.facebook.internal.FacebookWebFallbackDialog;
+			}
+			export module FacebookWebFallbackDialog {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.FacebookWebFallbackDialog.Companion>;
+					public newInstance(param0: globalAndroid.content.Context, param1: string, param2: string): com.facebook.internal.FacebookWebFallbackDialog;
+				}
 			}
 		}
 	}
@@ -4573,14 +4603,13 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.FeatureManager$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onCompleted(param0: boolean): void;
-					});
+					public constructor(implementation: { onCompleted(param0: boolean): void });
 					public constructor();
 					public onCompleted(param0: boolean): void;
 				}
 				export class Feature {
 					public static class: java.lang.Class<com.facebook.internal.FeatureManager.Feature>;
+					public static Companion: com.facebook.internal.FeatureManager.Feature.Companion;
 					public static Unknown: com.facebook.internal.FeatureManager.Feature;
 					public static Core: com.facebook.internal.FeatureManager.Feature;
 					public static AppEvents: com.facebook.internal.FeatureManager.Feature;
@@ -4603,13 +4632,12 @@ declare module com {
 					public static ErrorReport: com.facebook.internal.FeatureManager.Feature;
 					public static AnrReport: com.facebook.internal.FeatureManager.Feature;
 					public static Monitoring: com.facebook.internal.FeatureManager.Feature;
+					public static ServiceUpdateCompliance: com.facebook.internal.FeatureManager.Feature;
 					public static Login: com.facebook.internal.FeatureManager.Feature;
 					public static ChromeCustomTabsPrefetching: com.facebook.internal.FeatureManager.Feature;
 					public static IgnoreAppSwitchToLoggedOut: com.facebook.internal.FeatureManager.Feature;
 					public static BypassAppSwitch: com.facebook.internal.FeatureManager.Feature;
 					public static Share: com.facebook.internal.FeatureManager.Feature;
-					public static Places: com.facebook.internal.FeatureManager.Feature;
-					public static Companion: com.facebook.internal.FeatureManager.Feature.Companion;
 					public toString(): string;
 					public getParent(): com.facebook.internal.FeatureManager.Feature;
 					public static values(): androidNative.Array<com.facebook.internal.FeatureManager.Feature>;
@@ -4644,7 +4672,7 @@ declare module com {
 				public static resetRuntimeGateKeeperCache(): void;
 				public static setRuntimeGateKeeper(param0: string, param1: com.facebook.internal.gatekeeper.GateKeeper): void;
 				public static queryAppGateKeepers(param0: string, param1: boolean): org.json.JSONObject;
-				public getGateKeepersForApplication(param0: string): java.util.Map<string,java.lang.Boolean>;
+				public getGateKeepersForApplication(param0: string): java.util.Map<string, java.lang.Boolean>;
 				public static parseAppGateKeepersFromJSON$facebook_core_release(param0: string, param1: org.json.JSONObject): org.json.JSONObject;
 				public static loadAppGateKeepersAsync(param0: com.facebook.internal.FetchedAppGateKeepersManager.Callback): void;
 			}
@@ -4654,9 +4682,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.FetchedAppGateKeepersManager$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onCompleted(): void;
-					});
+					public constructor(implementation: { onCompleted(): void });
 					public constructor();
 					public onCompleted(): void;
 				}
@@ -4683,15 +4709,15 @@ declare module com {
 				public getSmartLoginOptions(): java.util.EnumSet<com.facebook.internal.SmartLoginOption>;
 				public getTrackUninstallEnabled(): boolean;
 				public getSessionTimeoutInSeconds(): number;
-				public getDialogConfigurations(): java.util.Map<string,java.util.Map<string,com.facebook.internal.FetchedAppSettings.DialogFeatureConfig>>;
+				public getDialogConfigurations(): java.util.Map<string, java.util.Map<string, com.facebook.internal.FetchedAppSettings.DialogFeatureConfig>>;
 				public getMonitorViaDialogEnabled(): boolean;
 				public getAutomaticLoggingEnabled(): boolean;
 				public getSmartLoginBookmarkIconURL(): string;
 				public getSuggestedEventsSetting(): string;
 				public getRawAamRules(): string;
-				public supportsImplicitLogging(): boolean;
+				public constructor(param0: boolean, param1: string, param2: boolean, param3: number, param4: java.util.EnumSet<com.facebook.internal.SmartLoginOption>, param5: java.util.Map<string, any>, param6: boolean, param7: com.facebook.internal.FacebookRequestErrorClassification, param8: string, param9: string, param10: boolean, param11: boolean, param12: org.json.JSONArray, param13: string, param14: boolean, param15: boolean, param16: string, param17: string, param18: string);
 				public getNuxEnabled(): boolean;
-				public constructor(param0: boolean, param1: string, param2: boolean, param3: number, param4: java.util.EnumSet<com.facebook.internal.SmartLoginOption>, param5: java.util.Map<string,any>, param6: boolean, param7: com.facebook.internal.FacebookRequestErrorClassification, param8: string, param9: string, param10: boolean, param11: boolean, param12: org.json.JSONArray, param13: string, param14: boolean, param15: boolean, param16: string, param17: string, param18: string);
+				public supportsImplicitLogging(): boolean;
 			}
 			export module FetchedAppSettings {
 				export class Companion {
@@ -4745,10 +4771,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.FetchedAppSettingsManager$FetchedAppSettingsCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onSuccess(param0: com.facebook.internal.FetchedAppSettings): void;
-						onError(): void;
-					});
+					public constructor(implementation: { onSuccess(param0: com.facebook.internal.FetchedAppSettings): void; onError(): void });
 					public constructor();
 					public onSuccess(param0: com.facebook.internal.FetchedAppSettings): void;
 					public onError(): void;
@@ -4769,9 +4792,9 @@ declare module com {
 				public openPutStream(param0: string, param1: string): java.io.OutputStream;
 				public getLocation(): string;
 				public sizeInBytesForTest(): number;
-				public get(param0: string): java.io.InputStream;
 				public interceptAndPut(param0: string, param1: java.io.InputStream): java.io.InputStream;
 				public toString(): string;
+				public get(param0: string): java.io.InputStream;
 				public clearCache(): void;
 				public openPutStream(param0: string): java.io.OutputStream;
 			}
@@ -4787,8 +4810,8 @@ declare module com {
 				export class CloseCallbackOutputStream {
 					public static class: java.lang.Class<com.facebook.internal.FileLruCache.CloseCallbackOutputStream>;
 					public getCallback(): com.facebook.internal.FileLruCache.StreamCloseCallback;
-					public write(param0: androidNative.Array<number>): void;
 					public getInnerStream(): java.io.OutputStream;
+					public write(param0: androidNative.Array<number>): void;
 					public close(): void;
 					public flush(): void;
 					public write(param0: number): void;
@@ -4808,10 +4831,10 @@ declare module com {
 					public markSupported(): boolean;
 					public close(): void;
 					public skip(param0: number): number;
-					public read(param0: androidNative.Array<number>, param1: number, param2: number): number;
 					public constructor(param0: java.io.InputStream, param1: java.io.OutputStream);
-					public read(param0: androidNative.Array<number>): number;
+					public read(param0: androidNative.Array<number>, param1: number, param2: number): number;
 					public getInput(): java.io.InputStream;
+					public read(param0: androidNative.Array<number>): number;
 					public mark(param0: number): void;
 				}
 				export class Limits {
@@ -4842,9 +4865,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.FileLruCache$StreamCloseCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onClose(): void;
-					});
+					public constructor(implementation: { onClose(): void });
 					public constructor();
 					public onClose(): void;
 				}
@@ -4882,7 +4903,7 @@ declare module com {
 				public static class: java.lang.Class<com.facebook.internal.ImageDownloader>;
 				public static INSTANCE: com.facebook.internal.ImageDownloader;
 				public static downloadAsync(param0: com.facebook.internal.ImageRequest): void;
-				public getPendingRequests(): java.util.Map<com.facebook.internal.ImageDownloader.RequestKey,com.facebook.internal.ImageDownloader.DownloaderContext>;
+				public getPendingRequests(): java.util.Map<com.facebook.internal.ImageDownloader.RequestKey, com.facebook.internal.ImageDownloader.DownloaderContext>;
 				public static cancelRequest(param0: com.facebook.internal.ImageRequest): boolean;
 				public static clearCache(): void;
 				public static prioritizeRequest(param0: com.facebook.internal.ImageRequest): void;
@@ -4902,8 +4923,8 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.internal.ImageDownloader.DownloaderContext>;
 					public isCancelled(): boolean;
 					public setWorkItem(param0: com.facebook.internal.WorkQueue.WorkItem): void;
-					public setCancelled(param0: boolean): void;
 					public constructor(param0: com.facebook.internal.ImageRequest);
+					public setCancelled(param0: boolean): void;
 					public getWorkItem(): com.facebook.internal.WorkQueue.WorkItem;
 					public getRequest(): com.facebook.internal.ImageRequest;
 					public setRequest(param0: com.facebook.internal.ImageRequest): void;
@@ -4914,10 +4935,10 @@ declare module com {
 					public equals(param0: any): boolean;
 					public getTag(): any;
 					public getUri(): globalAndroid.net.Uri;
-					public hashCode(): number;
 					public setUri(param0: globalAndroid.net.Uri): void;
-					public setTag(param0: any): void;
+					public hashCode(): number;
 					public constructor(param0: globalAndroid.net.Uri, param1: any);
+					public setTag(param0: any): void;
 				}
 				export module RequestKey {
 					export class Companion {
@@ -4934,8 +4955,8 @@ declare module com {
 		export module internal {
 			export class ImageRequest {
 				public static class: java.lang.Class<com.facebook.internal.ImageRequest>;
-				public static UNSPECIFIED_DIMENSION: number;
 				public static Companion: com.facebook.internal.ImageRequest.Companion;
+				public static UNSPECIFIED_DIMENSION: number;
 				public getContext(): globalAndroid.content.Context;
 				public getImageUri(): globalAndroid.net.Uri;
 				public static getProfilePictureUri(param0: string, param1: number, param2: number): globalAndroid.net.Uri;
@@ -4963,9 +4984,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.ImageRequest$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onCompleted(param0: com.facebook.internal.ImageResponse): void;
-					});
+					public constructor(implementation: { onCompleted(param0: com.facebook.internal.ImageResponse): void });
 					public constructor();
 					public onCompleted(param0: com.facebook.internal.ImageResponse): void;
 				}
@@ -5010,8 +5029,8 @@ declare module com {
 				export class BufferedHttpInputStream {
 					public static class: java.lang.Class<com.facebook.internal.ImageResponseCache.BufferedHttpInputStream>;
 					public constructor(param0: java.io.InputStream, param1: java.net.HttpURLConnection);
-					public close(): void;
 					public getConnection(): java.net.HttpURLConnection;
+					public close(): void;
 					public setConnection(param0: java.net.HttpURLConnection): void;
 				}
 			}
@@ -5024,8 +5043,14 @@ declare module com {
 		export module internal {
 			export class InstagramCustomTab extends com.facebook.internal.CustomTab {
 				public static class: java.lang.Class<com.facebook.internal.InstagramCustomTab>;
+				public static Companion: com.facebook.internal.InstagramCustomTab.Companion;
 				public constructor(param0: string, param1: globalAndroid.os.Bundle);
-				public static getURIForAction(param0: string, param1: globalAndroid.os.Bundle): globalAndroid.net.Uri;
+			}
+			export module InstagramCustomTab {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.InstagramCustomTab.Companion>;
+					public getURIForAction(param0: string, param1: globalAndroid.os.Bundle): globalAndroid.net.Uri;
+				}
 			}
 		}
 	}
@@ -5045,9 +5070,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.InstallReferrerUtil$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onReceiveReferrerUrl(param0: string): void;
-					});
+					public constructor(implementation: { onReceiveReferrerUrl(param0: string): void });
 					public constructor();
 					public onReceiveReferrerUrl(param0: string): void;
 				}
@@ -5073,7 +5096,7 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module internal {
-			export class LockOnGetVariable<T>  extends java.lang.Object {
+			export class LockOnGetVariable<T> extends java.lang.Object {
 				public static class: java.lang.Class<com.facebook.internal.LockOnGetVariable<any>>;
 				public constructor(param0: T);
 				public getValue(): T;
@@ -5088,8 +5111,8 @@ declare module com {
 		export module internal {
 			export class Logger {
 				public static class: java.lang.Class<com.facebook.internal.Logger>;
-				public static LOG_TAG_BASE: string;
 				public static Companion: com.facebook.internal.Logger.Companion;
+				public static LOG_TAG_BASE: string;
 				public getContents(): string;
 				public static log(param0: com.facebook.LoggingBehavior, param1: string, param2: string, param3: androidNative.Array<any>): void;
 				public append(param0: string): void;
@@ -5127,8 +5150,8 @@ declare module com {
 		export module internal {
 			export class NativeAppCallAttachmentStore {
 				public static class: java.lang.Class<com.facebook.internal.NativeAppCallAttachmentStore>;
-				public static ATTACHMENTS_DIR_NAME: string;
 				public static INSTANCE: com.facebook.internal.NativeAppCallAttachmentStore;
+				public static ATTACHMENTS_DIR_NAME: string;
 				public static cleanupAllAttachments(): void;
 				public static createAttachment(param0: java.util.UUID, param1: globalAndroid.graphics.Bitmap): com.facebook.internal.NativeAppCallAttachmentStore.Attachment;
 				public static ensureAttachmentsDirectoryExists(): java.io.File;
@@ -5143,13 +5166,13 @@ declare module com {
 			export module NativeAppCallAttachmentStore {
 				export class Attachment {
 					public static class: java.lang.Class<com.facebook.internal.NativeAppCallAttachmentStore.Attachment>;
-					public setShouldCreateFile(param0: boolean): void;
 					public constructor(param0: java.util.UUID, param1: globalAndroid.graphics.Bitmap, param2: globalAndroid.net.Uri);
+					public setShouldCreateFile(param0: boolean): void;
 					public getOriginalUri(): globalAndroid.net.Uri;
-					public getAttachmentName(): string;
 					public getCallId(): java.util.UUID;
-					public setContentUri(param0: boolean): void;
+					public getAttachmentName(): string;
 					public getBitmap(): globalAndroid.graphics.Bitmap;
+					public setContentUri(param0: boolean): void;
 					public getAttachmentUrl(): string;
 					public isContentUri(): boolean;
 					public getShouldCreateFile(): boolean;
@@ -5164,6 +5187,7 @@ declare module com {
 		export module internal {
 			export class NativeProtocol {
 				public static class: java.lang.Class<com.facebook.internal.NativeProtocol>;
+				public static INSTANCE: com.facebook.internal.NativeProtocol;
 				public static NO_PROTOCOL_AVAILABLE: number;
 				public static FACEBOOK_PROXY_AUTH_PERMISSIONS_KEY: string;
 				public static FACEBOOK_PROXY_AUTH_APP_ID_KEY: string;
@@ -5267,30 +5291,27 @@ declare module com {
 				public static AUDIENCE_ME: string;
 				public static AUDIENCE_FRIENDS: string;
 				public static AUDIENCE_EVERYONE: string;
-				public static INSTANCE: com.facebook.internal.NativeProtocol;
+				public static createBundleForException(param0: com.facebook.FacebookException): globalAndroid.os.Bundle;
+				public static getMethodArgumentsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
+				public static createProtocolResultIntent(param0: globalAndroid.content.Intent, param1: globalAndroid.os.Bundle, param2: com.facebook.FacebookException): globalAndroid.content.Intent;
 				public static setupProtocolRequestIntent(param0: globalAndroid.content.Intent, param1: string, param2: string, param3: number, param4: globalAndroid.os.Bundle): void;
+				public static computeLatestAvailableVersionFromVersionSpec(param0: java.util.TreeSet<java.lang.Integer>, param1: number, param2: androidNative.Array<number>): number;
+				public static getCallIdFromIntent(param0: globalAndroid.content.Intent): java.util.UUID;
+				public static getBridgeArgumentsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
+				public static createInstagramIntent(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: string, param10: boolean, param11: boolean, param12: boolean): globalAndroid.content.Intent;
+				public static getProtocolVersionFromIntent(param0: globalAndroid.content.Intent): number;
+				public static getExceptionFromErrorData(param0: globalAndroid.os.Bundle): com.facebook.FacebookException;
 				public static validateActivityIntent(param0: globalAndroid.content.Context, param1: globalAndroid.content.Intent, param2: com.facebook.internal.NativeProtocol.NativeAppInfo): globalAndroid.content.Intent;
-				public static createFacebookLiteIntent(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: string, param10: boolean, param11: boolean, param12: boolean): globalAndroid.content.Intent;
+				public static createProxyAuthIntents(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: boolean, param10: string, param11: boolean, param12: boolean, param13: boolean, param14: string, param15: string, param16: string): java.util.List<globalAndroid.content.Intent>;
 				public static validateServiceIntent(param0: globalAndroid.content.Context, param1: globalAndroid.content.Intent, param2: com.facebook.internal.NativeProtocol.NativeAppInfo): globalAndroid.content.Intent;
+				public static createPlatformServiceIntent(param0: globalAndroid.content.Context): globalAndroid.content.Intent;
 				public static getLatestAvailableProtocolVersionForService(param0: number): number;
+				public static isErrorResult(param0: globalAndroid.content.Intent): boolean;
 				public static getLatestAvailableProtocolVersionForAction(param0: string, param1: androidNative.Array<number>): com.facebook.internal.NativeProtocol.ProtocolVersionQueryResult;
 				public static getSuccessResultsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 				public static getErrorDataFromResultIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
 				public static isVersionCompatibleWithBucketedIntent(param0: number): boolean;
 				public static updateAllAvailableProtocolVersionsAsync(): void;
-				public static createBundleForException(param0: com.facebook.FacebookException): globalAndroid.os.Bundle;
-				public static getMethodArgumentsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
-				public static createProtocolResultIntent(param0: globalAndroid.content.Intent, param1: globalAndroid.os.Bundle, param2: com.facebook.FacebookException): globalAndroid.content.Intent;
-				public static createProxyAuthIntents(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: boolean, param10: string, param11: boolean, param12: boolean, param13: boolean, param14: string): java.util.List<globalAndroid.content.Intent>;
-				public static computeLatestAvailableVersionFromVersionSpec(param0: java.util.TreeSet<java.lang.Integer>, param1: number, param2: androidNative.Array<number>): number;
-				public static getCallIdFromIntent(param0: globalAndroid.content.Intent): java.util.UUID;
-				public static getBridgeArgumentsFromIntent(param0: globalAndroid.content.Intent): globalAndroid.os.Bundle;
-				public static createInstagramIntent(param0: globalAndroid.content.Context, param1: string, param2: java.util.Collection<string>, param3: string, param4: boolean, param5: boolean, param6: com.facebook.login.DefaultAudience, param7: string, param8: string, param9: string, param10: boolean, param11: boolean, param12: boolean): globalAndroid.content.Intent;
-				public static createTokenRefreshIntent(param0: globalAndroid.content.Context): globalAndroid.content.Intent;
-				public static getProtocolVersionFromIntent(param0: globalAndroid.content.Intent): number;
-				public static getExceptionFromErrorData(param0: globalAndroid.os.Bundle): com.facebook.FacebookException;
-				public static createPlatformServiceIntent(param0: globalAndroid.content.Context): globalAndroid.content.Intent;
-				public static isErrorResult(param0: globalAndroid.content.Intent): boolean;
 				public static getLatestKnownVersion(): number;
 				public static createPlatformActivityIntent(param0: globalAndroid.content.Context, param1: string, param2: string, param3: com.facebook.internal.NativeProtocol.ProtocolVersionQueryResult, param4: globalAndroid.os.Bundle): globalAndroid.content.Intent;
 			}
@@ -5302,24 +5323,11 @@ declare module com {
 					public getLoginActivity(): string;
 					public getLoginActivity(): java.lang.Void;
 				}
-				export class FBLiteAppInfo extends com.facebook.internal.NativeProtocol.NativeAppInfo {
-					public static class: java.lang.Class<com.facebook.internal.NativeProtocol.FBLiteAppInfo>;
-					public static FACEBOOK_LITE_ACTIVITY: string;
-					public static Companion: com.facebook.internal.NativeProtocol.FBLiteAppInfo.Companion;
-					public getPackage(): string;
-					public constructor();
-					public getLoginActivity(): string;
-				}
-				export module FBLiteAppInfo {
-					export class Companion {
-						public static class: java.lang.Class<com.facebook.internal.NativeProtocol.FBLiteAppInfo.Companion>;
-					}
-				}
 				export class InstagramAppInfo extends com.facebook.internal.NativeProtocol.NativeAppInfo {
 					public static class: java.lang.Class<com.facebook.internal.NativeProtocol.InstagramAppInfo>;
 					public getPackage(): string;
-					public getResponseType(): string;
 					public constructor();
+					public getResponseType(): string;
 					public getLoginActivity(): string;
 				}
 				export class KatanaAppInfo extends com.facebook.internal.NativeProtocol.NativeAppInfo {
@@ -5339,8 +5347,8 @@ declare module com {
 				export abstract class NativeAppInfo {
 					public static class: java.lang.Class<com.facebook.internal.NativeProtocol.NativeAppInfo>;
 					public getPackage(): string;
-					public getResponseType(): string;
 					public constructor();
+					public getResponseType(): string;
 					public fetchAvailableVersions(param0: boolean): void;
 					public getLoginActivity(): string;
 					public onAvailableVersionsNullOrEmpty(): void;
@@ -5394,9 +5402,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.PlatformServiceClient$CompletedListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						completed(param0: globalAndroid.os.Bundle): void;
-					});
+					public constructor(implementation: { completed(param0: globalAndroid.os.Bundle): void });
 					public constructor();
 					public completed(param0: globalAndroid.os.Bundle): void;
 				}
@@ -5423,16 +5429,21 @@ declare module com {
 		export module internal {
 			export class ServerProtocol {
 				public static class: java.lang.Class<com.facebook.internal.ServerProtocol>;
+				public static INSTANCE: com.facebook.internal.ServerProtocol;
 				public static DIALOG_PATH: string;
 				public static DIALOG_PARAM_ACCESS_TOKEN: string;
 				public static DIALOG_PARAM_APP_ID: string;
 				public static DIALOG_PARAM_AUTH_TYPE: string;
 				public static DIALOG_PARAM_CBT: string;
 				public static DIALOG_PARAM_CLIENT_ID: string;
+				public static DIALOG_PARAM_CODE_CHALLENGE: string;
+				public static DIALOG_PARAM_CODE_CHALLENGE_METHOD: string;
+				public static DIALOG_PARAM_CODE_REDIRECT_URI: string;
 				public static DIALOG_PARAM_CUSTOM_TABS_PREFETCHING: string;
 				public static DIALOG_PARAM_DISPLAY: string;
 				public static DIALOG_PARAM_DISPLAY_TOUCH: string;
 				public static DIALOG_PARAM_E2E: string;
+				public static DIALOG_PARAM_AUTHENTICATION_TOKEN: string;
 				public static DIALOG_PARAM_IES: string;
 				public static DIALOG_PARAM_LEGACY_OVERRIDE: string;
 				public static DIALOG_PARAM_LOGIN_BEHAVIOR: string;
@@ -5452,6 +5463,7 @@ declare module com {
 				public static DIALOG_REREQUEST_AUTH_TYPE: string;
 				public static DIALOG_PARAM_FX_APP: string;
 				public static DIALOG_PARAM_SKIP_DEDUPE: string;
+				public static DIALOG_RESPONSE_TYPE_CODE: string;
 				public static DIALOG_RESPONSE_TYPE_TOKEN_AND_SCOPES: string;
 				public static DIALOG_RESPONSE_TYPE_TOKEN_AND_SIGNED_REQUEST: string;
 				public static DIALOG_RESPONSE_TYPE_ID_TOKEN_AND_SIGNED_REQUEST: string;
@@ -5467,7 +5479,6 @@ declare module com {
 				public static FALLBACK_DIALOG_PARAM_VERSION: string;
 				public static FALLBACK_DIALOG_DISPLAY_VALUE_TOUCH: string;
 				public static INSTAGRAM_OAUTH_PATH: string;
-				public static INSTANCE: com.facebook.internal.ServerProtocol;
 				public static getGraphUrlBase(): string;
 				public static getInstagramDialogAuthority(): string;
 				public static getGraphVideoUrlBase(): string;
@@ -5489,10 +5500,10 @@ declare module com {
 		export module internal {
 			export class SmartLoginOption {
 				public static class: java.lang.Class<com.facebook.internal.SmartLoginOption>;
+				public static Companion: com.facebook.internal.SmartLoginOption.Companion;
 				public static None: com.facebook.internal.SmartLoginOption;
 				public static Enabled: com.facebook.internal.SmartLoginOption;
 				public static RequireConfirm: com.facebook.internal.SmartLoginOption;
-				public static Companion: com.facebook.internal.SmartLoginOption.Companion;
 				public static values(): androidNative.Array<com.facebook.internal.SmartLoginOption>;
 				public static parseOptions(param0: number): java.util.EnumSet<com.facebook.internal.SmartLoginOption>;
 				public getValue(): number;
@@ -5528,9 +5539,9 @@ declare module com {
 		export module internal {
 			export class Utility {
 				public static class: java.lang.Class<com.facebook.internal.Utility>;
+				public static INSTANCE: com.facebook.internal.Utility;
 				public static LOG_TAG: string;
 				public static DEFAULT_STREAM_BUFFER_SIZE: number;
-				public static INSTANCE: com.facebook.internal.Utility;
 				public static getActivityName(param0: globalAndroid.content.Context): string;
 				public static isDataProcessingRestricted(): boolean;
 				public static logd(param0: string, param1: string): void;
@@ -5539,61 +5550,51 @@ declare module com {
 				public static tryGetJSONObjectFromResponse(param0: org.json.JSONObject, param1: string): org.json.JSONObject;
 				public static jsonArrayToStringList(param0: org.json.JSONArray): java.util.List<string>;
 				public static logd(param0: string, param1: string, param2: java.lang.Throwable): void;
-				public static mapToJsonStr(param0: java.util.Map<string,string>): string;
-				public static arrayList(param0: androidNative.Array<any>): java.util.ArrayList;
+				public static mapToJsonStr(param0: java.util.Map<string, string>): string;
+				public static writeNonnullStringMapToParcel(param0: globalAndroid.os.Parcel, param1: java.util.Map<string, string>): void;
 				public static getResourceLocale(): java.util.Locale;
 				public static setAppEventExtendedDeviceInfoParameters(param0: org.json.JSONObject, param1: globalAndroid.content.Context): void;
-				public static filter(param0: java.util.List, param1: com.facebook.internal.Utility.Predicate<any>): java.util.List;
-				public static writeStringMapToParcel(param0: globalAndroid.os.Parcel, param1: java.util.Map<string,string>): void;
+				public static writeStringMapToParcel(param0: globalAndroid.os.Parcel, param1: java.util.Map<string, string>): void;
 				public static getBundleLongAsDate(param0: globalAndroid.os.Bundle, param1: string, param2: java.util.Date): java.util.Date;
 				public static putJSONValueInBundle(param0: globalAndroid.os.Bundle, param1: string, param2: any): boolean;
 				public static putCommaSeparatedStringList(param0: globalAndroid.os.Bundle, param1: string, param2: java.util.List<string>): void;
-				public static unmodifiableCollection(param0: androidNative.Array<any>): java.util.Collection;
-				public static isSubset(param0: java.util.Collection, param1: java.util.Collection): boolean;
 				public static safeGetStringFromResponse(param0: org.json.JSONObject, param1: string): string;
 				public static isAutofillAvailable(param0: globalAndroid.content.Context): boolean;
 				public static closeQuietly(param0: java.io.Closeable): void;
-				public static hashSet(param0: androidNative.Array<any>): java.util.HashSet;
 				public static getContentSize(param0: globalAndroid.net.Uri): number;
 				public static runOnNonUiThread(param0: java.lang.Runnable): void;
 				public static coerceValueIfNullOrEmpty(param0: string, param1: string): string;
 				public static isFileUri(param0: globalAndroid.net.Uri): boolean;
-				public static clearCaches(): void;
 				public static md5hash(param0: string): string;
 				public static getMethodQuietly(param0: java.lang.Class<any>, param1: string, param2: androidNative.Array<java.lang.Class<any>>): java.lang.reflect.Method;
-				public static deleteDirectory(param0: java.io.File): void;
-				public static handlePermissionResponse(param0: org.json.JSONObject): com.facebook.internal.Utility.PermissionsLists;
 				public static getStringPropertyAsJSON(param0: org.json.JSONObject, param1: string, param2: string): any;
 				public static sha256hash(param0: string): string;
 				public static readStreamToString(param0: java.io.InputStream): string;
 				public static copyAndCloseInputStream(param0: java.io.InputStream, param1: java.io.OutputStream): number;
 				public static isAutoAppLinkSetup(): boolean;
-				public static convertJSONObjectToHashMap(param0: org.json.JSONObject): java.util.Map<string,any>;
-				public static isNullOrEmpty(param0: java.util.Collection): boolean;
+				public static convertJSONObjectToHashMap(param0: org.json.JSONObject): java.util.Map<string, any>;
 				public static clearFacebookCookies(param0: globalAndroid.content.Context): void;
+				public static setAppEventAttributionParameters(param0: org.json.JSONObject, param1: com.facebook.internal.AttributionIdentifiers, param2: string, param3: boolean, param4: globalAndroid.content.Context): void;
 				public static tryGetJSONArrayFromResponse(param0: org.json.JSONObject, param1: string): org.json.JSONArray;
 				public static getCurrentLocale(): java.util.Locale;
 				public static mustFixWindowParamsForAutofill(param0: globalAndroid.content.Context): boolean;
 				public static parseUrlQueryString(param0: string): globalAndroid.os.Bundle;
-				public static setAppEventAttributionParameters(param0: org.json.JSONObject, param1: com.facebook.internal.AttributionIdentifiers, param2: string, param3: boolean): void;
 				public static getAppName(param0: globalAndroid.content.Context): string;
+				public static isNullOrEmpty(param0: java.util.Collection<any>): boolean;
 				public static logd(param0: string, param1: java.lang.Exception): void;
 				public static sha1hash(param0: string): string;
-				public static map(param0: java.util.List, param1: com.facebook.internal.Utility.Mapper<any,any>): java.util.List;
 				public static sha256hash(param0: androidNative.Array<number>): string;
-				public static jsonStrToMap(param0: string): java.util.Map<string,string>;
+				public static jsonStrToMap(param0: string): java.util.Map<string, string>;
 				public static isContentUri(param0: globalAndroid.net.Uri): boolean;
-				public static hasSameId(param0: org.json.JSONObject, param1: org.json.JSONObject): boolean;
-				public static intersectRanges(param0: androidNative.Array<number>, param1: androidNative.Array<number>): androidNative.Array<number>;
-				public static asListNoNulls(param0: androidNative.Array<any>): java.util.List;
 				public static sha1hash(param0: androidNative.Array<number>): string;
-				public static readStringMapFromParcel(param0: globalAndroid.os.Parcel): java.util.Map<string,string>;
+				public static readStringMapFromParcel(param0: globalAndroid.os.Parcel): java.util.Map<string, string>;
 				public static areObjectsEqual(param0: any, param1: any): boolean;
 				public static isChromeOS(param0: globalAndroid.content.Context): boolean;
 				public static putUri(param0: globalAndroid.os.Bundle, param1: string, param2: globalAndroid.net.Uri): void;
 				public static invokeMethodQuietly(param0: any, param1: java.lang.reflect.Method, param2: androidNative.Array<any>): any;
 				public static awaitGetGraphMeRequestWithCache(param0: string): org.json.JSONObject;
 				public static getMetadataApplicationId(param0: globalAndroid.content.Context): string;
+				public static readNonnullStringMapFromParcel(param0: globalAndroid.os.Parcel): java.util.Map<string, string>;
 				public static getGraphMeRequestWithCacheAsync(param0: string, param1: com.facebook.internal.Utility.GraphMeRequestWithCacheCallback): void;
 				public static getUriString(param0: globalAndroid.net.Uri): string;
 				public static convertJSONArrayToList(param0: org.json.JSONArray): java.util.List<string>;
@@ -5608,7 +5609,7 @@ declare module com {
 				public static jsonArrayToSet(param0: org.json.JSONArray): java.util.Set<string>;
 				public static isNullOrEmpty(param0: string): boolean;
 				public static putNonEmptyString(param0: globalAndroid.os.Bundle, param1: string, param2: string): void;
-				public static convertJSONObjectToStringMap(param0: org.json.JSONObject): java.util.Map<string,string>;
+				public static convertJSONObjectToStringMap(param0: org.json.JSONObject): java.util.Map<string, string>;
 			}
 			export module Utility {
 				export class GraphMeRequestWithCacheCallback {
@@ -5616,45 +5617,10 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.Utility$GraphMeRequestWithCacheCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onSuccess(param0: org.json.JSONObject): void;
-						onFailure(param0: com.facebook.FacebookException): void;
-					});
+					public constructor(implementation: { onSuccess(param0: org.json.JSONObject): void; onFailure(param0: com.facebook.FacebookException): void });
 					public constructor();
 					public onFailure(param0: com.facebook.FacebookException): void;
 					public onSuccess(param0: org.json.JSONObject): void;
-				}
-				export class Mapper<T, K>  extends java.lang.Object {
-					public static class: java.lang.Class<com.facebook.internal.Utility.Mapper<any,any>>;
-					/**
-					 * Constructs a new instance of the com.facebook.internal.Utility$Mapper interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-					 */
-					public constructor(implementation: {
-						apply(param0: T): K;
-					});
-					public constructor();
-					public apply(param0: T): K;
-				}
-				export class PermissionsLists {
-					public static class: java.lang.Class<com.facebook.internal.Utility.PermissionsLists>;
-					public getDeclinedPermissions(): java.util.List<string>;
-					public constructor(param0: java.util.List<string>, param1: java.util.List<string>, param2: java.util.List<string>);
-					public getGrantedPermissions(): java.util.List<string>;
-					public setExpiredPermissions(param0: java.util.List<string>): void;
-					public setDeclinedPermissions(param0: java.util.List<string>): void;
-					public getExpiredPermissions(): java.util.List<string>;
-					public setGrantedPermissions(param0: java.util.List<string>): void;
-				}
-				export class Predicate<T>  extends java.lang.Object {
-					public static class: java.lang.Class<com.facebook.internal.Utility.Predicate<any>>;
-					/**
-					 * Constructs a new instance of the com.facebook.internal.Utility$Predicate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-					 */
-					public constructor(implementation: {
-						apply(param0: T): boolean;
-					});
-					public constructor();
-					public apply(param0: T): boolean;
 				}
 			}
 		}
@@ -5666,11 +5632,12 @@ declare module com {
 		export module internal {
 			export class Validate {
 				public static class: java.lang.Class<com.facebook.internal.Validate>;
-				public static CUSTOM_TAB_REDIRECT_URI_PREFIX: string;
 				public static INSTANCE: com.facebook.internal.Validate;
+				public static CUSTOM_TAB_REDIRECT_URI_PREFIX: string;
 				public static hasPermission(param0: globalAndroid.content.Context, param1: string): boolean;
 				public static hasContentProvider(param0: globalAndroid.content.Context): void;
 				public static containsNoNullOrEmpty(param0: java.util.Collection<string>, param1: string): void;
+				public static notNullOrEmpty(param0: string, param1: string): string;
 				public static notEmpty(param0: java.util.Collection, param1: string): void;
 				public static oneOf(param0: any, param1: string, param2: androidNative.Array<any>): void;
 				public static hasFacebookActivity(param0: globalAndroid.content.Context, param1: boolean): void;
@@ -5683,7 +5650,6 @@ declare module com {
 				public static hasFacebookActivity(param0: globalAndroid.content.Context): void;
 				public static hasAppID(): string;
 				public static hasInternetPermissions(param0: globalAndroid.content.Context, param1: boolean): void;
-				public static notNullOrEmpty(param0: string, param1: string): void;
 				public static notEmpty(param0: string, param1: string): void;
 				public static hasBluetoothPermission(param0: globalAndroid.content.Context): boolean;
 				public static hasClientToken(): string;
@@ -5701,6 +5667,8 @@ declare module com {
 		export module internal {
 			export class WebDialog {
 				public static class: java.lang.Class<com.facebook.internal.WebDialog>;
+				public static Companion: com.facebook.internal.WebDialog.Companion;
+				public static DISABLE_SSL_CHECK_FOR_TESTING: boolean;
 				public isListenerCalled(): boolean;
 				public isPageFinished(): boolean;
 				public constructor(param0: globalAndroid.content.Context, param1: string);
@@ -5712,8 +5680,8 @@ declare module com {
 				public dismiss(): void;
 				public sendErrorToListener(param0: java.lang.Throwable): void;
 				public cancel(): void;
-				public onStop(): void;
 				public getWebView(): globalAndroid.webkit.WebView;
+				public onStop(): void;
 				public static setInitCallback(param0: com.facebook.internal.WebDialog.InitCallback): void;
 				public getOnCompleteListener(): com.facebook.internal.WebDialog.OnCompleteListener;
 				public static initDefaultTheme(param0: globalAndroid.content.Context): void;
@@ -5723,30 +5691,40 @@ declare module com {
 				public setOnCompleteListener(param0: com.facebook.internal.WebDialog.OnCompleteListener): void;
 				public onCreate(param0: globalAndroid.os.Bundle): void;
 				public onStart(): void;
-				public static setWebDialogTheme(param0: number): void;
 				public resize(): void;
+				public static setWebDialogTheme(param0: number): void;
 				public onDetachedFromWindow(): void;
 				public onAttachedToWindow(): void;
 			}
 			export module WebDialog {
 				export class Builder {
 					public static class: java.lang.Class<com.facebook.internal.WebDialog.Builder>;
-					public constructor(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle);
 					public getTheme(): number;
 					public getListener(): com.facebook.internal.WebDialog.OnCompleteListener;
+					public constructor(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle);
 					public getParameters(): globalAndroid.os.Bundle;
-					public constructor(param0: globalAndroid.content.Context, param1: string, param2: string, param3: globalAndroid.os.Bundle);
 					public getApplicationId(): string;
+					public constructor(param0: globalAndroid.content.Context, param1: string, param2: string, param3: globalAndroid.os.Bundle);
 					public getContext(): globalAndroid.content.Context;
 					public setTheme(param0: number): com.facebook.internal.WebDialog.Builder;
 					public setOnCompleteListener(param0: com.facebook.internal.WebDialog.OnCompleteListener): com.facebook.internal.WebDialog.Builder;
 					public build(): com.facebook.internal.WebDialog;
+				}
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.internal.WebDialog.Companion>;
+					public initDefaultTheme(param0: globalAndroid.content.Context): void;
+					public newInstance(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle, param3: number, param4: com.facebook.login.LoginTargetApp, param5: com.facebook.internal.WebDialog.OnCompleteListener): com.facebook.internal.WebDialog;
+					public newInstance(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle, param3: number, param4: com.facebook.internal.WebDialog.OnCompleteListener): com.facebook.internal.WebDialog;
+					public getWebDialogTheme(): number;
+					public setInitCallback(param0: com.facebook.internal.WebDialog.InitCallback): void;
+					public setWebDialogTheme(param0: number): void;
 				}
 				export class DialogWebViewClient {
 					public static class: java.lang.Class<com.facebook.internal.WebDialog.DialogWebViewClient>;
 					public onPageFinished(param0: globalAndroid.webkit.WebView, param1: string): void;
 					public onReceivedSslError(param0: globalAndroid.webkit.WebView, param1: globalAndroid.webkit.SslErrorHandler, param2: globalAndroid.net.http.SslError): void;
 					public shouldOverrideUrlLoading(param0: globalAndroid.webkit.WebView, param1: string): boolean;
+					public constructor(param0: com.facebook.internal.WebDialog);
 					public onReceivedError(param0: globalAndroid.webkit.WebView, param1: number, param2: string, param3: string): void;
 					public onPageStarted(param0: globalAndroid.webkit.WebView, param1: string, param2: globalAndroid.graphics.Bitmap): void;
 				}
@@ -5755,9 +5733,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.WebDialog$InitCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onInit(param0: globalAndroid.webkit.WebView): void;
-					});
+					public constructor(implementation: { onInit(param0: globalAndroid.webkit.WebView): void });
 					public constructor();
 					public onInit(param0: globalAndroid.webkit.WebView): void;
 				}
@@ -5766,16 +5742,18 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.WebDialog$OnCompleteListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onComplete(param0: globalAndroid.os.Bundle, param1: com.facebook.FacebookException): void;
-					});
+					public constructor(implementation: { onComplete(param0: globalAndroid.os.Bundle, param1: com.facebook.FacebookException): void });
 					public constructor();
 					public onComplete(param0: globalAndroid.os.Bundle, param1: com.facebook.FacebookException): void;
 				}
-				export class UploadStagingResourcesTask extends globalAndroid.os.AsyncTask<java.lang.Void,java.lang.Void,androidNative.Array<string>> {
+				export class UploadStagingResourcesTask extends globalAndroid.os.AsyncTask<java.lang.Void, java.lang.Void, androidNative.Array<string>> {
 					public static class: java.lang.Class<com.facebook.internal.WebDialog.UploadStagingResourcesTask>;
 					public doInBackground(param0: androidNative.Array<java.lang.Void>): androidNative.Array<string>;
+					public constructor(param0: string, param1: globalAndroid.os.Bundle);
 					public onPostExecute(param0: androidNative.Array<string>): void;
+				}
+				export class WhenMappings {
+					public static class: java.lang.Class<com.facebook.internal.WebDialog.WhenMappings>;
 				}
 			}
 		}
@@ -5787,8 +5765,8 @@ declare module com {
 		export module internal {
 			export class WorkQueue {
 				public static class: java.lang.Class<com.facebook.internal.WorkQueue>;
-				public static DEFAULT_MAX_CONCURRENT: number;
 				public static Companion: com.facebook.internal.WorkQueue.Companion;
+				public static DEFAULT_MAX_CONCURRENT: number;
 				public addActiveWorkItem(param0: java.lang.Runnable): com.facebook.internal.WorkQueue.WorkItem;
 				public constructor(param0: number);
 				public validate(): void;
@@ -5805,11 +5783,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.WorkQueue$WorkItem interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						cancel(): boolean;
-						isRunning(): boolean;
-						moveToFront(): void;
-					});
+					public constructor(implementation: { cancel(): boolean; isRunning(): boolean; moveToFront(): void });
 					public constructor();
 					public cancel(): boolean;
 					public isRunning(): boolean;
@@ -5819,8 +5793,8 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.internal.WorkQueue.WorkNode>;
 					public getNext(): com.facebook.internal.WorkQueue.WorkNode;
 					public cancel(): boolean;
-					public addToList(param0: com.facebook.internal.WorkQueue.WorkNode, param1: boolean): com.facebook.internal.WorkQueue.WorkNode;
 					public constructor(param0: java.lang.Runnable);
+					public addToList(param0: com.facebook.internal.WorkQueue.WorkNode, param1: boolean): com.facebook.internal.WorkQueue.WorkNode;
 					public getCallback(): java.lang.Runnable;
 					public isRunning(): boolean;
 					public removeFromList(param0: com.facebook.internal.WorkQueue.WorkNode): com.facebook.internal.WorkQueue.WorkNode;
@@ -5975,13 +5949,13 @@ declare module com {
 			export module instrument {
 				export class InstrumentUtility {
 					public static class: java.lang.Class<com.facebook.internal.instrument.InstrumentUtility>;
+					public static INSTANCE: com.facebook.internal.instrument.InstrumentUtility;
 					public static ANALYSIS_REPORT_PREFIX: string;
 					public static ANR_REPORT_PREFIX: string;
 					public static CRASH_REPORT_PREFIX: string;
 					public static CRASH_SHIELD_PREFIX: string;
 					public static THREAD_CHECK_PREFIX: string;
 					public static ERROR_REPORT_PREFIX: string;
-					public static INSTANCE: com.facebook.internal.instrument.InstrumentUtility;
 					public static writeFile(param0: string, param1: string): void;
 					public static sendReports(param0: string, param1: org.json.JSONArray, param2: com.facebook.GraphRequest.Callback): void;
 					public static getInstrumentReportDir(): java.io.File;
@@ -6068,8 +6042,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.internal.instrument.crashshield.AutoHandleExceptions interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-						});
+						public constructor(implementation: {});
 						public constructor();
 					}
 				}
@@ -6112,8 +6085,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.internal.instrument.crashshield.NoAutoExceptionHandling interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-						});
+						public constructor(implementation: {});
 						public constructor();
 					}
 				}
@@ -6136,8 +6108,8 @@ declare module com {
 						public save(): void;
 						public clear(): void;
 						public toString(): string;
-						public isValid(): boolean;
 						public constructor(param0: string);
+						public isValid(): boolean;
 					}
 					export module ErrorReportData {
 						export class Companion {
@@ -6192,144 +6164,21 @@ declare module com {
 		export module internal {
 			export module logging {
 				export module dumpsys {
-					export class AndroidRootResolver {
-						public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.AndroidRootResolver>;
-						public static Companion: com.facebook.internal.logging.dumpsys.AndroidRootResolver.Companion;
+					export class EndToEndDumper {
+						public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.EndToEndDumper>;
+						/**
+						 * Constructs a new instance of the com.facebook.internal.logging.dumpsys.EndToEndDumper interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
+						 */
+						public constructor(implementation: { maybeDump(param0: string, param1: java.io.PrintWriter, param2: androidNative.Array<string>): boolean; <clinit>(): void });
 						public constructor();
-						public attachActiveRootListener(param0: com.facebook.internal.logging.dumpsys.AndroidRootResolver.Listener): void;
-						public listActiveRoots(): java.util.List<com.facebook.internal.logging.dumpsys.AndroidRootResolver.Root>;
+						public static Companion: com.facebook.internal.logging.dumpsys.EndToEndDumper.Companion;
+						public maybeDump(param0: string, param1: java.io.PrintWriter, param2: androidNative.Array<string>): boolean;
 					}
-					export module AndroidRootResolver {
+					export module EndToEndDumper {
 						export class Companion {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.AndroidRootResolver.Companion>;
-						}
-						export class ListenableArrayList extends java.util.ArrayList<globalAndroid.view.View> {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.AndroidRootResolver.ListenableArrayList>;
-							public remove(param0: number): globalAndroid.view.View;
-							public constructor();
-							public contains(param0: any): boolean;
-							public size(): number;
-							public removeAt(param0: number): globalAndroid.view.View;
-							public lastIndexOf(param0: any): number;
-							public remove(param0: any): boolean;
-							public remove(param0: globalAndroid.view.View): boolean;
-							public indexOf(param0: any): number;
-							public lastIndexOf(param0: globalAndroid.view.View): number;
-							public setListener(param0: com.facebook.internal.logging.dumpsys.AndroidRootResolver.Listener): void;
-							public getSize(): number;
-							public indexOf(param0: globalAndroid.view.View): number;
-							public contains(param0: globalAndroid.view.View): boolean;
-							public add(param0: globalAndroid.view.View): boolean;
-						}
-						export class Listener {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.AndroidRootResolver.Listener>;
-							/**
-							 * Constructs a new instance of the com.facebook.internal.logging.dumpsys.AndroidRootResolver$Listener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-							 */
-							public constructor(implementation: {
-								onRootAdded(param0: globalAndroid.view.View): void;
-								onRootRemoved(param0: globalAndroid.view.View): void;
-								onRootsChanged(param0: java.util.List<any>): void;
-							});
-							public constructor();
-							public onRootRemoved(param0: globalAndroid.view.View): void;
-							public onRootsChanged(param0: java.util.List<any>): void;
-							public onRootAdded(param0: globalAndroid.view.View): void;
-						}
-						export class Root {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.AndroidRootResolver.Root>;
-							public getParam(): globalAndroid.view.WindowManager.LayoutParams;
-							public getView(): globalAndroid.view.View;
-							public constructor(param0: globalAndroid.view.View, param1: globalAndroid.view.WindowManager.LayoutParams);
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module internal {
-			export module logging {
-				export module dumpsys {
-					export class EndToEndDumpsysHelper {
-						public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper>;
-						public static Companion: com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper.Companion;
-						public constructor();
-						public static maybeDump(param0: string, param1: java.io.PrintWriter, param2: androidNative.Array<string>): boolean;
-					}
-					export module EndToEndDumpsysHelper {
-						export class Api21Utils {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper.Api21Utils>;
-							public static INSTANCE: com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper.Api21Utils;
-							public writeExtraProps(param0: java.io.PrintWriter, param1: globalAndroid.view.View): void;
-						}
-						export class Api24Utils {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper.Api24Utils>;
-							public static INSTANCE: com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper.Api24Utils;
-							public addExtraProps(param0: org.json.JSONObject, param1: globalAndroid.view.accessibility.AccessibilityNodeInfo): void;
-						}
-						export class Companion {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.EndToEndDumpsysHelper.Companion>;
-							public maybeDump(param0: string, param1: java.io.PrintWriter, param2: androidNative.Array<string>): boolean;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module internal {
-			export module logging {
-				export module dumpsys {
-					export class ResourcesUtil {
-						public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.ResourcesUtil>;
-						public static INSTANCE: com.facebook.internal.logging.dumpsys.ResourcesUtil;
-						public static getIdStringQuietly(param0: globalAndroid.content.res.Resources, param1: number): string;
-						public static getIdString(param0: globalAndroid.content.res.Resources, param1: number): string;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module internal {
-			export module logging {
-				export module dumpsys {
-					export class WebViewDumpHelper {
-						public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.WebViewDumpHelper>;
-						public static GET_WEBVIEW_HTML_JS_SCRIPT: string;
-						public static Companion: com.facebook.internal.logging.dumpsys.WebViewDumpHelper.Companion;
-						public handle(param0: globalAndroid.webkit.WebView): void;
-						public constructor();
-						public dump(param0: java.io.PrintWriter): void;
-					}
-					export module WebViewDumpHelper {
-						export class Companion {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.WebViewDumpHelper.Companion>;
-						}
-						export class WebViewData {
-							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.WebViewDumpHelper.WebViewData>;
-							public static Companion: com.facebook.internal.logging.dumpsys.WebViewDumpHelper.WebViewData.Companion;
-							public getWidth(): number;
-							public getHeight(): number;
-							public getKey(): string;
-							public getLeft(): number;
-							public getTop(): number;
-							public constructor(param0: globalAndroid.webkit.WebView);
-						}
-						export module WebViewData {
-							export class Companion {
-								public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.WebViewDumpHelper.WebViewData.Companion>;
-							}
+							public static class: java.lang.Class<com.facebook.internal.logging.dumpsys.EndToEndDumper.Companion>;
+							public getInstance(): com.facebook.internal.logging.dumpsys.EndToEndDumper;
+							public setInstance(param0: com.facebook.internal.logging.dumpsys.EndToEndDumper): void;
 						}
 					}
 				}
@@ -6347,10 +6196,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.qualityvalidation.Excuse interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						type(): string;
-						reason(): string;
-					});
+					public constructor(implementation: { type(): string; reason(): string });
 					public constructor();
 					public reason(): string;
 					public type(): string;
@@ -6369,9 +6215,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.internal.qualityvalidation.ExcusesForDesignViolations interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						value(): androidNative.Array<com.facebook.internal.qualityvalidation.Excuse>;
-					});
+					public constructor(implementation: { value(): androidNative.Array<com.facebook.internal.qualityvalidation.Excuse> });
 					public constructor();
 					public value(): androidNative.Array<com.facebook.internal.qualityvalidation.Excuse>;
 				}
@@ -6386,8 +6230,8 @@ declare module com {
 			export module security {
 				export class CertificateUtil {
 					public static class: java.lang.Class<com.facebook.internal.security.CertificateUtil>;
-					public static DELIMITER: string;
 					public static INSTANCE: com.facebook.internal.security.CertificateUtil;
+					public static DELIMITER: string;
 					public static getCertificateHash(param0: globalAndroid.content.Context): string;
 				}
 			}
@@ -6401,9 +6245,9 @@ declare module com {
 			export module security {
 				export class OidcSecurityUtil {
 					public static class: java.lang.Class<com.facebook.internal.security.OidcSecurityUtil>;
+					public static INSTANCE: com.facebook.internal.security.OidcSecurityUtil;
 					public static SIGNATURE_ALGORITHM_SHA256: string;
 					public static TIMEOUT_IN_MILLISECONDS: number;
-					public static INSTANCE: com.facebook.internal.security.OidcSecurityUtil;
 					public static verify(param0: java.security.PublicKey, param1: string, param2: string): boolean;
 					public getOPENID_KEYS_PATH(): string;
 					public static getRawKeyFromEndPoint(param0: string): string;
@@ -6421,12 +6265,22 @@ declare module com {
 				public static class: java.lang.Class<com.facebook.login.BuildConfig>;
 				public static DEBUG: boolean;
 				public static LIBRARY_PACKAGE_NAME: string;
-				public static APPLICATION_ID: string;
 				public static BUILD_TYPE: string;
-				public static FLAVOR: string;
-				public static VERSION_CODE: number;
-				public static VERSION_NAME: string;
 				public constructor();
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export module login {
+			export class CodeChallengeMethod {
+				public static class: java.lang.Class<com.facebook.login.CodeChallengeMethod>;
+				public static S256: com.facebook.login.CodeChallengeMethod;
+				public static PLAIN: com.facebook.login.CodeChallengeMethod;
+				public static values(): androidNative.Array<com.facebook.login.CodeChallengeMethod>;
+				public static valueOf(param0: string): com.facebook.login.CodeChallengeMethod;
 			}
 		}
 	}
@@ -6437,14 +6291,26 @@ declare module com {
 		export module login {
 			export class CustomTabLoginMethodHandler extends com.facebook.login.WebLoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.CustomTabLoginMethodHandler>;
-				public static calledThroughLoggedOutAppSwitch: boolean;
+				public static Companion: com.facebook.login.CustomTabLoginMethodHandler.Companion;
 				public static OAUTH_DIALOG: string;
+				public static calledThroughLoggedOutAppSwitch: boolean;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.CustomTabLoginMethodHandler>;
+				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
 				public putChallengeParam(param0: org.json.JSONObject): void;
 				public describeContents(): number;
+				public getTokenSource(): com.facebook.AccessTokenSource;
 				public getRedirectUrl(): string;
+				public constructor(param0: globalAndroid.os.Parcel);
 				public getSSODevice(): string;
+				public getNameForLogging(): string;
+			}
+			export module CustomTabLoginMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.CustomTabLoginMethodHandler.Companion>;
+				}
 			}
 		}
 	}
@@ -6455,11 +6321,19 @@ declare module com {
 		export module login {
 			export class CustomTabPrefetchHelper {
 				public static class: java.lang.Class<com.facebook.login.CustomTabPrefetchHelper>;
+				public static Companion: com.facebook.login.CustomTabPrefetchHelper.Companion;
 				public onServiceDisconnected(param0: globalAndroid.content.ComponentName): void;
 				public static getPreparedSessionOnce(): androidx.browser.customtabs.CustomTabsSession;
 				public static mayLaunchUrl(param0: globalAndroid.net.Uri): void;
 				public onCustomTabsServiceConnected(param0: globalAndroid.content.ComponentName, param1: androidx.browser.customtabs.CustomTabsClient): void;
 				public constructor();
+			}
+			export module CustomTabPrefetchHelper {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.CustomTabPrefetchHelper.Companion>;
+					public getPreparedSessionOnce(): androidx.browser.customtabs.CustomTabsSession;
+					public mayLaunchUrl(param0: globalAndroid.net.Uri): void;
+				}
 			}
 		}
 	}
@@ -6487,35 +6361,60 @@ declare module com {
 		export module login {
 			export class DeviceAuthDialog {
 				public static class: java.lang.Class<com.facebook.login.DeviceAuthDialog>;
-				public onDismiss(param0: globalAndroid.content.DialogInterface): void;
-				public startLogin(param0: com.facebook.login.LoginClient.Request): void;
-				public onBackButtonPressed(): void;
+				public static Companion: com.facebook.login.DeviceAuthDialog.Companion;
 				public onCancel(): void;
 				public onError(param0: com.facebook.FacebookException): void;
 				public onCreateView(param0: globalAndroid.view.LayoutInflater, param1: globalAndroid.view.ViewGroup, param2: globalAndroid.os.Bundle): globalAndroid.view.View;
+				public additionalDeviceInfo(): java.util.Map<string, string>;
 				public onSaveInstanceState(param0: globalAndroid.os.Bundle): void;
-				public onDestroyView(): void;
 				public onCreateDialog(param0: globalAndroid.os.Bundle): globalAndroid.app.Dialog;
-				public initializeContentView(param0: boolean): globalAndroid.view.View;
 				public getLayoutResId(param0: boolean): number;
 				public constructor();
+				public onDismiss(param0: globalAndroid.content.DialogInterface): void;
+				public startLogin(param0: com.facebook.login.LoginClient.Request): void;
+				public onBackButtonPressed(): void;
+				public onDestroyView(): void;
+				public initializeContentView(param0: boolean): globalAndroid.view.View;
 			}
 			export module DeviceAuthDialog {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.DeviceAuthDialog.Companion>;
+					public getDEVICE_LOGIN_STATUS_ENDPOINT$facebook_common_release(): string;
+					public getLOGIN_ERROR_SUBCODE_AUTHORIZATION_PENDING$facebook_common_release(): number;
+					public getDEVICE_LOGIN_ENDPOINT$facebook_common_release(): string;
+				}
+				export class PermissionsLists {
+					public static class: java.lang.Class<com.facebook.login.DeviceAuthDialog.PermissionsLists>;
+					public constructor(param0: java.util.List<string>, param1: java.util.List<string>, param2: java.util.List<string>);
+					public getDeclinedPermissions(): java.util.List<string>;
+					public getGrantedPermissions(): java.util.List<string>;
+					public setExpiredPermissions(param0: java.util.List<string>): void;
+					public setDeclinedPermissions(param0: java.util.List<string>): void;
+					public getExpiredPermissions(): java.util.List<string>;
+					public setGrantedPermissions(param0: java.util.List<string>): void;
+				}
 				export class RequestState {
 					public static class: java.lang.Class<com.facebook.login.DeviceAuthDialog.RequestState>;
+					public static Companion: com.facebook.login.DeviceAuthDialog.RequestState.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.DeviceAuthDialog.RequestState>;
 					public getRequestCode(): string;
-					public constructor(param0: globalAndroid.os.Parcel);
-					public getUserCode(): string;
-					public getInterval(): number;
 					public setInterval(param0: number): void;
-					public setLastPoll(param0: number): void;
-					public getAuthorizationUri(): string;
+					public getUserCode(): string;
 					public withinLastRefreshWindow(): boolean;
 					public describeContents(): number;
 					public setRequestCode(param0: string): void;
+					public constructor(param0: globalAndroid.os.Parcel);
+					public getInterval(): number;
+					public setLastPoll(param0: number): void;
+					public getAuthorizationUri(): string;
+					public constructor();
 					public setUserCode(param0: string): void;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				}
+				export module RequestState {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.login.DeviceAuthDialog.RequestState.Companion>;
+					}
 				}
 			}
 		}
@@ -6527,15 +6426,24 @@ declare module com {
 		export module login {
 			export class DeviceAuthMethodHandler extends com.facebook.login.LoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.DeviceAuthMethodHandler>;
+				public static Companion: com.facebook.login.DeviceAuthMethodHandler.Companion;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.DeviceAuthMethodHandler>;
 				public createDeviceAuthDialog(): com.facebook.login.DeviceAuthDialog;
-				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
 				public static getBackgroundExecutor(): java.util.concurrent.ScheduledThreadPoolExecutor;
 				public onCancel(): void;
 				public describeContents(): number;
 				public onSuccess(param0: string, param1: string, param2: string, param3: java.util.Collection<string>, param4: java.util.Collection<string>, param5: java.util.Collection<string>, param6: com.facebook.AccessTokenSource, param7: java.util.Date, param8: java.util.Date, param9: java.util.Date): void;
 				public onError(param0: java.lang.Exception): void;
 				public constructor(param0: globalAndroid.os.Parcel);
+				public getNameForLogging(): string;
+			}
+			export module DeviceAuthMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.DeviceAuthMethodHandler.Companion>;
+					public getBackgroundExecutor(): java.util.concurrent.ScheduledThreadPoolExecutor;
+				}
 			}
 		}
 	}
@@ -6551,7 +6459,6 @@ declare module com {
 				public setDeviceRedirectUri(param0: globalAndroid.net.Uri): void;
 				public static getInstance(): com.facebook.login.DeviceLoginManager;
 				public setDeviceAuthTargetUserId(param0: string): void;
-				public createLoginRequest(param0: java.util.Collection<string>, param1: string): com.facebook.login.LoginClient.Request;
 				public getDeviceAuthTargetUserId(): string;
 				public static getInstance(): com.facebook.login.LoginManager;
 				public constructor();
@@ -6563,21 +6470,10 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module login {
-			export class FacebookLiteLoginMethodHandler extends com.facebook.login.NativeAppLoginMethodHandler {
-				public static class: java.lang.Class<com.facebook.login.FacebookLiteLoginMethodHandler>;
-				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.FacebookLiteLoginMethodHandler>;
-				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-				public describeContents(): number;
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module login {
 			export class GetTokenClient extends com.facebook.internal.PlatformServiceClient {
 				public static class: java.lang.Class<com.facebook.login.GetTokenClient>;
+				public constructor(param0: globalAndroid.content.Context, param1: number, param2: number, param3: number, param4: string, param5: string);
+				public constructor(param0: globalAndroid.content.Context, param1: com.facebook.login.LoginClient.Request);
 				public populateRequestBundle(param0: globalAndroid.os.Bundle): void;
 			}
 		}
@@ -6589,9 +6485,22 @@ declare module com {
 		export module login {
 			export class GetTokenLoginMethodHandler extends com.facebook.login.LoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.GetTokenLoginMethodHandler>;
+				public static Companion: com.facebook.login.GetTokenLoginMethodHandler.Companion;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.GetTokenLoginMethodHandler>;
-				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public getTokenCompleted(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle): void;
+				public onComplete(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
+				public complete(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle): void;
 				public describeContents(): number;
+				public cancel(): void;
+				public constructor(param0: globalAndroid.os.Parcel);
+				public getNameForLogging(): string;
+			}
+			export module GetTokenLoginMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.GetTokenLoginMethodHandler.Companion>;
+				}
 			}
 		}
 	}
@@ -6602,10 +6511,20 @@ declare module com {
 		export module login {
 			export class InstagramAppLoginMethodHandler extends com.facebook.login.NativeAppLoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.InstagramAppLoginMethodHandler>;
+				public static Companion: com.facebook.login.InstagramAppLoginMethodHandler.Companion;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.InstagramAppLoginMethodHandler>;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
 				public describeContents(): number;
 				public getTokenSource(): com.facebook.AccessTokenSource;
+				public constructor(param0: globalAndroid.os.Parcel);
+				public getNameForLogging(): string;
+			}
+			export module InstagramAppLoginMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.InstagramAppLoginMethodHandler.Companion>;
+				}
 			}
 		}
 	}
@@ -6616,10 +6535,19 @@ declare module com {
 		export module login {
 			export class KatanaProxyLoginMethodHandler extends com.facebook.login.NativeAppLoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.KatanaProxyLoginMethodHandler>;
+				public static Companion: com.facebook.login.KatanaProxyLoginMethodHandler.Companion;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.KatanaProxyLoginMethodHandler>;
-				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
 				public shouldKeepTrackOfMultipleIntents(): boolean;
 				public describeContents(): number;
+				public constructor(param0: globalAndroid.os.Parcel);
+				public getNameForLogging(): string;
+			}
+			export module KatanaProxyLoginMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.KatanaProxyLoginMethodHandler.Companion>;
+				}
 			}
 		}
 	}
@@ -6648,8 +6576,15 @@ declare module com {
 				public static WEB_VIEW_ONLY: com.facebook.login.LoginBehavior;
 				public static DIALOG_ONLY: com.facebook.login.LoginBehavior;
 				public static DEVICE_AUTH: com.facebook.login.LoginBehavior;
+				public allowsGetTokenAuth(): boolean;
+				public allowsDeviceAuth(): boolean;
+				public allowsFacebookLiteAuth(): boolean;
+				public allowsWebViewAuth(): boolean;
+				public allowsKatanaAuth(): boolean;
+				public allowsCustomTabAuth(): boolean;
 				public static values(): androidNative.Array<com.facebook.login.LoginBehavior>;
 				public static valueOf(param0: string): com.facebook.login.LoginBehavior;
+				public allowsInstagramAppAuth(): boolean;
 			}
 		}
 	}
@@ -6660,16 +6595,49 @@ declare module com {
 		export module login {
 			export class LoginClient {
 				public static class: java.lang.Class<com.facebook.login.LoginClient>;
+				public static Companion: com.facebook.login.LoginClient.Companion;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.LoginClient>;
+				public getExtraData(): java.util.Map<string, string>;
+				public getInProgress(): boolean;
+				public authorize(param0: com.facebook.login.LoginClient.Request): void;
+				public setPendingRequest(param0: com.facebook.login.LoginClient.Request): void;
+				public getLoggingExtras(): java.util.Map<string, string>;
+				public setFragment(param0: androidx.fragment.app.Fragment): void;
+				public setBackgroundProcessingListener(param0: com.facebook.login.LoginClient.BackgroundProcessingListener): void;
+				public checkPermission(param0: string): number;
+				public setCurrentHandlerIndex(param0: number): void;
+				public completeAndValidate(param0: com.facebook.login.LoginClient.Result): void;
+				public notifyBackgroundProcessingStart(): void;
+				public getActivity(): androidx.fragment.app.FragmentActivity;
+				public notifyBackgroundProcessingStop(): void;
+				public cancelCurrentHandler(): void;
+				public tryNextHandler(): void;
+				public getOnCompletedListener(): com.facebook.login.LoginClient.OnCompletedListener;
+				public setCheckedInternetPermission(param0: boolean): void;
 				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
+				public tryCurrentHandler(): boolean;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				public getHandlersToTry(param0: com.facebook.login.LoginClient.Request): androidNative.Array<com.facebook.login.LoginMethodHandler>;
-				public static getLoginRequestCode(): number;
+				public addExtraData(param0: string, param1: string, param2: boolean): void;
+				public complete(param0: com.facebook.login.LoginClient.Result): void;
+				public getBackgroundProcessingListener(): com.facebook.login.LoginClient.BackgroundProcessingListener;
+				public setExtraData(param0: java.util.Map<string, string>): void;
 				public constructor(param0: androidx.fragment.app.Fragment);
+				public getCurrentHandler(): com.facebook.login.LoginMethodHandler;
+				public setLoggingExtras(param0: java.util.Map<string, string>): void;
+				public checkInternetPermission(): boolean;
+				public constructor(param0: globalAndroid.os.Parcel);
+				public getCheckedInternetPermission(): boolean;
+				public getHandlersToTry(): androidNative.Array<com.facebook.login.LoginMethodHandler>;
+				public setHandlersToTry(param0: androidNative.Array<com.facebook.login.LoginMethodHandler>): void;
+				public static getLoginRequestCode(): number;
+				public static getE2E(): string;
+				public setOnCompletedListener(param0: com.facebook.login.LoginClient.OnCompletedListener): void;
+				public validateSameFbidAndFinish(param0: com.facebook.login.LoginClient.Result): void;
 				public describeContents(): number;
 				public getFragment(): androidx.fragment.app.Fragment;
+				public startOrContinueAuth(param0: com.facebook.login.LoginClient.Request): void;
 				public getPendingRequest(): com.facebook.login.LoginClient.Request;
-				public constructor(param0: globalAndroid.os.Parcel);
 			}
 			export module LoginClient {
 				export class BackgroundProcessingListener {
@@ -6677,43 +6645,94 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.login.LoginClient$BackgroundProcessingListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onBackgroundProcessingStarted(): void;
-						onBackgroundProcessingStopped(): void;
-					});
+					public constructor(implementation: { onBackgroundProcessingStarted(): void; onBackgroundProcessingStopped(): void });
 					public constructor();
 					public onBackgroundProcessingStarted(): void;
 					public onBackgroundProcessingStopped(): void;
+				}
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginClient.Companion>;
+					public getLoginRequestCode(): number;
+					public getE2E(): string;
 				}
 				export class OnCompletedListener {
 					public static class: java.lang.Class<com.facebook.login.LoginClient.OnCompletedListener>;
 					/**
 					 * Constructs a new instance of the com.facebook.login.LoginClient$OnCompletedListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						onCompleted(param0: com.facebook.login.LoginClient.Result): void;
-					});
+					public constructor(implementation: { onCompleted(param0: com.facebook.login.LoginClient.Result): void });
 					public constructor();
 					public onCompleted(param0: com.facebook.login.LoginClient.Result): void;
 				}
 				export class Request {
 					public static class: java.lang.Class<com.facebook.login.LoginClient.Request>;
+					public static Companion: com.facebook.login.LoginClient.Request.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.LoginClient.Request>;
-					public getNonce(): string;
+					public getAuthId(): string;
+					public setRerequest(param0: boolean): void;
+					public setDeviceRedirectUriString(param0: string): void;
+					public constructor(param0: com.facebook.login.LoginBehavior, param1: java.util.Set<string>, param2: com.facebook.login.DefaultAudience, param3: string, param4: string, param5: string, param6: com.facebook.login.LoginTargetApp, param7: string, param8: string, param9: string);
+					public getCodeChallengeMethod(): com.facebook.login.CodeChallengeMethod;
+					public shouldSkipAccountDeduplication(): boolean;
+					public hasPublishPermission(): boolean;
+					public isInstagramLogin(): boolean;
+					public constructor(param0: com.facebook.login.LoginBehavior, param1: java.util.Set<string>, param2: com.facebook.login.DefaultAudience, param3: string, param4: string, param5: string, param6: com.facebook.login.LoginTargetApp, param7: string, param8: string);
+					public getLoginBehavior(): com.facebook.login.LoginBehavior;
+					public isFamilyLogin(): boolean;
 					public getMessengerPageId(): string;
+					public getDefaultAudience(): com.facebook.login.DefaultAudience;
+					public setFamilyLogin(param0: boolean): void;
+					public setShouldSkipAccountDeduplication(param0: boolean): void;
+					public constructor(param0: com.facebook.login.LoginBehavior, param1: java.util.Set<string>, param2: com.facebook.login.DefaultAudience, param3: string, param4: string, param5: string, param6: com.facebook.login.LoginTargetApp, param7: string, param8: string, param9: string, param10: com.facebook.login.CodeChallengeMethod);
+					public constructor(param0: com.facebook.login.LoginBehavior, param1: java.util.Set<string>, param2: com.facebook.login.DefaultAudience, param3: string, param4: string, param5: string);
+					public getResetMessengerState(): boolean;
+					public getPermissions(): java.util.Set<string>;
+					public setAuthId(param0: string): void;
+					public setAuthType(param0: string): void;
+					public getNonce(): string;
+					public getCodeVerifier(): string;
+					public constructor(param0: com.facebook.login.LoginBehavior, param1: java.util.Set<string>, param2: com.facebook.login.DefaultAudience, param3: string, param4: string, param5: string, param6: com.facebook.login.LoginTargetApp, param7: string);
 					public setResetMessengerState(param0: boolean): void;
 					public describeContents(): number;
 					public setMessengerPageId(param0: string): void;
+					public getAuthType(): string;
+					public getCodeChallenge(): string;
+					public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
+					public constructor(param0: com.facebook.login.LoginBehavior, param1: java.util.Set<string>, param2: com.facebook.login.DefaultAudience, param3: string, param4: string, param5: string, param6: com.facebook.login.LoginTargetApp);
+					public isRerequest(): boolean;
+					public setDeviceAuthTargetUserId(param0: string): void;
+					public getDeviceAuthTargetUserId(): string;
+					public getDeviceRedirectUriString(): string;
+					public getApplicationId(): string;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-					public getResetMessengerState(): boolean;
+					public setPermissions(param0: java.util.Set<string>): void;
+				}
+				export module Request {
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.login.LoginClient.Request.Companion>;
+					}
 				}
 				export class Result {
 					public static class: java.lang.Class<com.facebook.login.LoginClient.Result>;
-					public loggingExtras: java.util.Map<string,string>;
-					public extraData: java.util.Map<string,string>;
+					public static Companion: com.facebook.login.LoginClient.Result.Companion;
+					public code: com.facebook.login.LoginClient.Result.Code;
+					public token: com.facebook.AccessToken;
+					public authenticationToken: com.facebook.AuthenticationToken;
+					public errorMessage: string;
+					public errorCode: string;
+					public request: com.facebook.login.LoginClient.Request;
+					public loggingExtras: java.util.Map<string, string>;
+					public extraData: java.util.Map<string, string>;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.LoginClient.Result>;
+					public static createCancelResult(param0: com.facebook.login.LoginClient.Request, param1: string): com.facebook.login.LoginClient.Result;
+					public static createErrorResult(param0: com.facebook.login.LoginClient.Request, param1: string, param2: string): com.facebook.login.LoginClient.Result;
 					public describeContents(): number;
+					public static createErrorResult(param0: com.facebook.login.LoginClient.Request, param1: string, param2: string, param3: string): com.facebook.login.LoginClient.Result;
+					public static createCompositeTokenResult(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.AccessToken, param2: com.facebook.AuthenticationToken): com.facebook.login.LoginClient.Result;
+					public constructor(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.login.LoginClient.Result.Code, param2: com.facebook.AccessToken, param3: string, param4: string);
+					public static createTokenResult(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.AccessToken): com.facebook.login.LoginClient.Result;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+					public constructor(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.login.LoginClient.Result.Code, param2: com.facebook.AccessToken, param3: com.facebook.AuthenticationToken, param4: string, param5: string);
 				}
 				export module Result {
 					export class Code {
@@ -6721,8 +6740,17 @@ declare module com {
 						public static SUCCESS: com.facebook.login.LoginClient.Result.Code;
 						public static CANCEL: com.facebook.login.LoginClient.Result.Code;
 						public static ERROR: com.facebook.login.LoginClient.Result.Code;
+						public getLoggingValue(): string;
 						public static values(): androidNative.Array<com.facebook.login.LoginClient.Result.Code>;
 						public static valueOf(param0: string): com.facebook.login.LoginClient.Result.Code;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.login.LoginClient.Result.Companion>;
+						public createCancelResult(param0: com.facebook.login.LoginClient.Request, param1: string): com.facebook.login.LoginClient.Result;
+						public createErrorResult(param0: com.facebook.login.LoginClient.Request, param1: string, param2: string): com.facebook.login.LoginClient.Result;
+						public createCompositeTokenResult(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.AccessToken, param2: com.facebook.AuthenticationToken): com.facebook.login.LoginClient.Result;
+						public createTokenResult(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.AccessToken): com.facebook.login.LoginClient.Result;
+						public createErrorResult(param0: com.facebook.login.LoginClient.Request, param1: string, param2: string, param3: string): com.facebook.login.LoginClient.Result;
 					}
 				}
 			}
@@ -6735,12 +6763,14 @@ declare module com {
 		export module login {
 			export class LoginConfiguration {
 				public static class: java.lang.Class<com.facebook.login.LoginConfiguration>;
-				public static OPENID: string;
 				public static Companion: com.facebook.login.LoginConfiguration.Companion;
+				public static OPENID: string;
+				public getCodeVerifier(): string;
 				public constructor(param0: java.util.Collection<string>);
 				public getPermissions(): java.util.Set<string>;
 				public constructor(param0: java.util.Collection<string>, param1: string);
 				public getNonce(): string;
+				public constructor(param0: java.util.Collection<string>, param1: string, param2: string);
 			}
 			export module LoginConfiguration {
 				export class Companion {
@@ -6756,8 +6786,13 @@ declare module com {
 		export module login {
 			export class LoginFragment {
 				public static class: java.lang.Class<com.facebook.login.LoginFragment>;
+				public static Companion: com.facebook.login.LoginFragment.Companion;
+				public static RESULT_KEY: string;
+				public static REQUEST_KEY: string;
+				public static EXTRA_REQUEST: string;
 				public createLoginClient(): com.facebook.login.LoginClient;
 				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): void;
+				public getLoginClient(): com.facebook.login.LoginClient;
 				public onCreate(param0: globalAndroid.os.Bundle): void;
 				public onResume(): void;
 				public getLayoutResId(): number;
@@ -6766,6 +6801,11 @@ declare module com {
 				public onDestroy(): void;
 				public onSaveInstanceState(param0: globalAndroid.os.Bundle): void;
 				public constructor();
+			}
+			export module LoginFragment {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginFragment.Companion>;
+				}
 			}
 		}
 	}
@@ -6776,23 +6816,66 @@ declare module com {
 		export module login {
 			export class LoginLogger {
 				public static class: java.lang.Class<com.facebook.login.LoginLogger>;
-				public logCompleteLogin(param0: string, param1: java.util.Map<string,string>, param2: com.facebook.login.LoginClient.Result.Code, param3: java.util.Map<string,string>, param4: java.lang.Exception, param5: string): void;
+				public static Companion: com.facebook.login.LoginLogger.Companion;
+				public static EVENT_NAME_LOGIN_METHOD_START: string;
+				public static EVENT_NAME_LOGIN_METHOD_COMPLETE: string;
+				public static EVENT_NAME_LOGIN_METHOD_NOT_TRIED: string;
+				public static EVENT_PARAM_METHOD_RESULT_SKIPPED: string;
+				public static EVENT_NAME_LOGIN_START: string;
+				public static EVENT_NAME_LOGIN_COMPLETE: string;
+				public static EVENT_NAME_LOGIN_STATUS_START: string;
+				public static EVENT_NAME_LOGIN_STATUS_COMPLETE: string;
+				public static EVENT_NAME_LOGIN_HEARTBEAT: string;
+				public static EVENT_NAME_FOA_LOGIN_METHOD_START: string;
+				public static EVENT_NAME_FOA_LOGIN_METHOD_COMPLETE: string;
+				public static EVENT_NAME_FOA_LOGIN_METHOD_NOT_TRIED: string;
+				public static EVENT_PARAM_FOA_METHOD_RESULT_SKIPPED: string;
+				public static EVENT_NAME_FOA_LOGIN_START: string;
+				public static EVENT_NAME_FOA_LOGIN_COMPLETE: string;
+				public static EVENT_PARAM_AUTH_LOGGER_ID: string;
+				public static EVENT_PARAM_TIMESTAMP: string;
+				public static EVENT_PARAM_LOGIN_RESULT: string;
+				public static EVENT_PARAM_METHOD: string;
+				public static EVENT_PARAM_ERROR_CODE: string;
+				public static EVENT_PARAM_ERROR_MESSAGE: string;
+				public static EVENT_PARAM_EXTRAS: string;
+				public static EVENT_PARAM_CHALLENGE: string;
+				public static EVENT_EXTRAS_TRY_LOGIN_ACTIVITY: string;
+				public static EVENT_EXTRAS_MISSING_INTERNET_PERMISSION: string;
+				public static EVENT_EXTRAS_NOT_TRIED: string;
+				public static EVENT_EXTRAS_NEW_PERMISSIONS: string;
+				public static EVENT_EXTRAS_LOGIN_BEHAVIOR: string;
+				public static EVENT_EXTRAS_REQUEST_CODE: string;
+				public static EVENT_EXTRAS_PERMISSIONS: string;
+				public static EVENT_EXTRAS_DEFAULT_AUDIENCE: string;
+				public static EVENT_EXTRAS_IS_REAUTHORIZE: string;
+				public static EVENT_EXTRAS_FACEBOOK_VERSION: string;
+				public static EVENT_EXTRAS_FAILURE: string;
+				public static EVENT_EXTRAS_TARGET_APP: string;
+				public static FACEBOOK_PACKAGE_NAME: string;
+				public constructor(param0: globalAndroid.content.Context, param1: string);
+				public logCompleteLogin(param0: string, param1: java.util.Map<string, string>, param2: com.facebook.login.LoginClient.Result.Code, param3: java.util.Map<string, string>, param4: java.lang.Exception, param5: string): void;
 				public logStartLogin(param0: com.facebook.login.LoginClient.Request): void;
 				public logAuthorizationMethodStart(param0: string, param1: string, param2: string): void;
-				public logCompleteLogin(param0: string, param1: java.util.Map<string,string>, param2: com.facebook.login.LoginClient.Result.Code, param3: java.util.Map<string,string>, param4: java.lang.Exception): void;
+				public logCompleteLogin(param0: string, param1: java.util.Map<string, string>, param2: com.facebook.login.LoginClient.Result.Code, param3: java.util.Map<string, string>, param4: java.lang.Exception): void;
 				public logAuthorizationMethodNotTried(param0: string, param1: string, param2: string): void;
 				public logLoginStatusStart(param0: string): void;
 				public logAuthorizationMethodStart(param0: string, param1: string): void;
-				public logAuthorizationMethodComplete(param0: string, param1: string, param2: string, param3: string, param4: string, param5: java.util.Map<string,string>): void;
 				public logLoginStatusError(param0: string, param1: java.lang.Exception): void;
+				public logAuthorizationMethodComplete(param0: string, param1: string, param2: string, param3: string, param4: string, param5: java.util.Map<string, string>): void;
 				public logStartLogin(param0: com.facebook.login.LoginClient.Request, param1: string): void;
 				public logAuthorizationMethodNotTried(param0: string, param1: string): void;
 				public getApplicationId(): string;
-				public logAuthorizationMethodComplete(param0: string, param1: string, param2: string, param3: string, param4: string, param5: java.util.Map<string,string>, param6: string): void;
+				public logAuthorizationMethodComplete(param0: string, param1: string, param2: string, param3: string, param4: string, param5: java.util.Map<string, string>, param6: string): void;
 				public logUnexpectedError(param0: string, param1: string, param2: string): void;
 				public logLoginStatusFailure(param0: string): void;
 				public logLoginStatusSuccess(param0: string): void;
 				public logUnexpectedError(param0: string, param1: string): void;
+			}
+			export module LoginLogger {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginLogger.Companion>;
+				}
 			}
 		}
 	}
@@ -6803,10 +6886,13 @@ declare module com {
 		export module login {
 			export class LoginManager {
 				public static class: java.lang.Class<com.facebook.login.LoginManager>;
+				public static Companion: com.facebook.login.LoginManager.Companion;
 				public setLoginTargetApp(param0: com.facebook.login.LoginTargetApp): com.facebook.login.LoginManager;
 				public setDefaultAudience(param0: com.facebook.login.DefaultAudience): com.facebook.login.LoginManager;
+				public constructor();
 				public logOut(): void;
 				public logIn(param0: globalAndroid.app.Activity, param1: com.facebook.login.LoginConfiguration): void;
+				public onActivityResult(param0: number, param1: globalAndroid.content.Intent, param2: com.facebook.FacebookCallback<com.facebook.login.LoginResult>): boolean;
 				public setShouldSkipAccountDeduplication(param0: boolean): com.facebook.login.LoginManager;
 				public logIn(param0: com.facebook.internal.FragmentWrapper, param1: java.util.Collection<string>, param2: string): void;
 				public isFamilyLogin(): boolean;
@@ -6818,6 +6904,7 @@ declare module com {
 				public resolveError(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: com.facebook.GraphResponse): void;
 				public logIn(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>, param2: string): void;
 				public createLoginRequestWithConfig(param0: com.facebook.login.LoginConfiguration): com.facebook.login.LoginClient.Request;
+				public static computeLoginResult(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.AccessToken, param2: com.facebook.AuthenticationToken): com.facebook.login.LoginResult;
 				public getLoginBehavior(): com.facebook.login.LoginBehavior;
 				public unregisterCallback(param0: com.facebook.CallbackManager): void;
 				public reauthorizeDataAccess(param0: androidx.fragment.app.Fragment): void;
@@ -6826,6 +6913,7 @@ declare module com {
 				public setAuthType(param0: string): com.facebook.login.LoginManager;
 				public logInWithReadPermissions(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
 				public logInWithPublishPermissions(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
+				public static getExtraDataFromIntent(param0: globalAndroid.content.Intent): java.util.Map<string, string>;
 				public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<com.facebook.login.LoginResult>): void;
 				public logIn(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager, param2: java.util.Collection<string>): void;
 				public logInWithReadPermissions(param0: globalAndroid.app.Activity, param1: java.util.Collection<string>): void;
@@ -6840,7 +6928,6 @@ declare module com {
 				public resolveError(param0: globalAndroid.app.Fragment, param1: com.facebook.GraphResponse): void;
 				public setMessengerPageId(param0: string): com.facebook.login.LoginManager;
 				public getAuthType(): string;
-				public createLoginRequest(param0: java.util.Collection<string>, param1: string): com.facebook.login.LoginClient.Request;
 				public static getInstance(): com.facebook.login.LoginManager;
 				public resolveError(param0: globalAndroid.app.Activity, param1: com.facebook.GraphResponse): void;
 				public logIn(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>, param2: string): void;
@@ -6855,10 +6942,12 @@ declare module com {
 				public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
 				/** @deprecated */
 				public logInWithPublishPermissions(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
+				public static isPublishPermission(param0: string): boolean;
 				public setResetMessengerState(param0: boolean): com.facebook.login.LoginManager;
 				public createLoginRequest(param0: java.util.Collection<string>): com.facebook.login.LoginClient.Request;
 				/** @deprecated */
 				public logInWithReadPermissions(param0: androidx.fragment.app.Fragment, param1: java.util.Collection<string>): void;
+				public onActivityResult(param0: number, param1: globalAndroid.content.Intent): boolean;
 				public loginWithConfiguration(param0: globalAndroid.app.Activity, param1: com.facebook.login.LoginConfiguration): void;
 				public logIn(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
 				public logInWithPublishPermissions(param0: globalAndroid.app.Fragment, param1: java.util.Collection<string>): void;
@@ -6868,19 +6957,41 @@ declare module com {
 					public static class: java.lang.Class<com.facebook.login.LoginManager.ActivityStartActivityDelegate>;
 					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
 					public getActivityContext(): globalAndroid.app.Activity;
+					public constructor(param0: globalAndroid.app.Activity);
 				}
 				export class AndroidxActivityResultRegistryOwnerStartActivityDelegate extends com.facebook.login.StartActivityDelegate {
 					public static class: java.lang.Class<com.facebook.login.LoginManager.AndroidxActivityResultRegistryOwnerStartActivityDelegate>;
 					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
+					public constructor(param0: androidx.activity.result.ActivityResultRegistryOwner, param1: com.facebook.CallbackManager);
 					public getActivityContext(): globalAndroid.app.Activity;
+				}
+				export module startActivityForResult {
+					export module AndroidxActivityResultRegistryOwnerStartActivityDelegate {
+						export class LauncherHolder {
+							public static class: java.lang.Class<com.facebook.login.LoginManager.AndroidxActivityResultRegistryOwnerStartActivityDelegate.startActivityForResult.LauncherHolder>;
+							public constructor();
+							public getLauncher(): androidx.activity.result.ActivityResultLauncher<globalAndroid.content.Intent>;
+							public setLauncher(param0: androidx.activity.result.ActivityResultLauncher<globalAndroid.content.Intent>): void;
+						}
+					}
+				}
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginManager.Companion>;
+					public isPublishPermission(param0: string): boolean;
+					public getExtraDataFromIntent(param0: globalAndroid.content.Intent): java.util.Map<string, string>;
+					public getInstance(): com.facebook.login.LoginManager;
+					public computeLoginResult(param0: com.facebook.login.LoginClient.Request, param1: com.facebook.AccessToken, param2: com.facebook.AuthenticationToken): com.facebook.login.LoginResult;
 				}
 				export class FragmentStartActivityDelegate extends com.facebook.login.StartActivityDelegate {
 					public static class: java.lang.Class<com.facebook.login.LoginManager.FragmentStartActivityDelegate>;
 					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
 					public getActivityContext(): globalAndroid.app.Activity;
+					public constructor(param0: com.facebook.internal.FragmentWrapper);
 				}
 				export class LoginLoggerHolder {
 					public static class: java.lang.Class<com.facebook.login.LoginManager.LoginLoggerHolder>;
+					public static INSTANCE: com.facebook.login.LoginManager.LoginLoggerHolder;
+					public getLogger(param0: globalAndroid.content.Context): com.facebook.login.LoginLogger;
 				}
 			}
 		}
@@ -6892,14 +7003,45 @@ declare module com {
 		export module login {
 			export abstract class LoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.LoginMethodHandler>;
+				public static Companion: com.facebook.login.LoginMethodHandler.Companion;
 				public loginClient: com.facebook.login.LoginClient;
+				public static USER_CANCELED_LOG_IN_ERROR_MESSAGE: string;
+				public static NO_SIGNED_REQUEST_ERROR_MESSAGE: string;
+				public static NO_USER_ID_ERROR_MESSAGE: string;
+				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
+				public processCodeExchange(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle): globalAndroid.os.Bundle;
+				public getLoginClient(): com.facebook.login.LoginClient;
+				public putChallengeParam(param0: org.json.JSONObject): void;
 				public shouldKeepTrackOfMultipleIntents(): boolean;
 				public static createAuthenticationTokenFromWebBundle(param0: globalAndroid.os.Bundle, param1: string): com.facebook.AuthenticationToken;
 				public getClientState(param0: string): string;
+				public getMethodLoggingExtras(): java.util.Map<string, string>;
+				public getRedirectUrl(): string;
+				public static createAccessTokenFromNativeLogin(param0: globalAndroid.os.Bundle, param1: com.facebook.AccessTokenSource, param2: string): com.facebook.AccessToken;
+				public constructor(param0: globalAndroid.os.Parcel);
+				public needsInternetPermission(): boolean;
 				public addLoggingExtra(param0: string, param1: any): void;
+				public static createAuthenticationTokenFromNativeLogin(param0: globalAndroid.os.Bundle, param1: string): com.facebook.AuthenticationToken;
+				public cancel(): void;
+				public setMethodLoggingExtras(param0: java.util.Map<string, string>): void;
+				public setLoginClient(param0: com.facebook.login.LoginClient): void;
 				public logWebLoginCompleted(param0: string): void;
+				public getNameForLogging(): string;
 				public static createAccessTokenFromWebBundle(param0: java.util.Collection<string>, param1: globalAndroid.os.Bundle, param2: com.facebook.AccessTokenSource, param3: string): com.facebook.AccessToken;
+				public static getUserIDFromSignedRequest(param0: string): string;
+			}
+			export module LoginMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginMethodHandler.Companion>;
+					public createAuthenticationTokenFromNativeLogin(param0: globalAndroid.os.Bundle, param1: string): com.facebook.AuthenticationToken;
+					public createAuthenticationTokenFromWebBundle(param0: globalAndroid.os.Bundle, param1: string): com.facebook.AuthenticationToken;
+					public getUserIDFromSignedRequest(param0: string): string;
+					public createAccessTokenFromNativeLogin(param0: globalAndroid.os.Bundle, param1: com.facebook.AccessTokenSource, param2: string): com.facebook.AccessToken;
+					public createAccessTokenFromWebBundle(param0: java.util.Collection<string>, param1: globalAndroid.os.Bundle, param2: com.facebook.AccessTokenSource, param3: string): com.facebook.AccessToken;
+				}
 			}
 		}
 	}
@@ -6934,7 +7076,16 @@ declare module com {
 		export module login {
 			export class LoginStatusClient extends com.facebook.internal.PlatformServiceClient {
 				public static class: java.lang.Class<com.facebook.login.LoginStatusClient>;
+				public static Companion: com.facebook.login.LoginStatusClient.Companion;
+				public static DEFAULT_TOAST_DURATION_MS: number;
+				public constructor(param0: globalAndroid.content.Context, param1: number, param2: number, param3: number, param4: string, param5: string);
+				public constructor(param0: globalAndroid.content.Context, param1: string, param2: string, param3: string, param4: number, param5: string);
 				public populateRequestBundle(param0: globalAndroid.os.Bundle): void;
+			}
+			export module LoginStatusClient {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.LoginStatusClient.Companion>;
+				}
 			}
 		}
 	}
@@ -6945,9 +7096,9 @@ declare module com {
 		export module login {
 			export class LoginTargetApp {
 				public static class: java.lang.Class<com.facebook.login.LoginTargetApp>;
+				public static Companion: com.facebook.login.LoginTargetApp.Companion;
 				public static FACEBOOK: com.facebook.login.LoginTargetApp;
 				public static INSTAGRAM: com.facebook.login.LoginTargetApp;
-				public static Companion: com.facebook.login.LoginTargetApp.Companion;
 				public static valueOf(param0: string): com.facebook.login.LoginTargetApp;
 				public static values(): androidNative.Array<com.facebook.login.LoginTargetApp>;
 				public static fromString(param0: string): com.facebook.login.LoginTargetApp;
@@ -6968,11 +7119,15 @@ declare module com {
 		export module login {
 			export abstract class NativeAppLoginMethodHandler extends com.facebook.login.LoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.NativeAppLoginMethodHandler>;
+				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
 				public handleResultCancel(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.content.Intent): void;
 				public tryIntent(param0: globalAndroid.content.Intent, param1: number): boolean;
 				public getErrorMessage(param0: globalAndroid.os.Bundle): string;
 				public getTokenSource(): com.facebook.AccessTokenSource;
 				public handleResultError(param0: com.facebook.login.LoginClient.Request, param1: string, param2: string, param3: string): void;
+				public constructor(param0: globalAndroid.os.Parcel);
 				public getError(param0: globalAndroid.os.Bundle): string;
 				public handleResultOk(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle): void;
 			}
@@ -6995,15 +7150,27 @@ declare module com {
 declare module com {
 	export module facebook {
 		export module login {
+			export class PKCEUtil {
+				public static class: java.lang.Class<com.facebook.login.PKCEUtil>;
+				public static INSTANCE: com.facebook.login.PKCEUtil;
+				public static isValidCodeVerifier(param0: string): boolean;
+				public static generateCodeVerifier(): string;
+				public static createCodeExchangeRequest(param0: string, param1: string, param2: string): com.facebook.GraphRequest;
+				public static generateCodeChallenge(param0: string, param1: com.facebook.login.CodeChallengeMethod): string;
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export module login {
 			export class StartActivityDelegate {
 				public static class: java.lang.Class<com.facebook.login.StartActivityDelegate>;
 				/**
 				 * Constructs a new instance of the com.facebook.login.StartActivityDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
-					getActivityContext(): globalAndroid.app.Activity;
-				});
+				public constructor(implementation: { startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void; getActivityContext(): globalAndroid.app.Activity });
 				public constructor();
 				public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
 				public getActivityContext(): globalAndroid.app.Activity;
@@ -7017,12 +7184,19 @@ declare module com {
 		export module login {
 			export abstract class WebLoginMethodHandler extends com.facebook.login.LoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.WebLoginMethodHandler>;
-				public tokenSource: com.facebook.AccessTokenSource;
+				public static Companion: com.facebook.login.WebLoginMethodHandler.Companion;
+				public constructor(param0: com.facebook.login.LoginClient);
 				public getParameters(param0: com.facebook.login.LoginClient.Request): globalAndroid.os.Bundle;
+				public getTokenSource(): com.facebook.AccessTokenSource;
 				public addExtraParameters(param0: globalAndroid.os.Bundle, param1: com.facebook.login.LoginClient.Request): globalAndroid.os.Bundle;
 				public onComplete(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle, param2: com.facebook.FacebookException): void;
-				public getRedirectUrl(): string;
+				public constructor(param0: globalAndroid.os.Parcel);
 				public getSSODevice(): string;
+			}
+			export module WebLoginMethodHandler {
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.WebLoginMethodHandler.Companion>;
+				}
 			}
 		}
 	}
@@ -7033,25 +7207,46 @@ declare module com {
 		export module login {
 			export class WebViewLoginMethodHandler extends com.facebook.login.WebLoginMethodHandler {
 				public static class: java.lang.Class<com.facebook.login.WebViewLoginMethodHandler>;
+				public static Companion: com.facebook.login.WebViewLoginMethodHandler.Companion;
 				public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.login.WebViewLoginMethodHandler>;
 				public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				public constructor(param0: com.facebook.login.LoginClient);
+				public tryAuthorize(param0: com.facebook.login.LoginClient.Request): number;
+				public setLoginDialog(param0: com.facebook.internal.WebDialog): void;
+				public constructor(param0: globalAndroid.os.Parcel);
+				public needsInternetPermission(): boolean;
+				public onWebDialogComplete(param0: com.facebook.login.LoginClient.Request, param1: globalAndroid.os.Bundle, param2: com.facebook.FacebookException): void;
+				public getE2e(): string;
 				public describeContents(): number;
+				public setE2e(param0: string): void;
+				public getTokenSource(): com.facebook.AccessTokenSource;
+				public cancel(): void;
+				public getLoginDialog(): com.facebook.internal.WebDialog;
+				public getNameForLogging(): string;
 			}
 			export module WebViewLoginMethodHandler {
 				export class AuthDialogBuilder extends com.facebook.internal.WebDialog.Builder {
 					public static class: java.lang.Class<com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder>;
-					public setLoginBehavior(param0: com.facebook.login.LoginBehavior): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
+					public e2e: string;
+					public authType: string;
+					public setE2e(param0: string): void;
+					public setAuthType(param0: string): void;
 					public setAuthType(param0: string): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
 					public constructor(param0: globalAndroid.content.Context, param1: string, param2: globalAndroid.os.Bundle);
+					public getAuthType(): string;
+					public setLoginBehavior(param0: com.facebook.login.LoginBehavior): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
 					public setShouldSkipDedupe(param0: boolean): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
+					public setIsRerequest(param0: boolean): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
 					public setLoginTargetApp(param0: com.facebook.login.LoginTargetApp): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
 					public constructor(param0: globalAndroid.content.Context, param1: string, param2: string, param3: globalAndroid.os.Bundle);
 					public setE2E(param0: string): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
-					/** @deprecated */
-					public setIsRerequest(param0: boolean): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
 					public setIsChromeOS(param0: boolean): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
+					public getE2e(): string;
 					public setFamilyLogin(param0: boolean): com.facebook.login.WebViewLoginMethodHandler.AuthDialogBuilder;
 					public build(): com.facebook.internal.WebDialog;
+				}
+				export class Companion {
+					public static class: java.lang.Class<com.facebook.login.WebViewLoginMethodHandler.Companion>;
 				}
 			}
 		}
@@ -7089,55 +7284,69 @@ declare module com {
 			export module widget {
 				export class LoginButton extends com.facebook.FacebookButtonBase {
 					public static class: java.lang.Class<com.facebook.login.widget.LoginButton>;
-					public setToolTipStyle(param0: com.facebook.login.widget.ToolTipPopup.Style): void;
-					public setPermissions(param0: java.util.List<string>): void;
-					/** @deprecated */
-					public setPublishPermissions(param0: androidNative.Array<string>): void;
+					public properties: com.facebook.login.widget.LoginButton.LoginButtonProperties;
+					public getLoggerID(): string;
+					public getShouldSkipAccountDeduplication(): boolean;
 					public onAttachedToWindow(): void;
-					public setLogoutText(param0: string): void;
 					public onVisibilityChanged(param0: globalAndroid.view.View, param1: number): void;
 					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet);
-					public clearPermissions(): void;
 					public getLoginBehavior(): com.facebook.login.LoginBehavior;
 					public getDefaultStyleResource(): number;
-					public getDefaultRequestCode(): number;
 					public getMessengerPageId(): string;
-					public setToolTipDisplayTime(param0: number): void;
+					public getLoginButtonWidth(param0: number): number;
 					public getDefaultAudience(): com.facebook.login.DefaultAudience;
 					public setPermissions(param0: androidNative.Array<string>): void;
 					public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<com.facebook.login.LoginResult>): void;
-					public getResetMessengerState(): boolean;
 					/** @deprecated */
 					public setPublishPermissions(param0: java.util.List<string>): void;
-					public onDetachedFromWindow(): void;
 					public setAuthType(param0: string): void;
-					public onMeasure(param0: number, param1: number): void;
 					public onDraw(param0: globalAndroid.graphics.Canvas): void;
-					public getToolTipMode(): com.facebook.login.widget.LoginButton.ToolTipMode;
+					public parseLoginButtonAttributes(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number): void;
+					public setLoginTargetApp(param0: com.facebook.login.LoginTargetApp): void;
 					public setResetMessengerState(param0: boolean): void;
 					public getToolTipDisplayTime(): number;
-					public dismissToolTip(): void;
 					public configureButton(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number): void;
 					public setMessengerPageId(param0: string): void;
-					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number);
 					public setDefaultAudience(param0: com.facebook.login.DefaultAudience): void;
 					public getAuthType(): string;
-					public constructor(param0: globalAndroid.content.Context);
-					/** @deprecated */
-					public setReadPermissions(param0: androidNative.Array<string>): void;
-					public getNewLoginClickListener(): com.facebook.login.widget.LoginButton.LoginClickListener;
+					public setButtonIcon(): void;
+					public setButtonText(): void;
 					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number, param4: string, param5: string);
-					public onLayout(param0: boolean, param1: number, param2: number, param3: number, param4: number): void;
-					public setToolTipMode(param0: com.facebook.login.widget.LoginButton.ToolTipMode): void;
-					public setLoginBehavior(param0: com.facebook.login.LoginBehavior): void;
 					public setLoginText(param0: string): void;
 					/** @deprecated */
 					public setReadPermissions(param0: java.util.List<string>): void;
 					public unregisterCallback(param0: com.facebook.CallbackManager): void;
+					public setToolTipStyle(param0: com.facebook.login.widget.ToolTipPopup.Style): void;
+					public setButtonTransparency(): void;
+					public setPermissions(param0: java.util.List<string>): void;
+					/** @deprecated */
+					public setPublishPermissions(param0: androidNative.Array<string>): void;
+					public setLogoutText(param0: string): void;
+					public clearPermissions(): void;
+					public getDefaultRequestCode(): number;
+					public setToolTipDisplayTime(param0: number): void;
+					public getResetMessengerState(): boolean;
+					public onDetachedFromWindow(): void;
+					public onMeasure(param0: number, param1: number): void;
+					public getToolTipMode(): com.facebook.login.widget.LoginButton.ToolTipMode;
+					public getLoginButtonContinueLabel(): number;
+					public dismissToolTip(): void;
+					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number);
+					public constructor(param0: globalAndroid.content.Context);
+					/** @deprecated */
+					public setReadPermissions(param0: androidNative.Array<string>): void;
+					public setButtonRadius(): void;
+					public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
+					public getNewLoginClickListener(): com.facebook.login.widget.LoginButton.LoginClickListener;
+					public onLayout(param0: boolean, param1: number, param2: number, param3: number, param4: number): void;
+					public setToolTipMode(param0: com.facebook.login.widget.LoginButton.ToolTipMode): void;
+					public setLoginBehavior(param0: com.facebook.login.LoginBehavior): void;
+					public getCallbackManager(): com.facebook.CallbackManager;
 				}
 				export module LoginButton {
 					export class LoginButtonProperties {
 						public static class: java.lang.Class<com.facebook.login.widget.LoginButton.LoginButtonProperties>;
+						public setShouldSkipAccountDeduplication(param0: boolean): void;
 						public clearPermissions(): void;
 						public getMessengerPageId(): string;
 						public setResetMessengerState(param0: boolean): void;
@@ -7145,16 +7354,21 @@ declare module com {
 						public setPermissions(param0: java.util.List<string>): void;
 						public setLoginBehavior(param0: com.facebook.login.LoginBehavior): void;
 						public getDefaultAudience(): com.facebook.login.DefaultAudience;
+						public getShouldSkipAccountDeduplication(): boolean;
+						public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
 						public getAuthType(): string;
 						public setMessengerPageId(param0: string): void;
 						public setDefaultAudience(param0: com.facebook.login.DefaultAudience): void;
 						public setAuthType(param0: string): void;
+						public setLoginTargetApp(param0: com.facebook.login.LoginTargetApp): void;
 						public getLoginBehavior(): com.facebook.login.LoginBehavior;
 					}
 					export class LoginClickListener {
 						public static class: java.lang.Class<com.facebook.login.widget.LoginButton.LoginClickListener>;
 						public constructor(param0: com.facebook.login.widget.LoginButton);
 						public performLogin(): void;
+						public isFamilyLogin(): boolean;
+						public getLoginTargetApp(): com.facebook.login.LoginTargetApp;
 						public performLogout(param0: globalAndroid.content.Context): void;
 						public onClick(param0: globalAndroid.view.View): void;
 						public getLoginManager(): com.facebook.login.LoginManager;
@@ -7190,6 +7404,7 @@ declare module com {
 					public static LARGE: number;
 					public onDetachedFromWindow(): void;
 					public onMeasure(param0: number, param1: number): void;
+					public getShouldUpdateOnProfileChange(): boolean;
 					public getPresetSize(): number;
 					public setProfileId(param0: string): void;
 					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number);
@@ -7203,6 +7418,7 @@ declare module com {
 					public onLayout(param0: boolean, param1: number, param2: number, param3: number, param4: number): void;
 					public onSaveInstanceState(): globalAndroid.os.Parcelable;
 					public setPresetSize(param0: number): void;
+					public setShouldUpdateOnProfileChange(param0: boolean): void;
 					public isCropped(): boolean;
 					public setDefaultProfilePicture(param0: globalAndroid.graphics.Bitmap): void;
 				}
@@ -7212,9 +7428,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.login.widget.ProfilePictureView$OnErrorListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onError(param0: com.facebook.FacebookException): void;
-						});
+						public constructor(implementation: { onError(param0: com.facebook.FacebookException): void });
 						public constructor();
 						public onError(param0: com.facebook.FacebookException): void;
 					}
@@ -7266,9 +7480,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.ppml.receiver.IReceiverService interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						sendEvents(param0: globalAndroid.os.Bundle): number;
-					});
+					public constructor(implementation: { sendEvents(param0: globalAndroid.os.Bundle): number });
 					public constructor();
 					public sendEvents(param0: globalAndroid.os.Bundle): number;
 				}
@@ -7306,119 +7518,15 @@ declare module com {
 
 declare module com {
 	export module facebook {
-		export module referrals {
-			export class ReferralClient {
-				public static class: java.lang.Class<com.facebook.referrals.ReferralClient>;
-				public expectedChallenge: string;
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module referrals {
-			export class ReferralFragment {
-				public static class: java.lang.Class<com.facebook.referrals.ReferralFragment>;
-				public static TAG: string;
-				public onActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): void;
-				public onCreate(param0: globalAndroid.os.Bundle): void;
-				public onResume(): void;
-				public constructor();
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module referrals {
-			export class ReferralLogger {
-				public static class: java.lang.Class<com.facebook.referrals.ReferralLogger>;
-				public logError(param0: java.lang.Exception): void;
-				public logCancel(): void;
-				public logSuccess(): void;
-				public logStartReferral(): void;
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module referrals {
-			export class ReferralManager {
-				public static class: java.lang.Class<com.facebook.referrals.ReferralManager>;
-				public startReferral(param0: com.facebook.internal.FragmentWrapper): void;
-				public startReferral(param0: androidx.fragment.app.Fragment): void;
-				public static getInstance(): com.facebook.referrals.ReferralManager;
-				public startReferral(param0: globalAndroid.app.Fragment): void;
-				public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<com.facebook.referrals.ReferralResult>): void;
-				public startReferral(param0: globalAndroid.app.Activity): void;
-			}
-			export module ReferralManager {
-				export class ActivityStartActivityDelegate extends com.facebook.referrals.StartActivityDelegate {
-					public static class: java.lang.Class<com.facebook.referrals.ReferralManager.ActivityStartActivityDelegate>;
-					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
-					public getActivityContext(): globalAndroid.app.Activity;
-				}
-				export class FragmentStartActivityDelegate extends com.facebook.referrals.StartActivityDelegate {
-					public static class: java.lang.Class<com.facebook.referrals.ReferralManager.FragmentStartActivityDelegate>;
-					public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
-					public getActivityContext(): globalAndroid.app.Activity;
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module referrals {
-			export class ReferralResult {
-				public static class: java.lang.Class<com.facebook.referrals.ReferralResult>;
-				public getReferralCodes(): java.util.List<string>;
-				public hashCode(): number;
-				public equals(param0: any): boolean;
-				public constructor(param0: java.util.List<string>);
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module referrals {
-			export class StartActivityDelegate {
-				public static class: java.lang.Class<com.facebook.referrals.StartActivityDelegate>;
-				/**
-				 * Constructs a new instance of the com.facebook.referrals.StartActivityDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-				 */
-				public constructor(implementation: {
-					startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
-					getActivityContext(): globalAndroid.app.Activity;
-				});
-				public constructor();
-				public startActivityForResult(param0: globalAndroid.content.Intent, param1: number): void;
-				public getActivityContext(): globalAndroid.app.Activity;
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
 		export module share {
-			export class ShareBuilder<P, E>  extends java.lang.Object {
-				public static class: java.lang.Class<com.facebook.share.ShareBuilder<any,any>>;
+			export class ShareBuilder<M, B> extends java.lang.Object {
+				public static class: java.lang.Class<com.facebook.share.ShareBuilder<any, any>>;
 				/**
 				 * Constructs a new instance of the com.facebook.share.ShareBuilder<any,any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					build(): P;
-				});
+				public constructor(implementation: { build(): M });
 				public constructor();
-				public build(): P;
+				public build(): M;
 			}
 		}
 	}
@@ -7432,10 +7540,7 @@ declare module com {
 				/**
 				 * Constructs a new instance of the com.facebook.share.Sharer interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 				 */
-				public constructor(implementation: {
-					getShouldFailOnDataError(): boolean;
-					setShouldFailOnDataError(param0: boolean): void;
-				});
+				public constructor(implementation: { getShouldFailOnDataError(): boolean; setShouldFailOnDataError(param0: boolean): void });
 				public constructor();
 				public getShouldFailOnDataError(): boolean;
 				public setShouldFailOnDataError(param0: boolean): void;
@@ -7475,8 +7580,8 @@ declare module com {
 			export module internal {
 				export class CameraEffectJSONUtility {
 					public static class: java.lang.Class<com.facebook.share.internal.CameraEffectJSONUtility>;
+					public static INSTANCE: com.facebook.share.internal.CameraEffectJSONUtility;
 					public static convertToJSON(param0: com.facebook.share.model.CameraEffectArguments): org.json.JSONObject;
-					public constructor();
 					public static convertToCameraEffectArguments(param0: org.json.JSONObject): com.facebook.share.model.CameraEffectArguments;
 				}
 				export module CameraEffectJSONUtility {
@@ -7485,10 +7590,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.share.internal.CameraEffectJSONUtility$Setter interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							setOnArgumentsBuilder(param0: com.facebook.share.model.CameraEffectArguments.Builder, param1: string, param2: any): void;
-							setOnJSON(param0: org.json.JSONObject, param1: string, param2: any): void;
-						});
+						public constructor(implementation: { setOnArgumentsBuilder(param0: com.facebook.share.model.CameraEffectArguments.Builder, param1: string, param2: any): void; setOnJSON(param0: org.json.JSONObject, param1: string, param2: any): void });
 						public constructor();
 						public setOnArgumentsBuilder(param0: com.facebook.share.model.CameraEffectArguments.Builder, param1: string, param2: any): void;
 						public setOnJSON(param0: org.json.JSONObject, param1: string, param2: any): void;
@@ -7503,434 +7605,10 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module internal {
-				export class DeviceShareDialogFragment {
-					public static class: java.lang.Class<com.facebook.share.internal.DeviceShareDialogFragment>;
-					public static TAG: string;
-					public onSaveInstanceState(param0: globalAndroid.os.Bundle): void;
-					public constructor();
-					public onCreateView(param0: globalAndroid.view.LayoutInflater, param1: globalAndroid.view.ViewGroup, param2: globalAndroid.os.Bundle): globalAndroid.view.View;
-					public onDismiss(param0: globalAndroid.content.DialogInterface): void;
-					public onCreateDialog(param0: globalAndroid.os.Bundle): globalAndroid.app.Dialog;
-					public setShareContent(param0: com.facebook.share.model.ShareContent<any,any>): void;
-				}
-				export module DeviceShareDialogFragment {
-					export class RequestState {
-						public static class: java.lang.Class<com.facebook.share.internal.DeviceShareDialogFragment.RequestState>;
-						public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.internal.DeviceShareDialogFragment.RequestState>;
-						public constructor(param0: globalAndroid.os.Parcel);
-						public setExpiresIn(param0: number): void;
-						public describeContents(): number;
-						public getUserCode(): string;
-						public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-						public setUserCode(param0: string): void;
-						public getExpiresIn(): number;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
 				export class LegacyNativeDialogParameters {
 					public static class: java.lang.Class<com.facebook.share.internal.LegacyNativeDialogParameters>;
-					public constructor();
-					public static create(param0: java.util.UUID, param1: com.facebook.share.model.ShareContent<any,any>, param2: boolean): globalAndroid.os.Bundle;
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeActionController {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeActionController>;
-					public static ACTION_LIKE_ACTION_CONTROLLER_UPDATED: string;
-					public static ACTION_LIKE_ACTION_CONTROLLER_DID_ERROR: string;
-					public static ACTION_LIKE_ACTION_CONTROLLER_DID_RESET: string;
-					public static ACTION_OBJECT_ID_KEY: string;
-					public static ERROR_INVALID_OBJECT_ID: string;
-					public static ERROR_PUBLISH_ERROR: string;
-					/** @deprecated */
-					public shouldEnableView(): boolean;
-					/** @deprecated */
-					public static getControllerForObjectId(param0: string, param1: com.facebook.share.widget.LikeView.ObjectType, param2: com.facebook.share.internal.LikeActionController.CreationCallback): void;
-					/** @deprecated */
-					public getSocialSentence(): string;
-					/** @deprecated */
-					public static handleOnActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent): boolean;
-					/** @deprecated */
-					public getLikeCountString(): string;
-					/** @deprecated */
-					public getObjectId(): string;
-					/** @deprecated */
-					public toggleLike(param0: globalAndroid.app.Activity, param1: com.facebook.internal.FragmentWrapper, param2: globalAndroid.os.Bundle): void;
-					/** @deprecated */
-					public isObjectLiked(): boolean;
-				}
-				export module LikeActionController {
-					export abstract class AbstractRequestWrapper extends com.facebook.share.internal.LikeActionController.RequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.AbstractRequestWrapper>;
-						public objectId: string;
-						public objectType: com.facebook.share.widget.LikeView.ObjectType;
-						public error: com.facebook.FacebookRequestError;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-						public constructor(param0: com.facebook.share.internal.LikeActionController, param1: string, param2: com.facebook.share.widget.LikeView.ObjectType);
-						public setRequest(param0: com.facebook.GraphRequest): void;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class CreateLikeActionControllerWorkItem {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.CreateLikeActionControllerWorkItem>;
-						public run(): void;
-					}
-					export class CreationCallback {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.CreationCallback>;
-						/**
-						 * Constructs a new instance of the com.facebook.share.internal.LikeActionController$CreationCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-						 */
-						public constructor(implementation: {
-							onComplete(param0: com.facebook.share.internal.LikeActionController, param1: com.facebook.FacebookException): void;
-						});
-						public constructor();
-						public onComplete(param0: com.facebook.share.internal.LikeActionController, param1: com.facebook.FacebookException): void;
-					}
-					export class GetEngagementRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.GetEngagementRequestWrapper>;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class GetOGObjectIdRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.GetOGObjectIdRequestWrapper>;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class GetOGObjectLikesRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper implements com.facebook.share.internal.LikeActionController.LikeRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.GetOGObjectLikesRequestWrapper>;
-						public getUnlikeToken(): string;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public isObjectLiked(): boolean;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class GetPageIdRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.GetPageIdRequestWrapper>;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class GetPageLikesRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper implements com.facebook.share.internal.LikeActionController.LikeRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.GetPageLikesRequestWrapper>;
-						public getUnlikeToken(): string;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public isObjectLiked(): boolean;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class LikeRequestWrapper extends com.facebook.share.internal.LikeActionController.RequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.LikeRequestWrapper>;
-						/**
-						 * Constructs a new instance of the com.facebook.share.internal.LikeActionController$LikeRequestWrapper interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-						 */
-						public constructor(implementation: {
-							isObjectLiked(): boolean;
-							getUnlikeToken(): string;
-							getError(): com.facebook.FacebookRequestError;
-							addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						});
-						public constructor();
-						public getUnlikeToken(): string;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public isObjectLiked(): boolean;
-						public getError(): com.facebook.FacebookRequestError;
-					}
-					export class MRUCacheWorkItem {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.MRUCacheWorkItem>;
-						public run(): void;
-					}
-					export class PublishLikeRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.PublishLikeRequestWrapper>;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class PublishUnlikeRequestWrapper extends com.facebook.share.internal.LikeActionController.AbstractRequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.PublishUnlikeRequestWrapper>;
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-						public processError(param0: com.facebook.FacebookRequestError): void;
-						public processSuccess(param0: com.facebook.GraphResponse): void;
-					}
-					export class RequestCompletionCallback {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.RequestCompletionCallback>;
-						/**
-						 * Constructs a new instance of the com.facebook.share.internal.LikeActionController$RequestCompletionCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-						 */
-						public constructor(implementation: {
-							onComplete(): void;
-						});
-						public constructor();
-						public onComplete(): void;
-					}
-					export class RequestWrapper {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.RequestWrapper>;
-						/**
-						 * Constructs a new instance of the com.facebook.share.internal.LikeActionController$RequestWrapper interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-						 */
-						public constructor(implementation: {
-							getError(): com.facebook.FacebookRequestError;
-							addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						});
-						public constructor();
-						public addToBatch(param0: com.facebook.GraphRequestBatch): void;
-						public getError(): com.facebook.FacebookRequestError;
-					}
-					export class SerializeToDiskWorkItem {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeActionController.SerializeToDiskWorkItem>;
-						public run(): void;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeBoxCountView {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeBoxCountView>;
-					/** @deprecated */
-					public setText(param0: string): void;
-					public onDraw(param0: globalAndroid.graphics.Canvas): void;
-					/** @deprecated */
-					public constructor(param0: globalAndroid.content.Context);
-					/** @deprecated */
-					public setCaretPosition(param0: com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition): void;
-				}
-				export module LikeBoxCountView {
-					export class LikeBoxCountViewCaretPosition {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition>;
-						public static LEFT: com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition;
-						public static TOP: com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition;
-						public static RIGHT: com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition;
-						public static BOTTOM: com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition;
-						public static valueOf(param0: string): com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition;
-						public static values(): androidNative.Array<com.facebook.share.internal.LikeBoxCountView.LikeBoxCountViewCaretPosition>;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeButton extends com.facebook.FacebookButtonBase {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeButton>;
-					public getDefaultStyleResource(): number;
-					public getDefaultRequestCode(): number;
-					/** @deprecated */
-					public constructor(param0: globalAndroid.content.Context, param1: boolean);
-					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number, param4: string, param5: string);
-					public configureButton(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: number): void;
-					/** @deprecated */
-					public setSelected(param0: boolean): void;
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeContent extends com.facebook.share.model.ShareModel {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeContent>;
-					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.internal.LikeContent>;
-					/** @deprecated */
-					public getObjectType(): string;
-					/** @deprecated */
-					public getObjectId(): string;
-					/** @deprecated */
-					public describeContents(): number;
-					/** @deprecated */
-					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-				}
-				export module LikeContent {
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.internal.LikeContent,com.facebook.share.internal.LikeContent.Builder> {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeContent.Builder>;
-						/** @deprecated */
-						public setObjectType(param0: string): com.facebook.share.internal.LikeContent.Builder;
-						public constructor();
-						/** @deprecated */
-						public setObjectId(param0: string): com.facebook.share.internal.LikeContent.Builder;
-						public readFrom(param0: any): any;
-						/** @deprecated */
-						public readFrom(param0: com.facebook.share.internal.LikeContent): com.facebook.share.internal.LikeContent.Builder;
-						/** @deprecated */
-						public build(): com.facebook.share.internal.LikeContent;
-						public build(): any;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeDialog extends com.facebook.internal.FacebookDialogBase<com.facebook.share.internal.LikeContent,com.facebook.share.internal.LikeDialog.Result> {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeDialog>;
-					/** @deprecated */
-					public constructor(param0: globalAndroid.app.Activity);
-					public createBaseAppCall(): com.facebook.internal.AppCall;
-					public registerCallbackImpl(param0: com.facebook.internal.CallbackManagerImpl, param1: com.facebook.FacebookCallback<any>): void;
-					public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<any>, param2: number): void;
-					/** @deprecated */
-					public constructor(param0: androidx.fragment.app.Fragment);
-					/** @deprecated */
-					public static canShowWebFallback(): boolean;
-					public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<any>): void;
-					public getOrderedModeHandlers(): java.util.List<com.facebook.internal.FacebookDialogBase.ModeHandler>;
-					/** @deprecated */
-					public static canShowNativeDialog(): boolean;
-					public show(param0: any): void;
-					public registerCallbackImpl(param0: com.facebook.internal.CallbackManagerImpl, param1: com.facebook.FacebookCallback<com.facebook.share.internal.LikeDialog.Result>): void;
-					public canShow(param0: any): boolean;
-					/** @deprecated */
-					public show(param0: com.facebook.share.internal.LikeContent): void;
-					public constructor(param0: globalAndroid.app.Activity, param1: number);
-					public constructor(param0: com.facebook.internal.FragmentWrapper, param1: number);
-					/** @deprecated */
-					public constructor(param0: globalAndroid.app.Fragment);
-					/** @deprecated */
-					public constructor(param0: com.facebook.internal.FragmentWrapper);
-				}
-				export module LikeDialog {
-					export class NativeHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeDialog.NativeHandler>;
-						public createAppCall(param0: com.facebook.share.internal.LikeContent): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.internal.LikeContent, param1: boolean): boolean;
-						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public canShow(param0: any, param1: boolean): boolean;
-					}
-					export class Result {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeDialog.Result>;
-						public constructor(param0: globalAndroid.os.Bundle);
-						public getData(): globalAndroid.os.Bundle;
-					}
-					export class WebFallbackHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
-						public static class: java.lang.Class<com.facebook.share.internal.LikeDialog.WebFallbackHandler>;
-						public createAppCall(param0: com.facebook.share.internal.LikeContent): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.internal.LikeContent, param1: boolean): boolean;
-						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public canShow(param0: any, param1: boolean): boolean;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeDialogFeature extends com.facebook.internal.DialogFeature {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeDialogFeature>;
-					public static LIKE_DIALOG: com.facebook.share.internal.LikeDialogFeature;
-					public getMinVersion(): number;
-					public name(): string;
-					public static valueOf(param0: string): com.facebook.share.internal.LikeDialogFeature;
-					public static values(): androidNative.Array<com.facebook.share.internal.LikeDialogFeature>;
-					public getAction(): string;
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class LikeStatusClient extends com.facebook.internal.PlatformServiceClient {
-					public static class: java.lang.Class<com.facebook.share.internal.LikeStatusClient>;
-					public populateRequestBundle(param0: globalAndroid.os.Bundle): void;
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module internal {
-				export class MessengerShareContentUtility {
-					public static class: java.lang.Class<com.facebook.share.internal.MessengerShareContentUtility>;
-					public static FACEBOOK_DOMAIN: java.util.regex.Pattern;
-					public static TITLE: string;
-					public static SUBTITLE: string;
-					public static URL: string;
-					public static IMAGE_URL: string;
-					public static BUTTONS: string;
-					public static FALLBACK_URL: string;
-					public static MESSENGER_EXTENSIONS: string;
-					public static WEBVIEW_SHARE_BUTTON: string;
-					public static SHARABLE: string;
-					public static ATTACHMENT: string;
-					public static ATTACHMENT_ID: string;
-					public static ELEMENTS: string;
-					public static DEFAULT_ACTION: string;
-					public static SHARE_BUTTON_HIDE: string;
-					public static BUTTON_TYPE: string;
-					public static BUTTON_URL_TYPE: string;
-					public static PREVIEW_DEFAULT: string;
-					public static PREVIEW_OPEN_GRAPH: string;
-					public static TEMPLATE_TYPE: string;
-					public static TEMPLATE_GENERIC_TYPE: string;
-					public static TEMPLATE_OPEN_GRAPH_TYPE: string;
-					public static TEMPLATE_MEDIA_TYPE: string;
-					public static ATTACHMENT_TYPE: string;
-					public static ATTACHMENT_PAYLOAD: string;
-					public static ATTACHMENT_TEMPLATE_TYPE: string;
-					public static WEBVIEW_RATIO: string;
-					public static WEBVIEW_RATIO_FULL: string;
-					public static WEBVIEW_RATIO_TALL: string;
-					public static WEBVIEW_RATIO_COMPACT: string;
-					public static IMAGE_ASPECT_RATIO: string;
-					public static IMAGE_RATIO_SQUARE: string;
-					public static IMAGE_RATIO_HORIZONTAL: string;
-					public static MEDIA_TYPE: string;
-					public static MEDIA_VIDEO: string;
-					public static MEDIA_IMAGE: string;
-					public static addGenericTemplateContent(param0: globalAndroid.os.Bundle, param1: com.facebook.share.model.ShareMessengerGenericTemplateContent): void;
-					public constructor();
-					public static addMediaTemplateContent(param0: globalAndroid.os.Bundle, param1: com.facebook.share.model.ShareMessengerMediaTemplateContent): void;
-					public static addOpenGraphMusicTemplateContent(param0: globalAndroid.os.Bundle, param1: com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent): void;
+					public static INSTANCE: com.facebook.share.internal.LegacyNativeDialogParameters;
+					public static create(param0: java.util.UUID, param1: com.facebook.share.model.ShareContent<any, any>, param2: boolean): globalAndroid.os.Bundle;
 				}
 			}
 		}
@@ -7943,8 +7621,8 @@ declare module com {
 			export module internal {
 				export class NativeDialogParameters {
 					public static class: java.lang.Class<com.facebook.share.internal.NativeDialogParameters>;
-					public constructor();
-					public static create(param0: java.util.UUID, param1: com.facebook.share.model.ShareContent<any,any>, param2: boolean): globalAndroid.os.Bundle;
+					public static INSTANCE: com.facebook.share.internal.NativeDialogParameters;
+					public static create(param0: java.util.UUID, param1: com.facebook.share.model.ShareContent<any, any>, param2: boolean): globalAndroid.os.Bundle;
 				}
 			}
 		}
@@ -7961,8 +7639,8 @@ declare module com {
 					public getMinVersion(): number;
 					public name(): string;
 					public static valueOf(param0: string): com.facebook.share.internal.OpenGraphActionDialogFeature;
-					public static values(): androidNative.Array<com.facebook.share.internal.OpenGraphActionDialogFeature>;
 					public getAction(): string;
+					public static values(): androidNative.Array<com.facebook.share.internal.OpenGraphActionDialogFeature>;
 				}
 			}
 		}
@@ -7975,6 +7653,7 @@ declare module com {
 			export module internal {
 				export class OpenGraphJSONUtility {
 					public static class: java.lang.Class<com.facebook.share.internal.OpenGraphJSONUtility>;
+					public static INSTANCE: com.facebook.share.internal.OpenGraphJSONUtility;
 					public static toJSONObject(param0: com.facebook.share.model.ShareOpenGraphAction, param1: com.facebook.share.internal.OpenGraphJSONUtility.PhotoJSONProcessor): org.json.JSONObject;
 					public static toJSONValue(param0: any, param1: com.facebook.share.internal.OpenGraphJSONUtility.PhotoJSONProcessor): any;
 				}
@@ -7984,9 +7663,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.facebook.share.internal.OpenGraphJSONUtility$PhotoJSONProcessor interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							toJSONObject(param0: com.facebook.share.model.SharePhoto): org.json.JSONObject;
-						});
+						public constructor(implementation: { toJSONObject(param0: com.facebook.share.model.SharePhoto): org.json.JSONObject });
 						public constructor();
 						public toJSONObject(param0: com.facebook.share.model.SharePhoto): org.json.JSONObject;
 					}
@@ -8018,6 +7695,7 @@ declare module com {
 			export module internal {
 				export class ShareConstants {
 					public static class: java.lang.Class<com.facebook.share.internal.ShareConstants>;
+					public static INSTANCE: com.facebook.share.internal.ShareConstants;
 					public static WEB_DIALOG_PARAM_ACTION_TYPE: string;
 					public static WEB_DIALOG_PARAM_DATA: string;
 					public static WEB_DIALOG_PARAM_MESSAGE: string;
@@ -8104,6 +7782,7 @@ declare module com {
 					public static RESULT_POST_ID: string;
 					public static MAXIMUM_PHOTO_COUNT: number;
 					public static MAXIMUM_MEDIA_COUNT: number;
+					public static MY_VIDEOS: string;
 					public static FEED_TO_PARAM: string;
 					public static FEED_LINK_PARAM: string;
 					public static FEED_PICTURE_PARAM: string;
@@ -8115,7 +7794,6 @@ declare module com {
 					public static STORY_DEEP_LINK_URL: string;
 					public static STORY_BG_ASSET: string;
 					public static STORY_INTERACTIVE_ASSET_URI: string;
-					public constructor();
 				}
 			}
 		}
@@ -8128,91 +7806,83 @@ declare module com {
 			export module internal {
 				export class ShareContentValidation {
 					public static class: java.lang.Class<com.facebook.share.internal.ShareContentValidation>;
-					public static validateMedium(param0: com.facebook.share.model.ShareMedia, param1: com.facebook.share.internal.ShareContentValidation.Validator): void;
-					public static validateForMessage(param0: com.facebook.share.model.ShareContent<any,any>): void;
-					public static validateForNativeShare(param0: com.facebook.share.model.ShareContent<any,any>): void;
-					public constructor();
-					public static validateForApiShare(param0: com.facebook.share.model.ShareContent<any,any>): void;
-					public static validateForStoryShare(param0: com.facebook.share.model.ShareContent<any,any>): void;
-					public static validateForWebShare(param0: com.facebook.share.model.ShareContent<any,any>): void;
+					public static INSTANCE: com.facebook.share.internal.ShareContentValidation;
+					public static validateForMessage(param0: com.facebook.share.model.ShareContent<any, any>): void;
+					public static validateMedium(param0: com.facebook.share.model.ShareMedia<any, any>, param1: com.facebook.share.internal.ShareContentValidation.Validator): void;
+					public static validateForApiShare(param0: com.facebook.share.model.ShareContent<any, any>): void;
+					public static validateForWebShare(param0: com.facebook.share.model.ShareContent<any, any>): void;
+					public static validateForNativeShare(param0: com.facebook.share.model.ShareContent<any, any>): void;
+					public static validateForStoryShare(param0: com.facebook.share.model.ShareContent<any, any>): void;
 				}
 				export module ShareContentValidation {
 					export class ApiValidator extends com.facebook.share.internal.ShareContentValidation.Validator {
 						public static class: java.lang.Class<com.facebook.share.internal.ShareContentValidation.ApiValidator>;
-						public validate(param0: com.facebook.share.model.ShareMedia): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerMediaTemplateContent): void;
+						public constructor();
+						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any, any>, param1: boolean): void;
 						public validate(param0: com.facebook.share.model.SharePhotoContent): void;
 						public validate(param0: com.facebook.share.model.ShareCameraEffectContent): void;
 						public validate(param0: com.facebook.share.model.ShareMediaContent): void;
 						public validate(param0: com.facebook.share.model.ShareStoryContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphContent): void;
 						public validate(param0: com.facebook.share.model.ShareLinkContent): void;
+						public validate(param0: com.facebook.share.model.ShareMedia<any, any>): void;
 						public validate(param0: com.facebook.share.model.ShareVideoContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphAction): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphObject): void;
 						public validate(param0: com.facebook.share.model.SharePhoto): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent): void;
 						public validate(param0: com.facebook.share.model.ShareVideo): void;
-						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any,any>, param1: boolean): void;
 					}
 					export class StoryShareValidator extends com.facebook.share.internal.ShareContentValidation.Validator {
 						public static class: java.lang.Class<com.facebook.share.internal.ShareContentValidation.StoryShareValidator>;
-						public validate(param0: com.facebook.share.model.ShareMedia): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerMediaTemplateContent): void;
+						public constructor();
+						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any, any>, param1: boolean): void;
 						public validate(param0: com.facebook.share.model.SharePhotoContent): void;
 						public validate(param0: com.facebook.share.model.ShareCameraEffectContent): void;
 						public validate(param0: com.facebook.share.model.ShareMediaContent): void;
 						public validate(param0: com.facebook.share.model.ShareStoryContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphContent): void;
 						public validate(param0: com.facebook.share.model.ShareLinkContent): void;
+						public validate(param0: com.facebook.share.model.ShareMedia<any, any>): void;
 						public validate(param0: com.facebook.share.model.ShareVideoContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphAction): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphObject): void;
 						public validate(param0: com.facebook.share.model.SharePhoto): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent): void;
 						public validate(param0: com.facebook.share.model.ShareVideo): void;
-						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any,any>, param1: boolean): void;
 					}
 					export class Validator {
 						public static class: java.lang.Class<com.facebook.share.internal.ShareContentValidation.Validator>;
-						public validate(param0: com.facebook.share.model.ShareMedia): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerMediaTemplateContent): void;
+						public constructor();
+						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any, any>, param1: boolean): void;
 						public validate(param0: com.facebook.share.model.SharePhotoContent): void;
 						public validate(param0: com.facebook.share.model.ShareCameraEffectContent): void;
 						public validate(param0: com.facebook.share.model.ShareMediaContent): void;
 						public validate(param0: com.facebook.share.model.ShareStoryContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphContent): void;
 						public validate(param0: com.facebook.share.model.ShareLinkContent): void;
+						public validate(param0: com.facebook.share.model.ShareMedia<any, any>): void;
 						public validate(param0: com.facebook.share.model.ShareVideoContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphAction): void;
 						public isOpenGraphContent(): boolean;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphObject): void;
 						public validate(param0: com.facebook.share.model.SharePhoto): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent): void;
 						public validate(param0: com.facebook.share.model.ShareVideo): void;
-						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any,any>, param1: boolean): void;
 					}
 					export class WebShareValidator extends com.facebook.share.internal.ShareContentValidation.Validator {
 						public static class: java.lang.Class<com.facebook.share.internal.ShareContentValidation.WebShareValidator>;
-						public validate(param0: com.facebook.share.model.ShareMedia): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerMediaTemplateContent): void;
+						public constructor();
+						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any, any>, param1: boolean): void;
 						public validate(param0: com.facebook.share.model.SharePhotoContent): void;
 						public validate(param0: com.facebook.share.model.ShareCameraEffectContent): void;
 						public validate(param0: com.facebook.share.model.ShareMediaContent): void;
 						public validate(param0: com.facebook.share.model.ShareStoryContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphContent): void;
 						public validate(param0: com.facebook.share.model.ShareLinkContent): void;
+						public validate(param0: com.facebook.share.model.ShareMedia<any, any>): void;
 						public validate(param0: com.facebook.share.model.ShareVideoContent): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphAction): void;
 						public validate(param0: com.facebook.share.model.ShareOpenGraphObject): void;
 						public validate(param0: com.facebook.share.model.SharePhoto): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent): void;
-						public validate(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent): void;
 						public validate(param0: com.facebook.share.model.ShareVideo): void;
-						public validate(param0: com.facebook.share.model.ShareOpenGraphValueContainer<any,any>, param1: boolean): void;
 					}
 				}
 			}
@@ -8247,33 +7917,53 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module internal {
-				export class ShareFeedContent extends com.facebook.share.model.ShareContent<com.facebook.share.internal.ShareFeedContent,com.facebook.share.internal.ShareFeedContent.Builder> {
+				export class ShareFeedContent extends com.facebook.share.model.ShareContent<com.facebook.share.internal.ShareFeedContent, com.facebook.share.internal.ShareFeedContent.Builder> {
 					public static class: java.lang.Class<com.facebook.share.internal.ShareFeedContent>;
+					public static Companion: com.facebook.share.internal.ShareFeedContent.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.internal.ShareFeedContent>;
 					public getPicture(): string;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public getLinkName(): string;
 					public describeContents(): number;
 					public getLink(): string;
 					public getLinkCaption(): string;
 					public getLinkDescription(): string;
 					public getToId(): string;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public getMediaSource(): string;
 				}
 				export module ShareFeedContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.internal.ShareFeedContent,com.facebook.share.internal.ShareFeedContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.internal.ShareFeedContent, com.facebook.share.internal.ShareFeedContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.internal.ShareFeedContent.Builder>;
-						public constructor();
-						public setLinkCaption(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
 						public readFrom(param0: any): any;
+						public setMediaSource$facebook_common_release(param0: string): void;
+						public getMediaSource$facebook_common_release(): string;
+						public setToId$facebook_common_release(param0: string): void;
+						public getLinkName$facebook_common_release(): string;
 						public readFrom(param0: com.facebook.share.internal.ShareFeedContent): com.facebook.share.internal.ShareFeedContent.Builder;
-						public setPicture(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
-						public build(): com.facebook.share.internal.ShareFeedContent;
+						public setPicture$facebook_common_release(param0: string): void;
+						public getLinkCaption$facebook_common_release(): string;
 						public setToId(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
-						public setLink(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
-						public setLinkName(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
 						public setMediaSource(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
 						public setLinkDescription(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
+						public constructor();
+						public getToId$facebook_common_release(): string;
+						public setLinkCaption(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
+						public setLinkName$facebook_common_release(param0: string): void;
+						public setPicture(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
+						public setLink(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
+						public setLinkName(param0: string): com.facebook.share.internal.ShareFeedContent.Builder;
+						public getLink$facebook_common_release(): string;
+						public getLinkDescription$facebook_common_release(): string;
+						public getPicture$facebook_common_release(): string;
+						public setLinkDescription$facebook_common_release(param0: string): void;
+						public build(): com.facebook.share.internal.ShareFeedContent;
+						public setLinkCaption$facebook_common_release(param0: string): void;
+						public setLink$facebook_common_release(param0: string): void;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.internal.ShareFeedContent.Companion>;
 					}
 				}
 			}
@@ -8287,12 +7977,14 @@ declare module com {
 			export module internal {
 				export class ShareInternalUtility {
 					public static class: java.lang.Class<com.facebook.share.internal.ShareInternalUtility>;
-					public static MY_PHOTOS: string;
+					public static INSTANCE: com.facebook.share.internal.ShareInternalUtility;
+					public static MY_STAGING_RESOURCES: string;
+					public static STAGING_PARAM: string;
+					public static invokeOnErrorCallback(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: com.facebook.GraphResponse, param2: string): void;
 					public static getTextureUrlBundle(param0: com.facebook.share.model.ShareCameraEffectContent, param1: java.util.UUID): globalAndroid.os.Bundle;
 					public static registerStaticShareCallback(param0: number): void;
 					public static invokeCallbackWithException(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: java.lang.Exception): void;
-					public static getFieldNameAndNamespaceFromFullName(param0: string): globalAndroid.util.Pair<string,string>;
-					public constructor();
+					public static getFieldNameAndNamespaceFromFullName(param0: string): globalAndroid.util.Pair<string, string>;
 					public static getPhotoUrls(param0: com.facebook.share.model.SharePhotoContent, param1: java.util.UUID): java.util.List<string>;
 					public static getMediaInfos(param0: com.facebook.share.model.ShareMediaContent, param1: java.util.UUID): java.util.List<globalAndroid.os.Bundle>;
 					public static getShareDialogPostId(param0: globalAndroid.os.Bundle): string;
@@ -8301,8 +7993,8 @@ declare module com {
 					public static getNativeDialogCompletionGesture(param0: globalAndroid.os.Bundle): string;
 					public static getBackgroundAssetMediaInfo(param0: com.facebook.share.model.ShareStoryContent, param1: java.util.UUID): globalAndroid.os.Bundle;
 					public static getUriExtension(param0: globalAndroid.net.Uri): string;
+					public static invokeOnErrorCallback(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: string): void;
 					public static newUploadStagingResourceWithImageRequest(param0: com.facebook.AccessToken, param1: globalAndroid.net.Uri, param2: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
-					public static getMostSpecificObjectType(param0: com.facebook.share.widget.LikeView.ObjectType, param1: com.facebook.share.widget.LikeView.ObjectType): com.facebook.share.widget.LikeView.ObjectType;
 					public static toJSONObjectForWeb(param0: com.facebook.share.model.ShareOpenGraphContent): org.json.JSONObject;
 					public static removeNamespacesFromOGJsonArray(param0: org.json.JSONArray, param1: boolean): org.json.JSONArray;
 					public static handleActivityResult(param0: number, param1: number, param2: globalAndroid.content.Intent, param3: com.facebook.share.internal.ResultProcessor): boolean;
@@ -8312,7 +8004,10 @@ declare module com {
 					public static invokeCallbackWithResults(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: string, param2: com.facebook.GraphResponse): void;
 					public static toJSONObjectForCall(param0: java.util.UUID, param1: com.facebook.share.model.ShareOpenGraphContent): org.json.JSONObject;
 					public static invokeCallbackWithError(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: string): void;
+					public static invokeOnCancelCallback(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>): void;
 					public static getShareResultProcessor(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>): com.facebook.share.internal.ResultProcessor;
+					public static invokeOnErrorCallback(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: com.facebook.FacebookException): void;
+					public static invokeOnSuccessCallback(param0: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>, param1: string): void;
 					public static newUploadStagingResourceWithImageRequest(param0: com.facebook.AccessToken, param1: java.io.File, param2: com.facebook.GraphRequest.Callback): com.facebook.GraphRequest;
 				}
 			}
@@ -8344,15 +8039,15 @@ declare module com {
 			export module internal {
 				export class WebDialogParameters {
 					public static class: java.lang.Class<com.facebook.share.internal.WebDialogParameters>;
+					public static INSTANCE: com.facebook.share.internal.WebDialogParameters;
 					public static create(param0: com.facebook.share.model.ShareOpenGraphContent): globalAndroid.os.Bundle;
 					public static create(param0: com.facebook.share.model.GameRequestContent): globalAndroid.os.Bundle;
-					public static createBaseParameters(param0: com.facebook.share.model.ShareContent<any,any>): globalAndroid.os.Bundle;
 					public static createForFeed(param0: com.facebook.share.internal.ShareFeedContent): globalAndroid.os.Bundle;
-					public constructor();
 					public static create(param0: com.facebook.share.model.ShareLinkContent): globalAndroid.os.Bundle;
 					public static create(param0: com.facebook.share.model.SharePhotoContent): globalAndroid.os.Bundle;
 					public static createForFeed(param0: com.facebook.share.model.ShareLinkContent): globalAndroid.os.Bundle;
 					public static create(param0: com.facebook.share.model.AppGroupCreationContent): globalAndroid.os.Bundle;
+					public static createBaseParameters(param0: com.facebook.share.model.ShareContent<any, any>): globalAndroid.os.Bundle;
 				}
 			}
 		}
@@ -8365,7 +8060,9 @@ declare module com {
 			export module model {
 				export class AppGroupCreationContent extends com.facebook.share.model.ShareModel {
 					public static class: java.lang.Class<com.facebook.share.model.AppGroupCreationContent>;
+					public static Companion: com.facebook.share.model.AppGroupCreationContent.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.AppGroupCreationContent>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public getName(): string;
 					public getAppGroupPrivacy(): com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy;
 					public describeContents(): number;
@@ -8380,16 +8077,25 @@ declare module com {
 						public static values(): androidNative.Array<com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy>;
 						public static valueOf(param0: string): com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy;
 					}
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.AppGroupCreationContent,com.facebook.share.model.AppGroupCreationContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.AppGroupCreationContent, com.facebook.share.model.AppGroupCreationContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.AppGroupCreationContent.Builder>;
+						public setDescription$facebook_common_release(param0: string): void;
 						public constructor();
+						public getName$facebook_common_release(): string;
 						public setDescription(param0: string): com.facebook.share.model.AppGroupCreationContent.Builder;
 						public readFrom(param0: any): any;
-						public setAppGroupPrivacy(param0: com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy): com.facebook.share.model.AppGroupCreationContent.Builder;
-						public build(): com.facebook.share.model.AppGroupCreationContent;
 						public setName(param0: string): com.facebook.share.model.AppGroupCreationContent.Builder;
 						public readFrom(param0: com.facebook.share.model.AppGroupCreationContent): com.facebook.share.model.AppGroupCreationContent.Builder;
+						public setName$facebook_common_release(param0: string): void;
 						public build(): any;
+						public setAppGroupPrivacy$facebook_common_release(param0: com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy): void;
+						public setAppGroupPrivacy(param0: com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy): com.facebook.share.model.AppGroupCreationContent.Builder;
+						public build(): com.facebook.share.model.AppGroupCreationContent;
+						public getDescription$facebook_common_release(): string;
+						public getAppGroupPrivacy$facebook_common_release(): com.facebook.share.model.AppGroupCreationContent.AppGroupPrivacy;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.AppGroupCreationContent.Companion>;
 					}
 				}
 			}
@@ -8403,7 +8109,9 @@ declare module com {
 			export module model {
 				export class CameraEffectArguments extends com.facebook.share.model.ShareModel {
 					public static class: java.lang.Class<com.facebook.share.model.CameraEffectArguments>;
+					public static Companion: com.facebook.share.model.CameraEffectArguments.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.CameraEffectArguments>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public get(param0: string): any;
 					public describeContents(): number;
 					public getStringArray(param0: string): androidNative.Array<string>;
@@ -8412,8 +8120,9 @@ declare module com {
 					public keySet(): java.util.Set<string>;
 				}
 				export module CameraEffectArguments {
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.CameraEffectArguments,com.facebook.share.model.CameraEffectArguments.Builder> {
+					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.CameraEffectArguments, com.facebook.share.model.CameraEffectArguments.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.CameraEffectArguments.Builder>;
+						public getParams$facebook_common_release(): globalAndroid.os.Bundle;
 						public readFrom(param0: com.facebook.share.model.CameraEffectArguments): com.facebook.share.model.CameraEffectArguments.Builder;
 						public constructor();
 						public readFrom(param0: any): any;
@@ -8422,6 +8131,9 @@ declare module com {
 						public build(): com.facebook.share.model.CameraEffectArguments;
 						public putArgument(param0: string, param1: string): com.facebook.share.model.CameraEffectArguments.Builder;
 						public build(): any;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.CameraEffectArguments.Companion>;
 					}
 				}
 			}
@@ -8435,8 +8147,10 @@ declare module com {
 			export module model {
 				export class CameraEffectTextures extends com.facebook.share.model.ShareModel {
 					public static class: java.lang.Class<com.facebook.share.model.CameraEffectTextures>;
+					public static Companion: com.facebook.share.model.CameraEffectTextures.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.CameraEffectTextures>;
 					public getTextureBitmap(param0: string): globalAndroid.graphics.Bitmap;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public get(param0: string): any;
 					public describeContents(): number;
 					public getTextureUri(param0: string): globalAndroid.net.Uri;
@@ -8444,7 +8158,7 @@ declare module com {
 					public keySet(): java.util.Set<string>;
 				}
 				export module CameraEffectTextures {
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.CameraEffectTextures,com.facebook.share.model.CameraEffectTextures.Builder> {
+					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.CameraEffectTextures, com.facebook.share.model.CameraEffectTextures.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.CameraEffectTextures.Builder>;
 						public readFrom(param0: globalAndroid.os.Parcel): com.facebook.share.model.CameraEffectTextures.Builder;
 						public constructor();
@@ -8453,7 +8167,11 @@ declare module com {
 						public readFrom(param0: com.facebook.share.model.CameraEffectTextures): com.facebook.share.model.CameraEffectTextures.Builder;
 						public build(): com.facebook.share.model.CameraEffectTextures;
 						public putTexture(param0: string, param1: globalAndroid.net.Uri): com.facebook.share.model.CameraEffectTextures.Builder;
+						public getTextures$facebook_common_release(): globalAndroid.os.Bundle;
 						public build(): any;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.CameraEffectTextures.Companion>;
 					}
 				}
 			}
@@ -8492,7 +8210,7 @@ declare module com {
 						public static valueOf(param0: string): com.facebook.share.model.GameRequestContent.ActionType;
 						public static values(): androidNative.Array<com.facebook.share.model.GameRequestContent.ActionType>;
 					}
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.GameRequestContent,com.facebook.share.model.GameRequestContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.GameRequestContent, com.facebook.share.model.GameRequestContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.GameRequestContent.Builder>;
 						public setMessage(param0: string): com.facebook.share.model.GameRequestContent.Builder;
 						public setRecipients(param0: java.util.List<string>): com.facebook.share.model.GameRequestContent.Builder;
@@ -8529,7 +8247,7 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareCameraEffectContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareCameraEffectContent,com.facebook.share.model.ShareCameraEffectContent.Builder> {
+				export class ShareCameraEffectContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareCameraEffectContent, com.facebook.share.model.ShareCameraEffectContent.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareCameraEffectContent>;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareCameraEffectContent>;
 					public getArguments(): com.facebook.share.model.CameraEffectArguments;
@@ -8538,7 +8256,7 @@ declare module com {
 					public getEffectId(): string;
 				}
 				export module ShareCameraEffectContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareCameraEffectContent,com.facebook.share.model.ShareCameraEffectContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareCameraEffectContent, com.facebook.share.model.ShareCameraEffectContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareCameraEffectContent.Builder>;
 						public build(): com.facebook.share.model.ShareCameraEffectContent;
 						public readFrom(param0: com.facebook.share.model.ShareCameraEffectContent): com.facebook.share.model.ShareCameraEffectContent.Builder;
@@ -8558,31 +8276,43 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export abstract class ShareContent<P, E>  extends com.facebook.share.model.ShareModel {
-					public static class: java.lang.Class<com.facebook.share.model.ShareContent<any,any>>;
+				export abstract class ShareContent<M, B> extends com.facebook.share.model.ShareModel {
+					public static class: java.lang.Class<com.facebook.share.model.ShareContent<any, any>>;
 					public getPlaceId(): string;
 					public constructor(param0: globalAndroid.os.Parcel);
-					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any,any>);
 					public getRef(): string;
 					public getContentUrl(): globalAndroid.net.Uri;
 					public getPeopleIds(): java.util.List<string>;
 					public describeContents(): number;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
 					public getPageId(): string;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public getShareHashtag(): com.facebook.share.model.ShareHashtag;
 				}
 				export module ShareContent {
-					export abstract class Builder<P, E>  extends com.facebook.share.model.ShareModelBuilder<any,any> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareContent.Builder<any,any>>;
+					export abstract class Builder<M, B> extends com.facebook.share.model.ShareModelBuilder<any, any> {
+						public static class: java.lang.Class<com.facebook.share.model.ShareContent.Builder<any, any>>;
 						public constructor();
+						public getHashtag$facebook_common_release(): com.facebook.share.model.ShareHashtag;
 						public readFrom(param0: any): any;
-						public setPeopleIds(param0: java.util.List<string>): any;
+						public setPlaceId$facebook_common_release(param0: string): void;
 						public setShareHashtag(param0: com.facebook.share.model.ShareHashtag): any;
+						public getPlaceId$facebook_common_release(): string;
 						public setPageId(param0: string): any;
+						public setPeopleIds$facebook_common_release(param0: java.util.List<string>): void;
+						public build(): any;
+						public setPageId$facebook_common_release(param0: string): void;
+						public getPageId$facebook_common_release(): string;
+						public setRef$facebook_common_release(param0: string): void;
+						public getPeopleIds$facebook_common_release(): java.util.List<string>;
+						public setContentUrl$facebook_common_release(param0: globalAndroid.net.Uri): void;
+						public setPeopleIds(param0: java.util.List<string>): any;
+						public getContentUrl$facebook_common_release(): globalAndroid.net.Uri;
+						public setHashtag$facebook_common_release(param0: com.facebook.share.model.ShareHashtag): void;
 						public setContentUrl(param0: globalAndroid.net.Uri): any;
+						public getRef$facebook_common_release(): string;
 						public setPlaceId(param0: string): any;
 						public setRef(param0: string): any;
-						public build(): any;
 					}
 				}
 			}
@@ -8596,15 +8326,18 @@ declare module com {
 			export module model {
 				export class ShareHashtag extends com.facebook.share.model.ShareModel {
 					public static class: java.lang.Class<com.facebook.share.model.ShareHashtag>;
+					public static Companion: com.facebook.share.model.ShareHashtag.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareHashtag>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public describeContents(): number;
 					public getHashtag(): string;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				}
 				export module ShareHashtag {
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.ShareHashtag,com.facebook.share.model.ShareHashtag.Builder> {
+					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.ShareHashtag, com.facebook.share.model.ShareHashtag.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareHashtag.Builder>;
 						public constructor();
+						public readFrom$facebook_common_release(param0: globalAndroid.os.Parcel): com.facebook.share.model.ShareHashtag.Builder;
 						public readFrom(param0: any): any;
 						public getHashtag(): string;
 						public build(): com.facebook.share.model.ShareHashtag;
@@ -8612,43 +8345,8 @@ declare module com {
 						public setHashtag(param0: string): com.facebook.share.model.ShareHashtag.Builder;
 						public build(): any;
 					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module model {
-				export class ShareLinkContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareLinkContent,com.facebook.share.model.ShareLinkContent.Builder> {
-					public static class: java.lang.Class<com.facebook.share.model.ShareLinkContent>;
-					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareLinkContent>;
-					/** @deprecated */
-					public getContentDescription(): string;
-					/** @deprecated */
-					public getContentTitle(): string;
-					public getQuote(): string;
-					public describeContents(): number;
-					/** @deprecated */
-					public getImageUrl(): globalAndroid.net.Uri;
-					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-				}
-				export module ShareLinkContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareLinkContent,com.facebook.share.model.ShareLinkContent.Builder> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareLinkContent.Builder>;
-						public setQuote(param0: string): com.facebook.share.model.ShareLinkContent.Builder;
-						public constructor();
-						/** @deprecated */
-						public setContentDescription(param0: string): com.facebook.share.model.ShareLinkContent.Builder;
-						public readFrom(param0: any): any;
-						public build(): com.facebook.share.model.ShareLinkContent;
-						/** @deprecated */
-						public setImageUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareLinkContent.Builder;
-						public readFrom(param0: com.facebook.share.model.ShareLinkContent): com.facebook.share.model.ShareLinkContent.Builder;
-						/** @deprecated */
-						public setContentTitle(param0: string): com.facebook.share.model.ShareLinkContent.Builder;
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareHashtag.Companion>;
 					}
 				}
 			}
@@ -8660,25 +8358,72 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export abstract class ShareMedia extends com.facebook.share.model.ShareModel {
-					public static class: java.lang.Class<com.facebook.share.model.ShareMedia>;
+				export class ShareLinkContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareLinkContent, com.facebook.share.model.ShareLinkContent.Builder> {
+					public static class: java.lang.Class<com.facebook.share.model.ShareLinkContent>;
+					public static Companion: com.facebook.share.model.ShareLinkContent.Companion;
+					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareLinkContent>;
+					public constructor(param0: globalAndroid.os.Parcel);
+					public getQuote(): string;
+					public describeContents(): number;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
+					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
+				}
+				export module ShareLinkContent {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareLinkContent, com.facebook.share.model.ShareLinkContent.Builder> {
+						public static class: java.lang.Class<com.facebook.share.model.ShareLinkContent.Builder>;
+						public setQuote(param0: string): com.facebook.share.model.ShareLinkContent.Builder;
+						public constructor();
+						public readFrom(param0: any): any;
+						public build(): com.facebook.share.model.ShareLinkContent;
+						public getQuote$facebook_common_release(): string;
+						public readFrom(param0: com.facebook.share.model.ShareLinkContent): com.facebook.share.model.ShareLinkContent.Builder;
+						public setQuote$facebook_common_release(param0: string): void;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareLinkContent.Companion>;
+					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module facebook {
+		export module share {
+			export module model {
+				export abstract class ShareMedia<M, B> extends com.facebook.share.model.ShareModel {
+					public static class: java.lang.Class<com.facebook.share.model.ShareMedia<any, any>>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					/** @deprecated */
 					public getParameters(): globalAndroid.os.Bundle;
+					public constructor(param0: com.facebook.share.model.ShareMedia.Builder<any, any>);
 					public describeContents(): number;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-					public constructor(param0: com.facebook.share.model.ShareMedia.Builder<any,any>);
 					public getMediaType(): com.facebook.share.model.ShareMedia.Type;
 				}
 				export module ShareMedia {
-					export abstract class Builder<M, B>  extends com.facebook.share.model.ShareModelBuilder<any,any> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMedia.Builder<any,any>>;
+					export abstract class Builder<M, B> extends com.facebook.share.model.ShareModelBuilder<any, any> {
+						public static class: java.lang.Class<com.facebook.share.model.ShareMedia.Builder<any, any>>;
+						public static Companion: com.facebook.share.model.ShareMedia.Builder.Companion;
+						public getParams$facebook_common_release(): globalAndroid.os.Bundle;
 						public constructor();
 						/** @deprecated */
 						public setParameter(param0: string, param1: string): any;
 						/** @deprecated */
 						public setParameters(param0: globalAndroid.os.Bundle): any;
 						public readFrom(param0: any): any;
+						public static writeListTo$facebook_common_release(param0: globalAndroid.os.Parcel, param1: number, param2: java.util.List<any>): void;
+						public static readListFrom$facebook_common_release(param0: globalAndroid.os.Parcel): java.util.List<com.facebook.share.model.ShareMedia<any, any>>;
+						public setParams$facebook_common_release(param0: globalAndroid.os.Bundle): void;
 						public build(): any;
+					}
+					export module Builder {
+						export class Companion {
+							public static class: java.lang.Class<com.facebook.share.model.ShareMedia.Builder.Companion>;
+							public readListFrom$facebook_common_release(param0: globalAndroid.os.Parcel): java.util.List<com.facebook.share.model.ShareMedia<any, any>>;
+							public writeListTo$facebook_common_release(param0: globalAndroid.os.Parcel, param1: number, param2: java.util.List<any>): void;
+						}
 					}
 					export class Type {
 						public static class: java.lang.Class<com.facebook.share.model.ShareMedia.Type>;
@@ -8697,23 +8442,30 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareMediaContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareMediaContent,com.facebook.share.model.ShareMediaContent.Builder> {
+				export class ShareMediaContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareMediaContent, com.facebook.share.model.ShareMediaContent.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareMediaContent>;
+					public static Companion: com.facebook.share.model.ShareMediaContent.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareMediaContent>;
-					public getMedia(): java.util.List<com.facebook.share.model.ShareMedia>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public describeContents(): number;
+					public getMedia(): java.util.List<com.facebook.share.model.ShareMedia<any, any>>;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				}
 				export module ShareMediaContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareMediaContent,com.facebook.share.model.ShareMediaContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareMediaContent, com.facebook.share.model.ShareMediaContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareMediaContent.Builder>;
-						public addMedium(param0: com.facebook.share.model.ShareMedia): com.facebook.share.model.ShareMediaContent.Builder;
 						public readFrom(param0: com.facebook.share.model.ShareMediaContent): com.facebook.share.model.ShareMediaContent.Builder;
 						public constructor();
 						public build(): com.facebook.share.model.ShareMediaContent;
 						public readFrom(param0: any): any;
-						public setMedia(param0: java.util.List<com.facebook.share.model.ShareMedia>): com.facebook.share.model.ShareMediaContent.Builder;
-						public addMedia(param0: java.util.List<com.facebook.share.model.ShareMedia>): com.facebook.share.model.ShareMediaContent.Builder;
+						public addMedia(param0: java.util.List<any>): com.facebook.share.model.ShareMediaContent.Builder;
+						public setMedia(param0: java.util.List<any>): com.facebook.share.model.ShareMediaContent.Builder;
+						public getMedia$facebook_common_release(): java.util.List<com.facebook.share.model.ShareMedia<any, any>>;
+						public addMedium(param0: com.facebook.share.model.ShareMedia<any, any>): com.facebook.share.model.ShareMediaContent.Builder;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareMediaContent.Companion>;
 					}
 				}
 			}
@@ -8728,13 +8480,16 @@ declare module com {
 				export abstract class ShareMessengerActionButton extends com.facebook.share.model.ShareModel {
 					public static class: java.lang.Class<com.facebook.share.model.ShareMessengerActionButton>;
 					public getTitle(): string;
-					public constructor(param0: com.facebook.share.model.ShareMessengerActionButton.Builder<any,any>);
+					public constructor(param0: globalAndroid.os.Parcel);
+					public constructor(param0: com.facebook.share.model.ShareMessengerActionButton.Builder<any, any>);
 					public describeContents(): number;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				}
 				export module ShareMessengerActionButton {
-					export abstract class Builder<M, B>  extends com.facebook.share.model.ShareModelBuilder<any,any> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerActionButton.Builder<any,any>>;
+					export abstract class Builder<M, B> extends com.facebook.share.model.ShareModelBuilder<any, any> {
+						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerActionButton.Builder<any, any>>;
+						public getTitle$facebook_common_release(): string;
+						public setTitle$facebook_common_release(param0: string): void;
 						public constructor();
 						public readFrom(param0: any): any;
 						public setTitle(param0: string): any;
@@ -8750,169 +8505,46 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareMessengerGenericTemplateContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareMessengerGenericTemplateContent,com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder> {
-					public static class: java.lang.Class<com.facebook.share.model.ShareMessengerGenericTemplateContent>;
-					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareMessengerGenericTemplateContent>;
-					public constructor(param0: globalAndroid.os.Parcel);
-					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any,any>);
-					public describeContents(): number;
-					public constructor(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder);
-					public getIsSharable(): boolean;
-					public getGenericTemplateElement(): com.facebook.share.model.ShareMessengerGenericTemplateElement;
-					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-					public getImageAspectRatio(): com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio;
-				}
-				export module ShareMessengerGenericTemplateContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareMessengerGenericTemplateContent,com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder>;
-						public setImageAspectRatio(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio): com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder;
-						public constructor();
-						public setGenericTemplateElement(param0: com.facebook.share.model.ShareMessengerGenericTemplateElement): com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder;
-						public readFrom(param0: any): any;
-						public build(): com.facebook.share.model.ShareMessengerGenericTemplateContent;
-						public readFrom(param0: com.facebook.share.model.ShareMessengerGenericTemplateContent): com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder;
-						public setIsSharable(param0: boolean): com.facebook.share.model.ShareMessengerGenericTemplateContent.Builder;
-					}
-					export class ImageAspectRatio {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio>;
-						public static HORIZONTAL: com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio;
-						public static SQUARE: com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio;
-						public static values(): androidNative.Array<com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio>;
-						public static valueOf(param0: string): com.facebook.share.model.ShareMessengerGenericTemplateContent.ImageAspectRatio;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module model {
-				export class ShareMessengerGenericTemplateElement extends com.facebook.share.model.ShareModel {
-					public static class: java.lang.Class<com.facebook.share.model.ShareMessengerGenericTemplateElement>;
-					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareMessengerGenericTemplateElement>;
-					public getTitle(): string;
-					public getImageUrl(): globalAndroid.net.Uri;
-					public getSubtitle(): string;
-					public getDefaultAction(): com.facebook.share.model.ShareMessengerActionButton;
-					public describeContents(): number;
-					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-					public getButton(): com.facebook.share.model.ShareMessengerActionButton;
-				}
-				export module ShareMessengerGenericTemplateElement {
-					export class Builder extends com.facebook.share.model.ShareModelBuilder<com.facebook.share.model.ShareMessengerGenericTemplateElement,com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder>;
-						public setDefaultAction(param0: com.facebook.share.model.ShareMessengerActionButton): com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder;
-						public build(): com.facebook.share.model.ShareMessengerGenericTemplateElement;
-						public constructor();
-						public setTitle(param0: string): com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder;
-						public setSubtitle(param0: string): com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder;
-						public readFrom(param0: any): any;
-						public setImageUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder;
-						public setButton(param0: com.facebook.share.model.ShareMessengerActionButton): com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder;
-						public readFrom(param0: com.facebook.share.model.ShareMessengerGenericTemplateElement): com.facebook.share.model.ShareMessengerGenericTemplateElement.Builder;
-						public build(): any;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module model {
-				export class ShareMessengerMediaTemplateContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareMessengerMediaTemplateContent,com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder> {
-					public static class: java.lang.Class<com.facebook.share.model.ShareMessengerMediaTemplateContent>;
-					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareMessengerMediaTemplateContent>;
-					public describeContents(): number;
-					public getMediaType(): com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType;
-					public getMediaUrl(): globalAndroid.net.Uri;
-					public getAttachmentId(): string;
-					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-					public getButton(): com.facebook.share.model.ShareMessengerActionButton;
-				}
-				export module ShareMessengerMediaTemplateContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareMessengerMediaTemplateContent,com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder>;
-						public setMediaUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder;
-						public constructor();
-						public setButton(param0: com.facebook.share.model.ShareMessengerActionButton): com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder;
-						public readFrom(param0: any): any;
-						public setAttachmentId(param0: string): com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder;
-						public build(): com.facebook.share.model.ShareMessengerMediaTemplateContent;
-						public readFrom(param0: com.facebook.share.model.ShareMessengerMediaTemplateContent): com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder;
-						public setMediaType(param0: com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType): com.facebook.share.model.ShareMessengerMediaTemplateContent.Builder;
-					}
-					export class MediaType {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType>;
-						public static IMAGE: com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType;
-						public static VIDEO: com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType;
-						public static values(): androidNative.Array<com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType>;
-						public static valueOf(param0: string): com.facebook.share.model.ShareMessengerMediaTemplateContent.MediaType;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module model {
-				export class ShareMessengerOpenGraphMusicTemplateContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent,com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent.Builder> {
-					public static class: java.lang.Class<com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent>;
-					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent>;
-					public describeContents(): number;
-					public getUrl(): globalAndroid.net.Uri;
-					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
-					public getButton(): com.facebook.share.model.ShareMessengerActionButton;
-				}
-				export module ShareMessengerOpenGraphMusicTemplateContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent,com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent.Builder> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent.Builder>;
-						public constructor();
-						public readFrom(param0: com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent): com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent.Builder;
-						public setButton(param0: com.facebook.share.model.ShareMessengerActionButton): com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent.Builder;
-						public readFrom(param0: any): any;
-						public setUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent.Builder;
-						public build(): com.facebook.share.model.ShareMessengerOpenGraphMusicTemplateContent;
-					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module model {
 				export class ShareMessengerURLActionButton extends com.facebook.share.model.ShareMessengerActionButton {
 					public static class: java.lang.Class<com.facebook.share.model.ShareMessengerURLActionButton>;
+					public static Companion: com.facebook.share.model.ShareMessengerURLActionButton.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareMessengerURLActionButton>;
 					public getWebviewHeightRatio(): com.facebook.share.model.ShareMessengerURLActionButton.WebviewHeightRatio;
-					public getIsMessengerExtensionURL(): boolean;
+					public constructor(param0: globalAndroid.os.Parcel);
+					public isMessengerExtensionURL(): boolean;
+					public constructor(param0: com.facebook.share.model.ShareMessengerActionButton.Builder<any, any>);
 					public getUrl(): globalAndroid.net.Uri;
 					public getShouldHideWebviewShareButton(): boolean;
 					public getFallbackUrl(): globalAndroid.net.Uri;
+					/** @deprecated */
+					public getIsMessengerExtensionURL(): boolean;
+					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				}
 				export module ShareMessengerURLActionButton {
-					export class Builder extends com.facebook.share.model.ShareMessengerActionButton.Builder<com.facebook.share.model.ShareMessengerURLActionButton,com.facebook.share.model.ShareMessengerURLActionButton.Builder> {
+					export class Builder extends com.facebook.share.model.ShareMessengerActionButton.Builder<com.facebook.share.model.ShareMessengerURLActionButton, com.facebook.share.model.ShareMessengerURLActionButton.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerURLActionButton.Builder>;
-						public setFallbackUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
 						public constructor();
-						public setWebviewHeightRatio(param0: com.facebook.share.model.ShareMessengerURLActionButton.WebviewHeightRatio): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
-						public build(): com.facebook.share.model.ShareMessengerURLActionButton;
+						public setWebviewHeightRatio$facebook_common_release(param0: com.facebook.share.model.ShareMessengerURLActionButton.WebviewHeightRatio): void;
 						public readFrom(param0: any): any;
+						public getShouldHideWebviewShareButton$facebook_common_release(): boolean;
+						public getWebviewHeightRatio$facebook_common_release(): com.facebook.share.model.ShareMessengerURLActionButton.WebviewHeightRatio;
+						public setMessengerExtensionURL$facebook_common_release(param0: boolean): void;
+						public isMessengerExtensionURL$facebook_common_release(): boolean;
+						public setFallbackUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
+						public setWebviewHeightRatio(param0: com.facebook.share.model.ShareMessengerURLActionButton.WebviewHeightRatio): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
+						public setShouldHideWebviewShareButton$facebook_common_release(param0: boolean): void;
+						public build(): com.facebook.share.model.ShareMessengerURLActionButton;
+						public setFallbackUrl$facebook_common_release(param0: globalAndroid.net.Uri): void;
 						public setUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
 						public setIsMessengerExtensionURL(param0: boolean): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
+						public getUrl$facebook_common_release(): globalAndroid.net.Uri;
+						public setUrl$facebook_common_release(param0: globalAndroid.net.Uri): void;
 						public readFrom(param0: com.facebook.share.model.ShareMessengerURLActionButton): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
 						public setShouldHideWebviewShareButton(param0: boolean): com.facebook.share.model.ShareMessengerURLActionButton.Builder;
+						public getFallbackUrl$facebook_common_release(): globalAndroid.net.Uri;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerURLActionButton.Companion>;
 					}
 					export class WebviewHeightRatio {
 						public static class: java.lang.Class<com.facebook.share.model.ShareMessengerURLActionButton.WebviewHeightRatio>;
@@ -8937,8 +8569,7 @@ declare module com {
 					/**
 					 * Constructs a new instance of the com.facebook.share.model.ShareModel interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-					});
+					public constructor(implementation: {});
 					public constructor();
 				}
 			}
@@ -8950,15 +8581,12 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareModelBuilder<P, E>  extends com.facebook.share.ShareBuilder<any,any> {
-					public static class: java.lang.Class<com.facebook.share.model.ShareModelBuilder<any,any>>;
+				export class ShareModelBuilder<M, B> extends com.facebook.share.ShareBuilder<any, any> {
+					public static class: java.lang.Class<com.facebook.share.model.ShareModelBuilder<any, any>>;
 					/**
 					 * Constructs a new instance of the com.facebook.share.model.ShareModelBuilder<any,any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 					 */
-					public constructor(implementation: {
-						readFrom(param0: any): any;
-						build(): any;
-					});
+					public constructor(implementation: { readFrom(param0: any): any; build(): any });
 					public constructor();
 					public build(): any;
 					public readFrom(param0: any): any;
@@ -8972,13 +8600,13 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareOpenGraphAction extends com.facebook.share.model.ShareOpenGraphValueContainer<com.facebook.share.model.ShareOpenGraphAction,com.facebook.share.model.ShareOpenGraphAction.Builder> {
+				export class ShareOpenGraphAction extends com.facebook.share.model.ShareOpenGraphValueContainer<com.facebook.share.model.ShareOpenGraphAction, com.facebook.share.model.ShareOpenGraphAction.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphAction>;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareOpenGraphAction>;
 					public getActionType(): string;
 				}
 				export module ShareOpenGraphAction {
-					export class Builder extends com.facebook.share.model.ShareOpenGraphValueContainer.Builder<com.facebook.share.model.ShareOpenGraphAction,com.facebook.share.model.ShareOpenGraphAction.Builder> {
+					export class Builder extends com.facebook.share.model.ShareOpenGraphValueContainer.Builder<com.facebook.share.model.ShareOpenGraphAction, com.facebook.share.model.ShareOpenGraphAction.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphAction.Builder>;
 						public readFrom(param0: com.facebook.share.model.ShareOpenGraphAction): com.facebook.share.model.ShareOpenGraphAction.Builder;
 						public constructor();
@@ -8996,7 +8624,7 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareOpenGraphContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareOpenGraphContent,com.facebook.share.model.ShareOpenGraphContent.Builder> {
+				export class ShareOpenGraphContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareOpenGraphContent, com.facebook.share.model.ShareOpenGraphContent.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphContent>;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareOpenGraphContent>;
 					public getAction(): com.facebook.share.model.ShareOpenGraphAction;
@@ -9005,7 +8633,7 @@ declare module com {
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 				}
 				export module ShareOpenGraphContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareOpenGraphContent,com.facebook.share.model.ShareOpenGraphContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareOpenGraphContent, com.facebook.share.model.ShareOpenGraphContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphContent.Builder>;
 						public setAction(param0: com.facebook.share.model.ShareOpenGraphAction): com.facebook.share.model.ShareOpenGraphContent.Builder;
 						public constructor();
@@ -9024,16 +8652,23 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareOpenGraphObject extends com.facebook.share.model.ShareOpenGraphValueContainer<com.facebook.share.model.ShareOpenGraphObject,com.facebook.share.model.ShareOpenGraphObject.Builder> {
+				export class ShareOpenGraphObject extends com.facebook.share.model.ShareOpenGraphValueContainer<com.facebook.share.model.ShareOpenGraphObject, com.facebook.share.model.ShareOpenGraphObject.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphObject>;
+					public static Companion: com.facebook.share.model.ShareOpenGraphObject.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareOpenGraphObject>;
+					public constructor(param0: globalAndroid.os.Parcel);
+					public constructor(param0: com.facebook.share.model.ShareOpenGraphValueContainer.Builder<any, any>);
 				}
 				export module ShareOpenGraphObject {
-					export class Builder extends com.facebook.share.model.ShareOpenGraphValueContainer.Builder<com.facebook.share.model.ShareOpenGraphObject,com.facebook.share.model.ShareOpenGraphObject.Builder> {
+					export class Builder extends com.facebook.share.model.ShareOpenGraphValueContainer.Builder<com.facebook.share.model.ShareOpenGraphObject, com.facebook.share.model.ShareOpenGraphObject.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphObject.Builder>;
 						public constructor();
+						public readFrom$facebook_common_release(param0: globalAndroid.os.Parcel): com.facebook.share.model.ShareOpenGraphObject.Builder;
 						public readFrom(param0: any): any;
 						public build(): com.facebook.share.model.ShareOpenGraphObject;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphObject.Companion>;
 					}
 				}
 			}
@@ -9045,14 +8680,15 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export abstract class ShareOpenGraphValueContainer<P, E>  extends com.facebook.share.model.ShareModel {
-					public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphValueContainer<any,any>>;
+				export abstract class ShareOpenGraphValueContainer<P, E> extends com.facebook.share.model.ShareModel {
+					public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphValueContainer<any, any>>;
 					public get(param0: string): any;
 					public getBooleanArray(param0: string): androidNative.Array<boolean>;
 					public getDouble(param0: string, param1: number): number;
 					public getObjectArrayList(param0: string): java.util.ArrayList<com.facebook.share.model.ShareOpenGraphObject>;
 					public describeContents(): number;
 					public getBoolean(param0: string, param1: boolean): boolean;
+					public constructor(param0: com.facebook.share.model.ShareOpenGraphValueContainer.Builder<any, any>);
 					public getString(param0: string): string;
 					public getPhotoArrayList(param0: string): java.util.ArrayList<com.facebook.share.model.SharePhoto>;
 					public getLong(param0: string, param1: number): number;
@@ -9063,14 +8699,13 @@ declare module com {
 					public getDoubleArray(param0: string): androidNative.Array<number>;
 					public getBundle(): globalAndroid.os.Bundle;
 					public getStringArrayList(param0: string): java.util.ArrayList<string>;
-					public constructor(param0: com.facebook.share.model.ShareOpenGraphValueContainer.Builder<any,any>);
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public keySet(): java.util.Set<string>;
 					public getInt(param0: string, param1: number): number;
 				}
 				export module ShareOpenGraphValueContainer {
-					export abstract class Builder<P, E>  extends com.facebook.share.model.ShareModelBuilder<any,any> {
-						public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphValueContainer.Builder<any,any>>;
+					export abstract class Builder<M, B> extends com.facebook.share.model.ShareModelBuilder<any, any> {
+						public static class: java.lang.Class<com.facebook.share.model.ShareOpenGraphValueContainer.Builder<any, any>>;
 						public constructor();
 						public putIntArray(param0: string, param1: androidNative.Array<number>): any;
 						public putPhoto(param0: string, param1: com.facebook.share.model.SharePhoto): any;
@@ -9099,11 +8734,14 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class SharePhoto extends com.facebook.share.model.ShareMedia {
+				export class SharePhoto extends com.facebook.share.model.ShareMedia<com.facebook.share.model.SharePhoto, com.facebook.share.model.SharePhoto.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.SharePhoto>;
+					public static Companion: com.facebook.share.model.SharePhoto.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.SharePhoto>;
 					public getImageUrl(): globalAndroid.net.Uri;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public getUserGenerated(): boolean;
+					public constructor(param0: com.facebook.share.model.ShareMedia.Builder<any, any>);
 					public describeContents(): number;
 					public getCaption(): string;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
@@ -9111,16 +8749,32 @@ declare module com {
 					public getMediaType(): com.facebook.share.model.ShareMedia.Type;
 				}
 				export module SharePhoto {
-					export class Builder extends com.facebook.share.model.ShareMedia.Builder<com.facebook.share.model.SharePhoto,com.facebook.share.model.SharePhoto.Builder> {
+					export class Builder extends com.facebook.share.model.ShareMedia.Builder<com.facebook.share.model.SharePhoto, com.facebook.share.model.SharePhoto.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.SharePhoto.Builder>;
-						public setBitmap(param0: globalAndroid.graphics.Bitmap): com.facebook.share.model.SharePhoto.Builder;
+						public static Companion: com.facebook.share.model.SharePhoto.Builder.Companion;
 						public setImageUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.SharePhoto.Builder;
 						public constructor();
+						public getUserGenerated$facebook_common_release(): boolean;
 						public readFrom(param0: any): any;
-						public setUserGenerated(param0: boolean): com.facebook.share.model.SharePhoto.Builder;
 						public build(): com.facebook.share.model.SharePhoto;
-						public setCaption(param0: string): com.facebook.share.model.SharePhoto.Builder;
+						public getBitmap$facebook_common_release(): globalAndroid.graphics.Bitmap;
 						public readFrom(param0: com.facebook.share.model.SharePhoto): com.facebook.share.model.SharePhoto.Builder;
+						public setBitmap(param0: globalAndroid.graphics.Bitmap): com.facebook.share.model.SharePhoto.Builder;
+						public getImageUrl$facebook_common_release(): globalAndroid.net.Uri;
+						public readFrom$facebook_common_release(param0: globalAndroid.os.Parcel): com.facebook.share.model.SharePhoto.Builder;
+						public getCaption$facebook_common_release(): string;
+						public setUserGenerated(param0: boolean): com.facebook.share.model.SharePhoto.Builder;
+						public setCaption(param0: string): com.facebook.share.model.SharePhoto.Builder;
+					}
+					export module Builder {
+						export class Companion {
+							public static class: java.lang.Class<com.facebook.share.model.SharePhoto.Builder.Companion>;
+							public writePhotoListTo$facebook_common_release(param0: globalAndroid.os.Parcel, param1: number, param2: java.util.List<com.facebook.share.model.SharePhoto>): void;
+							public readPhotoListFrom$facebook_common_release(param0: globalAndroid.os.Parcel): java.util.List<com.facebook.share.model.SharePhoto>;
+						}
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.SharePhoto.Companion>;
 					}
 				}
 			}
@@ -9132,23 +8786,30 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class SharePhotoContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.SharePhotoContent,com.facebook.share.model.SharePhotoContent.Builder> {
+				export class SharePhotoContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.SharePhotoContent, com.facebook.share.model.SharePhotoContent.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.SharePhotoContent>;
+					public static Companion: com.facebook.share.model.SharePhotoContent.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.SharePhotoContent>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public describeContents(): number;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public getPhotos(): java.util.List<com.facebook.share.model.SharePhoto>;
 				}
 				export module SharePhotoContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.SharePhotoContent,com.facebook.share.model.SharePhotoContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.SharePhotoContent, com.facebook.share.model.SharePhotoContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.SharePhotoContent.Builder>;
 						public constructor();
 						public build(): com.facebook.share.model.SharePhotoContent;
 						public readFrom(param0: any): any;
 						public addPhoto(param0: com.facebook.share.model.SharePhoto): com.facebook.share.model.SharePhotoContent.Builder;
 						public setPhotos(param0: java.util.List<com.facebook.share.model.SharePhoto>): com.facebook.share.model.SharePhotoContent.Builder;
+						public getPhotos$facebook_common_release(): java.util.List<com.facebook.share.model.SharePhoto>;
 						public addPhotos(param0: java.util.List<com.facebook.share.model.SharePhoto>): com.facebook.share.model.SharePhotoContent.Builder;
 						public readFrom(param0: com.facebook.share.model.SharePhotoContent): com.facebook.share.model.SharePhotoContent.Builder;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.SharePhotoContent.Companion>;
 					}
 				}
 			}
@@ -9160,27 +8821,41 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareStoryContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareStoryContent,com.facebook.share.model.ShareStoryContent.Builder> {
+				export class ShareStoryContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareStoryContent, com.facebook.share.model.ShareStoryContent.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareStoryContent>;
+					public static Companion: com.facebook.share.model.ShareStoryContent.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareStoryContent>;
-					public getBackgroundAsset(): com.facebook.share.model.ShareMedia;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public getStickerAsset(): com.facebook.share.model.SharePhoto;
 					public getAttributionLink(): string;
 					public describeContents(): number;
+					public getBackgroundAsset(): com.facebook.share.model.ShareMedia<any, any>;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public getBackgroundColorList(): java.util.List<string>;
 				}
 				export module ShareStoryContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareStoryContent,com.facebook.share.model.ShareStoryContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareStoryContent, com.facebook.share.model.ShareStoryContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareStoryContent.Builder>;
 						public constructor();
 						public build(): com.facebook.share.model.ShareStoryContent;
 						public setAttributionLink(param0: string): com.facebook.share.model.ShareStoryContent.Builder;
 						public readFrom(param0: any): any;
-						public setBackgroundAsset(param0: com.facebook.share.model.ShareMedia): com.facebook.share.model.ShareStoryContent.Builder;
+						public setBackgroundAsset(param0: com.facebook.share.model.ShareMedia<any, any>): com.facebook.share.model.ShareStoryContent.Builder;
+						public getStickerAsset$facebook_common_release(): com.facebook.share.model.SharePhoto;
+						public getBackgroundColorList$facebook_common_release(): java.util.List<string>;
+						public setStickerAsset$facebook_common_release(param0: com.facebook.share.model.SharePhoto): void;
 						public readFrom(param0: com.facebook.share.model.ShareStoryContent): com.facebook.share.model.ShareStoryContent.Builder;
+						public setBackgroundAsset$facebook_common_release(param0: com.facebook.share.model.ShareMedia<any, any>): void;
 						public setBackgroundColorList(param0: java.util.List<string>): com.facebook.share.model.ShareStoryContent.Builder;
 						public setStickerAsset(param0: com.facebook.share.model.SharePhoto): com.facebook.share.model.ShareStoryContent.Builder;
+						public getBackgroundAsset$facebook_common_release(): com.facebook.share.model.ShareMedia<any, any>;
+						public getAttributionLink$facebook_common_release(): string;
+						public setAttributionLink$facebook_common_release(param0: string): void;
+						public setBackgroundColorList$facebook_common_release(param0: java.util.List<string>): void;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareStoryContent.Companion>;
 					}
 				}
 			}
@@ -9192,22 +8867,31 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareVideo extends com.facebook.share.model.ShareMedia {
+				export class ShareVideo extends com.facebook.share.model.ShareMedia<com.facebook.share.model.ShareVideo, com.facebook.share.model.ShareVideo.Builder> {
 					public static class: java.lang.Class<com.facebook.share.model.ShareVideo>;
+					public static Companion: com.facebook.share.model.ShareVideo.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareVideo>;
+					public constructor(param0: globalAndroid.os.Parcel);
+					public constructor(param0: com.facebook.share.model.ShareMedia.Builder<any, any>);
 					public describeContents(): number;
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public getLocalUrl(): globalAndroid.net.Uri;
 					public getMediaType(): com.facebook.share.model.ShareMedia.Type;
 				}
 				export module ShareVideo {
-					export class Builder extends com.facebook.share.model.ShareMedia.Builder<com.facebook.share.model.ShareVideo,com.facebook.share.model.ShareVideo.Builder> {
+					export class Builder extends com.facebook.share.model.ShareMedia.Builder<com.facebook.share.model.ShareVideo, com.facebook.share.model.ShareVideo.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareVideo.Builder>;
+						public setLocalUrl$facebook_common_release(param0: globalAndroid.net.Uri): void;
 						public constructor();
 						public readFrom(param0: any): any;
+						public readFrom$facebook_common_release(param0: globalAndroid.os.Parcel): com.facebook.share.model.ShareVideo.Builder;
+						public getLocalUrl$facebook_common_release(): globalAndroid.net.Uri;
 						public setLocalUrl(param0: globalAndroid.net.Uri): com.facebook.share.model.ShareVideo.Builder;
 						public readFrom(param0: com.facebook.share.model.ShareVideo): com.facebook.share.model.ShareVideo.Builder;
 						public build(): com.facebook.share.model.ShareVideo;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareVideo.Companion>;
 					}
 				}
 			}
@@ -9219,125 +8903,41 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module model {
-				export class ShareVideoContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareVideoContent,com.facebook.share.model.ShareVideoContent.Builder> implements com.facebook.share.model.ShareModel  {
+				export class ShareVideoContent extends com.facebook.share.model.ShareContent<com.facebook.share.model.ShareVideoContent, com.facebook.share.model.ShareVideoContent.Builder> implements com.facebook.share.model.ShareModel {
 					public static class: java.lang.Class<com.facebook.share.model.ShareVideoContent>;
+					public static Companion: com.facebook.share.model.ShareVideoContent.Companion;
 					public static CREATOR: globalAndroid.os.Parcelable.Creator<com.facebook.share.model.ShareVideoContent>;
+					public constructor(param0: globalAndroid.os.Parcel);
 					public describeContents(): number;
 					public getVideo(): com.facebook.share.model.ShareVideo;
 					public getPreviewPhoto(): com.facebook.share.model.SharePhoto;
+					public constructor(param0: com.facebook.share.model.ShareContent.Builder<any, any>);
 					public writeToParcel(param0: globalAndroid.os.Parcel, param1: number): void;
 					public getContentDescription(): string;
 					public getContentTitle(): string;
 				}
 				export module ShareVideoContent {
-					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareVideoContent,com.facebook.share.model.ShareVideoContent.Builder> {
+					export class Builder extends com.facebook.share.model.ShareContent.Builder<com.facebook.share.model.ShareVideoContent, com.facebook.share.model.ShareVideoContent.Builder> {
 						public static class: java.lang.Class<com.facebook.share.model.ShareVideoContent.Builder>;
-						public readFrom(param0: com.facebook.share.model.ShareVideoContent): com.facebook.share.model.ShareVideoContent.Builder;
+						public setPreviewPhoto$facebook_common_release(param0: com.facebook.share.model.SharePhoto): void;
 						public constructor();
 						public setVideo(param0: com.facebook.share.model.ShareVideo): com.facebook.share.model.ShareVideoContent.Builder;
 						public readFrom(param0: any): any;
+						public setVideo$facebook_common_release(param0: com.facebook.share.model.ShareVideo): void;
+						public setContentDescription(param0: string): com.facebook.share.model.ShareVideoContent.Builder;
+						public getContentTitle$facebook_common_release(): string;
+						public readFrom(param0: com.facebook.share.model.ShareVideoContent): com.facebook.share.model.ShareVideoContent.Builder;
+						public getVideo$facebook_common_release(): com.facebook.share.model.ShareVideo;
+						public getPreviewPhoto$facebook_common_release(): com.facebook.share.model.SharePhoto;
+						public getContentDescription$facebook_common_release(): string;
+						public setContentTitle$facebook_common_release(param0: string): void;
 						public setContentTitle(param0: string): com.facebook.share.model.ShareVideoContent.Builder;
 						public build(): com.facebook.share.model.ShareVideoContent;
-						public setContentDescription(param0: string): com.facebook.share.model.ShareVideoContent.Builder;
+						public setContentDescription$facebook_common_release(param0: string): void;
 						public setPreviewPhoto(param0: com.facebook.share.model.SharePhoto): com.facebook.share.model.ShareVideoContent.Builder;
 					}
-				}
-			}
-		}
-	}
-}
-
-declare module com {
-	export module facebook {
-		export module share {
-			export module widget {
-				export class LikeView {
-					public static class: java.lang.Class<com.facebook.share.widget.LikeView>;
-					public onDetachedFromWindow(): void;
-					/** @deprecated */
-					public setObjectIdAndType(param0: string, param1: com.facebook.share.widget.LikeView.ObjectType): void;
-					/** @deprecated */
-					public setLikeViewStyle(param0: com.facebook.share.widget.LikeView.Style): void;
-					/** @deprecated */
-					public getOnErrorListener(): com.facebook.share.widget.LikeView.OnErrorListener;
-					/** @deprecated */
-					public setFragment(param0: globalAndroid.app.Fragment): void;
-					/** @deprecated */
-					public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet);
-					/** @deprecated */
-					public setForegroundColor(param0: number): void;
-					/** @deprecated */
-					public setHorizontalAlignment(param0: com.facebook.share.widget.LikeView.HorizontalAlignment): void;
-					/** @deprecated */
-					public constructor(param0: globalAndroid.content.Context);
-					/** @deprecated */
-					public setAuxiliaryViewPosition(param0: com.facebook.share.widget.LikeView.AuxiliaryViewPosition): void;
-					/** @deprecated */
-					public setFragment(param0: androidx.fragment.app.Fragment): void;
-					/** @deprecated */
-					public setOnErrorListener(param0: com.facebook.share.widget.LikeView.OnErrorListener): void;
-					/** @deprecated */
-					public setEnabled(param0: boolean): void;
-				}
-				export module LikeView {
-					export class AuxiliaryViewPosition {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.AuxiliaryViewPosition>;
-						public static BOTTOM: com.facebook.share.widget.LikeView.AuxiliaryViewPosition;
-						public static INLINE: com.facebook.share.widget.LikeView.AuxiliaryViewPosition;
-						public static TOP: com.facebook.share.widget.LikeView.AuxiliaryViewPosition;
-						public static values(): androidNative.Array<com.facebook.share.widget.LikeView.AuxiliaryViewPosition>;
-						public static valueOf(param0: string): com.facebook.share.widget.LikeView.AuxiliaryViewPosition;
-						public toString(): string;
-					}
-					export class HorizontalAlignment {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.HorizontalAlignment>;
-						public static CENTER: com.facebook.share.widget.LikeView.HorizontalAlignment;
-						public static LEFT: com.facebook.share.widget.LikeView.HorizontalAlignment;
-						public static RIGHT: com.facebook.share.widget.LikeView.HorizontalAlignment;
-						public static valueOf(param0: string): com.facebook.share.widget.LikeView.HorizontalAlignment;
-						public static values(): androidNative.Array<com.facebook.share.widget.LikeView.HorizontalAlignment>;
-						public toString(): string;
-					}
-					export class LikeActionControllerCreationCallback extends com.facebook.share.internal.LikeActionController.CreationCallback {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.LikeActionControllerCreationCallback>;
-						public onComplete(param0: com.facebook.share.internal.LikeActionController, param1: com.facebook.FacebookException): void;
-						public cancel(): void;
-					}
-					export class LikeControllerBroadcastReceiver {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.LikeControllerBroadcastReceiver>;
-						public onReceive(param0: globalAndroid.content.Context, param1: globalAndroid.content.Intent): void;
-					}
-					export class ObjectType {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.ObjectType>;
-						public static UNKNOWN: com.facebook.share.widget.LikeView.ObjectType;
-						public static OPEN_GRAPH: com.facebook.share.widget.LikeView.ObjectType;
-						public static PAGE: com.facebook.share.widget.LikeView.ObjectType;
-						public static DEFAULT: com.facebook.share.widget.LikeView.ObjectType;
-						public static values(): androidNative.Array<com.facebook.share.widget.LikeView.ObjectType>;
-						public static valueOf(param0: string): com.facebook.share.widget.LikeView.ObjectType;
-						public static fromInt(param0: number): com.facebook.share.widget.LikeView.ObjectType;
-						public toString(): string;
-						public getValue(): number;
-					}
-					export class OnErrorListener {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.OnErrorListener>;
-						/**
-						 * Constructs a new instance of the com.facebook.share.widget.LikeView$OnErrorListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
-						 */
-						public constructor(implementation: {
-							onError(param0: com.facebook.FacebookException): void;
-						});
-						public constructor();
-						public onError(param0: com.facebook.FacebookException): void;
-					}
-					export class Style {
-						public static class: java.lang.Class<com.facebook.share.widget.LikeView.Style>;
-						public static STANDARD: com.facebook.share.widget.LikeView.Style;
-						public static BUTTON: com.facebook.share.widget.LikeView.Style;
-						public static BOX_COUNT: com.facebook.share.widget.LikeView.Style;
-						public static values(): androidNative.Array<com.facebook.share.widget.LikeView.Style>;
-						public static valueOf(param0: string): com.facebook.share.widget.LikeView.Style;
-						public toString(): string;
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.model.ShareVideoContent.Companion>;
 					}
 				}
 			}
@@ -9349,46 +8949,62 @@ declare module com {
 	export module facebook {
 		export module share {
 			export module widget {
-				export class ShareDialog extends com.facebook.internal.FacebookDialogBase<com.facebook.share.model.ShareContent<any,any>,com.facebook.share.Sharer.Result> implements com.facebook.share.Sharer  {
+				export class ShareDialog extends com.facebook.internal.FacebookDialogBase<com.facebook.share.model.ShareContent<any, any>, com.facebook.share.Sharer.Result> implements com.facebook.share.Sharer {
 					public static class: java.lang.Class<com.facebook.share.widget.ShareDialog>;
+					public static Companion: com.facebook.share.widget.ShareDialog.Companion;
 					public static WEB_SHARE_DIALOG: string;
-					public show(param0: com.facebook.share.model.ShareContent<any,any>, param1: com.facebook.share.widget.ShareDialog.Mode): void;
+					public canShow(param0: com.facebook.share.model.ShareContent<any, any>, param1: com.facebook.share.widget.ShareDialog.Mode): boolean;
 					public constructor(param0: globalAndroid.app.Fragment);
 					public createBaseAppCall(): com.facebook.internal.AppCall;
-					public static canShow(param0: java.lang.Class<any>): boolean;
 					public registerCallbackImpl(param0: com.facebook.internal.CallbackManagerImpl, param1: com.facebook.FacebookCallback<any>): void;
-					public canShow(param0: com.facebook.share.model.ShareContent<any,any>, param1: com.facebook.share.widget.ShareDialog.Mode): boolean;
+					public static canShow(param0: java.lang.Class<any>): boolean;
 					public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<any>, param2: number): void;
-					public static show(param0: androidx.fragment.app.Fragment, param1: com.facebook.share.model.ShareContent<any,any>): void;
-					public static show(param0: globalAndroid.app.Fragment, param1: com.facebook.share.model.ShareContent<any,any>): void;
+					public constructor(param0: androidx.fragment.app.Fragment, param1: number);
+					public static show(param0: globalAndroid.app.Activity, param1: com.facebook.share.model.ShareContent<any, any>): void;
 					public constructor(param0: androidx.fragment.app.Fragment);
 					public registerCallback(param0: com.facebook.CallbackManager, param1: com.facebook.FacebookCallback<any>): void;
 					public constructor(param0: globalAndroid.app.Activity);
 					public getOrderedModeHandlers(): java.util.List<com.facebook.internal.FacebookDialogBase.ModeHandler>;
+					public show(param0: com.facebook.share.model.ShareContent<any, any>, param1: com.facebook.share.widget.ShareDialog.Mode): void;
 					public setShouldFailOnDataError(param0: boolean): void;
+					public static show(param0: androidx.fragment.app.Fragment, param1: com.facebook.share.model.ShareContent<any, any>): void;
 					public show(param0: any): void;
+					public static show(param0: globalAndroid.app.Fragment, param1: com.facebook.share.model.ShareContent<any, any>): void;
 					public canShow(param0: any): boolean;
 					public constructor(param0: globalAndroid.app.Activity, param1: number);
 					public constructor(param0: com.facebook.internal.FragmentWrapper, param1: number);
 					public registerCallbackImpl(param0: com.facebook.internal.CallbackManagerImpl, param1: com.facebook.FacebookCallback<com.facebook.share.Sharer.Result>): void;
 					public getShouldFailOnDataError(): boolean;
-					public static show(param0: globalAndroid.app.Activity, param1: com.facebook.share.model.ShareContent<any,any>): void;
+					public constructor(param0: globalAndroid.app.Fragment, param1: number);
 				}
 				export module ShareDialog {
 					export class CameraEffectHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
 						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.CameraEffectHandler>;
+						public createAppCall(param0: com.facebook.share.model.ShareContent<any, any>): com.facebook.internal.AppCall;
+						public canShow(param0: com.facebook.share.model.ShareContent<any, any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.internal.FacebookDialogBase<any, any>);
 						public getMode(): any;
+						public setMode(param0: any): void;
 						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public createAppCall(param0: com.facebook.share.model.ShareContent<any,any>): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.model.ShareContent<any,any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.share.widget.ShareDialog);
 						public canShow(param0: any, param1: boolean): boolean;
+					}
+					export class Companion {
+						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.Companion>;
+						public show(param0: androidx.fragment.app.Fragment, param1: com.facebook.share.model.ShareContent<any, any>): void;
+						public canShow(param0: java.lang.Class<any>): boolean;
+						public show(param0: globalAndroid.app.Activity, param1: com.facebook.share.model.ShareContent<any, any>): void;
+						public show(param0: globalAndroid.app.Fragment, param1: com.facebook.share.model.ShareContent<any, any>): void;
 					}
 					export class FeedHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
 						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.FeedHandler>;
+						public createAppCall(param0: com.facebook.share.model.ShareContent<any, any>): com.facebook.internal.AppCall;
+						public canShow(param0: com.facebook.share.model.ShareContent<any, any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.internal.FacebookDialogBase<any, any>);
 						public getMode(): any;
+						public setMode(param0: any): void;
 						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public createAppCall(param0: com.facebook.share.model.ShareContent<any,any>): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.model.ShareContent<any,any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.share.widget.ShareDialog);
 						public canShow(param0: any, param1: boolean): boolean;
 					}
 					export class Mode {
@@ -9402,27 +9018,39 @@ declare module com {
 					}
 					export class NativeHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
 						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.NativeHandler>;
+						public createAppCall(param0: com.facebook.share.model.ShareContent<any, any>): com.facebook.internal.AppCall;
+						public canShow(param0: com.facebook.share.model.ShareContent<any, any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.internal.FacebookDialogBase<any, any>);
 						public getMode(): any;
+						public setMode(param0: any): void;
 						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public createAppCall(param0: com.facebook.share.model.ShareContent<any,any>): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.model.ShareContent<any,any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.share.widget.ShareDialog);
 						public canShow(param0: any, param1: boolean): boolean;
 					}
 					export class ShareStoryHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
 						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.ShareStoryHandler>;
+						public createAppCall(param0: com.facebook.share.model.ShareContent<any, any>): com.facebook.internal.AppCall;
+						public canShow(param0: com.facebook.share.model.ShareContent<any, any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.internal.FacebookDialogBase<any, any>);
 						public getMode(): any;
+						public setMode(param0: any): void;
 						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public createAppCall(param0: com.facebook.share.model.ShareContent<any,any>): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.model.ShareContent<any,any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.share.widget.ShareDialog);
 						public canShow(param0: any, param1: boolean): boolean;
 					}
 					export class WebShareHandler extends com.facebook.internal.FacebookDialogBase.ModeHandler {
 						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.WebShareHandler>;
+						public createAppCall(param0: com.facebook.share.model.ShareContent<any, any>): com.facebook.internal.AppCall;
+						public canShow(param0: com.facebook.share.model.ShareContent<any, any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.internal.FacebookDialogBase<any, any>);
 						public getMode(): any;
+						public setMode(param0: any): void;
 						public createAppCall(param0: any): com.facebook.internal.AppCall;
-						public createAppCall(param0: com.facebook.share.model.ShareContent<any,any>): com.facebook.internal.AppCall;
-						public canShow(param0: com.facebook.share.model.ShareContent<any,any>, param1: boolean): boolean;
+						public constructor(param0: com.facebook.share.widget.ShareDialog);
 						public canShow(param0: any, param1: boolean): boolean;
+					}
+					export class WhenMappings {
+						public static class: java.lang.Class<com.facebook.share.widget.ShareDialog.WhenMappings>;
 					}
 				}
 			}
@@ -9439,14 +9067,12 @@ declare module com {
 //com.facebook.bolts.TaskCompletionSource:1
 //com.facebook.internal.FacebookDialogBase:2
 //com.facebook.internal.LockOnGetVariable:1
-//com.facebook.internal.Utility.Mapper:2
-//com.facebook.internal.Utility.Predicate:1
 //com.facebook.share.ShareBuilder:2
 //com.facebook.share.model.ShareContent:2
 //com.facebook.share.model.ShareContent.Builder:2
+//com.facebook.share.model.ShareMedia:2
 //com.facebook.share.model.ShareMedia.Builder:2
 //com.facebook.share.model.ShareMessengerActionButton.Builder:2
 //com.facebook.share.model.ShareModelBuilder:2
 //com.facebook.share.model.ShareOpenGraphValueContainer:2
 //com.facebook.share.model.ShareOpenGraphValueContainer.Builder:2
-
