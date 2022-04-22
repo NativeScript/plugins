@@ -1,7 +1,7 @@
 # @nativescript/zip
 
 ```cli
-ns plugin add @nativescript/zip
+npm install @nativescript/zip
 ```
 
 ## Usage
