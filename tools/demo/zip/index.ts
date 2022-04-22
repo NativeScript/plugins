@@ -2,12 +2,12 @@ import { DemoSharedBase } from '../utils';
 import { Observable, EventData, Page, path, Folder, knownFolders } from '@nativescript/core';
 import { Zip } from '@nativescript/zip';
 
-const dest = Folder.fromPath(path.join(knownFolders.temp().path, 'books'));
+const dest = Folder.fromPath(path.join(knownFolders.temp().path, 'logos'));
 const dir = () => {
-	return path.join(knownFolders.currentApp().path, 'assets');
+	return path.join(knownFolders.currentApp().path, 'logos');
 };
 const out = () => {
-	return path.join(knownFolders.temp().path, 'zip_files_out.zip');
+	return path.join(knownFolders.temp().path, 'logos.zip');
 };
 
 export class DemoSharedZip extends DemoSharedBase {
@@ -45,8 +45,8 @@ export class DemoSharedZip extends DemoSharedBase {
 
 	unzip() {
 		console.log(`begin unzip`);
-    let appPath = knownFolders.currentApp().path;
-    // File omitted from repo due to size - can test this locally with your own zip file
+		let appPath = knownFolders.currentApp().path;
+		// File omitted from repo due to size - can test this locally with your own zip file
 		let testZipFile = path.join(appPath, 'test_70mb.zip');
 		// Zip.unzip(testZipFile, appPath);
 		Zip.unzip({

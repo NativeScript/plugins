@@ -1,6 +1,4 @@
-
 declare class SSZipArchive extends NSObject {
-
 	static alloc(): SSZipArchive; // inherited from NSObject
 
 	static createZipFileAtPathWithContentsOfDirectory(path: string, directoryPath: string): boolean;
@@ -8,6 +6,8 @@ declare class SSZipArchive extends NSObject {
 	static createZipFileAtPathWithContentsOfDirectoryKeepParentDirectory(path: string, directoryPath: string, keepParentDirectory: boolean): boolean;
 
 	static createZipFileAtPathWithContentsOfDirectoryKeepParentDirectoryCompressionLevelPasswordAESProgressHandler(path: string, directoryPath: string, keepParentDirectory: boolean, compressionLevel: number, password: string, aes: boolean, progressHandler: (p1: number, p2: number) => void): boolean;
+
+	static createZipFileAtPathWithContentsOfDirectoryKeepParentDirectoryCompressionLevelPasswordAESProgressHandlerKeepSymlinks(path: string, directoryPath: string, keepParentDirectory: boolean, compressionLevel: number, password: string, aes: boolean, progressHandler: (p1: number, p2: number) => void, keeplinks: boolean): boolean;
 
 	static createZipFileAtPathWithContentsOfDirectoryKeepParentDirectoryWithPassword(path: string, directoryPath: string, keepParentDirectory: boolean, password: string): boolean;
 
@@ -19,11 +19,17 @@ declare class SSZipArchive extends NSObject {
 
 	static createZipFileAtPathWithFilesAtPathsWithPassword(path: string, paths: NSArray<string> | string[], password: string): boolean;
 
+	static createZipFileAtPathWithFilesAtPathsWithPasswordKeepSymlinks(path: string, paths: NSArray<string> | string[], password: string, keeplinks: boolean): boolean;
+
+	static createZipFileAtPathWithFilesAtPathsWithPasswordProgressHandler(path: string, paths: NSArray<string> | string[], password: string, progressHandler: (p1: number, p2: number) => void): boolean;
+
 	static isFilePasswordProtectedAtPath(path: string): boolean;
 
 	static isPasswordValidForArchiveAtPathPasswordError(path: string, pw: string): boolean;
 
 	static new(): SSZipArchive; // inherited from NSObject
+
+	static payloadSizeForArchiveAtPathError(path: string): number;
 
 	static unzipFileAtPathToDestination(path: string, destination: string): boolean;
 
@@ -41,13 +47,15 @@ declare class SSZipArchive extends NSObject {
 
 	static unzipFileAtPathToDestinationProgressHandlerCompletionHandler(path: string, destination: string, progressHandler: (p1: string, p2: unz_file_info, p3: number, p4: number) => void, completionHandler: (p1: string, p2: boolean, p3: NSError) => void): boolean;
 
-	constructor(o: { path: string; });
+	constructor(o: { path: string });
 
 	close(): boolean;
 
 	initWithPath(path: string): this;
 
 	open(): boolean;
+
+	openForAppending(): boolean;
 
 	writeDataFilenameCompressionLevelPasswordAES(data: NSData, filename: string, compressionLevel: number, password: string, aes: boolean): boolean;
 
@@ -60,10 +68,11 @@ declare class SSZipArchive extends NSObject {
 	writeFileWithPassword(path: string, password: string): boolean;
 
 	writeFolderAtPathWithFolderNameWithPassword(path: string, folderName: string, password: string): boolean;
+
+	writeSymlinkFileAtPathWithFileNameCompressionLevelPasswordAES(path: string, fileName: string, compressionLevel: number, password: string, aes: boolean): boolean;
 }
 
 interface SSZipArchiveDelegate extends NSObjectProtocol {
-
 	zipArchiveDidUnzipArchiveAtPathZipInfoUnzippedPath?(path: string, zipInfo: unz_global_info, unzippedPath: string): void;
 
 	zipArchiveDidUnzipFileAtIndexTotalFilesArchivePathFileInfo?(fileIndex: number, totalFiles: number, archivePath: string, fileInfo: unz_file_info): void;
@@ -79,12 +88,10 @@ interface SSZipArchiveDelegate extends NSObjectProtocol {
 	zipArchiveWillUnzipFileAtIndexTotalFilesArchivePathFileInfo?(fileIndex: number, totalFiles: number, archivePath: string, fileInfo: unz_file_info): void;
 }
 declare var SSZipArchiveDelegate: {
-
 	prototype: SSZipArchiveDelegate;
 };
 
 declare const enum SSZipArchiveErrorCode {
-
 	FailedOpenZipFile = -1,
 
 	FailedOpenFileInZip = -2,
@@ -95,7 +102,7 @@ declare const enum SSZipArchiveErrorCode {
 
 	FailedToWriteFile = -5,
 
-	InvalidArguments = -6
+	InvalidArguments = -6,
 }
 
 declare var SSZipArchiveErrorDomain: string;
@@ -103,10 +110,6 @@ declare var SSZipArchiveErrorDomain: string;
 declare var SSZipArchiveVersionNumber: number;
 
 declare var SSZipArchiveVersionString: interop.Reference<number>;
-
-declare var ZipArchiveVersionNumber: number;
-
-declare var ZipArchiveVersionString: interop.Reference<number>;
 
 interface unz_file_info {
 	version: number;
