@@ -69,6 +69,10 @@ registerElement('IonicPortal', () => IonicPortal);
     * `portalId`: The portal id to register
     * `startDir`: Set the web applications directory. By default it will look for a folder named the same as the portalId as the location of the web assets. Use this optional 2nd arg if you would like the folder name to be different that the portalId.
 
+### Use Capacitor Plugins
+
+Refer [to this blog post](https://blog.nativescript.org/ionic-portals-with-capacitor-plugins).
+
 ## License
 
 Apache License Version 2.0
