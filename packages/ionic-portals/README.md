@@ -33,8 +33,6 @@ Application.run({ moduleName: 'app-root' });
 
 2. Use in your views
 
-> Note: You may need to add `IPHONEOS_DEPLOYMENT_TARGET = 12.0` to your `App_Resources/iOS/build.xcconfig` file.
-
 ### Vanilla/Plain/Core
 
 ```xml
@@ -72,6 +70,13 @@ registerElement('IonicPortal', () => IonicPortal);
 ### Use Capacitor Plugins
 
 Refer [to this blog post](https://blog.nativescript.org/ionic-portals-with-capacitor-plugins).
+
+## Notes
+
+> For iOS: 
+> You may need to add `IPHONEOS_DEPLOYMENT_TARGET = 12.0` to your `App_Resources/iOS/build.xcconfig` file.
+> If your project contains `App_Resources/iOS/Podfile`, you may need to remove any post install handling which removes deployment targets, for example:
+> Remove anything like this: `config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'`
 
 ## License
 
