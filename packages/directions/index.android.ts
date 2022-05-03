@@ -12,7 +12,7 @@ export class Directions extends DirectionsCommon implements DirectionsApi {
 			let pm = Utils.android.getApplicationContext().getPackageManager();
 			return intent.resolveActivity(pm) != null;
 		} catch (e) {
-			console.error(e)l
+			console.error(e);
 		}
 		return true;
 	}
