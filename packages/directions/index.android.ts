@@ -9,9 +9,11 @@ export class Directions extends DirectionsCommon implements DirectionsApi {
 		try {
 			let intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse('http://maps.google.com/maps'));
 
-			let pm = com.tns.NativeScriptApplication.getInstance().getPackageManager();
+			let pm = Utils.android.getApplicationContext().getPackageManager();
 			return intent.resolveActivity(pm) != null;
-		} catch (e) {}
+		} catch (e) {
+			console.error(e)l
+		}
 		return true;
 	}
 
