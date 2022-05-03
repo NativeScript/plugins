@@ -114,8 +114,6 @@ export class DirectionsCommon {
 			qs += '&dirflg=' + DirectionsCommon.getDirflgType(options.type);
 		}
 
-		console.log('>> qs: ' + qs);
-
 		return qs;
 	}
 
@@ -166,7 +164,6 @@ export class DirectionsCommon {
 
 		finalUrl += this.getTypeString(options);
 
-		console.log('Final Url:', finalUrl);
 		Utils.openUrl(finalUrl);
 	}
 
