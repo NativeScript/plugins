@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/directions",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Leverage the native Maps app to show directions from and to anywhere you like.",
 	"main": "index",
 	"typings": "index.d.ts",
