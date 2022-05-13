@@ -6,10 +6,12 @@ export class IonicPortalManager {
 		PortalManager.register(apiKey);
 	}
 
-	static create(portalId: string, startDir?: string) {
-		return PortalManager.newPortal(portalId)
-			.setStartDir(startDir || portalId)
-			.create();
+	static create(portalId: string, startDir?: string, plugins?: Array<string>, initialContext?: any) {
+		const builder = PortalManager.newPortal(portalId).setStartDir(startDir || portalId);
+		if (initialContext) {
+			builder.setInitialContext(initialContext);
+		}
+		return builder.create();
 	}
 }
 

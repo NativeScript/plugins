@@ -16,6 +16,6 @@ export declare class IonicPortalManager {
 	 * iOS: App_Resources/iOS/webPortal
 	 * Android: App_Resources/Android/src/main/asssets/webPortal
 	 */
-	static create(portalId: string, startDir?: string, plugins?: Array<string> /* Android only - if using non-official Capacitor plugins, can pass array of fully qualified plugin namespaces */): any;
+	static create(portalId: string, startDir?: string, plugins?: Array<string> /* Android only - if using non-official Capacitor plugins, can pass array of fully qualified plugin namespaces */, initialContext?: any): any;
 }
 export declare class IonicPortal extends IonicPortalCommon {}

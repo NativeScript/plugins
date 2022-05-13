@@ -6,8 +6,15 @@ export class IonicPortalManager {
 		io.ionic.portals.PortalManager.register(apiKey);
 	}
 
-	static create(portalId: string, startDir?: string, plugins?: Array<string>) {
+	static create(portalId: string, startDir?: string, plugins?: Array<string>, initialContext?: any) {
 		const builder = io.ionic.portals.PortalManager.newPortal(portalId).setStartDir(startDir || portalId);
+		if (initialContext) {
+			const javaMap = new java.util.Map();
+			for (const key in initialContext) {
+				javaMap.put(key, initialContext[key]);
+			}
+			builder.setInitialContext(javaMap);
+		}
 		let list: java.util.ArrayList<any>;
 		if (typeof com !== 'undefined' && com?.capacitorjs?.plugins) {
 			// auto register all official plugins detected
