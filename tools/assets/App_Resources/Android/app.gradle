@@ -7,14 +7,11 @@ dependencies {
 }
 
 android {  
-  compileSdkVersion 31
-  // added ndkVersion because CI tries to use a higer version and fails
-  // if having trouble running or building locally, comment this line
-  // todo: remove once ndk 23+ is supported
-  ndkVersion "22.1.7171670"
+  compileSdkVersion 32
+  buildToolsVersion "32.0.0"
   defaultConfig {  
     minSdkVersion 24
-    targetSdkVersion 31
+    targetSdkVersion 32
     generatedDensities = []
   }  
   aaptOptions {  

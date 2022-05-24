@@ -17,9 +17,6 @@ import { Application } from '@nativescript/core';
 // Application.on(Application.launchEvent, () => {
 // 	// Register IonicPortals
 // 	IonicPortalManager.register('<portal-api-key>');
-
-// 	// Create as many Portals as you need to use in your app
-// 	IonicPortalManager.create('ionicWebPortalSample');
 // });
 
 Application.run({ moduleName: 'app-root' });
