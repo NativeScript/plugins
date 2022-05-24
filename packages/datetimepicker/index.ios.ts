@@ -143,7 +143,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		const okButtonText = options.okButtonText ? options.okButtonText : 'OK';
 		const cancelActionStyle = style && style.buttonCancelBackgroundColor ? UIAlertActionStyle.Default : UIAlertActionStyle.Cancel;
 		let cancelAction = UIAlertAction.actionWithTitleStyleHandler(cancelButtonText, cancelActionStyle, () => {
-			callback(null);
+			//callback(null);
 		});
 		let okAction = UIAlertAction.actionWithTitleStyleHandler(okButtonText, UIAlertActionStyle.Default, () => {
 			callback(pickerView.date);
