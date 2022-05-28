@@ -1,0 +1,11 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" shownModally="shownModally" class="page">
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+            <Label text="Testing share from a modal" textWrap="true" class="text-center" />
+            <Button text="share" tap="{{shareThis}}" />
+            
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>

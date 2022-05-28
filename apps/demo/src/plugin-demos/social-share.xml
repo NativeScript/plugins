@@ -12,6 +12,8 @@
             <Button class="btn-outline btn-primary m-20 p-10" text="Share via Twitter" tap="{{ doShareTwitter }}"></Button>
             <Button class="btn-outline btn-primary m-20 p-10" text="Share via Facebook" tap="{{ doShareFacebook }}"></Button>
 
+            <Button class="btn-outline btn-primary m-20 p-10" text="Open modal to share" tap="{{ openModal }}"></Button>
+
           </StackLayout>
         </ScrollView>
     </StackLayout>
