@@ -14,6 +14,7 @@ export * from './debug-ios';
 export * from './detox';
 export * from './directions';
 export * from './email';
+export * from './encrypted-storage';
 export * from './facebook';
 export * from './fingerprint-auth';
 export * from './geolocation';

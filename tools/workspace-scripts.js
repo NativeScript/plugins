@@ -287,6 +287,13 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/encrypted-storage
+			'encrypted-storage': {
+				build: {
+					script: 'nx run encrypted-storage:build.all',
+					description: '@nativescript/encrypted-storage: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -424,6 +431,10 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			'encrypted-storage': {
+				script: 'nx run encrypted-storage:focus',
+				description: 'Focus on @nativescript/encrypted-storage',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

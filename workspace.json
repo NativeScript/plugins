@@ -18,6 +18,7 @@
 		"detox": "packages/detox",
 		"directions": "packages/directions",
 		"email": "packages/email",
+		"encrypted-storage": "packages/encrypted-storage",
 		"facebook": "packages/facebook",
 		"fingerprint-auth": "packages/fingerprint-auth",
 		"geolocation": "packages/geolocation",

@@ -39,6 +39,7 @@
 			"@nativescript/detox": ["packages/detox/index.d.ts"],
 			"@nativescript/directions": ["packages/directions/index.d.ts"],
 			"@nativescript/email": ["packages/email/index.d.ts"],
+			"@nativescript/encrypted-storage": ["packages/encrypted-storage/index.d.ts"],
 			"@nativescript/facebook": ["packages/facebook/index.d.ts"],
 			"@nativescript/fingerprint-auth": ["packages/fingerprint-auth/index.d.ts"],
 			"@nativescript/geolocation": ["packages/geolocation/index.d.ts"],

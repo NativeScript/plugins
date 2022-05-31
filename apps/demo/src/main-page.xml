@@ -20,6 +20,7 @@
         <Button text="detox" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="directions" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="encrypted-storage" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="facebook" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

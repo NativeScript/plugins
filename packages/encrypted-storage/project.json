@@ -1,0 +1,64 @@
+{
+	"root": "packages/encrypted-storage",
+	"projectType": "library",
+	"sourceRoot": "packages/encrypted-storage",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/encrypted-storage",
+				"tsConfig": "packages/encrypted-storage/tsconfig.json",
+				"packageJson": "packages/encrypted-storage/package.json",
+				"main": "packages/encrypted-storage/index.d.ts",
+				"assets": [
+					"packages/encrypted-storage/*.md",
+					"packages/encrypted-storage/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/encrypted-storage/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts encrypted-storage"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/encrypted-storage"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages encrypted-storage"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/encrypted-storage/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

@@ -13,6 +13,7 @@
 - [@nativescript/detox](packages/detox/README.md)
 - [@nativescript/directions](packages/directions/README.md)
 - [@nativescript/email](packages/email/README.md)
+- [@nativescript/encrypted-storage](packages/encrypted-storage/README.md)
 - [@nativescript/facebook](packages/facebook/README.md)
 - [@nativescript/fingerprint-auth](packages/fingerprint-auth/README.md)
 - [@nativescript/geolocation](packages/geolocation/README.md)
