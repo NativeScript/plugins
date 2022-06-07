@@ -240,11 +240,11 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 		opts.zIndex(options.zIndex);
 	}
 
-	if (typeof options?.startCap) {
+	if (options?.startCap?.native) {
 		opts.startCap(options.startCap.native);
 	}
 
-	if (typeof options?.endCap) {
+	if (options?.endCap?.native) {
 		opts.endCap(options.endCap.native);
 	}
 	return opts;
