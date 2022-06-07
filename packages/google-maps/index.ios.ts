@@ -1587,6 +1587,10 @@ export class Tile {
 		return null;
 	}
 
+	static fromImageSource(source: ImageSource): Tile | null {
+		return Tile.fromNative(source?.ios);
+	}
+
 	get native() {
 		return this.#native;
 	}

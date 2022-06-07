@@ -17,6 +17,10 @@ import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 
+import android.graphics.Bitmap;
+import java.io.ByteArrayOutputStream;
+import com.google.android.gms.maps.model.Tile;
+
 public class GoogleMaps {
 
   final static String CAMERA_POSITION_EVENT_IDLE = "idle";
@@ -228,4 +232,11 @@ public class GoogleMaps {
     });
 
   }
+
+  public static Tile bitmapToTile(Bitmap bitmap) {
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			ByteArray data = stream.toByteArray();
+			return new Tile(bitmap.getWidth(), bitmap.getHeight(), data);
+		}
 }

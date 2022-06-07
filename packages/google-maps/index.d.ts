@@ -618,12 +618,16 @@ export interface ITileOverlay {
 	zIndex: number;
 }
 
+export class Tile {
+	static fromImageSource(source: ImageSource): Tile | null;
+}
+
 export interface ITileProvider {}
 
 export class TileProvider implements ITileProvider {
-	constructor(size?: number);
+	constructor(callback: (x: number, y: number, zoom: number) => Tile);
 }
 
 export class UrlTileProvider extends TileProvider {
-	constructor(size?: number);
+	constructor(callback: (x: number, y: number, zoom: number) => string, size?: number);
 }

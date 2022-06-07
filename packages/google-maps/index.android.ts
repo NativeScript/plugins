@@ -1730,6 +1730,13 @@ export class Tile {
 		return null;
 	}
 
+	static fromImageSource(source: ImageSource): Tile | null {
+		if (source instanceof ImageSource && source.android) {
+			return Tile.fromNative((org as any).nativescript.plugins.google_maps.GoogleMaps.bitmapToTile(source.android));
+		}
+		return null;
+	}
+
 	get native() {
 		return this.#native;
 	}
