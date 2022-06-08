@@ -236,7 +236,7 @@ public class GoogleMaps {
   public static Tile bitmapToTile(Bitmap bitmap) {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-			ByteArray data = stream.toByteArray();
+			byte[] data = stream.toByteArray();
 			return new Tile(bitmap.getWidth(), bitmap.getHeight(), data);
 		}
 }
