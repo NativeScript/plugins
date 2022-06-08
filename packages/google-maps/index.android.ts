@@ -747,12 +747,13 @@ export class GoogleMap implements IGoogleMap {
 		return Projection.fromNative(this.native.getProjection());
 	}
 
-	#mapStyle: Style;
+	#mapStyle: Style[];
 	get mapStyle() {
 		return this.#mapStyle;
 	}
 
 	set mapStyle(value) {
+		this.#mapStyle = value;
 		try {
 			const style = new com.google.android.gms.maps.model.MapStyleOptions(JSON.stringify(value));
 			this.native.setMapStyle(style);

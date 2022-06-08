@@ -372,7 +372,7 @@ export interface IGoogleMap {
 
 	cameraPosition: CameraPosition;
 
-	mapStyle: Style;
+	mapStyle: Style[];
 
 	snapshot(): Promise<ImageSource>;
 

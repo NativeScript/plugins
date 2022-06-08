@@ -801,13 +801,14 @@ export class GoogleMap implements IGoogleMap {
 		return UISettings.fromNative(this.native.settings);
 	}
 
-	#mapStyle: Style;
+	#mapStyle: Style[];
 	get mapStyle() {
 		return this.#mapStyle;
 	}
 
 	set mapStyle(value) {
 		try {
+			this.#mapStyle = value;
 			const style = JSON.stringify(value);
 			this.native.mapStyle = GMSMapStyle.styleWithJSONStringError(style);
 		} catch (e) {
