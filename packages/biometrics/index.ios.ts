@@ -1,5 +1,6 @@
 import { Utils } from '@nativescript/core';
 import { BiometricIDAvailableResult, BiometricResult, ERROR_CODES, BiometricApi, VerifyBiometricOptions } from './common';
+export * from './common';
 
 const keychainItemIdentifier = 'TouchIDKey';
 let keychainItemServiceName = null;
