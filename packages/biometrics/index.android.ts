@@ -1,5 +1,6 @@
 import { BiometricIDAvailableResult, ERROR_CODES, BiometricApi, BiometricResult, VerifyBiometricOptions } from './common';
 import { Application, AndroidActivityResultEventData, Utils, AndroidApplication } from '@nativescript/core';
+export * from './common';
 
 declare const com: any;
 
