@@ -624,7 +624,7 @@ export class IndoorBuilding implements IIndoorBuilding {
 	get levels(): IndoorLevel[] {
 		const result: IndoorLevel[] = [];
 		const levels = this.native.levels;
-		const count = levels.count;
+		const count = levels?.count || 0;
 		for (let i = 0; i < count; i++) {
 			result.push(IndoorLevel.fromNative(levels.objectAtIndex(i)));
 		}
@@ -1169,10 +1169,11 @@ export class Polygon extends OverLayBase implements IPolygon {
 	}
 
 	get points(): Coordinate[] {
-		const count = this.native.path.count();
+		const path = this.native.path;
+		const count = path.count?.() || 0;
 		const points: Coordinate[] = [];
 		for (let i = 0; i < count; i++) {
-			const point = this.native.path.coordinateAtIndex(i);
+			const point = path.coordinateAtIndex(i);
 			points.push({
 				lat: point.latitude,
 				lng: point.longitude,
@@ -1193,10 +1194,11 @@ export class Polygon extends OverLayBase implements IPolygon {
 	}
 
 	get holes(): Coordinate[] {
-		const count = this.native.holes.count;
+		const nativeHoles = this.native.holes;
+		const count = nativeHoles?.count || 0;
 		const holes: Coordinate[] = [];
 		for (let i = 0; i < count; i++) {
-			const hole = this.native.holes.objectAtIndex(i);
+			const hole = nativeHoles.objectAtIndex(i);
 			const coord = hole.coordinateAtIndex(0);
 			holes.push({
 				lat: coord.latitude,
@@ -1310,10 +1312,11 @@ export class Polyline extends OverLayBase implements IPolyline {
 	}
 
 	get points(): Coordinate[] {
-		const count = this.native.path.count();
+		const path = this.native.path;
+		const count = path.count?.() || 0;
 		const points: Coordinate[] = [];
 		for (let i = 0; i < count; i++) {
-			const point = this.native.path.coordinateAtIndex(i);
+			const point = path.coordinateAtIndex(i);
 			points.push({
 				lat: point.latitude,
 				lng: point.longitude,
