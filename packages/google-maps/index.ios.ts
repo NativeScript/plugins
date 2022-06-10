@@ -1170,7 +1170,7 @@ export class Polygon extends OverLayBase implements IPolygon {
 
 	get points(): Coordinate[] {
 		const path = this.native.path;
-		const count = path.count?.() || 0;
+		const count = path?.count?.() || 0;
 		const points: Coordinate[] = [];
 		for (let i = 0; i < count; i++) {
 			const point = path.coordinateAtIndex(i);
@@ -1194,7 +1194,7 @@ export class Polygon extends OverLayBase implements IPolygon {
 	}
 
 	get holes(): Coordinate[] {
-		const nativeHoles = this.native.holes;
+		const nativeHoles = this.native?.holes;
 		const count = nativeHoles?.count || 0;
 		const holes: Coordinate[] = [];
 		for (let i = 0; i < count; i++) {
@@ -1313,7 +1313,7 @@ export class Polyline extends OverLayBase implements IPolyline {
 
 	get points(): Coordinate[] {
 		const path = this.native.path;
-		const count = path.count?.() || 0;
+		const count = path?.count?.() || 0;
 		const points: Coordinate[] = [];
 		for (let i = 0; i < count; i++) {
 			const point = path.coordinateAtIndex(i);
