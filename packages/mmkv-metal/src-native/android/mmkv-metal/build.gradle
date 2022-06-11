@@ -1,0 +1,87 @@
+plugins {
+	id 'com.android.library'
+	id 'org.jetbrains.kotlin.android'
+}
+
+
+def NDK_PATH = ""
+def hasNdkDirectory = project.hasProperty("ndkDirectory")
+if(!hasNdkDirectory){
+	println "No ndkDirectory set, checking environment \$ANDROID_NDK..."
+
+	NDK_PATH = "$System.env.ANDROID_NDK"
+	if (NDK_PATH == null || NDK_PATH == "null"){
+		println "No ndkDirectory set, checking environment \$ANDROID_NDK_ROOT..."
+		NDK_PATH = "$System.env.ANDROID_NDK_ROOT"
+	}
+
+	if (NDK_PATH == null || NDK_PATH == "null"){
+		println "No ndkDirectory set, checking environment \$ANDROID_NDK_HOME..."
+		NDK_PATH = "$System.env.ANDROID_NDK_HOME"
+	}
+} else {
+	NDK_PATH = ndkDirectory
+}
+println "Runtime using NDK_PATH: " + NDK_PATH
+
+
+
+
+android {
+	compileSdk 32
+	ndkVersion "20.0.5594570"
+	defaultConfig {
+		minSdk 17
+		targetSdk 32
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+		consumerProguardFiles "consumer-rules.pro"
+
+		externalNativeBuild {
+			cmake {
+				arguments "-DANDROID_TOOLCHAIN=clang",
+					"-DANDROID_STL=c++_static",
+					"-DANDROID_NDK_ROOT=${NDK_PATH}"
+			}
+		}
+		ndk {
+			abiFilters 'x86', 'armeabi-v7a', 'arm64-v8a'
+		}
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	kotlinOptions {
+		jvmTarget = '1.8'
+	}
+
+	externalNativeBuild {
+		cmake {
+			path "CMakeLists.txt"
+		}
+	}
+
+//	sourceSets {
+//		main {
+//			jniLibs.srcDirs 'src/main/cpp/libs'
+//		}
+//	}
+
+}
+
+
+dependencies {
+
+	implementation 'androidx.core:core-ktx:1.6.0'
+	implementation 'androidx.appcompat:appcompat:1.4.2'
+	testImplementation 'junit:junit:4.13.2'
+	androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+	androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

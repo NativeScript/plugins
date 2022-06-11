@@ -287,6 +287,20 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/mmkv
+			mmkv: {
+				build: {
+					script: 'nx run mmkv:build.all',
+					description: '@nativescript/mmkv: Build',
+				},
+			},
+			// @nativescript/mmkv-metal
+			'mmkv-metal': {
+				build: {
+					script: 'nx run mmkv-metal:build.all',
+					description: '@nativescript/mmkv-metal: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -424,6 +438,14 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			mmkv: {
+				script: 'nx run mmkv:focus',
+				description: 'Focus on @nativescript/mmkv',
+			},
+			'mmkv-metal': {
+				script: 'nx run mmkv-metal:focus',
+				description: 'Focus on @nativescript/mmkv-metal',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

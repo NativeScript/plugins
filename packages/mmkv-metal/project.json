@@ -1,0 +1,64 @@
+{
+	"root": "packages/mmkv-metal",
+	"projectType": "library",
+	"sourceRoot": "packages/mmkv-metal",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/mmkv-metal",
+				"tsConfig": "packages/mmkv-metal/tsconfig.json",
+				"packageJson": "packages/mmkv-metal/package.json",
+				"main": "packages/mmkv-metal/index.d.ts",
+				"assets": [
+					"packages/mmkv-metal/*.md",
+					"packages/mmkv-metal/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/mmkv-metal/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts mmkv-metal"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/mmkv-metal"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages mmkv-metal"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/mmkv-metal/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

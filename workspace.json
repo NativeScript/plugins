@@ -34,6 +34,8 @@
 		"social-share": "packages/social-share",
 		"theme-switcher": "packages/theme-switcher",
 		"twitter": "packages/twitter",
-		"zip": "packages/zip"
+		"zip": "packages/zip",
+		"mmkv": "packages/mmkv",
+		"mmkv-metal": "packages/mmkv-metal"
 	}
 }

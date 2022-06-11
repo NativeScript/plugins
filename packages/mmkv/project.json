@@ -1,0 +1,64 @@
+{
+	"root": "packages/mmkv",
+	"projectType": "library",
+	"sourceRoot": "packages/mmkv",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/mmkv",
+				"tsConfig": "packages/mmkv/tsconfig.json",
+				"packageJson": "packages/mmkv/package.json",
+				"main": "packages/mmkv/index.d.ts",
+				"assets": [
+					"packages/mmkv/*.md",
+					"packages/mmkv/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/mmkv/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts mmkv"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/mmkv"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages mmkv"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/mmkv/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}
