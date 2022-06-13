@@ -24,6 +24,25 @@ export class CameraUpdate implements ICameraUpdate {
 		}
 	}
 
+	static fromCoordinates(coordinates: Coordinate[], padding: number);
+	static fromCoordinates(coordinates: Coordinate[], width: number, height?: number, padding?: number) {
+		if (!Array.isArray(coordinates)) {
+			return null;
+		}
+		const bounds = GMSCoordinateBounds.new();
+		coordinates.forEach((coord) => {
+			bounds.includingCoordinate(CLLocationCoordinate2DMake(coord.lat, coord.lng));
+		});
+
+		if (arguments.length == 2) {
+			return CameraUpdate.fromNative(GMSCameraUpdate.fitBoundsWithPadding(bounds, width));
+		} else {
+			/// top, left, bottom, right
+			const insets = UIEdgeInsetsFromString(`${padding},${padding},${height - padding},${width - padding}`);
+			return CameraUpdate.fromNative(GMSCameraUpdate.fitBoundsWithEdgeInsets(bounds, insets));
+		}
+	}
+
 	static fromCameraPosition(position: CameraPosition) {
 		return CameraUpdate.fromNative(GMSCameraUpdate.setCamera(position.native));
 	}

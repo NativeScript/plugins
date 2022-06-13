@@ -192,6 +192,10 @@ export interface ICameraUpdate {}
 export class CameraUpdate implements ICameraUpdate {
 	static fromCoordinate(coordinate: Coordinate, zoom: number): CameraUpdate;
 
+	static fromCoordinates(coordinates: Coordinate[], padding: number): CameraUpdate;
+
+	static fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number): CameraUpdate;
+
 	static fromCameraPosition(position: CameraPosition): CameraUpdate;
 
 	static zoomIn(): CameraUpdate;

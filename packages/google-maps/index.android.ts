@@ -855,6 +855,23 @@ export class CameraUpdate implements ICameraUpdate {
 		}
 	}
 
+	static fromCoordinates(coordinates: Coordinate[], padding: number);
+	static fromCoordinates(coordinates: Coordinate[], width: number, height?: number, padding?: number) {
+		if (!Array.isArray(coordinates)) {
+			return null;
+		}
+		const bounds = new com.google.android.gms.maps.model.LatLngBounds.Builder();
+		coordinates.forEach((coord) => {
+			bounds.include(new com.google.android.gms.maps.model.LatLng(coord.lat, coord.lng));
+		});
+
+		if (arguments.length == 2) {
+			return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.newLatLngBounds(bounds.build(), width));
+		} else {
+			return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.newLatLngBounds(bounds.build(), width, height, padding));
+		}
+	}
+
 	static fromCameraPosition(position: CameraPosition) {
 		return CameraUpdate.fromNative(com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(position.native));
 	}
