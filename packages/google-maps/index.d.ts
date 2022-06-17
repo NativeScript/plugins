@@ -421,6 +421,7 @@ export class GoogleMap implements IGoogleMap {
 	readonly uiSettings: IUISettings;
 	cameraPosition: CameraPosition;
 	readonly projection: Projection;
+	readonly native: any;
 
 	addCircle(circle: CircleOptions): Circle;
 
