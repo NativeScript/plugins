@@ -627,6 +627,10 @@ export class UISettings implements IUISettings {
 		return this.native.isMyLocationButtonEnabled();
 	}
 
+	set myLocationButtonEnabled(value) {
+		this.native.setMyLocationButtonEnabled(value);
+	}
+
 	get indoorLevelPickerEnabled(): boolean {
 		return this.native.isIndoorLevelPickerEnabled();
 	}
