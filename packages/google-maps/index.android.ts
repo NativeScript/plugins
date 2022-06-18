@@ -787,7 +787,11 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addCircle(options: CircleOptions): Circle {
-		return Circle.fromNative(this.native.addCircle(intoNativeCircleOptions(options)));
+		const circle = Circle.fromNative(this.native.addCircle(intoNativeCircleOptions(options)));
+		if (options?.userData) {
+			circle.userData = options.userData;
+		}
+		return circle;
 	}
 
 	removeCircle(circle: Circle) {
@@ -795,7 +799,11 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addPolygon(options: PolygonOptions): Polygon {
-		return Polygon.fromNative(this.native.addPolygon(intoNativePolygonOptions(options)));
+		const poly = Polygon.fromNative(this.native.addPolygon(intoNativePolygonOptions(options)));
+		if (options?.userData) {
+			poly.userData = options.userData;
+		}
+		return poly;
 	}
 
 	removePolygon(polygon: Polygon) {
@@ -803,7 +811,11 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addPolyline(options: PolylineOptions): Polyline {
-		return Polyline.fromNative(this.native.addPolyline(intoNativePolylineOptions(options)));
+		const polyline = Polyline.fromNative(this.native.addPolyline(intoNativePolylineOptions(options)));
+		if (options?.userData) {
+			polyline.userData = options.userData;
+		}
+		return polyline;
 	}
 
 	removePolyline(polyline: Polyline) {
@@ -811,7 +823,11 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	addGroundOverlay(options: GroundOverlayOptions): GroundOverlay {
-		return GroundOverlay.fromNative(this.native.addGroundOverlay(intoNativeGroundOverlayOptions(options)));
+		const overlay = GroundOverlay.fromNative(this.native.addGroundOverlay(intoNativeGroundOverlayOptions(options)));
+		if (options?.userData) {
+			overlay.userData = options.userData;
+		}
+		return overlay;
 	}
 
 	removeGroundOverlay(groundOverlay: GroundOverlay) {

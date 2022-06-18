@@ -71,6 +71,11 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -110,6 +115,11 @@ export function intoNativeCircleOptions(options: CircleOptions) {
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -169,6 +179,11 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -221,6 +236,11 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 	if (typeof options?.endCap) {
 		// TODO
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -268,6 +288,10 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
+	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
 	}
 
 	return opts;
