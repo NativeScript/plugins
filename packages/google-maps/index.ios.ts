@@ -29,9 +29,9 @@ export class CameraUpdate implements ICameraUpdate {
 		if (!Array.isArray(coordinates)) {
 			return null;
 		}
-		const bounds = GMSCoordinateBounds.new();
+		let bounds = GMSCoordinateBounds.new();
 		coordinates.forEach((coord) => {
-			bounds.includingCoordinate(CLLocationCoordinate2DMake(coord.lat, coord.lng));
+			bounds = bounds.includingCoordinate(CLLocationCoordinate2DMake(coord.lat, coord.lng));
 		});
 
 		if (arguments.length == 2) {
