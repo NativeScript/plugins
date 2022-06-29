@@ -4,6 +4,7 @@ export interface Configuration {
 	scopes?: string[];
 	signInOptions?: 'default' | 'games';
 	clientId?: string;
+	serverClientId?: string;
 	accountName?: string;
 	hostedDomain?: string;
 }
