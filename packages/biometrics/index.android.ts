@@ -2,8 +2,6 @@ import { BiometricIDAvailableResult, ERROR_CODES, BiometricApi, BiometricResult,
 import { Application, AndroidActivityResultEventData, Utils, AndroidApplication } from '@nativescript/core';
 export * from './common';
 
-declare const com: any;
-
 const KEY_NAME = 'biometricprintauth';
 const SECRET_BYTE_ARRAY = Array.create('byte', 16);
 const REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS = 788; // arbitrary
@@ -42,10 +40,7 @@ const AuthenticationCallback = (<any>androidx.biometric.BiometricPrompt.Authenti
 		});
 	},
 	onAuthenticationFailed() {
-		this.reject({
-			code: ERROR_CODES.NOT_RECOGNIZED,
-			message: 'Fingerprint not recognized.',
-		});
+		// Called on every failure
 	},
 	onAuthenticationSucceeded(result: androidx.biometric.BiometricPrompt.AuthenticationResult): void {
 		let encrypted: string;
@@ -89,7 +84,7 @@ const AuthenticationCallback = (<any>androidx.biometric.BiometricPrompt.Authenti
 export class BiometricAuth implements BiometricApi {
 	private keyguardManager: android.app.KeyguardManager;
 
-	private biometricPrompt: any;
+	private biometricPrompt: androidx.biometric.BiometricPrompt;
 
 	constructor() {
 		this.keyguardManager = Utils.android.getApplicationContext().getSystemService('keyguard');
@@ -179,7 +174,7 @@ export class BiometricAuth implements BiometricApi {
 				}
 
 				const executor = androidx.core.content.ContextCompat.getMainExecutor(Utils.android.getApplicationContext());
-				let authCallback = new AuthenticationCallback();
+				const authCallback = new AuthenticationCallback();
 				authCallback.resolve = resolve;
 				authCallback.reject = reject;
 				authCallback.toEncrypt = options?.secret;
@@ -328,7 +323,7 @@ export class BiometricAuth implements BiometricApi {
 	 */
 	private showAuthenticationScreen(options): void {
 		// https://developer.android.com/reference/android/app/KeyguardManager#createConfirmDeviceCredentialIntent(java.lang.CharSequence,%2520java.lang.CharSequence)
-		const intent = (this.keyguardManager as any).createConfirmDeviceCredentialIntent(options && options.title ? options.title : null, options && options.fallbackMessage ? options.fallbackMessage : null);
+		const intent = this.keyguardManager.createConfirmDeviceCredentialIntent(options && options.title ? options.title : null, options && options.fallbackMessage ? options.fallbackMessage : null);
 		if (intent !== null) {
 			this.getActivity().startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS);
 		}
