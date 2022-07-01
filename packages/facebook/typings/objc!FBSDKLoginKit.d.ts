@@ -223,6 +223,8 @@ declare class FBSDKLoginConfiguration extends NSObject {
 
 	readonly nonce: string;
 
+	readonly requestedPermissions: NSSet<FBSDKPermission>;
+
 	readonly tracking: FBSDKLoginTracking;
 
 	constructor(o: { permissions: NSArray<string> | string[]; tracking: FBSDKLoginTracking });
@@ -284,16 +286,16 @@ declare const enum FBSDKLoginError {
 
 declare var FBSDKLoginErrorDomain: string;
 
-declare class FBSDKLoginManager extends NSObject {
+declare class FBSDKLoginManager extends NSObject implements FBSDKLoginProviding {
 	static alloc(): FBSDKLoginManager; // inherited from NSObject
 
 	static new(): FBSDKLoginManager; // inherited from NSObject
 
-	defaultAudience: FBSDKDefaultAudience;
+	defaultAudience: FBSDKDefaultAudience; // inherited from FBSDKLoginProviding
 
 	logInFromViewControllerConfigurationCompletion(viewController: UIViewController, configuration: FBSDKLoginConfiguration, completion: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
 
-	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], fromViewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], viewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
 
 	logOut(): void;
 
@@ -319,6 +321,19 @@ declare class FBSDKLoginManagerLoginResult extends NSObject {
 
 	initWithTokenAuthenticationTokenIsCancelledGrantedPermissionsDeclinedPermissions(token: FBSDKAccessToken, authenticationToken: FBSDKAuthenticationToken, isCancelled: boolean, grantedPermissions: NSSet<string>, declinedPermissions: NSSet<string>): this;
 }
+
+interface FBSDKLoginProviding {
+	defaultAudience: FBSDKDefaultAudience;
+
+	logInFromViewControllerConfigurationCompletion(viewController: UIViewController, configuration: FBSDKLoginConfiguration, completion: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+
+	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], viewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+
+	logOut(): void;
+}
+declare var FBSDKLoginProviding: {
+	prototype: FBSDKLoginProviding;
+};
 
 declare class FBSDKLoginTooltipView extends FBSDKTooltipView {
 	static alloc(): FBSDKLoginTooltipView; // inherited from NSObject
@@ -357,6 +372,32 @@ declare const enum FBSDKLoginTracking {
 	Enabled = 0,
 
 	Limited = 1,
+}
+
+declare class FBSDKLoginUtility extends NSObject {
+	static alloc(): FBSDKLoginUtility; // inherited from NSObject
+
+	static new(): FBSDKLoginUtility; // inherited from NSObject
+
+	static queryParamsFromLoginURL(url: NSURL): NSDictionary<string, any>;
+
+	static stringForAudience(audience: FBSDKDefaultAudience): string;
+
+	static userIDFromSignedRequest(signedRequest: string): string;
+}
+
+declare class FBSDKPermission extends NSObject {
+	static alloc(): FBSDKPermission; // inherited from NSObject
+
+	static new(): FBSDKPermission; // inherited from NSObject
+
+	static permissionsFromRawPermissions(rawPermissions: NSSet<string>): NSSet<FBSDKPermission>;
+
+	static rawPermissionsFromPermissions(permissions: NSSet<FBSDKPermission>): NSSet<string>;
+
+	constructor(o: { string: string });
+
+	initWithString(string: string): this;
 }
 
 declare const enum FBSDKTooltipColorStyle {
@@ -407,18 +448,36 @@ declare const enum FBSDKTooltipViewArrowDirection {
 	Up = 1,
 }
 
-interface FBSDKUserInterfaceElementProviding {
+interface _FBSDKLoginEventLogging {
+	flushBehavior: FBSDKAppEventsFlushBehavior;
+
+	flush(): void;
+
+	logInternalEventParametersIsImplicitlyLogged(eventName: string, parameters: NSDictionary<string, any>, isImplicitlyLogged: boolean): void;
+}
+declare var _FBSDKLoginEventLogging: {
+	prototype: _FBSDKLoginEventLogging;
+};
+
+interface _FBSDKServerConfigurationProviding {
+	loadServerConfigurationWithCompletionBlock(completion: (p1: FBSDKLoginTooltip, p2: NSError) => void): void;
+}
+declare var _FBSDKServerConfigurationProviding: {
+	prototype: _FBSDKServerConfigurationProviding;
+};
+
+interface _FBSDKUserInterfaceElementProviding {
 	topMostViewController(): UIViewController;
 
 	viewControllerForView(view: UIView): UIViewController;
 }
-declare var FBSDKUserInterfaceElementProviding: {
-	prototype: FBSDKUserInterfaceElementProviding;
+declare var _FBSDKUserInterfaceElementProviding: {
+	prototype: _FBSDKUserInterfaceElementProviding;
 };
 
-interface FBSDKUserInterfaceStringProviding {
+interface _FBSDKUserInterfaceStringProviding {
 	bundleForStrings: NSBundle;
 }
-declare var FBSDKUserInterfaceStringProviding: {
-	prototype: FBSDKUserInterfaceStringProviding;
+declare var _FBSDKUserInterfaceStringProviding: {
+	prototype: _FBSDKUserInterfaceStringProviding;
 };

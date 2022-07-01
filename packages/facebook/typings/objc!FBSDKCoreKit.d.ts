@@ -269,7 +269,7 @@ declare var FBSDKAppEventState: string;
 
 declare var FBSDKAppEventZip: string;
 
-declare class FBSDKAppEvents extends NSObject {
+declare class FBSDKAppEvents extends NSObject implements _FBSDKLoginEventLogging {
 	static alloc(): FBSDKAppEvents; // inherited from NSObject
 
 	static new(): FBSDKAppEvents; // inherited from NSObject
@@ -337,7 +337,7 @@ declare class FBSDKAppEvents extends NSObject {
 	setUserEmailFirstNameLastNamePhoneDateOfBirthGenderCityStateZipCountry(email: string, firstName: string, lastName: string, phone: string, dateOfBirth: string, gender: string, city: string, state: string, zip: string, country: string): void;
 }
 
-declare class FBSDKAppEventsCAPIManager extends NSObject {
+declare class FBSDKAppEventsCAPIManager extends NSObject implements FBSDKCAPIReporter {
 	static alloc(): FBSDKAppEventsCAPIManager; // inherited from NSObject
 
 	static new(): FBSDKAppEventsCAPIManager; // inherited from NSObject
@@ -347,6 +347,8 @@ declare class FBSDKAppEventsCAPIManager extends NSObject {
 	configureWithFactorySettings(factory: FBSDKGraphRequestFactoryProtocol, settings: FBSDKSettingsProtocol): void;
 
 	enable(): void;
+
+	recordEvent(parameters: NSDictionary<string, any>): void;
 }
 
 declare const enum FBSDKAppEventsFlushBehavior {
@@ -522,6 +524,8 @@ declare class FBSDKApplicationDelegate extends NSObject {
 	static alloc(): FBSDKApplicationDelegate; // inherited from NSObject
 
 	static new(): FBSDKApplicationDelegate; // inherited from NSObject
+
+	readonly applicationObservers: NSHashTable<FBSDKApplicationObserving>;
 
 	static readonly sharedInstance: FBSDKApplicationDelegate;
 
@@ -950,6 +954,17 @@ declare var FBSDKButtonImpressionLogging: {
 	prototype: FBSDKButtonImpressionLogging;
 };
 
+interface FBSDKCAPIReporter {
+	configureWithFactorySettings(factory: FBSDKGraphRequestFactoryProtocol, settings: FBSDKSettingsProtocol): void;
+
+	enable(): void;
+
+	recordEvent(parameters: NSDictionary<string, any>): void;
+}
+declare var FBSDKCAPIReporter: {
+	prototype: FBSDKCAPIReporter;
+};
+
 declare var FBSDKCATransform3DIdentity: CATransform3D;
 
 declare const enum FBSDKCoreError {
@@ -1090,6 +1105,8 @@ declare const enum FBSDKFeature {
 	AEMConversionFiltering = 16844801,
 
 	AEMCatalogMatching = 16844802,
+
+	AppEventsCloudbridge = 16845056,
 
 	Instrument = 16908288,
 
@@ -1411,7 +1428,7 @@ declare class FBSDKImpressionLoggingButton extends UIButton {
 	static systemButtonWithPrimaryAction(primaryAction: UIAction): FBSDKImpressionLoggingButton; // inherited from UIButton
 }
 
-declare class FBSDKInternalUtility extends NSObject implements FBSDKAppAvailabilityChecker, FBSDKAppURLSchemeProviding, FBSDKInternalUtilityProtocol, FBSDKURLHosting, FBSDKUserInterfaceElementProviding, FBSDKUserInterfaceStringProviding, _FBSDKWindowFinding {
+declare class FBSDKInternalUtility extends NSObject implements FBSDKAppAvailabilityChecker, FBSDKAppURLSchemeProviding, FBSDKInternalUtilityProtocol, FBSDKURLHosting, _FBSDKUserInterfaceElementProviding, _FBSDKUserInterfaceStringProviding, _FBSDKWindowFinding {
 	static alloc(): FBSDKInternalUtility; // inherited from NSObject
 
 	static new(): FBSDKInternalUtility; // inherited from NSObject
@@ -1854,7 +1871,7 @@ declare var FBSDKProfileProviding: {
 	fetchCachedProfile(): FBSDKProfile;
 };
 
-declare class FBSDKServerConfigurationProvider extends NSObject {
+declare class FBSDKServerConfigurationProvider extends NSObject implements _FBSDKServerConfigurationProviding {
 	static alloc(): FBSDKServerConfigurationProvider; // inherited from NSObject
 
 	static new(): FBSDKServerConfigurationProvider; // inherited from NSObject
@@ -1863,7 +1880,7 @@ declare class FBSDKServerConfigurationProvider extends NSObject {
 
 	cachedSmartLoginOptions(): number;
 
-	loadServerConfigurationWithCompletionBlock(completionBlock: (p1: FBSDKLoginTooltip, p2: NSError) => void): void;
+	loadServerConfigurationWithCompletionBlock(completion: (p1: FBSDKLoginTooltip, p2: NSError) => void): void;
 
 	useSafariViewControllerForDialogName(dialogName: string): boolean;
 }
@@ -2056,14 +2073,14 @@ declare class FBSDKTransformer extends NSObject {
 	CATransform3DMakeTranslationTyTz(tx: number, ty: number, tz: number): CATransform3D;
 }
 
-declare class FBSDKTransformerGraphRequestFactory extends FBSDKGraphRequestFactory {
+declare class FBSDKTransformerGraphRequestFactory extends NSObject {
 	static alloc(): FBSDKTransformerGraphRequestFactory; // inherited from NSObject
 
 	static new(): FBSDKTransformerGraphRequestFactory; // inherited from NSObject
 
 	static readonly shared: FBSDKTransformerGraphRequestFactory;
 
-	callCapiGatewayAPIWithParameters(graphPath: string, parameters: NSDictionary<string, any>): void;
+	callCapiGatewayAPIWith(parameters: NSDictionary<string, any>): void;
 
 	configureWithDatasetIDUrlAccessKey(datasetID: string, url: string, accessKey: string): void;
 }
