@@ -1,5 +1,3 @@
-const npsUtils = require('nps-utils');
-
 module.exports = {
 	message: 'NativeScript Plugins ~ made with ❤️  Choose a command to start...',
 	pageSize: 32,
