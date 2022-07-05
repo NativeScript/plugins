@@ -1,0 +1,32 @@
+{
+	"uses": [
+		"android.app:Activity",
+		"android.content:ContentResolver",
+		"android.content:Context",
+		"android.content:Intent",
+		"android.content:IntentSender",
+		"android.database:Cursor",
+		"android.net:Uri",
+		"android.os:Build",
+		"android.os:Build.VERSION",
+		"android.os:Bundle",
+		"android.os:CancellationSignal",
+		"android.os:Environment",
+		"android.os:Parcelable",
+		"android.provider:DocumentsContract",
+		"android.provider:MediaStore",
+		"android.provider:MediaStore.Audio",
+		"android.provider:MediaStore.Audio.Media",
+		"android.provider:MediaStore.Images",
+		"android.provider:MediaStore.Images.Media",
+		"android.provider:MediaStore.MediaColumns",
+		"android.provider:MediaStore.Video",
+		"android.provider:MediaStore.Video.Media",
+		"android:Manifest",
+		"android:Manifest.permission",
+		"androidNative:Array",
+		"java.io:File",
+		"java.io:Serializable",
+		"java.lang:String"
+	]
+}
