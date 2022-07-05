@@ -17,11 +17,6 @@ export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 			throw new Error(error);
 		}
 	}
-
-	buildHeatMapProvider(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions) {
-		const heatMapProvider = new HeatmapTileProvider(coordinates, heatmapOptions);
-		return heatMapProvider;
-	}
 }
 
 export interface IHeatmapOptions {
