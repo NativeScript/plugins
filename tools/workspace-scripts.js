@@ -285,6 +285,13 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/google-maps-utils
+			'google-maps-utils': {
+				build: {
+					script: 'nx run google-maps-utils:build.all',
+					description: '@nativescript/google-maps-utils: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -422,6 +429,10 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			'google-maps-utils': {
+				script: 'nx run google-maps-utils:focus',
+				description: 'Focus on @nativescript/google-maps-utils',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

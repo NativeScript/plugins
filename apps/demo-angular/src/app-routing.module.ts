@@ -26,6 +26,7 @@ const routes: Routes = [
 	{ path: 'fingerprint-auth', loadChildren: () => import('./plugin-demos/fingerprint-auth.module').then(m => m.FingerprintAuthModule) },
 	{ path: 'geolocation', loadChildren: () => import('./plugin-demos/geolocation.module').then(m => m.GeolocationModule) },
 	{ path: 'google-maps', loadChildren: () => import('./plugin-demos/google-maps.module').then(m => m.GoogleMapsModule) },
+	{ path: 'google-maps-utils', loadChildren: () => import('./plugin-demos/google-maps-utils.module').then(m => m.GoogleMapsUtilsModule) },
 	{ path: 'google-signin', loadChildren: () => import('./plugin-demos/google-signin.module').then(m => m.GoogleSigninModule) },
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then(m => m.ImagepickerModule) },
 	{ path: 'ionic-portals', loadChildren: () => import('./plugin-demos/ionic-portals.module').then(m => m.IonicPortalsModule) },

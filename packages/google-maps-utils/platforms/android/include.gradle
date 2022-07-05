@@ -1,0 +1,3 @@
+dependencies {
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+}
