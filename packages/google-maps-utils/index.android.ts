@@ -1,5 +1,7 @@
 import { GoogleMapsUtilsCommon } from './common';
 import { Coordinate, CoordinateBounds } from '@nativescript/google-maps';
+import { IGeoJsonLayer, IGeometryStyle } from '.';
+import { Color } from '@nativescript/core';
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 	constructor(private map: com.google.android.gms.maps.GoogleMap) {
@@ -11,7 +13,6 @@ export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 			const geoJsonData = new org.json.JSONObject(geoJson);
 			const layer = new GeoJsonLayer(this.map, geoJsonData);
 
-			layer.addLayerToMap();
 			return layer;
 		} catch (error) {
 			throw new Error(error);
@@ -96,45 +97,45 @@ export class HeatmapTileProvider {
 export abstract class DataLayer<T extends com.google.maps.android.data.Layer> {
 	abstract readonly native: T;
 
-	setMap(map: com.google.android.gms.maps.GoogleMap) {
-		this.native.setMap(map);
-	}
+	// setMap(map: com.google.android.gms.maps.GoogleMap) {
+	// 	this.native.setMap(map);
+	// }
 
-	getDefaultPolygonStyle() {
-		return this.native.getDefaultPolygonStyle();
-	}
+	// getDefaultPolygonStyle() {
+	// 	return this.native.getDefaultPolygonStyle();
+	// }
 
 	addLayerToMap() {
 		this.native.addLayerToMap();
 	}
 
-	isLayerOnMap(): boolean {
-		return this.native.isLayerOnMap();
-	}
+	// isLayerOnMap(): boolean {
+	// 	return this.native.isLayerOnMap();
+	// }
 
 	removeLayerFromMap() {
 		this.native.removeLayerFromMap();
 	}
 
-	hasFeatures(): boolean {
-		return this.native.hasFeatures();
-	}
+	// hasFeatures(): boolean {
+	// 	return this.native.hasFeatures();
+	// }
 
-	getFeature(feature: any) {
-		return this.native.getFeature(feature);
-	}
+	// getFeature(feature: any) {
+	// 	return this.native.getFeature(feature);
+	// }
 
-	getFeatures(): any {
-		return this.native.getFeatures();
-	}
+	// getFeatures(): any {
+	// 	return this.native.getFeatures();
+	// }
 
-	addFeature(feature: com.google.maps.android.data.geojson.GeoJsonFeature) {
-		return this.native.addFeature(feature);
-	}
+	// addFeature(feature: com.google.maps.android.data.geojson.GeoJsonFeature) {
+	// 	return this.native.addFeature(feature);
+	// }
 
-	removeFeature(feature: com.google.maps.android.data.geojson.GeoJsonFeature) {
-		this.native.removeFeature(feature);
-	}
+	// removeFeature(feature: com.google.maps.android.data.geojson.GeoJsonFeature) {
+	// 	this.native.removeFeature(feature);
+	// }
 
 	get android() {
 		return this.native;
@@ -154,14 +155,59 @@ export abstract class DataLayer<T extends com.google.maps.android.data.Layer> {
 	// public getGroundOverlays(): java.lang.Iterable<com.google.maps.android.data.kml.KmlGroundOverlay>;
 }
 
-export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson.GeoJsonLayer> {
-	#native: com.google.maps.android.data.geojson.GeoJsonLayer;
+export class GeometryStyle implements Partial<IGeometryStyle> {
+	constructor(private polygonStyle: com.google.maps.android.data.geojson.GeoJsonPolygonStyle, private lineStyle: com.google.maps.android.data.geojson.GeoJsonLineStringStyle, private pointStyle: com.google.maps.android.data.geojson.GeoJsonPointStyle) {}
 
-	constructor(mapView: com.google.android.gms.maps.GoogleMap, geoJson: org.json.JSONObject) {
+	get strokeColor() {
+		return this.polygonStyle.getStrokeColor();
+	}
+	set strokeColor(color: Color) {
+		this.polygonStyle.setStrokeColor(color.android);
+		this.lineStyle.setColor(color.android);
+	}
+
+	get fillColor() {
+		return this.polygonStyle.getFillColor();
+	}
+	set fillColor(color: Color) {
+		this.polygonStyle.setFillColor(color.android);
+	}
+
+	get width(): number {
+		return this.lineStyle.getWidth();
+	}
+	set width(width: number) {
+		this.lineStyle.setWidth(width);
+		this.polygonStyle.setStrokeWidth(width);
+	}
+
+	get title() {
+		return this.pointStyle.getTitle();
+	}
+	set title(title: string) {
+		this.pointStyle.setTitle(title);
+	}
+
+	get heading(): number {
+		return this.pointStyle.getRotation();
+	}
+	set heading(rotation: number) {
+		// Marker roation or rotation???
+		this.pointStyle.setRotation(rotation);
+		// this.pointStyle.setMarkerRotation(rotation);
+	}
+}
+
+export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson.GeoJsonLayer> implements IGeoJsonLayer {
+	#native: com.google.maps.android.data.geojson.GeoJsonLayer;
+	style: GeometryStyle;
+
+	constructor(mapView: com.google.android.gms.maps.GoogleMap, geoJson: org.json.JSONObject, geometryStyle?: IGeometryStyle) {
 		super();
 		if (mapView && geoJson) {
 			this.#native = new com.google.maps.android.data.geojson.GeoJsonLayer(mapView, geoJson);
 			this.#native.addLayerToMap();
+			this.style = new GeometryStyle(this.#native.getDefaultPolygonStyle(), this.#native.getDefaultLineStringStyle(), this.#native.getDefaultPointStyle());
 		}
 	}
 
@@ -178,25 +224,25 @@ export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson
 		return this.#native;
 	}
 
-	get bounds(): CoordinateBounds {
-		const bounds = this.#native.getBoundingBox();
-		if (bounds) {
-			return {
-				southwest: {
-					lat: bounds?.southwest?.latitude,
-					lng: bounds?.southwest?.longitude,
-				},
-				northeast: {
-					lat: bounds?.northeast?.latitude,
-					lng: bounds?.northeast?.longitude,
-				},
-			};
-		}
-	}
+	// get bounds(): CoordinateBounds {
+	// 	const bounds = this.#native.getBoundingBox();
+	// 	if (bounds) {
+	// 		return {
+	// 			southwest: {
+	// 				lat: bounds?.southwest?.latitude,
+	// 				lng: bounds?.southwest?.longitude,
+	// 			},
+	// 			northeast: {
+	// 				lat: bounds?.northeast?.latitude,
+	// 				lng: bounds?.northeast?.longitude,
+	// 			},
+	// 		};
+	// 	}
+	// }
 
-	toString() {
-		return this.native.toString();
-	}
+	// toString() {
+	// 	return this.native.toString();
+	// }
 }
 
 export class KmlLayer extends DataLayer<com.google.maps.android.data.kml.KmlLayer> {
