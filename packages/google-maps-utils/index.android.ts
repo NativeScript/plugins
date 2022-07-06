@@ -159,7 +159,7 @@ export class GeometryStyle implements Partial<IGeometryStyle> {
 	constructor(private polygonStyle: com.google.maps.android.data.geojson.GeoJsonPolygonStyle, private lineStyle: com.google.maps.android.data.geojson.GeoJsonLineStringStyle, private pointStyle: com.google.maps.android.data.geojson.GeoJsonPointStyle) {}
 
 	get strokeColor() {
-		return this.polygonStyle.getStrokeColor();
+		return new Color(this.polygonStyle.getStrokeColor());
 	}
 	set strokeColor(color: Color) {
 		this.polygonStyle.setStrokeColor(color.android);
@@ -167,7 +167,7 @@ export class GeometryStyle implements Partial<IGeometryStyle> {
 	}
 
 	get fillColor() {
-		return this.polygonStyle.getFillColor();
+		return new Color(this.polygonStyle.getFillColor());
 	}
 	set fillColor(color: Color) {
 		this.polygonStyle.setFillColor(color.android);

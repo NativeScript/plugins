@@ -1,9 +1,10 @@
 import { DemoSharedBase } from '../utils';
-import { GeoJsonLayer, GoogleMapsUtils, HeatmapTileProvider } from '@nativescript/google-maps-utils/index.android';
-import { LoadEventData } from '@nativescript/core';
-import { MapView } from '@nativescript/google-maps/index.android';
+import { GeoJsonLayer, GeoJsonLayer, GoogleMapsUtils, IGeometryStyle } from '@nativescript/google-maps-utils';
+import { Color, LoadEventData } from '@nativescript/core';
+import { CameraUpdate, MapReadyEvent, MapView } from '@nativescript/google-maps';
 import { australia } from './geojson.example';
 import { intoNativeTileOverlayOptions } from '@nativescript/google-maps/utils';
+import { zoomProperty } from '@nativescript/google-maps/common';
 
 function generateRandomPosition(position, distance) {
 	var r = distance / 111300;
@@ -24,9 +25,9 @@ function generateRandomPosition(position, distance) {
 }
 
 export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
-	map: MapView;
+	mapView: MapView;
 	geoJson: GeoJsonLayer;
-	heatmapProvider: HeatmapTileProvider;
+	// heatmapProvider: HeatmapTileProvider;
 	heatmapOverlay;
 
 	testIt() {
@@ -35,26 +36,42 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			positionSet.push(generateRandomPosition([-32.093407, 116.240609], 10000));
 		}
 
-		this.heatmapProvider.setData(positionSet);
-		this.heatmapProvider.opacity = 0.1;
+		this.geoJson.removeLayerFromMap();
+		// this.heatmapProvider.setData(positionSet);
+		// this.heatmapProvider.opacity = 0.1;
 		// Need to clear cache to show adjustments
-		this.heatmapOverlay.clearTileCache();
+		// this.heatmapOverlay.clearTileCache();
 	}
 
-	async onMapReady(args: LoadEventData) {
-		this.map = args.object as MapView;
+	async onMapReady(args: MapReadyEvent) {
+		this.mapView = args.object as unknown as MapView;
 
-		// Initialize or pass the map?
-		const utils = new GoogleMapsUtils(this.map._map);
-		this.geoJson = await utils.addGeoJsonLayer(JSON.stringify(australia));
+		const map = args.map;
+		map.animateCamera(
+			CameraUpdate.fromCoordinate(
+				{
+					lat: -27.74278,
+					lng: 130.497139,
+				},
+				4
+			)
+		);
 
-		const positionSet = [];
-		for (var i = 0; i < 200; i++) {
-			positionSet.push(generateRandomPosition([-32.093407, 116.240609], 10000));
-		}
+		this.geoJson = new GeoJsonLayer(this.mapView, australia, {
+			fillColor: new Color('blue'),
+			strokeColor: new Color('red'),
+			width: 4,
+		});
 
-		this.heatmapProvider = utils.buildHeatMapProvider(positionSet);
-		this.heatmapOverlay = this.map.mapView.addTileOverlay(intoNativeTileOverlayOptions({}).tileProvider(this.heatmapProvider.build()));
+		this.geoJson.addLayerToMap();
+
+		// const positionSet = [];
+		// for (var i = 0; i < 200; i++) {
+		// 	positionSet.push(generateRandomPosition([-32.093407, 116.240609], 10000));
+		// }
+
+		// this.heatmapProvider = utils.buildHeatMapProvider(positionSet);
+		// this.heatmapOverlay = this.map.mapView.addTileOverlay(intoNativeTileOverlayOptions({}).tileProvider(this.heatmapProvider.build()));
 
 		console.log('added heat map');
 	}

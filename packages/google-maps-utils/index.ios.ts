@@ -1,17 +1,18 @@
-import { Color } from '@nativescript/core';
+import { Color, encoding } from '@nativescript/core';
+import { MapView } from '@nativescript/google-maps';
 import { IGeoJsonLayer, IGeometryStyle } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
 let UNIQUE_STYLE_ID = 0;
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
-	constructor(private map: GMSMapView) {
+	constructor(private map: MapView) {
 		super();
 	}
 
 	addGeoJsonLayer(geoJson: string) {
 		try {
-			const layer = new GeoJsonLayer(this.map, geoJson);
+			const layer = new GeoJsonLayer(this.map.nativeView, geoJson);
 			layer.addLayerToMap();
 			return layer;
 		} catch (error) {
@@ -23,24 +24,22 @@ export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 export class GeometryStyle implements IGeometryStyle {
 	#native: GMUStyle;
 
-	constructor(public geometryStyles: IGeometryStyle) {
+	constructor(public geometryStyles: Partial<IGeometryStyle>) {
 		Object.assign(this, geometryStyles);
 
-		const style = {
-			styleID: `google-maps-utils-style-${UNIQUE_STYLE_ID++}`,
-			strokeColor: this.strokeColor.ios ?? null,
-			fillColor: this.fillColor.ios ?? null,
-			width: this.width ?? 0,
+		this.#native = new GMUStyle({
+			styleID: `google-maps-style-${UNIQUE_STYLE_ID++}`,
+			strokeColor: this.strokeColor?.ios ?? null,
+			fillColor: this.fillColor?.ios ?? null,
+			width: this.width ?? 1,
 			scale: this.scale ?? 0,
 			heading: this.heading ?? 0,
-			anchor: this.anchor ?? [0,0],
+			anchor: CGPointMake(this.anchor?.[0] ?? 0, this.anchor?.[1] ?? 0),
 			iconUrl: this.iconUrl ?? null,
 			title: this.title ?? null,
 			hasFill: !!this.fillColor,
-			hasStroke: !!this.strokeColor,
-		} as GMUStyle;
-
-		this.#native = new GMUStyle(style);
+			hasStroke: !!this.strokeColor
+		} as any);
 	}
 
 	strokeColor: Color;
@@ -61,9 +60,19 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	#native: GMUGeometryRenderer;
 	style: GeometryStyle;
 
-	constructor(private map: GMSMapView, private geoJsonData: any, private styles?: IGeometryStyle) {
+	constructor(private map: MapView, private geometries: any, private styles?: Partial<IGeometryStyle>) {
 		this.style = new GeometryStyle(styles);
-		this.#native = new GMUGeometryRenderer({ map: this.map, geometries: this.geoJsonData.features, styles: this.style.native });
+
+		const jsonString = new NSString({ UTF8String: JSON.stringify(geometries) });
+		const geoJsonParser = new GMUGeoJSONParser({ data: jsonString.dataUsingEncoding(encoding.UTF_8) });
+		geoJsonParser.parse();
+
+		const features = geoJsonParser.features;
+		for (const feature of features) {
+			feature.style = this.style.native;
+		}
+
+		this.#native = new GMUGeometryRenderer({ map: this.map.nativeView, geometries: features });
 	}
 
 	static fromNative(nativeGeoJsonLayer: GMUGeometryRenderer) {

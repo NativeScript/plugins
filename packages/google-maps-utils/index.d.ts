@@ -1,10 +1,21 @@
 import { GoogleMapsUtilsCommon } from './common';
 import { Color } from '@nativescript/core';
+import { MapView } from '@nativescript/google-maps';
 
 export declare class GoogleMapsUtils extends GoogleMapsUtilsCommon {}
 
 export interface IGeoJsonLayer {
 	style: GeometryStyle;
+	addLayerToMap: () => void;
+	removeLayerFromMap: () => void;
+}
+
+export class GeoJsonLayer implements IGeoJsonLayer {
+	ios: any;
+	android: any;
+	native: any;
+	style: GeometryStyle;
+	constructor(map: MapView, geojson: any, styles?: Partial<IGeometryStyle>);
 	addLayerToMap: () => void;
 	removeLayerFromMap: () => void;
 }
