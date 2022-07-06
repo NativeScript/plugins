@@ -73,6 +73,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 		// this.heatmapProvider = utils.buildHeatMapProvider(positionSet);
 		// this.heatmapOverlay = this.map.mapView.addTileOverlay(intoNativeTileOverlayOptions({}).tileProvider(this.heatmapProvider.build()));
 
-		console.log('added heat map');
+		// console.log('added heat map');
 	}
 }

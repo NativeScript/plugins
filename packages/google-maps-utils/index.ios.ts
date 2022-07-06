@@ -10,7 +10,7 @@ export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 		super();
 	}
 
-	addGeoJsonLayer(geoJson: string) {
+	addGeoJsonLayer(geoJson: any) {
 		try {
 			const layer = new GeoJsonLayer(this.map.nativeView, geoJson);
 			layer.addLayerToMap();
@@ -28,7 +28,7 @@ export class GeometryStyle implements IGeometryStyle {
 		Object.assign(this, geometryStyles);
 
 		this.#native = new GMUStyle({
-			styleID: `google-maps-style-${UNIQUE_STYLE_ID++}`,
+			styleID: `google-maps-utils-style-${UNIQUE_STYLE_ID++}`,
 			strokeColor: this.strokeColor?.ios ?? null,
 			fillColor: this.fillColor?.ios ?? null,
 			width: this.width ?? 1,
@@ -38,7 +38,7 @@ export class GeometryStyle implements IGeometryStyle {
 			iconUrl: this.iconUrl ?? null,
 			title: this.title ?? null,
 			hasFill: !!this.fillColor,
-			hasStroke: !!this.strokeColor
+			hasStroke: !!this.strokeColor,
 		} as any);
 	}
 
@@ -47,7 +47,7 @@ export class GeometryStyle implements IGeometryStyle {
 	width: number;
 	scale: number;
 	heading: number;
-	anchor: number[];
+	anchor: [number, number];
 	iconUrl: string;
 	title: string;
 

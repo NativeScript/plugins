@@ -1,6 +1,6 @@
-import { GoogleMapsUtilsCommon } from './common';
 import { Color } from '@nativescript/core';
 import { MapView } from '@nativescript/google-maps';
+import { GoogleMapsUtilsCommon } from './common';
 
 export declare class GoogleMapsUtils extends GoogleMapsUtilsCommon {}
 
@@ -21,7 +21,6 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 }
 
 export interface IGeometryStyle {
-
 	/**
 	 * The color for the stroke of a LineString or Polygon.
 	 */
@@ -50,7 +49,7 @@ export interface IGeometryStyle {
 	/**
 	 * The position within an icon that is anchored to the Point.
 	 */
-	anchor: number[];
+	anchor: [number, number];
 
 	/**
 	 * Icon Url

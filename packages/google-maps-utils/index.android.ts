@@ -1,22 +1,15 @@
-import { GoogleMapsUtilsCommon } from './common';
-import { Coordinate, CoordinateBounds } from '@nativescript/google-maps';
-import { IGeoJsonLayer, IGeometryStyle } from '.';
 import { Color } from '@nativescript/core';
+import { Coordinate, MapView } from '@nativescript/google-maps';
+import { IGeoJsonLayer, IGeometryStyle } from '.';
+import { GoogleMapsUtilsCommon } from './common';
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
-	constructor(private map: com.google.android.gms.maps.GoogleMap) {
+	constructor(private map: MapView) {
 		super();
 	}
 
-	addGeoJsonLayer(geoJson: string): GeoJsonLayer {
-		try {
-			const geoJsonData = new org.json.JSONObject(geoJson);
-			const layer = new GeoJsonLayer(this.map, geoJsonData);
-
-			return layer;
-		} catch (error) {
-			throw new Error(error);
-		}
+	addGeoJsonLayer(geoJson: any): GeoJsonLayer {
+		return new GeoJsonLayer((this.map as any)._map, geoJson);
 	}
 }
 
@@ -202,12 +195,24 @@ export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson
 	#native: com.google.maps.android.data.geojson.GeoJsonLayer;
 	style: GeometryStyle;
 
-	constructor(mapView: com.google.android.gms.maps.GoogleMap, geoJson: org.json.JSONObject, geometryStyle?: IGeometryStyle) {
+	constructor(mapView: MapView, geoJson: any, geometryStyle?: IGeometryStyle) {
 		super();
 		if (mapView && geoJson) {
-			this.#native = new com.google.maps.android.data.geojson.GeoJsonLayer(mapView, geoJson);
-			this.#native.addLayerToMap();
-			this.style = new GeometryStyle(this.#native.getDefaultPolygonStyle(), this.#native.getDefaultLineStringStyle(), this.#native.getDefaultPointStyle());
+			try {
+				const geoJsonData = new org.json.JSONObject(JSON.stringify(geoJson));
+				this.#native = new com.google.maps.android.data.geojson.GeoJsonLayer((mapView as any)._map, geoJsonData);
+				this.style = new GeometryStyle(this.#native.getDefaultPolygonStyle(), this.#native.getDefaultLineStringStyle(), this.#native.getDefaultPointStyle());
+
+				if (geometryStyle) {
+					for (const key of Object.keys(geometryStyle)) {
+						if (geometryStyle?.[key]) {
+							this.style[key] = geometryStyle?.[key];
+						}
+					}
+				}
+			} catch (error) {
+				console.error(error);
+			}
 		}
 	}
 
