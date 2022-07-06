@@ -63,6 +63,8 @@
         <string>filza</string>
         <string>activator</string>
     </array>
+    <key>TNSGoogleMapsAPIKey</key>
+    <string>yourKey</string>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
   </dict>
