@@ -1,7 +1,7 @@
 import { Color, Utils } from '@nativescript/core';
 import { Coordinate, GoogleMap, MapView, Marker, MarkerOptions } from '@nativescript/google-maps';
 import { intoNativeMarkerOptions } from '../google-maps/utils';
-import { IClusterManager, IGeoJsonLayer, IGeometryStyle } from '.';
+import { IClusterManager, IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
@@ -12,12 +12,6 @@ export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 	addGeoJsonLayer(geoJson: any): GeoJsonLayer {
 		return new GeoJsonLayer((this.map as any)._map, geoJson);
 	}
-}
-
-export interface IHeatmapOptions {
-	opacity: number;
-	radius: number;
-	maxIntensity: number;
 }
 
 export class HeatmapTileProvider {
@@ -53,24 +47,20 @@ export class HeatmapTileProvider {
 		return this.#native;
 	}
 
-	build() {
-		return this.#native;
-	}
-
 	set opacity(opacity: number) {
-		this.#native.setOpacity(opacity);
+		this.native.setOpacity(opacity);
 	}
 
 	setGradient(gradient: com.google.maps.android.heatmaps.Gradient): void {
-		this.#native.setGradient(gradient);
+		this.native.setGradient(gradient);
 	}
 
 	set radius(degrees: number) {
-		this.#native.setRadius(degrees);
+		this.native.setRadius(degrees);
 	}
 
 	set maxIntensity(maxIntensity: number) {
-		this.#native.setMaxIntensity(maxIntensity);
+		this.native.setMaxIntensity(maxIntensity);
 	}
 
 	setData(coordinates: Coordinate[]): void {
@@ -80,11 +70,11 @@ export class HeatmapTileProvider {
 			data.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
 		});
 
-		this.#native.setData(data);
+		this.native.setData(data);
 	}
 
-	getTile(param0: number, param1: number, param2: number): com.google.android.gms.maps.model.Tile {
-		return this.#native.getTile(param0, param1, param2);
+	getTile(x: number, y: number, z: number): com.google.android.gms.maps.model.Tile {
+		return this.native.getTile(x, y, z);
 	}
 }
 

@@ -1,5 +1,5 @@
 import { Color } from '@nativescript/core';
-import { GoogleMap, Marker, MarkerOptions } from '@nativescript/google-maps';
+import { Coordinate, GoogleMap, Marker, MarkerOptions } from '@nativescript/google-maps';
 import { GoogleMapsUtilsCommon } from './common';
 
 export declare class GoogleMapsUtils extends GoogleMapsUtilsCommon {}
@@ -38,6 +38,20 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	constructor(map: GoogleMap, geojson: any, styles?: Partial<IGeometryStyle>);
 	addLayerToMap: () => void;
 	removeLayerFromMap: () => void;
+}
+
+export interface IHeatmapOptions {
+	opacity: number;
+	radius: number;
+	maxIntensity: number;
+}
+
+export class HeatmapTileProvider {
+	constructor(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions);
+	build: () => void;
+	setData: (coordinates: Coordinate[]) => void;
+	opacity: number;
+	native: any;
 }
 
 export interface IGeometryStyle {

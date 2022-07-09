@@ -1,7 +1,7 @@
 import { DemoSharedBase } from '../utils';
-import { GeoJsonLayer, GeoJsonLayer, ClusterManager, GoogleMapsUtils, IGeometryStyle, ClusterItem, ClusterRenderer } from '@nativescript/google-maps-utils';
+import { GeoJsonLayer, ClusterManager, GoogleMapsUtils, IGeometryStyle, ClusterItem, ClusterRenderer, HeatmapTileProvider } from '@nativescript/google-maps-utils';
 import { Color, LoadEventData } from '@nativescript/core';
-import { CameraUpdate, GoogleMap, MapReadyEvent, MapView, Marker } from '@nativescript/google-maps';
+import { CameraUpdate, GoogleMap, MapReadyEvent, MapView, Marker, TileProvider } from '@nativescript/google-maps';
 import { australia } from './geojson.example';
 import { intoNativeMarkerOptions, intoNativeTileOverlayOptions } from '@nativescript/google-maps/utils';
 import { zoomProperty } from '@nativescript/google-maps/common';
@@ -28,7 +28,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	mapView: MapView;
 	map: GoogleMap;
 	geoJson: GeoJsonLayer;
-	// heatmapProvider: HeatmapTileProvider;
+	heatmapProvider: HeatmapTileProvider;
 	heatmapOverlay;
 
 	testIt() {
@@ -63,11 +63,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 
 		//clustering!
 		clusterManager.cluster();
-
-		// this.heatmapProvider.setData(positionSet);
-		// this.heatmapProvider.opacity = 0.1;
-		// Need to clear cache to show adjustments
-		// this.heatmapOverlay.clearTileCache();
 	}
 
 	async onMapReady(args: MapReadyEvent) {
@@ -90,16 +85,21 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			width: 4,
 		});
 
-		this.geoJson.addLayerToMap();
+		// this.geoJson.addLayerToMap();
 
-		// const positionSet = [];
-		// for (var i = 0; i < 200; i++) {
-		// 	positionSet.push(generateRandomPosition([-32.093407, 116.240609], 10000));
-		// }
+		const positionSet = [];
+		for (var i = 0; i < 200; i++) {
+			positionSet.push(generateRandomPosition([-32.093407, 116.240609], 10000));
+		}
 
-		// this.heatmapProvider = utils.buildHeatMapProvider(positionSet);
-		// this.heatmapOverlay = this.map.mapView.addTileOverlay(intoNativeTileOverlayOptions({}).tileProvider(this.heatmapProvider.build()));
+		this.heatmapProvider = new HeatmapTileProvider(positionSet);
+		this.heatmapOverlay = this.map.addTileOverlay({
+			tileProvider: this.heatmapProvider,
+		} as any);
 
-		// console.log('added heat map');
+		// this.heatmapProvider.setData(positionSet);
+		// this.heatmapProvider.opacity = 0.1;
+		// Need to clear cache to show adjustments
+		// this.heatmapOverlay.clearTileCache();
 	}
 }
