@@ -15,6 +15,7 @@
 - [@nativescript/email](packages/email/README.md)
 - [@nativescript/facebook](packages/facebook/README.md)
 - [@nativescript/fingerprint-auth](packages/fingerprint-auth/README.md)
+- [@nativescript/flutter](packages/flutter/README.md)
 - [@nativescript/geolocation](packages/geolocation/README.md)
 - [@nativescript/google-maps](packages/google-maps/README.md)
 - [@nativescript/google-signin](packages/google-signin/README.md)

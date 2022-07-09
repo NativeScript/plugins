@@ -65,5 +65,11 @@
     </array>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Allow Flutter tools to debug your Skia views.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_dartobservatory._tcp</string>
+    </array>
   </dict>
 </plist>

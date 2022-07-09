@@ -285,6 +285,13 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/sflutterkia
+			flutter: {
+				build: {
+					script: 'nx run flutter:build.all',
+					description: '@nativescript/flutter: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -422,6 +429,10 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			flutter: {
+				script: 'nx run flutter:focus',
+				description: 'Focus on @nativescript/flutter',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

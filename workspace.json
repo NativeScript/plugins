@@ -20,6 +20,7 @@
 		"email": "packages/email",
 		"facebook": "packages/facebook",
 		"fingerprint-auth": "packages/fingerprint-auth",
+		"flutter": "packages/flutter",
 		"geolocation": "packages/geolocation",
 		"google-maps": "packages/google-maps",
 		"google-signin": "packages/google-signin",

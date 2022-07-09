@@ -1,0 +1,12 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page"
+  xmlns:ui="@nativescript/flutter">
+  <Page.actionBar>
+    <ActionBar title="Demo" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <GridLayout class="p-20" rows="auto,*">
+    <!-- <Button row="0" text="Test flutter" tap="{{ testIt }}" class="btn btn-primary"/>
+    <ui:Flutter row="1" width="200" width="200" backgroundColor="yellow"></ui:Flutter> -->
+    <Button row="0" text="Open Flutter" tap="{{ openFlutter }}" class="btn btn-primary"/>
+  </GridLayout>
+</Page>

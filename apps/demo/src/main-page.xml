@@ -22,6 +22,7 @@
         <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="facebook" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="flutter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

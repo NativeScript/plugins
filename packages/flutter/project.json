@@ -1,0 +1,64 @@
+{
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/flutter",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/flutter",
+				"tsConfig": "packages/flutter/tsconfig.json",
+				"packageJson": "packages/flutter/package.json",
+				"main": "packages/flutter/index.d.ts",
+				"assets": [
+					"packages/flutter/*.md",
+					"packages/flutter/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/flutter/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts flutter"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/flutter"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages flutter"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/flutter/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}
