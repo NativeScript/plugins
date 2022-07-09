@@ -1,10 +1,11 @@
-import { Color } from '@nativescript/core';
-import { Coordinate, MapView } from '@nativescript/google-maps';
-import { IGeoJsonLayer, IGeometryStyle } from '.';
+import { Color, Utils } from '@nativescript/core';
+import { Coordinate, GoogleMap, MapView, Marker, MarkerOptions } from '@nativescript/google-maps';
+import { intoNativeMarkerOptions } from '../google-maps/utils';
+import { IClusterManager, IGeoJsonLayer, IGeometryStyle } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
-	constructor(private map: MapView) {
+	constructor(private map: GoogleMap) {
 		super();
 	}
 
@@ -195,12 +196,12 @@ export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson
 	#native: com.google.maps.android.data.geojson.GeoJsonLayer;
 	style: GeometryStyle;
 
-	constructor(mapView: MapView, geoJson: any, geometryStyle?: IGeometryStyle) {
+	constructor(map: GoogleMap, geoJson: any, geometryStyle?: IGeometryStyle) {
 		super();
-		if (mapView && geoJson) {
+		if (map && geoJson) {
 			try {
 				const geoJsonData = new org.json.JSONObject(JSON.stringify(geoJson));
-				this.#native = new com.google.maps.android.data.geojson.GeoJsonLayer((mapView as any)._map, geoJsonData);
+				this.#native = new com.google.maps.android.data.geojson.GeoJsonLayer(map.native, geoJsonData);
 				this.style = new GeometryStyle(this.#native.getDefaultPolygonStyle(), this.#native.getDefaultLineStringStyle(), this.#native.getDefaultPointStyle());
 
 				if (geometryStyle) {
@@ -276,5 +277,83 @@ export class KmlLayer extends DataLayer<com.google.maps.android.data.kml.KmlLaye
 
 	getGroundOverlays(): java.lang.Iterable<com.google.maps.android.data.kml.KmlGroundOverlay> {
 		return this.native.getGroundOverlays();
+	}
+}
+
+export class ClusterItem extends com.google.maps.android.clustering.ClusterItem {
+	constructor(public options: MarkerOptions) {
+		super({
+			getPosition: (): com.google.android.gms.maps.model.LatLng => {
+				return new com.google.android.gms.maps.model.LatLng(options?.position?.lat ?? 0, options?.position?.lng ?? 0);
+			},
+			getSnippet: (): string => {
+				return this.options?.snippet ?? '';
+			},
+			getTitle: (): string => {
+				return this.options?.title ?? '';
+			},
+		});
+	}
+}
+
+export class ClusterRenderer extends com.google.maps.android.clustering.view.DefaultClusterRenderer<any> {
+	constructor(map: GoogleMap, clusterManager: ClusterManager) {
+		console.log('custom renderer');
+		super(Utils.ad.getApplicationContext(), map.native, clusterManager.native);
+	}
+
+	onBeforeClusterItemRendered(item: com.google.maps.android.clustering.Cluster<any>, markerOptions: com.google.android.gms.maps.model.MarkerOptions): void {
+		console.log(item.getItems()?.[0]?.title);
+		super.onBeforeClusterItemRendered(item, markerOptions);
+		console.log(item.getItems());
+	}
+
+	public onClustersChanged(param0: java.util.Set<any>): void {
+		super.onClustersChanged(param0);
+	}
+}
+
+export class ClusterManager implements IClusterManager {
+	#native: com.google.maps.android.clustering.ClusterManager<com.google.maps.android.clustering.ClusterItem>;
+
+	constructor(private map: GoogleMap) {
+		this.#native = new com.google.maps.android.clustering.ClusterManager(Utils.ad.getApplicationContext(), map.native);
+
+		if (map?.native?.setOnCameraIdleListener) {
+			(map.native as com.google.android.gms.maps.GoogleMap).setOnCameraIdleListener(this.#native);
+		}
+	}
+
+	static fromNative(nativeClusterManager: com.google.maps.android.clustering.ClusterManager<any>) {
+		if (ClusterManager instanceof com.google.maps.android.clustering.ClusterManager) {
+			const geoJsonLayer = new ClusterManager(null);
+			geoJsonLayer.#native = nativeClusterManager;
+			return geoJsonLayer;
+		}
+		return null;
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	setRenderer(renderer) {
+		this.native.setRenderer(renderer);
+	}
+
+	addItem(clusterItem: ClusterItem) {
+		this.native.addItem(clusterItem);
+	}
+
+	addItems(clusterItems: ClusterItem[]) {
+		const clusterItemArray = new java.util.ArrayList();
+		for (const clusterItem of clusterItems) {
+			clusterItemArray.add(clusterItem);
+		}
+		this.native.addItems(clusterItemArray);
+	}
+
+	cluster() {
+		this.native.cluster();
 	}
 }

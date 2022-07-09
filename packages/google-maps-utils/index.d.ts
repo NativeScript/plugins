@@ -1,8 +1,28 @@
 import { Color } from '@nativescript/core';
-import { MapView } from '@nativescript/google-maps';
+import { GoogleMap, Marker, MarkerOptions } from '@nativescript/google-maps';
 import { GoogleMapsUtilsCommon } from './common';
 
 export declare class GoogleMapsUtils extends GoogleMapsUtilsCommon {}
+
+export class ClusterItem {
+	constructor(markerOptions: MarkerOptions);
+}
+
+export interface IClusterManager {
+	native: any;
+}
+
+export class ClusterRenderer {
+	constructor(private map: GoogleMap, private manager: ClusterManager);
+}
+
+export class ClusterManager implements IClusterManager {
+	constructor(private map: GoogleMap);
+	addItems: (markers: ClusterItem[]) => void;
+	addItem: (marker: ClusterItem) => void;
+	cluster: () => void;
+	setRenderer(clusterRenderer: ClusterRenderer): () => void;
+}
 
 export interface IGeoJsonLayer {
 	style: GeometryStyle;
@@ -15,7 +35,7 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	android: any;
 	native: any;
 	style: GeometryStyle;
-	constructor(map: MapView, geojson: any, styles?: Partial<IGeometryStyle>);
+	constructor(map: GoogleMap, geojson: any, styles?: Partial<IGeometryStyle>);
 	addLayerToMap: () => void;
 	removeLayerFromMap: () => void;
 }

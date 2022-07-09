@@ -1,18 +1,18 @@
 import { Color, encoding } from '@nativescript/core';
-import { MapView } from '@nativescript/google-maps';
+import { GoogleMap, MapView } from '@nativescript/google-maps';
 import { IGeoJsonLayer, IGeometryStyle } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
 let UNIQUE_STYLE_ID = 0;
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
-	constructor(private map: MapView) {
+	constructor(private map: GoogleMap) {
 		super();
 	}
 
 	addGeoJsonLayer(geoJson: any) {
 		try {
-			const layer = new GeoJsonLayer(this.map.nativeView, geoJson);
+			const layer = new GeoJsonLayer(this.map.native, geoJson);
 			layer.addLayerToMap();
 			return layer;
 		} catch (error) {
@@ -60,7 +60,7 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	#native: GMUGeometryRenderer;
 	style: GeometryStyle;
 
-	constructor(private map: MapView, private geometries: any, private styles?: Partial<IGeometryStyle>) {
+	constructor(private map: GoogleMap, private geometries: any, private styles?: Partial<IGeometryStyle>) {
 		this.style = new GeometryStyle(styles);
 
 		const jsonString = new NSString({ UTF8String: JSON.stringify(geometries) });
@@ -72,7 +72,7 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 			feature.style = this.style.native;
 		}
 
-		this.#native = new GMUGeometryRenderer({ map: this.map.nativeView, geometries: features });
+		this.#native = new GMUGeometryRenderer({ map: this.map.native, geometries: features });
 	}
 
 	static fromNative(nativeGeoJsonLayer: GMUGeometryRenderer) {

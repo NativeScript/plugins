@@ -1,9 +1,9 @@
 import { DemoSharedBase } from '../utils';
-import { GeoJsonLayer, GeoJsonLayer, GoogleMapsUtils, IGeometryStyle } from '@nativescript/google-maps-utils';
+import { GeoJsonLayer, GeoJsonLayer, ClusterManager, GoogleMapsUtils, IGeometryStyle, ClusterItem, ClusterRenderer } from '@nativescript/google-maps-utils';
 import { Color, LoadEventData } from '@nativescript/core';
-import { CameraUpdate, MapReadyEvent, MapView } from '@nativescript/google-maps';
+import { CameraUpdate, GoogleMap, MapReadyEvent, MapView, Marker } from '@nativescript/google-maps';
 import { australia } from './geojson.example';
-import { intoNativeTileOverlayOptions } from '@nativescript/google-maps/utils';
+import { intoNativeMarkerOptions, intoNativeTileOverlayOptions } from '@nativescript/google-maps/utils';
 import { zoomProperty } from '@nativescript/google-maps/common';
 
 function generateRandomPosition(position, distance) {
@@ -26,6 +26,7 @@ function generateRandomPosition(position, distance) {
 
 export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	mapView: MapView;
+	map: GoogleMap;
 	geoJson: GeoJsonLayer;
 	// heatmapProvider: HeatmapTileProvider;
 	heatmapOverlay;
@@ -37,6 +38,32 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 		}
 
 		this.geoJson.removeLayerFromMap();
+
+		//creating cluster manager');
+		const clusterManager = new ClusterManager(this.map);
+		const clusterRenderer = new ClusterRenderer(this.map, clusterManager);
+		clusterManager.setRenderer(clusterRenderer);
+
+		//building marker list');
+		const clusterSet: ClusterItem[] = [];
+		for (var i = 0; i < 100; i++) {
+			//creating new markers to cluster
+			const position = generateRandomPosition([-32.093407, 116.240609], 10000);
+
+			const clusterItem = new ClusterItem({
+				position: position,
+				color: 'blue',
+			});
+
+			clusterSet.push(clusterItem);
+		}
+
+		//adding markers to cluster manager
+		clusterManager.addItems(clusterSet);
+
+		//clustering!
+		clusterManager.cluster();
+
 		// this.heatmapProvider.setData(positionSet);
 		// this.heatmapProvider.opacity = 0.1;
 		// Need to clear cache to show adjustments
@@ -44,10 +71,10 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	}
 
 	async onMapReady(args: MapReadyEvent) {
-		this.mapView = args.object as unknown as MapView;
+		this.mapView = args.object as MapView;
 
-		const map = args.map;
-		map.animateCamera(
+		this.map = args.map;
+		this.map.animateCamera(
 			CameraUpdate.fromCoordinate(
 				{
 					lat: -27.74278,
@@ -57,7 +84,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			)
 		);
 
-		this.geoJson = new GeoJsonLayer(this.mapView, australia, {
+		this.geoJson = new GeoJsonLayer(this.map, australia, {
 			fillColor: new Color('blue'),
 			strokeColor: new Color('red'),
 			width: 4,
