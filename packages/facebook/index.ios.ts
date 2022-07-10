@@ -27,24 +27,34 @@ export class FacebookError extends Error {
 let appDelegateInitialized = false;
 let appDelegate: FacebookAppDelegateImpl;
 @NativeClass
-@ObjCClass(UIApplicationDelegate)
 class FacebookAppDelegateImpl extends UIResponder implements UIApplicationDelegate {
-	static get sharedInstance() {
-		if (!appDelegate) {
-			appDelegate = FacebookAppDelegateImpl.alloc().init() as FacebookAppDelegateImpl;
-		}
-		return appDelegate;
-	}
+	static ObjCProtocols = [UIApplicationDelegate];
+	// static get sharedInstance() {
+	// 	if (!appDelegate) {
+	// 		appDelegate = FacebookAppDelegateImpl.alloc().init() as FacebookAppDelegateImpl;
+	// 	}
+	// 	return appDelegate;
+	// }
 
 	applicationOpenURLOptions(app: UIApplication, url: NSURL, options: NSDictionary<string, any>): boolean {
-		return FBSDKApplicationDelegate.sharedInstance.applicationOpenURLOptions(app, url, options);
+		FBSDKApplicationDelegate.sharedInstance.applicationOpenURLOptions(app, url, options);
+		return true;
 	}
 
 	applicationOpenURLSourceApplicationAnnotation(application: UIApplication, url: NSURL, sourceApplication: string, annotation: any): boolean {
-		return FBSDKApplicationDelegate.sharedInstance.applicationOpenURLSourceApplicationAnnotation(application, url, sourceApplication, annotation);
+		let handled = false;
+		if (!handled && typeof FBSDKApplicationDelegate !== 'undefined') {
+			// 		sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+			// annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+			handled = FBSDKApplicationDelegate.sharedInstance.applicationOpenURLSourceApplicationAnnotation(application, url, sourceApplication, annotation);
+		}
+		return handled;
 	}
 	applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>): boolean {
-		return FBSDKApplicationDelegate.sharedInstance.applicationDidFinishLaunchingWithOptions(application, launchOptions);
+		if (typeof FBSDKApplicationDelegate !== 'undefined') {
+			FBSDKApplicationDelegate.sharedInstance.applicationDidFinishLaunchingWithOptions(application, launchOptions);
+		}
+		return true;
 	}
 }
 
@@ -132,8 +142,8 @@ export class AccessToken {
 			permissions: this.permissions,
 			refreshDate: this.refreshDate,
 			tokenString: this.tokenString,
-			userID: this.userID
-		}
+			userID: this.userID,
+		};
 	}
 
 	get native() {
@@ -198,8 +208,8 @@ export class LoginResult {
 			declinedPermissions: this.declinedPermissions,
 			grantedPermissions: this.grantedPermissions,
 			isCancelled: this.isCancelled,
-			token: this.token
-		}
+			token: this.token,
+		};
 	}
 
 	get native() {
@@ -222,8 +232,8 @@ export class LoginManager implements ILoginManager {
 			if (!Application.ios.delegate) {
 				Application.ios.delegate = FacebookAppDelegateImpl;
 			}
-			GULAppDelegateSwizzler.proxyOriginalDelegate();
-			GULAppDelegateSwizzler.registerAppDelegateInterceptor(FacebookAppDelegateImpl.sharedInstance);
+			// GULAppDelegateSwizzler.proxyOriginalDelegate();
+			// GULAppDelegateSwizzler.registerAppDelegateInterceptor(FacebookAppDelegateImpl.sharedInstance);
 			appDelegateInitialized = true;
 		}
 	}
