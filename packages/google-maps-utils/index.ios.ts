@@ -1,6 +1,6 @@
 import { Color, encoding } from '@nativescript/core';
-import { GoogleMap, MapView } from '@nativescript/google-maps';
-import { IGeoJsonLayer, IGeometryStyle } from '.';
+import { Coordinate, GoogleMap, ITileProvider, MapView } from '@nativescript/google-maps';
+import { IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
 let UNIQUE_STYLE_ID = 0;
@@ -98,5 +98,64 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 
 	removeLayerFromMap() {
 		this.native.clear();
+	}
+}
+
+export class HeatmapTileProvider implements ITileProvider {
+	#native: GMUHeatmapTileLayer;
+	constructor(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions) {
+		if(coordinates) {
+			this.#native = GMUHeatmapTileLayer.alloc();
+
+			if (heatmapOptions) {
+				if (heatmapOptions.opacity) {
+					this.#native.opacity = heatmapOptions.opacity;
+				}
+				if (heatmapOptions.radius) {
+					this.#native.radius = heatmapOptions.radius;
+				}
+				if ( heatmapOptions.maxIntensity) {
+					this.#native.maximumZoomIntensity = heatmapOptions.maxIntensity;
+				}
+			}
+		}
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	set opacity(opacity: number) {
+		this.native.opacity = opacity;
+	}
+
+	setGradient(gradient): void {
+		this.native.gradient = gradient;
+	}
+
+	set radius(degrees: number) {
+		this.native.radius = degrees;
+	}
+
+	set maxIntensity(maxIntensity: number) {
+		this.native.maximumZoomIntensity = maxIntensity;
+	}
+
+	setData(coordinates: Coordinate[]): void {
+		const data = [];
+
+		coordinates.forEach((coordinate) => {
+			const coords = GMUWeightedLatLng.alloc().initWithCoordinateIntensity(
+				CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng),
+				1.0
+			);
+			data.push(coords);
+		});
+
+		this.native.weightedData = NSArray.arrayWithArray(data);
+	}
+
+	getTile(x: number, y: number, z: number): UIImage {
+		return this.native.tileForXYZoom(x, y, z);
 	}
 }
