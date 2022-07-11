@@ -25,7 +25,6 @@ function generateRandomPosition(position, distance) {
 }
 
 export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
-	mapView: MapView;
 	map: GoogleMap;
 	geoJson: GeoJsonLayer;
 	heatmapProvider: HeatmapTileProvider;
@@ -52,6 +51,8 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 
 			const clusterItem = new ClusterItem({
 				position: position,
+				title: `Marker ${i}`,
+				snippet: `This is marker ${i}!!`
 			});
 
 			clusterSet.push(clusterItem);
@@ -65,8 +66,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	}
 
 	async onMapReady(args: MapReadyEvent) {
-		this.mapView = args.object as MapView;
-
 		this.map = args.map;
 		this.map.animateCamera(
 			CameraUpdate.fromCoordinate(
