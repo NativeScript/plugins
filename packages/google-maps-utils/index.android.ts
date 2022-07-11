@@ -55,8 +55,8 @@ export class HeatmapTileProvider {
 		this.native.setGradient(gradient);
 	}
 
-	set radius(degrees: number) {
-		this.native.setRadius(degrees);
+	set radius(radius: number) {
+		this.native.setRadius(radius);
 	}
 
 	set maxIntensity(maxIntensity: number) {

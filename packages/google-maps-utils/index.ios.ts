@@ -1,4 +1,4 @@
-import { Color, encoding } from '@nativescript/core';
+import { Color, encoding, Utils } from '@nativescript/core';
 import { Coordinate, GoogleMap, ITileProvider, MapView } from '@nativescript/google-maps';
 import { IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
 import { GoogleMapsUtilsCommon } from './common';
@@ -105,20 +105,18 @@ export class HeatmapTileProvider implements ITileProvider {
 	#native: GMUHeatmapTileLayer;
 	constructor(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions) {
 		if(coordinates) {
-			this.#native = GMUHeatmapTileLayer.alloc();
+			this.#native = GMUHeatmapTileLayer.alloc().init();
 
-			if (heatmapOptions) {
-				if (heatmapOptions.opacity) {
-					this.#native.opacity = heatmapOptions.opacity;
-				}
-				if (heatmapOptions.radius) {
-					this.#native.radius = heatmapOptions.radius;
-				}
-				if ( heatmapOptions.maxIntensity) {
-					this.#native.maximumZoomIntensity = heatmapOptions.maxIntensity;
-				}
-			}
+			const defaultGradient = GMUGradient.alloc().initWithColorsStartPointsColorMapSize(
+				[new Color('red').ios, new Color('green').ios],
+				[0.1, 0.5],
+				256);
+			this.setGradient(defaultGradient);
+			this.opacity = heatmapOptions?.opacity ?? 0.7;
+			this.radius = heatmapOptions?.radius ?? 80;
 		}
+
+		this.setData(coordinates);
 	}
 
 	get native() {
@@ -129,12 +127,12 @@ export class HeatmapTileProvider implements ITileProvider {
 		this.native.opacity = opacity;
 	}
 
-	setGradient(gradient): void {
+	setGradient(gradient: GMUGradient): void {
 		this.native.gradient = gradient;
 	}
 
-	set radius(degrees: number) {
-		this.native.radius = degrees;
+	set radius(radius: number) {
+		this.native.radius = radius;
 	}
 
 	set maxIntensity(maxIntensity: number) {
@@ -142,17 +140,12 @@ export class HeatmapTileProvider implements ITileProvider {
 	}
 
 	setData(coordinates: Coordinate[]): void {
-		const data = [];
-
-		coordinates.forEach((coordinate) => {
-			const coords = GMUWeightedLatLng.alloc().initWithCoordinateIntensity(
+		this.native.weightedData = coordinates.map((coordinate) => {
+			return GMUWeightedLatLng.alloc().initWithCoordinateIntensity(
 				CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng),
 				1.0
 			);
-			data.push(coords);
-		});
-
-		this.native.weightedData = NSArray.arrayWithArray(data);
+		}) as any;
 	}
 
 	getTile(x: number, y: number, z: number): UIImage {
