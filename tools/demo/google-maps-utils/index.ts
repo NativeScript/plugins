@@ -52,7 +52,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 
 			const clusterItem = new ClusterItem({
 				position: position,
-				color: 'blue',
 			});
 
 			clusterSet.push(clusterItem);

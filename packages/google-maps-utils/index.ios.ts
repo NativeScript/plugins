@@ -1,5 +1,6 @@
 import { Color, encoding, Utils } from '@nativescript/core';
-import { Coordinate, GoogleMap, ITileProvider, MapView } from '@nativescript/google-maps';
+import { Coordinate, GoogleMap, ITileProvider, MapView, Marker, MarkerOptions, Poi } from '@nativescript/google-maps';
+import { intoNativeMarkerOptions } from '../google-maps/utils';
 import { IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
@@ -150,5 +151,71 @@ export class HeatmapTileProvider implements ITileProvider {
 
 	getTile(x: number, y: number, z: number): UIImage {
 		return this.native.tileForXYZoom(x, y, z);
+	}
+}
+
+export class ClusterItem {
+	#native: GMSMarker;
+
+	constructor(options: MarkerOptions) {
+		this.#native = intoNativeMarkerOptions(options);
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	get ios() {
+		return this.native;
+	}
+}
+
+export class ClusterRenderer {
+	#native: GMUClusterRenderer;
+
+	constructor(map: GoogleMap, clusterManager: ClusterManager) {
+		const iconGenerator = GMUDefaultClusterIconGenerator.alloc().init();
+		this.#native = GMUDefaultClusterRenderer.alloc().initWithMapViewClusterIconGenerator(map.native, iconGenerator)
+	}
+
+	get native() {
+		return this.#native;
+	}
+}
+
+export class ClusterManager {
+	#native: GMUClusterManager;
+
+	constructor(map: GoogleMap) {
+    const algorithm = GMUNonHierarchicalDistanceBasedAlgorithm.alloc().init();
+		const renderer = new ClusterRenderer(map, null);
+		this.#native = GMUClusterManager.alloc().initWithMapAlgorithmRenderer(map.native, algorithm, renderer.native);
+
+		// TODO:
+		// this.#native.setMapDelegate
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	get ios() {
+		return this.#native;
+	}
+
+	setRenderer(renderer) {
+		// Console.log('Only available for android');
+	}
+
+	addItem(clusterItem: ClusterItem) {
+		this.native.addItem(clusterItem.native);
+	}
+
+	addItems(clusterItems: ClusterItem[]) {
+		this.native.addItems(clusterItems.map((item) => item.native));
+	}
+
+	cluster() {
+		this.native.cluster();
 	}
 }
