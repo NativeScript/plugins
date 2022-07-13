@@ -1,9 +1,20 @@
 repositories {
 	mavenCentral()
+  maven {
+    url '/Users/nstudio/Documents/github/nstudio/flutter-examples/startup_namer_module/build/host/outputs/repo'
+    // This is relative to the location of the build.gradle file
+    // if using a relative path.
+  }
+  maven {
+    url 'https://storage.googleapis.com/download.flutter.io'
+  }
 }
 
 dependencies {
-	implementation 'com.facebook.android:facebook-share:[5,6)'
+	// implementation 'com.facebook.android:facebook-share:[5,6)'
+  debugImplementation 'com.example.startup_namer_module:flutter_debug:1.0'
+  profileImplementation 'com.example.startup_namer_module:flutter_profile:1.0'
+  releaseImplementation 'com.example.startup_namer_module:flutter_release:1.0'
 }
 
 android {  
@@ -13,8 +24,16 @@ android {
     minSdkVersion 24
     targetSdkVersion 32
     generatedDensities = []
+    ndk {
+      // Filter for architectures supported by Flutter.
+      abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+    }
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
-  }  
+  }
+  compileOptions {
+    sourceCompatibility 1.8
+    targetCompatibility 1.8
+  }
 } 

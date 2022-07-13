@@ -1,4 +1,5 @@
 import { Application } from '@nativescript/core';
+import { FlutterDelegate } from '@nativescript/flutter';
 
 // uncomment to test local notifications
 // import "@nativescript/local-notifications";
@@ -18,5 +19,7 @@ import { Application } from '@nativescript/core';
 // 	// Register IonicPortals
 // 	IonicPortalManager.register('<portal-api-key>');
 // });
+
+Application.ios.delegate = FlutterDelegate;
 
 Application.run({ moduleName: 'app-root' });

@@ -1,6 +1,6 @@
 import { Observable, EventData, Page, ShowModalOptions } from '@nativescript/core';
 import { DemoSharedFlutter } from '@demo/shared';
-import {} from '@nativescript/flutter';
+import { Flutter } from '@nativescript/flutter';
 
 export function navigatingTo(args: EventData) {
 	const page = <Page>args.object;
@@ -8,6 +8,8 @@ export function navigatingTo(args: EventData) {
 }
 
 export class DemoModel extends DemoSharedFlutter {
+	flutter: Flutter;
+
 	constructor(protected page: Page) {
 		super();
 	}
@@ -16,5 +18,9 @@ export class DemoModel extends DemoSharedFlutter {
 		this.page.showModal('modals/modal-flutter', <ShowModalOptions>{
 			fullscreen: false,
 		});
+	}
+
+	loadedFlutter(args) {
+		this.flutter = args.object;
 	}
 }
