@@ -36,6 +36,8 @@
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="video" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="video-advanced" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>

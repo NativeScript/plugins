@@ -29,6 +29,8 @@
 - [@nativescript/social-share](packages/social-share/README.md)
 - [@nativescript/theme-switcher](packages/theme-switcher/README.md)
 - [@nativescript/twitter](packages/twitter/README.md)
+- [@nativescript/video](packages/video/README.md)
+- [@nativescript/video-advanced](packages/video-advanced/README.md)
 - [@nativescript/zip](packages/zip/README.md)
 
 # How to use?

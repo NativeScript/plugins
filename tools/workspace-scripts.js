@@ -285,6 +285,20 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/video
+			video: {
+				build: {
+					script: 'nx run video:build.all',
+					description: '@nativescript/video: Build',
+				},
+			},
+			// @nativescript/video-advanced
+			'video-advanced': {
+				build: {
+					script: 'nx run video-advanced:build.all',
+					description: '@nativescript/video-advanced: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -422,6 +436,14 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			video: {
+				script: 'nx run video:focus',
+				description: 'Focus on @nativescript/video',
+			},
+			'video-advanced': {
+				script: 'nx run video-advanced:focus',
+				description: 'Focus on @nativescript/video-advanced',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

@@ -30,4 +30,6 @@ export * from './shared-notification-delegate';
 export * from './social-share';
 export * from './theme-switcher';
 export * from './twitter';
+export * from './video';
+export * from './video-advanced';
 export * from './zip';

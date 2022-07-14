@@ -1,0 +1,64 @@
+{
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/video-advanced",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/video-advanced",
+				"tsConfig": "packages/video-advanced/tsconfig.json",
+				"packageJson": "packages/video-advanced/package.json",
+				"main": "packages/video-advanced/index.d.ts",
+				"assets": [
+					"packages/video-advanced/*.md",
+					"packages/video-advanced/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/video-advanced/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts video-advanced"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/video-advanced"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages video-advanced"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/video-advanced/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}
