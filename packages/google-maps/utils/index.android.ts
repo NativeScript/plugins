@@ -253,6 +253,11 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	const opts = new com.google.android.gms.maps.model.GroundOverlayOptions();
 
+	if (options?.position) {
+		const coords = <Coordinate>options.position;
+		opts.position(new com.google.android.gms.maps.model.LatLng(coords.lat, coords.lng), options.width);
+	}
+
 	if (typeof options?.width === 'number') {
 		opts.position(opts.getLocation(), options.width);
 	}
@@ -271,11 +276,6 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 
 	if (typeof options?.tappable === 'boolean') {
 		opts.clickable(options.tappable);
-	}
-
-	if (options?.position) {
-		const coords = <Coordinate>options.position;
-		opts.position(new com.google.android.gms.maps.model.LatLng(coords.lat, coords.lng), opts.getWidth());
 	}
 
 	if (typeof options?.tappable === 'boolean') {
