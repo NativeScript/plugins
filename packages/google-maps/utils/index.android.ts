@@ -266,6 +266,13 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 		opts.position(opts.getLocation(), opts.getWidth(), options.height);
 	}
 
+	if (options?.bounds) {
+		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(
+			new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng),
+			new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)
+		));
+	}
+
 	if (typeof options?.transparency) {
 		opts.transparency(options.transparency);
 	}
