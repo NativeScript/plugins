@@ -1,7 +1,7 @@
 import { Color, encoding, Utils } from '@nativescript/core';
 import { Coordinate, GoogleMap, ITileProvider, MapView, Marker, MarkerOptions, Poi } from '@nativescript/google-maps';
 import { intoNativeMarkerOptions } from '../google-maps/utils';
-import { IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
+import { IClusterManager, IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
 import { GoogleMapsUtilsCommon } from './common';
 
 let UNIQUE_STYLE_ID = 0;
@@ -105,13 +105,10 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 export class HeatmapTileProvider implements ITileProvider {
 	#native: GMUHeatmapTileLayer;
 	constructor(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions) {
-		if(coordinates) {
+		if (coordinates) {
 			this.#native = GMUHeatmapTileLayer.alloc().init();
 
-			const defaultGradient = GMUGradient.alloc().initWithColorsStartPointsColorMapSize(
-				[new Color('red').ios, new Color('green').ios],
-				[0.1, 0.5],
-				256);
+			const defaultGradient = GMUGradient.alloc().initWithColorsStartPointsColorMapSize([new Color('red').ios, new Color('green').ios], [0.1, 0.5], 256);
 			this.setGradient(defaultGradient);
 			this.opacity = heatmapOptions?.opacity ?? 0.7;
 			this.radius = heatmapOptions?.radius ?? 80;
@@ -142,10 +139,7 @@ export class HeatmapTileProvider implements ITileProvider {
 
 	setData(coordinates: Coordinate[]): void {
 		this.native.weightedData = coordinates.map((coordinate) => {
-			return GMUWeightedLatLng.alloc().initWithCoordinateIntensity(
-				CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng),
-				1.0
-			);
+			return GMUWeightedLatLng.alloc().initWithCoordinateIntensity(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng), 1.0);
 		}) as any;
 	}
 
@@ -175,7 +169,7 @@ export class ClusterRenderer {
 
 	constructor(map: GoogleMap, clusterManager: ClusterManager) {
 		const iconGenerator = GMUDefaultClusterIconGenerator.alloc().init();
-		this.#native = GMUDefaultClusterRenderer.alloc().initWithMapViewClusterIconGenerator(map.native, iconGenerator)
+		this.#native = GMUDefaultClusterRenderer.alloc().initWithMapViewClusterIconGenerator(map.native, iconGenerator);
 	}
 
 	get native() {
@@ -183,11 +177,11 @@ export class ClusterRenderer {
 	}
 }
 
-export class ClusterManager {
+export class ClusterManager implements IClusterManager {
 	#native: GMUClusterManager;
 
 	constructor(map: GoogleMap) {
-    const algorithm = GMUNonHierarchicalDistanceBasedAlgorithm.alloc().init();
+		const algorithm = GMUNonHierarchicalDistanceBasedAlgorithm.alloc().init();
 		const renderer = new ClusterRenderer(map, null);
 		this.#native = GMUClusterManager.alloc().initWithMapAlgorithmRenderer(map.native, algorithm, renderer.native);
 
@@ -213,6 +207,20 @@ export class ClusterManager {
 
 	addItems(clusterItems: ClusterItem[]) {
 		this.native.addItems(clusterItems.map((item) => item.native));
+	}
+
+	removeItem(clusterItem: ClusterItem) {
+		this.native.removeItem(clusterItem.native);
+	}
+
+	removeItems(clusterItems: ClusterItem[]) {
+		clusterItems.forEach((item) => {
+			this.native.removeItem(item.native);
+		});
+	}
+
+	clearItems() {
+		this.native.clearItems();
 	}
 
 	cluster() {

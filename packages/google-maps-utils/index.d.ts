@@ -10,6 +10,13 @@ export class ClusterItem {
 
 export interface IClusterManager {
 	native: any;
+	addItems: (markers: ClusterItem[]) => void;
+	addItem: (marker: ClusterItem) => void;
+	removeItems: (markers: ClusterItem[]) => void;
+	removeItem: (marker: ClusterItem) => void;
+	clearItems: () => void;
+	cluster: () => void;
+	setRenderer: (clusterRenderer: any) => void;
 }
 
 export class ClusterRenderer {
@@ -20,8 +27,11 @@ export class ClusterManager implements IClusterManager {
 	constructor(private map: GoogleMap);
 	addItems: (markers: ClusterItem[]) => void;
 	addItem: (marker: ClusterItem) => void;
+	removeItems: (markers: ClusterItem[]) => void;
+	removeItem: (marker: ClusterItem) => void;
+	clearItems: () => void;
 	cluster: () => void;
-	setRenderer(clusterRenderer: ClusterRenderer): () => void;
+	setRenderer: (clusterRenderer: ClusterRenderer) => void;
 }
 
 export interface IGeoJsonLayer {

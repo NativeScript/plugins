@@ -1,7 +1,7 @@
 import { DemoSharedBase } from '../utils';
 import { GeoJsonLayer, ClusterManager, GoogleMapsUtils, IGeometryStyle, ClusterItem, ClusterRenderer, HeatmapTileProvider } from '@nativescript/google-maps-utils';
 import { Color, LoadEventData } from '@nativescript/core';
-import { CameraUpdate, GoogleMap, MapReadyEvent, MapView, Marker, TileProvider } from '@nativescript/google-maps';
+import { CameraUpdate, GoogleMap, MapReadyEvent, Coordinate, MapView, Marker, TileProvider } from '@nativescript/google-maps';
 import { australia } from './geojson.example';
 import { intoNativeMarkerOptions, intoNativeTileOverlayOptions } from '@nativescript/google-maps/utils';
 import { zoomProperty } from '@nativescript/google-maps/common';
@@ -38,12 +38,10 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 
 		this.geoJson.removeLayerFromMap();
 
-		//creating cluster manager');
+		//creating cluster manager;
 		const clusterManager = new ClusterManager(this.map);
-		const clusterRenderer = new ClusterRenderer(this.map, clusterManager);
-		clusterManager.setRenderer(clusterRenderer);
 
-		//building marker list');
+		//building marker list;
 		const clusterSet: ClusterItem[] = [];
 		for (var i = 0; i < 100; i++) {
 			//creating new markers to cluster
@@ -52,7 +50,9 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			const clusterItem = new ClusterItem({
 				position: position,
 				title: `Marker ${i}`,
-				snippet: `This is marker ${i}!!`
+				snippet: `This is marker ${i}!!`,
+				rotation: 180,
+				color: new Color('blue'),
 			});
 
 			clusterSet.push(clusterItem);
