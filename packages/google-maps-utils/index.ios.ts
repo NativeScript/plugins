@@ -108,7 +108,7 @@ export class HeatmapTileProvider implements ITileProvider {
 		if (coordinates) {
 			this.#native = GMUHeatmapTileLayer.alloc().init();
 
-			const defaultGradient = GMUGradient.alloc().initWithColorsStartPointsColorMapSize([new Color('red').ios, new Color('green').ios], [0.1, 0.5], 256);
+			const defaultGradient = GMUGradient.alloc().initWithColorsStartPointsColorMapSize([new Color('green').ios, new Color('red').ios], [0.1, 0.15], 256);
 			this.setGradient(defaultGradient);
 			this.opacity = heatmapOptions?.opacity ?? 0.7;
 			this.radius = heatmapOptions?.radius ?? 80;
@@ -187,6 +187,7 @@ export class ClusterManager implements IClusterManager {
 
 		// TODO:
 		// this.#native.setMapDelegate
+
 	}
 
 	get native() {
@@ -198,7 +199,7 @@ export class ClusterManager implements IClusterManager {
 	}
 
 	setRenderer(renderer) {
-		// Console.log('Only available for android');
+		// TODO;
 	}
 
 	addItem(clusterItem: ClusterItem) {
