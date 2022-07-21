@@ -1,8 +1,12 @@
-import { Color, encoding, Utils } from '@nativescript/core';
-import { Coordinate, GoogleMap, ITileProvider, MapView, Marker, MarkerOptions, Poi } from '@nativescript/google-maps';
-import { intoNativeMarkerOptions } from '../google-maps/utils';
-import { IClusterManager, IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
+import { Color, encoding } from '@nativescript/core';
+import { GoogleMap } from '@nativescript/google-maps';
+import { IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle } from '.';
 import { GoogleMapsUtilsCommon } from './common';
+
+export * from './src/clustering';
+export * from './src/heatmap';
+export * from './src/iconfactory';
+export * from './src/utils';
 
 let UNIQUE_STYLE_ID = 0;
 
@@ -59,16 +63,17 @@ export class GeometryStyle implements IGeometryStyle {
 
 export class GeoJsonLayer implements IGeoJsonLayer {
 	#native: GMUGeometryRenderer;
+	#parser: GMUGeoJSONParser;
 	style: GeometryStyle;
 
 	constructor(private map: GoogleMap, private geometries: any, private styles?: Partial<IGeometryStyle>) {
 		this.style = new GeometryStyle(styles);
 
 		const jsonString = new NSString({ UTF8String: JSON.stringify(geometries) });
-		const geoJsonParser = new GMUGeoJSONParser({ data: jsonString.dataUsingEncoding(encoding.UTF_8) });
-		geoJsonParser.parse();
+		this.#parser = new GMUGeoJSONParser({ data: jsonString.dataUsingEncoding(encoding.UTF_8) });
+		this.#parser.parse();
 
-		const features = geoJsonParser.features;
+		const features = this.#parser.features;
 		for (const feature of features) {
 			feature.style = this.style.native;
 		}
@@ -77,7 +82,7 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	}
 
 	static fromNative(nativeGeoJsonLayer: GMUGeometryRenderer) {
-		if (GeoJsonLayer instanceof GMUGeometryRenderer) {
+		if (nativeGeoJsonLayer instanceof GMUGeometryRenderer) {
 			const geoJsonLayer = new GeoJsonLayer(null, null, null);
 			geoJsonLayer.#native = nativeGeoJsonLayer;
 			return geoJsonLayer;
@@ -93,6 +98,18 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 		return this.native;
 	}
 
+	get features() {
+		// const features = [];
+		// for (const feature of this.#parser.features) {
+		// 	const f = feature as GMUGeometryContainer;
+
+		// 	GeoJsonFeature.fromNative(f);
+		// 	f.geometry;
+		// 	f.style;
+		// }
+		return null;
+	}
+
 	addLayerToMap() {
 		this.native.render();
 	}
@@ -102,57 +119,56 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	}
 }
 
-export class HeatmapTileProvider implements ITileProvider {
-	#native: GMUHeatmapTileLayer;
-	constructor(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions) {
-		if (coordinates) {
-			this.#native = GMUHeatmapTileLayer.alloc().init();
+export class GeoJsonFeature implements IFeature {
+	#native: GMUGeometryCollection;
 
-			const defaultGradient = GMUGradient.alloc().initWithColorsStartPointsColorMapSize([new Color('green').ios, new Color('red').ios], [0.1, 0.15], 256);
-			this.setGradient(defaultGradient);
-			this.opacity = heatmapOptions?.opacity ?? 0.7;
-			this.radius = heatmapOptions?.radius ?? 80;
+	static fromNative(nativeGeometryContainer: GMUGeometryCollection) {
+		if (nativeGeometryContainer instanceof GMUGeometryCollection) {
+			const geoJsonFeature = new GeoJsonFeature();
+			geoJsonFeature.#native = nativeGeometryContainer;
+			return geoJsonFeature;
+		}
+		return null;
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	get ios() {
+		return this.#native;
+	}
+
+	get geometry() {
+		const geometries = [];
+
+		for (const geometry of this.native.geometries) {
+			geometries.push(Geometry.fromNative(geometry));
 		}
 
-		this.setData(coordinates);
+		return geometries;
 	}
 
-	get native() {
-		return this.#native;
+	get properties() {
+		return;
 	}
 
-	set opacity(opacity: number) {
-		this.native.opacity = opacity;
-	}
-
-	setGradient(gradient: GMUGradient): void {
-		this.native.gradient = gradient;
-	}
-
-	set radius(radius: number) {
-		this.native.radius = radius;
-	}
-
-	set maxIntensity(maxIntensity: number) {
-		this.native.maximumZoomIntensity = maxIntensity;
-	}
-
-	setData(coordinates: Coordinate[]): void {
-		this.native.weightedData = coordinates.map((coordinate) => {
-			return GMUWeightedLatLng.alloc().initWithCoordinateIntensity(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng), 1.0);
-		}) as any;
-	}
-
-	getTile(x: number, y: number, z: number): UIImage {
-		return this.native.tileForXYZoom(x, y, z);
+	get id() {
+		return this.native.description;
 	}
 }
 
-export class ClusterItem {
-	#native: GMSMarker;
+export class Geometry implements IGeometry {
+	#native: GMUGeometry;
 
-	constructor(options: MarkerOptions) {
-		this.#native = intoNativeMarkerOptions(options);
+	static fromNative(nativeGeometry: GMUGeometry) {
+		if (nativeGeometry) {
+			console.log(nativeGeometry.class().name);
+			const geometry = new Geometry();
+			geometry.#native = nativeGeometry;
+			return geometry;
+		}
+		return null;
 	}
 
 	get native() {
@@ -160,71 +176,14 @@ export class ClusterItem {
 	}
 
 	get ios() {
+		return this.#native;
+	}
+
+	get type() {
+		return this.#native.type;
+	}
+
+	get geometries() {
 		return this.native;
-	}
-}
-
-export class ClusterRenderer {
-	#native: GMUClusterRenderer;
-
-	constructor(map: GoogleMap, clusterManager: ClusterManager) {
-		const iconGenerator = GMUDefaultClusterIconGenerator.alloc().init();
-		this.#native = GMUDefaultClusterRenderer.alloc().initWithMapViewClusterIconGenerator(map.native, iconGenerator);
-	}
-
-	get native() {
-		return this.#native;
-	}
-}
-
-export class ClusterManager implements IClusterManager {
-	#native: GMUClusterManager;
-
-	constructor(map: GoogleMap) {
-		const algorithm = GMUNonHierarchicalDistanceBasedAlgorithm.alloc().init();
-		const renderer = new ClusterRenderer(map, null);
-		this.#native = GMUClusterManager.alloc().initWithMapAlgorithmRenderer(map.native, algorithm, renderer.native);
-
-		// TODO:
-		// this.#native.setMapDelegate
-
-	}
-
-	get native() {
-		return this.#native;
-	}
-
-	get ios() {
-		return this.#native;
-	}
-
-	setRenderer(renderer) {
-		// TODO;
-	}
-
-	addItem(clusterItem: ClusterItem) {
-		this.native.addItem(clusterItem.native);
-	}
-
-	addItems(clusterItems: ClusterItem[]) {
-		this.native.addItems(clusterItems.map((item) => item.native));
-	}
-
-	removeItem(clusterItem: ClusterItem) {
-		this.native.removeItem(clusterItem.native);
-	}
-
-	removeItems(clusterItems: ClusterItem[]) {
-		clusterItems.forEach((item) => {
-			this.native.removeItem(item.native);
-		});
-	}
-
-	clearItems() {
-		this.native.clearItems();
-	}
-
-	cluster() {
-		this.native.cluster();
 	}
 }

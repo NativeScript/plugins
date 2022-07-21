@@ -1,11 +1,14 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Color, ImageSource, Utils } from '@nativescript/core';
-import { Coordinate, GoogleMap, MapView, MarkerOptions } from '@nativescript/google-maps';
-import { Marker } from '../google-maps/index.android';
-import { intoNativeColor } from '../google-maps/utils/common';
-import { hueFromColor, intoNativeMarkerOptions } from '../google-maps/utils';
-import { IClusterManager, IGeoJsonLayer, IGeometryStyle, IHeatmapOptions } from '.';
+import { Color } from '@nativescript/core';
+import { GoogleMap } from '@nativescript/google-maps';
+import { IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle } from '.';
 import { GoogleMapsUtilsCommon } from './common';
+import { intoNativeColor } from './src/utils';
+
+export * from './src/clustering';
+export * from './src/heatmap';
+export * from './src/iconfactory';
+export * from './src/utils';
 
 export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 	constructor(private map: GoogleMap) {
@@ -16,71 +19,6 @@ export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
 		return new GeoJsonLayer((this.map as any)._map, geoJson);
 	}
 }
-
-export class HeatmapTileProvider {
-	#native: com.google.maps.android.heatmaps.HeatmapTileProvider;
-
-	constructor(coordinates: Coordinate[], heatmapOptions?: IHeatmapOptions) {
-		if (coordinates) {
-			const builder = new com.google.maps.android.heatmaps.HeatmapTileProvider.Builder();
-			const data = new java.util.ArrayList();
-
-			coordinates.forEach((coordinate) => {
-				data.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
-			});
-
-			if (heatmapOptions) {
-				if (heatmapOptions.maxIntensity) {
-					builder.maxIntensity(heatmapOptions.maxIntensity);
-				}
-				if (heatmapOptions.opacity) {
-					builder.opacity(heatmapOptions.opacity);
-				}
-				if (heatmapOptions.radius) {
-					builder.maxIntensity(heatmapOptions.radius);
-				}
-			}
-
-			builder.data(data);
-			this.#native = builder.build();
-		}
-	}
-
-	get native() {
-		return this.#native;
-	}
-
-	set opacity(opacity: number) {
-		this.native.setOpacity(opacity);
-	}
-
-	setGradient(gradient: com.google.maps.android.heatmaps.Gradient): void {
-		this.native.setGradient(gradient);
-	}
-
-	set radius(radius: number) {
-		this.native.setRadius(radius);
-	}
-
-	set maxIntensity(maxIntensity: number) {
-		this.native.setMaxIntensity(maxIntensity);
-	}
-
-	setData(coordinates: Coordinate[]): void {
-		const data = new java.util.ArrayList();
-
-		coordinates.forEach((coordinate) => {
-			data.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
-		});
-
-		this.native.setData(data);
-	}
-
-	getTile(x: number, y: number, z: number): com.google.android.gms.maps.model.Tile {
-		return this.native.getTile(x, y, z);
-	}
-}
-
 export abstract class DataLayer<T extends com.google.maps.android.data.Layer> {
 	abstract readonly native: T;
 
@@ -142,7 +80,21 @@ export abstract class DataLayer<T extends com.google.maps.android.data.Layer> {
 	// public getGroundOverlays(): java.lang.Iterable<com.google.maps.android.data.kml.KmlGroundOverlay>;
 }
 
-export class GeometryStyle implements Partial<IGeometryStyle> {
+export class KmlGeometryStyle implements IGeometryStyle {
+	constructor(public getPolygonOptions: com.google.android.gms.maps.model.PolygonOptions, public getPolylineOptions: com.google.android.gms.maps.model.PolylineOptions, public kerOptions: com.google.android.gms.maps.model.MarkerOptions) {}
+
+	get strokeColor(): Color {
+		return intoNativeColor(this.getPolygonOptions.getStrokeColor().toString());
+	}
+	fillColor: Color;
+	width: number;
+	scale: number;
+	heading: number;
+	anchor: [number, number];
+	iconUrl: string;
+	title: string;
+}
+export class GeoJsonGeometryStyle implements Partial<IGeometryStyle> {
 	constructor(private polygonStyle: com.google.maps.android.data.geojson.GeoJsonPolygonStyle, private lineStyle: com.google.maps.android.data.geojson.GeoJsonLineStringStyle, private pointStyle: com.google.maps.android.data.geojson.GeoJsonPointStyle) {}
 
 	get strokeColor() {
@@ -187,7 +139,7 @@ export class GeometryStyle implements Partial<IGeometryStyle> {
 
 export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson.GeoJsonLayer> implements IGeoJsonLayer {
 	#native: com.google.maps.android.data.geojson.GeoJsonLayer;
-	style: GeometryStyle;
+	style: GeoJsonGeometryStyle;
 
 	constructor(map: GoogleMap, geoJson: any, geometryStyle?: IGeometryStyle) {
 		super();
@@ -195,7 +147,7 @@ export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson
 			try {
 				const geoJsonData = new org.json.JSONObject(JSON.stringify(geoJson));
 				this.#native = new com.google.maps.android.data.geojson.GeoJsonLayer(map.native, geoJsonData);
-				this.style = new GeometryStyle(this.#native.getDefaultPolygonStyle(), this.#native.getDefaultLineStringStyle(), this.#native.getDefaultPointStyle());
+				this.style = new GeoJsonGeometryStyle(this.#native.getDefaultPolygonStyle(), this.#native.getDefaultLineStringStyle(), this.#native.getDefaultPointStyle());
 
 				if (geometryStyle) {
 					for (const key of Object.keys(geometryStyle)) {
@@ -211,7 +163,7 @@ export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson
 	}
 
 	static fromNative(nativeGeoJsonLayer: com.google.maps.android.data.geojson.GeoJsonLayer) {
-		if (GeoJsonLayer instanceof com.google.maps.android.data.geojson.GeoJsonLayer) {
+		if (nativeGeoJsonLayer instanceof com.google.maps.android.data.geojson.GeoJsonLayer) {
 			const geoJsonLayer = new GeoJsonLayer(null, null);
 			geoJsonLayer.#native = nativeGeoJsonLayer;
 			return geoJsonLayer;
@@ -221,6 +173,19 @@ export class GeoJsonLayer extends DataLayer<com.google.maps.android.data.geojson
 
 	get native() {
 		return this.#native;
+	}
+
+	get features() {
+		const features: GeoJsonFeature[] = [];
+		const nativeFeatures: java.lang.Iterable<com.google.maps.android.data.geojson.GeoJsonFeature> = this.native.getFeatures();
+
+		const iter = nativeFeatures.iterator();
+		while (iter.hasNext()) {
+			const feature = iter.next();
+			features.push(GeoJsonFeature.fromNative(feature));
+		}
+
+		return features;
 	}
 
 	// get bounds(): CoordinateBounds {
@@ -272,103 +237,102 @@ export class KmlLayer extends DataLayer<com.google.maps.android.data.kml.KmlLaye
 		return this.native.getGroundOverlays();
 	}
 }
+abstract class BaseFeature<T extends com.google.maps.android.data.Feature> implements IFeature {
+	abstract style: any;
+	abstract readonly native: T;
 
-export class ClusterItem extends com.google.maps.android.clustering.ClusterItem {
-	constructor(public options: MarkerOptions) {
-		super({
-			getPosition: (): com.google.android.gms.maps.model.LatLng => {
-				return new com.google.android.gms.maps.model.LatLng(options?.position?.lat ?? 0, options?.position?.lng ?? 0);
-			},
-			getSnippet: (): string => {
-				return this.options?.snippet ?? '';
-			},
-			getTitle: (): string => {
-				return this.options?.title ?? '';
-			},
+	get android() {
+		return this.native;
+	}
+
+	get geometry() {
+		return Geometry.fromNative(this.native.getGeometry());
+	}
+
+	get id() {
+		return this.native.getId();
+	}
+
+	get properties() {
+		const props = {};
+
+		const iter = this.native.getPropertyKeys().iterator();
+		while (iter.hasNext()) {
+			const key = iter.next();
+			props[key] = this.native.getProperty(key);
+		}
+
+		return props;
+	}
+	set properties(value: any) {
+		Object.entries(value).forEach(([key, value]: [string, string]) => {
+			this.native.setProperty(key, value);
 		});
 	}
 }
 
-@NativeClass()
-export class ClusterRenderer extends com.google.maps.android.clustering.view.DefaultClusterRenderer<any> {
-	constructor(map: GoogleMap, clusterManager: ClusterManager) {
-		super(Utils.ad.getApplicationContext(), map.native, clusterManager.native);
+export class GeoJsonFeature extends BaseFeature<com.google.maps.android.data.geojson.GeoJsonFeature> {
+	#native: com.google.maps.android.data.geojson.GeoJsonFeature;
+	#style: GeoJsonGeometryStyle;
+
+	constructor() {
+		super();
 	}
 
-	override onBeforeClusterItemRendered(item: ClusterItem, opts: com.google.android.gms.maps.model.MarkerOptions): void {
-		super.onBeforeClusterItemRendered(item, opts);
-
-		if (typeof item.options?.draggable === 'boolean') {
-			opts.draggable(item.options.draggable);
+	static fromNative(nativeFeature: com.google.maps.android.data.geojson.GeoJsonFeature) {
+		if (nativeFeature instanceof com.google.maps.android.data.geojson.GeoJsonFeature) {
+			const feature = new GeoJsonFeature();
+			feature.#native = nativeFeature;
+			return feature;
 		}
+		return null;
+	}
 
-		if (typeof item.options?.anchorU === 'number' || typeof item.options?.anchorV === 'number') {
-			const anchorU = item.options?.anchorU ?? opts.getAnchorU();
-			const anchorV = item.options?.anchorV ?? opts?.getAnchorV();
-			opts.anchor(anchorU, anchorV);
-		}
+	get native() {
+		return this.#native;
+	}
 
-		if (item.options?.position) {
-			opts.position(new com.google.android.gms.maps.model.LatLng(item.options.position.lat, item.options.position.lng));
-		}
-
-		if (item.options?.title) {
-			opts.title(item.options.title);
-		}
-
-		if (item.options?.snippet) {
-			opts.snippet(item.options.snippet);
-		}
-
-		if (item.options?.icon) {
-			if (item.options?.icon instanceof android.graphics.Bitmap) {
-				const desc = com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(item.options.icon);
-				opts.icon(desc);
-			} else if (item.options?.icon instanceof ImageSource) {
-				const desc = com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(item.options.icon.android);
-				opts.icon(desc);
-			}
-		}
-
-		const color = intoNativeColor(item.options.color);
-
-		if (color !== null) {
-			opts.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(color)));
-		}
-
-		if (typeof item.options?.rotation === 'number') {
-			opts.rotation(item.options.rotation);
-		}
-
-		if (typeof item.options?.flat === 'boolean') {
-			opts.flat(item.options.flat);
-		}
-
-		if (typeof item.options?.zIndex === 'number') {
-			opts.zIndex(item.options.zIndex);
-		}
+	get style() {
+		this.#style = new GeoJsonGeometryStyle(this.native.getPolygonStyle(), this.native.getLineStringStyle(), this.native.getPointStyle());
+		return this.#style;
 	}
 }
 
-export class ClusterManager implements IClusterManager {
-	#native: com.google.maps.android.clustering.ClusterManager<com.google.maps.android.clustering.ClusterItem>;
+export class KMLPlacemarkFeature extends BaseFeature<com.google.maps.android.data.kml.KmlPlacemark> {
+	#native: com.google.maps.android.data.kml.KmlPlacemark;
+	#style: GeoJsonGeometryStyle;
 
-	constructor(private map: GoogleMap) {
-		this.#native = new com.google.maps.android.clustering.ClusterManager(Utils.ad.getApplicationContext(), map.native);
-
-		if (map?.native?.setOnCameraIdleListener) {
-			(map.native as com.google.android.gms.maps.GoogleMap).setOnCameraIdleListener(this.#native);
-		}
-
-		const renderer = new ClusterRenderer(map, this);
-		this.setRenderer(renderer);
+	constructor() {
+		super();
 	}
 
-	static fromNative(nativeClusterManager: com.google.maps.android.clustering.ClusterManager<any>) {
-		if (ClusterManager instanceof com.google.maps.android.clustering.ClusterManager) {
-			const geoJsonLayer = new ClusterManager(null);
-			geoJsonLayer.#native = nativeClusterManager;
-			return geoJsonLayer;
+	static fromNative(nativeFeature: com.google.maps.android.data.kml.KmlPlacemark) {
+		if (nativeFeature instanceof com.google.maps.android.data.kml.KmlPlacemark) {
+			const feature = new KMLPlacemarkFeature();
+			feature.#native = nativeFeature;
+			return feature;
+		}
+		return null;
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	get style() {
+		// this.#style = new KmlGeometryStyle(this.native.getPolygonOptions(), this.native.getPolylineOptions(), this.native.getMarkerOptions());
+		return this.#style;
+	}
+}
+
+export class Geometry<T = any> implements IGeometry {
+	#native: com.google.maps.android.data.Geometry<T>;
+
+	static fromNative(nativeGeometry: com.google.maps.android.data.Geometry<any>) {
+		if (nativeGeometry instanceof com.google.maps.android.data.Geometry) {
+			const geometry = new Geometry<typeof nativeGeometry>();
+			geometry.#native = nativeGeometry;
+			return geometry;
 		}
 		return null;
 	}
@@ -381,35 +345,11 @@ export class ClusterManager implements IClusterManager {
 		return this.native;
 	}
 
-	setRenderer(renderer: ClusterRenderer) {
-		this.native.setRenderer(renderer);
+	get type() {
+		return this.native.getGeometryType();
 	}
 
-	addItem(clusterItem: ClusterItem) {
-		this.native.addItem(clusterItem);
-	}
-
-	addItems(clusterItems: ClusterItem[]) {
-		const clusterItemArray = new java.util.ArrayList();
-		for (const clusterItem of clusterItems) {
-			clusterItemArray.add(clusterItem);
-		}
-		this.native.addItems(clusterItemArray);
-	}
-
-	removeItem(clusterItem: ClusterItem) {
-		this.native.removeItem(clusterItem);
-	}
-
-	removeItems(clusterItems: ClusterItem[]) {
-		this.native.removeItems(clusterItems as any);
-	}
-
-	clearItems() {
-		this.native.clearItems();
-	}
-
-	cluster() {
-		this.native.cluster();
+	get geometries() {
+		return this.native.getGeometryObject();
 	}
 }
