@@ -37,14 +37,14 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 
 		this.geoJson.addLayerToMap();
 		const features = this.geoJson.features;
-		features[0].style.fillColor = new Color('green');
-		features[1].style.strokeColor = new Color('yellow');
+		// features[0].style.fillColor = new Color('green');
+		// features[1].style.strokeColor = new Color('yellow');
 
-		features[0].properties = {
-			STATE_NAME: 'blueberry',
-		};
+		// features[0].properties = {
+		// 	STATE_NAME: 'blueberry',
+		// };
 
-		console.log(features[0].properties);
+		// console.log(features[0].properties);
 
 		// this.geoJson.removeLayerFromMap();
 
