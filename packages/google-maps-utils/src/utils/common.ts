@@ -26,8 +26,16 @@ export function intoNativeHeatmapGradient(gradients: IGradient[]): any {
 	);
 
 	if (global.isAndroid) {
-		// This is currently breaking... No idea why.
-		return new com.google.maps.android.heatmaps.Gradient(colors, stops);
+		const _colors = Array.create('int', colors.length);
+		for (let i = 0; i < colors.length; i++) {
+			_colors[i] = colors[i];
+		}
+		const _stops = Array.create('float', stops.length);
+		for (let i = 0; i < stops.length; i++) {
+			_stops[i] = stops[i];
+		}
+
+		return new com.google.maps.android.heatmaps.Gradient(_colors, _stops);
 	} else {
 		return GMUGradient.alloc().initWithColorsStartPointsColorMapSize(colors, stops, 256);
 	}

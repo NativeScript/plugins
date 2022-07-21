@@ -25,8 +25,7 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 					builder.maxIntensity(heatmapOptions.radius);
 				}
 				if (heatmapOptions.gradient) {
-					// TODO: Fix nativeGradient
-					// builder.gradient = intoNativeHeatmapGradient(heatmapOptions.gradient);
+					builder.gradient(intoNativeHeatmapGradient(heatmapOptions.gradient));
 				}
 			}
 
