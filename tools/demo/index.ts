@@ -26,6 +26,7 @@ export * from './iqkeyboardmanager';
 export * from './local-notifications';
 export * from './localize';
 export * from './picker';
+export * from './roomplan';
 export * from './shared-notification-delegate';
 export * from './social-share';
 export * from './theme-switcher';

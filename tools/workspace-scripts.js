@@ -285,6 +285,13 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
+			// @nativescript/roomplan
+			roomplan: {
+				build: {
+					script: 'nx run roomplan:build.all',
+					description: '@nativescript/roomplan: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -422,6 +429,10 @@ module.exports = {
 			'ionic-portals': {
 				script: 'nx run ionic-portals:focus',
 				description: 'Focus on @nativescript/ionic-portals',
+			},
+			roomplan: {
+				script: 'nx run roomplan:focus',
+				description: 'Focus on @nativescript/roomplan',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

@@ -25,6 +25,7 @@
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
 - [@nativescript/picker](packages/picker/README.md)
+- [@nativescript/roomplan](packages/roomplan/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
 - [@nativescript/theme-switcher](packages/theme-switcher/README.md)

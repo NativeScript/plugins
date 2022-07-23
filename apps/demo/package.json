@@ -4,8 +4,8 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
-		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/roomplan": "file:../../packages/roomplan",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -27,10 +27,11 @@
 		"@nativescript/google-maps": "file:../../packages/google-maps",
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/imagepicker": "file:../../packages/imagepicker",
+		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",
-		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/localize": "file:../../packages/localize",
 		"@nativescript/picker": "file:../../packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",
@@ -40,6 +41,6 @@
 	},
 	"devDependencies": {
 		"@nativescript/android": "~8.2.0",
-		"@nativescript/ios": "~8.2.0"
+		"@nativescript/ios": "~8.3.0"
 	}
 }

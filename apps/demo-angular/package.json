@@ -2,7 +2,7 @@
 	"main": "./src/main.ts",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/ionic-portals": "file:../../dist/packages/ionic-portals",
+		"@nativescript/roomplan": "file:../../dist/packages/roomplan",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -24,6 +24,7 @@
 		"@nativescript/google-maps": "file:../../dist/packages/google-maps",
 		"@nativescript/google-signin": "file:../../dist/packages/google-signin",
 		"@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
+		"@nativescript/ionic-portals": "file:../../dist/packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../dist/packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
@@ -37,6 +38,6 @@
 	},
 	"devDependencies": {
 		"@nativescript/android": "~8.2.0",
-		"@nativescript/ios": "~8.2.0"
+		"@nativescript/ios": "~8.3.0"
 	}
 }
