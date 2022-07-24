@@ -9,21 +9,3 @@ declare class NSCRoomPlan extends UIViewController {
 
 	stopSession(): void;
 }
-
-declare class RoomCapture extends UIView {
-	static alloc(): RoomCapture; // inherited from NSObject
-
-	static appearance(): RoomCapture; // inherited from UIAppearance
-
-	static appearanceForTraitCollection(trait: UITraitCollection): RoomCapture; // inherited from UIAppearance
-
-	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): RoomCapture; // inherited from UIAppearance
-
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): RoomCapture; // inherited from UIAppearance
-
-	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): RoomCapture; // inherited from UIAppearance
-
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): RoomCapture; // inherited from UIAppearance
-
-	static new(): RoomCapture; // inherited from NSObject
-}
