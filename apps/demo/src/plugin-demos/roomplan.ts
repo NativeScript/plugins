@@ -1,4 +1,4 @@
-import { Observable, EventData, Page, ShowModalOptions } from '@nativescript/core';
+import { Observable, EventData, Page, ShowModalOptions, Dialogs } from '@nativescript/core';
 import { DemoSharedRoomplan } from '@demo/shared';
 import {} from '@nativescript/roomplan';
 
@@ -15,6 +15,19 @@ export class DemoModel extends DemoSharedRoomplan {
 	openModal() {
 		this.page.showModal('modals/modal-roomplan', <ShowModalOptions>{
 			fullscreen: true,
+			context: {
+				enablePreview: true,
+			},
+			closeCallback: (savedModelPath: string) => {
+				console.log('savedModelPath:', savedModelPath);
+				setTimeout(() => {
+					Dialogs.alert({
+						title: 'Model saved!',
+						message: savedModelPath,
+						okButtonText: 'Ok',
+					});
+				}, 1000);
+			},
 		});
 	}
 }

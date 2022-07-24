@@ -3,8 +3,6 @@ declare class NSCRoomPlan extends UIViewController {
 
 	static new(): NSCRoomPlan; // inherited from NSObject
 
-	callback: (p1: string) => void;
-
 	exportResultsWithFilePathCallback(filePath: string, callback: (p1: string) => void): void;
 
 	startSession(): void;

@@ -1,4 +1,4 @@
-import { Observable, EventData, Page } from '@nativescript/core';
+import { Observable, EventData, Page, Dialogs, knownFolders, path } from '@nativescript/core';
 import { RoomCaptureView } from '@nativescript/roomplan';
 import { shareText } from '@nativescript/social-share';
 
@@ -31,7 +31,21 @@ export class DemoModel extends Observable {
 			this.scanning = false;
 			this.notifyPropertyChange('scanning', this.scanning);
 		} else {
-			this.page.closeModal();
+			Dialogs.prompt({
+				title: 'Save 3D Room Model?',
+				message: 'Please type the name for the model...',
+				defaultText: 'my-room',
+				okButtonText: 'Save',
+				cancelButtonText: 'Cancel',
+			}).then((value) => {
+				if (value.result && value.text) {
+					roomCaptureView.export(path.join(knownFolders.documents().path, `${value.text}.usdz`), (outputPath) => {
+						this.page.closeModal(outputPath);
+					});
+				} else {
+					this.page.closeModal();
+				}
+			});
 		}
 	}
 }

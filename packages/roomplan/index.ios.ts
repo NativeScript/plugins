@@ -1,4 +1,4 @@
-import { callbackProperty, RoomCaptureViewCommon } from './common';
+import { RoomCaptureViewCommon } from './common';
 
 export class RoomCaptureView extends RoomCaptureViewCommon {
 	private roomPlan: NSCRoomPlan;
@@ -16,7 +16,7 @@ export class RoomCaptureView extends RoomCaptureViewCommon {
 		this.roomPlan.stopSession();
 	}
 
-	[callbackProperty.setNative](value: (filePath: string) => void) {
-		this.roomPlan.callback = value;
+	export(filePath: string, callback?: (outputPath: string) => void) {
+		this.roomPlan.exportResultsWithFilePathCallback(filePath, callback);
 	}
 }
