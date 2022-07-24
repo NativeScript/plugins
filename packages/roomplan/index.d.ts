@@ -1,3 +1,6 @@
-import { RoomplanCommon } from './common';
+import { RoomCaptureViewCommon } from './common';
 
-export declare class Roomplan extends RoomplanCommon {}
+export declare class RoomCaptureView extends RoomCaptureViewCommon {
+	start(): void;
+	stop(): void;
+}

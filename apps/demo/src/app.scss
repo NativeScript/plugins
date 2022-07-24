@@ -2,30 +2,30 @@
 @import 'nativescript-theme-core/scss/index';
 
 Button {
-  text-transform: none;
-  height: 54;
-  android-elevation: 0;
-  android-dynamic-elevation-offset: 0;
-  padding: 0;
-  margin: 0;
+	text-transform: none;
+	height: 54;
+	android-elevation: 0;
+	android-dynamic-elevation-offset: 0;
+	padding: 0;
+	margin: 0;
 
-  &.btn {
-    padding: 0;
-  margin: 2 0 2 0;
+	&.btn {
+		padding: 0;
+		margin: 2 0 2 0;
 
-  &.btn-primary {
-    background-color: rgb(95, 185, 249);
-  }
-  }
+		&.btn-primary {
+			background-color: #5fb9f9;
+		}
+	}
 }
 TextField {
 	border-bottom-width: 1;
 	border-bottom-color: transparent;
-  font-size: 17;
-  placeholder-color: rgb(201, 201, 201);
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  height: 29;
+	font-size: 17;
+	placeholder-color: rgb(201, 201, 201);
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	height: 29;
 }

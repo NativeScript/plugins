@@ -1,14 +1,16 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="roomplan" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test roomplan" tap="{{ testIt }}" class="btn btn-primary"/>
-
-          </StackLayout>
-        </ScrollView>
+  <Page.actionBar>
+    <ActionBar title="NativeScript + RoomPlan" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <GridLayout class="p-20" rows="40,auto,*,auto,40">
+    <StackLayout row="1">
+      <Label text="RoomPlan" fontSize="40" fontWeight="bold" class="text-center" />
+      <Label text="iOS 16+" fontSize="36" fontWeight="bold" marginBottom="25" class="text-center" />
+      <Label text="Use your device to scan your entire room." fontSize="25" textWrap="true" class="text-center" />
     </StackLayout>
+
+    <Button row="3" text="Scan Room" tap="{{ openModal }}" class="btn btn-primary" borderRadius="25" />
+
+  </GridLayout>
 </Page>

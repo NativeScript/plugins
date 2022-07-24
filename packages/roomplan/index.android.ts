@@ -1,3 +1,3 @@
-import { RoomplanCommon } from './common';
+import { RoomCaptureViewCommon } from './common';
 
-export class Roomplan extends RoomplanCommon {}
+export class RoomCaptureView extends RoomCaptureViewCommon {}
