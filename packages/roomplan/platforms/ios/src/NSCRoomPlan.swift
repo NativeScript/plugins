@@ -10,7 +10,6 @@ import RoomPlan
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("RoomCapture viewDidLoad!")
         // Set up after loading the view.
         setupRoomCaptureView()
         
@@ -19,22 +18,18 @@ import RoomPlan
     
     override func viewWillDisappear(_ flag: Bool) {
         super.viewWillDisappear(flag)
-        print("RoomCapture viewWillDisappear!")
         stopSession()
     }
     
     public func setupRoomCaptureView() {
-        print("setupRoomCaptureView!")
         roomCaptureView = RoomCaptureView(frame: view.bounds)
         roomCaptureView.captureSession.delegate = self
         roomCaptureView.delegate = self
         
-        print("setupRoomCaptureView insert!")
         view.insertSubview(roomCaptureView, at: 0)
     }
     
     @objc public func startSession() {
-        print("RoomCapture startSession!")
         isScanning = true
         roomCaptureView?.captureSession.run(configuration: roomCaptureSessionConfig)
     }
@@ -58,7 +53,6 @@ import RoomPlan
         let destinationURL = filePath != nil ? URL(fileURLWithPath: filePath!) :  FileManager.default.temporaryDirectory.appending(path: "Room.usdz")
         do {
             try finalResults?.export(to: destinationURL)
-            print(destinationURL)
             
             if (callback != nil) {
                 callback!(destinationURL.absoluteString)
