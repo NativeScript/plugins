@@ -292,6 +292,13 @@ module.exports = {
 					description: '@nativescript/haptics: Build',
 				},
 			},
+			// @nativescript/pdf
+			'pdf': {
+				build: {
+					script: 'nx run pdf:build.all',
+					description: '@nativescript/pdf: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -433,6 +440,10 @@ module.exports = {
 			haptics: {
 				script: 'nx run haptics:focus',
 				description: 'Focus on @nativescript/haptics',
+			},
+			'pdf': {
+				script: 'nx run pdf:focus',
+				description: 'Focus on @nativescript/pdf',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',
