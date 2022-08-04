@@ -1,5 +1,5 @@
 import { Color, ImageSource, EventData, View } from '@nativescript/core';
-import { JointType, MapViewBase } from './common';
+import { JointType, MapType, MapViewBase } from './common';
 
 export type FeatureTypeAdministrative = 'administrative' | 'administrative.country' | 'administrative.land_parcel' | 'administrative.locality' | 'administrative.neighborhood' | 'administrative.province';
 
@@ -380,6 +380,8 @@ export interface IGoogleMap {
 
 	mapStyle: Style[];
 
+	mapType: MapType;
+
 	snapshot(): Promise<ImageSource>;
 
 	animateCamera(update: CameraUpdate);
@@ -413,6 +415,7 @@ export interface IGoogleMap {
 
 export class GoogleMap implements IGoogleMap {
 	mapStyle: Style[];
+	mapType: MapType;
 	addTileOverlay(options: TileOverlayOptions): TileOverlay;
 	removeTileOverlay(overlay: TileOverlay);
 	buildingsEnabled: boolean;
