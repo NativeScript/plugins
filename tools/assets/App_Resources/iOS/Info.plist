@@ -65,5 +65,7 @@
     </array>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Upload photos/videos as well as scan using your camera.</string>
   </dict>
 </plist>
