@@ -259,6 +259,13 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 		// TODO
 	}
 
+	if (options?.bounds) {
+		opts.bounds = new GMSCoordinateBounds({
+			coordinate: CLLocationCoordinate2DMake(options.bounds.southwest.lat, options.bounds.southwest.lng),
+			coordinate2: CLLocationCoordinate2DMake(options.bounds.northeast.lat, options.bounds.northeast.lng)
+		});
+	}
+
 	if (typeof options?.anchorU === 'number' || typeof options?.anchorV === 'number') {
 		opts.anchor = CGPointMake(options?.anchorU ?? opts.anchor.x, options?.anchorV ?? opts.anchor.y);
 	}
