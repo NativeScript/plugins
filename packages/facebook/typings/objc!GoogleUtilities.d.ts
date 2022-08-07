@@ -156,13 +156,13 @@ declare class GULKeychainStorage extends NSObject {
 
 	constructor(o: { service: string });
 
-	getObjectForKeyObjectClassAccessGroup(key: string, objectClass: typeof NSObject, accessGroup: string): FBLPromise<NSSecureCoding>;
+	getObjectForKeyObjectClassAccessGroup(key: string, objectClass: typeof NSObject, accessGroup: string): FBLPromise;
 
 	initWithService(service: string): this;
 
-	removeObjectForKeyAccessGroup(key: string, accessGroup: string): FBLPromise<NSNull>;
+	removeObjectForKeyAccessGroup(key: string, accessGroup: string): FBLPromise;
 
-	setObjectForKeyAccessGroup(object: NSSecureCoding, key: string, accessGroup: string): FBLPromise<NSNull>;
+	setObjectForKeyAccessGroup(object: NSSecureCoding, key: string, accessGroup: string): FBLPromise;
 }
 
 declare class GULKeychainUtils extends NSObject {
@@ -468,8 +468,6 @@ declare class GULSecureCoding extends NSObject {
 	static archivedDataWithRootObjectError(object: NSCoding): NSData;
 
 	static new(): GULSecureCoding; // inherited from NSObject
-
-	static unarchivedObjectOfClassFromDataError(aClass: typeof NSObject, data: NSData): any;
 
 	static unarchivedObjectOfClassesFromDataError(classes: NSSet<typeof NSObject>, data: NSData): any;
 }

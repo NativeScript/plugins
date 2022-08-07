@@ -3,6 +3,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.facebook.android:facebook-core:13.1.0'
-    implementation 'com.facebook.android:facebook-login:13.1.0'
+    implementation 'com.facebook.android:facebook-core:14.1.0'
+    implementation 'com.facebook.android:facebook-login:14.1.0'
 }

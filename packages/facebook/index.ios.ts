@@ -25,28 +25,6 @@ export class FacebookError extends Error {
 }
 
 let appDelegateInitialized = false;
-let appDelegate: FacebookAppDelegateImpl;
-@NativeClass
-@ObjCClass(UIApplicationDelegate)
-class FacebookAppDelegateImpl extends UIResponder implements UIApplicationDelegate {
-	static get sharedInstance() {
-		if (!appDelegate) {
-			appDelegate = FacebookAppDelegateImpl.alloc().init() as FacebookAppDelegateImpl;
-		}
-		return appDelegate;
-	}
-
-	applicationOpenURLOptions(app: UIApplication, url: NSURL, options: NSDictionary<string, any>): boolean {
-		return FBSDKApplicationDelegate.sharedInstance.applicationOpenURLOptions(app, url, options);
-	}
-
-	applicationOpenURLSourceApplicationAnnotation(application: UIApplication, url: NSURL, sourceApplication: string, annotation: any): boolean {
-		return FBSDKApplicationDelegate.sharedInstance.applicationOpenURLSourceApplicationAnnotation(application, url, sourceApplication, annotation);
-	}
-	applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>): boolean {
-		return FBSDKApplicationDelegate.sharedInstance.applicationDidFinishLaunchingWithOptions(application, launchOptions);
-	}
-}
 
 export class AccessToken {
 	#native: FBSDKAccessToken;
@@ -132,8 +110,8 @@ export class AccessToken {
 			permissions: this.permissions,
 			refreshDate: this.refreshDate,
 			tokenString: this.tokenString,
-			userID: this.userID
-		}
+			userID: this.userID,
+		};
 	}
 
 	get native() {
@@ -198,8 +176,8 @@ export class LoginResult {
 			declinedPermissions: this.declinedPermissions,
 			grantedPermissions: this.grantedPermissions,
 			isCancelled: this.isCancelled,
-			token: this.token
-		}
+			token: this.token,
+		};
 	}
 
 	get native() {
@@ -220,10 +198,11 @@ export class LoginManager implements ILoginManager {
 
 		if (!appDelegateInitialized) {
 			if (!Application.ios.delegate) {
-				Application.ios.delegate = FacebookAppDelegateImpl;
+				Application.ios.delegate = NSCFBAppDelegate;
 			}
 			GULAppDelegateSwizzler.proxyOriginalDelegate();
-			GULAppDelegateSwizzler.registerAppDelegateInterceptor(FacebookAppDelegateImpl.sharedInstance);
+			GULAppDelegateSwizzler.registerAppDelegateInterceptor(<any>NSCFBAppDelegate);
+
 			appDelegateInitialized = true;
 		}
 	}
