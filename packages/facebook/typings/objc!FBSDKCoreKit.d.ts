@@ -1,4 +1,4 @@
-declare class FBSDKAccessToken extends NSObject implements NSCopying, NSObjectProtocol, NSSecureCoding {
+declare class FBSDKAccessToken extends NSObject implements FBSDKAccessTokenProviding, NSCopying, NSObjectProtocol, NSSecureCoding {
 	static alloc(): FBSDKAccessToken; // inherited from NSObject
 
 	static new(): FBSDKAccessToken; // inherited from NSObject
@@ -27,11 +27,7 @@ declare class FBSDKAccessToken extends NSObject implements NSCopying, NSObjectPr
 
 	readonly userID: string;
 
-	static currentAccessToken: FBSDKAccessToken;
-
 	static readonly currentAccessTokenIsActive: boolean;
-
-	static tokenCache: FBSDKTokenCaching;
 
 	readonly debugDescription: string; // inherited from NSObjectProtocol
 
@@ -45,7 +41,11 @@ declare class FBSDKAccessToken extends NSObject implements NSCopying, NSObjectPr
 
 	readonly; // inherited from NSObjectProtocol
 
+	static currentAccessToken: FBSDKAccessToken; // inherited from FBSDKAccessTokenProviding
+
 	static readonly supportsSecureCoding: boolean; // inherited from NSSecureCoding
+
+	static tokenCache: FBSDKTokenCaching; // inherited from FBSDKAccessTokenProviding
 
 	constructor(o: { coder: NSCoder }); // inherited from NSCoding
 
@@ -99,11 +99,6 @@ declare var FBSDKAccessTokenDidExpireKey: string;
 interface FBSDKAccessTokenProviding {}
 declare var FBSDKAccessTokenProviding: {
 	prototype: FBSDKAccessTokenProviding;
-};
-
-interface FBSDKAccessTokenSetting {}
-declare var FBSDKAccessTokenSetting: {
-	prototype: FBSDKAccessTokenSetting;
 };
 
 declare const enum FBSDKAdvertisingTrackingStatus {
@@ -559,7 +554,7 @@ declare var FBSDKApplicationObserving: {
 	prototype: FBSDKApplicationObserving;
 };
 
-declare class FBSDKAuthenticationToken extends NSObject implements NSCopying, NSObjectProtocol, NSSecureCoding {
+declare class FBSDKAuthenticationToken extends NSObject implements FBSDKAuthenticationTokenProviding, NSCopying, NSObjectProtocol, NSSecureCoding {
 	static alloc(): FBSDKAuthenticationToken; // inherited from NSObject
 
 	static new(): FBSDKAuthenticationToken; // inherited from NSObject
@@ -569,10 +564,6 @@ declare class FBSDKAuthenticationToken extends NSObject implements NSCopying, NS
 	readonly nonce: string;
 
 	readonly tokenString: string;
-
-	static currentAuthenticationToken: FBSDKAuthenticationToken;
-
-	static tokenCache: FBSDKTokenCaching;
 
 	readonly debugDescription: string; // inherited from NSObjectProtocol
 
@@ -586,9 +577,15 @@ declare class FBSDKAuthenticationToken extends NSObject implements NSCopying, NS
 
 	readonly; // inherited from NSObjectProtocol
 
+	static currentAuthenticationToken: FBSDKAuthenticationToken; // inherited from FBSDKAuthenticationTokenProviding
+
 	static readonly supportsSecureCoding: boolean; // inherited from NSSecureCoding
 
+	static tokenCache: FBSDKTokenCaching; // inherited from FBSDKAuthenticationTokenProviding
+
 	constructor(o: { coder: NSCoder }); // inherited from NSCoding
+
+	constructor(o: { tokenString: string; nonce: string; graphDomain: string });
 
 	claims(): FBSDKAuthenticationTokenClaims;
 
@@ -601,6 +598,8 @@ declare class FBSDKAuthenticationToken extends NSObject implements NSCopying, NS
 	encodeWithCoder(coder: NSCoder): void;
 
 	initWithCoder(coder: NSCoder): this;
+
+	initWithTokenStringNonceGraphDomain(tokenString: string, nonce: string, graphDomain: string): this;
 
 	isEqual(object: any): boolean;
 
@@ -623,6 +622,8 @@ declare class FBSDKAuthenticationToken extends NSObject implements NSCopying, NS
 
 declare class FBSDKAuthenticationTokenClaims extends NSObject {
 	static alloc(): FBSDKAuthenticationTokenClaims; // inherited from NSObject
+
+	static claimsFromEncodedStringNonce(encodedClaims: string, expectedNonce: string): FBSDKAuthenticationTokenClaims;
 
 	static new(): FBSDKAuthenticationTokenClaims; // inherited from NSObject
 
@@ -670,11 +671,6 @@ declare class FBSDKAuthenticationTokenClaims extends NSObject {
 interface FBSDKAuthenticationTokenProviding {}
 declare var FBSDKAuthenticationTokenProviding: {
 	prototype: FBSDKAuthenticationTokenProviding;
-};
-
-interface FBSDKAuthenticationTokenSetting {}
-declare var FBSDKAuthenticationTokenSetting: {
-	prototype: FBSDKAuthenticationTokenSetting;
 };
 
 declare class FBSDKBridgeAPI extends NSObject implements FBSDKBridgeAPIRequestOpening, FBSDKURLOpener {
@@ -1105,6 +1101,8 @@ declare const enum FBSDKFeature {
 	AEMConversionFiltering = 16844801,
 
 	AEMCatalogMatching = 16844802,
+
+	AEMAdvertiserRuleMatchInServer = 16844803,
 
 	AppEventsCloudbridge = 16845056,
 
@@ -1746,10 +1744,12 @@ declare const enum FBSDKProductCondition {
 	Used = 2,
 }
 
-declare class FBSDKProfile extends NSObject implements NSCopying, NSSecureCoding {
+declare class FBSDKProfile extends NSObject implements FBSDKProfileProviding, NSCopying, NSSecureCoding {
 	static alloc(): FBSDKProfile; // inherited from NSObject
 
 	static enableUpdatesOnAccessTokenChange(enable: boolean): void;
+
+	static fetchCachedProfile(): FBSDKProfile;
 
 	static loadCurrentProfileWithCompletion(completion: (p1: FBSDKProfile, p2: NSError) => void): void;
 
@@ -1785,7 +1785,7 @@ declare class FBSDKProfile extends NSObject implements NSCopying, NSSecureCoding
 
 	readonly userID: string;
 
-	static currentProfile: FBSDKProfile;
+	static currentProfile: FBSDKProfile; // inherited from FBSDKProfileProviding
 
 	static readonly supportsSecureCoding: boolean; // inherited from NSSecureCoding
 

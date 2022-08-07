@@ -25,38 +25,6 @@ export class FacebookError extends Error {
 }
 
 let appDelegateInitialized = false;
-let appDelegate: FacebookAppDelegateImpl;
-@NativeClass
-class FacebookAppDelegateImpl extends UIResponder implements UIApplicationDelegate {
-	static ObjCProtocols = [UIApplicationDelegate];
-	// static get sharedInstance() {
-	// 	if (!appDelegate) {
-	// 		appDelegate = FacebookAppDelegateImpl.alloc().init() as FacebookAppDelegateImpl;
-	// 	}
-	// 	return appDelegate;
-	// }
-
-	applicationOpenURLOptions(app: UIApplication, url: NSURL, options: NSDictionary<string, any>): boolean {
-		FBSDKApplicationDelegate.sharedInstance.applicationOpenURLOptions(app, url, options);
-		return true;
-	}
-
-	applicationOpenURLSourceApplicationAnnotation(application: UIApplication, url: NSURL, sourceApplication: string, annotation: any): boolean {
-		let handled = false;
-		if (!handled && typeof FBSDKApplicationDelegate !== 'undefined') {
-			// 		sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-			// annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-			handled = FBSDKApplicationDelegate.sharedInstance.applicationOpenURLSourceApplicationAnnotation(application, url, sourceApplication, annotation);
-		}
-		return handled;
-	}
-	applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: NSDictionary<string, any>): boolean {
-		if (typeof FBSDKApplicationDelegate !== 'undefined') {
-			FBSDKApplicationDelegate.sharedInstance.applicationDidFinishLaunchingWithOptions(application, launchOptions);
-		}
-		return true;
-	}
-}
 
 export class AccessToken {
 	#native: FBSDKAccessToken;
@@ -230,10 +198,11 @@ export class LoginManager implements ILoginManager {
 
 		if (!appDelegateInitialized) {
 			if (!Application.ios.delegate) {
-				Application.ios.delegate = FacebookAppDelegateImpl;
+				Application.ios.delegate = NSCFBAppDelegate;
 			}
-			// GULAppDelegateSwizzler.proxyOriginalDelegate();
-			// GULAppDelegateSwizzler.registerAppDelegateInterceptor(FacebookAppDelegateImpl.sharedInstance);
+			GULAppDelegateSwizzler.proxyOriginalDelegate();
+			GULAppDelegateSwizzler.registerAppDelegateInterceptor(<any>NSCFBAppDelegate);
+
 			appDelegateInitialized = true;
 		}
 	}
