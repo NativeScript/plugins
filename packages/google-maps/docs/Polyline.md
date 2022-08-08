@@ -1,7 +1,7 @@
 # Polyline
 ## Adding Polylines
 
-You can create Polylines using the [GoogleMap](GoogleMap.md)s object `addPolyline` function by passing in the specified [Polyline Options](#polyline-options).
+You can create Polylines using the [GoogleMap](README.md)s object `addPolyline` function by passing in the specified [Polyline Options](#polyline-options).
 
 ```ts
 function addPolyline(map: GoogleMap, Polyline: PolylineOptions): Polyline {
@@ -27,7 +27,7 @@ function addPolyline(map: GoogleMap, Polyline: PolylineOptions): Polyline {
 
 ## Removing Polylines
 
-You can remove a Polyline using the [GoogleMap](GoogleMap.md)s `removePolyline` function, like so: 
+You can remove a Polyline using the [GoogleMap](README.md)s `removePolyline` function, like so: 
 
 ```ts
 function removePolyline(map: GoogleMap, Polyline: PolylineOptions) {

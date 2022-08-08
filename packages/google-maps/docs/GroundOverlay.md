@@ -1,7 +1,7 @@
 # Ground Overlays
 ## Adding Ground Overlays
 
-You can create Ground Overlays using the [GoogleMap](GoogleMap.md)s object `addGroundOverlay` function by passing in the specified [GroundOverlay Options](#groundoverlay-options).
+You can create Ground Overlays using the [GoogleMap](README.md)s object `addGroundOverlay` function by passing in the specified [GroundOverlay Options](#groundoverlay-options).
 
 ```ts
 function addGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions): GroundOverlay {
@@ -28,7 +28,7 @@ function addGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions): 
 
 ## Removing Ground Overlays
 
-You can remove a GroundOverlay using the [GoogleMap](GoogleMap.md)s `removeGroundOverlay` function, like so: 
+You can remove a GroundOverlay using the [GoogleMap](README.md)s `removeGroundOverlay` function, like so: 
 
 ```ts
 function removeGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions) {

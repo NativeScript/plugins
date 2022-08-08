@@ -1,7 +1,7 @@
 # Polygon
 ## Adding Polygons
 
-You can create polygons using the [GoogleMap](GoogleMap.md)s object `addPolygon` function by passing in the specified [Polygon Options](#polygon-options).
+You can create polygons using the [GoogleMap](README.md)s object `addPolygon` function by passing in the specified [Polygon Options](#polygon-options).
 
 ```ts
 function addPolygon(map: GoogleMap, Polygon: PolygonOptions): Polygon {
@@ -27,7 +27,7 @@ function addPolygon(map: GoogleMap, Polygon: PolygonOptions): Polygon {
 
 ## Removing Polygons
 
-You can remove a Polygon using the [GoogleMap](GoogleMap.md)s `removePolygon` function, like so: 
+You can remove a Polygon using the [GoogleMap](README.md)s `removePolygon` function, like so: 
 
 ```ts
 function removePolygon(map: GoogleMap, Polygon: PolygonOptions) {
