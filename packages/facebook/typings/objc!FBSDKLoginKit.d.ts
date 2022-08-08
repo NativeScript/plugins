@@ -34,6 +34,10 @@ declare class FBSDKDeviceLoginCodeInfo extends NSObject {
 	readonly pollingInterval: number;
 
 	readonly verificationURL: NSURL;
+
+	constructor(o: { identifier: string; loginCode: string; verificationURL: NSURL; expirationDate: Date; pollingInterval: number });
+
+	initWithIdentifierLoginCodeVerificationURLExpirationDatePollingInterval(identifier: string, loginCode: string, verificationURL: NSURL, expirationDate: Date, pollingInterval: number): this;
 }
 
 declare const enum FBSDKDeviceLoginError {
@@ -118,7 +122,7 @@ declare class FBSDKDeviceLoginManager extends NSObject implements NSNetServiceDe
 	start(): void;
 }
 
-interface FBSDKDeviceLoginManagerDelegate extends NSObjectProtocol {
+interface FBSDKDeviceLoginManagerDelegate {
 	deviceLoginManagerCompletedWithResultError(loginManager: FBSDKDeviceLoginManager, result: FBSDKDeviceLoginManagerResult, error: NSError): void;
 
 	deviceLoginManagerStartedWithCodeInfo(loginManager: FBSDKDeviceLoginManager, codeInfo: FBSDKDeviceLoginCodeInfo): void;
@@ -134,7 +138,33 @@ declare class FBSDKDeviceLoginManagerResult extends NSObject {
 
 	readonly accessToken: FBSDKAccessToken;
 
-	readonly cancelled: boolean;
+	readonly isCancelled: boolean;
+
+	constructor(o: { token: FBSDKAccessToken; isCancelled: boolean });
+
+	initWithTokenIsCancelled(token: FBSDKAccessToken, cancelled: boolean): this;
+}
+
+declare class FBSDKDevicePoller extends NSObject {
+	static alloc(): FBSDKDevicePoller; // inherited from NSObject
+
+	static new(): FBSDKDevicePoller; // inherited from NSObject
+
+	scheduleWithIntervalBlock(interval: number, block: () => void): void;
+}
+
+declare class FBSDKDeviceRequestsHelper extends NSObject {
+	static alloc(): FBSDKDeviceRequestsHelper; // inherited from NSObject
+
+	static cleanUpAdvertisementServiceFor(delegate: NSNetServiceDelegate): void;
+
+	static getDeviceInfo(): string;
+
+	static isDelegateForAdvertisementService(delegate: NSNetServiceDelegate, service: NSNetService): boolean;
+
+	static new(): FBSDKDeviceRequestsHelper; // inherited from NSObject
+
+	static startAdvertisementServiceWithLoginCodeDelegate(loginCode: string, delegate: NSNetServiceDelegate): boolean;
 }
 
 declare var FBSDKLoginAuthTypeReauthorize: string;
@@ -208,10 +238,63 @@ declare const enum FBSDKLoginButtonTooltipBehavior {
 	Disable = 2,
 }
 
+declare class FBSDKLoginCompleterFactory extends NSObject {
+	static alloc(): FBSDKLoginCompleterFactory; // inherited from NSObject
+
+	static new(): FBSDKLoginCompleterFactory; // inherited from NSObject
+
+	createLoginCompleterWithUrlParametersAppID(parameters: NSDictionary<string, any>, appID: string): FBSDKLoginCompleting;
+}
+
+interface FBSDKLoginCompleting {
+	completeLoginWithHandler(handler: (p1: FBSDKLoginCompletionParameters) => void): void;
+
+	completeLoginWithNonceCodeVerifierHandler(nonce: string, codeVerifier: string, handler: (p1: FBSDKLoginCompletionParameters) => void): void;
+}
+declare var FBSDKLoginCompleting: {
+	prototype: FBSDKLoginCompleting;
+};
+
+declare class FBSDKLoginCompletionParameters extends NSObject {
+	static alloc(): FBSDKLoginCompletionParameters; // inherited from NSObject
+
+	static new(): FBSDKLoginCompletionParameters; // inherited from NSObject
+
+	accessTokenString: string;
+
+	appID: string;
+
+	authenticationToken: FBSDKAuthenticationToken;
+
+	authenticationTokenString: string;
+
+	challenge: string;
+
+	code: string;
+
+	dataAccessExpirationDate: Date;
+
+	declinedPermissions: NSSet<FBSDKPermission>;
+
+	error: NSError;
+
+	expirationDate: Date;
+
+	expiredPermissions: NSSet<FBSDKPermission>;
+
+	graphDomain: string;
+
+	nonceString: string;
+
+	permissions: NSSet<FBSDKPermission>;
+
+	profile: FBSDKProfile;
+
+	userID: string;
+}
+
 declare class FBSDKLoginConfiguration extends NSObject {
 	static alloc(): FBSDKLoginConfiguration; // inherited from NSObject
-
-	static authTypeForString(rawValue: string): string;
 
 	static new(): FBSDKLoginConfiguration; // inherited from NSObject
 
@@ -222,6 +305,8 @@ declare class FBSDKLoginConfiguration extends NSObject {
 	readonly messengerPageId: string;
 
 	readonly nonce: string;
+
+	readonly requestedPermissions: NSSet<FBSDKPermission>;
 
 	readonly tracking: FBSDKLoginTracking;
 
@@ -284,20 +369,96 @@ declare const enum FBSDKLoginError {
 
 declare var FBSDKLoginErrorDomain: string;
 
-declare class FBSDKLoginManager extends NSObject {
+declare class FBSDKLoginManager extends NSObject implements FBSDKURLOpening {
 	static alloc(): FBSDKLoginManager; // inherited from NSObject
 
 	static new(): FBSDKLoginManager; // inherited from NSObject
 
 	defaultAudience: FBSDKDefaultAudience;
 
+	readonly debugDescription: string; // inherited from NSObjectProtocol
+
+	readonly description: string; // inherited from NSObjectProtocol
+
+	readonly hash: number; // inherited from NSObjectProtocol
+
+	readonly isProxy: boolean; // inherited from NSObjectProtocol
+
+	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
+
+	readonly; // inherited from NSObjectProtocol
+
+	constructor(o: { defaultAudience: FBSDKDefaultAudience });
+
+	applicationDidBecomeActive(application: UIApplication): void;
+
+	applicationOpenURLSourceApplicationAnnotation(application: UIApplication, url: NSURL, sourceApplication: string, annotation: any): boolean;
+
+	canOpenURLForApplicationSourceApplicationAnnotation(url: NSURL, application: UIApplication, sourceApplication: string, annotation: any): boolean;
+
+	class(): typeof NSObject;
+
+	conformsToProtocol(aProtocol: any /* Protocol */): boolean;
+
+	initWithDefaultAudience(defaultAudience: FBSDKDefaultAudience): this;
+
+	isAuthenticationURL(url: NSURL): boolean;
+
+	isEqual(object: any): boolean;
+
+	isKindOfClass(aClass: typeof NSObject): boolean;
+
+	isMemberOfClass(aClass: typeof NSObject): boolean;
+
 	logInFromViewControllerConfigurationCompletion(viewController: UIViewController, configuration: FBSDKLoginConfiguration, completion: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
 
-	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], fromViewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], viewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
 
 	logOut(): void;
 
-	reauthorizeDataAccessHandler(fromViewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+	performSelector(aSelector: string): any;
+
+	performSelectorWithObject(aSelector: string, object: any): any;
+
+	performSelectorWithObjectWithObject(aSelector: string, object1: any, object2: any): any;
+
+	reauthorizeDataAccessHandler(viewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+
+	respondsToSelector(aSelector: string): boolean;
+
+	retainCount(): number;
+
+	self(): this;
+
+	shouldStopPropagationOfURL(url: NSURL): boolean;
+}
+
+declare class FBSDKLoginManagerLogger extends NSObject {
+	static alloc(): FBSDKLoginManagerLogger; // inherited from NSObject
+
+	static clientStateForAuthMethodAndExistingStateLogger(authMethod: string, existingState: NSDictionary<string, any>, logger: FBSDKLoginManagerLogger): string;
+
+	static new(): FBSDKLoginManagerLogger; // inherited from NSObject
+
+	constructor(o: { loggingToken: string; tracking: FBSDKLoginTracking });
+
+	constructor(o: { parameters: NSDictionary<string, any>; tracking: FBSDKLoginTracking });
+
+	endLoginWithResultError(result: FBSDKLoginManagerLoginResult, error: NSError): void;
+
+	endSession(): void;
+
+	initWithLoggingTokenTracking(loggingToken: string, tracking: FBSDKLoginTracking): this;
+
+	initWithParametersTracking(parameters: NSDictionary<string, any>, tracking: FBSDKLoginTracking): this;
+
+	postLoginHeartbeat(): void;
+
+	startAuthMethod(authMethod: string): void;
+
+	startSessionForLoginManager(loginManager: FBSDKLoginManager): void;
+
+	willAttemptAppSwitchingBehaviorWithUrlScheme(urlScheme: string): void;
 }
 
 declare class FBSDKLoginManagerLoginResult extends NSObject {
@@ -305,19 +466,69 @@ declare class FBSDKLoginManagerLoginResult extends NSObject {
 
 	static new(): FBSDKLoginManagerLoginResult; // inherited from NSObject
 
-	authenticationToken: FBSDKAuthenticationToken;
+	readonly authenticationToken: FBSDKAuthenticationToken;
 
-	declinedPermissions: NSSet<string>;
+	readonly declinedPermissions: NSSet<string>;
 
-	grantedPermissions: NSSet<string>;
+	readonly grantedPermissions: NSSet<string>;
 
 	readonly isCancelled: boolean;
 
-	token: FBSDKAccessToken;
+	readonly token: FBSDKAccessToken;
 
 	constructor(o: { token: FBSDKAccessToken; authenticationToken: FBSDKAuthenticationToken; isCancelled: boolean; grantedPermissions: NSSet<string>; declinedPermissions: NSSet<string> });
 
 	initWithTokenAuthenticationTokenIsCancelledGrantedPermissionsDeclinedPermissions(token: FBSDKAccessToken, authenticationToken: FBSDKAuthenticationToken, isCancelled: boolean, grantedPermissions: NSSet<string>, declinedPermissions: NSSet<string>): this;
+}
+
+declare const enum FBSDKLoginManagerState {
+	Idle = 0,
+
+	Start = 1,
+
+	PerformingLogin = 2,
+}
+
+declare class FBSDKLoginRecoveryAttempter extends NSObject implements FBSDKErrorRecoveryAttempting {
+	static alloc(): FBSDKLoginRecoveryAttempter; // inherited from NSObject
+
+	static new(): FBSDKLoginRecoveryAttempter; // inherited from NSObject
+
+	readonly debugDescription: string; // inherited from NSObjectProtocol
+
+	readonly description: string; // inherited from NSObjectProtocol
+
+	readonly hash: number; // inherited from NSObjectProtocol
+
+	readonly isProxy: boolean; // inherited from NSObjectProtocol
+
+	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
+
+	readonly; // inherited from NSObjectProtocol
+
+	attemptRecoveryFromErrorCompletionHandler(error: NSError, completionHandler: (p1: boolean) => void): void;
+
+	class(): typeof NSObject;
+
+	conformsToProtocol(aProtocol: any /* Protocol */): boolean;
+
+	isEqual(object: any): boolean;
+
+	isKindOfClass(aClass: typeof NSObject): boolean;
+
+	isMemberOfClass(aClass: typeof NSObject): boolean;
+
+	performSelector(aSelector: string): any;
+
+	performSelectorWithObject(aSelector: string, object: any): any;
+
+	performSelectorWithObjectWithObject(aSelector: string, object1: any, object2: any): any;
+
+	respondsToSelector(aSelector: string): boolean;
+
+	retainCount(): number;
+
+	self(): this;
 }
 
 declare class FBSDKLoginTooltipView extends FBSDKTooltipView {
@@ -340,9 +551,11 @@ declare class FBSDKLoginTooltipView extends FBSDKTooltipView {
 	delegate: FBSDKLoginTooltipViewDelegate;
 
 	forceDisplay: boolean;
+
+	shouldForceDisplay: boolean;
 }
 
-interface FBSDKLoginTooltipViewDelegate extends NSObjectProtocol {
+interface FBSDKLoginTooltipViewDelegate {
 	loginTooltipViewShouldAppear?(view: FBSDKLoginTooltipView, appIsEligible: boolean): boolean;
 
 	loginTooltipViewWillAppear?(view: FBSDKLoginTooltipView): void;
@@ -357,6 +570,40 @@ declare const enum FBSDKLoginTracking {
 	Enabled = 0,
 
 	Limited = 1,
+}
+
+declare class FBSDKLoginUtility extends NSObject {
+	static alloc(): FBSDKLoginUtility; // inherited from NSObject
+
+	static new(): FBSDKLoginUtility; // inherited from NSObject
+
+	static queryParamsFromLoginURL(url: NSURL): NSDictionary<string, any>;
+
+	static stringForAudience(audience: FBSDKDefaultAudience): string;
+
+	static userIDFromSignedRequest(signedRequest: string): string;
+}
+
+declare class FBSDKPermission extends NSObject {
+	static alloc(): FBSDKPermission; // inherited from NSObject
+
+	static new(): FBSDKPermission; // inherited from NSObject
+
+	static permissionsFromRawPermissions(rawPermissions: NSSet<string>): NSSet<FBSDKPermission>;
+
+	static rawPermissionsFromPermissions(permissions: NSSet<FBSDKPermission>): NSSet<string>;
+
+	constructor(o: { string: string });
+
+	initWithString(string: string): this;
+}
+
+declare class FBSDKProfileFactory extends NSObject {
+	static alloc(): FBSDKProfileFactory; // inherited from NSObject
+
+	static new(): FBSDKProfileFactory; // inherited from NSObject
+
+	createProfileWithUserIDFirstNameMiddleNameLastNameNameLinkURLRefreshDateImageURLEmailFriendIDsBirthdayAgeRangeHometownLocationGenderIsLimited(userID: string, firstName: string, middleName: string, lastName: string, name: string, linkURL: NSURL, refreshDate: Date, imageURL: NSURL, email: string, friendIDs: NSArray<string> | string[], birthday: Date, ageRange: FBSDKUserAgeRange, hometown: FBSDKLocation, location: FBSDKLocation, gender: string, isLimited: boolean): FBSDKProfile;
 }
 
 declare const enum FBSDKTooltipColorStyle {
@@ -398,7 +645,7 @@ declare class FBSDKTooltipView extends UIView {
 
 	presentFromView(anchorView: UIView): void;
 
-	presentInViewWithArrowPositionDirection(view: UIView, arrowPosition: CGPoint, arrowDirection: FBSDKTooltipViewArrowDirection): void;
+	presentInViewWithArrowPositionDirection(view: UIView, arrowPosition: CGPoint, direction: FBSDKTooltipViewArrowDirection): void;
 }
 
 declare const enum FBSDKTooltipViewArrowDirection {
@@ -407,18 +654,46 @@ declare const enum FBSDKTooltipViewArrowDirection {
 	Up = 1,
 }
 
-interface FBSDKUserInterfaceElementProviding {
+interface _FBSDKLoginEventLogging {
+	flushBehavior: FBSDKAppEventsFlushBehavior;
+
+	flush(): void;
+
+	logInternalEventParametersIsImplicitlyLogged(eventName: string, parameters: NSDictionary<string, any>, isImplicitlyLogged: boolean): void;
+}
+declare var _FBSDKLoginEventLogging: {
+	prototype: _FBSDKLoginEventLogging;
+};
+
+interface _FBSDKServerConfigurationProviding {
+	loadServerConfigurationWithCompletionBlock(completion: (p1: FBSDKLoginTooltip, p2: NSError) => void): void;
+}
+declare var _FBSDKServerConfigurationProviding: {
+	prototype: _FBSDKServerConfigurationProviding;
+};
+
+interface _FBSDKUserInterfaceElementProviding {
 	topMostViewController(): UIViewController;
 
 	viewControllerForView(view: UIView): UIViewController;
 }
-declare var FBSDKUserInterfaceElementProviding: {
-	prototype: FBSDKUserInterfaceElementProviding;
+declare var _FBSDKUserInterfaceElementProviding: {
+	prototype: _FBSDKUserInterfaceElementProviding;
 };
 
-interface FBSDKUserInterfaceStringProviding {
+interface _FBSDKUserInterfaceStringProviding {
 	bundleForStrings: NSBundle;
 }
-declare var FBSDKUserInterfaceStringProviding: {
-	prototype: FBSDKUserInterfaceStringProviding;
+declare var _FBSDKUserInterfaceStringProviding: {
+	prototype: _FBSDKUserInterfaceStringProviding;
 };
+
+declare class _LoginURLCompleter extends NSObject implements FBSDKLoginCompleting {
+	static alloc(): _LoginURLCompleter; // inherited from NSObject
+
+	static new(): _LoginURLCompleter; // inherited from NSObject
+
+	completeLoginWithHandler(handler: (p1: FBSDKLoginCompletionParameters) => void): void;
+
+	completeLoginWithNonceCodeVerifierHandler(nonce: string, codeVerifier: string, handler: (p1: FBSDKLoginCompletionParameters) => void): void;
+}
