@@ -2,7 +2,7 @@
 
 ## Adding Markers
 
-You can create markers using the [GoogleMap](GoogleMap.md)s object `addMarker` function by passing in the specified [Marker Options](#marker-options).
+You can create markers using the [GoogleMap](README.md)s object `addMarker` function by passing in the specified [Marker Options](#marker-options).
 
 ```ts
 function addMarker(map: GoogleMap, marker: MarkerOptions): Marker {
@@ -29,7 +29,7 @@ function addMarker(map: GoogleMap, marker: MarkerOptions): Marker {
 
 ## Removing Markers
 
-You can remove a marker using the [GoogleMap](GoogleMap.md)s `removeMarker` function, like so: 
+You can remove a marker using the [GoogleMap](README.md)s `removeMarker` function, like so: 
 
 ```ts
 function removeMarker(map: GoogleMap, marker: Marker) {
