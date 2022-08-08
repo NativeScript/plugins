@@ -142,7 +142,29 @@ export class BiometricAuth implements BiometricApi {
 	}
 
 	didBiometricDatabaseChange(): Promise<boolean> {
-		return Promise.resolve(false);
+		return new Promise((resolve, reject) => {
+			const options = {pinFallBack: false};
+			try {
+				var _a;
+				const cipher = this.getCipher();
+				var secretKey = this.getSecretKey((_a = options === null || options === void 0 ? void 0 : options.keyName) !== null && _a !== void 0 ? _a : KEY_NAME);
+				if (secretKey === null) {
+					BiometricAuth.generateSecretKey(options, reject);
+					secretKey = this.getSecretKey((_a = options === null || options === void 0 ? void 0 : options.keyName) !== null && _a !== void 0 ? _a : KEY_NAME);
+				}
+				cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, secretKey);
+				resolve(false);
+			} catch (ex) {
+				console.log(`Error in biometrics-auth.verifyBiometric: ${ex}`);
+				try {
+					BiometricAuth.generateSecretKey(options, reject);
+					resolve(true);
+					} catch (e) {
+					console.log(`Error when generating new key: ${ex}`);
+					resolve(false);
+				}
+			}
+		});
 	}
 
 	// Following: https://developer.android.com/training/sign-in/biometric-auth#java as a guide
