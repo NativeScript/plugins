@@ -338,8 +338,6 @@ export function deserialize(data) {
 	}
 	let store;
 
-	console.log(data.getClass().getName());
-
 	switch (data.getClass().getName()) {
 		case 'java.lang.String': {
 			return String(data);
