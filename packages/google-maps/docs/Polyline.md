@@ -12,18 +12,18 @@ function addPolyline(map: GoogleMap, Polyline: PolylineOptions): Polyline {
 
 | Property | Type 
 |:---------|:-----
-width | number | 
-points | Coordinate[] | 
-tappable | boolean | 
-geodesic | boolean | 
-visible | boolean | 
-zIndex | number | 
-jointType | JointType | 
-pattern | PatternItem & Partial\<NativeObject\>[] | 
-color | Color \| string | 
-startCap | Cap & Partial\<NativeObject\> | 
-endCap | Cap & Partial\<NativeObject\> | 
-userData | { [key: string]: any } | 
+| `width` | number | 
+| `points` | Coordinate[] | 
+| `tappable` | boolean | 
+| `geodesic` | boolean | 
+| `visible` | boolean | 
+| `zIndex` | number | 
+| `jointType` | JointType | 
+| `pattern` | PatternItem & Partial\<NativeObject\>[] | 
+| `color` | Color \| string | 
+| `startCap` | Cap & Partial\<NativeObject\> | 
+| `endCap` | Cap & Partial\<NativeObject\> | 
+| `userData` | { [key: string]: any } | 
 
 ## Removing Polylines
 

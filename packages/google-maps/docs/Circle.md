@@ -12,16 +12,16 @@ function addCircle(map: GoogleMap, Circle: CircleOptions): Circle {
 
 | Property | Type 
 |:---------|:-----
-center | Coordinate |
-fillColor | Color \| string |
-radius | number |
-strokeColor | Color \| string |
-strokePattern | PatternItem & Partial\<NativeObject\>[] |
-strokeWidth | number |
-tappable | boolean |
-visible | boolean |
-zIndex | number |
-userData | { [key: string]: any } |
+`center` | Coordinate |
+`fillColor` | Color \| string |
+`radius` | number |
+`strokeColor` | Color \| string |
+`strokePattern` | PatternItem & Partial\<NativeObject\>[] |
+`strokeWidth` | number |
+`tappable` | boolean |
+`visible` | boolean |
+`zIndex` | number |
+`userData` | { [key: string]: any } |
 
 ## Removing Circles
 

@@ -12,18 +12,18 @@ function addPolygon(map: GoogleMap, Polygon: PolygonOptions): Polygon {
 
 | Property | Type 
 |:---------|:-----
-points | Coordinate[] |
-holes | Coordinate[] |
-tappable | boolean |
-strokeWidth | number |
-strokeColor | Color \| string |
-fillColor | Color \| string |
-strokePattern | PatternItem & Partial\<NativeObject\>[] |
-zIndex | number |
-geodesic | boolean |
-strokeJointType | JointType |
-visible | boolean |
-userData | { [key: string]: any } |
+| `points` | Coordinate[] |
+| `holes` | Coordinate[] |
+| `tappable` | boolean |
+| `strokeWidth` | number |
+| `strokeColor` | Color \| string |
+| `fillColor` | Color \| string |
+| `strokePattern` | PatternItem & Partial\<NativeObject\>[] |
+| `zIndex` | number |
+| `geodesic` | boolean |
+| `strokeJointType` | JointType |
+| `visible` | boolean |
+| `userData` | { [key: string]: any } |
 
 ## Removing Polygons
 

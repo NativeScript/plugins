@@ -12,21 +12,19 @@ function addGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions): 
 
 | Property | Type 
 |:---------|:-----
-zIndex | number | 
-visible | boolean | 
-transparency | number | 
-position | Coordinate | 
-bounds | CoordinateBounds | 
-tappable | boolean | 
-bearing | number | 
-image | ImageSource | 
-readonly width | number | 
-readonly height | number | 
-userData | any | 
-width | number | 
-height | number | 
-anchorU | number | 
-anchorV | number | 
+`zIndex` | number | 
+`visible` | boolean | 
+`transparency` | number | 
+`position` | Coordinate | 
+`bounds` | CoordinateBounds | 
+`tappable` | boolean | 
+`bearing` | number | 
+`image` | ImageSource | 
+`userData` | any | 
+`width` | number | 
+`height` | number | 
+`anchorU` | number | 
+`anchorV` | number | 
 
 ## Removing Ground Overlays
 

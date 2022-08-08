@@ -14,11 +14,11 @@ function addTileOverlay(map: GoogleMap, TileOverlay: TileOverlayOptions): TileOv
 
 | Property | Type 
 |:---------|:-----
-fadeIn | boolean |
-transparency | number |
-visible | boolean |
-tileProvider | TileProvider & Partial\<NativeObject\> |
-zIndex | number |
+| `fadeIn` | boolean |
+| `transparency` | number |
+| `visible` | boolean |
+| `tileProvider` | TileProvider & Partial\<NativeObject\> |
+| `zIndex` | number |
 
 ## Removing Tile Overlays
 

@@ -20,17 +20,17 @@ function getGoogleMap(view: MapView): GoogleMap {
 #### Properties
 | Property       | Type |Description
 :--------------- |:-----|:---------------------------------
-mapStyle | Style[] | See [Map Styles](#map-styles)
-mapType | MapType | See [Map Type](#map-type)
-buildingsEnabled | boolean | Enables Buildings
-maxZoomLevel | number | Maximum level of zoom
-minZoomLevel | number | Minimum level of zoom
-myLocationEnabled | boolean | Enables "My Location"
-trafficEnabled | boolean | Enables traffic
-readonly uiSettings | IUISettings | See [UI Settings](#ui-settings)
-cameraPosition | CameraPosition | See [Camera Position](#camera-position)
-readonly projection | Projection | See [Projection](#projection)
-readonly native | any | See [Native Map Object](#native-map-object)
+`mapStyle` | Style[] | See [Map Styles](#map-styles)
+`mapType` | MapType | See [Map Type](#map-type)
+`buildingsEnabled` | boolean | Enables Buildings
+`maxZoomLevel` | number | Maximum level of zoom
+`minZoomLevel` | number | Minimum level of zoom
+`myLocationEnabled` | boolean | Enables "My Location"
+`trafficEnabled` | boolean | Enables traffic
+`uiSettings` | IUISettings | See [UI Settings](#ui-settings)
+`cameraPosition` | CameraPosition | See [Camera Position](#camera-position)
+`projection` | Projection | See [Projection](#projection)
+`native` | any | See [Native Map Object](#native-map-object)
 
 #### Functions
 | Func       | Description
@@ -64,10 +64,10 @@ The maps current camera position can be read from the `GoogleMap`s object `camer
 
 | Property       | Type | Description
 :--------------- |:---- |:---------------------------------
-target | Coordinate | The camera target is the location of the center of the map, specified as `lat` and `lng`.
-bearing | number | The direction in which the camera points measured in degrees clockwise from north.
-tilt | number | The viewing angle of the camera measured in degrees
-zoom | number | The scale of the map 
+`target` | Coordinate | The camera target is the location of the center of the map, specified as `lat` and `lng`.
+`bearing` | number | The direction in which the camera points measured in degrees clockwise from north.
+`tilt` | number | The viewing angle of the camera measured in degrees
+`zoom` | number | The scale of the map 
 
 #### Controlling the camera
 To programatically update the camera position you can call `animateCamera` from the `GoogleMap` object, like so:
@@ -87,15 +87,15 @@ map.animateCamera(
 
 | Method | Description
 |:-------|:-----------
-fromCoordinate(coordinate: Coordinate, zoom: number) | Returns a CameraUpdate from a single coordinate
-fromCoordinates(coordinates: Coordinate[], padding: number) | Returns a CameraUpdate from multiple coordinates 
-fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number) | Returns a CameraUpdate from multiple coordinates with specified height, width and padding
-fromCameraPosition(position: CameraPosition) | Returns a CameraUpdate from a CameraPosition 
-zoomIn() | Returns a CameraUpdate that has zoomed in
-zoomOut() | Returns a CameraUpdate that has zoomed out
-zoomTo(value: number) | Returns a CameraUpdate that has zoomed to a value
-zoomBy(amount: number, point?: { x: number; y: number }) | Returns a CameraUpdate that has zoomed and panned
-scrollBy(x: number, y: number) | Returns a panned CameraUpdate
+| fromCoordinate(coordinate: Coordinate, zoom: number) | Returns a CameraUpdate from a single coordinate
+| fromCoordinates(coordinates: Coordinate[], padding: number) | Returns a CameraUpdate from multiple coordinates 
+| fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number) | Returns a CameraUpdate from multiple coordinates with specified height, width and padding
+| fromCameraPosition(position: CameraPosition) | Returns a CameraUpdate from a CameraPosition 
+| zoomIn() | Returns a CameraUpdate that has zoomed in
+| zoomOut() | Returns a CameraUpdate that has zoomed out
+| zoomTo(value: number) | Returns a CameraUpdate that has zoomed to a value
+| zoomBy(amount: number, point?: { x: number; y: number }) | Returns a CameraUpdate that has zoomed and panned
+| scrollBy(x: number, y: number) | Returns a panned CameraUpdate
 
 ### Projection
 .
@@ -105,17 +105,17 @@ scrollBy(x: number, y: number) | Returns a panned CameraUpdate
 You can adjust the maps UI settings from the `GoogleMap` object by configuring the following properties of `uiSettings`:
 
 | Property       | Type | Description
-:--------------- |:-----|:---------------------------------
-compassEnabled | boolean | Whether the compass is enabled or not
-indoorLevelPickerEnabled | boolean | Whether the indoor level picker is enabled or not
-mapToolbarEnabled | boolean | Whether the map toolbar is enabled or not
-myLocationButtonEnabled | boolean | Whether the 'My Location' button is enabled or not
-rotateGesturesEnabled | boolean | Whether the compass is enabled or not
-scrollGesturesEnabled | boolean | Whether map scroll gestures are enabled or not
-tiltGesturesEnabled | boolean | Whether map tilt gestures are enabled or not
-zoomGesturesEnabled | boolean | Whether map zoom gestures are enabled or not
-zoomControlsEnabled | boolean | Whether map zoom controls are enabled or not
-scrollGesturesEnabledDuringRotateOrZoom | boolean | Whether scroll gestures are enabled while rotating or zooming
+|:-------------- |:-----|:---------------------------------
+| `compassEnabled` | boolean | Whether the compass is enabled or not
+| `indoorLevelPickerEnabled` | boolean | Whether the indoor level picker is enabled or not
+| `mapToolbarEnabled` | boolean | Whether the map toolbar is enabled or not
+| `myLocationButtonEnabled` | boolean | Whether the 'My Location' button is enabled or not
+| `rotateGesturesEnabled` | boolean | Whether the compass is enabled or not
+| `scrollGesturesEnabled` | boolean | Whether map scroll gestures are enabled or not
+| `tiltGesturesEnabled` | boolean | Whether map tilt gestures are enabled or not
+| `zoomGesturesEnabled` | boolean | Whether map zoom gestures are enabled or not
+| `zoomControlsEnabled` | boolean | Whether map zoom controls are enabled or not
+| `scrollGesturesEnabledDuringRotateOrZoom` | boolean | Whether scroll gestures are enabled while rotating or zooming
 
 ### Map Type
 
@@ -123,11 +123,11 @@ The Google Maps API offers five types of maps:
 
 | Type | Description
 :------|:-----------
-| None | No tiles. The map is rendered as an empty grid with no tiles loaded.
-| Normal | Typical road map. Shows roads, some features built by humans, and important natural features such as rivers. Road and feature labels are also visible.
-| Satellite |  Satellite photograph data. Road and feature labels are not visible.
-| Terrain | Topographic data. The map includes colors, contour lines and labels, and perspective shading. Some roads and labels are also visible.
-| Hybrid | Satellite photograph data with road maps added. Road and feature labels are also visible. 
+| `None` | No tiles. The map is rendered as an empty grid with no tiles loaded.
+| `Normal` | Typical road map. Shows roads, some features built by humans, and important natural features such as rivers. Road and feature labels are also visible.
+| `Satellite` |  Satellite photograph data. Road and feature labels are not visible.
+| `Terrain` | Topographic data. The map includes colors, contour lines and labels, and perspective shading. Some roads and labels are also visible.
+| `Hybrid` | Satellite photograph data with road maps added. Road and feature labels are also visible. 
 
 To set the type of a map, adjust the `GoogleMap` objects `mapType`. You can pass in one map type from the `MapType` Enum. For example: 
 
