@@ -6,14 +6,12 @@ function share(thingsToShare) {
 	const presentViewController = activityController.popoverPresentationController;
 	if (presentViewController) {
 		const page = Frame.topmost().currentPage;
-		if (page && page.ios.navigationItem.rightBarButtonItems && page.ios.navigationItem.rightBarButtonItems.count > 0) {
+		if (page?.ios?.navigationItem?.rightBarButtonItems?.count > 0) {
 			presentViewController.barButtonItem = page.ios.navigationItem.rightBarButtonItems[0];
-		} else {
+		} else if (page?.ios?.view) {
 			presentViewController.sourceView = page.ios.view;
 			presentViewController.permittedArrowDirections = UIPopoverArrowDirection.Unknown;
-			if (page && page.ios && page.ios.view) {
-				presentViewController.sourceRect = CGRectMake(CGRectGetMidX(page.ios.view.bounds), CGRectGetMaxY(page.ios.view.bounds), 0, 0);
-			}
+			presentViewController.sourceRect = CGRectMake(CGRectGetMidX(page.ios.view.bounds), CGRectGetMaxY(page.ios.view.bounds), 0, 0);
 		}
 	}
 
