@@ -984,6 +984,7 @@ abstract class OverLayBase {
 export class Marker extends OverLayBase implements IMarker {
 	#native: GMSMarker;
 	#color = new Color('red');
+	#visible = true;
 	static fromNative(nativeMarker: GMSMarker) {
 		if (nativeMarker instanceof GMSMarker) {
 			const marker = new Marker();
@@ -1077,6 +1078,15 @@ export class Marker extends OverLayBase implements IMarker {
 
 	set rotation(value: number) {
 		this.native.rotation = value;
+	}
+
+	get visible(): boolean {
+		return this.#visible;
+	}
+
+	set visible(value: boolean) {
+		this.#visible = value;
+		this.native.opacity = this.visible ? 1 : 0;
 	}
 
 	get flat(): boolean {
