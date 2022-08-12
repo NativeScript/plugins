@@ -296,6 +296,7 @@ export interface IMarker {
 	icon: any /* Image, ImageSource, UIImage & Bitmap */;
 	color: Color | string;
 	rotation: number;
+	visible: boolean;
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };
@@ -315,6 +316,7 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	icon: any; /* Image, ImageSource, UIImage & Bitmap */
 	color: Color | string;
 	rotation: number;
+	visible: boolean;
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };

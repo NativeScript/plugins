@@ -64,6 +64,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.rotation = options.rotation;
 	}
 
+	if (typeof options?.visible === 'boolean') {
+		opts.opacity = options.visible ? 1 : 0;
+	}
+
 	if (typeof options?.flat === 'boolean') {
 		opts.flat = options.flat;
 	}

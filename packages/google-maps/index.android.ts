@@ -1070,6 +1070,14 @@ export class Marker extends OverLayBase implements IMarker {
 		this.native.setRotation(value);
 	}
 
+	get visible(): boolean {
+		return this.native.isVisible();
+	}
+
+	set visible(value) {
+		this.native.setVisible(value);
+	}
+
 	get flat(): boolean {
 		return this.native.isFlat();
 	}

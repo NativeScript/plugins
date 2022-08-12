@@ -80,6 +80,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.rotation(options.rotation);
 	}
 
+	if (typeof options?.visible === 'boolean') {
+		opts.visible(options.visible);
+	}
+
 	if (typeof options?.flat === 'boolean') {
 		opts.flat(options.flat);
 	}
