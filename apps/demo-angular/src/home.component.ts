@@ -88,7 +88,7 @@ export class HomeComponent {
 			name: 'localize',
 		},
 		{
-			name: 'pdf'
+			name: 'pdf',
 		},
 		{
 			name: 'picker',

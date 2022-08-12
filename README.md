@@ -25,7 +25,7 @@
 - [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
-- [@nativescript/pdf-view](packages/pdf-view/README.md)
+- [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)

@@ -29,7 +29,7 @@
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/localize": "file:../../dist/packages/localize",
-		"@nativescript/pdf-view": "file:../../dist/packages/pdf-view",
+		"@nativescript/pdf": "file:../../dist/packages/pdf",
 		"@nativescript/picker": "file:../../dist/packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",

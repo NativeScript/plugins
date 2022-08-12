@@ -1,4 +1,4 @@
-import { PDFViewCommon, srcProperty } from './pdf-view.common';
+import { Common, srcProperty } from './common';
 
 class PDFViewDelegate extends NSObject implements WKNavigationDelegate {
 	public static ObjCProtocols = [WKNavigationDelegate];
@@ -12,11 +12,11 @@ class PDFViewDelegate extends NSObject implements WKNavigationDelegate {
 	}
 
 	public webViewDidFinishNavigation(webView: WKWebView) {
-		PDFViewCommon.notifyOfEvent(PDFViewCommon.loadEvent, this.owner);
+		Common.notifyOfEvent(Common.loadEvent, this.owner);
 	}
 }
 
-export class PDFView extends PDFViewCommon {
+export class PDFView extends Common {
 	private delegate: PDFViewDelegate;
 
 	public constructor() {
@@ -74,8 +74,7 @@ export class PDFView extends PDFViewCommon {
 		this.ios.opaque = false;
 		this.ios.autoresizingMask =
 			// tslint:disable-next-line:no-bitwise
-			UIViewAutoresizing.FlexibleWidth |
-			UIViewAutoresizing.FlexibleHeight;
+			UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 	}
 
 	private get mainScreen(): UIScreen {

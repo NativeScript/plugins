@@ -1,6 +1,6 @@
 <Page
 	xmlns="http://schemas.nativescript.org/tns.xsd"
-	xmlns:pdf="@nativescript/pdf-view"
+	xmlns:pdf="@nativescript/pdf"
 	navigatingTo="navigatingTo" class="page">
 	<FlexboxLayout flexDirection="column">
 		<Button height="70" text="Show Another!" tap="{{ changePDF }}"/>

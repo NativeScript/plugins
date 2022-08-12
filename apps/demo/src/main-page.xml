@@ -32,7 +32,7 @@
         <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="localize" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-				<Button text="pdf-view" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+				<Button text="pdf" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
 				<Button text="picker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

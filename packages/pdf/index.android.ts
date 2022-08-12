@@ -3,17 +3,17 @@
 import pdfviewer = com.github.barteksc.pdfviewer;
 import * as http from '@nativescript/core/http';
 
-import { PDFViewCommon, srcProperty } from './pdf-view.common';
+import { Common, srcProperty } from './common';
 
-export class PDFView extends PDFViewCommon {
+export class PDFView extends Common {
 	private promise: Promise<void>;
 
 	private onLoadHandler = (() => {
 		const pdfViewRef = new WeakRef(this);
 
 		return new pdfviewer.listener.OnLoadCompleteListener({
-			loadComplete: numPages => {
-				PDFViewCommon.notifyOfEvent(PDFViewCommon.loadEvent, pdfViewRef);
+			loadComplete: (numPages) => {
+				Common.notifyOfEvent(Common.loadEvent, pdfViewRef);
 			},
 		});
 	})();
@@ -38,9 +38,7 @@ export class PDFView extends PDFViewCommon {
 		// detect base64 stream
 		const base64prefix = 'data:application/pdf;base64,';
 		if (src.indexOf(base64prefix) === 0) {
-			const base64data = android.util.Base64.decode(
-				src.substr(base64prefix.length),
-				android.util.Base64.DEFAULT);
+			const base64data = android.util.Base64.decode(src.substr(base64prefix.length), android.util.Base64.DEFAULT);
 			this.createTempFile(base64data);
 			return;
 		}
@@ -56,30 +54,24 @@ export class PDFView extends PDFViewCommon {
 		const uri = android.net.Uri.parse(src);
 
 		const defaultSpacingDP = 8;
-		this.android
-			.fromUri(uri)
-			.onLoad(this.onLoadHandler)
-			.spacing(defaultSpacingDP)
-			.enableAnnotationRendering(this.enableAnnotationRendering)
-			.fitEachPage(true)
-			.load();
+		this.android.fromUri(uri).onLoad(this.onLoadHandler).spacing(defaultSpacingDP).enableAnnotationRendering(this.enableAnnotationRendering).fitEachPage(true).load();
 	}
 
 	private cacheThenLoad(url: string) {
 		// clear everything in cache
 		this.tempFolder.clear().then(() => {
-
 			// download to cache
-			const promise = this.promise = http
+			const promise = (this.promise = http
 				.getFile(url, `${this.tempFolder.path}/${Date.now()}.pdf`)
-				.then(file => {
-					if (this.promise === promise) {  // make sure we haven't switched
+				.then((file) => {
+					if (this.promise === promise) {
+						// make sure we haven't switched
 						this.loadPDF(file.path);
 					}
-				}).catch(error => {
+				})
+				.catch((error) => {
 					console.error(error);
-				});
+				}));
 		});
 	}
 }
-

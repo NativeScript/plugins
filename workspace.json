@@ -29,7 +29,7 @@
 		"iqkeyboardmanager": "packages/iqkeyboardmanager",
 		"local-notifications": "packages/local-notifications",
 		"localize": "packages/localize",
-		"pdf-view": "packages/pdf-view",
+		"pdf": "packages/pdf",
 		"picker": "packages/picker",
 		"shared-notification-delegate": "packages/shared-notification-delegate",
 		"social-share": "packages/social-share",

@@ -1,7 +1,7 @@
 import * as fs from '@nativescript/core/file-system';
 import { Property, View } from '@nativescript/core/ui/core/view';
 
-export abstract class PDFViewCommon extends View{
+export abstract class Common extends View {
 	public static loadEvent = 'load';
 
 	/**
@@ -19,7 +19,7 @@ export abstract class PDFViewCommon extends View{
 	public static notifyOfEvent(
 		eventName: string,
 		// tslint:disable-next-line: no-any
-		pdfViewRef: WeakRef<any>,
+		pdfViewRef: WeakRef<any>
 	) {
 		const viewer = pdfViewRef.get();
 
@@ -34,21 +34,20 @@ export abstract class PDFViewCommon extends View{
 	// tslint:disable-next-line: no-any
 	protected createTempFile(base64data: any) {
 		this.tempFolder.clear().then(() => {
-			const file = fs.Folder.fromPath(this.tempFolder.path)
-				.getFile(`_${Date.now()}.pdf`);
+			const file = fs.Folder.fromPath(this.tempFolder.path).getFile(`_${Date.now()}.pdf`);
 			file.writeSync(base64data);
 			this.loadPDF(file.path);
 		});
 	}
 }
 
-export const enableAnnotationRenderingProperty = new Property<PDFViewCommon, boolean>({
+export const enableAnnotationRenderingProperty = new Property<Common, boolean>({
 	defaultValue: false,
 	name: 'enableAnnotationRendering',
 });
-enableAnnotationRenderingProperty.register(PDFViewCommon);
+enableAnnotationRenderingProperty.register(Common);
 
-export const srcProperty = new Property<PDFViewCommon, string>({
+export const srcProperty = new Property<Common, string>({
 	name: 'src',
 });
-srcProperty.register(PDFViewCommon);
+srcProperty.register(Common);
