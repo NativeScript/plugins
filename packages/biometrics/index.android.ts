@@ -141,9 +141,30 @@ export class BiometricAuth implements BiometricApi {
 		});
 	}
 
-	didBiometricDatabaseChange(): Promise<boolean> {
-		return Promise.resolve(false);
-	}
+    // Following: https://stackoverflow.com/questions/61193681/check-if-the-user-changed-biometric-fingerprint-in-android as a guide
+    didBiometricDatabaseChange(): Promise<boolean> {
+		return new Promise((resolve, reject) => {
+			const options = {};
+            const cipher = this.getCipher();
+            var secretKey = this.getSecretKey(KEY_NAME);
+            if (secretKey === null) {
+                BiometricAuth.generateSecretKey(options, reject);
+                secretKey = this.getSecretKey(KEY_NAME);
+            }
+			try {
+				cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, secretKey);
+			} catch (ex) {
+				console.log(`Error in biometrics-auth.verifyBiometric: ${ex}`);
+				try {
+					BiometricAuth.generateSecretKey(options, reject);
+					resolve(true);
+                } catch (e) {
+					console.log(`Error when generating new key: ${ex}`);
+				}
+			}
+            resolve(false);
+		});
+    }
 
 	// Following: https://developer.android.com/training/sign-in/biometric-auth#java as a guide
 	verifyBiometric(options: VerifyBiometricOptions): Promise<BiometricResult> {
