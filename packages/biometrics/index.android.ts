@@ -36,7 +36,7 @@ const AuthenticationCallback = (<any>androidx.biometric.BiometricPrompt.Authenti
 
 		this.reject({
 			code: returnCode,
-			message,
+			message
 		});
 	},
 	onAuthenticationFailed() {
@@ -58,10 +58,16 @@ const AuthenticationCallback = (<any>androidx.biometric.BiometricPrompt.Authenti
 			} else if (this.toDecrypt) {
 				const nativeBytes = android.util.Base64.decode(this.toDecrypt, android.util.Base64.DEFAULT);
 
-				const decryptedBytes = result.getCryptoObject().getCipher().doFinal(nativeBytes);
+				const decryptedBytes = result
+					.getCryptoObject()
+					.getCipher()
+					.doFinal(nativeBytes);
 				decrypted = new java.lang.String(decryptedBytes, java.nio.charset.StandardCharsets.UTF_8).toString();
 			} else if (!this.pinFallBack) {
-				result.getCryptoObject().getCipher().doFinal(SECRET_BYTE_ARRAY);
+				result
+					.getCryptoObject()
+					.getCipher()
+					.doFinal(SECRET_BYTE_ARRAY);
 			}
 
 			this.resolve({
@@ -69,16 +75,16 @@ const AuthenticationCallback = (<any>androidx.biometric.BiometricPrompt.Authenti
 				message: 'All OK',
 				encrypted,
 				decrypted,
-				iv,
+				iv
 			});
 		} catch (error) {
 			console.log(`Error in onAuthenticationSucceeded: ${error}`);
 			this.reject({
 				code: ERROR_CODES.UNEXPECTED_ERROR,
-				message: error,
+				message: error
 			});
 		}
-	},
+	}
 });
 
 export class BiometricAuth implements BiometricApi {
@@ -95,7 +101,7 @@ export class BiometricAuth implements BiometricApi {
 			try {
 				if (!this.keyguardManager || !this.keyguardManager.isKeyguardSecure()) {
 					resolve({
-						any: false,
+						any: false
 					});
 					return;
 				}
@@ -122,7 +128,7 @@ export class BiometricAuth implements BiometricApi {
 					if (this.keyguardManager.isDeviceSecure()) {
 						resolve({
 							any: true,
-							biometrics: false,
+							biometrics: false
 						});
 					} else {
 						reject(`User hasn't enrolled any biometrics to authenticate with`);
@@ -131,7 +137,7 @@ export class BiometricAuth implements BiometricApi {
 					// Phone has biometric hardware and is enrolled
 					resolve({
 						any: true,
-						biometrics: true,
+						biometrics: true
 					});
 				}
 			} catch (ex) {
@@ -141,16 +147,16 @@ export class BiometricAuth implements BiometricApi {
 		});
 	}
 
-    // Following: https://stackoverflow.com/questions/61193681/check-if-the-user-changed-biometric-fingerprint-in-android as a guide
-    didBiometricDatabaseChange(): Promise<boolean> {
+	// Following: https://stackoverflow.com/questions/61193681/check-if-the-user-changed-biometric-fingerprint-in-android as a guide
+	didBiometricDatabaseChange(): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			const options = {};
-            const cipher = this.getCipher();
-            var secretKey = this.getSecretKey(KEY_NAME);
-            if (secretKey === null) {
-                BiometricAuth.generateSecretKey(options, reject);
-                secretKey = this.getSecretKey(KEY_NAME);
-            }
+			const cipher = this.getCipher();
+			var secretKey = this.getSecretKey(KEY_NAME);
+			if (secretKey === null) {
+				BiometricAuth.generateSecretKey(options, reject);
+				secretKey = this.getSecretKey(KEY_NAME);
+			}
 			try {
 				cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, secretKey);
 			} catch (ex) {
@@ -158,13 +164,13 @@ export class BiometricAuth implements BiometricApi {
 				try {
 					BiometricAuth.generateSecretKey(options, reject);
 					resolve(true);
-                } catch (e) {
+				} catch (e) {
 					console.log(`Error when generating new key: ${ex}`);
 				}
 			}
-            resolve(false);
+			resolve(false);
 		});
-    }
+	}
 
 	// Following: https://developer.android.com/training/sign-in/biometric-auth#java as a guide
 	verifyBiometric(options: VerifyBiometricOptions): Promise<BiometricResult> {
@@ -173,14 +179,14 @@ export class BiometricAuth implements BiometricApi {
 				if (!this.keyguardManager) {
 					reject({
 						code: ERROR_CODES.NOT_AVAILABLE,
-						message: 'Keyguard manager not available.',
+						message: 'Keyguard manager not available.'
 					});
 				}
 
 				if (this.keyguardManager && !this.keyguardManager.isKeyguardSecure()) {
 					reject({
 						code: ERROR_CODES.NOT_CONFIGURED,
-						message: 'Secure lock screen hasn\'t been set up.\n Go to "Settings -> Security -> Screenlock" to set up a lock screen.',
+						message: 'Secure lock screen hasn\'t been set up.\n Go to "Settings -> Security -> Screenlock" to set up a lock screen.'
 					});
 				}
 				const pinFallback = options?.pinFallback;
@@ -219,7 +225,7 @@ export class BiometricAuth implements BiometricApi {
 						.setSubtitle(options.subTitle ? options.subTitle : null)
 						.setDescription(options.message ? options.message : null)
 						.setConfirmationRequired(options.confirm ? options.confirm : false) // Confirm button after verify biometrics=
-						.setNegativeButtonText(options.fallbackMessage ? options.fallbackMessage : 'Enter your password') // PIN Fallback or Cancel
+						.setNegativeButtonText(options.fallbackMessage ? options.fallbackMessage : 'Cancel') // PIN Fallback or Cancel
 						.setAllowedAuthenticators(androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG) // PIN Fallback or Cancel
 						.build();
 
@@ -229,7 +235,7 @@ export class BiometricAuth implements BiometricApi {
 				console.log(`Error in biometrics-auth.verifyBiometric: ${ex}`);
 				reject({
 					code: ERROR_CODES.UNEXPECTED_ERROR,
-					message: ex,
+					message: ex
 				});
 			}
 		});
@@ -275,14 +281,17 @@ export class BiometricAuth implements BiometricApi {
 				if (options.android?.decryptText) {
 					reject({
 						code: ERROR_CODES.UNEXPECTED_ERROR,
-						message: `Key not available: ${keyName}`,
+						message: `Key not available: ${keyName}`
 					});
 				}
 			}
 		}
 
 		const keyGenerator = javax.crypto.KeyGenerator.getInstance(android.security.keystore.KeyProperties.KEY_ALGORITHM_AES, 'AndroidKeyStore');
-		const builder = new android.security.keystore.KeyGenParameterSpec.Builder(keyName, android.security.keystore.KeyProperties.PURPOSE_ENCRYPT | android.security.keystore.KeyProperties.PURPOSE_DECRYPT).setBlockModes([android.security.keystore.KeyProperties.BLOCK_MODE_CBC]).setEncryptionPaddings([android.security.keystore.KeyProperties.ENCRYPTION_PADDING_PKCS7]).setUserAuthenticationRequired(true);
+		const builder = new android.security.keystore.KeyGenParameterSpec.Builder(keyName, android.security.keystore.KeyProperties.PURPOSE_ENCRYPT | android.security.keystore.KeyProperties.PURPOSE_DECRYPT)
+			.setBlockModes([android.security.keystore.KeyProperties.BLOCK_MODE_CBC])
+			.setEncryptionPaddings([android.security.keystore.KeyProperties.ENCRYPTION_PADDING_PKCS7])
+			.setUserAuthenticationRequired(true);
 		if (android.os.Build.VERSION.SDK_INT > 23) {
 			builder.setInvalidatedByBiometricEnrollment(true);
 		}
@@ -297,14 +306,14 @@ export class BiometricAuth implements BiometricApi {
 					// the user has just authenticated via the ConfirmDeviceCredential activity
 					resolve({
 						code: ERROR_CODES.SUCCESS,
-						message: 'All OK',
+						message: 'All OK'
 					});
 				} else {
 					// the user has quit the activity without providing credendials
 
 					reject({
 						code: ERROR_CODES.USER_CANCELLED,
-						message: 'User cancelled.',
+						message: 'User cancelled.'
 					});
 				}
 			}
