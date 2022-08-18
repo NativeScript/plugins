@@ -50,7 +50,7 @@ NativeScript binding for the Google Maps Android & iOS API.
 To use the Google Maps API, you must register your app in the [Google API Console](https://console.cloud.google.com/apis/dashboard) and obtain an API key.
 
 ## Installation
-```javascript
+```cli
 ns plugin add @nativescript/google-maps
 ```
 
@@ -191,7 +191,7 @@ The following events are available:
 `markerDragEnd` | Fires when a marker ends dragging
 `tileRenderingStart` | Fires when tile rendering begins
 `tileRenderingEnd` | Fires when tile rendering ends
-`cameraPosition` | Fires when the map viewport state changes, camera states include `idle` | `start` | `moving`
+`cameraPosition` | Fires when the map viewport state changes, camera states include `idle` \| `start` \| `moving`
 `circle` | Fires when a circle is tapped 
 `polygon` | Fires when a polygon is tapped 
 `polyline` | Fires when a polyline is tapped 
@@ -249,7 +249,7 @@ removeGroundOverlay(groundOverlay: GroundOverlay) | Removes a ground overlay fro
 [addPolyline](#adding-polylines)(options: [PolylineOptions](#polyline-options)): [Polyline](#polyline) | Adds a polyline to the map
 [removePolyline](#removing-polylines)(polyline: [Polyline]()#polyline) | Removes a polyline from the map
 [animateCamera](#controlling-the-camera)(update: CameraUpdate) | Animates camera to a new position
-snapshot(): Promise\<ImageSource\> | Returns a platform specific image of the maps current viewport
+snapshot(): Promise<ImageSource> | Returns a platform specific image of the maps current viewport
 clear() | Clears all objects added to the map
 
 ### Native Map Object
@@ -389,8 +389,8 @@ map.mapStyle = [{
 You can create markers using the [GoogleMap](#google-map)s object `addMarker` function by passing in the specified [Marker Options](#marker-options).
 
 ```ts
-function addMarker(map: GoogleMap, marker: MarkerOptions): Marker {
-	return map.addMarker(marker);
+function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
+	return map.addMarker(markerOptions);
 }
 ```
 ### Marker Options
@@ -427,8 +427,8 @@ function removeMarker(map: GoogleMap, marker: Marker) {
 You can create Circles using the [GoogleMap](#google-map)s object `addCircle` function by passing in the specified [Circle Options](#circle-options).
 
 ```ts
-function addCircle(map: GoogleMap, Circle: CircleOptions): Circle {
-	return map.addCircle(Circle);
+function addCircle(map: GoogleMap, circleOptions: CircleOptions): Circle {
+	return map.addCircle(circleOptions);
 }
 ```
 ### Circle Options
@@ -444,15 +444,15 @@ function addCircle(map: GoogleMap, Circle: CircleOptions): Circle {
 `tappable` | boolean |
 `visible` | boolean |
 `zIndex` | number |
-`userData` | `{ [key: string]: any }` |
+`userData` | { [key: string]: any } |
 
 ## Removing Circles
 
 You can remove a Circle using the [GoogleMap](#google-map)s `removeCircle` function, like so: 
 
 ```ts
-function removeCircle(map: GoogleMap, Circle: CircleOptions) {
-	map.removeCircle(Circle);
+function removeCircle(map: GoogleMap, circle: Circle) {
+	map.removeCircle(circle);
 }
 ```
 # Polygons
@@ -461,8 +461,8 @@ function removeCircle(map: GoogleMap, Circle: CircleOptions) {
 You can create polygons using the [GoogleMap](#google-map)s object `addPolygon` function by passing in the specified [Polygon Options](#polygon-options).
 
 ```ts
-function addPolygon(map: GoogleMap, Polygon: PolygonOptions): Polygon {
-	return map.addPolygon(Polygon);
+function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
+	return map.addPolygon(polygonOptions);
 }
 ```
 ### Polygon Options
@@ -480,15 +480,15 @@ function addPolygon(map: GoogleMap, Polygon: PolygonOptions): Polygon {
 | `geodesic` | boolean |
 | `strokeJointType` | JointType |
 | `visible` | boolean |
-| `userData` | `{ [key: string]: any }` |
+| `userData` | { [key: string]: any } |
 
 ## Removing Polygons
 
 You can remove a Polygon using the [GoogleMap](#google-map)s `removePolygon` function, like so: 
 
 ```ts
-function removePolygon(map: GoogleMap, Polygon: PolygonOptions) {
-	map.removePolygon(Polygon);
+function removePolygon(map: GoogleMap, polygon: Polygon) {
+	map.removePolygon(polygon);
 }
 ```
 
@@ -498,8 +498,8 @@ function removePolygon(map: GoogleMap, Polygon: PolygonOptions) {
 You can create Polylines using the [GoogleMap](#google-map)s object `addPolyline` function by passing in the specified [Polyline Options](#polyline-options).
 
 ```ts
-function addPolyline(map: GoogleMap, Polyline: PolylineOptions): Polyline {
-	return map.addPolyline(Polyline);
+function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline {
+	return map.addPolyline(polylineOptions);
 }
 ```
 ### Polyline Options
@@ -517,15 +517,15 @@ function addPolyline(map: GoogleMap, Polyline: PolylineOptions): Polyline {
 | `color` | Color \| string | 
 | `startCap` | Cap & Partial\<NativeObject\> | 
 | `endCap` | Cap & Partial\<NativeObject\> | 
-| `userData` | `{ [key: string]: any }` | 
+| `userData` | { [key: string]: any } | 
 
 ## Removing Polylines
 
 You can remove a Polyline using the [GoogleMap](#google-map)s `removePolyline` function, like so: 
 
 ```ts
-function removePolyline(map: GoogleMap, Polyline: PolylineOptions) {
-	map.removePolyline(Polyline);
+function removePolyline(map: GoogleMap, polyline: Polyline) {
+	map.removePolyline(polyline);
 }
 ```
 
@@ -535,8 +535,8 @@ function removePolyline(map: GoogleMap, Polyline: PolylineOptions) {
 You can create Ground Overlays using the [GoogleMap](#google-map)s object `addGroundOverlay` function by passing in the specified [GroundOverlay Options](#groundoverlay-options).
 
 ```ts
-function addGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions): GroundOverlay {
-	return map.addGroundOverlay(GroundOverlay);
+function addGroundOverlay(map: GoogleMap, groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
+	return map.addGroundOverlay(groundOverlayOptions);
 }
 ```
 ### GroundOverlay Options
@@ -562,8 +562,8 @@ function addGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions): 
 You can remove a GroundOverlay using the [GoogleMap](#google-map)s `removeGroundOverlay` function, like so: 
 
 ```ts
-function removeGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions) {
-	map.removeGroundOverlay(GroundOverlay);
+function removeGroundOverlay(map: GoogleMap, groundOverlay: GroundOverlay) {
+	map.removeGroundOverlay(groundOverlay);
 }
 ```
 
@@ -575,8 +575,8 @@ function removeGroundOverlay(map: GoogleMap, GroundOverlay: GroundOverlayOptions
 You can create Tile Overlays using the [GoogleMap](#google-map)s object `addTileOverlay` function by passing in the specified [TileOverlay Options](#tileoverlay-options).
 
 ```ts
-function addTileOverlay(map: GoogleMap, TileOverlay: TileOverlayOptions): TileOverlay {
-	return map.addTileOverlay(TileOverlay);
+function addTileOverlay(map: GoogleMap, tileOverlayOptions: TileOverlayOptions): TileOverlay {
+	return map.addTileOverlay(tileOverlayOptions);
 }
 ```
 ### TileOverlay Options
@@ -594,8 +594,8 @@ function addTileOverlay(map: GoogleMap, TileOverlay: TileOverlayOptions): TileOv
 You can remove a TileOverlay using the [GoogleMap](#google-map)s `removeTileOverlay` function, like so: 
 
 ```ts
-function removeTileOverlay(map: GoogleMap, TileOverlay: TileOverlayOptions) {
-	map.removeTileOverlay(TileOverlay);
+function removeTileOverlay(map: GoogleMap, tileOverlay: TileOverlay) {
+	map.removeTileOverlay(tileOverlay);
 }
 ```
 
