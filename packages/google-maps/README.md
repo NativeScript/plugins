@@ -249,7 +249,7 @@ removeGroundOverlay(groundOverlay: GroundOverlay) | Removes a ground overlay fro
 [addPolyline](#adding-polylines)(options: [PolylineOptions](#polyline-options)): [Polyline](#polyline) | Adds a polyline to the map
 [removePolyline](#removing-polylines)(polyline: [Polyline]()#polyline) | Removes a polyline from the map
 [animateCamera](#controlling-the-camera)(update: CameraUpdate) | Animates camera to a new position
-snapshot(): Promise<ImageSource> | Returns a platform specific image of the maps current viewport
+snapshot(): Promise\<ImageSource\> | Returns a platform specific image of the maps current viewport
 clear() | Clears all objects added to the map
 
 ### Native Map Object
@@ -444,7 +444,7 @@ function addCircle(map: GoogleMap, circleOptions: CircleOptions): Circle {
 `tappable` | boolean |
 `visible` | boolean |
 `zIndex` | number |
-`userData` | { [key: string]: any } |
+`userData` | `{ [key: string]: any }` |
 
 ## Removing Circles
 
@@ -480,7 +480,7 @@ function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
 | `geodesic` | boolean |
 | `strokeJointType` | JointType |
 | `visible` | boolean |
-| `userData` | { [key: string]: any } |
+| `userData` | `{ [key: string]: any }` |
 
 ## Removing Polygons
 
@@ -517,7 +517,7 @@ function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline
 | `color` | Color \| string | 
 | `startCap` | Cap & Partial\<NativeObject\> | 
 | `endCap` | Cap & Partial\<NativeObject\> | 
-| `userData` | { [key: string]: any } | 
+| `userData` | `{ [key: string]: any }` | 
 
 ## Removing Polylines
 
