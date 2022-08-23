@@ -781,7 +781,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	set cameraPosition(value) {
-		this.native.camera = value.native;
+		this.native.moveCamera(CameraUpdate.fromCameraPosition(value).native);
 	}
 
 	get maxZoomLevel(): number {
