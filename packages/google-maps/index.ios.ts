@@ -781,7 +781,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	set cameraPosition(value) {
-		this.native.camera = value.native;
+		this.native.moveCamera(CameraUpdate.fromCameraPosition(value).native);
 	}
 
 	get maxZoomLevel(): number {
@@ -909,6 +909,10 @@ export class GoogleMap implements IGoogleMap {
 		const polyline = Polyline.fromNative(intoNativePolylineOptions(options));
 		polyline.native.map = this.native;
 		return polyline;
+	}
+
+	moveCamera(update: CameraUpdate) {
+		this.native.moveCamera(update.native);
 	}
 
 	animateCamera(update: CameraUpdate) {
