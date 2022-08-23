@@ -452,6 +452,8 @@ export class GoogleMap implements IGoogleMap {
 
 	removePolyline(polyline: Polyline);
 
+	moveCamera(update: CameraUpdate);
+
 	animateCamera(update: CameraUpdate);
 
 	snapshot(): Promise<ImageSource>;

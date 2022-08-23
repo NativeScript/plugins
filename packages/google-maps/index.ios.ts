@@ -911,6 +911,10 @@ export class GoogleMap implements IGoogleMap {
 		return polyline;
 	}
 
+	moveCamera(update: CameraUpdate) {
+		this.native.moveCamera(update.native);
+	}
+
 	animateCamera(update: CameraUpdate) {
 		this.native.animateWithCameraUpdate(update.native);
 	}

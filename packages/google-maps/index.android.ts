@@ -766,6 +766,10 @@ export class GoogleMap implements IGoogleMap {
 		}
 	}
 
+	moveCamera(update: CameraUpdate) {
+		this.native.moveCamera(update.native);
+	}
+
 	animateCamera(update: CameraUpdate) {
 		this.native.animateCamera(update.native);
 	}
