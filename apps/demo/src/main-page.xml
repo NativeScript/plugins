@@ -25,6 +25,7 @@
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="haptics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ionic-portals" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

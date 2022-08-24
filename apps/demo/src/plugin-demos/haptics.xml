@@ -1,0 +1,25 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="haptics" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout>
+      <Label text="Official API, supported from iPhone 7" class="message" textWrap="true"/>
+      <GridLayout columns="*, 106, 94" rows="auto">
+        <Button col="0" text="notification: success" tap="{{ doNotificationSuccess }}" class="button button-notification-success" />
+        <Button col="1" text="warn" tap="{{ doNotificationWarning }}" class="button button-notification-warning" />
+        <Button col="2" text="error" tap="{{ doNotificationError }}" class="button button-notification-error" />
+      </GridLayout>
+      <GridLayout columns="*, 106, 94" rows="auto">
+        <Button col="0" text="impact: light" tap="{{ doImpactLight }}" class="button button-impact-light" />
+        <Button col="1" text="medium" tap="{{ doImpactMedium }}" class="button button-impact-medium" />
+        <Button col="2" text="heavy" tap="{{ doImpactHeavy }}" class="button button-impact-heavy" />
+      </GridLayout>
+      <Button text="selection" tap="{{ doSelection }}" class="button button-selection" />
+
+      <Label text="Unofficial API, supported from iPhone 6s" class="message" textWrap="true"/>
+      <Button text="weak boom (peek)" tap="{{ doWeakBoom }}" class="button button-weakboom" />
+      <Button text="strong boom (pop)" tap="{{ doStrongBoom }}" class="button button-strongboom" />
+      <Button text="burst (nope!)" tap="{{ doBurst }}" class="button button-burst" />
+    </StackLayout>
+</Page>

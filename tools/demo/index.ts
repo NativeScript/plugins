@@ -19,6 +19,7 @@ export * from './fingerprint-auth';
 export * from './geolocation';
 export * from './google-maps';
 export * from './google-signin';
+export * from './haptics';
 export * from './imagepicker';
 export * from './ionic-portals';
 export * from './ios-security';
