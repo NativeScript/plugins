@@ -18,6 +18,7 @@
 - [@nativescript/geolocation](packages/geolocation/README.md)
 - [@nativescript/google-maps](packages/google-maps/README.md)
 - [@nativescript/google-signin](packages/google-signin/README.md)
+- [@nativescript/haptics](packages/haptics/README.md)
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
 - [@nativescript/ionic-portals](packages/ionic-portals/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)
