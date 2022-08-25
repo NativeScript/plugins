@@ -31,7 +31,7 @@
 		"@nativescript/ios-security": "file:../../packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",
-		"@nativescript/localize": "file:../../packages/localize",
+		"@nativescript/localize": "file:../../dist/packages/localize",
 		"@nativescript/picker": "file:../../packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",

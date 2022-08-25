@@ -1,13 +1,11 @@
 # @nativescript/haptics
 
-Thank you to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-taptic-engine](https://github.com/EddyVerbruggen/nativescript-taptic-engine). This officially scopes the plugin, streamlines the API and adds Android support, inspried by [react-native-haptic-feedback](https://github.com/junina-de/react-native-haptic-feedback).
+> Playing haptics can engage people's sense of touch and bring their familiarity with the physical world into your app or game.
+~ Developer docs
 
-## Supported platforms
-* Official API: 
-    * iPhone 7 / 7 Plus or newer
-* Unofficial API: 
-    * iPhone 6s / 6s Plus or newer
-* iOS Requires Xcode >=8 to build
+For iOS and Android development.
+
+Thank you to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-taptic-engine](https://github.com/EddyVerbruggen/nativescript-taptic-engine) as this continues it's evolution by streamlining the API and adding Android support, inspired by [react-native-haptic-feedback](https://github.com/junina-de/react-native-haptic-feedback).
 
 ## Usage
 
@@ -15,7 +13,7 @@ Thank you to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-tapti
 npm install @nativescript/haptics
 ```
 
-## Official API
+## API
 
 ### `selection`
 Use selection feedback generators to indicate a change in selection.
@@ -23,7 +21,6 @@ Use selection feedback generators to indicate a change in selection.
 ##### TypeScript
 
 ```js
-// require the plugin
 import { Haptics } from "@nativescript/haptics";
 
 Haptics.selection();
@@ -31,7 +28,6 @@ Haptics.selection();
 
 ##### JavaScript
 ```js
-// require the plugin
 const Haptics = require("@nativescript/haptics").Haptics;
 
 Haptics.selection();
@@ -44,15 +40,9 @@ There are 3 notification types: `HapticNotificationType.SUCCESS` (default), `.WA
 
 ##### TypeScript
 ```js
-// require the plugin
-import {TapticEngine, TapticEngineNotificationType} from "@nativescript/haptics";
+import { Haptics, HapticNotificationType } from "@nativescript/haptics";
 
-// instantiate the plugin
-let tapticEngine = new TapticEngine();
-
-tapticEngine.notification({
-  type: TapticEngineNotificationType.ERROR
-});
+Haptics.notification(HapticNotificationType.ERROR);
 ```
 
 ### `impact`
@@ -60,23 +50,26 @@ Use impact feedback generators to indicate that an impact has occurred.
 For example, you might trigger impact feedback when a user interface object
 collides with something or snaps into place.
 
-There are 3 impact styles: `TapticEngineImpactStyle.LIGHT`, `.MEDIUM` (default), and `.HEAVY`.
+There are 3 impact styles: `HapticImpactType.LIGHT`, `.MEDIUM` (default), and `.HEAVY`.
 
 ##### TypeScript
 ```js
-// require the plugin
-import {TapticEngine, TapticEngineImpactStyle} from "@nativescript/haptics";
+import { Haptics, HapticImpactType } from "@nativescript/haptics";
 
-// instantiate the plugin
-let tapticEngine = new TapticEngine();
-
-tapticEngine.impact({
-  type: TapticEngineImpactStyle.HEAVY
-});
+Haptics.impact(HapticImpactType.HEAVY);
 ```
 
 
-## Unofficial API (requires at least iPhone 6s)
+## HapticsFallback (requires at least iPhone 6s)
+
+With older phones you can use the following conditional to use the fallbacks:
+
+```
+if (!Haptics.isSupported() && Haptics.is6SAnd6SPlusSupported()) {
+  // use HapticsFallback
+}
+```
+
 __BEWARE__ This uses an undocumented feature which may get your app rejected when reviewed by Apple.
 [People have used this approach __without problems__ though.](http://stackoverflow.com/questions/32526868/taptic-in-ios-9)
 
@@ -85,35 +78,16 @@ This triggers the same effect as the 'Peek' in 'Peek & Pop', a very brief vibrat
 
 ##### TypeScript
 ```js
-// require the plugin
-import {TapticEngineUnofficial} from "@nativescript/haptics";
+import { HapticsFallback } from "@nativescript/haptics";
 
-// instantiate the plugin
-let tapticEngineUnofficial = new TapticEngineUnofficial();
-
-tapticEngineUnofficial.weakBoom().then(() => {
-  // note that unsupported iOS devices like the simulator also end up here
-}, (err) => {
-  console.log("You're running on Android. Meh.");
-});
+HapticsFallback.weakBoom();
 ```
 
 ##### JavaScript
 ```js
-// require the plugin
-var TapticEngineUnofficial = require("@nativescript/haptics").TapticEngineUnofficial;
+const HapticsFallback = require("@nativescript/haptics").HapticsFallback;
 
-// instantiate the plugin
-var tapticEngineUnofficial = new TapticEngineUnofficial();
-
-tapticEngineUnofficial.weakBoom().then(
-  function() {
-    // note that unsupported iOS devices like the simulator also end up here
-    console.log("Boomed weakly, if available.");
-  }, function () {
-    console.log("You're running on Android. Meh.");
-  }
-);
+HapticsFallback.weakBoom();
 ```
 
 ### `strongBoom`
@@ -128,7 +102,7 @@ This triggers the 'Nope' effect you get when fi. force touching a home icon whic
 Codewise this is exactly the same as `weakBoom` and `strongBoom`, except for the function name of course.
 
 ## Changelog
-* 3.0.0  Moved to @nativescript/haptics and added Android support. Also simplified the naming conventions.
+* 3.0.0  Moved to @nativescript/haptics and added Android support. Adjusted naming conventions.
 * 2.1.0  Modernized the code a little, migrated to the plugin seed structure, and added a Vue demo.
 * 2.0.0  Added official API for iPhone 7. Moved the old API to TapticEngineUnofficial.*. Requires Xcode 8 to build.
 * 1.0.0  Initial release, unofficial API only. Compatible with any Xcode version.

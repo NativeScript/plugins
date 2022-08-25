@@ -1,10 +1,10 @@
 import { Utils } from '@nativescript/core';
-import { HapticImpactStyle, HapticNotificationType } from './common';
+import { HapticImpactType, HapticNotificationType } from './common';
 
 export * from './common';
 
 let generatorNotification: UINotificationFeedbackGenerator;
-let generatorImpactMap: Map<HapticImpactStyle, UIImpactFeedbackGenerator>;
+let generatorImpactMap: Map<HapticImpactType, UIImpactFeedbackGenerator>;
 let generatorSelection: UISelectionFeedbackGenerator;
 
 export class Haptics {
@@ -35,24 +35,24 @@ export class Haptics {
 		generatorNotification.prepare();
 	}
 
-	static impact(style?: HapticImpactStyle) {
-		const impactStyle = style || HapticImpactStyle.MEDIUM;
+	static impact(type?: HapticImpactType) {
+		const impactType = type || HapticImpactType.MEDIUM;
 		let generator: UIImpactFeedbackGenerator;
 		let feedbackStyle: UIImpactFeedbackStyle;
 		if (!generatorImpactMap) {
 			generatorImpactMap = new Map();
 		}
-		if (generatorImpactMap.has(impactStyle)) {
-			generator = generatorImpactMap.get(impactStyle);
+		if (generatorImpactMap.has(impactType)) {
+			generator = generatorImpactMap.get(impactType);
 		} else {
-			switch (impactStyle) {
-				case HapticImpactStyle.LIGHT:
+			switch (impactType) {
+				case HapticImpactType.LIGHT:
 					feedbackStyle = UIImpactFeedbackStyle.Light;
 					break;
-				case HapticImpactStyle.MEDIUM:
+				case HapticImpactType.MEDIUM:
 					feedbackStyle = UIImpactFeedbackStyle.Medium;
 					break;
-				case HapticImpactStyle.HEAVY:
+				case HapticImpactType.HEAVY:
 					feedbackStyle = UIImpactFeedbackStyle.Heavy;
 					break;
 			}
@@ -81,7 +81,7 @@ export class Haptics {
 	}
 }
 
-export class HapticsUnofficial {
+export class HapticsFallback {
 	static weakBoom() {
 		AudioServicesPlaySystemSound(1519);
 	}

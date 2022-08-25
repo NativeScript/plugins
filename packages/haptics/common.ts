@@ -4,7 +4,7 @@ export enum HapticNotificationType {
 	ERROR,
 }
 
-export enum HapticImpactStyle {
+export enum HapticImpactType {
 	LIGHT = 1,
 	MEDIUM,
 	HEAVY,

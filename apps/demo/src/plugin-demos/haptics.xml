@@ -4,7 +4,7 @@
         </ActionBar>
     </Page.actionBar>
     <StackLayout>
-      <Label text="Official API, supported from iPhone 7" class="message" textWrap="true"/>
+      <Label text="Haptics" class="message" textWrap="true"/>
       <GridLayout columns="*, 106, 94" rows="auto">
         <Button col="0" text="notification: success" tap="{{ doNotificationSuccess }}" class="button button-notification-success" />
         <Button col="1" text="warn" tap="{{ doNotificationWarning }}" class="button button-notification-warning" />
@@ -17,7 +17,7 @@
       </GridLayout>
       <Button text="selection" tap="{{ doSelection }}" class="button button-selection" />
 
-      <Label text="Unofficial API, supported from iPhone 6s" class="message" textWrap="true"/>
+      <Label text="HapticsFallback" class="message" textWrap="true"/>
       <Button text="weak boom (peek)" tap="{{ doWeakBoom }}" class="button button-weakboom" />
       <Button text="strong boom (pop)" tap="{{ doStrongBoom }}" class="button button-strongboom" />
       <Button text="burst (nope!)" tap="{{ doBurst }}" class="button button-burst" />

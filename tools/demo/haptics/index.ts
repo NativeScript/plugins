@@ -1,5 +1,5 @@
 import { DemoSharedBase } from '../utils';
-import { Haptics, HapticsUnofficial, HapticNotificationType, HapticImpactStyle } from '@nativescript/haptics';
+import { Haptics, HapticsFallback, HapticNotificationType, HapticImpactType } from '@nativescript/haptics';
 
 export class DemoSharedHaptics extends DemoSharedBase {
 	doNotificationSuccess() {
@@ -19,26 +19,26 @@ export class DemoSharedHaptics extends DemoSharedBase {
 	}
 
 	doImpactLight() {
-		Haptics.impact(HapticImpactStyle.LIGHT);
+		Haptics.impact(HapticImpactType.LIGHT);
 	}
 
 	doImpactMedium() {
-		Haptics.impact(HapticImpactStyle.MEDIUM);
+		Haptics.impact(HapticImpactType.MEDIUM);
 	}
 
 	doImpactHeavy() {
-		Haptics.impact(HapticImpactStyle.HEAVY);
+		Haptics.impact(HapticImpactType.HEAVY);
 	}
 
 	doWeakBoom() {
-		HapticsUnofficial.weakBoom();
+		HapticsFallback.weakBoom();
 	}
 
 	doStrongBoom() {
-		HapticsUnofficial.strongBoom();
+		HapticsFallback.strongBoom();
 	}
 
 	doBurst() {
-		HapticsUnofficial.burst();
+		HapticsFallback.burst();
 	}
 }
