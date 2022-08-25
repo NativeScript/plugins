@@ -19,7 +19,9 @@
 		"JavaScript",
 		"TypeScript",
 		"iOS",
-		"Android"
+		"Android",
+		"Haptics",
+		"Haptic"
 	],
 	"author": {
 		"name": "NativeScript",
