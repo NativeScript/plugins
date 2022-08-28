@@ -49,7 +49,7 @@ import RoomPlan
         finalResults = processedResult
     }
     
-    @objc public func exportResults(filePath: String? = nil, callback: ((_ destinationPath: String?) -> ())? = nil) {
+    @objc public func exportResults(filePath: String? = nil, callback: ((_ destinationPath: String?) -> ())? = nil, errorCallback: ((_ error: String?) -> ())? = nil) {
         let destinationURL = filePath != nil ? URL(fileURLWithPath: filePath!) :  FileManager.default.temporaryDirectory.appending(path: "Room.usdz")
         do {
             try finalResults?.export(to: destinationURL)
@@ -60,6 +60,9 @@ import RoomPlan
             
         } catch {
             print("Error = \(error)")
+            if (errorCallback != nil) {
+                errorCallback!("Export error: \(error.localizedDescription)")
+            }
         }
     }
 }

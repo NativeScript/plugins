@@ -2,7 +2,7 @@
   <GridLayout rows="*" columns="*">
     <rp:RoomCaptureView width="100%" height="100%" loaded="loadedRoomCaptureView" iosOverflowSafeArea="true"/>
     <GridLayout rows="auto" columns="20,auto,*,auto,20" verticalAlignment="top" marginTop="20">
-      <Button col="1" text="Cancel" tap="{{cancel}}" fontSize="16" color="white" visibility="{{ scanning ? 'visible' : 'collapsed' }}"/>
+      <Button col="1" text="Cancel" tap="{{cancel}}" fontSize="16" color="white" color="{{scanning ? 'white' : '#5fb9f9'}}"/>
       <Button col="3" text="{{scanning ? 'Done' : 'Save' }}" tap="{{done}}" fontSize="16" color="{{scanning ? 'white' : '#5fb9f9'}}" />
     </GridLayout>
   </GridLayout>

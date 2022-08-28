@@ -10,9 +10,7 @@ export function shownModally(args: EventData) {
 let roomCaptureView: RoomCaptureView;
 
 export function loadedRoomCaptureView(args) {
-	console.log('loadedRoomCaptureView!');
 	roomCaptureView = args.object;
-	console.log('roomCaptureView.start:', roomCaptureView.start);
 }
 
 export class RoomPlanModel extends Observable {
@@ -26,6 +24,16 @@ export class RoomPlanModel extends Observable {
 		this.page.closeModal();
 	}
 
+	done() {
+		if (this.scanning) {
+			this.scanning = false;
+			this.notifyPropertyChange('scanning', this.scanning);
+			roomCaptureView.stop();
+		} else {
+			this.save();
+		}
+	}
+
 	save() {
 		Dialogs.prompt({
 			title: 'Save 3D Room Model?',
@@ -35,6 +43,10 @@ export class RoomPlanModel extends Observable {
 			cancelButtonText: 'Cancel',
 		}).then((value) => {
 			if (value.result && value.text) {
+				const filePath = path.join(knownFolders.documents().path, `${value.text}.usdz`);
+				roomCaptureView.export(filePath, (outputPath) => {
+					this.page.closeModal(outputPath);
+				});
 			} else {
 				this.page.closeModal();
 			}

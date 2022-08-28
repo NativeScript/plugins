@@ -19,14 +19,16 @@ export class DemoModel extends DemoSharedRoomplan {
 				enablePreview: true,
 			},
 			closeCallback: (savedModelPath: string) => {
-				console.log('savedModelPath:', savedModelPath);
-				setTimeout(() => {
-					Dialogs.alert({
-						title: 'Model saved!',
-						message: savedModelPath,
-						okButtonText: 'Ok',
-					});
-				}, 1000);
+				if (savedModelPath) {
+					console.log('savedModelPath:', savedModelPath);
+					setTimeout(() => {
+						Dialogs.alert({
+							title: 'Model saved!',
+							message: savedModelPath,
+							okButtonText: 'Ok',
+						});
+					}, 1000);
+				}
 			},
 		});
 	}

@@ -17,6 +17,8 @@ export class RoomCaptureView extends RoomCaptureViewCommon {
 	}
 
 	export(filePath: string, callback?: (outputPath: string) => void) {
-		this.roomPlan.exportResultsWithFilePathCallback(filePath, callback);
+		this.roomPlan.exportResultsWithFilePathCallbackErrorCallback(filePath, callback, (error) => {
+			console.error('error:', error);
+		});
 	}
 }
