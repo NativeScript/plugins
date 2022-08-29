@@ -20,7 +20,7 @@ Easily add [Detox](https://github.com/wix/Detox) end-to-end testing to your Nati
 ## Installation
 
 ```cli
-ns plugin add @nativescript/detox
+npm install @nativescript/detox
 ```
 
 ## Global Setup

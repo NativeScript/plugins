@@ -5,7 +5,7 @@ NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org/p
 ![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
 
 ```cli
-ns plugin add @nativescript/iqkeyboardmanager
+npm install @nativescript/iqkeyboardmanager
 ```
 
 ## Usage

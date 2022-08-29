@@ -1,7 +1,7 @@
 # @nativescript/theme-switcher
 
 ```cli
-ns plugin add @nativescript/theme-switcher
+npm install @nativescript/theme-switcher
 ```
 
 <table style="width:auto;">

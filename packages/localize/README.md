@@ -25,7 +25,7 @@ A lot of thanks goes out to [Ludovic Fabrèges (@lfabreges)](https://github.com/
 ## Installation
 
 ```cli
-ns plugin add @nativescript/localize
+npm install @nativescript/localize
 ```
 
 ## Usage

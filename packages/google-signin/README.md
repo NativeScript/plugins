@@ -1,7 +1,7 @@
 # @nativescript/google-signin
 
 ```cli
-ns plugin add @nativescript/google-signin
+npm install @nativescript/google-signin
 ```
 
 ## Prerequisites

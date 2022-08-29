@@ -1,7 +1,7 @@
 # @nativescript/background-http
 
 ```cli
-ns plugin add @nativescript/background-http
+npm install @nativescript/background-http
 ```
 
 ## Usage
