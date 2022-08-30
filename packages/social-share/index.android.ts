@@ -1,4 +1,4 @@
-import { Application, Device } from '@nativescript/core';
+import { Application, Device, File } from '@nativescript/core';
 
 let context;
 let numberOfImagesCreated = 0;
@@ -57,6 +57,32 @@ export function shareText(text, subject) {
 	const intent = getIntent('text/plain');
 
 	intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+	share(intent, subject);
+}
+
+export function sharePdf(pdf: File, subject?: string) {
+	context = Application.android.context;
+
+	const intent = getIntent('application/pdf');
+	const fileName = pdf.name;
+	const newFile = new java.io.File(context.getExternalFilesDir(null), fileName);
+	const bytes = pdf.readSync();
+	const fos = new java.io.FileOutputStream(newFile);
+
+	fos.write(bytes);
+	fos.flush();
+	fos.close();
+
+	let shareableFileUri;
+	const sdkVersionInt = parseInt(Device.sdkVersion);
+	if (sdkVersionInt >= 21) {
+		shareableFileUri = FileProviderPackageName.FileProvider.getUriForFile(context, Application.android.nativeApp.getPackageName() + '.provider', newFile);
+	} else {
+		shareableFileUri = android.net.Uri.fromFile(newFile);
+	}
+
+	intent.putExtra(android.content.Intent.EXTRA_STREAM, shareableFileUri);
+
 	share(intent, subject);
 }
 
