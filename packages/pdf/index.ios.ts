@@ -28,6 +28,15 @@ export class PDFView extends Common {
 		this.loadPDF(value);
 	}
 
+	// @ts-ignore
+	public get ios() {
+		return this.nativeView as WKWebView;
+	}
+
+	public set ios(value: WKWebView) {
+		this.nativeView = value;
+	}
+
 	public onLoaded() {
 		super.onLoaded();
 		this.ios.navigationDelegate = this.delegate;
