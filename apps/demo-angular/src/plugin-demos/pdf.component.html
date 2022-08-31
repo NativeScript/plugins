@@ -1,8 +1,5 @@
 <ActionBar title="pdf" class="action-bar"> </ActionBar>
-<StackLayout class="p-20">
-	<ScrollView class="h-full">
-		<StackLayout>
-			<Button text="Test nativescript-pdf" (tap)="demoShared.testIt()" class="btn btn-primary"></Button>
-		</StackLayout>
-	</ScrollView>
-</StackLayout>
+
+<GridLayout class="page__content" columns="*" rows="auto, *">
+	<PDFView row="1" col="0" [src]="pdfSrc" (load)="onLoad()"></PDFView>
+</GridLayout>

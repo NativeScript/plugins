@@ -1,16 +1,21 @@
 import { Component, NgZone } from '@angular/core';
 import { DemoSharedNativescriptPdfView } from '@demo/shared';
 
+import { PDFView } from '@nativescript/pdf';
+import { registerElement } from '@nativescript/angular';
+
+registerElement('PDFView', () => PDFView);
+
 @Component({
 	selector: 'demo-pdf',
 	templateUrl: 'pdf.component.html',
 })
 export class PdfComponent {
-	demoShared: DemoSharedNativescriptPdfView;
+	pdfSrc: string = 'https://riptutorial.com/Download/nativescript.pdf';
 
 	constructor(private _ngZone: NgZone) {}
 
-	ngOnInit() {
-		this.demoShared = new DemoSharedNativescriptPdfView();
+	onLoad() {
+		console.log('PDF loaded');
 	}
 }
