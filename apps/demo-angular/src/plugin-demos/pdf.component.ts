@@ -1,10 +1,4 @@
 import { Component, NgZone } from '@angular/core';
-import { DemoSharedNativescriptPdfView } from '@demo/shared';
-
-import { PDFView } from '@nativescript/pdf';
-import { registerElement } from '@nativescript/angular';
-
-registerElement('PDFView', () => PDFView);
 
 @Component({
 	selector: 'demo-pdf',
