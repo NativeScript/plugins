@@ -22,10 +22,13 @@
                 
                 <Button text="verify with encryption" tap="{{ doVerifyFingerprintWithEncrypt }}" class="btn btn-primary" />
                  <Button text="verify with decryption" tap="{{ doVerifyFingerprintWithDecrypt }}" class="btn btn-primary" />
+                 <Button text="delete Key" tap="{{ doDeleteKey }}" class="btn btn-primary" />
+                 
                  	<TextField text="{{ encryptedPassword }}" ></TextField>
                   <TextField text="{{ IV }}"></TextField>
                   <TextField text="{{ decryptedPassword }}"></TextField>
-              
+                  <TextField text="{{ androidKeyTimeout }}" ></TextField>
+                                
             </StackLayout>
           </ScrollView>
         </TabViewItem.view>
@@ -33,7 +36,6 @@
       <TabViewItem title="About">
         <TabViewItem.view>
           <StackLayout class="tab-content">
-            <Image margin="10" src="~/res/telerik-logo.png" />
             <Label text="Biometrics plugin demo" class="title"/>
             <Label text="The Biometrics plugin allows you to use the fingerprint / face scanner of your mobile device." textWrap="true"/>
             <Label text=" "/>
