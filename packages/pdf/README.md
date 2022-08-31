@@ -1,16 +1,12 @@
-[![Build Status](https://travis-ci.org/madmas/nativescript-pdf-view.svg?branch=master)](https://travis-ci.org/madmas/nativescript-pdf-view)
+# NativeScript PDF
 
-[![npm version](https://badge.fury.io/js/nativescript-pdf-view.svg)](https://badge.fury.io/js/nativescript-pdf-view)
+> *Remark* [This repository](https://github.com/NativeScript/plugins/blob/main/packages/pdf) is the replacement for [madmas/nativescript-pdf-view](https://github.com/madmas/nativescript-pdf-view) which was a fork of [the original by Merott](https://github.com/Merott/nativescript-pdf-view) and will be used with his consent to provide further maintenance of this NativeScript plugin.
 
-# NativeScript PDFView
+It serves minimal PDF view implementation that does only one thing, and that is to display PDF files in the simplest way possible. It conveniently uses the iOS `WKWebView`, and for Android it uses [`AndroidPdfViewer`](https://github.com/barteksc/AndroidPdfViewer).
 
-> *Remark* [This repository](https://github.com/madmas/nativescript-pdf-view) is a fork of [the original by Merott](https://github.com/Merott/nativescript-pdf-view) that will be used with his consent to provide further maintenance of this NativeScript plugin.
+This plugin does the bare minimum required to render the PDF, no configuration options, and no error handling have been built yet. All Pull Requests to enhance its functionality are welcome!
 
-A minimal PDF view implementation that does only one thing, and that is to display PDF files in the simplest way possible. It conveniently uses the iOS `WKWebView`, and for Android it uses [`AndroidPdfViewer`](https://github.com/barteksc/AndroidPdfViewer).
-
-This plugin does the bare minimum required to render the PDF, no configuration options, and no error handling have been built yet. I welcome all Pull Requests!
-
-My aim is to keep the features consistent across iOS and Android.
+The aim is to keep the features consistent across iOS and Android.
 
 ## Installation
 
@@ -52,6 +48,6 @@ Check out the [demo](./demo) folder for a demo application using this plugin. Yo
 
 There are sample applications avalable:
 
-* *Plain TypeScript*: see [demo/](https://github.com/madmas/nativescript-pdf-view/tree/master/demo) folder in this repository
+* *Plain TypeScript*: see [pdf.ts](https://github.com/NativeScript/plugins/tree/main/apps/demo/src/plugin-demos/pdf.ts) and [pdf.xml](https://github.com/NativeScript/plugins/tree/main/apps/demo/src/plugin-demos/pdf.xml) files in this repository
 * *NativeScript+Angular*: [nativescript-pdf-view-angular-sample](https://github.com/madmas/nativescript-pdf-view-angular-sample) repository
 * *NativeScript+VueJs*:  [nativescript-pdf-view-vue-sample](https://github.com/madmas/nativescript-pdf-view-vue-sample) repository
