@@ -1,4 +1,4 @@
-import { Frame, ImageSource, Utils } from '@nativescript/core';
+import { File, Frame, ImageSource, Utils } from '@nativescript/core';
 
 function share(thingsToShare) {
 	const activityController = UIActivityViewController.alloc().initWithActivityItemsApplicationActivities(thingsToShare, null);
@@ -54,6 +54,10 @@ export function shareImage(image: ImageSource) {
 
 export function shareText(text: string) {
 	share([text]);
+}
+
+export function sharePdf(pdf: File) {
+	share([NSURL.fileURLWithPath(pdf.path)]);
 }
 
 export function shareUrl(url, text) {
