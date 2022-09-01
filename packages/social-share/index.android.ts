@@ -1,8 +1,6 @@
-import { Application, Device, File } from '@nativescript/core';
+import { Application, Device, File, Utils } from '@nativescript/core';
 
-let context;
 let numberOfImagesCreated = 0;
-declare var global: any;
 const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : (<any>android).support.v4.content;
 
 function getIntent(type) {
@@ -11,12 +9,11 @@ function getIntent(type) {
 	return intent;
 }
 function share(intent, subject) {
-	context = Application.android.context;
 	subject = subject || 'How would you like to share this?';
 
 	const shareIntent = android.content.Intent.createChooser(intent, subject);
 	shareIntent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
-	context.startActivity(shareIntent);
+	(<android.content.Context>Utils.android.getApplicationContext()).startActivity(shareIntent);
 }
 function useAndroidX() {
 	return global.androidx && global.androidx.appcompat;
@@ -25,15 +22,13 @@ function useAndroidX() {
 export function shareImage(image, subject) {
 	numberOfImagesCreated++;
 
-	context = Application.android.context;
-
 	const intent = getIntent('image/jpeg');
 
 	const stream = new java.io.ByteArrayOutputStream();
 	image.android.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, stream);
 
 	const imageFileName = 'socialsharing' + numberOfImagesCreated + '.jpg';
-	const newFile = new java.io.File(context.getExternalFilesDir(null), imageFileName);
+	const newFile = new java.io.File((<android.content.Context>Utils.android.getApplicationContext()).getExternalFilesDir(null), imageFileName);
 
 	const fos = new java.io.FileOutputStream(newFile);
 	fos.write(stream.toByteArray());
@@ -44,7 +39,7 @@ export function shareImage(image, subject) {
 	let shareableFileUri;
 	const sdkVersionInt = parseInt(Device.sdkVersion);
 	if (sdkVersionInt >= 21) {
-		shareableFileUri = FileProviderPackageName.FileProvider.getUriForFile(context, Application.android.nativeApp.getPackageName() + '.provider', newFile);
+		shareableFileUri = FileProviderPackageName.FileProvider.getUriForFile(<android.content.Context>Utils.android.getApplicationContext(), Application.android.nativeApp.getPackageName() + '.provider', newFile);
 	} else {
 		shareableFileUri = android.net.Uri.fromFile(newFile);
 	}
@@ -61,11 +56,9 @@ export function shareText(text, subject) {
 }
 
 export function sharePdf(pdf: File, subject?: string) {
-	context = Application.android.context;
-
 	const intent = getIntent('application/pdf');
 	const fileName = pdf.name;
-	const newFile = new java.io.File(context.getExternalFilesDir(null), fileName);
+	const newFile = new java.io.File((<android.content.Context>Utils.android.getApplicationContext()).getExternalFilesDir(null), fileName);
 	const bytes = pdf.readSync();
 	const fos = new java.io.FileOutputStream(newFile);
 
@@ -76,7 +69,7 @@ export function sharePdf(pdf: File, subject?: string) {
 	let shareableFileUri;
 	const sdkVersionInt = parseInt(Device.sdkVersion);
 	if (sdkVersionInt >= 21) {
-		shareableFileUri = FileProviderPackageName.FileProvider.getUriForFile(context, Application.android.nativeApp.getPackageName() + '.provider', newFile);
+		shareableFileUri = FileProviderPackageName.FileProvider.getUriForFile(<android.content.Context>Utils.android.getApplicationContext(), Application.android.nativeApp.getPackageName() + '.provider', newFile);
 	} else {
 		shareableFileUri = android.net.Uri.fromFile(newFile);
 	}
