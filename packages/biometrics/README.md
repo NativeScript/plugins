@@ -108,7 +108,7 @@ biometricAuth.available().then((avail) => {
 
 ### Normal operation
 
-If you do not pass any of the options (pinFallback / keyName) to the verify method then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea being that the key will not be accessable unless the user has successfully authenticated.
+If you do not pass any of the options (pinFallback / keyName) to the verify method then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea being that the key will not be accessible unless the user has successfully authenticated.
 
 This however is not foolproof and the most secure method is to pass the `secret` and `Keyname`options to encrypt/decrypt text.
 

@@ -9,9 +9,14 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 	encryptedPassword: string = 'WIll Hold Encrypted Password';
 	IV: string = 'WIll Hold IV';
 	decryptedPassword = CONFIGURED_PASSWORD;
+	androidKeyTimeout = 0;
 	constructor() {
 		super();
 		this.fingerprintAuth = new BiometricAuth();
+	}
+
+	doDeleteKey(): void {
+		this.fingerprintAuth.deleteKey('MySecretKeyName');
 	}
 
 	doCheckAvailable(): void {
@@ -20,18 +25,18 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 			.then((result: BiometricIDAvailableResult) => {
 				console.log('doCheckAvailable result: ' + JSON.stringify(result));
 
-				let availbleBio: string = 'None';
+				let availableBio: string = 'None';
 				if (result.face) {
-					availbleBio = 'Face';
+					availableBio = 'Face';
 				} else if (result.touch) {
-					availbleBio = 'Touch';
+					availableBio = 'Touch';
 				} else if (result.biometrics) {
-					availbleBio = 'Biometrics';
+					availableBio = 'Biometrics';
 				} else if (result.any) {
-					availbleBio = 'Pin';
+					availableBio = 'Pin';
 				}
 
-				this.set('status', 'Biometric ID available? - ' + availbleBio);
+				this.set('status', 'Biometric ID available? - ' + availableBio);
 			})
 			.catch((err) => {
 				console.log('doCheckAvailable error: ' + err);
@@ -40,9 +45,13 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 	}
 
 	doCheckFingerprintsChanged(): void {
-		this.fingerprintAuth.didBiometricDatabaseChange().then((changed: boolean) => {
-			this.set('status', 'Biometric ID changed? - ' + (changed ? 'YES' : 'NO'));
-		});
+		this.fingerprintAuth
+			.didBiometricDatabaseChange({
+				keyName: 'MySecretKeyName',
+			})
+			.then((changed: boolean) => {
+				this.set('status', 'Biometric ID changed? - ' + (changed ? 'YES' : 'NO'));
+			});
 	}
 
 	doVerifyFingerprint(): void {
@@ -102,6 +111,7 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 				pinFallback: false,
 				keyName: 'MySecretKeyName',
 				secret: this.decryptedPassword,
+				android: { validityDuration: this.androidKeyTimeout },
 			})
 			.then((result) => {
 				this.setProperty('encryptedPassword', result.encrypted);
@@ -117,7 +127,7 @@ export class DemoSharedBiometrics extends DemoSharedBase {
 				message: 'Scan yer finger', // optional
 				pinFallback: false,
 				keyName: 'MySecretKeyName',
-				android: { decryptText: this.encryptedPassword, iv: this.IV },
+				android: { decryptText: this.encryptedPassword, iv: this.IV, validityDuration: this.androidKeyTimeout },
 				ios: { fetchSecret: true },
 			})
 			.then((result) => {
