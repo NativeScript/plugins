@@ -1,17 +1,15 @@
-# NativeScript PDF
+# @nativescript/pdf
+
+A simple PDF viewer.
 
 > *Remark* [This repository](https://github.com/NativeScript/plugins/blob/main/packages/pdf) is the replacement for [madmas/nativescript-pdf-view](https://github.com/madmas/nativescript-pdf-view) which was a fork of [the original by Merott](https://github.com/Merott/nativescript-pdf-view) and will be used with his consent to provide further maintenance of this NativeScript plugin.
 
 It serves minimal PDF view implementation that does only one thing, and that is to display PDF files in the simplest way possible. It conveniently uses the iOS `WKWebView`, and for Android it uses [`AndroidPdfViewer`](https://github.com/barteksc/AndroidPdfViewer).
 
-This plugin does the bare minimum required to render the PDF, no configuration options, and no error handling have been built yet. All Pull Requests to enhance its functionality are welcome!
-
-The aim is to keep the features consistent across iOS and Android.
-
 ## Installation
 
 ```
-tns plugin add @nativescript/pdf
+npm install @nativescript/pdf
 ```
 
 ## Usage
@@ -27,29 +25,23 @@ tns plugin add @nativescript/pdf
 </Page>
 ```
 
-### Angular NativeScript
+### Angular
 
 ```ts
 import { NativeScriptPdfModule } from '@nativescript/pdf/angular'
-
-...
 
 @NgModule({
 	imports: [
     NativeScriptCommonModule, 
     ...
-    NativeScriptPdfModule],
-...
+    NativeScriptPdfModule
+  ],
 
 ```
 
 ```html
 <PDFView [src]="src" (load)="onLoad()"></PDFView>
 ```
-
-## Demo
-
-Check out the [demo](./demo) folder for a demo application using this plugin. You can run the demo by executing `npm run demo.ios` and `npm run demo.android` from the root directory of the project.
 
 
 ## Samples

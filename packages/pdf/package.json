@@ -22,6 +22,10 @@
 		"View",
 		"iOS"
 	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
 	"contributors": [
 		{
 			"name": "Merott Movahedi",
