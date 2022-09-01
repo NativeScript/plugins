@@ -26,6 +26,7 @@ export * from './ios-security';
 export * from './iqkeyboardmanager';
 export * from './local-notifications';
 export * from './localize';
+export * from './pdf';
 export * from './picker';
 export * from './shared-notification-delegate';
 export * from './social-share';

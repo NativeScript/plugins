@@ -2,7 +2,7 @@
 	"main": "./src/main.ts",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/haptics": "file:../../dist/packages/haptics",
+		"@nativescript/pdf": "file:../../dist/packages/pdf",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -23,6 +23,7 @@
 		"@nativescript/geolocation": "file:../../dist/packages/geolocation",
 		"@nativescript/google-maps": "file:../../dist/packages/google-maps",
 		"@nativescript/google-signin": "file:../../dist/packages/google-signin",
+		"@nativescript/haptics": "file:../../dist/packages/haptics",
 		"@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
 		"@nativescript/ionic-portals": "file:../../dist/packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../dist/packages/ios-security",

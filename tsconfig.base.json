@@ -52,6 +52,7 @@
 			"@nativescript/local-notifications": ["packages/local-notifications/index.d.ts"],
 			"@nativescript/localize": ["packages/localize/index.d.ts"],
 			"@nativescript/localize/angular": ["packages/localize/angular/index.ts"],
+			"@nativescript/pdf": ["packages/pdf/index.d.ts"],
 			"@nativescript/picker": ["packages/picker/index.d.ts"],
 			"@nativescript/picker/angular": ["packages/picker/angular/index.ts"],
 			"@nativescript/shared-notification-delegate": ["packages/shared-notification-delegate/index.d.ts"],
