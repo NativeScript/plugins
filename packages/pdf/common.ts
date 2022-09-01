@@ -1,7 +1,8 @@
-import * as fs from '@nativescript/core/file-system';
-import { Property, View } from '@nativescript/core/ui/core/view';
+import { Folder, knownFolders, Property, View } from '@nativescript/core';
 
-export abstract class Common extends View {
+let tmpFolder: Folder;
+
+export abstract class PDFViewCommon extends View {
 	public static loadEvent = 'load';
 
 	/**
@@ -14,14 +15,12 @@ export abstract class Common extends View {
 	 */
 	public src: string;
 
-	protected tempFolder = fs.knownFolders.temp().getFolder('PDFViewer.temp/');
-
 	public static notifyOfEvent(
 		eventName: string,
 		// tslint:disable-next-line: no-any
 		pdfViewRef: WeakRef<any>
 	) {
-		const viewer = pdfViewRef.get();
+		const viewer = pdfViewRef?.get();
 
 		if (viewer) {
 			// tslint:disable-next-line: no-unsafe-any
@@ -32,22 +31,31 @@ export abstract class Common extends View {
 	public abstract loadPDF(src: string);
 
 	// tslint:disable-next-line: no-any
-	protected createTempFile(base64data: any) {
-		this.tempFolder.clear().then(() => {
-			const file = fs.Folder.fromPath(this.tempFolder.path).getFile(`_${Date.now()}.pdf`);
-			file.writeSync(base64data);
-			this.loadPDF(file.path);
+	protected createTempFile(base64data?: any) {
+		return new Promise<Folder>((resolve) => {
+			if (!tmpFolder) {
+				tmpFolder = knownFolders.documents().getFolder('PDFViewer.temp/');
+			}
+			tmpFolder.clear().then(() => {
+				if (base64data) {
+					const file = Folder.fromPath(tmpFolder.path).getFile(`_${Date.now()}.pdf`);
+					file.writeSync(base64data);
+					this.loadPDF(file.path);
+				} else {
+					resolve(tmpFolder);
+				}
+			});
 		});
 	}
 }
 
-export const enableAnnotationRenderingProperty = new Property<Common, boolean>({
+export const enableAnnotationRenderingProperty = new Property<PDFViewCommon, boolean>({
 	defaultValue: false,
 	name: 'enableAnnotationRendering',
 });
-enableAnnotationRenderingProperty.register(Common);
+enableAnnotationRenderingProperty.register(PDFViewCommon);
 
-export const srcProperty = new Property<Common, string>({
+export const srcProperty = new Property<PDFViewCommon, string>({
 	name: 'src',
 });
-srcProperty.register(Common);
+srcProperty.register(PDFViewCommon);

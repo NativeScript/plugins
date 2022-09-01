@@ -1,33 +1,19 @@
-/// <reference path="./AndroidPdfViewer.d.ts" />
+import { Http } from '@nativescript/core';
 
-import pdfviewer = com.github.barteksc.pdfviewer;
-import * as http from '@nativescript/core/http';
+import { PDFViewCommon, srcProperty } from './common';
 
-import { Common, srcProperty } from './common';
-
-export class PDFView extends Common {
+export class PDFView extends PDFViewCommon {
 	private promise: Promise<void>;
 
-	private onLoadHandler = (() => {
-		const pdfViewRef = new WeakRef(this);
-
-		return new pdfviewer.listener.OnLoadCompleteListener({
-			loadComplete: (numPages) => {
-				Common.notifyOfEvent(Common.loadEvent, pdfViewRef);
-			},
-		});
-	})();
-
-	public createNativeView() {
-		// tslint:disable-next-line:no-unsafe-any
-		return new pdfviewer.PDFView(this._context, void 0);
+	createNativeView() {
+		return new com.github.barteksc.pdfviewer.PDFView(this._context, void 0);
 	}
 
-	public [srcProperty.setNative](value: string) {
+	[srcProperty.setNative](value: string) {
 		this.loadPDF(value);
 	}
 
-	public loadPDF(src: string) {
+	loadPDF(src: string) {
 		if (!src || !this.android) {
 			return;
 		}
@@ -38,7 +24,7 @@ export class PDFView extends Common {
 		// detect base64 stream
 		const base64prefix = 'data:application/pdf;base64,';
 		if (src.indexOf(base64prefix) === 0) {
-			const base64data = android.util.Base64.decode(src.substr(base64prefix.length), android.util.Base64.DEFAULT);
+			const base64data = android.util.Base64.decode(src.substring(base64prefix.length), android.util.Base64.DEFAULT);
 			this.createTempFile(base64data);
 			return;
 		}
@@ -57,12 +43,21 @@ export class PDFView extends Common {
 		this.android.fromUri(uri).onLoad(this.onLoadHandler).spacing(defaultSpacingDP).enableAnnotationRendering(this.enableAnnotationRendering).fitEachPage(true).load();
 	}
 
+	private onLoadHandler = (() => {
+		const pdfViewRef = new WeakRef(this);
+
+		return new com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener({
+			loadComplete: (numPages) => {
+				PDFViewCommon.notifyOfEvent(PDFViewCommon.loadEvent, pdfViewRef);
+			},
+		});
+	})();
+
 	private cacheThenLoad(url: string) {
 		// clear everything in cache
-		this.tempFolder.clear().then(() => {
+		this.createTempFile().then((tmpFolder) => {
 			// download to cache
-			const promise = (this.promise = http
-				.getFile(url, `${this.tempFolder.path}/${Date.now()}.pdf`)
+			const promise = (this.promise = Http.getFile(url, `${tmpFolder.path}/${Date.now()}.pdf`)
 				.then((file) => {
 					if (this.promise === promise) {
 						// make sure we haven't switched

@@ -1,53 +1,50 @@
-import { Common, srcProperty } from './common';
+import { PDFViewCommon, srcProperty } from './common';
 
-class PDFViewDelegate extends NSObject implements WKNavigationDelegate {
-	public static ObjCProtocols = [WKNavigationDelegate];
-
+@NativeClass()
+class PDFWebViewDelegate extends NSObject implements WKNavigationDelegate {
+	static ObjCProtocols = [WKNavigationDelegate];
 	private owner: WeakRef<PDFView>;
 
-	public static initWithOwner(owner: WeakRef<PDFView>): PDFViewDelegate {
-		const delegate = PDFViewDelegate.new() as PDFViewDelegate;
+	static initWithOwner(owner: WeakRef<PDFView>): PDFWebViewDelegate {
+		const delegate = PDFWebViewDelegate.new() as PDFWebViewDelegate;
 		delegate.owner = owner;
 		return delegate;
 	}
 
-	public webViewDidFinishNavigation(webView: WKWebView) {
-		Common.notifyOfEvent(Common.loadEvent, this.owner);
+	webViewDidFinishNavigation(webView: WKWebView) {
+		PDFViewCommon.notifyOfEvent(PDFViewCommon.loadEvent, this.owner);
 	}
 }
 
-export class PDFView extends Common {
-	private delegate: PDFViewDelegate;
+export class PDFView extends PDFViewCommon {
+	private delegate: PDFWebViewDelegate;
 
-	public constructor() {
-		super();
-		this.init();
+	// @ts-ignore
+	get ios(): WKWebView {
+		return this.nativeView;
 	}
 
-	public [srcProperty.setNative](value: string) {
+	createNativeView() {
+		this.delegate = PDFWebViewDelegate.initWithOwner(new WeakRef(this));
+
+		const webView = new WKWebView({
+			configuration: WKWebViewConfiguration.new(),
+			frame: UIScreen.mainScreen.bounds,
+		});
+		webView.navigationDelegate = this.delegate;
+
+		webView.opaque = false;
+		webView.autoresizingMask =
+			// tslint:disable-next-line:no-bitwise
+			UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+		return webView;
+	}
+
+	[srcProperty.setNative](value: string) {
 		this.loadPDF(value);
 	}
 
-	// @ts-ignore
-	public get ios() {
-		return this.nativeView as WKWebView;
-	}
-
-	public set ios(value: WKWebView) {
-		this.nativeView = value;
-	}
-
-	public onLoaded() {
-		super.onLoaded();
-		this.ios.navigationDelegate = this.delegate;
-	}
-
-	public onUnloaded() {
-		this.ios.navigationDelegate = void 0;
-		super.onUnloaded();
-	}
-
-	public loadPDF(src: string) {
+	loadPDF(src: string) {
 		if (!src) {
 			return;
 		}
@@ -70,23 +67,5 @@ export class PDFView extends Common {
 			const urlRequest = NSURLRequest.requestWithURL(url);
 			this.ios.loadRequest(urlRequest);
 		}
-	}
-
-	private init() {
-		this.delegate = PDFViewDelegate.initWithOwner(new WeakRef(this));
-
-		this.ios = new WKWebView({
-			configuration: WKWebViewConfiguration.new(),
-			frame: this.mainScreen.bounds,
-		});
-
-		this.ios.opaque = false;
-		this.ios.autoresizingMask =
-			// tslint:disable-next-line:no-bitwise
-			UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-	}
-
-	private get mainScreen(): UIScreen {
-		return UIScreen.mainScreen;
 	}
 }
