@@ -13,6 +13,14 @@ export class BiometricAuth implements BiometricApi {
 		BiometricAuth.deleteKeyChainEntry(useKeyName);
 	}
 
+	private static get keychainItemServiceName() {
+		if (keychainItemServiceName === null) {
+			const bundleID = NSBundle.mainBundle.infoDictionary.objectForKey('CFBundleIdentifier');
+			keychainItemServiceName = `${bundleID}.TouchID`;
+		}
+		return keychainItemServiceName;
+	}
+
 	available(): Promise<BiometricIDAvailableResult> {
 		return new Promise((resolve, reject) => {
 			try {
@@ -85,11 +93,6 @@ export class BiometricAuth implements BiometricApi {
 					return;
 				}
 
-				if (keychainItemServiceName === null) {
-					const bundleID = NSBundle.mainBundle.infoDictionary.objectForKey('CFBundleIdentifier');
-					keychainItemServiceName = `${bundleID}.TouchID`;
-				}
-
 				const keyName = options.keyName ?? keychainItemIdentifier;
 				const secret = options.secret ?? 'dummy content';
 
@@ -123,7 +126,7 @@ export class BiometricAuth implements BiometricApi {
 		const query = NSMutableDictionary.alloc().init();
 		query.setObjectForKey(kSecClassGenericPassword, kSecClass);
 		query.setObjectForKey(keyName, kSecAttrAccount);
-		query.setObjectForKey(keychainItemServiceName, kSecAttrService);
+		query.setObjectForKey(BiometricAuth.keychainItemServiceName, kSecAttrService);
 		query.setObjectForKey(true, kSecReturnData);
 
 		// Note that you can only do this for Touch ID; for Face ID you need to tweak the plist value of NSFaceIDUsageDescription
@@ -219,7 +222,7 @@ export class BiometricAuth implements BiometricApi {
 		const query = NSMutableDictionary.alloc().init();
 		query.setObjectForKey(kSecClassGenericPassword, kSecClass);
 		query.setObjectForKey(keyName, kSecAttrAccount);
-		query.setObjectForKey(keychainItemServiceName, kSecAttrService);
+		query.setObjectForKey(BiometricAuth.keychainItemServiceName, kSecAttrService);
 
 		SecItemDelete(query);
 	}
@@ -228,7 +231,7 @@ export class BiometricAuth implements BiometricApi {
 		const attributes = NSMutableDictionary.new();
 		attributes.setObjectForKey(kSecClassGenericPassword, kSecClass);
 		attributes.setObjectForKey(keyName, kSecAttrAccount);
-		attributes.setObjectForKey(keychainItemServiceName, kSecAttrService);
+		attributes.setObjectForKey(BiometricAuth.keychainItemServiceName, kSecAttrService);
 
 		const accessControlRef = SecAccessControlCreateWithFlags(
 			kCFAllocatorDefault,
