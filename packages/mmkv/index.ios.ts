@@ -35,11 +35,6 @@ export class NSCMMKV implements INSCMMKV {
 			}
 		}
 	}
-
-	static initialize() {
-		MMKV.initialize();
-	}
-
 	get native() {
 		return this.#native;
 	}
@@ -69,6 +64,14 @@ export class NSCMMKV implements INSCMMKV {
 				this.native.setDataForKey(data, key);
 			}
 		}
+	}
+
+	key(index: number): string | null {
+		try {
+			const keys = this.native.allKeys();
+			return keys.objectAtIndex(index);
+		} catch (e) {}
+		return null;
 	}
 
 	getBoolean(key: string): boolean {
@@ -111,6 +114,10 @@ export class NSCMMKV implements INSCMMKV {
 		return this.native.actualSize();
 	}
 
+	count() {
+		return this.native.count();
+	}
+
 	get keys(): string[] {
 		const keys = this.native.allKeys();
 		const count = keys.count;
@@ -119,10 +126,6 @@ export class NSCMMKV implements INSCMMKV {
 			ret.push(keys.objectAtIndex(i));
 		}
 		return ret;
-	}
-
-	async() {
-		this.native.async();
 	}
 
 	clearMemoryCache() {
@@ -145,11 +148,15 @@ export class NSCMMKV implements INSCMMKV {
 		return MMKV.mmkvBasePath();
 	}
 
-	checkReSetCryptKey(key?: string) {
+	recrypt(key?: string) {
 		if (key) {
-			this.native.checkReSetCryptKey(intoData(key));
+			this.native.reKey(intoData(key));
 		} else {
-			this.native.checkReSetCryptKey(null);
+			this.native.reKey(null);
 		}
 	}
+}
+
+export function initialize() {
+	MMKV.initialize();
 }

@@ -1,7 +1,5 @@
 import { Application } from '@nativescript/core';
-import { NSCMMKV } from '@nativescript/mmkv';
-
-NSCMMKV.initialize();
+import '@nativescript/mmkv-metal/local-storage';
 
 // uncomment to test local notifications
 // import "@nativescript/local-notifications";

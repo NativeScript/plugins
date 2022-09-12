@@ -1,5 +1,6 @@
 export interface INSCMMKV {
 	contains(key: string): boolean;
+	key(index: number): string | null;
 	set(key: string, value: boolean | string | number | ArrayBuffer);
 	getBoolean(key: string): boolean;
 	getString(key: string): string;
@@ -11,22 +12,20 @@ export interface INSCMMKV {
 	readonly actualSize: number;
 	readonly keys: string[];
 
-	async();
 	clearMemoryCache();
 	close();
 
 	readonly cryptKey: string | null;
 
-	checkReSetCryptKey(key?: string);
+	recrypt(key?: string);
 }
 
 export class NSCMMKV implements INSCMMKV {
 	constructor(options?: { id?: string; path?: string; encryptionKey?: string; mode?: 'SINGLE' | 'MULTI' });
-
-	static initialize();
 	static readonly rootPath: string;
 
 	contains(key: string): boolean;
+	key(index: number): string | null;
 	set(key: string, value: boolean | string | number | ArrayBuffer);
 	getBoolean(key: string): boolean;
 	getString(key: string): string;
@@ -38,11 +37,12 @@ export class NSCMMKV implements INSCMMKV {
 	readonly actualSize: number;
 	readonly keys: string[];
 
-	async();
 	clearMemoryCache();
 	close();
 
 	readonly cryptKey: string | null;
 
-	checkReSetCryptKey(key?: string);
+	recrypt(key?: string);
 }
+
+export function initialize();

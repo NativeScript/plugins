@@ -30,10 +30,6 @@ export class NSCMMKV implements INSCMMKV {
 		return this;
 	}
 
-	static initialize() {
-		com.tencent.mmkv.MMKV.initialize(Utils.android.getApplicationContext());
-	}
-
 	get native() {
 		return this.#native;
 	}
@@ -48,6 +44,10 @@ export class NSCMMKV implements INSCMMKV {
 
 	contains(key: string): boolean {
 		return this.native.containsKey(key);
+	}
+
+	key(index: number): string | null {
+		return this.native.allKeys()[index];
 	}
 
 	set(key: string, value: boolean | string | number | ArrayBuffer) {
@@ -120,6 +120,10 @@ export class NSCMMKV implements INSCMMKV {
 		}
 	}
 
+	count() {
+		return this.native.count();
+	}
+
 	get totalSize() {
 		return this.native.totalSize();
 	}
@@ -138,10 +142,6 @@ export class NSCMMKV implements INSCMMKV {
 		return ret;
 	}
 
-	async() {
-		this.native.async();
-	}
-
 	clearMemoryCache() {
 		this.native.clearMemoryCache();
 	}
@@ -158,7 +158,11 @@ export class NSCMMKV implements INSCMMKV {
 		return com.tencent.mmkv.MMKV.getRootDir();
 	}
 
-	checkReSetCryptKey(key?: string) {
-		this.native.checkReSetCryptKey(key || null);
+	recrypt(key?: string) {
+		this.native.reKey(key || null);
 	}
+}
+
+export function initialize() {
+	com.tencent.mmkv.MMKV.initialize(Utils.android.getApplicationContext());
 }

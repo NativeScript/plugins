@@ -4,8 +4,6 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
-		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
-		"@nativescript/core": "file:../../node_modules/@nativescript/core",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -15,6 +13,7 @@
 		"@nativescript/brightness": "file:../../packages/brightness",
 		"@nativescript/camera": "file:../../packages/camera",
 		"@nativescript/contacts": "file:../../packages/contacts",
+		"@nativescript/core": "file:../../node_modules/@nativescript/core",
 		"@nativescript/datetimepicker": "file:../../packages/datetimepicker",
 		"@nativescript/debug-android": "file:../../packages/debug-android",
 		"@nativescript/debug-ios": "file:../../packages/debug-ios",
@@ -27,21 +26,22 @@
 		"@nativescript/google-maps": "file:../../packages/google-maps",
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/imagepicker": "file:../../packages/imagepicker",
+		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",
 		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/mmkv": "file:../../packages/mmkv",
+		"@nativescript/mmkv-metal": "file:../../packages/mmkv-metal",
 		"@nativescript/picker": "file:../../packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",
 		"@nativescript/theme-switcher": "file:../../packages/theme-switcher",
 		"@nativescript/twitter": "file:../../packages/twitter",
-		"@nativescript/zip": "file:../../packages/zip",
-		"@nativescript/mmkv": "file:../../packages/mmkv",
-		"@nativescript/mmkv-metal": "file:../../packages/mmkv-metal"
+		"@nativescript/zip": "file:../../packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.2.0",
+		"@nativescript/android": "file:../../../../android-runtime/dist/nativescript-android.tgz",
 		"@nativescript/ios": "~8.2.0"
 	}
 }

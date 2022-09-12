@@ -20,9 +20,7 @@ public:
 
     static v8::Local<v8::String> ConvertToV8String(v8::Isolate *isolate, const std::string &string);
 
-    static std::string ConvertFromV8String(v8::Isolate *isolate, const v8::Local<v8::Value> &value);
-
-    static bool IsInstanceOf(v8::Isolate *isolate, v8::Local<v8::Value> value, const std::string& clazz);
+    static std::string ConvertFromV8String(v8::Isolate *isolate, const v8::Local<v8::Value> value);
 
     static void SetInternalClassName(v8::Isolate *isolate, v8::Local<v8::Object> value, const std::string& clazz);
 

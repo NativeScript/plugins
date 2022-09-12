@@ -4,6 +4,5 @@
 
 #pragma once
 #include <stdint.h>
-#include <string.h>
 #include "include/v8.h"
 #include <android/log.h>

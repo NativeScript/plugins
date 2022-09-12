@@ -1,6 +1,8 @@
 import { Observable, EventData, Page } from '@nativescript/core';
 import { DemoSharedMmkvMetal } from '@demo/shared';
-import { NSCMMKV } from '@nativescript/mmkv-metal';
+import { NSCMMKV as NSCMMKVMetal, initialize as initializeMetal } from '@nativescript/mmkv-metal';
+
+import { NSCMMKV, initialize } from '@nativescript/mmkv';
 
 export function navigatingTo(args: EventData) {
 	const page = <Page>args.object;
@@ -11,48 +13,49 @@ const key = 'k';
 const iterations = 1000;
 
 export class DemoModel extends DemoSharedMmkvMetal {
-	mmkv: NSCMMKV;
+	mmkvm: NSCMMKVMetal;
+	mmkv: NSCMMKVMetal;
 	constructor() {
 		super();
-		NSCMMKV.initialize();
+		initializeMetal();
+		initialize();
+		console.time('NSCMMKV');
 		this.mmkv = new NSCMMKV();
-		//this.mmkv.clearAll();
-		//this.mmkv.clearMemoryCache();
-		// this.mmkv.set('', '');
-		// this.mmkv.set('age', 30);
-		// this.mmkv.set('metal', false);
+		console.timeEnd('NSCMMKV');
 
-		// if (global.isAndroid) {
-		// 	const js = new java.lang.String('Fortune');
-		// 	const buf = java.nio.ByteBuffer.wrap(js.getBytes());
-		// 	this.mmkv.set('last', (ArrayBuffer as any).from(buf as any));
-		// } else {
-		// 	const data = NSString.stringWithString('Fortune').dataUsingEncoding(NSUTF8StringEncoding);
-		// 	this.mmkv.set('last', interop.bufferFromData(data));
-		// }
+		console.time('NSCMMKVMetal');
+		this.mmkvm = new NSCMMKVMetal();
+		console.timeEnd('NSCMMKVMetal');
+		this.mmkvm.clearAll();
+		this.mmkvm.clearMemoryCache();
 
-		console.log(this.mmkv.getString('first'));
-		// console.log(this.mmkv.getNumber('age'));
-		// console.log(this.mmkv.getBoolean('metal'));
-		// console.log(this.mmkv.getString('last'));
-		// console.time('test');
-		//this.mmkv.set(key, 'hello');
-		//this.bm(this.getFromMMKV.bind(this));
-		//this.mmkv.close();
+		this.mmkv.clearAll();
+		this.mmkv.clearMemoryCache();
+
+		this.mmkvm.set(key, 'hello');
+		this.bm(this.getFromMMKVM.bind(this));
+
+		this.mmkv.set(key, 'hello');
+		this.bm(this.getFromMMKV.bind(this));
+		this.mmkvm.close();
 	}
 
 	getFromMMKV(): string | undefined {
 		return this.mmkv.getString(key);
 	}
 
+	getFromMMKVM(): string | undefined {
+		return this.mmkvm.getString(key);
+	}
+
 	bm(func) {
 		try {
 			console.log(`Starting Benchmark...`);
-			const start = performance.now() as any;
+			const start = global.performance ? performance.now() : (__time() as any);
 			for (let i = 0; i < iterations; i++) {
 				func();
 			}
-			const end = performance.now() as any;
+			const end = global.performance ? performance.now() : (__time() as any);
 			const diff = end - start;
 			console.log(`Finished Benchmark ! Took ${diff.toFixed(4)}ms!`);
 			return diff;

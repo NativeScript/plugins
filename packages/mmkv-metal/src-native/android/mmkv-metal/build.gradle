@@ -40,7 +40,7 @@ android {
 			cmake {
 				arguments "-DANDROID_TOOLCHAIN=clang",
 					"-DANDROID_STL=c++_static",
-					"-DANDROID_NDK_ROOT=${NDK_PATH}"
+					"-DANDROID_NDK_ROOT=${System.getenv("ANDROID_NDK_ROOT")}"
 			}
 		}
 		ndk {

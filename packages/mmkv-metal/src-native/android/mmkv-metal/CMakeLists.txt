@@ -4,16 +4,22 @@ MESSAGE("## ANDROID_NDK_ROOT: " ${ANDROID_NDK_ROOT})
 
 project(mmkvmetal)
 
-add_subdirectory(../MMKV/Core Core)
-
-
 include_directories(
-        ../MMKV/Core
-        ${PROJECT_SOURCE_DIR}/src/main/cpp/include
         ${PROJECT_SOURCE_DIR}/src/main/cpp/include/libc++
+        ${PROJECT_SOURCE_DIR}/src/main/cpp/include
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++17 -nostdinc++ -Werror -Wno-unused-result -mstackrealign -fexceptions -fno-builtin-stpcpy -fno-rtti -D_LIBCPP_ENABLE_NODISCARD  -D_LIBCPP_ABI_VERSION=Cr -D_LIBCPP_ABI_UNSTABLE -DV8_31BIT_SMIS_ON_64BIT_ARCH -DV8_31BIT_SMIS_ON_64BIT_ARCH -DV8_ENABLE_REGEXP_INTERPRETER_THREADED_DISPATCH -DV8_EMBEDDED_BUILTINS")
+set(COMMON_CMAKE_ARGUMENTS "-std=c++17 -nostdinc++ -Werror -Wno-unused-result -mstackrealign -fexceptions -fno-builtin-stpcpy -fno-rtti -D_LIBCPP_ENABLE_NODISCARD -D_LIBCPP_ABI_UNSTABLE  -D_LIBCPP_ABI_VERSION=Cr -DV8_31BIT_SMIS_ON_64BIT_ARCH -DV8_ENABLE_REGEXP_INTERPRETER_THREADED_DISPATCH -DV8_EMBEDDED_BUILTINS")
+
+if("${ANDROID_ABI}" MATCHES "arm64-v8a$" OR "${ANDROID_ABI}" MATCHES "x86_64$")
+  # Enable pointer compression on 64 bit platforms
+  set(COMMON_CMAKE_ARGUMENTS "${COMMON_CMAKE_ARGUMENTS} -DV8_COMPRESS_POINTERS")
+endif()
+
+
+set(CMAKE_CXX_FLAGS "${COMMON_CMAKE_ARGUMENTS}")
+
+add_subdirectory(../../MMKV/Core core)
 
 add_library(
         mmkvmetal
@@ -55,8 +61,8 @@ if ("${ANDROID_ABI}" MATCHES "armeabi-v7a" OR "${ANDROID_ABI}" MATCHES "x86")
           ${PROJECT_SOURCE_DIR}/src/main/libs/${ANDROID_ABI}/libv8.a
           ${PROJECT_SOURCE_DIR}/src/main/libs/${ANDROID_ABI}/libzip.a
           ${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/libs/${ANDROID_ABI}/libandroid_support.a
-          android
           core
+          android
           )
 
 else()
@@ -65,7 +71,7 @@ else()
           ${system-z}
           ${PROJECT_SOURCE_DIR}/src/main/libs/${ANDROID_ABI}/libv8.a
           ${PROJECT_SOURCE_DIR}/src/main/libs/${ANDROID_ABI}/libzip.a
-          android
           core
+          android
           )
 endif ()

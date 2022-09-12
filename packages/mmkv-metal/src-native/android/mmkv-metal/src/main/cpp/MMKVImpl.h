@@ -16,7 +16,7 @@ public:
 
     static void Init(v8::Isolate *isolate);
 
-    static MMKVImpl *GetPointer(v8::Local<v8::Object> object);
+    static MMKVImpl *GetPointer(const v8::Local<v8::Object>& object);
 
     static v8::Local<v8::FunctionTemplate> GetCtor(v8::Isolate *isolate);
 
@@ -25,6 +25,14 @@ public:
     static void Create(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Contains(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Close(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void ClearAll(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void ClearMemoryCache(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Count(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Set(const v8::FunctionCallbackInfo<v8::Value> &args);
 
@@ -37,6 +45,18 @@ public:
     static void GetBytes(const v8::FunctionCallbackInfo<v8::Value> &args);
 
     static void Delete(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Key(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Recrypt(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void GetAllKeys(const v8::FunctionCallbackInfo<v8::Value> &args);
+
+    static void Keys(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value> &info);
+
+    static void TotalSize(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value> &info);
+
+    static void ActualSize(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value> &info);
 
 private:
     MMKV* mmkv_;
