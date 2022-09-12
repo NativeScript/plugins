@@ -1,5 +1,3 @@
-const npsUtils = require('nps-utils');
-
 module.exports = {
 	message: 'NativeScript Plugins ~ made with ❤️  Choose a command to start...',
 	pageSize: 32,
@@ -301,6 +299,20 @@ module.exports = {
 					description: '@nativescript/mmkv-metal: Build',
 				},
 			},
+			// @nativescript/haptics
+			haptics: {
+				build: {
+					script: 'nx run haptics:build.all',
+					description: '@nativescript/haptics: Build',
+				},
+			},
+			// @nativescript/pdf
+			pdf: {
+				build: {
+					script: 'nx run pdf:build.all',
+					description: '@nativescript/pdf: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -446,6 +458,14 @@ module.exports = {
 			'mmkv-metal': {
 				script: 'nx run mmkv-metal:focus',
 				description: 'Focus on @nativescript/mmkv-metal',
+			},
+			haptics: {
+				script: 'nx run haptics:focus',
+				description: 'Focus on @nativescript/haptics',
+			},
+			pdf: {
+				script: 'nx run pdf:focus',
+				description: 'Focus on @nativescript/pdf',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

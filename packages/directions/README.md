@@ -1,7 +1,7 @@
 # @nativescript/directions
 
 ```cli
-ns plugin add @nativescript/directions
+npm install @nativescript/directions
 ```
 
 ## Usage

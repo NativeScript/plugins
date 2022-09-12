@@ -64,6 +64,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.rotation = options.rotation;
 	}
 
+	if (typeof options?.visible === 'boolean') {
+		opts.opacity = options.visible ? 1 : 0;
+	}
+
 	if (typeof options?.flat === 'boolean') {
 		opts.flat = options.flat;
 	}
@@ -71,6 +75,11 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -110,6 +119,11 @@ export function intoNativeCircleOptions(options: CircleOptions) {
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -169,6 +183,11 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -221,6 +240,11 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 	if (typeof options?.endCap) {
 		// TODO
 	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
+	}
+
 	return opts;
 }
 
@@ -237,6 +261,13 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 
 	if (typeof options?.transparency) {
 		// TODO
+	}
+
+	if (options?.bounds) {
+		opts.bounds = new GMSCoordinateBounds({
+			coordinate: CLLocationCoordinate2DMake(options.bounds.southwest.lat, options.bounds.southwest.lng),
+			coordinate2: CLLocationCoordinate2DMake(options.bounds.northeast.lat, options.bounds.northeast.lng),
+		});
 	}
 
 	if (typeof options?.anchorU === 'number' || typeof options?.anchorV === 'number') {
@@ -268,6 +299,10 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex = options.zIndex;
+	}
+
+	if (options?.userData) {
+		opts.userData = serialize(options.userData);
 	}
 
 	return opts;
@@ -337,7 +372,7 @@ export function serialize(data: any): any {
 			}
 
 			if (!data) {
-				return null;
+				return NSNull.new();
 			}
 
 			if (Array.isArray(data)) {
@@ -353,6 +388,6 @@ export function serialize(data: any): any {
 		}
 
 		default:
-			return null;
+			return NSNull.new();
 	}
 }

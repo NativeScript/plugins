@@ -67,6 +67,9 @@ export class HomeComponent {
 			name: 'google-signin',
 		},
 		{
+			name: 'haptics',
+		},
+		{
 			name: 'imagepicker',
 		},
 		{
@@ -89,6 +92,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'mmkv-metal',
+		},
+		{
+			name: 'pdf',
 		},
 		{
 			name: 'picker',

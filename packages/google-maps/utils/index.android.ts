@@ -80,6 +80,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.rotation(options.rotation);
 	}
 
+	if (typeof options?.visible === 'boolean') {
+		opts.visible(options.visible);
+	}
+
 	if (typeof options?.flat === 'boolean') {
 		opts.flat(options.flat);
 	}
@@ -253,12 +257,21 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	const opts = new com.google.android.gms.maps.model.GroundOverlayOptions();
 
+	if (options?.position) {
+		const coords = <Coordinate>options.position;
+		opts.position(new com.google.android.gms.maps.model.LatLng(coords.lat, coords.lng), options.width);
+	}
+
 	if (typeof options?.width === 'number') {
 		opts.position(opts.getLocation(), options.width);
 	}
 
 	if (typeof options?.height === 'number') {
 		opts.position(opts.getLocation(), opts.getWidth(), options.height);
+	}
+
+	if (options?.bounds) {
+		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng), new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)));
 	}
 
 	if (typeof options?.transparency) {
@@ -271,11 +284,6 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 
 	if (typeof options?.tappable === 'boolean') {
 		opts.clickable(options.tappable);
-	}
-
-	if (options?.position) {
-		const coords = <Coordinate>options.position;
-		opts.position(new com.google.android.gms.maps.model.LatLng(coords.lat, coords.lng), opts.getWidth());
 	}
 
 	if (typeof options?.tappable === 'boolean') {

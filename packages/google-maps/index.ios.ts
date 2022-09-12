@@ -1,7 +1,7 @@
 import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
-import { bearingProperty, JointType, latProperty, lngProperty, MapViewBase, tiltProperty, zoomProperty } from './common';
+import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
 export class CameraUpdate implements ICameraUpdate {
@@ -21,6 +21,25 @@ export class CameraUpdate implements ICameraUpdate {
 			return CameraUpdate.fromNative(GMSCameraUpdate.setTargetZoom(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng), zoom));
 		} else {
 			return CameraUpdate.fromNative(GMSCameraUpdate.setTarget(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng)));
+		}
+	}
+
+	static fromCoordinates(coordinates: Coordinate[], padding: number);
+	static fromCoordinates(coordinates: Coordinate[], width: number, height?: number, padding?: number) {
+		if (!Array.isArray(coordinates)) {
+			return null;
+		}
+		let bounds = GMSCoordinateBounds.new();
+		coordinates.forEach((coord) => {
+			bounds = bounds.includingCoordinate(CLLocationCoordinate2DMake(coord.lat, coord.lng));
+		});
+
+		if (arguments.length == 2) {
+			return CameraUpdate.fromNative(GMSCameraUpdate.fitBoundsWithPadding(bounds, width));
+		} else {
+			/// top, left, bottom, right
+			const insets = UIEdgeInsetsFromString(`${padding},${padding},${height - padding},${width - padding}`);
+			return CameraUpdate.fromNative(GMSCameraUpdate.fitBoundsWithEdgeInsets(bounds, insets));
 		}
 	}
 
@@ -762,7 +781,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	set cameraPosition(value) {
-		this.native.camera = value.native;
+		this.native.moveCamera(CameraUpdate.fromCameraPosition(value).native);
 	}
 
 	get maxZoomLevel(): number {
@@ -799,6 +818,41 @@ export class GoogleMap implements IGoogleMap {
 
 	get uiSettings(): IUISettings {
 		return UISettings.fromNative(this.native.settings);
+	}
+
+	get mapType() {
+		switch (this.native.mapType) {
+			case GMSMapViewType.kGMSTypeNone:
+				return MapType.None;
+			case GMSMapViewType.kGMSTypeNormal:
+				return MapType.Normal;
+			case GMSMapViewType.kGMSTypeSatellite:
+				return MapType.Satellite;
+			case GMSMapViewType.kGMSTypeTerrain:
+				return MapType.Terrain;
+			case GMSMapViewType.kGMSTypeHybrid:
+				return MapType.Hybrid;
+		}
+	}
+
+	set mapType(value: MapType) {
+		switch (value) {
+			case MapType.None:
+				this.native.mapType = GMSMapViewType.kGMSTypeNone;
+				break;
+			case MapType.Normal:
+				this.native.mapType = GMSMapViewType.kGMSTypeNormal;
+				break;
+			case MapType.Satellite:
+				this.native.mapType = GMSMapViewType.kGMSTypeSatellite;
+				break;
+			case MapType.Terrain:
+				this.native.mapType = GMSMapViewType.kGMSTypeTerrain;
+				break;
+			case MapType.Hybrid:
+				this.native.mapType = GMSMapViewType.kGMSTypeHybrid;
+				break;
+		}
 	}
 
 	#mapStyle: Style[];
@@ -855,6 +909,10 @@ export class GoogleMap implements IGoogleMap {
 		const polyline = Polyline.fromNative(intoNativePolylineOptions(options));
 		polyline.native.map = this.native;
 		return polyline;
+	}
+
+	moveCamera(update: CameraUpdate) {
+		this.native.moveCamera(update.native);
 	}
 
 	animateCamera(update: CameraUpdate) {
@@ -930,6 +988,7 @@ abstract class OverLayBase {
 export class Marker extends OverLayBase implements IMarker {
 	#native: GMSMarker;
 	#color = new Color('red');
+	#visible = true;
 	static fromNative(nativeMarker: GMSMarker) {
 		if (nativeMarker instanceof GMSMarker) {
 			const marker = new Marker();
@@ -1023,6 +1082,15 @@ export class Marker extends OverLayBase implements IMarker {
 
 	set rotation(value: number) {
 		this.native.rotation = value;
+	}
+
+	get visible(): boolean {
+		return this.#visible;
+	}
+
+	set visible(value: boolean) {
+		this.#visible = value;
+		this.native.opacity = this.visible ? 1 : 0;
 	}
 
 	get flat(): boolean {

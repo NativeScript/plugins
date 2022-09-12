@@ -1,7 +1,7 @@
 # @nativescript/twitter
 
 ```cli
-ns plugin add @nativescript/twitter
+npm install @nativescript/twitter
 ```
 
 ## Prerequisites

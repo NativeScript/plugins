@@ -5,7 +5,7 @@ This project aims to prevent the shortcomings that come from the iOS implementat
 ## Installation
 
 ```cli
-ns plugin add @nativescript/shared-notification-delegate
+npm install @nativescript/shared-notification-delegate
 ```
 
 ## Usage

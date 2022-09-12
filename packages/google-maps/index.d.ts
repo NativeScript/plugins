@@ -1,5 +1,5 @@
 import { Color, ImageSource, EventData, View } from '@nativescript/core';
-import { JointType, MapViewBase } from './common';
+import { JointType, MapType, MapViewBase } from './common';
 
 export type FeatureTypeAdministrative = 'administrative' | 'administrative.country' | 'administrative.land_parcel' | 'administrative.locality' | 'administrative.neighborhood' | 'administrative.province';
 
@@ -17,13 +17,15 @@ export type ElementTypeGeometry = 'geometry' | 'geometry.fill' | 'geometry.strok
 
 export type ElementTypeLabels = 'labels' | 'labels.icon' | 'labels.text' | 'labels.text.fill' | 'labels.text.stroke';
 
+export type StylersVisibility = 'on' | 'off' | 'simplified';
+
 export interface Stylers {
 	hue?: string;
 	lightness?: number;
 	saturation?: number;
 	gamma?: number;
 	invert_lightness?: boolean;
-	visibility?: boolean;
+	visibility?: StylersVisibility;
 	color?: string;
 	weight?: number;
 }
@@ -192,6 +194,10 @@ export interface ICameraUpdate {}
 export class CameraUpdate implements ICameraUpdate {
 	static fromCoordinate(coordinate: Coordinate, zoom: number): CameraUpdate;
 
+	static fromCoordinates(coordinates: Coordinate[], padding: number): CameraUpdate;
+
+	static fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number): CameraUpdate;
+
 	static fromCameraPosition(position: CameraPosition): CameraUpdate;
 
 	static zoomIn(): CameraUpdate;
@@ -290,6 +296,7 @@ export interface IMarker {
 	icon: any /* Image, ImageSource, UIImage & Bitmap */;
 	color: Color | string;
 	rotation: number;
+	visible: boolean;
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };
@@ -309,6 +316,7 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	icon: any; /* Image, ImageSource, UIImage & Bitmap */
 	color: Color | string;
 	rotation: number;
+	visible: boolean;
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };
@@ -374,6 +382,8 @@ export interface IGoogleMap {
 
 	mapStyle: Style[];
 
+	mapType: MapType;
+
 	snapshot(): Promise<ImageSource>;
 
 	animateCamera(update: CameraUpdate);
@@ -406,7 +416,8 @@ export interface IGoogleMap {
 }
 
 export class GoogleMap implements IGoogleMap {
-	mapStyle: Style;
+	mapStyle: Style[];
+	mapType: MapType;
 	addTileOverlay(options: TileOverlayOptions): TileOverlay;
 	removeTileOverlay(overlay: TileOverlay);
 	buildingsEnabled: boolean;
@@ -417,6 +428,7 @@ export class GoogleMap implements IGoogleMap {
 	readonly uiSettings: IUISettings;
 	cameraPosition: CameraPosition;
 	readonly projection: Projection;
+	readonly native: any;
 
 	addCircle(circle: CircleOptions): Circle;
 
@@ -439,6 +451,8 @@ export class GoogleMap implements IGoogleMap {
 	removePolygon(polygon: Polygon);
 
 	removePolyline(polyline: Polyline);
+
+	moveCamera(update: CameraUpdate);
 
 	animateCamera(update: CameraUpdate);
 

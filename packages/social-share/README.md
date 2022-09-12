@@ -1,7 +1,7 @@
 # @nativescript/social-share
 
 ```cli
-ns plugin add @nativescript/social-share
+npm install @nativescript/social-share
 ```
 
 ## Usage
@@ -56,6 +56,21 @@ Like `shareImage()`, you can optionally pass `shareText()` a second argument to 
 
 ```js
 SocialShare.shareText('I love NativeScript!', 'How would you like to share this text?')
+```
+
+### sharePdf(File pdf, \[optional\] String subject)
+
+The `sharePdf()` method expects a File instance:
+
+```js
+let pdf = File.fromPath("~/path/to/myPdf.pdf");
+SocialShare.sharePdf(pdf)
+```
+
+Like `shareImage()`, you can optionally pass `sharePdf()` a second argument to configure the subject on Android:
+
+```js
+SocialShare.sharePdf(pdf, 'How would you like to share this text?')
 ```
 
 ### shareUrl(String url, String text, \[optional\] String subject)

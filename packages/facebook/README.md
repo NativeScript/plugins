@@ -1,7 +1,7 @@
 # @nativescript/facebook
 
 ```cli
-ns plugin add @nativescript/facebook
+npm install @nativescript/facebook
 ```
 
 ## Prerequisites

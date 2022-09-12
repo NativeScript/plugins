@@ -124,7 +124,7 @@ export class GoogleSignin {
 
 			let serverClientId;
 			if (configuration['serverClientId']) {
-				clientId = configuration['serverClientId'];
+				serverClientId = configuration['serverClientId'];
 			} else {
 				if (!plist) {
 					plist = NSDictionary.alloc().initWithContentsOfFile(path);
