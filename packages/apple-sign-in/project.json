@@ -1,5 +1,5 @@
 {
-	"root": "packages/apple-sign-in",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"sourceRoot": "packages/apple-sign-in",
 	"targets": {

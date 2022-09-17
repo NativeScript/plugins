@@ -23,6 +23,7 @@
 		"geolocation": "packages/geolocation",
 		"google-maps": "packages/google-maps",
 		"google-signin": "packages/google-signin",
+		"haptics": "packages/haptics",
 		"imagepicker": "packages/imagepicker",
 		"ionic-portals": "packages/ionic-portals",
 		"ios-security": "packages/ios-security",
@@ -35,7 +36,7 @@
 		"social-share": "packages/social-share",
 		"theme-switcher": "packages/theme-switcher",
 		"twitter": "packages/twitter",
-		"zip": "packages/zip",
-		"haptics": "packages/haptics"
-	}
+		"zip": "packages/zip"
+	},
+	"$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
