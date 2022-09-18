@@ -1,5 +1,5 @@
 import { Dialogs, EventData, ImageAsset } from '@nativescript/core';
-import { requestPermissions, takePicture } from '@nativescript/camera';
+import { requestPermissions, takePicture, recordVideo, requestRecordPermissions } from '@nativescript/camera';
 import { DemoSharedBase } from '../utils';
 
 export class DemoSharedCamera extends DemoSharedBase {
@@ -36,6 +36,22 @@ export class DemoSharedCamera extends DemoSharedBase {
 
 							console.log(`${labelText}`);
 						});
+					},
+					(err) => {
+						console.log('Error -> ' + err.message);
+					}
+				);
+			},
+			() => Dialogs.alert('permissions rejected')
+		);
+	}
+
+	onRecordVideoTap(args: EventData) {
+		requestRecordPermissions().then(
+			() => {
+				recordVideo({ saveToGallery: this.saveToGallery, hd: true }).then(
+					(result) => {
+						console.log(result);
 					},
 					(err) => {
 						console.log('Error -> ' + err.message);

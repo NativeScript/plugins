@@ -1,5 +1,5 @@
-import { Utils, ImageSource, ImageAsset, Trace, Frame } from '@nativescript/core';
-import { CameraOptions } from '.';
+import { Utils, ImageSource, ImageAsset, Trace, Frame, knownFolders, path as nsPath, File } from '@nativescript/core';
+import { CameraOptions, CameraRecordOptions } from '.';
 
 @NativeClass()
 class UIImagePickerControllerDelegateImpl extends NSObject implements UIImagePickerControllerDelegate {
@@ -118,6 +118,125 @@ class UIImagePickerControllerDelegateImpl extends NSObject implements UIImagePic
 	}
 }
 
+@NativeClass
+@ObjCClass(UIImagePickerControllerDelegate)
+class UIImagePickerControllerVideoDelegateImpl extends NSObject implements UIImagePickerControllerDelegate {
+	private _saveToGallery: boolean;
+	private _resolve: (result?: { file: string }) => void;
+	private _reject: (error?: any) => void;
+	private _format: 'default' | 'mp4' = 'default';
+	private _hd: boolean;
+
+	public static initWithCallback(resolve: (result?) => void, reject: () => void): UIImagePickerControllerVideoDelegateImpl {
+		const delegate = UIImagePickerControllerVideoDelegateImpl.new() as UIImagePickerControllerVideoDelegateImpl;
+		delegate._resolve = resolve;
+		delegate._reject = reject;
+		return delegate;
+	}
+
+	public static initWithCallbackOptions(resolve: (result?: { file: string }) => void, reject: (result?: { file: string }) => void, options?: CameraRecordOptions): UIImagePickerControllerVideoDelegateImpl {
+		const delegate = UIImagePickerControllerVideoDelegateImpl.new() as UIImagePickerControllerVideoDelegateImpl;
+		if (options) {
+			delegate._saveToGallery = options.saveToGallery;
+			delegate._format = options.format;
+			delegate._hd = options.hd;
+		}
+		delegate._resolve = resolve;
+		delegate._reject = reject;
+		return delegate;
+	}
+
+	imagePickerControllerDidCancel(picker) {
+		picker.presentingViewController.dismissViewControllerAnimatedCompletion(true, null);
+		listener = null;
+	}
+
+	private saveToGallery(currentDate: Date, source: NSURL) {
+		PHPhotoLibrary.sharedPhotoLibrary().performChangesCompletionHandler(
+			() => {
+				PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(source);
+			},
+			(success, err) => {
+				if (success) {
+					let fetchOptions = PHFetchOptions.alloc().init();
+					let sortDescriptors = NSArray.arrayWithObject(NSSortDescriptor.sortDescriptorWithKeyAscending('creationDate', false));
+					fetchOptions.sortDescriptors = sortDescriptors;
+					fetchOptions.predicate = NSPredicate.predicateWithFormatArgumentArray('mediaType = %d', NSArray.arrayWithObject(PHAssetMediaType.Video));
+					let fetchResult = PHAsset.fetchAssetsWithOptions(fetchOptions);
+
+					if (fetchResult.count > 0) {
+						let asset = <PHAsset>fetchResult.objectAtIndex(0);
+
+						const opts = PHVideoRequestOptions.new();
+						opts.version = PHVideoRequestOptionsVersion.Original;
+
+						const dateDiff = asset.creationDate.valueOf() - currentDate.valueOf();
+						if (Math.abs(dateDiff) > 1000) {
+							// Video create date is rounded when asset is created.
+							// Display waring if the asset was created more than 1s before/after the current date.
+							console.warn('Video returned was created more than 1 second ago');
+						}
+						PHImageManager.defaultManager().requestAVAssetForVideoOptionsResultHandler(asset, opts, (asset, audioMix, info) => {
+							if (asset instanceof AVURLAsset) {
+								asset.URL;
+								this._resolve({ file: asset.URL?.absoluteString });
+							} else {
+								this._reject('Failed to load asset');
+							}
+						});
+					}
+				} else {
+					Trace.write('An error ocurred while saving image to gallery: ' + err, Trace.categories.Error, Trace.messageType.error);
+				}
+			}
+		);
+	}
+
+	imagePickerControllerDidFinishPickingMediaWithInfo(picker, info) {
+		if (info) {
+			let currentDate: Date = new Date();
+			let source = info.objectForKey(UIImagePickerControllerMediaURL);
+			const fileName = `NSVID_${createDateTimeStamp()}.mp4`;
+			const path = nsPath.join(knownFolders.documents().path, fileName);
+			if (this._saveToGallery) {
+				if (this._format === 'mp4') {
+					let asset = AVAsset.assetWithURL(source);
+					let preset = this._hd ? AVAssetExportPresetHighestQuality : AVAssetExportPresetLowQuality;
+					let session = AVAssetExportSession.exportSessionWithAssetPresetName(asset, preset);
+					session.outputFileType = AVFileTypeMPEG4;
+					const nativePath = NSURL.fileURLWithPath(path);
+					session.outputURL = nativePath;
+					session.exportAsynchronouslyWithCompletionHandler(() => {
+						this.saveToGallery(currentDate, nativePath);
+					});
+				} else {
+					this.saveToGallery(currentDate, NSURL.fileURLWithPath(path));
+				}
+			} else {
+				if (this._format === 'mp4') {
+					const asset = AVAsset.assetWithURL(source);
+					const preset = this._hd ? AVAssetExportPresetHighestQuality : AVAssetExportPresetLowQuality;
+					const session = AVAssetExportSession.exportSessionWithAssetPresetName(asset, preset);
+					session.outputFileType = AVFileTypeMPEG4;
+					session.outputURL = NSURL.fileURLWithPath(path);
+					session.exportAsynchronouslyWithCompletionHandler(() => {
+						if (session.error) {
+							this._reject(session.error.localizedDescription);
+						} else {
+							File.fromPath(source.path).removeSync();
+							this._resolve({ file: path });
+						}
+					});
+				} else {
+					this._resolve({ file: source.path });
+				}
+			}
+			picker.presentingViewController.dismissViewControllerAnimatedCompletion(true, null);
+			listener = null;
+		}
+	}
+}
+
 let listener;
 
 export let takePicture = function (options: CameraOptions): Promise<any> {
@@ -185,6 +304,52 @@ export let takePicture = function (options: CameraOptions): Promise<any> {
 				}
 
 				viewController.presentViewControllerAnimatedCompletion(imagePickerController, true, null);
+			}
+		}
+	});
+};
+
+export let recordVideo = function (options: CameraRecordOptions): Promise<{ file: string }> {
+	return new Promise((resolve, reject) => {
+		listener = null;
+		let modalPresentationStyle = UIModalPresentationStyle.FullScreen;
+		let picker = UIImagePickerController.new();
+		picker.mediaTypes = <any>[kUTTypeMovie];
+		picker.sourceType = UIImagePickerControllerSourceType.Camera;
+		picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureMode.Video;
+
+		picker.cameraDevice = options?.cameraFacing === 'front' ? UIImagePickerControllerCameraDevice.Front : UIImagePickerControllerCameraDevice.Rear;
+		picker.allowsEditing = typeof options?.allowsEditing === 'boolean' ? options.allowsEditing : false;
+		picker.videoQuality = options?.hd ? UIImagePickerControllerQualityType.TypeHigh : UIImagePickerControllerQualityType.TypeLow;
+
+		if (typeof options?.duration === 'number' && options.duration > 0) {
+			picker.videoMaximumDuration = options.duration;
+		}
+
+		if (options) {
+			listener = UIImagePickerControllerVideoDelegateImpl.initWithCallbackOptions(resolve, reject, options);
+		} else {
+			listener = UIImagePickerControllerVideoDelegateImpl.initWithCallback(resolve, reject);
+		}
+
+		picker.delegate = listener;
+		picker.modalPresentationStyle = modalPresentationStyle;
+
+		let topMostFrame = Frame.topmost();
+		if (topMostFrame) {
+			let viewController: UIViewController = topMostFrame.currentPage && topMostFrame.currentPage.ios;
+			if (viewController) {
+				while (viewController.parentViewController) {
+					// find top-most view controler
+					viewController = viewController.parentViewController;
+				}
+
+				while (viewController.presentedViewController) {
+					// find last presented modal
+					viewController = viewController.presentedViewController;
+				}
+
+				viewController.presentViewControllerAnimatedCompletion(picker, true, null);
 			}
 		}
 	});
@@ -266,4 +431,12 @@ export let requestCameraPermissions = function () {
 			}
 		}
 	});
+};
+
+let createDateTimeStamp = function () {
+	let result = '';
+	let date = new Date();
+	result = date.getFullYear().toString() + (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString()) + (date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString()) + '_' + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+
+	return result;
 };
