@@ -214,28 +214,23 @@ export class Contact extends ContactCommon {
 		}
 	}
 	delete() {
-		var store = new CNContactStore();
-		var contactRecord;
+		const store = new CNContactStore();
+		let contactRecord;
 
 		if (this.id && this.id !== '') {
-			var searchPredicate = CNContact.predicateForContactsWithIdentifiers([this.id]);
-			var keysToFetch: Array<any> = ['givenName', 'familyName', 'middleName', 'namePrefix', 'nameSuffix', 'phoneticGivenName', 'phoneticMiddleName', 'phoneticFamilyName', 'nickname', 'jobTitle', 'departmentName', 'organizationName', 'note', 'phoneNumbers', 'emailAddresses', 'postalAddresses', 'urlAddresses', 'imageData']; // All Properties that we are changing
-			var foundContacts = store.unifiedContactsMatchingPredicateKeysToFetchError(searchPredicate, keysToFetch);
+			const searchPredicate = CNContact.predicateForContactsWithIdentifiers([this.id]);
+			const keysToFetch: Array<any> = []; // We don't need any fields as we're going to delete it all anyway
+			const foundContacts = store.unifiedContactsMatchingPredicateKeysToFetchError(searchPredicate, keysToFetch);
 			if (foundContacts.count > 0) {
 				contactRecord = foundContacts[0].mutableCopy();
 			}
 		}
 
 		if (contactRecord) {
-			var saveRequest = new CNSaveRequest();
+			const saveRequest = new CNSaveRequest();
 			saveRequest.deleteContact(contactRecord);
 
-			// var error;
 			store.executeSaveRequestError(saveRequest);
-
-			// if (error) {
-			//     throw new Error(error.localizedDescription);
-			// }
 		}
 	}
 	isUnified() {
@@ -244,7 +239,7 @@ export class Contact extends ContactCommon {
 
 		if (this.id && this.id !== '') {
 			const searchPredicate = CNContact.predicateForContactsWithIdentifiers([this.id]);
-			const keysToFetch: Array<any> = ['givenName', 'familyName', 'middleName', 'namePrefix', 'nameSuffix', 'phoneticGivenName', 'phoneticMiddleName', 'phoneticFamilyName', 'nickname', 'jobTitle', 'departmentName', 'organizationName', 'note', 'phoneNumbers', 'emailAddresses', 'postalAddresses', 'urlAddresses', 'imageData', 'imageDataAvailable']; // All Properties that we are using in the Model
+			const keysToFetch: Array<any> = []; // no need to fetch any other data
 			const foundContacts = store.unifiedContactsMatchingPredicateKeysToFetchError(searchPredicate, keysToFetch);
 			if (foundContacts.count > 0) {
 				contactRecord = foundContacts[0];

@@ -43,7 +43,7 @@
 		"@nativescript/zip": "file:../../packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "file:../../../../android-runtime/dist/nativescript-android.tgz",
-		"@nativescript/ios": "~8.2.0"
+		"@nativescript/android": "~8.3.0",
+		"@nativescript/ios": "~8.3.0"
 	}
 }

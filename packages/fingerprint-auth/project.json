@@ -1,5 +1,5 @@
 {
-	"root": "packages/fingerprint-auth",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/fingerprint-auth",
 	"projectType": "library",
 	"generators": {},

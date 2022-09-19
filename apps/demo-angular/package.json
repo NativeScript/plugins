@@ -40,7 +40,7 @@
 		"@nativescript/mmkv-metal": "file:../../dist/packages/mmkv-metal"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.2.0",
-		"@nativescript/ios": "~8.2.0"
+		"@nativescript/android": "~8.3.0",
+		"@nativescript/ios": "~8.3.0"
 	}
 }

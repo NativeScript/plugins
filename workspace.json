@@ -23,21 +23,22 @@
 		"geolocation": "packages/geolocation",
 		"google-maps": "packages/google-maps",
 		"google-signin": "packages/google-signin",
+		"haptics": "packages/haptics",
 		"imagepicker": "packages/imagepicker",
 		"ionic-portals": "packages/ionic-portals",
 		"ios-security": "packages/ios-security",
 		"iqkeyboardmanager": "packages/iqkeyboardmanager",
 		"local-notifications": "packages/local-notifications",
 		"localize": "packages/localize",
+    "mmkv": "packages/mmkv",
+		"mmkv-metal": "packages/mmkv-metal",
 		"pdf": "packages/pdf",
 		"picker": "packages/picker",
 		"shared-notification-delegate": "packages/shared-notification-delegate",
 		"social-share": "packages/social-share",
 		"theme-switcher": "packages/theme-switcher",
 		"twitter": "packages/twitter",
-		"zip": "packages/zip",
-		"mmkv": "packages/mmkv",
-		"mmkv-metal": "packages/mmkv-metal",
-		"haptics": "packages/haptics"
-	}
+		"zip": "packages/zip"
+	},
+	"$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
