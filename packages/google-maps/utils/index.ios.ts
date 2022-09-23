@@ -64,6 +64,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.rotation = options.rotation;
 	}
 
+	if (typeof options?.visible === 'boolean') {
+		opts.opacity = options.visible ? 1 : 0;
+	}
+
 	if (typeof options?.flat === 'boolean') {
 		opts.flat = options.flat;
 	}
@@ -262,7 +266,7 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	if (options?.bounds) {
 		opts.bounds = new GMSCoordinateBounds({
 			coordinate: CLLocationCoordinate2DMake(options.bounds.southwest.lat, options.bounds.southwest.lng),
-			coordinate2: CLLocationCoordinate2DMake(options.bounds.northeast.lat, options.bounds.northeast.lng)
+			coordinate2: CLLocationCoordinate2DMake(options.bounds.northeast.lat, options.bounds.northeast.lng),
 		});
 	}
 
@@ -368,7 +372,7 @@ export function serialize(data: any): any {
 			}
 
 			if (!data) {
-				return null;
+				return NSNull.new();
 			}
 
 			if (Array.isArray(data)) {
@@ -384,6 +388,6 @@ export function serialize(data: any): any {
 		}
 
 		default:
-			return null;
+			return NSNull.new();
 	}
 }

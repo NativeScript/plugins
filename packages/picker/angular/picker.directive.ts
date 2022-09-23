@@ -40,24 +40,21 @@
 // 	}
 // }
 
-
-
-
-import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, forwardRef, IterableDiffers, NgZone } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, forwardRef, IterableDiffers, NgZone } from '@angular/core';
 import { ListViewComponent, TEMPLATED_ITEMS_COMPONENT } from '@nativescript/angular';
 import { PickerValueAccessor } from './picker.accessors';
 
 @Component({
-  selector: 'PickerField',
-  template: `<DetachedContainer>
-    <ng-container #loader></ng-container>
-  </DetachedContainer>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: TEMPLATED_ITEMS_COMPONENT, useExisting: forwardRef(() => PickerFieldComponent) }],
+	selector: 'PickerField',
+	template: `<DetachedContainer>
+		<ng-container #loader></ng-container>
+	</DetachedContainer>`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: TEMPLATED_ITEMS_COMPONENT, useExisting: forwardRef(() => PickerFieldComponent) }],
 })
 export class PickerFieldComponent extends ListViewComponent implements AfterContentInit {
-	constructor(_elementRef: ElementRef, _iterableDiffers: IterableDiffers, zone: NgZone) {
-		super(_elementRef, _iterableDiffers, zone);
+	constructor(_elementRef: ElementRef, _iterableDiffers: IterableDiffers, _cdRef: ChangeDetectorRef) {
+		super(_elementRef, _iterableDiffers, _cdRef);
 	}
 }
 

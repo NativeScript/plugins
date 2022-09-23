@@ -91,9 +91,9 @@ export interface MarkerInfoEvent extends EventData {
 }
 
 export interface NativeObject {
-	readonly native;
-	readonly ios;
-	readonly android;
+	readonly native: any;
+	readonly ios: any;
+	readonly android: any;
 }
 
 export interface IUISettings {
@@ -176,10 +176,7 @@ export interface ILocation {
 	readonly heading: number;
 }
 
-export class Location implements ILocation, NativeObject {
-	ios: any;
-	android: any;
-	native: any;
+export class Location extends NativeObject implements ILocation, NativeObject {
 	accuracy: number;
 	altitudeAccuracy: number;
 	coordinate: Coordinate;
@@ -296,6 +293,7 @@ export interface IMarker {
 	icon: any /* Image, ImageSource, UIImage & Bitmap */;
 	color: Color | string;
 	rotation: number;
+	visible: boolean;
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };
@@ -315,6 +313,7 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	icon: any; /* Image, ImageSource, UIImage & Bitmap */
 	color: Color | string;
 	rotation: number;
+	visible: boolean;
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };
@@ -450,6 +449,8 @@ export class GoogleMap implements IGoogleMap {
 
 	removePolyline(polyline: Polyline);
 
+	moveCamera(update: CameraUpdate);
+
 	animateCamera(update: CameraUpdate);
 
 	snapshot(): Promise<ImageSource>;
@@ -463,7 +464,7 @@ export interface ICircle {
 	tappable: boolean;
 	strokeWidth: number;
 	center: Coordinate;
-	strokePattern: PatternItem & Partial<NativeObject>[];
+	strokePattern: Array<PatternItem & Partial<NativeObject>>;
 	zIndex: number;
 	userData: { [key: string]: any };
 }
@@ -475,7 +476,7 @@ export class Circle implements ICircle {
 	fillColor: Color | string;
 	radius: number;
 	strokeColor: Color | string;
-	strokePattern: PatternItem & Partial<NativeObject>[];
+	strokePattern: Array<PatternItem & Partial<NativeObject>>;
 	strokeWidth: number;
 	tappable: boolean;
 	visible: boolean;
@@ -490,7 +491,7 @@ export interface IPolygon {
 	strokeWidth: number;
 	strokeColor: Color | string;
 	fillColor: Color | string;
-	strokePattern: PatternItem & Partial<NativeObject>[];
+	strokePattern: Array<PatternItem & Partial<NativeObject>>;
 	zIndex: number;
 	geodesic: boolean;
 	strokeJointType: JointType;
@@ -507,7 +508,7 @@ export class Polygon implements IPolygon {
 	points: Coordinate[];
 	strokeColor: Color | string;
 	strokeJointType: JointType;
-	strokePattern: PatternItem & Partial<NativeObject>[];
+	strokePattern: Array<PatternItem & Partial<NativeObject>>;
 	strokeWidth: number;
 	tappable: boolean;
 	visible: boolean;
@@ -523,7 +524,7 @@ export interface IPolyline {
 	visible: boolean;
 	zIndex: number;
 	jointType: JointType;
-	pattern: PatternItem & Partial<NativeObject>[];
+	pattern: Array<PatternItem & Partial<NativeObject>>;
 	color: Color | string;
 	startCap: Cap & Partial<NativeObject>;
 	endCap: Cap & Partial<NativeObject>;
@@ -532,17 +533,73 @@ export interface IPolyline {
 
 export interface PolylineOptions extends Partial<IPolyline> {}
 
-export class Polyline implements IPolyline {
+/** A polyline is a list of points, where line segments are drawn between consecutive points. */
+export class Polyline extends NativeObject implements IPolyline {
+	/**
+	 * Line segment width in screen pixels. The width is constant and independent of the camera's
+	 * zoom level.
+	 */
 	width: number;
+	/**
+	 * The vertices of the line. Line segments are drawn between consecutive points. A polyline is
+	 * not closed by default; to form a closed polyline, the start and end points must be the same.
+	 */
 	points: Coordinate[];
+	/**
+	 * If you want to handle events fired when the user clicks the polyline, set this property to
+	 * `true`. You can change this value at any time. The default is `false`.
+	 */
 	tappable: boolean;
+	/**
+	 * Indicates whether the segments of the polyline should be drawn as geodesics, as opposed to
+	 * straight lines on the Mercator projection. A geodesic is the shortest path between two points
+	 * on the Earth's surface. The geodesic curve is constructed assuming the Earth is a sphere.
+	 */
 	geodesic: boolean;
+	/**
+	 * Indicates if the polyline is visible or invisible, i.e., whether it is drawn on the map.
+	 * An invisible polyline is not drawn, but retains all of its other properties.
+	 * The default is `true`, i.e., visible.
+	 */
 	visible: boolean;
+	/**
+	 * The order in which this tile overlay is drawn with respect to other overlays (including
+	 * {@link GroundOverlay}s, {@link TileOverlay}s, {@link Circle}s, and {@link Polygon}s but
+	 * not {@link Marker}s). An overlay with a larger z-index is drawn over overlays with smaller
+	 * z-indices. The order of overlays with the same z-index is arbitrary. The default zIndex is `0`.
+	 */
 	zIndex: number;
+	/**
+	 * The joint type defines the shape to be used when joining adjacent line segments at all vertices
+	 * of the polyline except the start and end vertices. See {@link JointType} for supported joint
+	 * types. The default value is {@link JointType.Default}.
+	 */
 	jointType: JointType;
-	pattern: PatternItem & Partial<NativeObject>[];
+	/**
+	 * Solid (default) or a sequence of {@link PatternItem} objects to be repeated along the line.
+	 * Available {@link PatternItem} types: {@link Gap} (defined by gap length in pixels),
+	 * {@link Dash} (defined by line width and dash length in pixels) and {@link Dot} (circular,
+	 * centered on the line, diameter defined by line width in pixels).
+	 */
+	pattern: Array<PatternItem & Partial<NativeObject>>;
+	/**
+	 * Line segment color in ARGB format, the same format used by {@link Color}. The default value is
+	 * black (0xff000000).
+	 */
 	color: string | Color;
+	/**
+	 * Defines the shape to be used at the start of a polyline.
+	 * Supported cap types: {@link ButtCap}, {@link SquareCap}, {@link RoundCap} (applicable for solid
+	 * stroke pattern) and {@link CustomCap} (applicable for any stroke pattern).
+	 * Default is {@link ButtCap}.
+	 */
 	startCap: Cap & Partial<NativeObject>;
+	/**
+	 * Defines the shape to be used at the end of a polyline.
+	 * Supported cap types: {@link ButtCap}, {@link SquareCap}, {@link RoundCap} (applicable for solid
+	 * stroke pattern) and {@link CustomCap} (applicable for any stroke pattern).
+	 * Default is {@link ButtCap}.
+	 */
 	endCap: Cap & Partial<NativeObject>;
 	userData: { [key: string]: any };
 }
@@ -596,28 +653,79 @@ export class Poi implements IPoi {
 
 export interface ICap {}
 
-export class Cap implements ICap {}
+/** Immutable cap that can be applied at the start or end vertex of a {@link Polyline}. */
+export class Cap extends NativeObject implements ICap {}
 
+/**
+ * Cap that is squared off exactly at the start or end vertex of a {@link Polyline} with solid
+ * stroke pattern, equivalent to having no additional cap beyond the start or end vertex. This is
+ * the default cap type at start and end vertices of {@link Polyline}s with solid stroke pattern.
+ */
 export class ButtCap extends Cap {}
 
+/**
+ * Cap that is a semicircle with radius equal to half the stroke width, centered at the start or
+ * end vertex of a {@link Polyline} with solid stroke pattern.
+ */
 export class RoundCap extends Cap {}
 
+/**
+ * Cap that is squared off after extending half the stroke width beyond the start or end vertex of
+ * a {@link Polyline} with solid stroke pattern.
+ */
 export class SquareCap extends Cap {}
 
-export class CustomCap extends Cap {}
+/**
+ * Bitmap overlay centered at the start or end vertex of a {@link Polyline}, orientated according
+ * to the direction of the line's first or last edge and scaled with respect to the line's stroke
+ * width. CustomCap can be applied to {@link Polyline} with any stroke pattern.
+ */
+export class CustomCap extends Cap {
+	/**
+	 * Creates an instance of CustomCap.
+	 * @param image Cap image. Must not be null.
+	 * @param refWidth Stroke width, in pixels, for which the cap bitmap at its native dimension is
+	 * designed. Must be positive.
+	 */
+	constructor(image: ImageSource, refWidth?: number);
+}
 
 export interface IPatternItem {}
 
-export class PatternItem implements IPatternItem {}
+/**
+ * Immutable item used in the stroke pattern for a {@link Polyline} or the outline of a
+ * {@link Polygon} or {@link Circle}.
+ */
+export class PatternItem extends NativeObject implements IPatternItem {}
 
+/**
+ * An immutable class representing a dash used in the stroke pattern for a {@link Polyline} or the
+ * outline of a {@link Polygon} or {@link Circle}.
+ */
 export class Dash extends PatternItem {
-	constructor(width: number);
+	/**
+	 * Creates an instance of Dash.
+	 * @param length Length in pixels. Negative value will be clamped to zero.
+	 */
+	constructor(length: number);
 }
 
+/**
+ * An immutable class representing a gap used in the stroke pattern for a {@link Polyline} or the
+ * outline of a {@link Polygon} or {@link Circle}.
+ */
 export class Gap extends PatternItem {
-	constructor(width: number);
+	/**
+	 * Creates an instance of Gap.
+	 * @param length Length in pixels. Negative value will be clamped to zero.
+	 */
+	constructor(length: number);
 }
 
+/**
+ * An immutable class representing a dot used in the stroke pattern for a {@link Polyline} or the
+ * outline of a {@link Polygon} or {@link Circle}.
+ */
 export class Dot extends PatternItem {}
 
 export interface ITileOverlay {

@@ -1,5 +1,5 @@
 {
-	"root": "packages/datetimepicker",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/datetimepicker",
 	"projectType": "library",
 	"generators": {},

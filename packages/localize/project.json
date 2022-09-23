@@ -1,5 +1,5 @@
 {
-	"root": "packages/localize",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/localize",
 	"projectType": "library",
 	"generators": {},

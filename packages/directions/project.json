@@ -1,5 +1,5 @@
 {
-	"root": "packages/directions",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/directions",
 	"projectType": "library",
 	"generators": {},

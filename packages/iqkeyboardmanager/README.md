@@ -5,12 +5,32 @@ NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org/p
 ![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
 
 ```cli
-ns plugin add @nativescript/iqkeyboardmanager
+npm install @nativescript/iqkeyboardmanager
 ```
 
 ## Usage
 
-That's it! IQKeyboardManager takes care of all initialization when your app starts up by default.
+For any view which contains an input you want the keyboard manager to auto handle, just ensure the root/top node of the view is wrapped in a `ScrollView` as that will ensure keyboard manager can auto pan it properly, for example:
+
+* Incorrect:
+
+```
+<GridLayout>
+  <TextField></TextField>
+<GridLayout>
+```
+
+* Correct:
+
+```
+<ScrollView>
+  <GridLayout>
+    <TextField></TextField>
+  <GridLayout>
+</ScrollView>
+```
+
+Other than that, IQKeyboardManager takes care of all initialization when your app starts up by default.
 
 ## Advanced usage
 
@@ -31,18 +51,14 @@ However, if you surround the controls with this plugin's `<PreviousNextView>` co
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="nativescript-iqkeyboardmanager">
-  <StackLayout>
+  <ScrollView>
     <IQKeyboardManager:PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
       <StackLayout>
-        <StackLayout>
           <TextField hint="Email"/>
-        </StackLayout>
-        <StackLayout>
           <TextField hint="Password"/>
-        </StackLayout>
       </StackLayout>
     </IQKeyboardManager:PreviousNextView>
-  </Stacklayout>
+  </ScrollView>
 </Page>
 ```
 
@@ -52,26 +68,23 @@ In the `.modules.ts` file where you want to use this feature (or the `app.module
 register the `PreviousNextView` element:
 
 ```typescript
-import { registerElement } from 'nativescript-angular';
-registerElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
+import { registerElement } from '@nativescript/angular';
+import { PreviousNextView } from '@nativescript/iqkeyboardmanager';
+registerElement('PreviousNextView', () => PreviousNextView);
 ```
 
 Then in the view, use that element like this (again, we went nuts with the `<StackLayout>`s:
 
 ```html
-<StackLayout>
+<ScrollView>
 	<PreviousNextView
 		><!-- add this 'wrapper' to enable those previous / next buttons -->
 		<StackLayout>
-			<StackLayout>
 				<TextField hint="Email"></TextField>
-			</StackLayout>
-			<StackLayout>
 				<TextField hint="Password"></TextField>
-			</StackLayout>
 		</StackLayout>
 	</PreviousNextView>
-</StackLayout>
+</ScrollView>
 ```
 
 #### NativeScript /w Vue usage
@@ -96,10 +109,12 @@ use `TextViewWithHint` instead.
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript/iqkeyboardmanager">
-  <StackLayout>
-    <TextView hint="Not working TextView hint"/>
-    <IQKeyboardManager:TextViewWithHint hint="Working TextView hint 🤪"/>
-  </StackLayout>
+  <ScrollView>
+    <StackLayout>
+      <TextView hint="Not working TextView hint"/>
+      <IQKeyboardManager:TextViewWithHint hint="Working TextView hint 🤪"/>
+    </StackLayout>
+  </ScrollView>
 </Page>
 ```
 
@@ -110,7 +125,8 @@ register the `TextViewWithHint` element:
 
 ```typescript
 import { registerElement } from '@nativescript/angular';
-registerElement('TextViewWithHint', () => require('@nativescript/iqkeyboardmanager').TextViewWithHint);
+import { TextViewWithHint } from '@nativescript/iqkeyboardmanager';
+registerElement('TextViewWithHint', () => TextViewWithHint);
 ```
 
 Then in the view, use that element like this:
@@ -135,11 +151,11 @@ Vue.registerElement('TextViewWithHint', () => require('@nativescript/iqkeyboardm
 Start by adding the following two paths into your app’s `references.d.ts` file. (See this repo’s demo app for a specific example.)
 
 ```
-/// <reference path="./node_modules/tns-platform-declarations/ios/ios.d.ts" />
+/// <reference path="./node_modules/@nativescript/types/index.d.ts" />
 /// <reference path="./node_modules/@nativescript/iqkeyboardmanager/index.d.ts" />
 ```
 
-> **NOTE**: You might also need to `npm install --save-dev tns-platform-declarations` to bring in NativeScript’s TypeScript definitions for native iOS development.
+> **NOTE**: You might also need to `npm install --save-dev @nativescript/types` to bring in NativeScript’s TypeScript definitions for native iOS development.
 
 Next, initialize an instance of `IQKeyboardManager` with the following line of code.
 

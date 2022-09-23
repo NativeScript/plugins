@@ -1,7 +1,7 @@
 # @nativescript/animated-circle
 
 ```bash
-ns plugin add @nativescript/animated-circle
+npm install @nativescript/animated-circle
 ```
 
 Creates an animated circle (animates the border of the circle) on iOS and Android.

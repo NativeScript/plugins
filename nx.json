@@ -28,7 +28,5 @@
 			}
 		}
 	},
-	"cli": {
-		"defaultCollection": "@nstudio/xplat"
-	}
+	"$schema": "./node_modules/nx/schemas/nx-schema.json"
 }

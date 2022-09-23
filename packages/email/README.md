@@ -16,7 +16,7 @@ You can use this plugin to compose an e-mail, have the user edit the draft manua
 > **Note:** This plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
 
 ```cli
-ns plugin add @nativescript/email
+npm install @nativescript/email
 ```
 
 ## Usage

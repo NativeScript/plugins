@@ -3,7 +3,7 @@
 Geolocation plugin to use for getting current location, monitor movement, etc.
 
 ```cli
-ns plugin add @nativescript/geolocation
+npm install @nativescript/geolocation
 ```
 
 > **Important Breaking Change**

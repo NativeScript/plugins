@@ -1,3 +1,10 @@
+# @nativescript/\* plugins
+
+```
+npm run setup
+npm start
+```
+
 - [@nativescript/animated-circle](packages/animated-circle/README.md)
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/apple-sign-in](packages/apple-sign-in/README.md)
@@ -19,12 +26,14 @@
 - [@nativescript/google-maps](packages/google-maps/README.md)
 - [@nativescript/google-maps-utils](packages/google-maps-utils/README.md)
 - [@nativescript/google-signin](packages/google-signin/README.md)
+- [@nativescript/haptics](packages/haptics/README.md)
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
 - [@nativescript/ionic-portals](packages/ionic-portals/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)
 - [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
+- [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)

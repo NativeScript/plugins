@@ -1,7 +1,7 @@
 {
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"generators": {},
-	"root": "packages/debug-ios",
 	"sourceRoot": "packages/debug-ios",
 	"targets": {
 		"build": {

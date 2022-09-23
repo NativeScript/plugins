@@ -290,6 +290,20 @@ module.exports = {
 				build: {
 					script: 'nx run google-maps-utils:build.all',
 					description: '@nativescript/google-maps-utils: Build',
+        }
+      },
+			// @nativescript/haptics
+			haptics: {
+				build: {
+					script: 'nx run haptics:build.all',
+					description: '@nativescript/haptics: Build',
+				},
+			},
+			// @nativescript/pdf
+			'pdf': {
+				build: {
+					script: 'nx run pdf:build.all',
+					description: '@nativescript/pdf: Build',
 				},
 			},
 			'build-all': {
@@ -433,6 +447,14 @@ module.exports = {
 			'google-maps-utils': {
 				script: 'nx run google-maps-utils:focus',
 				description: 'Focus on @nativescript/google-maps-utils',
+      },
+			haptics: {
+				script: 'nx run haptics:focus',
+				description: 'Focus on @nativescript/haptics',
+			},
+			'pdf': {
+				script: 'nx run pdf:focus',
+				description: 'Focus on @nativescript/pdf',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

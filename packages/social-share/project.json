@@ -1,5 +1,5 @@
 {
-	"root": "packages/social-share",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/social-share",
 	"projectType": "library",
 	"generators": {},

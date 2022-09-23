@@ -1,0 +1,64 @@
+{
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/pdf",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/pdf",
+				"tsConfig": "packages/pdf/tsconfig.json",
+				"packageJson": "packages/pdf/package.json",
+				"main": "packages/pdf/index.d.ts",
+				"assets": [
+					"packages/pdf/*.md",
+					"packages/pdf/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/pdf/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts pdf"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/pdf"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages pdf"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/pdf/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

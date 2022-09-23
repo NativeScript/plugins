@@ -1,5 +1,5 @@
 {
-	"root": "packages/shared-notification-delegate",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/shared-notification-delegate",
 	"projectType": "library",
 	"generators": {},
