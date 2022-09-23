@@ -1,6 +1,6 @@
 import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
-import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
+import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, ICap, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
@@ -1431,7 +1431,7 @@ export class Polyline extends OverLayBase implements IPolyline {
 	}
 
 	jointType: JointType;
-	pattern: any[];
+	pattern: PatternItem[];
 
 	get color(): Color {
 		return Color.fromIosColor(this.native.strokeColor);
@@ -1445,8 +1445,8 @@ export class Polyline extends OverLayBase implements IPolyline {
 		}
 	}
 
-	startCap: any;
-	endCap: any;
+	startCap: Cap;
+	endCap: Cap;
 }
 
 export class GroundOverlay extends OverLayBase implements IGroundOverlay {
@@ -1808,3 +1808,4 @@ export class VisibleRegion implements IVisibleRegion {
 }
 
 export class PatternItem implements IPatternItem {}
+export class Cap implements ICap {}

@@ -1465,6 +1465,10 @@ export class Polyline extends OverLayBase implements IPolyline {
 		return this.native.getWidth();
 	}
 
+	set width(value) {
+		this.native.setWidth(value);
+	}
+
 	get points(): Coordinate[] {
 		const array: androidNative.Array<com.google.android.gms.maps.model.LatLng> = this.native.getPoints().toArray();
 		const points: Coordinate[] = [];
@@ -1971,11 +1975,16 @@ export class Cap implements ICap {
 export class ButtCap extends Cap {
 	#native: com.google.android.gms.maps.model.ButtCap;
 
+	constructor();
+	constructor(nativeCap: com.google.android.gms.maps.model.ButtCap);
+	constructor(nativeCap?: com.google.android.gms.maps.model.ButtCap) {
+		super();
+		this.#native = nativeCap || new com.google.android.gms.maps.model.ButtCap();
+	}
+
 	static fromNative(nativeCap: com.google.android.gms.maps.model.ButtCap) {
 		if (nativeCap instanceof com.google.android.gms.maps.model.ButtCap) {
-			const cap = new ButtCap();
-			cap.#native = nativeCap;
-			return cap;
+			return new ButtCap(nativeCap);
 		}
 		return null;
 	}
@@ -1992,11 +2001,16 @@ export class ButtCap extends Cap {
 export class RoundCap extends Cap {
 	#native: com.google.android.gms.maps.model.RoundCap;
 
+	constructor();
+	constructor(nativeCap: com.google.android.gms.maps.model.RoundCap);
+	constructor(nativeCap?: com.google.android.gms.maps.model.RoundCap) {
+		super();
+		this.#native = nativeCap || new com.google.android.gms.maps.model.RoundCap();
+	}
+
 	static fromNative(nativeCap: com.google.android.gms.maps.model.RoundCap) {
 		if (nativeCap instanceof com.google.android.gms.maps.model.RoundCap) {
-			const cap = new RoundCap();
-			cap.#native = nativeCap;
-			return cap;
+			return new RoundCap(nativeCap);
 		}
 		return null;
 	}
@@ -2013,11 +2027,16 @@ export class RoundCap extends Cap {
 export class SquareCap extends Cap {
 	#native: com.google.android.gms.maps.model.SquareCap;
 
+	constructor();
+	constructor(nativeCap: com.google.android.gms.maps.model.SquareCap);
+	constructor(nativeCap?: com.google.android.gms.maps.model.SquareCap) {
+		super();
+		this.#native = nativeCap || new com.google.android.gms.maps.model.SquareCap();
+	}
+
 	static fromNative(nativeCap: com.google.android.gms.maps.model.SquareCap) {
 		if (nativeCap instanceof com.google.android.gms.maps.model.SquareCap) {
-			const cap = new SquareCap();
-			cap.#native = nativeCap;
-			return cap;
+			return new SquareCap(nativeCap);
 		}
 		return null;
 	}
@@ -2034,20 +2053,24 @@ export class SquareCap extends Cap {
 export class CustomCap extends Cap {
 	#native: com.google.android.gms.maps.model.CustomCap;
 
-	constructor(image?: ImageSource, width?: number) {
+	constructor(image: ImageSource, refWidth?: number);
+	constructor(nativeCap: com.google.android.gms.maps.model.CustomCap);
+	constructor(nativeCapOrImage: com.google.android.gms.maps.model.CustomCap | ImageSource, refWidth?: number) {
 		super();
-		if (typeof width === 'number') {
-			this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(image.android), Utils.layout.toDevicePixels(width));
-		} else if (image) {
-			this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(image.android));
+		if (nativeCapOrImage instanceof com.google.android.gms.maps.model.CustomCap) {
+			this.#native = nativeCapOrImage;
+		} else {
+			if (typeof refWidth === 'number') {
+				this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(nativeCapOrImage.android), refWidth);
+			} else if (nativeCapOrImage) {
+				this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(nativeCapOrImage.android));
+			}
 		}
 	}
 
 	static fromNative(nativeCap: com.google.android.gms.maps.model.CustomCap) {
 		if (nativeCap instanceof com.google.android.gms.maps.model.CustomCap) {
-			const cap = new CustomCap();
-			cap.#native = nativeCap;
-			return cap;
+			return new CustomCap(nativeCap);
 		}
 		return null;
 	}
@@ -2119,7 +2142,7 @@ export class Gap extends PatternItem {
 export class Dot extends PatternItem {
 	#native: com.google.android.gms.maps.model.Dot;
 
-	constructor(length: number) {
+	constructor() {
 		super();
 		this.#native = new com.google.android.gms.maps.model.Dot();
 	}
