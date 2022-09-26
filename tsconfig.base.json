@@ -60,7 +60,8 @@
 			"@nativescript/social-share": ["packages/social-share/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"],
+			"@nativescript/auth0": ["packages/auth0/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

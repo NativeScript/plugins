@@ -1,0 +1,10 @@
+dependencies {
+    def androidXLegacyVersion = "1.0.0"
+    if (project.hasProperty("androidXLegacy")) {
+        androidXLegacyVersion = androidXLegacy
+    }
+
+    implementation "androidx.legacy:legacy-support-v4:$androidXLegacyVersion"
+    implementation "androidx.browser:browser:1.2.0"
+    implementation "com.auth0.android:jwtdecode:2.0.0"
+}

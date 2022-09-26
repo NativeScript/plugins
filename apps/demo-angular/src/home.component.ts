@@ -16,6 +16,9 @@ export class HomeComponent {
 			name: 'apple-sign-in',
 		},
 		{
+			name: 'auth0',
+		},
+		{
 			name: 'auto-fit-text',
 		},
 		{

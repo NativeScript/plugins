@@ -10,6 +10,7 @@ const routes: Routes = [
 	{ path: 'animated-circle', loadChildren: () => import('./plugin-demos/animated-circle.module').then((m) => m.AnimatedCircleModule) },
 	{ path: 'appavailability', loadChildren: () => import('./plugin-demos/appavailability.module').then((m) => m.AppavailabilityModule) },
 	{ path: 'apple-sign-in', loadChildren: () => import('./plugin-demos/apple-sign-in.module').then((m) => m.AppleSignInModule) },
+	{ path: 'auth0', loadChildren: () => import('./plugin-demos/auth0.module').then((m) => m.Auth0Module) },
 	{ path: 'auto-fit-text', loadChildren: () => import('./plugin-demos/auto-fit-text.module').then((m) => m.AutoFitTextModule) },
 	{ path: 'background-http', loadChildren: () => import('./plugin-demos/background-http.module').then((m) => m.BackgroundHttpModule) },
 	{ path: 'biometrics', loadChildren: () => import('./plugin-demos/biometrics.module').then((m) => m.BiometricsModule) },

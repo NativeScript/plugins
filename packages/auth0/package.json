@@ -1,0 +1,45 @@
+{
+	"name": "@nativescript/auth0",
+	"version": "5.0.0",
+	"description": "Auth0 SDK for NativeScript",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "6.0.0",
+			"android": "6.0.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"Auth0",
+		"oAuth",
+		"Social Login",
+		"Social",
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS",
+		"Android"
+	],
+	"author": {
+		"name": "Steve McNiven-Scott",
+		"email": "steve@sitefinitysteve.com"
+	},
+	"contributors": [
+		{
+			"name": "NativeScript",
+			"email": "oss@nativescript.org"
+		}
+	],
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed"
+}

@@ -1,0 +1,4 @@
+module A0ChallengeGenerator {
+    header "A0ChallengeGenerator.h"
+    export *
+}
