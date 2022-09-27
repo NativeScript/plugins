@@ -1,4 +1,3 @@
-import { Application } from '@nativescript/core';
 import { ILoginManager } from './common';
 
 function setToArray<T>(value: NSSet<T>): T[] {
@@ -23,8 +22,6 @@ export class FacebookError extends Error {
 		return this.#native;
 	}
 }
-
-let appDelegateInitialized = false;
 
 export class AccessToken {
 	#native: FBSDKAccessToken;
@@ -194,16 +191,6 @@ export class LoginManager implements ILoginManager {
 	static init() {
 		if (!this.#native) {
 			this.#native = FBSDKLoginManager.new();
-		}
-
-		if (!appDelegateInitialized) {
-			if (!Application.ios.delegate) {
-				Application.ios.delegate = NSCFBAppDelegate;
-			}
-			GULAppDelegateSwizzler.proxyOriginalDelegate();
-			GULAppDelegateSwizzler.registerAppDelegateInterceptor(<any>NSCFBAppDelegate);
-
-			appDelegateInitialized = true;
 		}
 	}
 
