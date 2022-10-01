@@ -32,6 +32,7 @@ export class SafariWebAuth extends WebAuth {
 	public responseType: ResponseType[] = [ResponseType.code];
 	public nonce: string | undefined;
 	private authenticationSession: boolean = true;
+	private redirectPrefix: string | undefined;
 
 	public static init(clientId: string, url: NSURL, presenter: ControllerModalPresenter = new ControllerModalPresenter(), telemetry: Telemetry = new Telemetry()): SafariWebAuth {
 		return new SafariWebAuth(clientId, url, presenter, TransactionStore.shared, telemetry);
@@ -76,6 +77,10 @@ export class SafariWebAuth extends WebAuth {
 			this.parameters[key] = parameters[key];
 		}
 		return this;
+	}
+
+	public setRedirectPrefix(prefix: string) {
+		this.redirectPrefix = prefix;
 	}
 
 	public setResponseType(responseType: ResponseType[]): this {
@@ -202,7 +207,12 @@ export class SafariWebAuth extends WebAuth {
 		const components = new NSURLComponents({ URL: this.url, resolvingAgainstBaseURL: true });
 		if (components != null && components.URL != null) {
 			components.scheme = this.universalLink ? 'https' : bundleIdentifier;
-			return components.URL.URLByAppendingPathComponent('ios').URLByAppendingPathComponent(bundleIdentifier).URLByAppendingPathComponent('callback');
+			const compUrl = components.URL.URLByAppendingPathComponent('ios').URLByAppendingPathComponent(bundleIdentifier).URLByAppendingPathComponent('callback');
+			if (this.redirectPrefix) {
+				return NSURL.URLWithString(`${this.redirectPrefix}${compUrl.absoluteString}`);
+			} else {
+				return compUrl;
+			}
 		} else {
 			return undefined;
 		}

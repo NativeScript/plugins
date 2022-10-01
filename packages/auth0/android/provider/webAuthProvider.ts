@@ -37,6 +37,7 @@ export class WebAuthProvider {
 	private pkce: PKCE;
 	private scheme: string;
 	private ctOptions: CustomTabsOptions;
+	private redirectPrefix: string;
 
 	/**
 	 * Initialize the WebAuthProvider instance with an account. Additional settings can be configured,
@@ -165,6 +166,10 @@ export class WebAuthProvider {
 		return this;
 	}
 
+	public withRedirectPrefix(prefix: string) {
+		this.redirectPrefix = prefix;
+	}
+
 	/**
 	 * Use the given connection. By default no connection is specified, so the login page will be displayed.
 	 *
@@ -237,7 +242,7 @@ export class WebAuthProvider {
 		WebAuthProvider.managerInstance = manager;
 
 		const redirectUri = CallbackHelper.getCallbackUri(this.scheme, activity.getApplicationContext().getPackageName(), this.account.getDomainUrl());
-		manager.startAuthorization(activity, redirectUri, 110);
+		manager.startAuthorization(activity, `${this.redirectPrefix || ''}${redirectUri}`, 110);
 	}
 
 	// Public methods

@@ -16,6 +16,7 @@ export interface WebAuthOptions {
 	scope?: string;
 	state?: string;
 	parameters?: { [param: string]: string };
+	redirectPrefix?: string;
 }
 
 export class WebAuthException extends Error {

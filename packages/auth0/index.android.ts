@@ -49,6 +49,9 @@ export class Auth0 extends Auth0Common {
 		if (options.parameters != null) {
 			webAuth.withParameters(options.parameters);
 		}
+		if (options.redirectPrefix != null) {
+			webAuth.withRedirectPrefix(options.redirectPrefix);
+		}
 
 		return new Promise((resolve, reject) => {
 			try {
