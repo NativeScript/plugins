@@ -5,7 +5,7 @@ import * as permissions from 'nativescript-permissions';
 export * from './common';
 
 declare var com: any;
-let REQUEST_ENABLE_LOCATION = 4269; // random number
+const REQUEST_ENABLE_LOCATION = 4269; // random number
 let _onEnableLocationSuccess = null;
 let _onEnableLocationFail = null;
 
@@ -51,17 +51,17 @@ function errorHandler(errData: UnhandledErrorEventData) {
 	}
 }
 
-export function getCurrentLocation(options: Options): Promise<Location> {
+export function getCurrentLocation(options?: Options): Promise<Location> {
 	return new Promise(function (resolve, reject) {
 		enableLocationRequest(false, false).then(() => {
-			if (options.timeout === 0) {
+			if (options?.timeout === 0) {
 				// get last known
-				LocationManager.getLastLocation(options.maximumAge, resolve, reject);
+				LocationManager.getLastLocation(options?.maximumAge, resolve, reject);
 			} else {
 				// wait for the exact location
-				let locationRequest = _getLocationRequest(options);
-				let watchId = _getNextWatchId();
-				let locationCallback = _getLocationCallback(watchId, (nativeLocation) => {
+				const locationRequest = _getLocationRequest(options);
+				const watchId = _getNextWatchId();
+				const locationCallback = _getLocationCallback(watchId, (nativeLocation) => {
 					clearWatch(watchId);
 					resolve(new Location(nativeLocation));
 				});
@@ -71,19 +71,19 @@ export function getCurrentLocation(options: Options): Promise<Location> {
 					clearWatch(watchId);
 					clearTimeout(timerId);
 					reject(new Error('Timeout while searching for location!'));
-				}, options.timeout || defaultGetLocationTimeout);
+				}, options?.timeout || defaultGetLocationTimeout);
 			}
 		}, reject);
 	});
 }
 
 function _getNextWatchId() {
-	let watchId = ++watchIdCounter;
+	const watchId = ++watchIdCounter;
 	return watchId;
 }
 
 function _getLocationCallback(watchId, onLocation): any {
-	let LocationCallback = com.google.android.gms.location.LocationCallback.extend({
+	const LocationCallback = com.google.android.gms.location.LocationCallback.extend({
 		// IMPORTANT: Do not touch any scope variables here. The Java definition of the class is cached
 		// internally in NativeScript and if we directly use 'watchId' or 'onLocation' here, we will
 		// always receive the references from the first '_getLocationCallback' method call!!!
@@ -92,7 +92,7 @@ function _getLocationCallback(watchId, onLocation): any {
 		},
 	});
 
-	let locationCallback = new LocationCallback();
+	const locationCallback = new LocationCallback();
 	// Workaround for the above-mentioned Note
 	locationCallback.onLocation = onLocation;
 
@@ -102,15 +102,15 @@ function _getLocationCallback(watchId, onLocation): any {
 }
 
 function _getLocationRequest(options: Options): any {
-	let mLocationRequest = new com.google.android.gms.location.LocationRequest();
-	let updateTime = options.updateTime === 0 ? 0 : options.updateTime || minTimeUpdate;
+	const mLocationRequest = new com.google.android.gms.location.LocationRequest();
+	const updateTime = options?.updateTime ?? minTimeUpdate;
 	mLocationRequest.setInterval(updateTime);
-	let minUpdateTime = options.minimumUpdateTime === 0 ? 0 : options.minimumUpdateTime || Math.min(updateTime, fastestTimeUpdate);
+	const minUpdateTime = options?.minimumUpdateTime ?? Math.min(updateTime, fastestTimeUpdate);
 	mLocationRequest.setFastestInterval(minUpdateTime);
-	if (options.updateDistance) {
+	if (options?.updateDistance) {
 		mLocationRequest.setSmallestDisplacement(options.updateDistance);
 	}
-	if (options.desiredAccuracy === Enums.Accuracy.high) {
+	if (options?.desiredAccuracy === Enums.Accuracy.high) {
 		mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY);
 	} else {
 		mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -143,7 +143,7 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 function _getLocationListener(maxAge, onLocation, onError) {
 	return _getTaskSuccessListener((nativeLocation: android.location.Location) => {
 		if (nativeLocation != null) {
-			let location = new Location(nativeLocation);
+			const location = new Location(nativeLocation);
 			if (typeof maxAge === 'number' && nativeLocation != null) {
 				if (location.timestamp.valueOf() + maxAge > new Date().valueOf()) {
 					onLocation(location);
@@ -171,7 +171,7 @@ function _getTaskFailListener(done: (exception) => void) {
 	});
 }
 
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options: Options): number {
+export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number {
 	// wrap in zoned callback in order to avoid UI glitches in Angular applications
 	// check https://github.com/NativeScript/NativeScript/issues/2229
 	const zonedSuccessCallback = zonedCallback(successCallback);
@@ -186,8 +186,8 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 		Application.on(Application.uncaughtErrorEvent, errorHandler.bind(this));
 	}
 
-	let locationRequest = _getLocationRequest(options);
-	let watchId = _getNextWatchId();
+	const locationRequest = _getLocationRequest(options);
+	const watchId = _getNextWatchId();
 	const locationCallback = _getLocationCallback(watchId, (nativeLocation) => {
 		zonedSuccessCallback(new Location(nativeLocation));
 	});
@@ -204,7 +204,7 @@ export function watchPermissionStatus(permissionCallback: permissionCallbackType
 }
 
 export function clearWatch(watchId: number): void {
-	let listener = locationListeners[watchId];
+	const listener = locationListeners[watchId];
 	if (listener) {
 		LocationManager.removeLocationUpdates(listener);
 		delete locationListeners[watchId];
@@ -262,7 +262,7 @@ function _makeGooglePlayServicesAvailable(): Promise<void> {
 			resolve();
 			return;
 		}
-		let googleApiAvailability = com.google.android.gms.common.GoogleApiAvailability.getInstance();
+		const googleApiAvailability = com.google.android.gms.common.GoogleApiAvailability.getInstance();
 		googleApiAvailability
 			.makeGooglePlayServicesAvailable(Application.android.foregroundActivity || Application.android.startActivity)
 			.addOnSuccessListener(_getTaskSuccessListener(resolve))
@@ -276,8 +276,8 @@ function _isGooglePlayServicesAvailable(): boolean {
 	}
 
 	let isLocationServiceEnabled = true;
-	let googleApiAvailability = com.google.android.gms.common.GoogleApiAvailability.getInstance();
-	let resultCode = googleApiAvailability.isGooglePlayServicesAvailable(Application.android.context);
+	const googleApiAvailability = com.google.android.gms.common.GoogleApiAvailability.getInstance();
+	const resultCode = googleApiAvailability.isGooglePlayServicesAvailable(Application.android.context);
 	if (resultCode !== com.google.android.gms.common.ConnectionResult.SUCCESS) {
 		isLocationServiceEnabled = false;
 	}
@@ -293,11 +293,11 @@ function _isLocationServiceEnabled(options?: Options): Promise<boolean> {
 		}
 
 		options = options || { desiredAccuracy: Enums.Accuracy.high, updateTime: 0, updateDistance: 0, maximumAge: 0, timeout: 0 };
-		let locationRequest = _getLocationRequest(options);
-		let locationSettingsBuilder = new com.google.android.gms.location.LocationSettingsRequest.Builder();
+		const locationRequest = _getLocationRequest(options);
+		const locationSettingsBuilder = new com.google.android.gms.location.LocationSettingsRequest.Builder();
 		locationSettingsBuilder.addLocationRequest(locationRequest);
 		locationSettingsBuilder.setAlwaysShow(true);
-		let locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Application.android.context);
+		const locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Application.android.context);
 		locationSettingsClient.checkLocationSettings(locationSettingsBuilder.build()).addOnSuccessListener(_getTaskSuccessListener(resolve)).addOnFailureListener(_getTaskFailListener(reject));
 	});
 }
@@ -366,7 +366,7 @@ export function distance(loc1: Location, loc2: Location): number {
 }
 
 function androidLocationFromLocation(location: Location): android.location.Location {
-	let androidLocation = new android.location.Location('custom');
+	const androidLocation = new android.location.Location('custom');
 	androidLocation.setLatitude(location.latitude);
 	androidLocation.setLongitude(location.longitude);
 	if (location.altitude) {

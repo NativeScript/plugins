@@ -1,5 +1,4 @@
 import { Application, Enums, UnhandledErrorEventData, Device, ApplicationSettings } from '@nativescript/core';
-
 import { LocationBase, defaultGetLocationTimeout, minRangeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 export * from './common';
@@ -23,7 +22,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 	private _reject: (error: Error) => void;
 
 	public static initWithLocationError(successCallback: successCallbackType, error?: errorCallbackType): LocationListenerImpl {
-		let listener = <LocationListenerImpl>LocationListenerImpl.new();
+		const listener = <LocationListenerImpl>LocationListenerImpl.new();
 		watchId++;
 		listener.id = watchId;
 		listener._onLocation = successCallback;
@@ -33,7 +32,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 	}
 
 	public static initWithPermissionError(permissionCallback: permissionCallbackType, error?: errorCallbackType): LocationListenerImpl {
-		let listener = <LocationListenerImpl>LocationListenerImpl.new();
+		const listener = <LocationListenerImpl>LocationListenerImpl.new();
 		watchId++;
 		listener.id = watchId;
 		listener._onPermissionChange = permissionCallback;
@@ -43,7 +42,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 	}
 
 	public static initWithPromiseCallbacks(resolve: () => void, reject: (error: Error) => void, authorizeAlways: boolean = false): LocationListenerImpl {
-		let listener = <LocationListenerImpl>LocationListenerImpl.new();
+		const listener = <LocationListenerImpl>LocationListenerImpl.new();
 		watchId++;
 		listener.id = watchId;
 		listener._resolve = resolve;
@@ -56,7 +55,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 	public locationManagerDidUpdateLocations(manager: CLLocationManager, locations: NSArray<CLLocation>): void {
 		if (this._onLocation) {
 			for (let i = 0, count = locations.count; i < count; i++) {
-				let location = locationFromCLLocation(<CLLocation>locations.objectAtIndex(i));
+				const location = locationFromCLLocation(<CLLocation>locations.objectAtIndex(i));
 				this._onLocation(location);
 			}
 		}
@@ -124,7 +123,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 }
 
 function locationFromCLLocation(clLocation: CLLocation): Location {
-	let location = new Location();
+	const location = new Location();
 	location.latitude = clLocation.coordinate.latitude;
 	location.longitude = clLocation.coordinate.longitude;
 	location.altitude = clLocation.altitude;
@@ -132,20 +131,20 @@ function locationFromCLLocation(clLocation: CLLocation): Location {
 	location.verticalAccuracy = clLocation.verticalAccuracy;
 	location.speed = clLocation.speed;
 	location.direction = clLocation.course;
-	let timeIntervalSince1970 = NSDate.dateWithTimeIntervalSinceDate(0, clLocation.timestamp).timeIntervalSince1970;
+	const timeIntervalSince1970 = NSDate.dateWithTimeIntervalSinceDate(0, clLocation.timestamp).timeIntervalSince1970;
 	location.timestamp = new Date(timeIntervalSince1970 * 1000);
 	location.ios = clLocation;
 	return location;
 }
 
 function clLocationFromLocation(location: Location): CLLocation {
-	let hAccuracy = location.horizontalAccuracy ? location.horizontalAccuracy : -1;
-	let vAccuracy = location.verticalAccuracy ? location.verticalAccuracy : -1;
-	let speed = location.speed ? location.speed : -1;
-	let course = location.direction ? location.direction : -1;
-	let altitude = location.altitude ? location.altitude : -1;
-	let timestamp = location.timestamp ? location.timestamp : null;
-	let iosLocation = CLLocation.alloc().initWithCoordinateAltitudeHorizontalAccuracyVerticalAccuracyCourseSpeedTimestamp(CLLocationCoordinate2DMake(location.latitude, location.longitude), altitude, hAccuracy, vAccuracy, course, speed, timestamp);
+	const hAccuracy = location.horizontalAccuracy ? location.horizontalAccuracy : -1;
+	const vAccuracy = location.verticalAccuracy ? location.verticalAccuracy : -1;
+	const speed = location.speed ? location.speed : -1;
+	const course = location.direction ? location.direction : -1;
+	const altitude = location.altitude ? location.altitude : -1;
+	const timestamp = location.timestamp ? location.timestamp : null;
+	const iosLocation = CLLocation.alloc().initWithCoordinateAltitudeHorizontalAccuracyVerticalAccuracyCourseSpeedTimestamp(CLLocationCoordinate2DMake(location.latitude, location.longitude), altitude, hAccuracy, vAccuracy, course, speed, timestamp);
 	return iosLocation;
 }
 
@@ -161,13 +160,13 @@ function getVersionMaj() {
 }
 
 // options - desiredAccuracy, updateDistance, minimumUpdateTime, maximumAge, timeout
-export function getCurrentLocation(options: Options): Promise<Location> {
+export function getCurrentLocation(options?: Options): Promise<Location> {
 	return new Promise(function (resolve, reject) {
 		enableLocationRequest().then(() => {
 			options = options || {};
 			if (options.timeout === 0) {
 				// we should take any cached location e.g. lastKnownLocation
-				let lastLocation = LocationMonitor.getLastKnownLocation();
+				const lastLocation = LocationMonitor.getLastKnownLocation();
 				if (lastLocation) {
 					if (typeof options.maximumAge === 'number') {
 						if (lastLocation.timestamp.valueOf() + options.maximumAge > new Date().valueOf()) {
@@ -182,11 +181,11 @@ export function getCurrentLocation(options: Options): Promise<Location> {
 					reject(new Error('There is no last known location!'));
 				}
 			} else {
-				let timerId;
-				let locListener;
-				let initLocation;
+				let timerId: number;
+				let locListener: any;
+				let initLocation: Location;
 
-				let stopTimerAndMonitor = function (locListenerId) {
+				const stopTimerAndMonitor = function (locListenerId) {
 					if (timerId !== undefined) {
 						clearTimeout(timerId);
 					}
@@ -194,7 +193,7 @@ export function getCurrentLocation(options: Options): Promise<Location> {
 					LocationMonitor.stopLocationMonitoring(locListenerId);
 				};
 
-				let successCallback = function (location: Location) {
+				const successCallback = function (location: Location) {
 					if (getVersionMaj() < 9) {
 						if (typeof options.maximumAge === 'number' && location.timestamp.valueOf() + options.maximumAge < new Date().valueOf()) {
 							// returned location is too old, but we still have some time before the timeout so maybe wait a bit?
@@ -235,17 +234,17 @@ export function getCurrentLocation(options: Options): Promise<Location> {
 	});
 }
 
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options: Options): number {
+export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number {
 	if (!attachedForErrorHandling) {
 		attachedForErrorHandling = true;
 		Application.on(Application.uncaughtErrorEvent, errorHandler.bind(this));
 	}
 
-	let zonedSuccessCallback = (<any>global).zonedCallback(successCallback);
-	let zonedErrorCallback = (<any>global).zonedCallback(errorCallback);
-	let locListener = LocationListenerImpl.initWithLocationError(zonedSuccessCallback, zonedErrorCallback);
+	const zonedSuccessCallback = (<any>global).zonedCallback(successCallback);
+	const zonedErrorCallback = (<any>global).zonedCallback(errorCallback);
+	const locListener = LocationListenerImpl.initWithLocationError(zonedSuccessCallback, zonedErrorCallback);
 	try {
-		let iosLocManager = getIOSLocationManager(locListener, options);
+		const iosLocManager = getIOSLocationManager(locListener, options);
 		iosLocManager.startUpdatingLocation();
 		return locListener.id;
 	} catch (e) {
@@ -256,12 +255,12 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 }
 
 export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType): number {
-	let zonedPermissionCallback = (<any>global).zonedCallback(permissionCallback);
-	let zonedErrorCallback = (<any>global).zonedCallback(errorCallback);
-	let permListener = LocationListenerImpl.initWithPermissionError(zonedPermissionCallback, zonedErrorCallback);
+	const zonedPermissionCallback = (<any>global).zonedCallback(permissionCallback);
+	const zonedErrorCallback = (<any>global).zonedCallback(errorCallback);
+	const permListener = LocationListenerImpl.initWithPermissionError(zonedPermissionCallback, zonedErrorCallback);
 
 	try {
-		let iosLocManager = new CLLocationManager();
+		const iosLocManager = new CLLocationManager();
 		iosLocManager.delegate = permListener;
 
 		locationManagers[permListener.id] = iosLocManager;
@@ -294,9 +293,9 @@ export function enableLocationRequest(always?: boolean, openSettingsIfLocationHa
 				UIApplication.sharedApplication.openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
 				reject();
 			} else {
-				let listener = LocationListenerImpl.initWithPromiseCallbacks(resolve, reject, always);
+				const listener = LocationListenerImpl.initWithPromiseCallbacks(resolve, reject, always);
 				try {
-					let manager = getIOSLocationManager(listener, null);
+					const manager = getIOSLocationManager(listener, null);
 					if (always) {
 						manager.requestAlwaysAuthorization();
 					} else {
@@ -333,7 +332,7 @@ function _isEnabled(always?: boolean): boolean {
 	return false;
 }
 
-export function isEnabled(options: Options): Promise<boolean> {
+export function isEnabled(options?: Options): Promise<boolean> {
 	return new Promise(function (resolve, reject) {
 		const isEnabledResult = _isEnabled();
 
@@ -360,7 +359,7 @@ export class LocationMonitor {
 		let iosLocation: CLLocation;
 		for (let locManagerId in locationManagers) {
 			if (locationManagers.hasOwnProperty(locManagerId)) {
-				let tempLocation = locationManagers[locManagerId].location;
+				const tempLocation = locationManagers[locManagerId].location;
 				if (!iosLocation || tempLocation.timestamp > iosLocation.timestamp) {
 					iosLocation = tempLocation;
 				}
@@ -371,7 +370,7 @@ export class LocationMonitor {
 			return locationFromCLLocation(iosLocation);
 		}
 
-		let locListener = LocationListenerImpl.initWithLocationError(null);
+		const locListener = LocationListenerImpl.initWithLocationError(null);
 		iosLocation = getIOSLocationManager(locListener, null).location;
 
 		if (iosLocation) {
@@ -381,12 +380,12 @@ export class LocationMonitor {
 	}
 
 	static requestLocation(options: Options, locListener: any): void {
-		let iosLocManager = getIOSLocationManager(locListener, options);
+		const iosLocManager = getIOSLocationManager(locListener, options);
 		iosLocManager.requestLocation();
 	}
 
 	static startLocationMonitoring(options: Options, locListener: any): void {
-		let iosLocManager = getIOSLocationManager(locListener, options);
+		const iosLocManager = getIOSLocationManager(locListener, options);
 		iosLocManager.startUpdatingLocation();
 	}
 
@@ -400,32 +399,32 @@ export class LocationMonitor {
 		}
 	}
 
-	static createiOSLocationManager(locListener: any, options: Options): CLLocationManager {
-		let iosLocManager = new CLLocationManager();
+	static createiOSLocationManager(locListener: any, options?: Options): CLLocationManager {
+		const iosLocManager = new CLLocationManager();
 		iosLocManager.delegate = locListener;
-		iosLocManager.desiredAccuracy = options ? options.desiredAccuracy : Enums.Accuracy.high;
-		iosLocManager.distanceFilter = options ? options.updateDistance : minRangeUpdate;
+		iosLocManager.desiredAccuracy = options?.desiredAccuracy ?? Enums.Accuracy.high;
+		iosLocManager.distanceFilter = options?.updateDistance ?? minRangeUpdate;
 		locationManagers[locListener.id] = iosLocManager;
 		locationListeners[locListener.id] = locListener;
 		if (getVersionMaj() >= 9) {
-			iosLocManager.allowsBackgroundLocationUpdates = options && options.iosAllowsBackgroundLocationUpdates != null ? options.iosAllowsBackgroundLocationUpdates : false;
+			iosLocManager.allowsBackgroundLocationUpdates = options?.iosAllowsBackgroundLocationUpdates ?? false;
 		}
-		iosLocManager.pausesLocationUpdatesAutomatically = options && options.iosPausesLocationUpdatesAutomatically != null ? options.iosPausesLocationUpdatesAutomatically : true;
+		iosLocManager.pausesLocationUpdatesAutomatically = options?.iosPausesLocationUpdatesAutomatically ?? true;
 		return iosLocManager;
 	}
 }
 
 let iosLocationManager: any;
 
-function getIOSLocationManager(locListener: any, options: Options): CLLocationManager {
+function getIOSLocationManager(locListener: any, options?: Options): CLLocationManager {
 	if (!iosLocationManager) {
 		return LocationMonitor.createiOSLocationManager(locListener, options);
 	} else {
-		let manager = new iosLocationManager();
+		const manager = new iosLocationManager();
 
 		manager.delegate = locListener;
-		manager.desiredAccuracy = options ? options.desiredAccuracy : Enums.Accuracy.high;
-		manager.distanceFilter = options ? options.updateDistance : minRangeUpdate;
+		manager.desiredAccuracy = options?.desiredAccuracy ?? Enums.Accuracy.high;
+		manager.distanceFilter = options?.updateDistance ?? minRangeUpdate;
 
 		locationManagers[locListener.id] = manager;
 		locationListeners[locListener.id] = locListener;
