@@ -13,6 +13,7 @@
 				"assets": [
 					"packages/pdf/*.md",
 					"packages/pdf/index.d.ts",
+					"packages/pdf/typings/AndroidPdfViewer.d.ts",
 					"LICENSE",
 					{
 						"glob": "**/*",
