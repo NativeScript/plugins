@@ -78,7 +78,6 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 	}
 
 	private _handleAuthorizationChange(status: CLAuthorizationStatus) {
-
 		// the permisssion listener doesn't resolve
 		if (this._onPermissionChange) {
 			this._onPermissionChange(status);
@@ -181,13 +180,14 @@ export function getCurrentLocation(options?: Options): Promise<Location> {
 					reject(new Error('There is no last known location!'));
 				}
 			} else {
-				let timerId: number;
+				let timerId: any;
 				let locListener: any;
 				let initLocation: Location;
 
 				const stopTimerAndMonitor = function (locListenerId) {
-					if (timerId !== undefined) {
+					if (typeof timerId === 'number') {
 						clearTimeout(timerId);
+						timerId = null;
 					}
 
 					LocationMonitor.stopLocationMonitoring(locListenerId);
@@ -287,8 +287,7 @@ export function enableLocationRequest(always?: boolean, openSettingsIfLocationHa
 			return;
 		} else {
 			const status = getIOSLocationManagerStatus();
-			if ((status === CLAuthorizationStatus.kCLAuthorizationStatusDenied && openSettingsIfLocationHasBeenDenied) ||
-				(!_systemDialogWillShow(always, status) && openSettingsIfLocationHasBeenDenied)) {
+			if ((status === CLAuthorizationStatus.kCLAuthorizationStatusDenied && openSettingsIfLocationHasBeenDenied) || (!_systemDialogWillShow(always, status) && openSettingsIfLocationHasBeenDenied)) {
 				// now open the Settings so the user can toggle the Location permission
 				UIApplication.sharedApplication.openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
 				reject();
@@ -312,7 +311,7 @@ export function enableLocationRequest(always?: boolean, openSettingsIfLocationHa
 
 function _systemDialogWillShow(always: boolean, status: CLAuthorizationStatus): boolean {
 	// the system dialog for "always" permission will not show if we requested it previously and currently have "when use" permission
-	return !(status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse && always && ApplicationSettings.getBoolean('hasRequestedAlwaysAuthorization', false))
+	return !(status === CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse && always && ApplicationSettings.getBoolean('hasRequestedAlwaysAuthorization', false));
 }
 
 function _isEnabled(always?: boolean): boolean {
