@@ -2,7 +2,7 @@
 	"main": "./src/main.ts",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/pdf": "file:../../dist/packages/pdf",
+		"@nativescript/auth0": "file:../../dist/packages/auth0",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -30,6 +30,7 @@
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/pdf": "file:../../dist/packages/pdf",
 		"@nativescript/picker": "file:../../dist/packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",

@@ -1,0 +1,64 @@
+{
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/auth0",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/auth0",
+				"tsConfig": "packages/auth0/tsconfig.json",
+				"packageJson": "packages/auth0/package.json",
+				"main": "packages/auth0/index.d.ts",
+				"assets": [
+					"packages/auth0/*.md",
+					"packages/auth0/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/auth0/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts auth0"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/auth0"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages auth0"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/auth0/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

@@ -293,10 +293,17 @@ module.exports = {
 				},
 			},
 			// @nativescript/pdf
-			'pdf': {
+			pdf: {
 				build: {
 					script: 'nx run pdf:build.all',
 					description: '@nativescript/pdf: Build',
+				},
+			},
+			// @nativescript/auth0
+			auth0: {
+				build: {
+					script: 'nx run auth0:build.all',
+					description: '@nativescript/auth0: Build',
 				},
 			},
 			'build-all': {
@@ -441,9 +448,13 @@ module.exports = {
 				script: 'nx run haptics:focus',
 				description: 'Focus on @nativescript/haptics',
 			},
-			'pdf': {
+			pdf: {
 				script: 'nx run pdf:focus',
 				description: 'Focus on @nativescript/pdf',
+			},
+			auth0: {
+				script: 'nx run auth0:focus',
+				description: 'Focus on @nativescript/auth0',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',
