@@ -274,10 +274,10 @@ The maps current camera position can be read from the `GoogleMap`s object `camer
 #### Controlling the camera
 To programatically update the camera position you can call `animateCamera` from the `GoogleMap` object, like so:
 ```ts
-import { CameraPosition } from '@nativescript/google-maps';
+import { CameraUpdate } from '@nativescript/google-maps';
 
 googleMap.animateCamera(
-	CameraPosition.fromCoordinates({
+	CameraUpdate.fromCoordinates({
 			lat: -32.1234,
 			lng: 125.1234
 		},
@@ -285,7 +285,7 @@ googleMap.animateCamera(
 	)
 );
 ```
-`CameraPosition` provides multiple methods to create a target CameraUpdate position. 
+`CameraUpdate` provides multiple methods to create a target CameraPosition. 
 
 | Method | Description
 |:-------|:-----------
