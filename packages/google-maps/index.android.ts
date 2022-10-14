@@ -623,6 +623,10 @@ export class UISettings implements IUISettings {
 		return this.native.isRotateGesturesEnabled();
 	}
 
+	set rotateGesturesEnabled(value) {
+		this.native.setRotateGesturesEnabled(value);
+	}
+
 	get myLocationButtonEnabled(): boolean {
 		return this.native.isMyLocationButtonEnabled();
 	}
@@ -635,8 +639,16 @@ export class UISettings implements IUISettings {
 		return this.native.isIndoorLevelPickerEnabled();
 	}
 
+	set indoorLevelPickerEnabled(value) {
+		this.native.setIndoorLevelPickerEnabled(value);
+	}
+
 	get scrollGesturesEnabled(): boolean {
 		return this.native.isScrollGesturesEnabled();
+	}
+
+	set scrollGesturesEnabled(value) {
+		this.native.setScrollGesturesEnabled(value);
 	}
 }
 
