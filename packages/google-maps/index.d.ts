@@ -749,3 +749,5 @@ export class TileProvider implements ITileProvider {
 export class UrlTileProvider extends TileProvider {
 	constructor(callback: (x: number, y: number, zoom: number) => string, size?: number);
 }
+
+export { MapType, JointType };
