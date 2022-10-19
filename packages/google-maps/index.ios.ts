@@ -1,6 +1,6 @@
 import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
-import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, ICap, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
+import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, CircleTapEvent, PolygonTapEvent, PolylineTapEvent, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, ICap, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
@@ -298,7 +298,25 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	}
 
 	mapViewDidTapOverlay(mapView: GMSMapView, overlay: GMSOverlay): void {
-		if (overlay instanceof GMSGroundOverlay) {
+		if (overlay instanceof GMSCircle) {
+			this._owner?.get?.().notify?.(<CircleTapEvent>{
+				eventName: MapView.circleTapEvent,
+				object: this._owner?.get?.(),
+				circle: Circle.fromNative(overlay),
+			});
+		} else if (overlay instanceof GMSPolygon) {
+			this._owner?.get?.().notify?.(<PolygonTapEvent>{
+				eventName: MapView.polygonTapEvent,
+				object: this._owner?.get?.(),
+				polygon: Polygon.fromNative(overlay),
+			});
+		} else if (overlay instanceof GMSPolyline) {
+			this._owner?.get?.().notify?.(<PolylineTapEvent>{
+				eventName: MapView.polylineTapEvent,
+				object: this._owner?.get?.(),
+				polyline: Polyline.fromNative(overlay),
+			});
+		} else if (overlay instanceof GMSGroundOverlay) {
 			this._owner?.get?.().notify?.(<GroundOverlayTapEvent>{
 				eventName: MapView.groundOverlayTapEvent,
 				object: this._owner?.get?.(),
