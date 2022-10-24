@@ -2,6 +2,7 @@ export * from './utils';
 export * from './animated-circle';
 export * from './appavailability';
 export * from './apple-sign-in';
+export * from './audio';
 export * from './auto-fit-text';
 export * from './background-http';
 export * from './biometrics';

@@ -1,0 +1,23 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+    <Page.actionBar>
+        <ActionBar title="audio" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout class="p-20">
+        <ScrollView class="h-full">
+          <StackLayout>
+            <Label class="h1" text="Player" />
+            <Button text="Play Audio" tap="{{ play }}" class="btn btn-primary"/>
+            <Button text="Pause Audio" tap="{{ pause }}" class="btn btn-primary"/>
+            <Button text="Play from 1:00" tap="{{ seek }}" class="btn btn-primary"/>
+            <Button text="Play From Beginning" tap="{{ startOver }}" class="btn btn-primary"/>
+            <Label class="c-black" text="{{ isPlaying ? 'Audio Playing' : 'Audio Not Playing' }}"></Label>
+            <Label class="c-black" text="{{ 'Seconds Played: ' + currentTime }}"></Label>
+
+            <Label class="h1" text="Recorder" />
+            <Button text="Record Audio" tap="{{ record }}" class="btn btn-primary"/>
+            <!-- <Button text="Pause Audio" tap="{{ pause }}" class="btn btn-primary"/> -->
+          </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Page>

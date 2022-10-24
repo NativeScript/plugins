@@ -1,13 +1,7 @@
-# @nativescript/\* plugins
-
-```
-npm run setup
-npm start
-```
-
 - [@nativescript/animated-circle](packages/animated-circle/README.md)
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/apple-sign-in](packages/apple-sign-in/README.md)
+- [@nativescript/audio](packages/audio/README.md)
 - [@nativescript/auto-fit-text](packages/auto-fit-text/README.md)
 - [@nativescript/background-http](packages/background-http/README.md)
 - [@nativescript/biometrics](packages/biometrics/README.md)
