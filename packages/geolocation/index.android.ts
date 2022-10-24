@@ -134,7 +134,16 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 					});
 			} else {
 				ApplicationSettings.setBoolean('askedForWhileUsePermission', true);
-				permissions.requestPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION).then(resolve, reject);
+				permissions.requestPermissions([(<any>android).Manifest.permission.ACCESS_FINE_LOCATION, (<any>android).Manifest.permission.ACCESS_COARSE_LOCATION])
+					.then((value) => {
+						resolve(value);
+					}).catch((err) => {
+						if (!err["android.permission.ACCESS_COARSE_LOCATION"] && !err["android.permission.ACCESS_FINE_LOCATION"]) {
+							reject(err);
+						} else if (!err["android.permission.ACCESS_FINE_LOCATION"] && err["android.permission.ACCESS_COARSE_LOCATION"]) {
+							resolve();
+						}
+					})
 			}
 		}
 	});
@@ -177,7 +186,7 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 	const zonedSuccessCallback = zonedCallback(successCallback);
 	const zonedErrorCallback = zonedCallback(errorCallback);
 
-	if ((!permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION) || !_isGooglePlayServicesAvailable()) && !LocationManager.shouldSkipChecks()) {
+	if ((!permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION) && !permissions.hasPermission((<any>android).Manifest.permission.ACCESS_COARSE_LOCATION) || !_isGooglePlayServicesAvailable()) && !LocationManager.shouldSkipChecks()) {
 		throw new Error('Cannot watch location. Call "enableLocationRequest" first');
 	}
 
@@ -335,7 +344,7 @@ function _permissionIsGiven(always: boolean): boolean {
 
 export function isEnabled(options?: Options): Promise<boolean> {
 	return new Promise(function (resolve, reject) {
-		if (!_isGooglePlayServicesAvailable() || !permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION)) {
+		if (!_isGooglePlayServicesAvailable() || !permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION) && !permissions.hasPermission((<any>android).Manifest.permission.ACCESS_COARSE_LOCATION)) {
 			resolve(false);
 		} else {
 			_isLocationServiceEnabled(options).then(
