@@ -60,6 +60,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		}
 	}
 
+	if (typeof options?.opacity === 'number') {
+		opts.opacity = options.opacity;
+	}
+
 	if (typeof options?.rotation === 'number') {
 		opts.rotation = options.rotation;
 	}
