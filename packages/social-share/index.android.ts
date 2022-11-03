@@ -19,7 +19,7 @@ function useAndroidX() {
 	return global.androidx && global.androidx.appcompat;
 }
 
-export function shareImage(image, subject) {
+export function shareImage(image, subject, caption) {
 	numberOfImagesCreated++;
 
 	const intent = getIntent('image/jpeg');
@@ -45,6 +45,10 @@ export function shareImage(image, subject) {
 	}
 	intent.putExtra(android.content.Intent.EXTRA_STREAM, shareableFileUri);
 
+	if (typeof caption === 'string') {
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, caption);
+	}
+
 	share(intent, subject);
 }
 
@@ -55,7 +59,7 @@ export function shareText(text, subject) {
 	share(intent, subject);
 }
 
-export function sharePdf(pdf: File, subject?: string) {
+export function sharePdf(pdf: File, subject?: string, caption?: string) {
 	const intent = getIntent('application/pdf');
 	const fileName = pdf.name;
 	const newFile = new java.io.File((<android.content.Context>Utils.android.getApplicationContext()).getExternalFilesDir(null), fileName);
@@ -75,6 +79,10 @@ export function sharePdf(pdf: File, subject?: string) {
 	}
 
 	intent.putExtra(android.content.Intent.EXTRA_STREAM, shareableFileUri);
+
+	if (typeof caption === 'string') {
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, caption);
+	}
 
 	share(intent, subject);
 }

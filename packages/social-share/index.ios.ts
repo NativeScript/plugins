@@ -48,16 +48,24 @@ function getRootViewController() {
 	return win.rootViewController;
 }
 
-export function shareImage(image: ImageSource) {
-	share([image.ios]);
+export function shareImage(image: ImageSource, subject?: string, caption?: string) {
+	if (typeof caption === 'string') {
+		share([image.ios, caption]);
+	} else {
+		share([image.ios]);
+	}
 }
 
 export function shareText(text: string) {
 	share([text]);
 }
 
-export function sharePdf(pdf: File) {
-	share([NSURL.fileURLWithPath(pdf.path)]);
+export function sharePdf(pdf: File, subject?: string, caption?: string) {
+	if (typeof caption === 'string') {
+		share([NSURL.fileURLWithPath(pdf.path), caption]);
+	} else {
+		share([NSURL.fileURLWithPath(pdf.path)]);
+	}
 }
 
 export function shareUrl(url, text) {
