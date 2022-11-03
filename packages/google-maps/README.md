@@ -408,6 +408,7 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 |:---------|:-----|:-----------
 | `position` | Coordinate | The position of the marker, specified as `lat` and `lng`
 | `color` | string \| Color | Color of the marker, shades are unavailable.
+| `opacity` | number | Opacity of the marker.
 | `title` | string | A string that's displayed in the info window when the user taps the marker
 | `snippet` | string | Additional text that's displayed below the title
 | `icon` | Image | A image that's displayed in place of the default marker image

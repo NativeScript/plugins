@@ -1116,6 +1116,14 @@ export class Marker extends OverLayBase implements IMarker {
 		}
 	}
 
+	get opacity(): number {
+		return this.native.getAlpha();
+	}
+
+	set opacity(value) {
+		this.native.setAlpha(value);
+	}
+
 	get icon(): any {
 		return this.#icon;
 	}
