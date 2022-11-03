@@ -6,7 +6,7 @@ import { File, ImageSource } from '@nativescript/core';
  * @param {string} [subject] - The subject of the share *** ANDROID ONLY ***
  * @param {string} [caption] - Caption to share alongside the image
  */
-export function shareImage(image?: ImageSource, subject?: string, caption?: stirng);
+export function shareImage(image?: ImageSource, subject?: string, caption?: string);
 
 /**
  * Share text.
@@ -21,7 +21,7 @@ export function shareText(text: string, subject?: string);
  * @param {string} [subject] - The subject of the share *** ANDROID ONLY ***
  * @param {string} [caption] - Caption to share alongside the file
  */
-export function sharePdf(pdf: File, subject?: string, caption?: stirng);
+export function sharePdf(pdf: File, subject?: string, caption?: string);
 
 /**
  * Share URL.
