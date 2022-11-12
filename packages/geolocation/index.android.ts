@@ -105,11 +105,13 @@ function _getLocationRequest(options: Options): any {
 	const priority = com.google.android.gms.location.Priority[options?.desiredAccuracy === CoreTypes.Accuracy.high ? 'PRIORITY_HIGH_ACCURACY' : 'PRIORITY_BALANCED_POWER_ACCURACY'];
 	const updateIntervalMillis = options?.updateTime ?? minTimeUpdate;
 	const minUpdateIntervalMillis = options?.minimumUpdateTime ?? Math.min(updateIntervalMillis, fastestTimeUpdate);
-	const minUpdateDistance = options?.updateDistance ?? 0;
+	const minUpdateDistanceMeters = options?.updateDistance;
 
 	const mLocationRequestBuilder = new com.google.android.gms.location.LocationRequest.Builder(priority, updateIntervalMillis);
 	mLocationRequestBuilder.setMinUpdateIntervalMillis(minUpdateIntervalMillis);
-	mLocationRequestBuilder.setMinUpdateDistanceMeters(minUpdateDistance);
+	if (minUpdateDistanceMeters) {
+		mLocationRequestBuilder.setMinUpdateDistanceMeters(minUpdateDistanceMeters);
+	}
 
 	return mLocationRequestBuilder.build();
 }
