@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/social-share",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "Social sharing widget handling for NativeScript",
 	"main": "index",
 	"typings": "index.d.ts",
