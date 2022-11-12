@@ -1,93 +1,68 @@
-import { Color, encoding } from '@nativescript/core';
-import { GoogleMap } from '@nativescript/google-maps';
-import { IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle } from '.';
-import { GoogleMapsUtilsCommon } from './common';
+import { Coordinate, GoogleMap, ITileProvider, MarkerOptions } from '@nativescript/google-maps';
+import { HeatmapOptions, IClusterManager, IGradient, IHeatmapTileProvider, intoNativeHeatmapGradient } from '.';
+import { intoNativeMarkerOptions } from '../google-maps/utils';
 
-export * from './src/clustering';
-export * from './src/heatmap';
-export * from './src/iconfactory';
-export * from './src/utils';
+export * from './experimental/datalayer';
+export * from './experimental/iconfactory';
+export * from './utils';
 
-let UNIQUE_STYLE_ID = 0;
+export class GoogleMapUtils {
+	constructor(private map: GoogleMap) {}
 
-export class GoogleMapsUtils extends GoogleMapsUtilsCommon {
-	constructor(private map: GoogleMap) {
-		super();
+	addHeatmapLayer(options: HeatmapOptions) {
+		return {} as any; // HeatmapTileProvider.fromNative(this.map.addHeatmapLayer(options));
 	}
-
-	addGeoJsonLayer(geoJson: any) {
-		try {
-			const layer = new GeoJsonLayer(this.map.native, geoJson);
-			layer.addLayerToMap();
-			return layer;
-		} catch (error) {
-			throw new Error(error);
-		}
-	}
+	addClusterManager: (markers: MarkerOptions[]) => ClusterManager;
 }
 
-export class GeometryStyle implements IGeometryStyle {
-	#native: GMUStyle;
+export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider {
+	#native: GMUHeatmapTileLayer;
 
-	constructor(public geometryStyles: Partial<IGeometryStyle>) {
-		Object.assign(this, geometryStyles);
-
-		this.#native = new GMUStyle({
-			styleID: `google-maps-utils-style-${UNIQUE_STYLE_ID++}`,
-			strokeColor: this.strokeColor?.ios ?? null,
-			fillColor: this.fillColor?.ios ?? null,
-			width: this.width ?? 1,
-			scale: this.scale ?? 0,
-			heading: this.heading ?? 0,
-			anchor: CGPointMake(this.anchor?.[0] ?? 0, this.anchor?.[1] ?? 0),
-			iconUrl: this.iconUrl ?? null,
-			title: this.title ?? null,
-			hasFill: !!this.fillColor,
-			hasStroke: !!this.strokeColor,
-		} as any);
+	static fromNative(nativeHeatmap: GMUHeatmapTileLayer) {
+		if (nativeHeatmap instanceof GMUHeatmapTileLayer) {
+			const heatmapTileProvider = new HeatmapTileProvider();
+			heatmapTileProvider.#native = nativeHeatmap;
+			return heatmapTileProvider;
+		}
+		return null;
 	}
-
-	strokeColor: Color;
-	fillColor: Color;
-	width: number;
-	scale: number;
-	heading: number;
-	anchor: [number, number];
-	iconUrl: string;
-	title: string;
 
 	get native() {
 		return this.#native;
 	}
-}
 
-export class GeoJsonLayer implements IGeoJsonLayer {
-	#native: GMUGeometryRenderer;
-	#parser: GMUGeoJSONParser;
-	style: GeometryStyle;
-
-	constructor(private map: GoogleMap, private geometries: any, private styles?: Partial<IGeometryStyle>) {
-		this.style = new GeometryStyle(styles);
-
-		const jsonString = new NSString({ UTF8String: JSON.stringify(geometries) });
-		this.#parser = new GMUGeoJSONParser({ data: jsonString.dataUsingEncoding(encoding.UTF_8) });
-		this.#parser.parse();
-
-		const features = this.#parser.features;
-		for (const feature of features) {
-			feature.style = this.style.native;
-		}
-
-		this.#native = new GMUGeometryRenderer({ map: this.map.native, geometries: features });
+	set opacity(opacity: number) {
+		this.native.opacity = opacity;
 	}
 
-	static fromNative(nativeGeoJsonLayer: GMUGeometryRenderer) {
-		if (nativeGeoJsonLayer instanceof GMUGeometryRenderer) {
-			const geoJsonLayer = new GeoJsonLayer(null, null, null);
-			geoJsonLayer.#native = nativeGeoJsonLayer;
-			return geoJsonLayer;
-		}
-		return null;
+	setGradient(gradients: IGradient[]): void {
+		this.native.gradient = intoNativeHeatmapGradient(gradients);
+	}
+
+	set radius(radius: number) {
+		this.native.radius = radius;
+	}
+
+	set maxIntensity(maxIntensity: number) {
+		this.native.maximumZoomIntensity = maxIntensity;
+	}
+
+	setData(coordinates: Coordinate[]): void {
+		this.native.weightedData = coordinates.map((coordinate) => {
+			return GMUWeightedLatLng.alloc().initWithCoordinateIntensity(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng), 1.0);
+		}) as any;
+	}
+
+	getTile(x: number, y: number, z: number): UIImage {
+		return this.native.tileForXYZoom(x, y, z);
+	}
+}
+
+export class ClusterItem {
+	#native: GMSMarker;
+
+	constructor(options: MarkerOptions) {
+		this.#native = intoNativeMarkerOptions(options);
 	}
 
 	get native() {
@@ -97,36 +72,29 @@ export class GeoJsonLayer implements IGeoJsonLayer {
 	get ios() {
 		return this.native;
 	}
+}
 
-	get features() {
-		// const features = [];
-		// for (const feature of this.#parser.features) {
-		// 	const f = feature as GMUGeometryContainer;
+export class ClusterRenderer {
+	#native: GMUClusterRenderer;
 
-		// 	GeoJsonFeature.fromNative(f);
-		// 	f.geometry;
-		// 	f.style;
-		// }
-		return null;
+	constructor(map: GoogleMap, clusterManager: ClusterManager) {
+		const iconGenerator = GMUDefaultClusterIconGenerator.alloc().init();
+		this.#native = GMUDefaultClusterRenderer.alloc().initWithMapViewClusterIconGenerator(map.native, iconGenerator);
 	}
 
-	addLayerToMap() {
-		this.native.render();
-	}
-
-	removeLayerFromMap() {
-		this.native.clear();
+	get native() {
+		return this.#native;
 	}
 }
 
-export class GeoJsonFeature implements IFeature {
-	#native: GMUGeometryCollection;
+export class ClusterManager implements Partial<IClusterManager> {
+	#native: GMUClusterManager;
 
-	static fromNative(nativeGeometryContainer: GMUGeometryCollection) {
-		if (nativeGeometryContainer instanceof GMUGeometryCollection) {
-			const geoJsonFeature = new GeoJsonFeature();
-			geoJsonFeature.#native = nativeGeometryContainer;
-			return geoJsonFeature;
+	static fromNative(nativeClusterManager: GMUClusterManager) {
+		if (nativeClusterManager instanceof GMUClusterManager) {
+			const clusterManager = new ClusterManager();
+			clusterManager.#native = nativeClusterManager;
+			return clusterManager;
 		}
 		return null;
 	}
@@ -139,51 +107,33 @@ export class GeoJsonFeature implements IFeature {
 		return this.#native;
 	}
 
-	get geometry() {
-		const geometries = [];
-
-		for (const geometry of this.native.geometries) {
-			geometries.push(Geometry.fromNative(geometry));
-		}
-
-		return geometries;
+	setRenderer(renderer) {
+		// TODO;
 	}
 
-	get properties() {
-		return;
+	addItem(clusterItem: ClusterItem) {
+		this.native.addItem(clusterItem.native);
 	}
 
-	get id() {
-		return this.native.description;
-	}
-}
-
-export class Geometry implements IGeometry {
-	#native: GMUGeometry;
-
-	static fromNative(nativeGeometry: GMUGeometry) {
-		if (nativeGeometry) {
-			console.log(nativeGeometry.class().name);
-			const geometry = new Geometry();
-			geometry.#native = nativeGeometry;
-			return geometry;
-		}
-		return null;
+	addItems(clusterItems: ClusterItem[]) {
+		this.native.addItems(clusterItems.map((item) => item.native));
 	}
 
-	get native() {
-		return this.#native;
+	removeItem(clusterItem: ClusterItem) {
+		this.native.removeItem(clusterItem.native);
 	}
 
-	get ios() {
-		return this.#native;
+	removeItems(clusterItems: ClusterItem[]) {
+		clusterItems.forEach((item) => {
+			this.native.removeItem(item.native);
+		});
 	}
 
-	get type() {
-		return this.#native.type;
+	clearItems() {
+		this.native.clearItems();
 	}
 
-	get geometries() {
-		return this.native;
+	cluster() {
+		this.native.cluster();
 	}
 }

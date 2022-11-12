@@ -1,82 +1,84 @@
 import { Color } from '@nativescript/core';
 import { GoogleMap } from '@nativescript/google-maps';
-import { GoogleMapsUtilsCommon } from './common';
 
-export * from './src/clustering';
-export * from './src/heatmap';
-export * from './src/iconfactory';
-export * from './src/utils';
+export * from './experimental/datalayer';
+export * from './experimental/iconfactory';
+export * from './utils';
 
-export declare class GoogleMapsUtils extends GoogleMapsUtilsCommon {}
+export class GoogleMapUtils {
+	constructor(map: GoogleMap);
 
-export interface IGeoJsonLayer {
-	style: GeometryStyle;
-	addLayerToMap: () => void;
-	removeLayerFromMap: () => void;
+	addHeatmapLayer(options: HeatmapOptions): HeatmapTileProvider;
+	addClusterManager(markers: MarkerOptions[]): ClusterManager;
 }
 
-export class GeoJsonLayer implements IGeoJsonLayer {
-	ios: any;
-	android: any;
+export interface IGradient {
+	color: Color | string;
+	stop: number;
+}
+
+export interface HeatmapOptions {
+	coordinates: Coordinate[];
+	opacity?: number;
+	radius?: number;
+	maxIntensity?: number;
+	gradient?: IGradient[];
+}
+
+export interface IHeatmapTileProvider {
+	setData: (coordinates: Coordinate[]) => void;
+	setGradient: (gradient: IGradient[]) => void;
+	opacity: number;
+	radius: number;
+	maxIntensity: number;
+}
+
+export class HeatmapTileProvider implements IHeatmapTileProvider {
+	static fromNative: (nativeHeatmap: any) => HeatmapTileProvider;
+	setData: (coordinates: Coordinate[]) => void;
+	setGradient: (gradient: IGradient[]) => void;
+	opacity: number;
+	radius: number;
+	maxIntensity: number;
 	native: any;
-	style: GeometryStyle;
-	features: GeoJsonFeature[];
-	constructor(map: GoogleMap, geojson: any, styles?: Partial<IGeometryStyle>);
-	addLayerToMap: () => void;
-	removeLayerFromMap: () => void;
+	android: any /*com.google.maps.android.heatmaps.HeatmapTileProvider*/;
+	ios: any /*GMUHeatmapTileLayer*/;
 }
 
-export interface IGeometryStyle {
-	/**
-	 * The color for the stroke of a LineString or Polygon.
-	 */
-	strokeColor: Color;
-
-	/**
-	 * The color for the fill of a Polygon.
-	 */
-	fillColor: Color;
-
-	/**
-	 * The width of a LineString
-	 */
-	width: number;
-
-	/**
-	 * The scale that a Point's icon should be rendered at.
-	 */
-	scale: number;
-
-	/**
-	 * The direction, in degrees, that a Point's icon should be rendered at.
-	 */
-	heading: number;
-
-	/**
-	 * The position within an icon that is anchored to the Point.
-	 */
-	anchor: [number, number];
-
-	/**
-	 * Icon Url
-	 */
-	iconUrl: string | null;
-
-	/**
-	 * The title of the point
-	 */
-	title: string | null;
-	// hasFill: boolean;
-	// hasStroke: boolean;
+export class ClusterItem {
+	constructor(options: MarkerOptions);
 }
 
-export interface IGeometry {
-	type: string;
-	geometries: any;
+export class ClusterRenderer {
+	constructor(private map: GoogleMap, private manager: ClusterManager);
+	android?: any;
+	ios?: any;
+	native?: any;
 }
 
-export interface IFeature {
-	geometry: any;
-	properties: any;
-	id: any;
+export interface IClusterManager {
+	addItems: (clusterItems: ClusterItem[]) => void;
+	addItem: (clusterItem: ClusterItem) => void;
+	removeItems: (clusterItems: ClusterItem[]) => void;
+	removeItem: (clusterItem: ClusterItem) => void;
+	clearItems: () => void;
+	cluster: () => void;
+	setRenderer: (clusterRenderer: any) => void;
+	android?: any;
+	ios?: any;
+	native?: any;
+}
+
+export class ClusterManager implements Partial<IClusterManager> {
+	static fromNative: (nativeClusterManager) => ClusterManager;
+	addItems: (clusterItems: ClusterItem[]) => void;
+	addItem: (clusterItem: ClusterItem) => void;
+	removeItems: (clusterItems: ClusterItem[]) => void;
+	removeItem: (clusterItem: ClusterItem) => void;
+	clearItems: () => void;
+	cluster: () => void;
+	setRenderer: (clusterRenderer: ClusterRenderer) => void;
+	android?: any;
+	ios?: any;
+	native?: any;
 }

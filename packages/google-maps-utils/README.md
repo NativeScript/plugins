@@ -6,7 +6,42 @@ ns plugin add @nativescript/google-maps-utils
 *Requires google maps plugin [@nativescript/google-maps](packages/google-maps/README.md)* 
 
 ## Usage
+Initialize the GoogleMapUtils class on the GoogleMap load event
+```javascript
+onMapReady(args: MapReadyEvent) {
+	const map = args.map;
+	const googleMapsUtils = new GoogleMapUtils(map);
+}
+```
 
+
+### HeatMaps
+```javascript
+import { GoogleMapsUtils, HeatmapTileProvider, HeatmapOptions } from '@nativescript/google-maps-utils';
+import { GoogleMap, Coordinate } from '@nativescript/google-maps';
+
+addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
+	// Create a new heat map tile provider
+	const heatmapProvider: HeatmapTileProvider = googleMapsUtils.addHeatmapLayer(heatmapOptions);
+	// Pass tile provider to Google Maps 
+	const heatmapOverlay = map.addTileOverlay({
+		tileProvider: heatmapProvider,
+	});
+}
+```
+
+### Clustering
+```javascript
+import { ClusterManager } from '@nativescript/google-maps-utils';
+import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
+
+addClusteredMarkers(markers: MarkerOptions[]) {
+	const clusterManager: ClusterManager = googleMapsUtils.addClusterManager(markers);
+}
+```
+
+## Experimental Features
+Features that are not yet fully implemented or likely to change.
 ### GeoJson Layers
 
 Currently only supports GeoJson Objects.
@@ -24,46 +59,7 @@ onMapReady(args: MapReadyEvent) {
 }
 ```
 
-### HeatMaps
-```javascript
-import { HeatmapTileProvider } from '@nativescript/google-maps-utils';
-import { GoogleMap, Coordinate } from '@nativescript/google-maps';
-
-addHeatmapOverlay(map: GoogleMap, positionSet: Coordinate[]) {
-	// Create a new heat map tile provider
-	this.heatmapProvider = new HeatmapTileProvider(positionSet);
-	// Pass tile provider to Google Maps 
-	this.heatmapOverlay = this.map.addTileOverlay({
-		tileProvider: this.heatmapProvider,
-	});
-}
-```
-
-### Clustering
-```javascript
-import { HeatmapTileProvider } from '@nativescript/google-maps-utils';
-import { GoogleMap, Coordinate } from '@nativescript/google-maps';
-
-addClusteredMarkers(map: GoogleMap, positions: Coordinate[]) {
-	const clusterManager = new ClusterManager(map);
-
-	// building marker list;
-	const clusterSet: ClusterItem[] = positions.map((position) => {
-		// creating new markers to cluster
-		return new ClusterItem({
-			position: position,
-			title: `Marker ${i}`,
-			snippet: `This is marker ${i}!!`
-		})
-	});
-
-	//adding markers to cluster manager
-	clusterManager.addItems(clusterSet);
-
-	//clustering!
-	clusterManager.cluster();
-}
-```
+### Custom Markers
 
 ## License
 

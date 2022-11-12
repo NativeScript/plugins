@@ -63,9 +63,9 @@ export class HomeComponent {
 		{
 			name: 'google-maps',
 		},
-    {
-		  name: 'google-maps-utils'
-	  },
+		{
+			name: 'google-maps-utils',
+		},
 		{
 			name: 'google-signin',
 		},

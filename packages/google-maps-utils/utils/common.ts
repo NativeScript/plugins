@@ -1,5 +1,5 @@
 import { Color } from '@nativescript/core';
-import { IGradient } from '../heatmap';
+import { IGradient } from '..';
 
 export function intoNativeColor(color: Color | string) {
 	if (color instanceof Color) {
