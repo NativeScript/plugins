@@ -1,5 +1,5 @@
 import { Coordinate, GoogleMap, ITileProvider, MarkerOptions } from '@nativescript/google-maps';
-import { HeatmapOptions, IClusterManager, IGradient, IHeatmapTileProvider, intoNativeHeatmapGradient } from '.';
+import { HeatmapOptions, IClusterManager, IGradient, IHeatmapTileProvider, intoNativeClusterManager, intoNativeHeatmapGradient, intoNativeHeatmapProvider } from '.';
 import { intoNativeMarkerOptions } from '../google-maps/utils';
 
 export * from './experimental/datalayer';
@@ -7,12 +7,21 @@ export * from './experimental/iconfactory';
 export * from './utils';
 
 export class GoogleMapUtils {
-	constructor(private map: GoogleMap) {}
+	constructor(private _map: GoogleMap) {}
 
 	addHeatmapLayer(options: HeatmapOptions) {
-		return {} as any; // HeatmapTileProvider.fromNative(this.map.addHeatmapLayer(options));
+		return HeatmapTileProvider.fromNative(intoNativeHeatmapProvider(options));
 	}
-	addClusterManager: (markers: MarkerOptions[]) => ClusterManager;
+	addClusterManager(markers: MarkerOptions[]) {
+		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(this._map));
+
+		const clusters = markers.map((marker) => new ClusterItem(marker));
+		clusterManager.addItems(clusters);
+
+		clusterManager.cluster();
+
+		return clusterManager;
+	}
 }
 
 export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider {

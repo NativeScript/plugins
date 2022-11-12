@@ -1,11 +1,11 @@
 import { GoogleMap } from '@nativescript/google-maps';
 import { ClusterRenderer, HeatmapOptions, IGradient } from '..';
+import { intoNativeHeatmapGradient } from './common';
 
 export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 	if (!options.coordinates) {
 		return;
 	}
-
 	const heatmap = GMUHeatmapTileLayer.alloc().init();
 
 	const defaultGradient: IGradient[] = [
@@ -13,10 +13,12 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 		{ color: 'red', stop: 0.15 },
 	];
 
-	this.setGradient(options?.gradient ?? defaultGradient);
-	this.opacity = options?.opacity ?? 0.7;
-	this.radius = options?.radius ?? 80;
-	this.setData(options.coordinates);
+	heatmap.gradient = intoNativeHeatmapGradient(options?.gradient ?? defaultGradient);
+	heatmap.opacity = options?.opacity ?? 0.7;
+	heatmap.radius = options?.radius ?? 80;
+	heatmap.weightedData = options?.coordinates.map((coordinate) => {
+		return GMUWeightedLatLng.alloc().initWithCoordinateIntensity(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng), 1.0);
+	}) as any;
 
 	return heatmap;
 }
