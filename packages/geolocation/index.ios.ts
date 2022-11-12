@@ -1,4 +1,4 @@
-import { Application, Enums, UnhandledErrorEventData, Device, ApplicationSettings } from '@nativescript/core';
+import { Application, CoreTypes, UnhandledErrorEventData, Device, ApplicationSettings } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, minRangeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 export * from './common';
@@ -200,7 +200,7 @@ export function getCurrentLocation(options?: Options): Promise<Location> {
 							return;
 						}
 
-						if (options.desiredAccuracy !== Enums.Accuracy.any && !initLocation) {
+						if (options.desiredAccuracy !== CoreTypes.Accuracy.any && !initLocation) {
 							// regardless of desired accuracy ios returns first location as quick as possible even if not as accurate as requested
 							initLocation = location;
 							return;
@@ -401,7 +401,7 @@ export class LocationMonitor {
 	static createiOSLocationManager(locListener: any, options?: Options): CLLocationManager {
 		const iosLocManager = new CLLocationManager();
 		iosLocManager.delegate = locListener;
-		iosLocManager.desiredAccuracy = options?.desiredAccuracy ?? Enums.Accuracy.high;
+		iosLocManager.desiredAccuracy = options?.desiredAccuracy ?? CoreTypes.Accuracy.high;
 		iosLocManager.distanceFilter = options?.updateDistance ?? minRangeUpdate;
 		locationManagers[locListener.id] = iosLocManager;
 		locationListeners[locListener.id] = locListener;
@@ -422,7 +422,7 @@ function getIOSLocationManager(locListener: any, options?: Options): CLLocationM
 		const manager = new iosLocationManager();
 
 		manager.delegate = locListener;
-		manager.desiredAccuracy = options?.desiredAccuracy ?? Enums.Accuracy.high;
+		manager.desiredAccuracy = options?.desiredAccuracy ?? CoreTypes.Accuracy.high;
 		manager.distanceFilter = options?.updateDistance ?? minRangeUpdate;
 
 		locationManagers[locListener.id] = manager;

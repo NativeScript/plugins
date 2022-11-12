@@ -11,6 +11,6 @@ android {
 }
 
 dependencies {
-	def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion : "11.4.0"
+	def googlePlayServicesVersion = project.hasProperty('googlePlayServicesVersion') ? project.googlePlayServicesVersion : "+"
 	implementation "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
 }
