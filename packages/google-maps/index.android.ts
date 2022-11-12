@@ -365,12 +365,15 @@ export class MapView extends MapViewBase {
 						zoom: owner.zoom,
 					});
 				}
-
-				ref.get?.().notify?.({
-					eventName: 'ready',
-					object: ref.get?.(),
-					map: GoogleMap.fromNative(map),
-				});
+				map.setOnMapLoadedCallback(new com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback({
+					onMapLoaded() {
+						ref.get?.().notify?.({
+							eventName: 'ready',
+							object: ref.get?.(),
+							map: GoogleMap.fromNative(map),
+						});
+					}
+				  }))
 			},
 		});
 		const container = new android.widget.LinearLayout(this._context);
