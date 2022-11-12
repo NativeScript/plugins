@@ -107,9 +107,11 @@ function _getLocationRequest(options: Options): any {
 	const minUpdateIntervalMillis = options?.minimumUpdateTime ?? Math.min(updateIntervalMillis, fastestTimeUpdate);
 	const minUpdateDistance = options?.updateDistance ?? 0;
 
-	const mLocationRequest = new com.google.android.gms.location.LocationRequest.Builder(priority, updateIntervalMillis).setMinUpdateIntervalMillis(minUpdateIntervalMillis).setMinUpdateDistanceMeters(minUpdateDistance).build();
+	const mLocationRequestBuilder = new com.google.android.gms.location.LocationRequest.Builder(priority, updateIntervalMillis);
+	mLocationRequestBuilder.setMinUpdateIntervalMillis(minUpdateIntervalMillis);
+	mLocationRequestBuilder.setMinUpdateDistanceMeters(minUpdateDistance);
 
-	return mLocationRequest;
+	return mLocationRequestBuilder.build();
 }
 
 function _requestLocationPermissions(always: boolean): Promise<void> {
