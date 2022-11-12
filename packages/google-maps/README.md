@@ -411,7 +411,7 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 | `opacity` | number | Opacity of the marker.
 | `title` | string | A string that's displayed in the info window when the user taps the marker
 | `snippet` | string | Additional text that's displayed below the title
-| `icon` | Image | A image that's displayed in place of the default marker image
+| `icon` | ImageSource \| UIImage \| Bitmap | A image that's displayed in place of the default marker image
 | `draggable` | boolean | Set to `true` if you want to allow the user to move the marker. Defaults to `false`
 | `flat` | boolean | By default, markers are oriented against the screen, and will not rotate or tilt with the camera. Flat markers are oriented against the surface of the earth, and will rotate and tilt with the camera
 | `rotation` | boolean | The orientation of the marker, specified in degrees clockwise
