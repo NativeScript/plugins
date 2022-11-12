@@ -1,4 +1,4 @@
-import { Enums, Application, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings } from '@nativescript/core';
+import { Application, CoreTypes, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 import * as permissions from 'nativescript-permissions';
@@ -102,19 +102,12 @@ function _getLocationCallback(watchId, onLocation): any {
 }
 
 function _getLocationRequest(options: Options): any {
-	const mLocationRequest = new com.google.android.gms.location.LocationRequest();
-	const updateTime = options?.updateTime ?? minTimeUpdate;
-	mLocationRequest.setInterval(updateTime);
-	const minUpdateTime = options?.minimumUpdateTime ?? Math.min(updateTime, fastestTimeUpdate);
-	mLocationRequest.setFastestInterval(minUpdateTime);
-	if (options?.updateDistance) {
-		mLocationRequest.setSmallestDisplacement(options.updateDistance);
-	}
-	if (options?.desiredAccuracy === Enums.Accuracy.high) {
-		mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY);
-	} else {
-		mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-	}
+	const priority = com.google.android.gms.location.Priority[options?.desiredAccuracy === CoreTypes.Accuracy.high ? 'PRIORITY_HIGH_ACCURACY' : 'PRIORITY_BALANCED_POWER_ACCURACY'];
+	const updateIntervalMillis = options?.updateTime ?? minTimeUpdate;
+	const minUpdateIntervalMillis = options?.minimumUpdateTime ?? Math.min(updateIntervalMillis, fastestTimeUpdate);
+	const minUpdateDistance = options?.updateDistance ?? 0;
+
+	const mLocationRequest = new com.google.android.gms.location.LocationRequest.Builder(priority, updateIntervalMillis).setMinUpdateIntervalMillis(minUpdateIntervalMillis).setMinUpdateDistanceMeters(minUpdateDistance).build();
 
 	return mLocationRequest;
 }
@@ -199,7 +192,7 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 
 export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType) {
 	const zonedErrorCallback = zonedCallback(errorCallback);
-	zonedErrorCallback(new Error("watchPermissionStatus() is not available on Android"));
+	zonedErrorCallback(new Error('watchPermissionStatus() is not available on Android'));
 	return null;
 }
 
@@ -292,7 +285,7 @@ function _isLocationServiceEnabled(options?: Options): Promise<boolean> {
 			return;
 		}
 
-		options = options || { desiredAccuracy: Enums.Accuracy.high, updateTime: 0, updateDistance: 0, maximumAge: 0, timeout: 0 };
+		options = options || { desiredAccuracy: CoreTypes.Accuracy.high, updateTime: 0, updateDistance: 0, maximumAge: 0, timeout: 0 };
 		const locationRequest = _getLocationRequest(options);
 		const locationSettingsBuilder = new com.google.android.gms.location.LocationSettingsRequest.Builder();
 		locationSettingsBuilder.addLocationRequest(locationRequest);
