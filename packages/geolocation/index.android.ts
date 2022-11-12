@@ -1,4 +1,4 @@
-import { Application, CoreTypes, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings } from '@nativescript/core';
+import { Application, CoreTypes, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings, Utils } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 import * as permissions from 'nativescript-permissions';
@@ -16,7 +16,7 @@ let attachedForErrorHandling = false;
 
 function _ensureLocationClient() {
 	// Wrapped in a function as we should not access java object there because of the snapshots.
-	fusedLocationClient = fusedLocationClient || com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(Application.android.context);
+	fusedLocationClient = fusedLocationClient || com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(Utils.android.getApplicationContext());
 }
 
 Application.android.on(AndroidApplication.activityResultEvent, function (args: any) {
@@ -37,7 +37,7 @@ function isAirplaneModeOn(): boolean {
 
 function isProviderEnabled(provider: string): boolean {
 	try {
-		const locationManager: android.location.LocationManager = (<android.content.Context>Application.android.context).getSystemService(android.content.Context.LOCATION_SERVICE);
+		const locationManager: android.location.LocationManager = (<android.content.Context>Utils.android.getApplicationContext()).getSystemService(android.content.Context.LOCATION_SERVICE);
 		return locationManager.isProviderEnabled(provider);
 	} catch (ex) {
 		return false;
@@ -270,7 +270,7 @@ function _isGooglePlayServicesAvailable(): boolean {
 
 	let isLocationServiceEnabled = true;
 	const googleApiAvailability = com.google.android.gms.common.GoogleApiAvailability.getInstance();
-	const resultCode = googleApiAvailability.isGooglePlayServicesAvailable(Application.android.context);
+	const resultCode = googleApiAvailability.isGooglePlayServicesAvailable(Utils.android.getApplicationContext());
 	if (resultCode !== com.google.android.gms.common.ConnectionResult.SUCCESS) {
 		isLocationServiceEnabled = false;
 	}
@@ -290,13 +290,13 @@ function _isLocationServiceEnabled(options?: Options): Promise<boolean> {
 		const locationSettingsBuilder = new com.google.android.gms.location.LocationSettingsRequest.Builder();
 		locationSettingsBuilder.addLocationRequest(locationRequest);
 		locationSettingsBuilder.setAlwaysShow(true);
-		const locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Application.android.context);
+		const locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Utils.android.getApplicationContext());
 		locationSettingsClient.checkLocationSettings(locationSettingsBuilder.build()).addOnSuccessListener(_getTaskSuccessListener(resolve)).addOnFailureListener(_getTaskFailListener(reject));
 	});
 }
 
 function _goToPhoneSettings() {
-	const intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts('package', Application.android.context.getPackageName(), null));
+	const intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts('package', Utils.android.getApplicationContext().getPackageName(), null));
 	const activity = Application.android.foregroundActivity || Application.android.startActivity;
 	intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
 	activity.startActivity(intent);
