@@ -1,4 +1,5 @@
 import { File, Frame, ImageSource, Utils } from '@nativescript/core';
+import type { ShareImageOptions } from '.';
 
 function share(thingsToShare) {
 	const activityController = UIActivityViewController.alloc().initWithActivityItemsApplicationActivities(thingsToShare, null);
@@ -48,7 +49,10 @@ function getRootViewController() {
 	return win.rootViewController;
 }
 
-export function shareImage(image: ImageSource, subject?: string, caption?: string) {
+export function shareImage(image: ImageSource, subjectOrOptions?: string | ShareImageOptions, caption?: string) {
+	if (subjectOrOptions && typeof subjectOrOptions === 'object') {
+		caption = subjectOrOptions.caption;
+	}
 	if (typeof caption === 'string') {
 		share([image.ios, caption]);
 	} else {
