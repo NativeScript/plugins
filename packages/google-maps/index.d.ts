@@ -290,7 +290,7 @@ export interface IMarker {
 	position: Coordinate;
 	title: string;
 	snippet: string;
-	icon: any /* Image, ImageSource, UIImage & Bitmap */;
+	icon: any /* ImageSource, UIImage & Bitmap */;
 	color: Color | string;
 	opacity: number;
 	rotation: number;
