@@ -22,7 +22,7 @@ import { GoogleMap, Coordinate } from '@nativescript/google-maps';
 
 addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
 	// Create a new heat map tile provider
-	const heatmapProvider: HeatmapTileProvider = googleMapsUtils.addHeatmapLayer(heatmapOptions);
+	const heatmapProvider: HeatmapTileProvider = googleMapsUtils.heatmapProvider(heatmapOptions);
 	// Pass tile provider to Google Maps 
 	const heatmapOverlay = map.addTileOverlay({
 		tileProvider: heatmapProvider,
@@ -36,7 +36,7 @@ import { ClusterManager } from '@nativescript/google-maps-utils';
 import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
 
 addClusteredMarkers(markers: MarkerOptions[]) {
-	const clusterManager: ClusterManager = googleMapsUtils.addClusterManager(markers);
+	const clusterManager: ClusterManager = googleMapsUtils.clusterManager(markers);
 }
 ```
 

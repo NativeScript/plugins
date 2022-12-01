@@ -8,8 +8,8 @@ export * from './utils';
 export class GoogleMapUtils {
 	constructor(map: GoogleMap);
 
-	addHeatmapLayer(options: HeatmapOptions): HeatmapTileProvider;
-	addClusterManager(markers: MarkerOptions[]): ClusterManager;
+	heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
+	clusterManager(markers: MarkerOptions[]): ClusterManager;
 }
 
 export interface IGradient {

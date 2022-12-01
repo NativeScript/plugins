@@ -11,11 +11,11 @@ export * from './utils';
 export class GoogleMapUtils {
 	constructor(private _map: GoogleMap) {}
 
-	addHeatmapLayer(options: HeatmapOptions) {
+	heatmapProvider(options: HeatmapOptions) {
 		return HeatmapTileProvider.fromNative(intoNativeHeatmapProvider(options));
 	}
 
-	addClusterManager(markers: MarkerOptions[]) {
+	clusterManager(markers: MarkerOptions[]) {
 		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(this._map));
 		const renderer = new ClusterRenderer(this._map, clusterManager);
 		clusterManager.setRenderer(renderer);
