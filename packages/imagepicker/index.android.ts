@@ -1,4 +1,4 @@
-import { ImageAsset, Application, AndroidApplication } from '@nativescript/core';
+import { ImageAsset, Application, AndroidApplication, Utils } from '@nativescript/core';
 import * as permissions from 'nativescript-permissions';
 
 import { ImagePickerMediaType, Options } from './common';
@@ -171,7 +171,21 @@ export class ImagePicker {
 	}
 
 	authorize(): Promise<void> {
-		if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
+		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
+			console.log('In api 33');
+			const requested = [];
+			if (this.mediaType === 'image/*') {
+				requested.push((<any>android).Manifest.permission.READ_MEDIA_IMAGES);
+			} else if (this.mediaType === 'video/*') {
+				requested.push((<any>android).Manifest.permission.READ_MEDIA_VIDEO);
+			} else {
+				requested.push((<any>android).Manifest.permission.READ_MEDIA_IMAGES);
+				requested.push((<any>android).Manifest.permission.READ_MEDIA_VIDEO);
+			}
+
+			return permissions.requestPermission(requested);
+		} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
+			console.log('in api 23');
 			return permissions.requestPermission([(<any>android).Manifest.permission.READ_EXTERNAL_STORAGE]);
 		} else {
 			return Promise.resolve();
