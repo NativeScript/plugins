@@ -172,7 +172,6 @@ export class ImagePicker {
 
 	authorize(): Promise<void> {
 		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
-			console.log('In api 33');
 			const requested = [];
 			if (this.mediaType === 'image/*') {
 				requested.push((<any>android).Manifest.permission.READ_MEDIA_IMAGES);
@@ -185,7 +184,6 @@ export class ImagePicker {
 
 			return permissions.requestPermission(requested);
 		} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
-			console.log('in api 23');
 			return permissions.requestPermission([(<any>android).Manifest.permission.READ_EXTERNAL_STORAGE]);
 		} else {
 			return Promise.resolve();
