@@ -24,6 +24,7 @@ NativeScript binding for the Google Maps Android & iOS API.
 	* [Native Map Object](#native-map-object)
 	* [Camera Position](#camera-position)
 		* [Controlling the camera](#controlling-the-camera)
+	* [Projection](#projection)
 	* [UI Settings](#ui-settings)
 	* [Map Type](#map-type)
 	* [Map Styles](#map-styles)
@@ -200,8 +201,8 @@ The following events are available:
 `infoWindowTap` | Fires when a marker's info window is tapped
 `infoWindowLongPress` | Fires when a marker's info window is long-pressed
 `infoWindowClose` | Fires when a marker's info window is closed
-`markerInfoContents` | 
-`markerInfoWindow` | 
+`markerInfoContents` | If this method returns a view, it will be placed within the default info window frame.
+`markerInfoWindow` | Called when a marker is about to become selected, and provides an optional custom info window to use for that marker if this method returns a view.
 `activeBuilding` | Fires when a building is focused on
 `activeLevel` | Fires when the level of the focused building changes
 
@@ -221,16 +222,16 @@ function onReady(event: MapReadyEvent) {
 ### Properties
 | Property       | Type |Description
 :--------------- |:-----|:---------------------------------
-`mapStyle` | Style[] | See [Map Styles](#map-styles)
-`mapType` | MapType | See [Map Type](#map-type)
 `buildingsEnabled` | boolean | Enables Buildings
 `maxZoomLevel` | number | Maximum level of zoom
 `minZoomLevel` | number | Minimum level of zoom
 `myLocationEnabled` | boolean | Enables "My Location"
 `trafficEnabled` | boolean | Enables traffic
-`uiSettings` | IUISettings | See [UI Settings](#ui-settings)
 `cameraPosition` | CameraPosition | See [Camera Position](#camera-position)
 `projection` | Projection | See [Projection](#projection)
+`uiSettings` | IUISettings | See [UI Settings](#ui-settings)
+`mapStyle` | Style[] | See [Map Styles](#map-styles)
+`mapType` | MapType | See [Map Type](#map-type)
 `native` | any | See [Native Map Object](#native-map-object)
 
 ### Functions
@@ -238,17 +239,17 @@ function onReady(event: MapReadyEvent) {
 :--------------- |:---------------------------------
 [addMarker](#adding-markers)(marker: [MarkerOptions](#marker-options)): [Marker](#markers) | Adds a [marker](#markers) to the map
 [removeMarker](#removing-markers)(marker: [Marker](#markers)) | Removes a marker from the map
-addTileOverlay(options: TileOverlayOptions): TileOverlay | Adds a tile overlay to the map
-removeTileOverlay(overlay: TileOverlay) | Removes a tile overlay from the map
+[addTileOverlay](#adding-tile-overlays)(options: [TileOverlayOptions](#tileoverlay-options)): [TileOverlay](#tile-overlays) | Adds a tile overlay to the map
+[removeTileOverlay](#removing-tile-overlays)(overlay: [TileOverlay](#tile-overlays)) | Removes a tile overlay from the map
 [addCircle](#adding-circles)(circle: [CircleOptions](#circle-options)): [Circle](#circle) | Adds a circle to the map
 [removeCircle](#removing-circles)(circle: [Circle](#circle)) | Removes a circle from the map
-addGroundOverlay(options: GroundOverlayOptions): GroundOverlay | Adds a ground overlay to the map
-removeGroundOverlay(groundOverlay: GroundOverlay) | Removes a ground overlay from the map
+[addGroundOverlay](#adding-ground-overlays)(options: [GroundOverlayOptions](#groundoverlay-options)): [GroundOverlay](#ground-overlays) | Adds a ground overlay to the map
+[removeGroundOverlay](#removing-ground-overlays)(groundOverlay: [GroundOverlay](#ground-overlays)) | Removes a ground overlay from the map
 [addPolygon](#adding-polygons)(options: [PolygonOptions](#polygon-options)): [Polygon](#polygons) | Adds a polygon to the map
 [removePolygon](#removing-polygons)(polygon: [Polygon](#polygons)) | Removes a polygon from the map
 [addPolyline](#adding-polylines)(options: [PolylineOptions](#polyline-options)): [Polyline](#polyline) | Adds a polyline to the map
-[removePolyline](#removing-polylines)(polyline: [Polyline]()#polyline) | Removes a polyline from the map
-[animateCamera](#controlling-the-camera)(update: CameraUpdate) | Animates camera to a new position
+[removePolyline](#removing-polylines)(polyline: [Polyline](#polyline)) | Removes a polyline from the map
+[animateCamera](#controlling-the-camera)(update: [CameraUpdate](#controlling-the-camera)) | Animates camera to a new position
 snapshot(): Promise\<ImageSource\> | Returns a platform specific image of the maps current viewport
 clear() | Clears all objects added to the map
 
@@ -273,10 +274,10 @@ The maps current camera position can be read from the `GoogleMap`s object `camer
 #### Controlling the camera
 To programatically update the camera position you can call `animateCamera` from the `GoogleMap` object, like so:
 ```ts
-import { CameraPosition } from '@nativescript/google-maps';
+import { CameraUpdate } from '@nativescript/google-maps';
 
 googleMap.animateCamera(
-	CameraPosition.fromCoordinates({
+	CameraUpdate.fromCoordinates({
 			lat: -32.1234,
 			lng: 125.1234
 		},
@@ -284,7 +285,7 @@ googleMap.animateCamera(
 	)
 );
 ```
-`CameraPosition` provides multiple methods to create a target CameraUpdate position. 
+`CameraUpdate` provides multiple methods to create a target CameraPosition. 
 
 | Method | Description
 |:-------|:-----------
@@ -298,6 +299,14 @@ googleMap.animateCamera(
 | zoomBy(amount: number, point?: { x: number; y: number }) | Returns a CameraUpdate that has zoomed and panned
 | scrollBy(x: number, y: number) | Returns a panned CameraUpdate
 
+### Projection 
+A projection is used to translate between on screen location and geographic coordinates on the surface of the Earth.
+
+| Method | Description
+|:-------|:-----------
+| fromScreenLocation(point: { x: number; y: number }) | Returns the geographic location that corresponds to a screen location.
+| getVisibleRegion() | Gets a projection of the viewing frustum for converting between screen coordinates and geo-latitude/longitude coordinates.
+| toScreenLocation(coordinate: Coordinate) | Returns a screen location that corresponds to a geographical coordinate.
 
 ### UI Settings
 
@@ -399,9 +408,10 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 |:---------|:-----|:-----------
 | `position` | Coordinate | The position of the marker, specified as `lat` and `lng`
 | `color` | string \| Color | Color of the marker, shades are unavailable.
+| `opacity` | number | Opacity of the marker.
 | `title` | string | A string that's displayed in the info window when the user taps the marker
 | `snippet` | string | Additional text that's displayed below the title
-| `icon` | Image | A image that's displayed in place of the default marker image
+| `icon` | ImageSource \| UIImage \| Bitmap | A image that's displayed in place of the default marker image
 | `draggable` | boolean | Set to `true` if you want to allow the user to move the marker. Defaults to `false`
 | `flat` | boolean | By default, markers are oriented against the screen, and will not rotate or tilt with the camera. Flat markers are oriented against the surface of the earth, and will rotate and tilt with the camera
 | `rotation` | boolean | The orientation of the marker, specified in degrees clockwise

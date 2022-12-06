@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface NSCFirebaseMessagingCoreLoader: NSObject
+@interface NSCFacebookLoader: NSObject
 @end
