@@ -1,6 +1,48 @@
 import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
-import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, CircleTapEvent, PolygonTapEvent, PolylineTapEvent, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, ICap, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
+import {
+	ActiveBuildingEvent,
+	ActiveLevelEvent,
+	CameraPositionEvent,
+	CameraPositionStartEvent,
+	CircleOptions,
+	Coordinate,
+	CoordinateBounds,
+	GroundOverlayOptions,
+	CircleTapEvent,
+	PolygonTapEvent,
+	PolylineTapEvent,
+	GroundOverlayTapEvent,
+	ICameraPosition,
+	ICameraUpdate,
+	ICircle,
+	IGoogleMap,
+	IGroundOverlay,
+	IIndoorBuilding,
+	IIndoorLevel,
+	IMarker,
+	InfoWindowEvent,
+	IPatternItem,
+	ICap,
+	IPoi,
+	IPolygon,
+	IPolyline,
+	IProjection,
+	ITileOverlay,
+	ITileProvider,
+	IUISettings,
+	IVisibleRegion,
+	MapTapEvent,
+	MarkerDragEvent,
+	MarkerInfoEvent,
+	MarkerOptions,
+	MarkerTapEvent,
+	PoiTapEvent,
+	PolygonOptions,
+	PolylineOptions,
+	Style,
+	TileOverlayOptions,
+} from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
@@ -278,11 +320,17 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	}
 
 	mapViewDidTapMarker(mapView: GMSMapView, marker: GMSMarker): boolean {
-		this._owner?.get?.().notify(<EventData & MarkerTapEvent>{
-			eventName: MapView.markerTapEvent,
-			object: this._owner?.get?.(),
-			marker: Marker.fromNative(marker),
-		});
+		const owner = this._owner?.get?.();
+		if (owner) {
+			owner.notify(<EventData & MarkerTapEvent>{
+				eventName: MapView.markerTapEvent,
+				object: owner,
+				marker: Marker.fromNative(marker),
+			});
+
+			return owner.disableMarkerTapHandler;
+		}
+
 		return false;
 	}
 
