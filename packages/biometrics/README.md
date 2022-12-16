@@ -14,6 +14,21 @@ Android Compatibility: API 23+
 
 ### `available`
 
+##### Android Note if not using `pinFallback: true` when calling `verifyBiometric()`
+
+In some devices, face recognition isn't considered secure enough by the system to be used as biometric authentication, and therefore it cannot be used for biometric authentication. This is decided by the device itself.
+This is the case in many Samsung devices. For example, Samsung Galaxy S10 has both fingerprint scanner and face recognition but only fingerprints are accepted as biometric authentication.
+
+This plugin currently returns `{ any: true, biometrics: false }` during the `available()` result in this scenario.
+The plugin source does a fallback to `isDeviceSecure()` [here](https://github.com/NativeScript/plugins/blob/c94f6ac637a7d034e50239516b50e9c97ba0b872/packages/biometrics/index.android.ts#L109). This method will return `{ any: true }` since the device is secure via that method which checks for device PIN, PATTERN, ETC. The plugin does this fallback in order to offer the `pinFallback` option to confirm biometrics.
+
+Example on Samsung Note 10:
+
+- Device has Face Recognition enabled and face scan saved.
+- `available()` returns `{ any: true, biometrics: false }`
+- You might expect the device to show Face Recognition when you call `verifyBiometric()` but Samsung does not consider Face Recognition secure on this device so you'll never be prompted.
+- If you go enroll a fingerprint in the Touch Recognition, you will be prompted for the fingerprint scan when calling `verifyBiometric()` on this device now.
+
 #### JavaScript
 
 ```js
@@ -55,7 +70,7 @@ verifyBiometric will fail on IOS simulator unless pinfallBack is used.
 biometricAuth
 	.verifyBiometric({
 		title: 'Android title', // optional title (used only on Android)
-		message: 'Scan yer finger', // optional (used on both platforms) - for FaceID on iOS see the notes about NSFaceIDUsageDescription
+		message: 'Scan your finger', // optional (used on both platforms) - for FaceID on iOS see the notes about NSFaceIDUsageDescription
 		fallbackMessage: 'Enter your PIN', // this will be the text to show for the "fallback" button on the biometric prompt
 		pinFallback: true, // allow fall back to pin/password
 	})
@@ -124,7 +139,7 @@ The best practice is to use the options to encrypt some secret that is validated
     biometricAuth
     	.verifyBiometric({
     		title: 'Enter your password',
-    		message: 'Scan yer finger', // optional
+    		message: 'Scan your finger', // optional
     		pinFallback: false, // do not allow pinFallback to enable crypto operations
     		keyName: 'MySecretKeyName', // The name of the key that will be created/used
     		secret: 'The Secret I want encrypted',

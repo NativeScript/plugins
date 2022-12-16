@@ -1,6 +1,6 @@
 #import "NSCFacebookLoader.h"
 #import <objc/runtime.h>
-@implementation NSCFirebaseMessagingCoreLoader : NSObject
+@implementation NSCFacebookLoader : NSObject
 + (void)load {
     Class clazz = NSClassFromString(@"NSCFacebookUIAppDelegateExt");
 #pragma clang diagnostic push

@@ -123,13 +123,13 @@ declare type errorCallbackType = (error: Error) => void;
  * Get current location applying the specified options (if any).
  * @param {Options} options
  */
-export function getCurrentLocation(options: Options): Promise<Location>;
+export function getCurrentLocation(options?: Options): Promise<Location>;
 
 /**
  * Monitor for location change.
  * @returns {number} The watch id
  */
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options: Options): number;
+export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number;
 
 
 /**

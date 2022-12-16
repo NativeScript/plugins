@@ -290,8 +290,9 @@ export interface IMarker {
 	position: Coordinate;
 	title: string;
 	snippet: string;
-	icon: any /* Image, ImageSource, UIImage & Bitmap */;
+	icon: any /* ImageSource, UIImage & Bitmap */;
 	color: Color | string;
+	opacity: number;
 	rotation: number;
 	visible: boolean;
 	flat: boolean;
@@ -312,6 +313,7 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	snippet: string;
 	icon: any; /* Image, ImageSource, UIImage & Bitmap */
 	color: Color | string;
+	opacity: number;
 	rotation: number;
 	visible: boolean;
 	flat: boolean;
@@ -749,3 +751,5 @@ export class TileProvider implements ITileProvider {
 export class UrlTileProvider extends TileProvider {
 	constructor(callback: (x: number, y: number, zoom: number) => string, size?: number);
 }
+
+export { MapType, JointType };

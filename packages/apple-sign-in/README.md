@@ -47,7 +47,7 @@ user sign themself in (after they pressed a nice button for instance).
 ```typescript
 import { SignIn, User } from "@nativescript/apple-sign-in";
 
-signIn(
+SignIn.signIn(
     {
         // by default you don't get these details, but if you provide these scopes you will (and the user will get to choose which ones are allowed)
         scopes: ["EMAIL", "FULLNAME"]
