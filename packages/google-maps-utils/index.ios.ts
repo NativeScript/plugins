@@ -54,7 +54,13 @@ export class GoogleMapUtils {
 				feature.style = style.native;
 			}
 
-			return new GMUGeometryRenderer({ map: (this as unknown as GoogleMap).native, geometries: features });
+			const renderer = new GMUGeometryRenderer({ map: (this as unknown as GoogleMap).native, geometries: features });
+
+			const layer = GeoJsonLayer.fromNative(renderer);
+
+			layer.addLayerToMap();
+
+			return layer;
 		}
 		return null;
 	}

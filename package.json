@@ -31,6 +31,7 @@
 		"@nativescript/types": "~8.3.0",
 		"@nativescript/webpack": "~5.0.5",
 		"@ngtools/webpack": "^14.2.0",
+		"@types/geojson": "^7946.0.10",
 		"@types/mkdirp": "^1.0.1",
 		"@types/sprintf-js": "^1.1.0",
 		"husky": "^8.0.0",
