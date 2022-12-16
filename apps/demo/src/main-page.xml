@@ -36,6 +36,7 @@
         <Button text="picker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="swift-ui" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

@@ -293,10 +293,17 @@ module.exports = {
 				},
 			},
 			// @nativescript/pdf
-			'pdf': {
+			pdf: {
 				build: {
 					script: 'nx run pdf:build.all',
 					description: '@nativescript/pdf: Build',
+				},
+			},
+			// @nativescript/swift-ui
+			'swift-ui': {
+				build: {
+					script: 'nx run swift-ui:build.all',
+					description: '@nativescript/swift-ui: Build',
 				},
 			},
 			'build-all': {
@@ -441,9 +448,13 @@ module.exports = {
 				script: 'nx run haptics:focus',
 				description: 'Focus on @nativescript/haptics',
 			},
-			'pdf': {
+			pdf: {
 				script: 'nx run pdf:focus',
 				description: 'Focus on @nativescript/pdf',
+			},
+			'swift-ui': {
+				script: 'nx run swift-ui:focus',
+				description: 'Focus on @nativescript/swift-ui',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',
