@@ -5,24 +5,30 @@ ns plugin add @nativescript/google-maps-utils
 ```
 *Requires google maps plugin [@nativescript/google-maps](packages/google-maps/README.md)* 
 
+## Installation
+Install the mixins to the GoogleMaps object
+```javascript
+import { installMixins } from '@nativescript/google-maps-utils';
+installMixins();
+```
+
 ## Usage
-Initialize the GoogleMapUtils class on the GoogleMap load event
+You can access the google maps utilities from the GoogleMaps object after the mixins have been installed.
 ```javascript
 onMapReady(args: MapReadyEvent) {
 	const map = args.map;
-	const googleMapsUtils = new GoogleMapUtils(map);
 }
 ```
 
 
 ### HeatMaps
 ```javascript
-import { GoogleMapsUtils, HeatmapTileProvider, HeatmapOptions } from '@nativescript/google-maps-utils';
+import { HeatmapTileProvider, HeatmapOptions } from '@nativescript/google-maps-utils';
 import { GoogleMap, Coordinate } from '@nativescript/google-maps';
 
 addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
 	// Create a new heat map tile provider
-	const heatmapProvider: HeatmapTileProvider = googleMapsUtils.heatmapProvider(heatmapOptions);
+	const heatmapProvider: HeatmapTileProvider = map.heatmapProvider(heatmapOptions);
 	// Pass tile provider to Google Maps 
 	const heatmapOverlay = map.addTileOverlay({
 		tileProvider: heatmapProvider,
@@ -35,8 +41,8 @@ addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
 import { ClusterManager } from '@nativescript/google-maps-utils';
 import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
 
-addClusteredMarkers(markers: MarkerOptions[]) {
-	const clusterManager: ClusterManager = googleMapsUtils.clusterManager(markers);
+addClusteredMarkers(map: GoogleMap, markers: MarkerOptions[]) {
+	const clusterManager: ClusterManager = map.clusterManager(markers);
 }
 ```
 
@@ -55,7 +61,19 @@ onMapReady(args: MapReadyEvent) {
 		strokeColor: new Color('red'),
 		width: 4,
 	}
-	geoJsonLayer: GeoJsonLayer = new GeoJsonLayer(args.map, australia, style);
+	
+	map.addGeoJson({
+		geoJson: geoJson,
+		style: style,
+	});
+}
+```
+
+```javascript
+import { GeoJsonLayer } from '@nativescript/google-maps-utils';
+
+removeGeoJsonLayer(map: GoogleMap, layer: GeoJsonLayer) {
+	map.removeGeoJson(layer);
 }
 ```
 

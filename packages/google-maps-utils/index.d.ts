@@ -1,15 +1,30 @@
 import { Color } from '@nativescript/core';
 import { GoogleMap } from '@nativescript/google-maps';
 
-export * from './experimental/datalayer';
-export * from './experimental/iconfactory';
+// export * from './experimental/datalayer';
+// export * from './experimental/iconfactory';
 export * from './utils';
+
+export function installMixins();
+
+declare module '@nativescript/google-maps' {
+	interface GoogleMap {
+		heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
+		clusterManager(markers: MarkerOptions[]): ClusterManager;
+
+		addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer;
+		removeGeoJson(geoJsonLayer: GeoJsonLayer): void;
+	}
+}
 
 export class GoogleMapUtils {
 	constructor(map: GoogleMap);
 
 	heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
 	clusterManager(markers: MarkerOptions[]): ClusterManager;
+
+	addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer;
+	removeGeoJson(geoJsonLayer: GeoJsonLayer): void;
 }
 
 export interface IGradient {
@@ -70,6 +85,9 @@ export interface IClusterManager {
 }
 
 export class ClusterManager implements Partial<IClusterManager> {
+	onClusterTap(cluster: any) {
+		throw new Error('Method not implemented.');
+	}
 	static fromNative: (nativeClusterManager) => ClusterManager;
 	addItems: (clusterItems: ClusterItem[]) => void;
 	addItem: (clusterItem: ClusterItem) => void;
@@ -81,4 +99,43 @@ export class ClusterManager implements Partial<IClusterManager> {
 	android?: any;
 	ios?: any;
 	native?: any;
+}
+
+export interface IGeoJsonLayer {
+	style: GeometryStyle;
+	addLayerToMap: () => void;
+	removeLayerFromMap: () => void;
+}
+
+export class GeoJsonLayer implements IGeoJsonLayer {
+	ios: any;
+	android: any;
+	native: any;
+	style: GeometryStyle;
+	features: GeoJsonFeature[];
+	constructor(map: GoogleMap, geojson: any, styles?: Partial<IGeometryStyle>);
+	addLayerToMap: () => void;
+	removeLayerFromMap: () => void;
+}
+
+export interface IGeometryStyle {
+	strokeColor?: Color;
+	fillColor?: Color;
+	width?: number;
+	scale?: number;
+	heading?: number;
+	anchor?: [number, number];
+	iconUrl?: string | null;
+	title?: string | null;
+}
+
+export interface IGeometry {
+	type: string;
+	geometries: any;
+}
+
+export interface IFeature {
+	geometry: any;
+	properties: any;
+	id: any;
 }
