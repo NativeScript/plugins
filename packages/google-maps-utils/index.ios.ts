@@ -332,7 +332,6 @@ export class Geometry implements IGeometry {
 
 	static fromNative(nativeGeometry: GMUGeometry) {
 		if (nativeGeometry) {
-			console.log(nativeGeometry.class().name);
 			const geometry = new Geometry();
 			geometry.#native = nativeGeometry;
 			return geometry;
