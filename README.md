@@ -36,6 +36,7 @@ npm start
 - [@nativescript/picker](packages/picker/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
+- [@nativescript/swift-ui](packages/swift-ui/README.md)
 - [@nativescript/theme-switcher](packages/theme-switcher/README.md)
 - [@nativescript/twitter](packages/twitter/README.md)
 - [@nativescript/zip](packages/zip/README.md)

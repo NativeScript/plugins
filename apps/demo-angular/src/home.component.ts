@@ -100,6 +100,9 @@ export class HomeComponent {
 			name: 'social-share',
 		},
 		{
+			name: 'swift-ui',
+		},
+		{
 			name: 'theme-switcher',
 		},
 		{

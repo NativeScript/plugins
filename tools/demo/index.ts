@@ -30,6 +30,7 @@ export * from './pdf';
 export * from './picker';
 export * from './shared-notification-delegate';
 export * from './social-share';
+export * from './swift-ui';
 export * from './theme-switcher';
 export * from './twitter';
 export * from './zip';

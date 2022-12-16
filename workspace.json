@@ -36,7 +36,8 @@
 		"social-share": "packages/social-share",
 		"theme-switcher": "packages/theme-switcher",
 		"twitter": "packages/twitter",
-		"zip": "packages/zip"
+		"zip": "packages/zip",
+		"swift-ui": "packages/swift-ui"
 	},
 	"$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

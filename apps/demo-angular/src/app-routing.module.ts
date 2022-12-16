@@ -38,6 +38,7 @@ const routes: Routes = [
 	{ path: 'picker', loadChildren: () => import('./plugin-demos/picker.module').then((m) => m.PickerModule) },
 	{ path: 'shared-notification-delegate', loadChildren: () => import('./plugin-demos/shared-notification-delegate.module').then((m) => m.SharedNotificationDelegateModule) },
 	{ path: 'social-share', loadChildren: () => import('./plugin-demos/social-share.module').then((m) => m.SocialShareModule) },
+	{ path: 'swift-ui', loadChildren: () => import('./plugin-demos/swift-ui.module').then((m) => m.SwiftUiModule) },
 	{ path: 'theme-switcher', loadChildren: () => import('./plugin-demos/theme-switcher.module').then((m) => m.ThemeSwitcherModule) },
 	{ path: 'twitter', loadChildren: () => import('./plugin-demos/twitter.module').then((m) => m.TwitterModule) },
 	{ path: 'zip', loadChildren: () => import('./plugin-demos/zip.module').then((m) => m.ZipModule) },
