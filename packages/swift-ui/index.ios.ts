@@ -1,5 +1,5 @@
-import { swiftDataProperty, SwiftUICommon, BaseUIDataDriver } from './common';
-import type { DefaultSwiftUIHolder, RegistryCallback } from '.';
+import { dataProperty, SwiftUICommon, BaseUIDataDriver } from './common';
+import type { ISwiftUIProvider, RegistryCallback } from '.';
 import { Utils } from '@nativescript/core';
 export * from './common';
 
@@ -10,20 +10,20 @@ export function registerSwiftUI(id: string, callback: RegistryCallback) {
 }
 
 export class UIDataDriver extends BaseUIDataDriver<SwiftUI> {
-	constructor(private composeHolder: DefaultSwiftUIHolder, owner: SwiftUI) {
+	constructor(private swiftUIProvider: ISwiftUIProvider, owner: SwiftUI) {
 		super(owner);
 	}
 	createNativeView(): UIView {
-		const vc = this.composeHolder;
+		const vc = this.swiftUIProvider;
 		return vc.view;
 	}
 	registerEvents(callback): void {
-		this.composeHolder.onEvent = (data) => {
+		this.swiftUIProvider.onEvent = (data) => {
 			callback(data);
 		};
 	}
 	updateData(data) {
-		this.composeHolder.updateDataWithData(data);
+		this.swiftUIProvider.updateDataWithData(data);
 	}
 	onEvent(data) {
 		const owner = this.owner.get();
@@ -37,7 +37,7 @@ export class UIDataDriver extends BaseUIDataDriver<SwiftUI> {
 }
 
 export class SwiftUI extends SwiftUICommon {
-	private swiftUIBridge: BaseUIDataDriver;
+	private driver: BaseUIDataDriver;
 
 	createNativeView() {
 		const generator = registry.get(this.swiftId);
@@ -46,18 +46,18 @@ export class SwiftUI extends SwiftUICommon {
 			console.warn('view not registered:', this.swiftId);
 			return UIView.new();
 		}
-		this.swiftUIBridge = generator(this as any);
-		return this.swiftUIBridge.createNativeView();
+		this.driver = generator(this as any);
+		return this.driver.createNativeView();
 	}
 
 	initNativeView(): void {
-		if (!this.swiftUIBridge) {
+		if (!this.driver) {
 			return;
 		}
 
-		this.swiftUIBridge.registerEvents((data) => {
-			if (this.swiftUIBridge.onEvent) {
-				this.swiftUIBridge.onEvent(data);
+		this.driver.registerEvents((data) => {
+			if (this.driver.onEvent) {
+				this.driver.onEvent(data);
 			} else {
 				this.notify({
 					eventName: SwiftUI.swiftUIEventEvent,
@@ -69,16 +69,16 @@ export class SwiftUI extends SwiftUICommon {
 
 	disposeNativeView(): void {
 		super.disposeNativeView();
-		if (this.swiftUIBridge) {
-			this.swiftUIBridge.destroyNativeView?.();
+		if (this.driver) {
+			this.driver.destroyNativeView?.();
 		}
 	}
 
-	[swiftDataProperty.setNative](data: any) {
+	[dataProperty.setNative](data: any) {
 		this.updateData(data);
 	}
 
 	updateData(data: Record<string, any>) {
-		this.swiftUIBridge?.updateData?.(data);
+		this.driver?.updateData?.(data);
 	}
 }

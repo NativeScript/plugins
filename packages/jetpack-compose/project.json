@@ -1,0 +1,64 @@
+{
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/jetpack-compose",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/jetpack-compose",
+				"tsConfig": "packages/jetpack-compose/tsconfig.json",
+				"packageJson": "packages/jetpack-compose/package.json",
+				"main": "packages/jetpack-compose/index.d.ts",
+				"assets": [
+					"packages/jetpack-compose/*.md",
+					"packages/jetpack-compose/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/jetpack-compose/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts jetpack-compose"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/jetpack-compose"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages jetpack-compose"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/jetpack-compose/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

@@ -1,0 +1,19 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page"
+  xmlns:jc="@nativescript/jetpack-compose">
+  <Page.actionBar>
+    <ActionBar title="Jetpack Compose" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <StackLayout backgroundColor="{{ backgroundColor }}">
+    <GridLayout class="p-20" height="100">
+      <Label text="The following view is Jetpack Compose inside NativeScript" textWrap="true" class="text-center"></Label>
+    </GridLayout>
+    <StackLayout backgroundColor="{{activeExample === 'hearts' ? '#fff' : 'lightblue'}}">
+      <jc:JetpackCompose composeId="jetpackCompose" composeEvent="{{ onEvent }}" data="{{ text }}"/>
+    </StackLayout>
+    <GridLayout class="p-20" height="65" visibility="{{ activeExample === 'hearts' ? 'collapsed' : 'visible' }}">
+      <Label text="This is NativeScript again" class="text-center"/>
+    </GridLayout>
+    <TextView textChange="{{ onTextChange }}" text="{{ text }}" textWrap="true" visibility="{{ activeExample === 'hearts' ? 'collapsed' : 'visible' }}"/>
+  </StackLayout>
+</Page>

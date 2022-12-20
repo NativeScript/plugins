@@ -37,7 +37,8 @@
 		"theme-switcher": "packages/theme-switcher",
 		"twitter": "packages/twitter",
 		"zip": "packages/zip",
-		"swift-ui": "packages/swift-ui"
+		"swift-ui": "packages/swift-ui",
+		"jetpack-compose": "packages/jetpack-compose"
 	},
 	"$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

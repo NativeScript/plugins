@@ -24,6 +24,7 @@ export * from './imagepicker';
 export * from './ionic-portals';
 export * from './ios-security';
 export * from './iqkeyboardmanager';
+export * from './jetpack-compose';
 export * from './local-notifications';
 export * from './localize';
 export * from './pdf';

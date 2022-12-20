@@ -85,7 +85,7 @@ This illustrates what is often called a "vanilla" flavored NativeScript app. How
 
 ```
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page" xmlns:sw="@nativescript/swift-ui">
-  <StackLayout class="p-20">
+  <StackLayout>
     <sw:SwiftUI swiftId="sampleView" height="150" />
   </StackLayout>
 </Page>

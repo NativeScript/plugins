@@ -32,6 +32,7 @@ const routes: Routes = [
 	{ path: 'ionic-portals', loadChildren: () => import('./plugin-demos/ionic-portals.module').then((m) => m.IonicPortalsModule) },
 	{ path: 'ios-security', loadChildren: () => import('./plugin-demos/ios-security.module').then((m) => m.IosSecurityModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then((m) => m.IqkeyboardmanagerModule) },
+	{ path: 'jetpack-compose', loadChildren: () => import('./plugin-demos/jetpack-compose.module').then((m) => m.JetpackComposeModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then((m) => m.LocalNotificationsModule) },
 	{ path: 'localize', loadChildren: () => import('./plugin-demos/localize.module').then((m) => m.LocalizeModule) },
 	{ path: 'pdf', loadChildren: () => import('./plugin-demos/pdf.module').then((m) => m.PdfModule) },

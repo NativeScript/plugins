@@ -5,7 +5,7 @@
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/swift-ui": "file:../../packages/swift-ui",
+		"@nativescript/jetpack-compose": "file:../../packages/jetpack-compose",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -37,12 +37,13 @@
 		"@nativescript/picker": "file:../../packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",
+		"@nativescript/swift-ui": "file:../../packages/swift-ui",
 		"@nativescript/theme-switcher": "file:../../packages/theme-switcher",
 		"@nativescript/twitter": "file:../../packages/twitter",
 		"@nativescript/zip": "file:../../packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.3.0",
+		"@nativescript/android": "~8.4.0",
 		"@nativescript/ios": "~8.3.0"
 	}
 }
