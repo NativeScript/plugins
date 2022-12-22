@@ -25,6 +25,11 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	public showPicker: Function;
 
 	/**
+	 * Close picker programatically
+	 */
+	public closePicker: Function;
+
+	/**
 	 * Set the `rowHeight` to the Listview
 	 */
 	public static rowHeight: string;

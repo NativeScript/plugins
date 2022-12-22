@@ -135,8 +135,12 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		}
 	}
 
-	public showPicker(args) {
+	public showPicker(args: GestureEventData) {
 		this.tapHandler(args);
+	}
+
+	public closePicker(args: EventData) {
+		this._modalRoot.closeModal(this.closeCallback);
 	}
 
 	private detachModalViewHandlers() {
