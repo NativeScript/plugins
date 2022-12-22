@@ -13,4 +13,16 @@ export function showPicker(args: EventData) {
 	const view: View = args.object as View;
 	const picker: PickerField = view.page.getViewById('picker');
 	picker.showPicker();
+
+	/*
+    setTimeout(() => {
+        closePicker(args)
+    }, 3000)
+    */
+}
+
+function closePicker(args: EventData) {
+	const view: View = args.object as View;
+	const picker: PickerField = view.page.getViewById('picker');
+	picker.closePicker();
 }
