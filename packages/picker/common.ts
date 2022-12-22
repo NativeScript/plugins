@@ -210,12 +210,12 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		return undefined;
 	}
 
-	public static modalAnimatedProperty = new Property<PickerField, boolean>({
+	public static rowHeightProperty = new Property<PickerField, string>({
 		name: 'rowHeight',
 		valueChanged: PickerField.rowHeightChanged,
 	});
 
-	public static rowHeightProperty = new Property<PickerField, boolean>({
+	public static modalAnimatedProperty = new Property<PickerField, boolean>({
 		name: 'modalAnimated',
 		defaultValue: true,
 		valueConverter: booleanConverter,
