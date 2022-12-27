@@ -1,4 +1,4 @@
-import { Observable, Property, Template, booleanConverter, CSSType, View, EventData, TextField, Button, GestureEventData, ListView, ItemEventData, TemplatedItemsView, Page, ShownModallyData, fromObject, addWeakEventListener, removeWeakEventListener, ObservableArray, ChangedData, GridLayout, ActionItem, NavigationButton, Frame, ShowModalOptions, Builder } from '@nativescript/core';
+import { Observable, Length, Property, Template, booleanConverter, CSSType, View, EventData, TextField, Button, GestureEventData, ListView, ItemEventData, TemplatedItemsView, Page, ShownModallyData, fromObject, addWeakEventListener, removeWeakEventListener, ObservableArray, ChangedData, GridLayout, ActionItem, NavigationButton, Frame, ShowModalOptions, Builder } from '@nativescript/core';
 
 export interface ItemsSource {
 	length: number;
@@ -19,7 +19,6 @@ export class PickerPage extends Page {}
 @CSSType('PickerField')
 export class PickerField extends TextField implements TemplatedItemsView {
 	public static itemLoadingEvent = 'itemLoading';
-
 	public pickerTitle: string;
 	public items: any[] | ItemsSource;
 	public itemTemplate: string | Template;
@@ -40,6 +39,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	private _page: Page;
 	private _modalGridLayout: GridLayout;
 	private closeCallback;
+	private rowHeight: string;
 
 	constructor() {
 		super();
@@ -135,6 +135,14 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		}
 	}
 
+	public showPicker(args: GestureEventData) {
+		this.tapHandler(args);
+	}
+
+	public closePicker(args: EventData) {
+		this._modalRoot.closeModal(this.closeCallback);
+	}
+
 	private detachModalViewHandlers() {
 		this._modalRoot.off(Page.shownModallyEvent, this.shownModallyHandler.bind(this));
 		this._modalListView.off(ListView.itemTapEvent, this.listViewItemTapHandler.bind(this));
@@ -206,6 +214,11 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		return undefined;
 	}
 
+	public static rowHeightProperty = new Property<PickerField, string>({
+		name: 'rowHeight',
+		valueChanged: PickerField.rowHeightChanged,
+	});
+
 	public static modalAnimatedProperty = new Property<PickerField, boolean>({
 		name: 'modalAnimated',
 		defaultValue: true,
@@ -215,6 +228,11 @@ export class PickerField extends TextField implements TemplatedItemsView {
 
 	private static modalAnimatedChanged(target: PickerField, oldValue, newValue) {
 		target.onModalAnimatedPropertyChanged(oldValue, newValue);
+	}
+
+	static rowHeightChanged(target, oldValue, newValue) {
+		console.error(target, oldValue, newValue);
+		target.onRowHeightPropertyChanged(oldValue, newValue);
 	}
 
 	public static selectedValueProperty = new Property<PickerField, any>({
@@ -350,6 +368,10 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		this.onValueFieldChanged(oldValue, newValue);
 	}
 
+	private onRowHeightPropertyChanged(oldValue, newValue) {
+		this.rowHeight = newValue;
+	}
+
 	private onTextFieldPropertyChanged(oldValue: string, newValue: string) {
 		this.onTextFieldChanged(oldValue, newValue);
 	}
@@ -394,6 +416,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	private updateListView() {
 		if (this._modalListView && this.itemTemplate) {
 			this._modalListView.itemTemplate = this.itemTemplate;
+			this._modalListView.rowHeight = Length.parse(this.rowHeight);
 			this._modalListView.refresh();
 		}
 	}
@@ -509,6 +532,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 }
 
 PickerField.modalAnimatedProperty.register(PickerField);
+PickerField.rowHeightProperty.register(PickerField);
 PickerField.pickerTitleProperty.register(PickerField);
 PickerField.itemTemplateProperty.register(PickerField);
 PickerField.editableProperty.register(PickerField);

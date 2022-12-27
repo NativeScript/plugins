@@ -6,9 +6,17 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-              <picker:PickerField hint="Click here" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
+
+            <Button text="Show Picker Programatically" tap="showPicker" />
+            <picker:PickerField rowHeight="300" id="picker" hint="Click here" textField="name" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
   								items="{{ pickerItems }}" >
-  		</picker:PickerField>
+                <picker:PickerField.itemTemplate>
+                    <GridLayout height="300">
+                        <Label text="{{ name}}" textWrap="true" />
+                        
+                    </GridLayout>
+                </picker:PickerField.itemTemplate>
+  		    </picker:PickerField>
 
           </StackLayout>
         </ScrollView>

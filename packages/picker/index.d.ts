@@ -20,6 +20,21 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	public static itemLoadingEvent: string;
 
 	/**
+	 * Show picker programatically
+	 */
+	public showPicker: Function;
+
+	/**
+	 * Close picker programatically
+	 */
+	public closePicker: Function;
+
+	/**
+	 * Set the `rowHeight` to the Listview
+	 */
+	public static rowHeight: string;
+
+	/**
 	 * Gets or sets the title of the modal view.
 	 */
 	public pickerTitle: string;
@@ -90,6 +105,11 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	 * Identifies the {@link textField} dependency property.
 	 */
 	static textFieldProperty: Property<PickerField, string>;
+
+	/**
+	 * Identifies the {@link rowHeight} dependency property.
+	 */
+	static rowHeightProperty: Property<PickerField, string>;
 
 	/**
 	 * Identifies the {@link iOSCloseButtonPosition} dependency property.
