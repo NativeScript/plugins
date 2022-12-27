@@ -6,14 +6,15 @@
   </Page.actionBar>
   <StackLayout backgroundColor="{{ backgroundColor }}">
     <GridLayout class="p-20" height="100">
-      <Label text="The following view is Jetpack Compose inside NativeScript" textWrap="true" class="text-center"></Label>
+      <Label text="The following view is Jetpack Compose inside a NativeScript layout:" textWrap="true" class="text-center t-15 c-black"></Label>
     </GridLayout>
-    <StackLayout backgroundColor="{{activeExample === 'hearts' ? '#fff' : 'lightblue'}}">
+    <StackLayout backgroundColor="{{activeExample === 'hearts' ? '#fff' : backgroundColor}}">
       <jc:JetpackCompose composeId="jetpackCompose" composeEvent="{{ onEvent }}" data="{{ text }}"/>
     </StackLayout>
-    <GridLayout class="p-20" height="65" visibility="{{ activeExample === 'hearts' ? 'collapsed' : 'visible' }}">
-      <Label text="This is NativeScript again" class="text-center"/>
-    </GridLayout>
+    <StackLayout class="p-20" height="120" visibility="{{ activeExample === 'hearts' ? 'collapsed' : 'visible' }}">
+      <Label text="This is NativeScript again." class="text-center c-black" textWrap="true"/>
+      <Label text="Typing in the {N} TextView below instantaneously updates data bindings to the Compose view above." class="text-center c-black" textWrap="true"/>
+    </StackLayout>
     <TextView textChange="{{ onTextChange }}" text="{{ text }}" textWrap="true" visibility="{{ activeExample === 'hearts' ? 'collapsed' : 'visible' }}"/>
   </StackLayout>
 </Page>
