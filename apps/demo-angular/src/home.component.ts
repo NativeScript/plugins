@@ -82,6 +82,9 @@ export class HomeComponent {
 			name: 'iqkeyboardmanager',
 		},
 		{
+			name: 'jetpack-compose',
+		},
+		{
 			name: 'local-notifications',
 		},
 		{

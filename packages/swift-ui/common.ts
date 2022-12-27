@@ -18,11 +18,11 @@ export abstract class BaseUIDataDriver<ViewType extends SwiftUICommon = SwiftUIC
 	destroyNativeView?(): void;
 }
 
-export const swiftDataProperty = new Property<SwiftUICommon, any>({
+export const dataProperty = new Property<SwiftUICommon, any>({
 	name: 'data',
 });
 
-swiftDataProperty.register(SwiftUICommon);
+dataProperty.register(SwiftUICommon);
 
 export const swiftIdProperty = new Property<SwiftUICommon, string>({
 	name: 'swiftId',

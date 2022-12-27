@@ -8,7 +8,7 @@ export declare interface SwiftUIEventData<T> extends EventData {
 	data: T;
 }
 
-export declare interface DefaultSwiftUIHolder {
+export declare interface ISwiftUIProvider {
 	view: UIView;
 	onEvent: unknown;
 	updateDataWithData(data: unknown): void;
@@ -17,11 +17,11 @@ export declare interface DefaultSwiftUIHolder {
 export declare class SwiftUI<T = any, K = any> extends SwiftUICommon {
 	static swiftUIEventEvent = 'swiftUIEvent';
 	updateData(data: K);
-	on(evtName: SwiftUI.swiftUIEventEvent, cb: (args: SwiftUIEventData<T>) => void, thisArg?: any);
+	on(name: SwiftUI.swiftUIEventEvent, callback: (args: SwiftUIEventData<T>) => void, thisArg?: any);
 }
 
-export class UIDataDriver<T extends DefaultSwiftUIHolder, K = unknown, V = unknown> extends BaseUIDataDriver<SwiftUI, K, V> {
-	constructor(composeHolder: T, view: SwiftUI);
+export class UIDataDriver<T extends ISwiftUIProvider, K = unknown, V = unknown> extends BaseUIDataDriver<SwiftUI, K, V> {
+	constructor(swiftUIProvider: T, view: SwiftUI);
 	onEvent(data: ReceivedDataType): void;
 	updateData(data: DataType): void;
 	createNativeView(): UIView;
