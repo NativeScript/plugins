@@ -8,11 +8,11 @@
           <StackLayout>
 
             <Button text="Show Picker Programatically" tap="showPicker" />
-            <picker:PickerField rowHeight="300" id="picker" hint="Click here" textField="name" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
+            <picker:PickerField rowHeight="60" id="picker" hint="Click here" textField="name" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
   								items="{{ pickerItems }}" >
                 <picker:PickerField.itemTemplate>
-                    <GridLayout height="300">
-                        <Label text="{{ name}}" textWrap="true" />
+                    <GridLayout height="60">
+                        <Label text="{{ name}}" textWrap="true" verticalAlignment="center" />
                         
                     </GridLayout>
                 </picker:PickerField.itemTemplate>
