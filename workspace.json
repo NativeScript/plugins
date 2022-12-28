@@ -28,17 +28,17 @@
 		"ionic-portals": "packages/ionic-portals",
 		"ios-security": "packages/ios-security",
 		"iqkeyboardmanager": "packages/iqkeyboardmanager",
+		"jetpack-compose": "packages/jetpack-compose",
 		"local-notifications": "packages/local-notifications",
 		"localize": "packages/localize",
 		"pdf": "packages/pdf",
 		"picker": "packages/picker",
 		"shared-notification-delegate": "packages/shared-notification-delegate",
 		"social-share": "packages/social-share",
+		"swift-ui": "packages/swift-ui",
 		"theme-switcher": "packages/theme-switcher",
 		"twitter": "packages/twitter",
-		"zip": "packages/zip",
-		"swift-ui": "packages/swift-ui",
-		"jetpack-compose": "packages/jetpack-compose"
+		"zip": "packages/zip"
 	},
 	"$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

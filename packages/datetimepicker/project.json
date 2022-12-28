@@ -1,4 +1,5 @@
 {
+	"name": "datetimepicker",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/datetimepicker",
 	"projectType": "library",
@@ -30,12 +31,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/datetimepicker"],
+			"outputs": ["{workspaceRoot}/dist/packages/datetimepicker"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts datetimepicker"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages datetimepicker"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

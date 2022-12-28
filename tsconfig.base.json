@@ -7,9 +7,9 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"noEmitHelpers": false,
-		"target": "es2017",
-		"module": "esnext",
-		"lib": ["es2019", "WebWorker", "dom"],
+		"target": "ES2020",
+		"module": "ESNext",
+		"lib": ["ESNext", "dom"],
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
@@ -50,6 +50,7 @@
 			"@nativescript/ionic-portals": ["packages/ionic-portals/index.d.ts"],
 			"@nativescript/ios-security": ["packages/ios-security/index.d.ts"],
 			"@nativescript/iqkeyboardmanager": ["packages/iqkeyboardmanager/index.d.ts"],
+			"@nativescript/jetpack-compose": ["packages/jetpack-compose/index.d.ts"],
 			"@nativescript/local-notifications": ["packages/local-notifications/index.d.ts"],
 			"@nativescript/localize": ["packages/localize/index.d.ts"],
 			"@nativescript/localize/angular": ["packages/localize/angular/index.ts"],
@@ -58,11 +59,10 @@
 			"@nativescript/picker/angular": ["packages/picker/angular/index.ts"],
 			"@nativescript/shared-notification-delegate": ["packages/shared-notification-delegate/index.d.ts"],
 			"@nativescript/social-share": ["packages/social-share/index.d.ts"],
+			"@nativescript/swift-ui": ["packages/swift-ui/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"],
-			"@nativescript/swift-ui": ["packages/swift-ui/index.d.ts"],
-			"@nativescript/jetpack-compose": ["packages/jetpack-compose/index.d.ts"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

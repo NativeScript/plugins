@@ -1,4 +1,5 @@
 {
+	"name": "swift-ui",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"sourceRoot": "packages/swift-ui",
@@ -29,12 +30,12 @@
 			}
 		},
 		"build.all": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts swift-ui"],
 				"parallel": false
 			},
-			"outputs": ["dist/packages/swift-ui"],
+			"outputs": ["{workspaceRoot}/dist/packages/swift-ui"],
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -47,7 +48,7 @@
 			]
 		},
 		"focus": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages swift-ui"],
 				"parallel": false
