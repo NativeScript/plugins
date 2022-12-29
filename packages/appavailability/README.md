@@ -100,6 +100,7 @@ and add this if you want to query for both `twitter://` and `fb://`:
   <array>
     <string>fb</string>
     <string>twitter</string>
+		<string>whatsapp</string>
   </array>
 ```
 
