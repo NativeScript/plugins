@@ -22,15 +22,11 @@ Open your app's App_Resources/iOS folder and add the following (or append) to a 
 </plist>
 ```
 
-## Usage
+## Using apple-sign-in
 
+###  Checking if it is supported
 
-
-## API
-
-### `isSupported`
-
-Sign In with Apple was added in iOS 13, so make sure to call this function before showing a "Sign In with Apple" button in your app.
+[Sign In with Apple](https://developer.apple.com/sign-in-with-apple/) was added in iOS `13`, so make sure to call this function before showing a `Sign In with Apple` button in your app.
 On iOS < 13 and Android this will return `false`.
 
 ```typescript
@@ -39,9 +35,9 @@ import { SignIn } from "@nativescript/apple-sign-in";
 const supported: boolean = SignIn.isSupported();
 ```
 
-### `signInWithApple`
+### Signing In With Apple
 
-Now that you know "Sign In with Apple" is supported on this device, you can have the
+Once you know that "Sign In with Apple" is supported on the device, you can have the
 user sign themself in (after they pressed a nice button for instance).
 
 ```typescript
@@ -55,29 +51,84 @@ SignIn.signIn(
     .then((result: User) => {
         console.log("Signed in, user: " + result);
         console.log("Signed in, familyName: " + result.fullName.familyName);
-        // you can remember the user to check the sign in state later (see 'getSignInWithAppleState' below)
+        
         this.user = result.user;
     })
     .catch(err => console.log("Error signing in: " + err));
 ```
 
-### `getState`
+### Getting A User Sign-in Status
 
 > ⚠️ This does not seem to work on a simulator!
 
-If you want to know the current Sign In status of your user, you can pass the `user` (id) you acquired previously.
+To get the current Sign In status of a user, call the [getState()](#getState) passing it the user id(`User.user`) acquired from [signIn()](#signin) method.
 
 ```typescript
 import { SignIn } from "@nativescript/apple-sign-in";
 
-const user: string = "the id you got back from the signIn function";
+const user: string = User.user;
 
 SignIn.getState(user)
     .then(state => console.log("Sign in state: " + state))
     .catch(err => console.log("Error getting sign in state: " + err));
 ```
 
+## API Reference
+### isSupported
+```ts
+isSupported: boolean = SignIn.isSupported();
+```
+Checks if Sign In With Apple is supported on the device. Returns `true` for iOS 13+, and `false` for iOS < `13` and on Android.
 
+---
+### signIn()
+```ts
+SignIn.signIn(
+    options: SignInOptions
+
+    )
+    .then((result: User) => {
+      // handle the signed-in user data
+    })
+    .catch(err =>{
+        // handle error
+    });
+```
+
+Signs in a user with the specified [SignInOptions]() details.
+
+---
+### getState()
+```ts
+SignIn.getState(userID:string)
+    .then(state =>{
+        // do something with user status
+    })
+    .catch(err =>{
+        // handle error
+    });
+```
+Gets the current sign-in status of the user.
+
+---
+## SignInOptions
+### user
+
+---
+### scopes
+```ts
+{
+        scopes: ["EMAIL", "FULLNAME"]
+}
+```
+_Optional_: By default, the `scopes` are not provided. To receive them you have to specify them.
+
+---
+### useOnce
+---
+### nonce
+
+---
 ## License
 
 Apache License Version 2.0
