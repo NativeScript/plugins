@@ -82,6 +82,10 @@ if (availableSync('twitter://')) {
 	Utils.openUrl('https://twitter.com/eddyverbruggen');
 }
 ```
+### Determining the correct identifier for an app.
+
+- `Android:` simply search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
+- `iOS:` this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example `'twitter://'` in the address bar, if the app launches you're good.
 
 ## iOS whitelisting
 
@@ -99,11 +103,12 @@ and add this if you want to query for both `twitter://` and `fb://`:
   </array>
 ```
 
-You may wonder how one would determine the correct identifier for an app.
+## API Reference
 
-- Android: simply search the Play Store and use the id in the URL. For Twitter this is com.twitter.android because the URL is https://play.google.com/store/apps/details?id=com.twitter.android.
-- iOS: this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example 'twitter://' in the address bar, if the app launches you're good.
-
+| Methods| Return Type| Description|
+|--------|------------|------------|
+|`available(packageName:string)`|`Promise<boolean>`| Asynchronously checks if the app with the specified `packageName` is installed on the device.|
+|`availableSync(packageName:string)`|`boolean`| Synchronously checks if the app with the specified `packageName` is installed on the device.|
 ## License
 
 Apache License Version 2.0
