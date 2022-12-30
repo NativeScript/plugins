@@ -109,11 +109,11 @@ Gets the current sign-in status of the user.
 
 ---
 ## SignInOptions Interface
+
 | Name | Type | Description |
 |------|------|-------------|
 | `user` | `string` | |
 | `scopes` | `SignInScopes[]` | _Optional_: The data about the user you would like the app to access. By default, the `scopes` are not provided. To receive them you have to specify them.
-|
 | `useOnce` | `boolean` | |
 | `nonce` | `string`| |
 
