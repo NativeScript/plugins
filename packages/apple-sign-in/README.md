@@ -7,8 +7,8 @@ npm install @nativescript/apple-sign-in
 ## Requirements
 
 Go to [the Apple developer](https://developer.apple.com/account/resources/identifiers/list) website and create a new app identifier with the "Sign In with Apple" Capability enabled. Make sure you sign your app with a provisioning profile using that app identifier.
-Open your app's App_Resources/iOS folder and add the following (or append) to a file named app.entitlements.
 
+Then add the [Sign In with Apple Entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_applesignin?language=objc) to `App_Resources/iOS/app.entitlements` as follows:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -45,7 +45,6 @@ import { SignIn, User } from "@nativescript/apple-sign-in";
 
 SignIn.signIn(
     {
-        // by default you don't get these details, but if you provide these scopes you will (and the user will get to choose which ones are allowed)
         scopes: ["EMAIL", "FULLNAME"]
     })
     .then((result: User) => {
@@ -58,8 +57,6 @@ SignIn.signIn(
 ```
 
 ### Getting A User Sign-in Status
-
-> ⚠️ This does not seem to work on a simulator!
 
 To get the current Sign In status of a user, call the [getState()](#getState) passing it the user id(`User.user`) acquired from [signIn()](#signin) method.
 
@@ -111,24 +108,65 @@ SignIn.getState(userID:string)
 Gets the current sign-in status of the user.
 
 ---
-## SignInOptions
-### user
+## SignInOptions Interface
+| Name | Type | Description |
+|------|------|-------------|
+| `user` | `string` | |
+| `scopes` | `SignInScopes[]` | _Optional_: The data about the user you would like the app to access. By default, the `scopes` are not provided. To receive them you have to specify them.
+|
+| `useOnce` | `boolean` | |
+| `nonce` | `string`| |
 
----
-### scopes
+
+## Types
+### SignInScopes
 ```ts
-{
-        scopes: ["EMAIL", "FULLNAME"]
+type SignInScopes = "EMAIL" | "FULL_NAME";
+```
+---
+### UserFullName Interface
+| Name | Type | Description |
+|------|------|-------------|
+| `namePrefix`| `string`| _Optional_: |
+| `givenName` | `string` | _Optional_: |
+| `middleName` | `string` | _Optional_: |
+| `familyName` | `string` | _Optional_: |
+| `nameSuffix` | `string` | _Optional_: |
+| `nickname` | `string` | _Optional_: |
+
+### User Interface
+| Name | Type | Description |
+|------|------|-------------|
+| `nonce`| `string`| _Optional_: |
+| `user` | `string` | |
+| `fullName` | [UserFullName](#userfullname-interface) | _Optional_: |
+| `realUserStatus` | [UserDetectionStatus](#userdetectionstatus-enum) | _Optional_: |
+| `authorizedScopes` | [SignInScopes](#signinscopes) | _Optional_: |
+| `identityToken` | `string` | _Optional_: |
+| `email` | `string` | _Optional_: |
+| `identityToken` | `string` |  |
+| `state` | `string` |  |
+| `authorizationCode` | `string` | _Optional_: |
+
+### CredentialState Enum
+```ts
+enum CredentialState {
+    Revoked = 'Revoked',
+    Authorized = 'Authorized',
+    NotFound = 'NotFound',
+    Transferred = 'Transferred'
+} 
+```
+---
+### UserDetectionStatus Enum
+```ts
+enum UserDetectionStatus {
+    Unsupported = 'Unsupported',
+    Unknown = 'Unknown',
+    LikelyReal = 'LikelyReal'
 }
 ```
-_Optional_: By default, the `scopes` are not provided. To receive them you have to specify them.
 
----
-### useOnce
----
-### nonce
-
----
 ## License
 
 Apache License Version 2.0
