@@ -112,10 +112,10 @@ Gets the current sign-in status of the user.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `user` | `string` | |
-| `scopes` | `SignInScopes[]` | _Optional_: The data about the user you would like the app to access. By default, the `scopes` are not provided. To receive them you have to specify them.
+| `user` | `string` | For a description, visit [user](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidrequest/3153041-user?language=objc).|
+| `scopes` | [SignInScopes](#SignInScopes)\[\] | _Optional_: By default, the `scopes` are not provided. To receive them you have to specify them in the sign in request object.
 | `useOnce` | `boolean` | |
-| `nonce` | `string`| |
+| `nonce` | `string`|  _Optional_: See [nonce](https://developer.apple.com/documentation/authenticationservices/asauthorizationopenidrequest/3362520-nonce?language=objc) for more information. |
 
 
 ## Types
@@ -123,31 +123,39 @@ Gets the current sign-in status of the user.
 ```ts
 type SignInScopes = "EMAIL" | "FULL_NAME";
 ```
+For more details, see [ASAuthorizationScope](https://developer.apple.com/documentation/authenticationservices/asauthorizationscope?language=objc).
+
 ---
 ### UserFullName Interface
 | Name | Type | Description |
 |------|------|-------------|
-| `namePrefix`| `string`| _Optional_: |
-| `givenName` | `string` | _Optional_: |
-| `middleName` | `string` | _Optional_: |
-| `familyName` | `string` | _Optional_: |
-| `nameSuffix` | `string` | _Optional_: |
-| `nickname` | `string` | _Optional_: |
+| `namePrefix`| `string`| _Optional_ |
+| `givenName` | `string` | _Optional_ |
+| `middleName` | `string` | _Optional_ |
+| `familyName` | `string` | _Optional_ |
+| `nameSuffix` | `string` | _Optional_ |
+| `nickname` | `string` | _Optional_ |
 
+For more details, see [NSPersonNameComponents](https://developer.apple.com/documentation/foundation/nspersonnamecomponents?language=objc).
+
+---
 ### User Interface
 | Name | Type | Description |
 |------|------|-------------|
-| `nonce`| `string`| _Optional_: |
-| `user` | `string` | |
-| `fullName` | [UserFullName](#userfullname-interface) | _Optional_: |
-| `realUserStatus` | [UserDetectionStatus](#userdetectionstatus-enum) | _Optional_: |
-| `authorizedScopes` | [SignInScopes](#signinscopes) | _Optional_: |
-| `identityToken` | `string` | _Optional_: |
-| `email` | `string` | _Optional_: |
-| `identityToken` | `string` |  |
-| `state` | `string` |  |
-| `authorizationCode` | `string` | _Optional_: |
+| `nonce`| `string`| _Optional_: See [nonce](https://developer.apple.com/documentation/authenticationservices/asauthorizationopenidrequest/3362520-nonce?language=objc) for more information. |
+| `user` | `string` | _Always Provided_|
+| `fullName` | [UserFullName](#userfullname-interface) | _Optional_ |
+| `realUserStatus` | [UserDetectionStatus](#userdetectionstatus-enum) | _Optional_ |
+| `authorizedScopes` | [SignInScopes](#signinscopes) | _Optional_ |
+| `identityToken` | `string` | _Optional_ |
+| `email` | `string` | _Optional_ |
+| `identityToken` | `string` |  _Always Provided_|
+| `state` | `string` |  _Always Provided_|
+| `authorizationCode` | `string` | _Optional_ |
 
+For more details, see [ASAuthorizationAppleIDCredential](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidcredential?language=objc).
+
+---
 ### CredentialState Enum
 ```ts
 enum CredentialState {
@@ -157,6 +165,8 @@ enum CredentialState {
     Transferred = 'Transferred'
 } 
 ```
+For more details, see [ASAuthorizationAppleIDProviderCredentialState](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidprovidercredentialstate?language=objc).
+
 ---
 ### UserDetectionStatus Enum
 ```ts
@@ -166,7 +176,7 @@ enum UserDetectionStatus {
     LikelyReal = 'LikelyReal'
 }
 ```
-
+For more details, see [ASUserDetectionStatus](https://developer.apple.com/documentation/authenticationservices/asuserdetectionstatus?language=objc).
 ## License
 
 Apache License Version 2.0
