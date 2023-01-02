@@ -61,5 +61,12 @@
 				"lintFilePatterns": ["packages/picker/**/*.ts"]
 			}
 		}
-	}
+	},
+	"contributors": [
+		{
+			"name": "KefahB",
+			"email": "kefah.bader@gmail.com",
+			"url": "https://github.com/kefahB"
+		}
+	]
 }

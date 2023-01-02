@@ -1,8 +1,9 @@
-import { Observable, Length, Property, Template, booleanConverter, CSSType, View, EventData, TextField, Button, GestureEventData, ListView, ItemEventData, TemplatedItemsView, Page, ShownModallyData, fromObject, addWeakEventListener, removeWeakEventListener, ObservableArray, ChangedData, GridLayout, ActionItem, NavigationButton, Frame, ShowModalOptions, Builder } from '@nativescript/core';
+import { Observable, Length, Property, Template, booleanConverter, CSSType, View, EventData, TextField, Button, GestureEventData, ListView, ItemEventData, TemplatedItemsView, Page, ShownModallyData, fromObject, addWeakEventListener, removeWeakEventListener, ObservableArray, ChangedData, GridLayout, ActionItem, NavigationButton, Frame, ShowModalOptions, Builder, PropertyChangeData, GridUnitType, ItemSpec, isAndroid, StackLayout } from '@nativescript/core';
 
 export interface ItemsSource {
 	length: number;
 	getItem(index: number): any;
+	index: number;
 }
 
 Builder.knownTemplates.add('itemTemplate');
@@ -16,11 +17,19 @@ export interface PickerField {
 @CSSType('PickerPage')
 export class PickerPage extends Page {}
 
+let unfilteredSource: Array<any> = [];
+let filtering: boolean = false;
+
 @CSSType('PickerField')
 export class PickerField extends TextField implements TemplatedItemsView {
 	public static itemLoadingEvent = 'itemLoading';
+	public focusOnShow: boolean;
+	public showFilter: boolean;
+	public enableSearch: boolean;
+	public hintText: string;
 	public pickerTitle: string;
-	public items: any[] | ItemsSource;
+	public items: any[];
+	public _items: any[];
 	public itemTemplate: string | Template;
 	public modalAnimated: boolean;
 	public textField: string;
@@ -34,12 +43,14 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	public static pickerOpenedEvent = 'pickerOpened';
 	public static pickerClosedEvent = 'pickerClosed';
 
+	private _searchBar: TextField;
 	private _modalListView: ListView;
 	private _modalRoot: Frame;
 	private _page: Page;
 	private _modalGridLayout: GridLayout;
 	private closeCallback;
 	private rowHeight: string;
+	filterKeyName: any;
 
 	constructor() {
 		super();
@@ -56,6 +67,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		this._page = new PickerPage();
 		this._modalListView = new ListView();
 		this._modalGridLayout = new GridLayout();
+		this._searchBar = new TextField();
 		this.initModalView();
 		this._page.content = this._modalGridLayout;
 	}
@@ -67,6 +79,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 			this._page = undefined;
 			this._modalListView = undefined;
 			this._modalGridLayout = undefined;
+			this._searchBar = undefined;
 		}
 	}
 
@@ -106,14 +119,56 @@ export class PickerField extends TextField implements TemplatedItemsView {
 			this._page.actionBar.actionItems.addItem(closeButton);
 		}
 
+		this._modalRoot.className = 'pickerRootModal';
+		this._page.className = 'pickerPage';
+		this._modalListView.className = 'pickerListView';
+		this._modalGridLayout.className = 'pickerGridLayout';
+
 		this._modalRoot.on(Page.shownModallyEvent, this.shownModallyHandler.bind(this));
 
 		this._modalListView.on(ListView.itemLoadingEvent, this.listViewItemLoadingHandler.bind(this));
 		this._modalListView.on(ListView.itemTapEvent, this.listViewItemTapHandler.bind(this));
-		this._modalListView.items = this.items;
+		let items = [];
+		this.items.forEach((item, index) => {
+			item.__index__ = index;
+			items.push(item);
+		});
+
+		this._modalListView.items = items;
+		this.items = items;
+		this._items = items;
+		this._searchBar.on(TextField.textChangeEvent, this.textFieldChangeTapHandler.bind(this));
+		this._searchBar.id = 'pickerSearchBar';
+		this._searchBar.className = 'pickerSearchBar';
+		if (this.hintText) {
+			this._searchBar.hint = this.hintText;
+		}
+		if (this.showFilter && this.focusOnShow) {
+			setTimeout(() => {
+				if (isAndroid) {
+					this._searchBar?.android?.requestFocus();
+				} else {
+					this._searchBar?.ios?.becomeFirstResponder();
+				}
+			}, 1000);
+		}
 
 		this.applyCssScope(this._modalGridLayout);
-		(<any>this._modalGridLayout).addChild(this._modalListView);
+		//(<any>this._modalGridLayout).addChild(this._modalListView);
+
+		const filterContainer = new StackLayout();
+		filterContainer.id = 'searchBarContainer';
+		filterContainer.className = 'searchBarContainer';
+		filterContainer.addChild(this._searchBar);
+
+		if (!this.showFilter) {
+			filterContainer.visibility = 'collapse';
+		}
+
+		this._modalGridLayout.addRow(new ItemSpec(1, GridUnitType.AUTO));
+		this._modalGridLayout.addRow(new ItemSpec(1, GridUnitType.STAR));
+		this._modalGridLayout.addChildAtCell(filterContainer, 0, 0);
+		this._modalGridLayout.addChildAtCell(this._modalListView, 1, 0);
 	}
 
 	private applyCssScope(view: View, transferClasses: Boolean = false) {
@@ -147,6 +202,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		this._modalRoot.off(Page.shownModallyEvent, this.shownModallyHandler.bind(this));
 		this._modalListView.off(ListView.itemTapEvent, this.listViewItemTapHandler.bind(this));
 		this._modalListView.off(ListView.itemLoadingEvent, this.listViewItemLoadingHandler.bind(this));
+		this._searchBar.off(TextField.textChangeEvent, this.textFieldChangeTapHandler.bind(this));
 	}
 
 	private shownModallyHandler(args: ShownModallyData) {
@@ -187,14 +243,35 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	}
 
 	private listViewItemTapHandler(args: ItemEventData) {
-		if (args.index !== undefined) {
-			let object = this.getDataItem(args.index);
-			this.selectedIndex = args.index;
+		try {
+			if (args.index !== undefined) {
+				let object = this.getDataItem(args.index);
+				if (!this.showFilter) {
+					this.selectedIndex = args.index;
+				} else {
+					this.selectedIndex = Object.values(this._items)?.indexOf(object);
+				}
+				this._updateSelectedValue(object);
+			}
 
-			this._updateSelectedValue(object);
+			this.items = this._items;
+			this.closeCallback(args.view, this.selectedIndex || args.index);
+		} catch (e) {
+			console.error(e);
+			this.closeCallback(args.view, args.index);
 		}
+	}
 
-		this.closeCallback(args.view, args.index);
+	private textFieldChangeTapHandler(data: any) {
+		filtering = true;
+		this.items = unfilteredSource.filter((item) => {
+			if (item[this.filterKeyName]) {
+				return item[this.filterKeyName].toString().toLowerCase().indexOf(data.value.toLowerCase()) !== -1;
+			} else {
+				return item.toString().toLowerCase().indexOf(data.value.toLowerCase()) !== -1;
+			}
+		});
+		filtering = false;
 	}
 
 	private listViewItemLoadingHandler(args: ItemEventData) {
@@ -231,7 +308,6 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	}
 
 	static rowHeightChanged(target, oldValue, newValue) {
-		console.error(target, oldValue, newValue);
 		target.onRowHeightPropertyChanged(oldValue, newValue);
 	}
 
@@ -318,6 +394,64 @@ export class PickerField extends TextField implements TemplatedItemsView {
 		valueChanged: PickerField.itemTemplateChanged,
 	});
 
+	public static focusOnShowProperty = new Property<PickerField, boolean>({
+		name: 'focusOnShow',
+		defaultValue: false,
+		valueConverter: booleanConverter,
+		valueChanged: PickerField.focusOnShowChanged,
+	});
+
+	private static focusOnShowChanged(target: PickerField, oldValue, newValue) {
+		target.onFocusOnChanged(oldValue, newValue);
+	}
+
+	private onFocusOnChanged(toldValue, newValue) {
+		this.focusOnShow = newValue;
+	}
+
+	public static showFilterProperty = new Property<PickerField, boolean>({
+		name: 'hideFilter',
+		defaultValue: false,
+		valueConverter: booleanConverter,
+		valueChanged: PickerField.showFilterChanged,
+	});
+
+	private static showFilterChanged(target: PickerField, oldValue, newValue) {
+		target.onShowFilterChanged(oldValue, newValue);
+	}
+
+	private onShowFilterChanged(toldValue, newValue) {
+		this.showFilter = newValue;
+	}
+
+	public static hintTextProperty = new Property<PickerField, string>({
+		name: 'hintText',
+		defaultValue: 'Enter text to filter...',
+		valueChanged: PickerField.hintTextChanged,
+	});
+
+	private static hintTextChanged(target: PickerField, oldValue, newValue) {
+		target.onHintTextChanged(oldValue, newValue);
+	}
+
+	private onHintTextChanged(toldValue, newValue) {
+		this.hintText = newValue;
+	}
+
+	public static filterKeyNameProperty = new Property<PickerField, string>({
+		name: 'filterKeyName',
+		defaultValue: 'name',
+		valueChanged: PickerField.filterKeyNameChanged,
+	});
+
+	private static filterKeyNameChanged(target: PickerField, oldValue, newValue) {
+		target.onFilterKeyNameChanged(oldValue, newValue);
+	}
+
+	private onFilterKeyNameChanged(oldValue, newValue) {
+		this.filterKeyName = newValue;
+	}
+
 	private static itemTemplateChanged(target: PickerField, oldValue, newValue) {
 		target.onItemTemplatePropertyChanged(oldValue, newValue);
 	}
@@ -353,6 +487,13 @@ export class PickerField extends TextField implements TemplatedItemsView {
 
 		if (target && target._modalListView) {
 			target._modalListView.refresh();
+		}
+
+		if (!filtering) {
+			while (unfilteredSource.length) unfilteredSource.pop();
+			newValue.forEach((element) => {
+				unfilteredSource.push(element);
+			});
 		}
 	}
 
@@ -409,8 +550,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	}
 
 	private getDataItem(index: number): any {
-		let thisItems = <ItemsSource>this.items;
-		return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
+		return this.items[index];
 	}
 
 	private updateListView() {
@@ -499,8 +639,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	}
 
 	private _getDataItem(index: number): any {
-		let thisItems = <ItemsSource>this.items;
-		return thisItems.getItem ? thisItems.getItem(index) : thisItems[index];
+		return this.items[index];
 	}
 
 	protected onValueFieldChanged(oldValue: string, newValue: string) {}
@@ -531,6 +670,10 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	}
 }
 
+PickerField.filterKeyNameProperty.register(PickerField);
+PickerField.focusOnShowProperty.register(PickerField);
+PickerField.showFilterProperty.register(PickerField);
+PickerField.hintTextProperty.register(PickerField);
 PickerField.modalAnimatedProperty.register(PickerField);
 PickerField.rowHeightProperty.register(PickerField);
 PickerField.pickerTitleProperty.register(PickerField);
