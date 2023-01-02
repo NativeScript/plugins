@@ -65,6 +65,8 @@ for(let i = 0; i <= 30; i++) {
 }
 ```
 
+<img width="350" src="https://user-images.githubusercontent.com/18148534/210265624-970a308b-1792-4d2b-a54f-4f17bc1dd4c4.gif" />
+
 ## Get selected item
 You need to register the callback from pickerClosed property `pickerClosed="onSelectedItem"` this will return the `selectedIndex` :
 
