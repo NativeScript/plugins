@@ -39,21 +39,15 @@ class MyClass {
   });
 }
 ```
-#### A Note about Android
-- It's only supported on `API 23+`. 
-- In some devices, face recognition isn't considered secure enough by the system to be used as biometric authentication,therefore it cannot be used for biometric authentication. This is decided by the device itself.
-This is the case in many Samsung devices. For example, Samsung Galaxy S10 has both fingerprint scanner and face recognition but only fingerprints are accepted as biometric authentication.
-
-So what happens is:
-
-- If the device has Face Recognition enabled and face scan saved,calling `available()` returns `{ any: true, biometrics: false }`. You might expect the device to show Face Recognition when you call `verifyBiometric()` but Samsung does not consider Face Recognition secure on this device so you'll never be prompted.
-- If you enroll a fingerprint in the Touch Recognition and call the `verifyBiometric()` method, the user will be prompted for the fingerprint scan.
+> **Note: Android** 
+It's only supported on `API 23+`. <br> <br>In some devices, face recognition isn't considered secure enough by the system to be used as biometric authentication,therefore it cannot be used for biometric authentication. This is decided by the device itself.
+This is the case in many Samsung devices. For example, Samsung Galaxy S10 has both fingerprint scanner and face recognition but only fingerprints are accepted as biometric authentication. <br> <br>So what happens is: <br>- If the device has Face Recognition enabled and face scan saved,calling `available()` returns `{ any: true, biometrics: false }`. You might expect the device to show Face Recognition when you call `verifyBiometric()` but Samsung does not consider Face Recognition secure on this device so you'll never be prompted. <br>- If you enroll a fingerprint in the Touch Recognition and call the `verifyBiometric()` method, the user will be prompted for the fingerprint scan.
 
 ### Verifying a user's biometric
 
 To verify a user's biometric, call the `verifyBiometric()` method.
 
-#### A Note about iOS
+> **Note: iOS** 
 Use `Features->Face ID` menu items to enroll a face and signal successs/failure to recognize a face.
 `verifyBiometric()` will fail on IOS simulator unless `pinfallBack` is used.
 
