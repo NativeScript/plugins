@@ -114,7 +114,7 @@ biometricAuth.available().then((avail) => {
 
 If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometric()` method, then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea being that the key will not be accessible unless the user has successfully authenticated.
 
-This however is not foolproof and the most secure method is to pass the `secret` and `Keyname`options to encrypt/decrypt text.
+This however is not foolproof and the most secure method is to pass the `secret` and `keyName`options to encrypt/decrypt text.
 
 ### Encrypting/Decrypting with Authentication
 
@@ -122,7 +122,7 @@ The best practice is to use the options to encrypt some secret that is validated
 
 #### Encrypting your secret
 
-To encrypt a secret key name, pass the `secret` and `Keyname`options to the `verifyBiometric()`. 
+To encrypt a secret key name, pass the `secret` and `keyName`options to the `verifyBiometric()`. 
 
     ```ts
     biometricAuth
@@ -142,7 +142,7 @@ To encrypt a secret key name, pass the `secret` and `Keyname`options to the `ver
     	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
     ```
 
-For Android the encrypted result and vector would then be stored in your app and used the next time when signing in the by calling the `verifyBiometric()` again:
+For Android the encrypted result and vector would then be stored in your app and used the next time when signing in the user by calling the `verifyBiometric()` again:
 
 ####  Decrypting your secret
 
@@ -187,18 +187,18 @@ biometricAuth
 
 ## API
 ### BiometricAuth Class
-| Name | Type | Description|
+| Name | Return Type | Description|
 |-----|-------|-----------|
 |`available()`|`Promise<BiometricIDAvailableResult>`| Checks if biometric authentification is supported on the device. See [BiometricIDAvailableResult](#biometricidavailableresult-interface) for more details.|
 | `didBiometricDatabaseChange(options?: VerifyBiometricOptions)`|`Promise<boolean>` | Checks if there is a change in a biometric.|
 | `verifyBiometric(options: VerifyBiometricOptions)`|`Promise<BiometricResult>`| Verifies the biometrics auth using the specified [VerifyBiometricOptions]() object. |
 | `close()` | `void`| Closes Face/Fingerprint prompt. Will not do anything on Android if `pinFallBack` is `true`.|
-| `deleteKey(keyName?: string)`|`void`| |
+| `deleteKey(keyName?: string)`|`void`| Deletes the specified key. |
 
 ### BiometricIDAvailableResult Interface
 | Name | Type| Description|
 |------|-----|------------|
-| `any`| `boolean`| `true` if no bio available on android but device has pin/pattern/password set.|
+| `any`| `boolean`| `true` if no biometric authentification is available on android but device has pin/pattern/password set.|
 | `touch`| `boolean`| _Optional_: `iOS only`|
 | `face`| `boolean`| _Optional_: `iOS only`|
 | `biometrics` | `boolean` | _Optional_: (`Android only`) indicates if Face/Fingerprint is available.|
@@ -210,9 +210,26 @@ biometricAuth
 | `subTitle`| `string`| _Optional_ : (`Android only`) Subtitle in the fingerprint screen. Defaults to `''`|
 | `message` | `string`| _Optional_: Description of the finngerprint screen. Defaults to `'Scan your finger'` on iOS and on Android is likely `'Enter your device password to continue'`.|
 | `confirm`| `boolean`|  _Optional_ : (`Android only`) The confirm button after biometrics have been verified in the fingerprint screen. Defaults to `false`. |
-| `android` | [AndroidOptions]() | _Optional_: Android-specific options. |
-| `ios`| [IOSOptions]() | _Optional_: iOS-specific options.
-	 
+| `fallbackMessage` | `string` | _Optional_: Button label when scanning the fingerprint fails. Defaults to `'Enter password'`. <br>On Android: <br>- when `pinFallback`= `true` this will be the text displayed on the pin dialog.<br>- When `pinFallback` =  `false` this will be the Negative button text on the Biometric Prompt.|
+| `pinFallback` | `boolean` | _Optional_: Allow Fallback to Pin - note that if `true` no cryptographic operations will happen and Face ID is not available on Android. |
+| `keyName` | `string`| _Optional_: Name of the key to use for crypto operations. Will be created if it you don't provide it. It's not used if `pinFallback` = `true`.|
+| `android` | [AndroidOptions](#androidoptions-interface) | _Optional_: Android-specific options. |
+| `ios`| [IOSOptions](#iosoptions-interface) | _Optional_: iOS-specific options. |
+
+### IOSOptions Interface
+| Name | Type| Description|
+|------|-----|------------|
+| `customFallback` | `boolean` | _Optional_: Indicates whether to allow a custom fallback from biometrics.|
+| `fetchSecret` | `boolean` | _Optional_: Indicates whether to attempt to fetch secret from the specified key.|
+
+### AndroidOptions Interface
+| Name | Type| Description|
+|------|-----|------------|
+| `decryptText` | `string`|  If set and `pinFallback` is `true`, and `keyName` is set then this string will be decrypted via the Biometric controlled Key. |
+ If set and pinFallback is true, and keyName is set then this string will be decrypted via the Biometric controlled Key.|
+| `iv`| `string` | _Optional_: Retrieved from the result of an encryption. |
+| `validityDuration` | `number` | _Optional_: The period, in seconds, for which operations on the key are valid without triggering a biometric prompt.|
+
 ### BiometricResult Interface
 | Name | Type| Description|
 |------|-----|------------|
