@@ -1,5 +1,6 @@
 # @nativescript/apple-sign-in
 
+## Install
 ```javascript
 npm install @nativescript/apple-sign-in
 ```
@@ -22,7 +23,7 @@ Then add the [Sign In with Apple Entitlement](https://developer.apple.com/docume
 </plist>
 ```
 
-## Using apple-sign-in
+## Usage
 
 ###  Checking if it is supported
 
