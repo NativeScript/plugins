@@ -7,7 +7,7 @@ npm install @nativescript/biometrics
 This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 
 
-## Using biometrics
+## Usage
 
 ### Checking for support
 
