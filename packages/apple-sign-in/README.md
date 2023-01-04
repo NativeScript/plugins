@@ -1,7 +1,9 @@
 # @nativescript/apple-sign-in
+A plugin that allows you to authenticate users with [Sign In with Apple](https://developer.apple.com/sign-in-with-apple/).
 
 ## Install
-```javascript
+
+```cli
 npm install @nativescript/apple-sign-in
 ```
 
@@ -23,12 +25,17 @@ Then add the [Sign In with Apple Entitlement](https://developer.apple.com/docume
 </plist>
 ```
 
-## Usage
+## Using apple-sign-in
 
-###  Checking if it is supported
+### Import 
+```ts
+import { SignIn, User } from "@nativescript/apple-sign-in";
+```
+
+### Checking if it is supported
 
 [Sign In with Apple](https://developer.apple.com/sign-in-with-apple/) was added in iOS `13`, so make sure to call this function before showing a `Sign In with Apple` button in your app.
-On iOS < 13 and Android this will return `false`.
+On iOS < 13 and Android, this will return `false`.
 
 ```typescript
 import { SignIn } from "@nativescript/apple-sign-in";
@@ -38,11 +45,9 @@ const supported: boolean = SignIn.isSupported();
 
 ### Signing In With Apple
 
-Once you know that "Sign In with Apple" is supported on the device, you can have the
-user sign themself in (after they pressed a nice button for instance).
+Once you know that Sign In with Apple is supported on the device, you can present the user with that option to sign in.
 
 ```typescript
-import { SignIn, User } from "@nativescript/apple-sign-in";
 
 SignIn.signIn(
     {
@@ -59,7 +64,7 @@ SignIn.signIn(
 
 ### Getting A User Sign-in Status
 
-To get the current Sign In status of a user, call the [getState()](#getState) passing it the user id(`User.user`) acquired from [signIn()](#signin) method.
+To get the current Sign In status of a user, call the [getState()](#getstate) passing it the user id(`User.user`) acquired from [signIn()](#signin) method.
 
 ```typescript
 import { SignIn } from "@nativescript/apple-sign-in";
@@ -71,8 +76,10 @@ SignIn.getState(user)
     .catch(err => console.log("Error getting sign in state: " + err));
 ```
 
-## API Reference
+## API 
+
 ### isSupported
+
 ```ts
 isSupported: boolean = SignIn.isSupported();
 ```
@@ -93,7 +100,7 @@ SignIn.signIn(
     });
 ```
 
-Signs in a user with the specified [SignInOptions]() details.
+Signs in a user with the specified [SignInOptions](#signinoptions) details.
 
 ---
 ### getState()
@@ -109,17 +116,16 @@ SignIn.getState(userID:string)
 Gets the current sign-in status of the user.
 
 ---
-## SignInOptions Interface
+### SignInOptions
 
 | Name | Type | Description |
 |------|------|-------------|
 | `user` | `string` | For a description, visit [user](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidrequest/3153041-user?language=objc).|
-| `scopes` | [SignInScopes](#SignInScopes)\[\] | _Optional_: By default, the `scopes` are not provided. To receive them you have to specify them in the sign in request object.
+| `scopes` | [SignInScopes](#signinscopes)`[]` | _Optional_: By default, the `scopes` are not provided. To receive them you have to specify them in the sign in request object.
 | `useOnce` | `boolean` | |
 | `nonce` | `string`|  _Optional_: See [nonce](https://developer.apple.com/documentation/authenticationservices/asauthorizationopenidrequest/3362520-nonce?language=objc) for more information. |
 
 
-## Types
 ### SignInScopes
 ```ts
 type SignInScopes = "EMAIL" | "FULL_NAME";
@@ -127,7 +133,7 @@ type SignInScopes = "EMAIL" | "FULL_NAME";
 For more details, see [ASAuthorizationScope](https://developer.apple.com/documentation/authenticationservices/asauthorizationscope?language=objc).
 
 ---
-### UserFullName Interface
+### UserFullName
 | Name | Type | Description |
 |------|------|-------------|
 | `namePrefix`| `string`| _Optional_ |
@@ -140,13 +146,13 @@ For more details, see [ASAuthorizationScope](https://developer.apple.com/documen
 For more details, see [NSPersonNameComponents](https://developer.apple.com/documentation/foundation/nspersonnamecomponents?language=objc).
 
 ---
-### User Interface
+### User
 | Name | Type | Description |
 |------|------|-------------|
 | `nonce`| `string`| _Optional_: See [nonce](https://developer.apple.com/documentation/authenticationservices/asauthorizationopenidrequest/3362520-nonce?language=objc) for more information. |
 | `user` | `string` | _Always Provided_|
-| `fullName` | [UserFullName](#userfullname-interface) | _Optional_ |
-| `realUserStatus` | [UserDetectionStatus](#userdetectionstatus-enum) | _Optional_ |
+| `fullName` | [UserFullName](#userfullname) | _Optional_ |
+| `realUserStatus` | [UserDetectionStatus](#userdetectionstatus) | _Optional_ |
 | `authorizedScopes` | [SignInScopes](#signinscopes) | _Optional_ |
 | `identityToken` | `string` | _Optional_ |
 | `email` | `string` | _Optional_ |
@@ -157,7 +163,7 @@ For more details, see [NSPersonNameComponents](https://developer.apple.com/docum
 For more details, see [ASAuthorizationAppleIDCredential](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidcredential?language=objc).
 
 ---
-### CredentialState Enum
+### CredentialState
 ```ts
 enum CredentialState {
     Revoked = 'Revoked',
@@ -169,7 +175,7 @@ enum CredentialState {
 For more details, see [ASAuthorizationAppleIDProviderCredentialState](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidprovidercredentialstate?language=objc).
 
 ---
-### UserDetectionStatus Enum
+### UserDetectionStatus
 ```ts
 enum UserDetectionStatus {
     Unsupported = 'Unsupported',
@@ -178,6 +184,7 @@ enum UserDetectionStatus {
 }
 ```
 For more details, see [ASUserDetectionStatus](https://developer.apple.com/documentation/authenticationservices/asuserdetectionstatus?language=objc).
+
 ## License
 
 Apache License Version 2.0
