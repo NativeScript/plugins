@@ -1,20 +1,24 @@
 # @nativescript/app-availability
 
-A plugin to check for availability of other apps on the device.
+A plugin to check for the availability of other apps on the device.
+
+## Install
 
 ```cli
 npm install @nativescript/appavailability
 ```
 
-## Usage
+## Using app-availability
 
-> **Note:** Version 1.3.0 added a synchronous version of this method that doesn't return a Promise. Need that? Use `availableSync` instead of `available`.
-
-### TypeScript
+### Import
 
 ```typescript
 import { available } from '@nativescript/appavailability';
+//or
+import { availableSync } from '@nativescript/appavailability';
+```
 
+```typescript
 // examples of what to pass:
 // - for iOS: "maps://", "twitter://", "fb://"
 // - for Android: "com.facebook.katana"
@@ -22,34 +26,7 @@ available('twitter://').then((avail: boolean) => {
 	console.log('App available? ' + avail);
 });
 ```
-
-### TypeScript + Angular
-
-```typescript
-import * as appavailability from '@nativescript/appavailability';
-
-// examples of what to pass:
-// - for iOS: "maps://", "twitter://", "fb://"
-// - for Android: "com.facebook.katana"
-appavailability.available('twitter://').then((avail: boolean) => {
-	console.log('App available? ' + avail);
-});
-```
-
-### JavaScript
-
-```javascript
-var appAvailability = require('@nativescript/appavailability');
-
-// examples of what to pass:
-// - for iOS: "maps://", "twitter://", "fb://"
-// - for Android: "com.facebook.katana"
-appAvailability.available('com.facebook.katana').then(function (avail) {
-	console.log('App available? ' + avail);
-});
-```
-
-## Opening an app (with web fallback)
+### Opening an app (with web fallback)
 
 Now that you know whether an app is installed or not, you probably want to launch it.
 Here's a snippet that opens the mobile Twitter app and falls back to the website if it's not installed.
@@ -89,22 +66,20 @@ if (availableSync('twitter://')) {
 
 ## iOS whitelisting
 
-To get useful results on iOS 9 and up you need to whitelist the URL Scheme
-you're querying in the application's `.plist`.
+To get useful results on iOS 9+ you need to whitelist the URL Scheme you're querying in the application's `Info.plist`.
 
-Luckily NativeScript made this pretty easy. Just open `app/App_ResourcesiOS/Info.plist`
-and add this if you want to query for both `twitter://` and `fb://`:
+For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit the `app/App_ResourcesiOS/Info.plist` as follows:
 
 ```xml
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fb</string>
-    <string>twitter</string>
-		<string>whatsapp</string>
-  </array>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+	<string>fb</string>
+	<string>twitter</string>
+	<string>whatsapp</string>
+</array>
 ```
 
-## API Reference
+## API
 
 | Methods| Return Type| Description|
 |--------|------------|------------|
