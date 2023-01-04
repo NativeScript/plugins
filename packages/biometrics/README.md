@@ -74,8 +74,8 @@ biometricAuth
 Face ID support was added iOS 11+. To allow Face ID support in your app, you need to state the reason for it by adding the value for the `NSFaceIDUsageDescription` key to the `app/App_Resources/ios/Info.plist` file:
 
 ```xml
-  <key>NSFaceIDUsageDescription</key>
-  <string>For easy authentication with our app.</string>
+<key>NSFaceIDUsageDescription</key>
+<string>For easy authentication with our app.</string>
 ```
 
 ### Detecting change in enrolled fingerprints (iOS)
@@ -118,8 +118,8 @@ The best practice is to use the options to encrypt some secret that is validated
 
 To encrypt a secret key name, pass the `secret` and `keyName`options to the `verifyBiometric()`. 
 
-    ```ts
-    biometricAuth
+```typescript
+biometricAuth
     	.verifyBiometric({
     		title: 'Enter your password',
     		message: 'Scan your finger', // optional
@@ -134,14 +134,14 @@ To encrypt a secret key name, pass the `secret` and `keyName`options to the `ver
     		// For IOS the secret is stored in the keycain
     	})
     	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
-    ```
+```
 
 For Android the encrypted result and vector would then be stored in your app and used the next time when signing in the user by calling the `verifyBiometric()` again:
 
 ####  Decrypting your secret
 
-    ```ts
-    biometricAuth
+```typescript
+biometricAuth
     	.verifyBiometric({
     		title: 'Enter your password',
     		message: 'Scan yer finger', // optional
@@ -158,13 +158,13 @@ For Android the encrypted result and vector would then be stored in your app and
     		verifyMySecret(decryptedText); // verify the secret by some means, e.g. a call to a back end server.
     	})
     	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
-    ```
+```
 
 ### Fallback to Pin
 
 To allow the user to fallback on lock screen credentials, set `pinFallback` to `true`. This also disables cryptography.
 
-```ts
+```typescript
 biometricAuth
 	.verifyBiometric({
 		title: 'Enter your password',
@@ -180,6 +180,7 @@ biometricAuth
 ```
 
 ## API
+
 ### BiometricAuth Class
 | Name | Return Type | Description|
 |-----|-------|-----------|
@@ -235,7 +236,7 @@ biometricAuth
 
 ### ERROR_CODES Enum
 
-```ts
+```typescript
 enum ERROR_CODES {
 	PASSWORD_FALLBACK_SELECTED = -3, // historically this is what iOS uses, so using that as well
 	SUCCESS = 0,
