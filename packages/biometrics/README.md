@@ -3,9 +3,9 @@
 ```cli
 npm install @nativescript/biometrics
 ```
-::: Note
-This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth)
-:::
+> **Note**
+This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
+
 
 ## Using biometrics
 
@@ -29,14 +29,16 @@ class MyClass {
 
   constructor() {
     this.biometricAuth = new BiometricAuth();
-  }
-
-  this.biometricAuth.available().then((result: BiometricIDAvailableResult) => {
+	
+	this.biometricAuth.available().then((result: BiometricIDAvailableResult) => {
     console.log(`Biometric ID available? ${result.any}`);
     console.log(`Touch? ${result.touch}`);
     console.log(`Face? ${result.face}`);
 	console.log(`Biometrics? ${result.biometrics}`);
   });
+  }
+
+  
 }
 ```
 > **Note: Android** 
