@@ -1,5 +1,7 @@
 # @nativescript/biometrics
 
+## Install
+
 ```cli
 npm install @nativescript/biometrics
 ```
@@ -8,22 +10,24 @@ This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 
 
 ## Usage
+### Import
+To use the plugin, you should first import it.
+```ts
+import { BiometricAuth, BiometricIDAvailableResult } from "@nativescript/biometrics";
 
+```
 ### Checking for support
 
 To check if the device support biometrics authentication, call the `available()`.
 
 ```js
-var biometricAuthPlugin = require('@nativescript/biometrics');
-var biometricAuth = new biometricAuthPlugin.BiometricAuth();
+var biometricAuth = new BiometricAuth();
 
 biometricAuth.available().then(function (avail) {
 	console.log('Available? ' + avail);
 });
 ```
 ```typescript
-import { BiometricAuth, BiometricIDAvailableResult } from "@nativescript/biometrics";
-
 class MyClass {
   private biometricAuth: BiometricAuth;
 
