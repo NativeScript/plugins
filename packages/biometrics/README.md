@@ -183,13 +183,13 @@ biometricAuth
 ### BiometricAuth Class
 | Name | Return Type | Description|
 |-----|-------|-----------|
-|`available()`|`Promise<BiometricIDAvailableResult>`| Checks if biometric authentification is supported on the device. See [BiometricIDAvailableResult](#biometricidavailableresult-interface) for more details.|
+|`available()`|`Promise<BiometricIDAvailableResult>`| Checks if biometric authentification is supported on the device. See [BiometricIDAvailableResult](#biometricidavailableresult) for more details.|
 | `didBiometricDatabaseChange(options?: VerifyBiometricOptions)`|`Promise<boolean>` | Checks if there is a change in a biometric.|
 | `verifyBiometric(options: VerifyBiometricOptions)`|`Promise<BiometricResult>`| Verifies the biometrics auth using the specified [VerifyBiometricOptions]() object. |
 | `close()` | `void`| Closes Face/Fingerprint prompt. Will not do anything on Android if `pinFallBack` is `true`.|
 | `deleteKey(keyName?: string)`|`void`| Deletes the specified key. |
 
-### BiometricIDAvailableResult Interface
+### BiometricIDAvailableResult
 | Name | Type| Description|
 |------|-----|------------|
 | `any`| `boolean`| `true` if no biometric authentification is available on android but device has pin/pattern/password set.|
@@ -197,7 +197,7 @@ biometricAuth
 | `face`| `boolean`| _Optional_: `iOS only`|
 | `biometrics` | `boolean` | _Optional_: (`Android only`) indicates if Face/Fingerprint is available.|
 
-### VerifyBiometricOptions Interface
+### VerifyBiometricOptions
 | Name | Type| Description|
 |------|-----|------------|
 | `title`| `string`| _Optional_: (`Android only`)The title for the the fingerprint screen. Defaults to whatever the device default is.|
@@ -207,16 +207,16 @@ biometricAuth
 | `fallbackMessage` | `string` | _Optional_: Button label when scanning the fingerprint fails. Defaults to `'Enter password'`. <br>On Android: <br>- when `pinFallback`= `true` this will be the text displayed on the pin dialog.<br>- When `pinFallback` =  `false` this will be the Negative button text on the Biometric Prompt.|
 | `pinFallback` | `boolean` | _Optional_: Allow Fallback to Pin - note that if `true` no cryptographic operations will happen and Face ID is not available on Android. |
 | `keyName` | `string`| _Optional_: Name of the key to use for crypto operations. Will be created if it you don't provide it. It's not used if `pinFallback` = `true`.|
-| `android` | [AndroidOptions](#androidoptions-interface) | _Optional_: Android-specific options. |
-| `ios`| [IOSOptions](#iosoptions-interface) | _Optional_: iOS-specific options. |
+| `android` | [AndroidOptions](#androidoptions) | _Optional_: Android-specific options. |
+| `ios`| [IOSOptions](#iosoptions) | _Optional_: iOS-specific options. |
 
-### IOSOptions Interface
+### IOSOptions
 | Name | Type| Description|
 |------|-----|------------|
 | `customFallback` | `boolean` | _Optional_: Indicates whether to allow a custom fallback from biometrics.|
 | `fetchSecret` | `boolean` | _Optional_: Indicates whether to attempt to fetch secret from the specified key.|
 
-### AndroidOptions Interface
+### AndroidOptions
 | Name | Type| Description|
 |------|-----|------------|
 | `decryptText` | `string`|  If set and `pinFallback` is `true`, and `keyName` is set then this string will be decrypted via the Biometric controlled Key. |
@@ -224,7 +224,7 @@ biometricAuth
 | `iv`| `string` | _Optional_: Retrieved from the result of an encryption. |
 | `validityDuration` | `number` | _Optional_: The period, in seconds, for which operations on the key are valid without triggering a biometric prompt.|
 
-### BiometricResult Interface
+### BiometricResult
 | Name | Type| Description|
 |------|-----|------------|
 |`code`| [ERROR_CODES](#error_codes-enum) |
