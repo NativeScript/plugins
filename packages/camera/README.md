@@ -1,7 +1,6 @@
 # @nativescript/camera
 
-Almost every mobile application needs the option to capture, save and share images.
-The NativeScript camera plugin was designed for the first two parts of the job (taking a picture and optionally saving to device storage).
+A plugin that allows you to take a picture and optionally save it  on the device storage.
 
 ## Installation
 
@@ -12,7 +11,7 @@ npm install @nativescript/camera --save
 
 ### Requesting permissions
 
-Both Android and iOS require explicit permissions in order for the application to have access to the camera and save photos to the device. Once the user has granted permissions the camera module can be used.
+Both Android and iOS require explicit permissions in order for the application to have access to the camera and save photos on the device. Once the user has granted permissions the camera module can be used.
 
 ```TypeScript
 import { requestPermissions } from '@nativescript/camera';
@@ -38,6 +37,16 @@ requestPermissions().then(
 <key>NSPhotoLibraryUsageDescription</key>
 <string>enter your photo library permission request text here</string>
 ```
+> **Note**: For Android, the plugin requests the permissions for you.
+### Checking if the device has a camera
+Before you take a picture, you should check if the device has an available camera. To do so, call the `isAvailable()` method. This method will return `true` if the camera hardware is ready to use or `false` otherwise.
+
+```ts
+const isAvailable = camera.isAvailable();
+```
+
+> **Note**: This method will return false when used in iOS simulator (as the simulator does not have camera hardware)
+
 
 ### Taking a picture
 To take a picture, call the module's `takePicture()` method.
@@ -75,21 +84,7 @@ camera.takePicture()
 
 ### Using the options to take memory efficient picture
 
-By default, the `takePicture()` method takes a huge image (even mid-level devices has a `5MP` camera, which results in a image `2580x2048`, which in bitmap means approximately `15MB`). In many cases you don't need such a huge picture to show an image with `100x100` size, for example. So taking a big picture is just a waste of memory. The camera `takePicture()` method accepts an optional parameter that could help in that case. With that optional parameter, you could set some properties like:
-
-- **width**: The desired width of the picture (in device independent pixels).
-- **height**: The desired height of the picture (in device independent pixels).
-- **keepAspectRatio**: A boolean parameter that indicates if the aspect ratio should be kept.
-- **saveToGallery**: A boolean parameter that indicates if the original taken photo will be saved in "Photos" for Android and in "Camera Roll" in iOS
-- **allowsEditing**: (iOS Only) A boolean parameter that indicates if the camera "Retake" or "Use Photo" screen forces the user to crop camera picture to a square and optionally lets them zoom in.
-- **cameraFacing**: Start with either the "front" or "rear" (default) camera of the device. The current implementation doesn't work on all Android devices, in which case it falls back to the default behavior.
-
-What does `device independent pixels` mean? The NativeScript layout mechanism uses device-independent pixels when measuring UI controls. This allows you to declare one layout and this layout will look similar to all devices (no matter the device's display resolution). In order to get a proper image quality for high resolution devices (like iPhone retina and Android Full HD), camera will return an image with bigger dimensions. For example, if we request an image that is 100x100, on iPhone 6 the actual image will be 200x200 (since its display density factor is 2 -> 100*2x100*2).
-Setting the `keepAspectRatio` property could result in a different than requested width or height. The camera will return an image with the correct aspect ratio but generally only one (from width and height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image.
-
-**Example 3** shows how to use the options parameter:
-
-#### Example 3: How to setup `width`, `height`, `keepAspectRatio` and `saveToGallery` properties for the camera module
+By default, the `camera.takePicture()` method takes a huge image (even mid-level devices with a `5MP` camera produce a `2580x2048` image, which in bitmap means approximately `15MB`). So taking a big picture is just a waste of memory. The `camera.takePicture()` method accepts an optional [CameraOptions](#cameraoptions) parameter that allows you to adjust the size and other aspects of the picture.
 
 ```JavaScript
 // JavaScript
@@ -132,9 +127,9 @@ camera.takePicture(options)
     });
 ```
 
-### Save a picture
+### Saving a picture
 
-To save a picture with the width & height that you have defined you must use the `imageAsset` and save it to the file system like so:
+To save a picture with the width & height that you have defined you must use the `imageAsset` and save it to the file system as follows:
 
 ```TypeScript
 import { ImageSource, knownFolders, path } from '@nativescript/core';
@@ -142,7 +137,7 @@ import { ImageSource, knownFolders, path } from '@nativescript/core';
 const source = new ImageSource();
 
 source.fromAsset(imageAsset)
-    .then((imageSource: ImageSource) => {
+        .then((imageSource: ImageSource) => {
         const folderPath: string = knownFolders.documents().path;
         const fileName: string = "test.jpg";
         const filePath: string = path.join(folderPath, fileName);
@@ -158,40 +153,29 @@ source.fromAsset(imageAsset)
 
 This could be used to create thumbnails for quick display within your application.
 
-### Check if the device has available camera
-
-The first thing that the developers should check if the device has an available camera.
-The method isAvaiable will return true if the camera hardware is ready to use or false if otherwise.
-
-```ts
-const isAvailable = camera.isAvailable();
-```
-
-> **Note**: This method will return false when used in iOS simulator (as the simulator does not have camera hardware)
-
 ## API
 
 ### Methods
 
-| Method                               | Description                                                                                                             |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| takePicture(options?: CameraOptions) | Take a photo using the camera with an optional parameter for setting different camera options.                          |
-| requestPermissions()                 | Request permission from the user for access to their saved photos as well as access to their camera. Returns a Promise. |
-| requestCameraPermissions()           | Request permission from the user for access to their camera. Returns a Promise.                                         |
-| requestPhotosPermissions()           | Request permission from the user for access to their saved photos. Returns a Promise.                                   |
-| isAvailable()                        | Is the device camera available to use.                                                                                  |
+| Method                               | Return Type | Description                                                                                                             |
+| ------------------------------------ |------------| ----------------------------------------------------------------------------------------------------------------------- |
+| `takePicture(options?: CameraOptions) `| `Promise<ImageAsset>`| Takes a photo using the camera with an optional parameter for setting different camera options.                          |
+| `requestPermissions()`                 | `Promise<any>`| Requests permission from the user to access their saved photos as well as access their camera.|
+| `requestCameraPermissions() `          | `Promise<any>` |Requests permission from the user for access to their camera.                                  |
+| `requestPhotosPermissions()`           | `Promise<any>`|Requests permission from the user for access to their saved photos. Returns a Promise.                                   |
+| `isAvailable()`                        |  `boolean`|Check if the device camera available to use.                                                                                  |
 
 ### CameraOptions
 
 | Property        | Default | Platform | Description                                                                                                                                                                                                                                                                                                                                                                              |
 | --------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| width           | 0       | Both     | Defines the desired width (in device independent pixels) of the taken image. It should be used with `height` property. If `keepAspectRatio` actual image width could be different in order to keep the aspect ratio of the original camera image. The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).  |
-| height          | 0       | Both     | Defines the desired height (in device independent pixels) of the taken image. It should be used with `width` property. If `keepAspectRatio` actual image width could be different in order to keep the aspect ratio of the original camera image. The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions). |
-| `keepAspectRatio` | true    | Both     | Defines if camera picture aspect ratio should be kept during picture resizing. This property could affect width or height return values.                                                                                                                                                                                                                                                 |
-| `saveToGallery`   | true    | Both     | Defines if camera picture should be copied to photo Gallery (Android) or Photos (iOS)                                                                                                                                                                                                                                                                                                    |
-| allowsEditing   | false   | iOS      | Defines if camera "Retake" or "Use Photo" screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                                                                                                                    |
-| cameraFacing    | rear    | Both     | The initial camera facing. Use `'front'` for selfies.                                                                                                                                                                                                                                                                                                                                    |
-| modalPresentationStyle    | 0    | iOS     | Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen)                                                                                                                                                                                                                                                                                                                                   |
+| `width`           | `0`       | Both     | The desired width of the picture (in device independent pixels). The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).  |
+| `height`          | `0`       | Both     | The desired height of the picture (in device independent pixels). The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions). |
+| `keepAspectRatio` | `true`    | Both     | Defines if camera picture aspect ratio should be kept during picture resizing. The camera will return an image with the correct aspect ratio but generally only one (width or height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image.|
+| `saveToGallery`   | `true`    | Both     | A boolean parameter that indicates if the original taken photo will be saved in `Photos` for Android and in `Camera Roll` in iOS.                                                                                                                                                                                                                                                             |
+| `allowsEditing`   | `false`   | iOS      | Defines if camera "Retake" or "Use Photo". Screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                                                                                                                    |
+| `cameraFacing`    | `'rear'`    | Both     | The initial camera facing. Use `'front'` for selfies.                                                           | `modalPresentationStyle`    | `0`    | iOS     | Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen). |
 
-> **Note**: The `saveToGallery` option might have unexpected behavior on Android! Some vendor camera apps (e.g. LG) will save all captured images to the gallery regardless of what the value of `saveToGallery` is. This behavior cannot be controlled by the camera plugin and if you must exclude the captured image from the photo gallery, you will need to get a local storage read/write permission and write custom code to find the gallery location and delete the new image from there.
+
+> **Note**: The `saveToGallery` option might have unexpected behavior on Android! Some vendor camera apps (e.g. LG) will save all captured images to the gallery regardless of what the value of `saveToGallery` is. This behavior cannot be controlled by the camera plugin and if you need to exclude the captured image from the photo gallery, you will need to get a local storage read/write permission and write custom code to find the gallery location and delete the new image from there.
 
