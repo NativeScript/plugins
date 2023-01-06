@@ -232,7 +232,7 @@ Contacts.getContactById(contactId).then(
 );
 ```
 
-#### Getting contacts groups
+### Getting contacts groups
 To get contacts group(s), use the `getGroups()` method. To get a contacts group with a specific name, call the method with the name of the group.
 
 ```ts
@@ -259,8 +259,8 @@ Contacts
 	);
 ```
 
-#### Save a new group
-
+### Saving a new contacts group
+To save a new contacts group, create an instance of the `Group` class, set the name and call the `save()` method on the instance.
 ```ts
 import { Group } from '@nativescript/contacts/models';
 
@@ -272,7 +272,8 @@ groupModel.name = 'Test Group';
 groupModel.save(false);
 ```
 
-#### Delete a group
+### Deleting a contacts group
+To delete a contacts group, call the `getGroups()` method to the group of interest. Then call the `delete()` method on that group to delete it.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -296,14 +297,14 @@ Contacts.getGroups('Test Group').then(
 );
 ```
 
-#### Add Member To Group
+### Adding A Contact To A Group
+To add a contact to a group, get the references to the contact and the group and then call the `addMember()` on the group to add the contact.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
 
 Contacts.getContact().then(function (args) {
-	/// args.data: Generic cross platform JSON object
-	/// args.reponse: "selected" or "cancelled" depending on wheter the user selected a contact.
+	/// args.reponse: "selected" or "cancelled" depending on whether the user selected a contact.
 
 	if (args.response === 'selected') {
 		const contact = args.data; //See data structure below
@@ -322,13 +323,13 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-#### Remove Member From Group
+### Removing A Contact From Group
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
 
 Contacts
-	.getGroups('Test Group') //[name] optional. If defined will look for group with the specified name, otherwise will return all groups.
+	.getGroups('Test Group') 
 	.then(
 		function (args) {
 			if (args.data !== null) {
@@ -336,8 +337,7 @@ Contacts
 
 				Contacts.getContactsInGroup(group).then(
 					function (a) {
-						/// Returns args:
-						/// args.data: Generic cross platform JSON object, null if no groups were found.
+						
 						/// args.reponse: "fetch"
 						console.log('getContactsInGroup complete');
 
@@ -359,7 +359,9 @@ Contacts
 	);
 ```
 
-#### getContactsInGroup: Get all contacts in a group. Returns an array of contact data.
+### Getting All The Contacts of a Group
+To get all of a group's contacts, use the `Contacts.getContactsInGroup` method passing the group instance.
+
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -390,7 +392,7 @@ Contacts
 	);
 ```
 
-### Single User Data Structure
+### Single Contact Data Structure
 
 ```ts
 {
@@ -430,7 +432,7 @@ Contacts
 }
 ```
 
-### PhoneNumber / EmailAddress structure
+### PhoneNumber / EmailAddress Structure
 
 ```ts
 {
@@ -468,7 +470,7 @@ Contacts
 
 ### Known Labels (for Urls, Addresses and Phones)
 
-The following constants are exposed from the plugin in the `KnownLabel` structure. See details bellow for what types and on what platform they are supported
+The plugin exposes the following labels via the `KnownLabel` object to be used for the contact data.
 
 - **HOME**
   iOS - _phone, email, postal, url_
@@ -531,8 +533,11 @@ Those are the system labels but you can also use any custom label you want.
 
 ```ts
 {
-	id: '';
-	name: '';
+	id: string,
+	name: string,
+	addMember: (constact: Contact) => void
+	removeMember: (constact: Contact) => void
+
 }
 ```
 
@@ -552,7 +557,7 @@ The object returned by contact fetch requests.
 See apples docs on properties available:
 https://developer.apple.com/library/mac/documentation/Contacts/Reference/CNContact_Class/index.html#//apple_ref/occ/cl/CNContact
 
-NOTE: Since the plugin uses the Contact framework it is supported only on iOS 9.0 and above!
+NOTE: Since the plugin uses the Contact framework, it is supported only on iOS 9.0 and above!
 
 ## Credit
 
