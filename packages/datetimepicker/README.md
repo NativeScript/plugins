@@ -1,8 +1,6 @@
 # @nativescript/datetimepicker
 
-A plugin that provides UI elements for picking date and time - `DatePickerField`, `TimePickerField` and `DateTimePickerFields` . These UI elements are all subclasses of the [TextField](https://docs.nativescript.org/ui/textfield) that show selected date and/or time and allow picking another after being tapped. There is also a `DateTimePicker` class which provides static methods `pickDate` and `pickTime` that can be called to show the same dialog picker as the fields.
-
-## Screenshots
+A plugin that provides UI elements for picking date and time - `DatePickerField`, `TimePickerField` and `DateTimePickerFields` . These UI elements are all subclasses of the [TextField](https://docs.nativescript.org/ui/textfield). There is also a `DateTimePicker` class which provides static methods `pickDate` and `pickTime` that can be called to show the same dialog picker as the fields.
 
 <img alt="DatePickerField on iOS (left) and Android (right)"  src="https://raw.githubusercontent.com/NativeScript/nativescript-datetimepicker/master/docs/date_picker_field.png" width="500px"/>
 
@@ -68,28 +66,27 @@ Then use it in a `template` as follows:
 <TimePickerField hint="select time"></TimePickerField>
 <DateTimePickerFields hintDate="select date" hintTime="select time"></DateTimePickerFields>
 ```
+## Customizing the DatePickerField and TimePickerField Pickers
 
 ### Setting Date and Time 
-To set time for the `DateTimePickerField` to a specific value, you have to set the value of the [date]() property to the desired time accompanied with a date.
+
+To set the time of the `TimePickerField` to a specific value, use the `time` property.
 ```xml
-<datetime:DatePickerField date="2019/02/24 14:00"/>
-```
-If you're interested only in a time, use the `TimePickerField` and set its `time` property to the time of interest.
-```xml
-<TimePickerField time="01:00" timeFormat="'time': HH:mm"></TimePickerField>
+<TimePickerField time="01:00"></TimePickerField>
 ```
 `TimePickerField`'s `time` property can parse values in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Times) format. 
 
-For date-only, use the  `DatePickerField` element and set its `date` property to the date you want.
+Use the `date` property to the date to a certain date.
 ```xml
 <DatePickerField date="2019/02/24"></DatePickerField>
 ```
 
 `DatePickerField`'s `date` property will just pass the string you provide as a parameter to the [Date constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), while the 
 
-### Changimng the  Picker Title and Button text
+### Changing the  Picker Title and Buttons text
 
-When one of the fields is tapped, a popup is opened. The popup has an OK and Cancel buttons and an optional title. Their text values are controlled respectively by the properties `pickerOkText`, `pickerCancelText` and `pickerTitle`. By default, the texts of the buttons OK and Cancel are `OK` and `Cancel` on iOS, and a localized version of OK and Cancel, dependent on the current setting of the device on Android. The `pickerTitle` is undefined. You can change those values as follows:
+When one of the fields is tapped, a popup is opened. The popup has an OK and Cancel buttons and an optional title. 
+To change those texts, use the `pickerOkText`, `pickerCancelText` and `pickerTitle` properties.
 
 ```xml
 <DatePickerField hint="tap to choose" pickerOkText="Approve" pickerCancelText="Reject" pickerTitle="Confirm predefined date selection" pickerDefaultDate="2019/05/15"></DatePickerField>
@@ -101,35 +98,85 @@ To set the locale of the components to a certain value, use their `locale` prope
 <DatePickerField locale="en_GB" hint="select date"></DatePickerField>       
 
 ```
-By default the `DatePickerField` and the `TimePickerField` will use the current language and region settings of the device to determine their locale. The locale is used for the names of the months, for the date picking spinners order (the month selector can be either the first or the second spinner) and whether the time is in 12h or 24h format. The `locale` property accepts values in the format specified [here](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html) as Locale ID. For example, using `en_GB` will result in month names spinner in the middle and values between 0 and 23 for the hours, while using `en_US` will result in month names spinner on the left and values between 1 and 12 for the hours.
+The locale is used for the names of the months, for the date picking spinners order (the month selector can be either the first or the second spinner) and whether the time is in 12h or 24h format. The `locale` property accepts values in the format specified [here](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html) as Locale ID. For example, using `en_GB` will result in month names spinner in the middle and values between 0 and 23 for the hours, while using `en_US` will result in month names spinner on the left and values between 1 and 12 for the hours.
 
-### Formatting the date and time
+### Formatting the date 
 
-Aside from the default formats that are dependent on the value of the `locale` property, you can add your custom format that can include ordering of the date/time values and also custom text. The property controlling the format in the `DatePickerField` is called `dateFormat` and the property controlling the format in the `TimePickerField` is `timeFormat`. Changing the default formats is demonstrated in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.xml#L42), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.html#L37) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L39) applications.
+Aside from the default formats that are dependent on the value of the `locale` property, you can add your custom format that can include ordering of the date/time values and also custom text. To change the date format, use the `dateFormat` property.
 
-- Minimum and Maximum Dates
+```xml
+<DatePickerField date="2019/02/24" dateFormat="'my date': dd-MMMM-yyyy"/> 
+```
 
-The `DatePickerField` has a `minDate` and `maxDate` properties that allow limiting the values that can be selected. This is demonstrated in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.xml#L23), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.html#L18) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L20) applications.
+### Setting the Minimum and Maximum Dates
 
-- Using 12 h and 24 h Time Formats
+To set the minimum and maximum dates, use the `minDate` and `maxDate` properties.
 
-The `TimePickerField` will determine whether to use 12 or 24 hour format (for formatting of the selected time in the field and for the values of the hour spinner) based on the selected region in the settings of the iOS device and based on the Use 24-Hour Format settings of the Android device. To change the default setting on Android, you need to use the `timeFormat` property and to change the setting on iOS, you need to use the `locale` property. Here's an example in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.xml#L66), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.html#L61) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L63) applications.
+```html
+<DatePickerField minDate="2020/02/02" maxDate="2021/02/02" hint="tap to select"/>
+```
 
-- CSS
+### Formating the time
 
-You can use css to style the `DatePickerField` and the `TimePickerField`. The field itself can be styled just as every other `TextField`, additionally the picker supports changing of its colors through predefined css classes: `date-time-picker` (picker background and title text color), `date-time-picker-spinners` (background and text color of the date/time selecting spinners), `date-time-picker-buttons` (background and text color of the OK/Cancel buttons), `date-time-picker-button-ok` and `date-time-picker-button-cancel` (to provide a separate style for each button). Please note that the iOS native implementation has limited capabilities for the buttons background colors. When a button is marked as a Cancel button, its background is always white and can't be changed. If you really need a cancel button with another color, you can pass a background color through the designated cancel button class, however this will change the picker layout and place the cancel button along with the OK button and they will both have the same background color.
+The `TimePickerField` will determine whether to use 12 or 24 hour format (for formatting of the selected time in the field and for the values of the hour spinner) based on the selected region in the settings of the iOS device and based on the `Use 24-Hour Format` setting of the Android device. To change the default setting on Android, you need to use the `timeFormat` property and to change the setting on iOS, you need to use the `locale` property. 
+
+```html
+<TimePickerField time="16:00" timeFormat="h:mm a" locale="en_US" />
+```
+
+### Styling the pickers with CSS
+
+You can use css to style the `DatePickerField` and the `TimePickerField`. The picker supports changing of its colors through predefined css classes: 
+
+- `date-time-picker`: picker background and title text color)
+- `date-time-picker-spinners`: background and text color of the date/time selecting spinners
+- `date-time-picker-buttons`: background and text color of the OK/Cancel buttons
+- `date-time-picker-button-ok` and `date-time-picker-button-cancel`: to provide a separate style for each button. 
+
+> **Note** that the iOS native implementation has limited capabilities for the buttons background colors. When a button is marked as a Cancel button, its background is always white and can't be changed. If you really need a cancel button with another color, you can pass a background color through the designated cancel button class, however this will change the picker layout and place the cancel button along with the OK button and they will both have the same background color.
+
 
 <img alt="DatePickerField with CSS applied on iOS (left) and Android (right)" src="https://raw.githubusercontent.com/NativeScript/nativescript-datetimepicker/master/docs/date_picker_field_css.png" width="500px"/>
 
-Here's the css used to achieve the above result, as used in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.css#L22), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.css#L22) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L350) applications.
+<!-- Here's the css used to achieve the above result, as used in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.css#L22), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.css#L22) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L350) applications. -->
+
+```css
+timepickerfield,
+datepickerfield {
+    padding: 12 4;
+}
+
+timepickerfield.apply-css,
+datepickerfield.apply-css {
+    color: #CDDC39;
+    background-color: #00796B;
+    font-size: 20;
+    font-weight: bold;
+    padding: 20;
+}
+
+.date-time-picker.apply-css {
+    color: #00796B;
+    background-color: #CDDC39;
+}
+
+.date-time-picker-spinners.apply-css {
+    color: #CDDC39;
+    background-color: #00796B;
+}
+
+.date-time-picker-buttons.apply-css {
+    color: #00796B;
+}
+Footer
+```
 
 To apply styles at runtime when opening the DateTimePicker you can do the following:
 
 ```ts
 import { DateTimePicker, DateTimePickerStyle } from '@nativescript/datetimepicker';
-import { Application, Button } from '@nativescript/core';
-
-export function someButtonTapToOpenThePicker(args) {
+import { Application, View} from '@nativescript/core';
+function createPicker(args: EventData) {
 	const dateTimePickerStyle = DateTimePickerStyle.create(args.object as any);
 
     // This example handles styling the calendar for light and dark mode of the device settings
@@ -153,14 +200,12 @@ export function someButtonTapToOpenThePicker(args) {
 
      DateTimePicker.pickDate(
       {
-        context: (args.object as Button)._context,
-        date: yourDateValue
-        minDate: subYears(new Date(), 10),
-        maxDate: new Date(),
-        title: 'DatePicker'
+        context: (args.object as View)._context,
+        minDate: new Date((new Date() as any) -1),
+        title: 'DatePicker',
         okButtonText: 'Okay',
         cancelButtonText: 'Cancel',
-        locale: 'en'
+        locale: 'es'
       },
       dateTimePickerStyle
     ).then((result) => {
@@ -169,11 +214,11 @@ export function someButtonTapToOpenThePicker(args) {
 }
 ```
 
-### DateTimePickerFields
+## Customizing the  DateTimePickerFields
 
 The `DateTimePickerFields` extends `GridLayout` that contains instances of `DatePickerField` and `TimePickerField`, when tapped, they open a picker dialog that allows date/time selection.
 
-- Getting/Setting Date and Time
+###  Getting/Setting the Date and Time
 
 The `DateTimePickerFields` has a `date` property which can be used to get its current value. You can also set its value through markup. `DateTimePickerFields`' `date` property will just pass the string you provide as a parameter to the [Date constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date). Here's an example in the [demo](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo/app/home/home-page.xml#L109), [demo-angular](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-angular/src/app/home/home.component.html#L104) and [demo-vue](https://github.com/NativeScript/nativescript-datetimepicker/blob/master/demo-vue/app/components/Home.vue#L106) applications.
 
