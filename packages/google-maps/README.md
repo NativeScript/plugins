@@ -307,6 +307,7 @@ A projection is used to translate between on screen location and geographic coor
 | fromScreenLocation(point: { x: number; y: number }) | Returns the geographic location that corresponds to a screen location.
 | getVisibleRegion() | Gets a projection of the viewing frustum for converting between screen coordinates and geo-latitude/longitude coordinates.
 | toScreenLocation(coordinate: Coordinate) | Returns a screen location that corresponds to a geographical coordinate.
+| containsCoordinate(coordinate: Coordinate) | Returns true if the coordinate is visible in the current viewport.
 
 ### UI Settings
 
