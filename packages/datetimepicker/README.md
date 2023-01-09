@@ -368,32 +368,31 @@ function onPickTimeTap (args) {
 | `cancelButtonText` |`string` | _Optional_: Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                              |
 
 ### TimePickerOptions
-
-| Property           | Description                                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `context`          | View's context.                                                                                                                                                                                                                                                                                                                                                                                 |
-| `time`             | The time that will be displayed in the picker, (if not provided, the picker will display now).                                                                                                                                                                                                                                                                                                  |
-| `is24Hours`        | This value will be used only on Android to determine whether the picker will be in 12 or 24 hour format.                                                                                                                                                                                                                                                                                        |
-| `locale`           | Identifier of a locale that will be used to create locale-specific time formatter of the time (with `de_DE` locale “vorm.”/”nachm.” will be used to show whether time is before/after noon, with `en_US` locale “am”/”pm” will be used, default is based on the device’s locale settings). The locale will also be used on iOS to determine whether the picker will be in 12 or 24 hour format. |
-| `title`            | Text that will be displayed as title of the picker, default is undefined.                                                                                                                                                                                                                                                                                                                       |
-| `okButtonText`     | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).                                                                                                                                                                                                                                               |
-| `cancelButtonText` | Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                                                                                                                                                                             |
+| Property | Type | Description | 
+|----------|--------|-----------------|
+| `context`          | `any` | View's context. Obtained from the `_context` property of a View instance.|
+| `time`             | `Date` | _Optional_: The time that will be displayed in the picker, (if not provided, the picker will display now). |
+| `is24Hours`        | `boolean` |_Optional_: This value will be used only on Android to determine whether the picker will be in 12 or 24 hour format. |
+| `locale`           | `string`| _Optional_: Identifier of a locale that will be used to localize month names and am/pm texts.|
+| `title`            | `string` | _Optional_: Text that will be displayed as title of the picker.|
+| `okButtonText`     | `string` | _Optional_:  Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings)).|
+| `cancelButtonText` | `string` | _Optional_:  Text for the cancel button of the picker (default is `Cancel` on iOS, localized version of Cancel on android (based on the devices locale settings)).                                                                                                                                                                                                                                             |
 
 ### DateTimePickerStyle
 
-| Property                      | Description                                                                                                |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `titleTextColor`              | Color to be used for the title text.                                                                       |
-| `dialogBackgroundColor`       | Color to be used as a background of the dialog picker.                                                     |
-| `spinnersTextColor`           | Color to be used for the texts of the date/time spinners.                                                  |
-| `spinnersBackgroundColor`     | Color to be used as a background of the date/time spinners.                                                |
-| `buttonsTextColor`            | Color to be used for the texts of the ok/cancel buttons.                                                   |
-| `buttonsBackgroundColor`      | Color to be used as a background of the ok/cancel buttons.                                                 |
-| `buttonOkTextColor`           | Color to be used for the texts of the ok button.                                                           |
-| `buttonOkBackgroundColor`     | Color to be used as a background of the ok button.                                                         |
-| `buttonCancelTextColor`       | Color to be used for the texts of the cancel button.                                                       |
-| `buttonCancelBackgroundColor` | Color to be used as a background of the cancel button.                                                     |
-| `create(view: View)`          | Creates a style based on any css provided. The parameter is a View with the properly setup css class name. |
+| Property                      | Type | Description  | 
+|-------------------------------|------|--------------|
+| `titleTextColor`              | `Color` | Color to be used for the title text.                                                                       |
+| `dialogBackgroundColor`       | `Color` | Color to be used as a background of the dialog picker.                                                     |
+| `spinnersTextColor`           | `Color` | Color to be used for the texts of the date/time spinners.                                                  |
+| `spinnersBackgroundColor`     | `Color` | Color to be used as a background of the date/time spinners.                                                |
+| `buttonsTextColor`            | `Color` | Color to be used for the texts of the ok/cancel buttons.                                                   |
+| `buttonsBackgroundColor`      | `Color` | Color to be used as a background of the ok/cancel buttons.                                                 |
+| `buttonOkTextColor`           | `Color` | Color to be used for the texts of the ok button.                                                           |
+| `buttonOkBackgroundColor`     | `Color` | Color to be used as a background of the ok button.                                                         |
+| `buttonCancelTextColor`       | `Color` | Color to be used for the texts of the cancel button.                                                       |
+| `buttonCancelBackgroundColor` | `Color` | Color to be used as a background of the cancel button.                                                     |
+| `create(view: View)`          | `DateTimePickerStyle` | Creates a style based on any css provided. The parameter is a View with the properly setup css class name. |
 
 ## License
 
