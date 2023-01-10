@@ -1,6 +1,6 @@
 # @nativescript/datetimepicker
 
-A plugin that provides UI elements for picking date and time - `DatePickerField`, `TimePickerField` and `DateTimePickerFields` . The `DatePickerField` and `TimePickerField` extend the  [TextField](https://docs.nativescript.org/ui/textfield) view and the `DateTimePickerFields` extends the [GridLayout](https://docs.nativescript.org/ui/gridlayout) layout container that contains instances of the `DatePickerField` and `TimePickerField` components. There is also a `DateTimePicker` class which provides static methods `pickDate()` and `pickTime()` that can be called to show the same dialog picker as the fields.
+A plugin that provides the UI elements `DatePickerField`, `TimePickerField` and `DateTimePickerFields` for picking a date and a time. The `DatePickerField` and `TimePickerField` components extend the [TextField](https://docs.nativescript.org/ui/textfield) view, while the `DateTimePickerFields` extends the [GridLayout](https://docs.nativescript.org/ui/gridlayout) layout container that contains instances of the `DatePickerField` and `TimePickerField` components. There is also a `DateTimePicker` class which provides static methods `pickDate()` and `pickTime()` that can be called to show the same dialog picker as the fields.
 
 <img alt="DatePickerField on iOS (left) and Android (right)"  src="https://raw.githubusercontent.com/NativeScript/nativescript-datetimepicker/master/docs/date_picker_field.png" width="500px"/>
 
@@ -73,9 +73,8 @@ To set the selected time of the `TimePickerField` to a specific value, use the `
 ```xml
 <TimePickerField time="01:00"></TimePickerField>
 ```
-`TimePickerField`'s `time` property can parse values in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Times) format. 
 
-The `DatePickerField` and `DateTimePickerFields` components use the `date` property to set their date selected(and time for `DateTimePickerFields`) value. 
+The `DatePickerField` and `DateTimePickerFields` components both use the `date` property to set their selected date(and the time for `DateTimePickerFields`) value. 
 
 ```xml
 <DatePickerField date="2019/02/24"></DatePickerField>
@@ -85,8 +84,7 @@ The `DatePickerField` and `DateTimePickerFields` components use the `date` prope
 
 ### Changing the Picker Titles and Buttons labels
 
-When one of the fields is tapped, a popup is opened. The popup has an OK and Cancel buttons and an optional title. 
-To change those texts, use the `pickerOkText`, `pickerCancelText` and `pickerTitle` properties.
+To change the titles and the button labels of the picker's popups, use the `pickerOkText`, `pickerCancelText` and `pickerTitle` properties.
 
 ```xml
 <DatePickerField hint="tap to choose" pickerOkText="Approve" pickerCancelText="Reject" pickerTitle="Confirm predefined date selection" pickerDefaultDate="2019/05/15"></DatePickerField>
@@ -104,7 +102,7 @@ The `DateTimePickerFields` has the additional `pickerTitleDate` for the date pic
 
 ### Setting Localization
 
-To set the locale of the `DatePickerField` and `DateTimePickerFields` components to a certain value, use the `locale` property.
+To localize the `DatePickerField` and `DateTimePickerFields` components, use the `locale` property.
 
 ```xml
 <DatePickerField locale="en_GB" hint="select date"></DatePickerField> 
@@ -113,8 +111,6 @@ To set the locale of the `DatePickerField` and `DateTimePickerFields` components
                         pickerOkText="Bestätigen" pickerCancelText="Stornieren"
                         pickerTitleDate="Datum auswählen" pickerTitleTime="Zeit wählen" />
 ```
-
-The locale is used for the names of the months, for the date picking spinners order (the month selector can be either the first or the second spinner) and whether the time is in 12h or 24h format. The `locale` property accepts values in the format specified [here](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html) as Locale ID.
 
 ### Formatting the date and time
 
@@ -138,7 +134,7 @@ For the `DateTimePickerFields` picker, use the same properties( `dateFormat`, `t
 
 ### Setting the Minimum and Maximum Dates
 
-To set the minimum and maximum dates, use the `minDate` and `maxDate` properties for the `DatePickerField` and `DateTimePickerFields` picker elements.
+To set the minimum and maximum dates, use the `minDate` and `maxDate` properties for the `DatePickerField` and `DateTimePickerFields` components.
 
 ```html
 <DatePickerField minDate="2020/02/02" maxDate="2021/02/02" hint="tap to select"/>
@@ -158,7 +154,7 @@ To lay out the picker fields in the horizontal(default) or vertical direction, u
 
 ### Styling the pickers with CSS
 
-You can use css to style the `DatePickerField` and the `TimePickerField` pickers. The same styling applies to the pickers contained in `DateTimePickerFields` component. The picker supports changing of its colors through predefined css classes: 
+You can use CSS to style the `DatePickerField` and the `TimePickerField` pickers. The same styling applies to the pickers contained in `DateTimePickerFields` component. The picker supports changing its colors through the following predefined CSS classes: 
 
 - `date-time-picker`: picker background and title text color)
 - `date-time-picker-spinners`: background and text color of the date/time selecting spinners
@@ -248,10 +244,10 @@ function createPicker(args: EventData) {
 
 ### DateTimePicker
 
-Internally `DatePickerField` and `TimePickerField` call `DateTimePicker`'s `pickDate` and `pickTime` methods which are public, so they can also be manually called in case a more customized picker is desired. The `pickDate` method accepts [DatePickerOptions](#datepickeroptions), while the `pickTime` method accepts [TimePickerOptions](#timepickeroptions). These options allow having the same features as in the fields. 
+Internally `DatePickerField` and `TimePickerField` call the `pickDate` and `pickTime` methods of the `DateTimePicker` which are public, so they can also be manually called in case a more customized picker is desired. The `pickDate` method accepts [DatePickerOptions](#datepickeroptions), while the `pickTime` method accepts [TimePickerOptions](#timepickeroptions). These options allow having the same features as in the fields. 
 
 ```ts
-function onPickDateTap (args) {
+function onPickDateTap (args: EventData) {
                 const dateToday = new Date();
                 const dateTomorrow = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate() + 1);
                 const dateNextWeek = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate() + 7);
@@ -275,7 +271,7 @@ function onPickDateTap (args) {
             },
 ```
 ```ts
-function onPickTimeTap (args) {
+function onPickTimeTap (args: EventData) {
                 const dateToday = new Date();
                 const dateTomorrow = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate() + 1);
                 dateTomorrow.setHours(8);
@@ -316,9 +312,9 @@ function onPickTimeTap (args) {
 
 ### TimePickerField API
 
-| Property            | Type |Description |
+| Property            | Type | Description |
 | ------------------- | ---------|-------------------- |
-| `time`              | `Date` | The time the picker field is currently displaying. If it is in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Times) format, it is passed to the JS `Date` constructor. |
+| `time`              | `Date` | The time the picker field is currently displaying. If it is in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Times) format, it is passed to the JS `Date` constructor. | 
 | `locale` | `string` |  Gets or sets a locale for displaying the date in the field, and also for the picker. Default value is `undefined`, meaning that the format will be based on the device's settings.|
 | `hint` | `string` | Gets or sets the hint text. Hint is the text that is displayed in the field when `time` is null.|
 | `timeFormat`| `string`        | Format used for the text in the picker field (on Android used as a pattern for a [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat), on iOS used as a dateFormat for [NSDateFormatter](https://developer.apple.com/documentation/foundation/nsdateformatter), default is generated by the current value of the locale property), the format will also be used on Android to determine whether the picker will be in 12 or 24 hour format. |
