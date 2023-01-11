@@ -1,12 +1,12 @@
 # @nativescript/auto-fit-text
 
-## Install
+## Installation
 
 ```cli
 npm install @nativescript/auto-fit-text
 ```
 
-This plugin is based on the Nativescript Label implementation but with changes to adjust the font size according to the label's width.
+This plugin extends the Nativescript [Label](https://docs.nativescript.org/ui/label) with changes to adjust the font size according to the label's width.
 
 ## Using AutoFitText
 
