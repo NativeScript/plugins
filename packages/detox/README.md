@@ -238,10 +238,10 @@ You should now be able to write tests to simulate user behavior and test for exp
 
 ### Building
 
-Build your app for testing using the following command:
+Build your app for testing using the following command with the value for the `-c` flag being any of the properties of `configuration` object' in `.detoxrc.js`:
 
 ```cli
-detox build -c ios|android
+detox build -c ios.sim.debug|android.emu.debug
 ```
 
 ### Testing
@@ -249,7 +249,7 @@ detox build -c ios|android
 Run your tests with the folling command:
 
 ```cli
-detox test -c ios|android
+detox test -c ios.sim.debug|android.emu.debug
 ```
 
 **NOTE:** If using an Android emulator, Detox will disable animations when the tests are ran. Animations will remain disabled after they are finished. This can be very annoying when you are actively developing. You can re-enable animations by running this helper script from your project's directory `./node_modules/.bin/enable-animations`.
@@ -258,12 +258,13 @@ To make this even easier I would suggest adding these scripts to your `package.j
 
 ```json
 {
-	"scripts": {
-		"e2e:android:build": "detox build -c android",
-		"e2e:android:test": "detox test -c android && ./node_modules/.bin/enable-animations",
-		"e2e:ios:build": "detox build -c ios",
-		"e2e:ios:test": "detox test -c ios"
-	}
+	"scripts":{
+    "e2e:android:build": "android.att.debug",
+    "e2e:android:build:debug": "ns clean; ns build android; detox build -c android.emu.debug",
+		"e2e:android:debug:test": "detox test -c android.emu.debug && ./node_modules/.bin/enable-animations",
+		"e2e:ios:build:debug": "detox build -c ios.sim.debug --env.e2e",
+		"e2e:ios:test": "detox test -c ios.sim.debug"
+  },
 }
 ```
 
@@ -272,24 +273,24 @@ Now to build and run tests you would run:
 Android:
 
 ```cli
-npm run e2e:android:build
-npm run e2e:android:test
+npm run e2e:android:build:debug
+npm run e2e:android:test:debug
 ```
 
 iOS:
 
 ```cli
-npm run e2e:ios:build
+npm run e2e:ios:build:debug
 npm run e2e:ios:test
 ```
 
 ## Troubleshooting
 
-Detox requires a minimum SDK version of 21, so if you get the following error, change the `minSdkVersion` to 21 in `App_Resources/Android/app.gradle`.
+Detox requires a minimum SDK version of `21`, so if you get the following error, change the `minSdkVersion` to 21 in `App_Resources/Android/app.gradle`.
 
 ```bash
 Execution failed for task ':app:processDebugAndroidTestManifest'.
-Manifest merger failed : uses-sdk:minSdkVersion 17 cannot be smaller than version 18 declared in library [com.wix:detox:17.6.1] /Users/user/.gradle/caches/transforms-2/files-2.1/91a3acd87d710d1913b266ac114d7001/jetified-detox-17.6.1/AndroidManifest.xml as the library might be using APIs not available in 17
+Manifest merger failed : uses-sdk:minSdkVersion 17 cannot be smaller than version 18 declared in library [com.wix:detox:17.6.1] /Users/user/.gradle/caches/transforms-2/files-2.1/91a3acd87d710d1913b266ac114d7001/jetified-detox-17.6.1/`AndroidManifest.xml` as the library might be using APIs not available in 17
         Suggestion: use a compatible library with a minSdk of at most 17,
                 or increase this project's minSdk version to at least 21,
                 or use tools:overrideLibrary="com.wix.detox" to force usage (may lead to runtime failures)
