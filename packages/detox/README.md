@@ -29,13 +29,13 @@ The full setup requirements can be found [here](https://github.com/wix/Detox/blo
 
 ### Install Detox command line tools (`detox-cli`)
 
-```bash
+```cli
 npm install -g detox-cli
 ```
 
 ### Install [applesimutils](https://github.com/wix/AppleSimulatorUtils) (iOS)
 
-```bash
+```cli
 brew tap wix/brew
 brew install applesimutils
 ```
@@ -44,36 +44,35 @@ brew install applesimutils
 
 ### Install the Detox package to your NativeScript project
 
-```bash
+```cli
 npm install detox --save-dev
 ```
 
 ### Install Jest
 
-```bash
+```cli
 npm install jest jest-cli jest-circus --save-dev --no-package-lock
 ```
 
 ### Initialize Detox
 
-```bash
+```cli
 detox init -r jest
 ```
 
 If things go well, you should to have this set up:
 
 - An `e2e/` folder in your project root
-- An `e2e/config.json` file; [example](https://github.com/wix/Detox/blob/master/examples/demo-react-native-jest/e2e/config.json)
-- An `e2e/environment.js` file; [example](https://github.com/wix/Detox/blob/master/examples/demo-react-native-jest/e2e/environment.js)
-- An `e2e/firstTest.e2e.ts` file with content similar to [this](https://github.com/wix/Detox/blob/master/examples/demo-react-native-jest/e2e/app-hello.e2e.ts).
+- An `e2e/jest.config.js` file
+- An `e2e/starter.test.js` file; [example](https://github.com/wix/Detox/blob/master/examples/demo-react-native-jest/e2e/environment.js)
 
-There should also be a file called `.detoxrc.json` in your project root.
+There should also be a Detox configuration file called `.detoxrc.js` in your project root.
 
 ### Configure Detox
 
-Detox must be configued to know the location of the iOS and Android app binary as well as what emulator/simulator to use.
+Detox must be configured to know the location of the iOS and Android app binary as well as what emulator/simulator to use.
 
-Open `.detoxrc.json` and make the following modifications under `apps` and `devices`.
+Open `.detoxrc.js` and make the following modifications under `apps` and `devices`.
 
 - `binaryPath`: Specify the location of the app binary (probably something like below).
 
@@ -86,53 +85,96 @@ Open `.detoxrc.json` and make the following modifications under `apps` and `devi
   - Android: `ns build android --detox --env.e2e`
 
 - `devices`:
-  - iOS: `"type": "iPhone 11"`
+  - iOS: `"type": "iPhone 14 Pro Max"`
   - Android: `"avdName": "Pixel_4_API_30"` (use `emulator -list-avds` to list Android emulators)
 
 Here is a full example of a Detox configuration:
 
-```json
-{
-  "testRunner": "jest",
-  "runnerConfig": "e2e/config.json",
-  "skipLegacyWorkersInjection": true,
-  "apps": {
-	"ios": {
-		"type": "ios.app",
-		"binaryPath": "platforms/ios/build/Debug-iphonesimulator/[APP_NAME].app",
-		"build": "ns build ios"
-	},
-	"android": {
-		"type": "android.apk",
-		"binaryPath": "platforms/android/app/build/outputs/apk/debug/app-debug.apk",
-		"build": "ns build android --detox"
-	}
-  },
-  "devices": {
-	"simulator": {
-		"type": "ios.simulator",
-		"device": {
-            "type": "iPhone 11 Pro"
-		}
-	},
-	"emulator": {
-		"type": "android.emulator",
-		"device": {
-			"avdName": "Pixel_4_API_30"
-		}
-	}
-  },
-  "configurations": {
-    "ios": {
-        "device": "simulator",
-        "app": "ios"
+```js
+ /** @type {Detox.DetoxConfig} */
+module.exports = {
+  testRunner: {
+    args: {
+      '$0': 'jest',
+      config: 'e2e/jest.config.js'
     },
-    "android": {
-        "device": "emulator",
-        "app": "android"
+    jest: {
+      setupTimeout: 120000
+    }
+  },
+  apps: {
+    'ios.debug': {
+      type: 'ios.app',
+      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/YOUR_APP.app',
+      build: 'xcodebuild -workspace platforms/ios/YOUR_APP.xcworkspace -scheme YOUR_APP -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build'
+    },
+    'ios.release': {
+      type: 'ios.app',
+      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/YOUR_APP.app',
+      build: 'xcodebuild -workspace platforms/ios/YOUR_APP.xcworkspace -scheme YOUR_APP -configuration Release -sdk iphonesimulator -derivedDataPath ios/build'
+    },
+    'android.debug': {
+      type: 'android.apk',
+      binaryPath: 'platforms/android/app/build/outputs/apk/debug/app-debug.apk',
+      build: 'cd platforms/android ; ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug ; cd -',
+      reversePorts: [
+        8081
+      ]
+    },
+    'android.release': {
+      type: 'android.apk',
+      binaryPath: 'platforms/android/app/build/outputs/apk/release/app-release.apk',
+      build: 'cd platforms/android ; ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release ; cd -'
+    }
+  },
+  devices: {
+    simulator: {
+      type: 'ios.simulator',
+      device: {
+        type: 'iPhone 14 Pro Max'
+      }
+    },
+    attached: {
+      type: 'android.attached',
+      device: {
+        adbName: '.*'
+      }
+    },
+    emulator: {
+      type: 'android.emulator',
+      device: {
+        avdName: 'Pixel_3a_API_30_x86'
+      }
+    }
+  },
+  configurations: {
+    'ios.sim.debug': {
+      device: 'simulator',
+      app: 'ios.debug'
+    },
+    'ios.sim.release': {
+      device: 'simulator',
+      app: 'ios.release'
+    },
+    'android.att.debug': {
+      device: 'attached',
+      app: 'android.debug'
+    },
+    'android.att.release': {
+      device: 'attached',
+      app: 'android.release'
+    },
+    'android.emu.debug': {
+      device: 'emulator',
+      app: 'android.debug'
+    },
+    'android.emu.release': {
+      device: 'emulator',
+      app: 'android.release'
     }
   }
-}
+};
+
 ```
 
 > **Note:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=21. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
@@ -152,7 +194,7 @@ Dependending on your setup iOS may not be able to communicate with Detox off the
 
 ## Usage
 
-Read through [this tutorial](https://github.com/wix/Detox/blob/master/docs/Introduction.WritingFirstTest.md) written by Detox about writing your first test. Nearly all of the things specified towards React Native apps also apply to NativeScript apps.
+Read through [this tutorial](https://github.com/wix/Detox/blob/master/docs/introduction/your-first-test.mdx) written by Detox about writing your first test. Nearly all of the things specified towards React Native apps also apply to NativeScript apps.
 
 Get started by opening the default test scenario in `e2e/firstTest.e2e.js`.
 
@@ -172,7 +214,7 @@ This example creates a testing scenario called `Example` and has a single test i
 
 ### Matchers
 
-Detox uses [matchers](https://github.com/wix/Detox/blob/master/docs/APIRef.Matchers.md) to find elements in your UI to interact with.
+Detox uses [matchers]https://github.com/wix/Detox/blob/master/docs/api/matchers.md) to find elements in your UI to interact with.
 
 You can use [NativeScript's `testID` property](https://blog.nativescript.org/nativescript-8-2-announcement/#testid) to find your UI elements using Detox's `by.id()` matcher.
 
@@ -198,7 +240,7 @@ You should now be able to write tests to simulate user behavior and test for exp
 
 Build your app for testing using the following command:
 
-```bash
+```cli
 detox build -c ios|android
 ```
 
@@ -206,7 +248,7 @@ detox build -c ios|android
 
 Run your tests with the folling command:
 
-```bash
+```cli
 detox test -c ios|android
 ```
 
@@ -229,14 +271,14 @@ Now to build and run tests you would run:
 
 Android:
 
-```bash
+```cli
 npm run e2e:android:build
 npm run e2e:android:test
 ```
 
 iOS:
 
-```bash
+```cli
 npm run e2e:ios:build
 npm run e2e:ios:test
 ```
