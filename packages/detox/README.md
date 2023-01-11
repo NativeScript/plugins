@@ -230,7 +230,7 @@ await element(by.id('testButton')).tap();
 
 ### Actions
 
-Once you find your UI element you can use an [action](https://github.com/wix/Detox/blob/master/docs/APIRef.ActionsOnElement.md) on it such as `tap()` to simulate user interaction.
+Once you find your UI element you can use an [action](https://github.com/wix/Detox/blob/master/docs/api/actions.md) on it such as `tap()` to simulate user interaction.
 
 You should now be able to write tests to simulate user behavior and test for expected results.
 
