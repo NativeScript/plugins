@@ -1,6 +1,6 @@
 # @nativescript/biometrics
 
-## Install
+## Installation
 
 ```cli
 npm install @nativescript/biometrics
@@ -18,7 +18,7 @@ import { BiometricAuth, BiometricIDAvailableResult } from "@nativescript/biometr
 ```
 ### Checking for support
 
-To check if the device support biometrics authentication, call the `available()`.
+To check if the device supports biometrics authentication, call the `available()` method.
 
 ```js
 var biometricAuth = new BiometricAuth();
@@ -54,8 +54,8 @@ This is the case in many Samsung devices. For example, Samsung Galaxy S10 has bo
 To verify a user's biometric, call the `verifyBiometric()` method.
 
 > **Note: iOS** 
-Use `Features->Face ID` menu items to enroll a face and signal successs/failure to recognize a face.
-`verifyBiometric()` will fail on IOS simulator unless `pinfallBack` is used.
+Use `Features->Face ID` menu items to enroll a face and signal a successs/failure to recognize a face.
+`verifyBiometric()` will fail on IOS simulator unless the `pinfallBack` option is used.
 
 ```typescript
 biometricAuth
@@ -75,7 +75,7 @@ biometricAuth
 
 ### Requirements for Face ID Auth (iOS)
 
-Face ID support was added iOS 11+. To allow Face ID support in your app, you need to state the reason for it by adding the value for the `NSFaceIDUsageDescription` key to the `app/App_Resources/ios/Info.plist` file:
+Support for Face ID was added in iOS 11+. To allow Face ID support in your app, you need to state the reason for it by adding the value for the `NSFaceIDUsageDescription` key to the `app/App_Resources/ios/Info.plist` file:
 
 ```xml
 <key>NSFaceIDUsageDescription</key>
@@ -84,7 +84,7 @@ Face ID support was added iOS 11+. To allow Face ID support in your app, you nee
 
 ### Detecting change in enrolled fingerprints (iOS)
 
-Since iOS 9 you can check if there is change in enrolled fingerprints since
+Since iOS 9 you can check if there is a change in enrolled fingerprints since
 the last time you checked it. It's recommended you add this check so you can counter hacker attacks
 to your app. See [this article](https://www.linkedin.com/pulse/fingerprint-trojan-per-thorsheim/) for more details.
 
@@ -112,7 +112,7 @@ biometricAuth.available().then((avail) => {
 
 If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometric()` method, then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea being that the key will not be accessible unless the user has successfully authenticated.
 
-This however is not foolproof and the most secure method is to pass the `secret` and `keyName`options to encrypt/decrypt text.
+This ,however, is not foolproof and the most secure method is to pass the `secret` and `keyName`options to encrypt/decrypt text.
 
 ### Encrypting/Decrypting with Authentication
 
@@ -120,7 +120,7 @@ The best practice is to use the options to encrypt some secret that is validated
 
 #### Encrypting your secret
 
-To encrypt a secret key name, pass the `secret` and `keyName`options to the `verifyBiometric()`. 
+To encrypt a secret key name, pass the `secret` and `keyName`options to the `verifyBiometric()` method. 
 
 ```typescript
 biometricAuth
@@ -140,7 +140,7 @@ biometricAuth
     	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
 ```
 
-For Android the encrypted result and vector would then be stored in your app and used the next time when signing in the user by calling the `verifyBiometric()` again:
+For Android the encrypted result and vector would then be stored in your app and used the next time when signing in the user by calling `verifyBiometric()` again:
 
 ####  Decrypting your secret
 
@@ -189,8 +189,8 @@ biometricAuth
 | Name | Return Type | Description|
 |-----|-------|-----------|
 |`available()`|`Promise<BiometricIDAvailableResult>`| Checks if biometric authentification is supported on the device. See [BiometricIDAvailableResult](#biometricidavailableresult) for more details.|
-| `didBiometricDatabaseChange(options?: VerifyBiometricOptions)`|`Promise<boolean>` | Checks if there is a change in a biometric.|
-| `verifyBiometric(options: VerifyBiometricOptions)`|`Promise<BiometricResult>`| Verifies the biometrics auth using the specified [VerifyBiometricOptions]() object. |
+| `didBiometricDatabaseChange(options?: VerifyBiometricOptions)`|`Promise<boolean>` | Checks if there is a change in a biometric of the user.|
+| `verifyBiometric(options: VerifyBiometricOptions)`|`Promise<BiometricResult>`| Verifies the biometrics auth using the specified [VerifyBiometricOptions](#verifybiometricoptions) object. |
 | `close()` | `void`| Closes Face/Fingerprint prompt. Will not do anything on Android if `pinFallBack` is `true`.|
 | `deleteKey(keyName?: string)`|`void`| Deletes the specified key. |
 
