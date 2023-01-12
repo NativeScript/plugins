@@ -12,7 +12,7 @@ Once you have installed the plugin, import and create an instance of the `Direct
 ```ts
 import { Directions } from "@nativescript/directions"
 
-cont directions = new Directions()
+const directions = new Directions()
 ```
 
 ### Checking for support
