@@ -1,5 +1,6 @@
 # @nativescript/background-http
 
+## Installation
 ```cli
 npm install @nativescript/background-http
 ```
@@ -8,7 +9,7 @@ npm install @nativescript/background-http
 
 ### Initializing http background service
 
-Before calling any method from the plugin, you should initialize a http background service by calling the `init` method in the `main.ts` file before the app starts.
+Before calling any method from the plugin, you should initialize an HTTP background service by calling the `init` method in the `main.ts` file before the app starts.
 
 ```typescript
 import { init } from '@nativescript/background-http';
@@ -44,7 +45,7 @@ For a single file upload, use the following code:
 var task = session.uploadFile(file, request);
 ```
 
-For multiple files or to pass additional data, use the multipart upload method. All parameter values must be strings:
+For multiple files or to pass additional data, use the `multipartUpload` method. All parameter values must be strings:
 
 ```js
 var params = [
@@ -54,11 +55,10 @@ var params = [
 var task = session.multipartUpload(params, request);
 ```
 
-In order to have a successful upload, the following must be taken into account:
+For a successful upload, the following must be taken into account:
 
-- the file must be accessible from your app. This may require additional permissions (e.g. access documents and files on the device). Usually this is not a problem - e.g. if you use another plugin to select the file, which already adds the required permissions.
+- the file must be accessible from your app. This may require additional permissions (e.g. access documents and files on the device). 
 - the URL must not be blocked by the OS. Android Pie or later devices require TLS (HTTPS) connection by default and will not upload to an insecure (HTTP) URL.
-
 
 ### Handling upload events
 
@@ -129,16 +129,18 @@ Initializes an HTTP background service.
 import { session } from '@nativescript/background-http';
 session: Session = session(id: string)
 ```
-Get or create a background download/upload session by id.
+Gets or creates a background download/upload session by id.
 
+---
 #### Session Object
 The Session object has the following members:
 - `uploadFile(fileUri: string, options: Request): Task`
 - `multipartUpload(params: Array<any>, options: Request): Task`
 
-Both methods initiate a new background file(s) upload task. `uploadFile()` is for a single file upload and `multipartUpload()` is for multiple files upload. `fileUri` is the path of the file to upload. `options` represents the [Request object](#upload-request-object).
+Both methods initiate a new background file(s) upload task. `uploadFile()` is for a single file upload and `multipartUpload()` is for multiple files upload. `fileUri` is the path of the file to upload. The `options` parameter represents the [Request object](#upload-request-object).
 
 ### Upload Request Object
+
 The request object parameter has the following properties:
 
 | Name                                  | Type      | Description                                                                                                                                                                                     |
@@ -162,7 +164,7 @@ The request object parameter has the following properties:
 | `androidRingToneEnabled `               | `boolean` | (Android only) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true. |
 | `androidNotificationChannelID`          | `string`  | (Android only) Used to set the channel ID for the notifications.                                                                                                                                |
 
-**Note** :- Android Notification titles/messages can be constructed with one of the following placeholder which will be replaced by the system .
+**Note**:- Android Notification titles/messages can be constructed with one of the following placeholders which will be replaced by the system.
 
 Replaced with the current upload rate/speed `[upload_rate]`
 
@@ -176,7 +178,7 @@ The task object has the following properties and methods, that can be used to ge
 
 | Name        | Type     | Description                                                                     |
 | ----------- | -------- | ------------------------------------------------------------------------------- |
-| `upload`      | `number` | Bytes uploaded.                                                                 |
+| `upload`      | `number` | Bytes uploaded.|
 | `totalUpload` | `number` | Total number of bytes to upload.                                                |
 | `status `     | `string` | One of the following: `error`, `uploading`, `complete`, `pending`, `cancelled`. |
 | `description` | `string` | The description set in the request used to create the upload task.              |
@@ -220,9 +222,9 @@ All the task events extend the EventData interface.
 
 ## Testing the plugin
 
-In order to test the plugin, you must have a server instance to accept the uploads. There are online services that can be used for small file uploads - e.g. `http://httpbin.org/post` However, these cannot be used for large files. The plugin repository comes with a simple server you can run locally. Here is how to start it:
+To test the plugin, you must have a server instance to accept the uploads. There are online services that can be used for small file uploads - e.g. `http://httpbin.org/post` However, these cannot be used for large files. The plugin repository comes with a simple server you can run locally. Here is how to start it:
 
-```bash
+```cli
 cd demo-server
 npm i
 node server 8080
