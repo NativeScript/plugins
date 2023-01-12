@@ -2,7 +2,7 @@
 
 A plugin to check for the availability of other apps on the device.
 
-## Install
+## Installation
 
 ```cli
 npm install @nativescript/appavailability
@@ -28,7 +28,7 @@ available('twitter://').then((avail: boolean) => {
 ```
 ### Opening an app (with web fallback)
 
-Now that you know whether an app is installed or not, you probably want to launch it.
+Once you have confirmed that the app is installed on the device, you probably want to launch it.
 Here's a snippet that opens the mobile Twitter app and falls back to the website if it's not installed.
 
 ```typescript
@@ -62,13 +62,13 @@ if (availableSync('twitter://')) {
 ### Determining the correct identifier for an app.
 
 - `Android:` simply search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
-- `iOS:` this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example `'twitter://'` in the address bar, if the app launches you're good.
+- `iOS:` this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example `'twitter://'` in the address bar if the app launches you're good.
 
 ## iOS whitelisting
 
 To get useful results on iOS 9+ you need to whitelist the URL Scheme you're querying in the application's `Info.plist`.
 
-For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit the `app/App_ResourcesiOS/Info.plist` as follows:
+For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit `app/App_ResourcesiOS/Info.plist` as follows:
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>
@@ -85,6 +85,7 @@ For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit the `app
 |--------|------------|------------|
 |`available(packageName:string)`|`Promise<boolean>`| Asynchronously checks if the app with the specified `packageName` is installed on the device.|
 |`availableSync(packageName:string)`|`boolean`| Synchronously checks if the app with the specified `packageName` is installed on the device.|
+
 ## License
 
 Apache License Version 2.0
