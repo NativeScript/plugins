@@ -1,7 +1,7 @@
 # @nativescript/apple-sign-in
 A plugin that allows you to authenticate users with [Sign In with Apple](https://developer.apple.com/sign-in-with-apple/).
 
-## Install
+## Installation
 
 ```cli
 npm install @nativescript/apple-sign-in
@@ -9,7 +9,7 @@ npm install @nativescript/apple-sign-in
 
 ## Requirements
 
-Go to [the Apple developer](https://developer.apple.com/account/resources/identifiers/list) website and create a new app identifier with the "Sign In with Apple" Capability enabled. Make sure you sign your app with a provisioning profile using that app identifier.
+Go to [the Apple developer](https://developer.apple.com/account/resources/identifiers/list) website and create a new app identifier with the `Sign In with Apple` Capability enabled. Make sure you sign your app with a provisioning profile using that app identifier.
 
 Then add the [Sign In with Apple Entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_applesignin?language=objc) to `App_Resources/iOS/app.entitlements` as follows:
 ```xml
@@ -32,10 +32,10 @@ Then add the [Sign In with Apple Entitlement](https://developer.apple.com/docume
 import { SignIn, User } from "@nativescript/apple-sign-in";
 ```
 
-### Checking if it is supported
+### Checking for support
 
-[Sign In with Apple](https://developer.apple.com/sign-in-with-apple/) was added in iOS `13`, so make sure to call this function before showing a `Sign In with Apple` button in your app.
-On iOS < 13 and Android, this will return `false`.
+[Sign In with Apple](https://developer.apple.com/sign-in-with-apple/) was added in iOS `13`, so to check if it is supported on a device, call the `isSupported()` method.
+On `iOS < 13` and Android, this will return `false`.
 
 ```typescript
 import { SignIn } from "@nativescript/apple-sign-in";
@@ -83,7 +83,7 @@ SignIn.getState(user)
 ```ts
 isSupported: boolean = SignIn.isSupported();
 ```
-Checks if Sign In With Apple is supported on the device. Returns `true` for iOS 13+, and `false` for iOS < `13` and on Android.
+Checks if Sign In with Apple is supported on the device. Returns `true` for iOS 13+, and `false` for iOS < `13` and on Android.
 
 ---
 ### signIn()
