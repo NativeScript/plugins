@@ -5,9 +5,9 @@
 npm install @nativescript/background-http
 ```
 
-## Using background-http
+## Usage
 
-### Initializing http background service
+### Initializing HTTP background service
 
 Before calling any method from the plugin, you should initialize an HTTP background service by calling the `init` method in the `main.ts` file before the app starts.
 
