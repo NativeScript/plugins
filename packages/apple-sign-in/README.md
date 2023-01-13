@@ -25,9 +25,9 @@ Then add the [Sign In with Apple Entitlement](https://developer.apple.com/docume
 </plist>
 ```
 
-## Using apple-sign-in
+## Usage
 
-### Import 
+### Importing 
 ```ts
 import { SignIn, User } from "@nativescript/apple-sign-in";
 ```
