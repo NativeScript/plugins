@@ -10,7 +10,7 @@ npm install @nativescript/appavailability
 
 ## Usage
 
-### Import
+### Importing
 
 ```typescript
 import { available } from '@nativescript/appavailability';
