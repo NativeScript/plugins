@@ -8,7 +8,7 @@ A plugin to check for the availability of other apps on the device.
 npm install @nativescript/appavailability
 ```
 
-## Using app-availability
+## Usage
 
 ### Import
 
