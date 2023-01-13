@@ -7,7 +7,7 @@ A plugin that allows you to take a picture and optionally save it  on the device
 ```cli
 npm install @nativescript/camera --save
 ```
-## Using camera
+## Usage
 
 ### Requesting permissions
 
@@ -84,7 +84,7 @@ camera.takePicture()
 
 ### Using the options to take memory efficient picture
 
-By default, the `camera.takePicture()` method takes a huge image (even mid-level devices with a `5MP` camera produce a `2580x2048` image, which in bitmap means approximately `15MB`). So taking a big picture is just a waste of memory. The `camera.takePicture()` method accepts an optional [CameraOptions](#cameraoptions) parameter that allows you to adjust the size and other aspects of the picture.
+By default, the `camera.takePicture()` method takes a huge image (even mid-level devices with a `5MP` camera produce a `2580x2048` image, which in bitmap means approximately `15MB`). So sometimes taking such a big picture is just a waste of memory. The `camera.takePicture()` method accepts an optional [CameraOptions](#cameraoptions) parameter that allows you to adjust the size and other aspects of the picture.
 
 ```JavaScript
 // JavaScript
