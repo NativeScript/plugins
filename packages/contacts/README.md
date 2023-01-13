@@ -1,13 +1,16 @@
 # @nativescript/contacts
 
 Easy access to iOS and Android contact directory. It allows you to pick a contact, update it, delete it, or add a new one.
-## Install
+
+## Installation
 ```cli
 npm install @nativescript/contacts
 ```
-## Using contacts
+
+## Usage
+
 ### Requesting for Permissions
-For the app to access the user's Contacts, the user must grant it the permission. Before requesting for permissions, ensure that the following requirement are met. 
+For the app to access the user's Contacts app, the user must grant it the permission. Before requesting for permissions, ensure that the following requirements are met. 
 
 #### iOS Permission Requirements
 
@@ -31,7 +34,7 @@ For iOS 13+, you need to add the following [entitlement](https://developer.apple
 </plist>
 ```
 
-#### Android Permission Requirement
+#### Android Permission Requirements
 
 For API level `23+` you need to check for the appropriate permissions to access the contacts. To inform Android about which permissions your app needs from the user in order to access contacts, list the following permissions in the  `AndroidManifest.xml`:
 
@@ -42,8 +45,7 @@ For API level `23+` you need to check for the appropriate permissions to access 
 <uses-permission android:name="android.permission.GLOBAL_SEARCH" />
 ```
 
-Then, to request for the permission, you can call the `requestPermissions()` method from the []() plugin. 
-You also need to make sure to request the permissions everytime you perform the operation itself (e.g. using the nativescript-permissions plugin):
+Then, to request for the permissions, you can call the `requestPermissions()` method from the `nativescript-permissions` plugin. 
 
 ```ts
 import { Contact } from '@nativescript/contacts';
@@ -87,8 +89,8 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Save a new contact
-To save a new contact, first instatiate the `Contact` class, set the desired properties and then call the `save()` method on the instance.
+### Saving a new contact
+To save a new contact, first instatiate the `Contact` class, set the various data of the contact and then call the `save()` method on the instance.
 
 ```ts
 import { Contact, KnownLabel } from '@nativescript/contacts';
@@ -106,7 +108,7 @@ newContact.photo = ImageSource.fromFileOrResource('~/photo.png');
 newContact.save();
 ```
 
-### Update an existing contact
+### Update a contact
 To update an existing contact, get it with the `getContact()` method, edit it and then call the `save()` method to update it.
 ```ts
 import { Application, ImageSource } from '@nativescript/core';
@@ -142,7 +144,7 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Check if contact is Unified/Linked (iOS Specific)
+### Checking if contact is Unified/Linked (iOS Specific)
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -158,7 +160,7 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Getting a contact
+### Getting A Contact By Name 
 To find all contacts matching a certain name, use the `getContactsByName()` method. Returns an array of contact data.
 
 ```ts
@@ -212,7 +214,7 @@ Contacts.getAllContacts(contactFields).then(
 
 ### Getting a contact by id
 
-To find a contact with ta specific identifier. Returns GetFetchResult. _(iOS Only)_
+To find a contact with ta specific identifier, use the `getContactById` method. Returns GetFetchResult. _(iOS Only)_
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -259,7 +261,7 @@ Contacts
 	);
 ```
 
-### Saving a new contacts group
+### Creating a new contacts group
 To save a new contacts group, create an instance of the `Group` class, set the name and call the `save()` method on the instance.
 ```ts
 import { Group } from '@nativescript/contacts/models';
@@ -272,8 +274,8 @@ groupModel.name = 'Test Group';
 groupModel.save(false);
 ```
 
-### Deleting a contacts group
-To delete a contacts group, call the `getGroups()` method to the group of interest. Then call the `delete()` method on that group to delete it.
+### Deleting A Contacts Group
+To delete a contacts group, call the `getGroups()` method to first get the group of interest. Then call the `delete()` method on that group to delete it.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -298,7 +300,7 @@ Contacts.getGroups('Test Group').then(
 ```
 
 ### Adding A Contact To A Group
-To add a contact to a group, get the references to the contact and the group and then call the `addMember()` on the group to add the contact.
+To add a contact to a group, get the references to the contact and the group and then call the `addMember()` on the group passing it the contact to to add.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -359,8 +361,8 @@ Contacts
 	);
 ```
 
-### Getting All The Contacts of a Group
-To get all of a group's contacts, use the `Contacts.getContactsInGroup` method passing the group instance.
+### Getting All The Contacts From A Group
+To get all of a group's contacts, use the `Contacts.getContactsInGroup()` method passing it the group instance.
 
 
 ```ts
@@ -559,7 +561,7 @@ https://developer.apple.com/library/mac/documentation/Contacts/Reference/CNConta
 
 NOTE: Since the plugin uses the Contact framework, it is supported only on iOS 9.0 and above!
 
-## Credit
+## Credits
 
 All credit to original author [Ryan Lebel](https://github.com/firescript) for creating [nativescript-contacts](https://github.com/firescript/nativescript-contacts).
 
