@@ -6,7 +6,7 @@
 npm install @nativescript/directions
 ```
 
-## Using directions
+## Usage
 ### Importing
 Once you have installed the plugin, import and create an instance of the `Directions` class.
 ```ts
