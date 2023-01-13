@@ -10,7 +10,8 @@ This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 
 
 ## Usage
-### Import
+
+### Importing
 To use the plugin, you should first import it.
 ```ts
 import { BiometricAuth, BiometricIDAvailableResult } from "@nativescript/biometrics";
