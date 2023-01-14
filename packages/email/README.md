@@ -96,10 +96,10 @@ email
 | `subject`| `string`| _Optional_: The subject of the email.|
 | `body`| `string`| _Optional_: The body of the email. The plugin will automatically handle plain and html email content.|
 | `body`| `string`| _Optional_: The body of the email. The plugin will automatically handle plain and html email content.|
-| `to` | `string[]` |  _Optional_: A string array of email addresses. On Android only the first item in the array is added.|
-| `cc` | `string[]` |  _Optional_: |
-| `bcc` | `string[]` |  _Optional_: |
-| `attachments`| Array<[Attachment](#attachment)>| |
+| `to` | `string[]` |  _Optional_: An array of email addresses of the direct recipients. On Android only the first item in the array is used.|
+| `cc` | `string[]` |  _Optional_: An array of email addresses of the `cc` recipients.|
+| `bcc` | `string[]` |  _Optional_: An array of email addresses of the `bcc` recipients.|
+| `attachments`| Array<[Attachment](#attachment)>| The files to be attached to the email.|
 | `iosViewController` | `any` | _Optional_: (`iOS-only`) iOS View Controller to open `compose` from.|
 
 
