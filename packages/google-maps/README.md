@@ -6,27 +6,24 @@ NativeScript binding for the Google Maps Android & iOS API.
 
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
-* [Config](#config)
-	* [Android](#android)
-	* [iOS](#ios)
 * [Usage](#usage)
 	* [Core](#core)
 	* [Angular](#angular)
 	* [Vue](#vue)
-* [API](#mapview-api)
-	* [Properties](#properties)
-	* [Events](#events)
-* [GoogleMap](#google-map)
-	* [Instance](#instance)
-	* [API](#api-1)
-		* [Properties](#properties-1)
-		* [Functions](#functions)
-	* [Native Map Object](#native-map-object)
-	* [Camera Position](#camera-position)
-		* [Controlling the camera](#controlling-the-camera)
-	* [Projection](#projection)
-	* [UI Settings](#ui-settings)
-	* [Map Type](#map-type)
+	* [Controlling the camera](#controlling-the-camera)
+	* [Setting The Map Type](#setting-the-map-type)
+* [API](#api)
+	* [MapView Class](#mapview-class)
+		* [Events](#events)
+		* [Properties](#properties)
+	* [GoogleMap Class](#googlemap-class)
+		* [Properties](#properties)
+		* [Methods](#methods)
+		* [Native Map Object](#native-map-object)
+		* [Camera Position](#camera-position)
+		* [Projection](#projection)
+		* [UISettings](#uisettings-interface)
+		* [MapType Enum](#maptype-enum)
 	* [Map Styles](#map-styles)
 * [Adding Markers](#adding-markers)
 	* [Marker Options](#marker-options)
@@ -48,22 +45,15 @@ NativeScript binding for the Google Maps Android & iOS API.
 * [Removing Tile Overlays](#removing-tile-overlays)
 
 ## Prerequisites
-To use the Google Maps API, you must register your app in the [Google API Console](https://console.cloud.google.com/apis/dashboard) and obtain an API key.
+1. To use the Google Maps API, you must register your app in the [Google API Console](https://console.cloud.google.com/apis/dashboard) and obtain an API key.
 
-## Installation
-```cli
-npm install @nativescript/google-maps
-```
+2. Add the Google Maps API key to your app.
 
-## Config
+**Android**
 
-### Android
-
-Modify the `AndroidManifest` to include the new meta tag along with your API key, the manifest is located
-in `App_Resources/Android/AndroidManifest.xml`
+In the `AndroidManifest.xml` file, add the `<meta-data>` tag with the `com.google.android.geo.API_KEY` as its name and the key as the value.  
 
 ```xml
-
 <application
   android:name="com.tns.NativeScriptApplication"
   android:allowBackup="true"
@@ -78,11 +68,9 @@ in `App_Resources/Android/AndroidManifest.xml`
 </application>
 ```
 
-
-### iOS
-
-Modify the `Info.plist` to include the new meta tag along with your API key, the manifest is located
-in `App_Resources/iOS/Info.plist`
+**iOS**
+dd the `TNSGoogleMapsAPIKey` key and the API key as the value to the `Info.plist` file, located
+at `App_Resources/iOS`.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -95,32 +83,38 @@ in `App_Resources/iOS/Info.plist`
 </plist>
 ```
 
+## Installation
+```cli
+npm install @nativescript/google-maps
+```
+
 ## Usage
 
 ### Core
 
-> **Important:** Ensure you've included xmlns:map="@nativescript/google-maps" on the Page element
-
-
 ```xml
-<map:MapView
-	lat="{{lat}}"
-	lng="{{lng}}"
-	zoom="{{zoom}}"
-	bearing="{{bearing}}"
-	tilt="{{tilt}}"
-	ready="{{onReady}}"
-	mapTap="{{onTap}}"
-	mapLongPress="{{onLongPress}}"
-	markerTap="{{onMarkerTap}}"
-/>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:map="@nativescript/google-maps">
+	<map:MapView
+		lat="{{lat}}"
+		lng="{{lng}}"
+		zoom="{{zoom}}"
+		bearing="{{bearing}}"
+		tilt="{{tilt}}"
+		ready="{{onReady}}"
+		mapTap="{{onTap}}"
+		mapLongPress="{{onLongPress}}"
+		markerTap="{{onMarkerTap}}"
+	/>
+</Page>
 ```
+To use the plugin in the different NativeScript flavors, modify the `main.ts` to import and then register it.
 
 ### Angular
-
 ```ts
 import { GoogleMapsModule } from '@nativescript/google-maps/angular';
 
+// Registering
 @NgModule({
     imports: [
       GoogleMapsModule
@@ -142,12 +136,14 @@ import { GoogleMapsModule } from '@nativescript/google-maps/angular';
 </MapView>
 ```
 ### Vue
-
 ```ts
-import Vue from 'nativescript-vue'
+import { createApp,registerElement } from 'nativescript-vue';
 import GoogleMaps from '@nativescript/google-maps/vue'
 
-Vue.use(GoogleMaps)
+import Home from './components/Home.vue';
+
+const app = createApp(Home)
+app.use(GoogleMaps)
 
 ```
 
@@ -161,13 +157,42 @@ Vue.use(GoogleMaps)
 />
 ```
 
-## MapView API
+### Controlling the camera
+To programatically update the camera position, call the `animateCamera()` from the `GoogleMap` object.
+```ts
+import { CameraUpdate } from '@nativescript/google-maps';
 
-### Properties
+googleMap.animateCamera(
+	CameraUpdate.fromCoordinate({
+			lat: -32.1234,
+			lng: 125.1234
+		},
+		googleMap.cameraPosition.zoom
+	)
+);
+```
+
+### Setting The Map Type
+To set the type of a map, the `mapType` property to one of the [MapType](#maptype) options.
+
+```ts
+import { GoogleMap, MapType } from '@nativescript/google-map';
+
+
+map: GoogleMap;
+map.mapType = MapType.Hybrid;
+```
+See [CameraUpdate]() for more methods you can call and pass to the `animateCamera()`
+
+## API
+
+### MapView Class
+
+#### Properties
 
 The following properties are available for adjusting the camera view on initialization:
 
-| Property     | type | Description and Data Type
+| Property     | Type | Description
 :------------- |:-----| :---------------------------------
 `lat` | number | Latitude, in degrees
 `lng` | number | Longitude, in degrees
@@ -175,9 +200,9 @@ The following properties are available for adjusting the camera view on initiali
 `bearing` | number | Bearing, in degrees
 `tilt` | number | Tilt, in degrees
 
-### Events
+#### Events
 
-The following events are available:
+`MapView` provides the following events:
 
 | Event        | Description
 :------------- | :---------------------------------
@@ -206,52 +231,48 @@ The following events are available:
 `activeBuilding` | Fires when a building is focused on
 `activeLevel` | Fires when the level of the focused building changes
 
-# Google Map
+### GoogleMap Class
 
-## Instance
-A GoogleMap instance is required from the map view to access many of the mapping features. The GoogleMaps instance is available from the `MapView`s `ready` event:
+This class provides the mapping features and its instance is available from the `MapView`s `ready` event:
 
 ```ts
 function onReady(event: MapReadyEvent) {
 	const map: GoogleMap = event.map;
 }
 ```
-
-## API 
-
-### Properties
+#### Properties
 | Property       | Type |Description
 :--------------- |:-----|:---------------------------------
-`buildingsEnabled` | boolean | Enables Buildings
-`maxZoomLevel` | number | Maximum level of zoom
-`minZoomLevel` | number | Minimum level of zoom
-`myLocationEnabled` | boolean | Enables "My Location"
-`trafficEnabled` | boolean | Enables traffic
-`cameraPosition` | CameraPosition | See [Camera Position](#camera-position)
-`projection` | Projection | See [Projection](#projection)
-`uiSettings` | IUISettings | See [UI Settings](#ui-settings)
+`buildingsEnabled` | `boolean` | Enables Buildings
+`maxZoomLevel` | `number` | Maximum level of zoom
+`minZoomLevel` | `number` | Minimum level of zoom
+`myLocationEnabled` | `boolean` | Enables "My Location"
+`trafficEnabled` | `boolean` | Enables traffic
+`cameraPosition` | `CameraPosition` | See [Camera Position](#camera-position)
+`projection` | `Projection` | See [Projection](#projection)
+`uiSettings` | `IUISettings` | See [UISettings Interface](#uisettings-interface)
 `mapStyle` | Style[] | See [Map Styles](#map-styles)
-`mapType` | MapType | See [Map Type](#map-type)
-`native` | any | See [Native Map Object](#native-map-object)
+`mapType` | MapType | See [MapType](#maptype)
+`native` | any | _readonly_: Platform-specific instance of the `GoogleMap` class. `com.google.android.gms.maps.GoogleMap` for Android and `GMSMapView` for iOS.
 
-### Functions
-| Func       | Description
-:--------------- |:---------------------------------
-[addMarker](#adding-markers)(marker: [MarkerOptions](#marker-options)): [Marker](#markers) | Adds a [marker](#markers) to the map
-[removeMarker](#removing-markers)(marker: [Marker](#markers)) | Removes a marker from the map
-[addTileOverlay](#adding-tile-overlays)(options: [TileOverlayOptions](#tileoverlay-options)): [TileOverlay](#tile-overlays) | Adds a tile overlay to the map
-[removeTileOverlay](#removing-tile-overlays)(overlay: [TileOverlay](#tile-overlays)) | Removes a tile overlay from the map
-[addCircle](#adding-circles)(circle: [CircleOptions](#circle-options)): [Circle](#circle) | Adds a circle to the map
-[removeCircle](#removing-circles)(circle: [Circle](#circle)) | Removes a circle from the map
-[addGroundOverlay](#adding-ground-overlays)(options: [GroundOverlayOptions](#groundoverlay-options)): [GroundOverlay](#ground-overlays) | Adds a ground overlay to the map
+#### Methods
+| Method       | Returns |Description
+:--------------- |:------------- |:---------------------------------
+[addMarker](#adding-markers)(marker: [MarkerOptions](#marker-options))| [Marker](#markers) |Adds a [marker](#markers) to the map
+[removeMarker](#removing-markers)(marker: [Marker](#markers))| `void` | Removes a marker from the map
+[addTileOverlay](#adding-tile-overlays)(options: [TileOverlayOptions](#tileoverlay-options))| [TileOverlay](#tile-overlays) | Adds a tile overlay to the map
+[removeTileOverlay](#removing-tile-overlays)(overlay: [TileOverlay](#tile-overlays))| `void` | Removes a tile overlay from the map
+[addCircle](#adding-circles)(circle: [CircleOptions](#circle-options))| [Circle](#circle) | Adds a circle to the map
+[removeCircle](#removing-circles)(circle: [Circle](#circle))| `void` | Removes a circle from the map
+[addGroundOverlay](#adding-ground-overlays)(options: [GroundOverlayOptions](#groundoverlay-options)) | [GroundOverlay](#ground-overlays) | Adds a ground overlay to the map
 [removeGroundOverlay](#removing-ground-overlays)(groundOverlay: [GroundOverlay](#ground-overlays)) | Removes a ground overlay from the map
-[addPolygon](#adding-polygons)(options: [PolygonOptions](#polygon-options)): [Polygon](#polygons) | Adds a polygon to the map
+[addPolygon](#adding-polygons)(options: [PolygonOptions](#polygon-options)) | [Polygon](#polygons) | Adds a polygon to the map
 [removePolygon](#removing-polygons)(polygon: [Polygon](#polygons)) | Removes a polygon from the map
-[addPolyline](#adding-polylines)(options: [PolylineOptions](#polyline-options)): [Polyline](#polyline) | Adds a polyline to the map
-[removePolyline](#removing-polylines)(polyline: [Polyline](#polyline)) | Removes a polyline from the map
-[animateCamera](#controlling-the-camera)(update: [CameraUpdate](#controlling-the-camera)) | Animates camera to a new position
-snapshot(): Promise\<ImageSource\> | Returns a platform specific image of the maps current viewport
-clear() | Clears all objects added to the map
+[addPolyline](#adding-polylines)(options: [PolylineOptions](#polyline-options)) | [Polyline](#polyline) | Adds a polyline to the map
+[removePolyline](#removing-polylines)(polyline: [Polyline](#polyline))| `void` | Removes a polyline from the map
+[animateCamera](#controlling-the-camera)(update: [CameraUpdate](#controlling-the-camera))| `void` | Animates camera to a new position
+`snapshot()`| `Promise<ImageSource>` | Returns a platform-specific image of the map's current viewport
+`clear()`| `void` | Clears all objects added to the map
 
 ### Native Map Object
 
@@ -260,73 +281,60 @@ clear() | Clears all objects added to the map
 consult the appropriate SDK reference on how to use it: [iOS](https://developers.google.com/maps/documentation/ios-sdk/reference/interface_g_m_s_map_view) | [Android](https://developers.google.com/android/reference/com/google/android/gms/maps/GoogleMap)
 
 
-### Camera Position
+#### Camera Position
 
-The maps current camera position can be read from the `GoogleMap`s object `cameraPosition`.
+The map's current camera position can be read from the `cameraPosition` property of a [GoogleMap](#googlemap-class) object.
 
 | Property       | Type | Description
 :--------------- |:---- |:---------------------------------
-`target` | Coordinate | The camera target is the location of the center of the map, specified as `lat` and `lng`.
-`bearing` | number | The direction in which the camera points measured in degrees clockwise from north.
-`tilt` | number | The viewing angle of the camera measured in degrees
-`zoom` | number | The scale of the map 
+`target` | `Coordinate` | The camera target is the location of the center of the map, specified as `lat` and `lng`.
+`bearing` | `number` | The direction in which the camera points measured in degrees clockwise from north.
+`tilt` | `number` | The viewing angle of the camera measured in degrees
+`zoom` | `number` | The scale of the map 
 
-#### Controlling the camera
-To programatically update the camera position you can call `animateCamera` from the `GoogleMap` object, like so:
-```ts
-import { CameraUpdate } from '@nativescript/google-maps';
-
-googleMap.animateCamera(
-	CameraUpdate.fromCoordinate({
-			lat: -32.1234,
-			lng: 125.1234
-		},
-		googleMap.cameraPosition.zoom
-	)
-);
-```
+#### CameraUpdate Class
 `CameraUpdate` provides multiple methods to create a target CameraPosition. 
 
-| Method | Description
+| Method |  Description
 |:-------|:-----------
-| fromCoordinate(coordinate: Coordinate, zoom: number) | Returns a CameraUpdate from a single coordinate
-| fromCoordinates(coordinates: Coordinate[], padding: number) | Returns a CameraUpdate from multiple coordinates 
-| fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number) | Returns a CameraUpdate from multiple coordinates with specified height, width and padding
-| fromCameraPosition(position: CameraPosition) | Returns a CameraUpdate from a CameraPosition 
-| zoomIn() | Returns a CameraUpdate that has zoomed in
-| zoomOut() | Returns a CameraUpdate that has zoomed out
-| zoomTo(value: number) | Returns a CameraUpdate that has zoomed to a value
-| zoomBy(amount: number, point?: { x: number; y: number }) | Returns a CameraUpdate that has zoomed and panned
-| scrollBy(x: number, y: number) | Returns a panned CameraUpdate
+| `fromCoordinate(coordinate: Coordinate, zoom: number)` | Returns a `CameraUpdate` from a single coordinate
+| `fromCoordinates(coordinates: Coordinate[], padding: number)` | Returns a `CameraUpdate` from multiple coordinates 
+| `fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number)` | Returns a `CameraUpdate` from multiple coordinates with specified height, width and padding
+| fromCameraPosition(position: CameraPosition) | Returns a `CameraUpdate` from a CameraPosition 
+| `zoomIn()` | Returns a `CameraUpdate` that has zoomed in
+| `zoomOut()` | Returns a `CameraUpdate` that has zoomed out
+| `zoomTo(value: number)` | Returns a `CameraUpdate` that has zoomed to a value
+| `zoomBy(amount: number, point?: { x: number; y: number })` | Returns a `CameraUpdate` that has zoomed and panned
+| `scrollBy(x: number, y: number)` | Returns a panned `CameraUpdate`
 
-### Projection 
+#### Projection 
 A projection is used to translate between on screen location and geographic coordinates on the surface of the Earth.
 
 | Method | Description
 |:-------|:-----------
-| fromScreenLocation(point: { x: number; y: number }) | Returns the geographic location that corresponds to a screen location.
-| getVisibleRegion() | Gets a projection of the viewing frustum for converting between screen coordinates and geo-latitude/longitude coordinates.
-| toScreenLocation(coordinate: Coordinate) | Returns a screen location that corresponds to a geographical coordinate.
-| containsCoordinate(coordinate: Coordinate) | Returns true if the coordinate is visible in the current viewport.
+| `fromScreenLocation(point: { x: number; y: number })` | Returns the geographic location that corresponds to a screen location.
+| `getVisibleRegion()` | Gets a projection of the viewing frustum for converting between screen coordinates and geo-latitude/longitude coordinates.
+| `toScreenLocation(coordinate: Coordinate)` | Returns a screen location that corresponds to a geographical coordinate.
+| `containsCoordinate(coordinate: Coordinate)` | Returns true if the coordinate is visible in the current viewport.
 
-### UI Settings
+#### UISettings Interface
 
-You can adjust the maps UI settings from the `GoogleMap` object by configuring the following properties of `uiSettings`:
+You can adjust the maps UI settings from the `GoogleMap` object by configuring the following properties of the `uiSettings` property:
 
 | Property       | Type | Description
 |:-------------- |:-----|:---------------------------------
-| `compassEnabled` | boolean | Whether the compass is enabled or not
-| `indoorLevelPickerEnabled` | boolean | Whether the indoor level picker is enabled or not
-| `mapToolbarEnabled` | boolean | Whether the map toolbar is enabled or not
-| `myLocationButtonEnabled` | boolean | Whether the 'My Location' button is enabled or not
-| `rotateGesturesEnabled` | boolean | Whether the compass is enabled or not
-| `scrollGesturesEnabled` | boolean | Whether map scroll gestures are enabled or not
-| `tiltGesturesEnabled` | boolean | Whether map tilt gestures are enabled or not
-| `zoomGesturesEnabled` | boolean | Whether map zoom gestures are enabled or not
-| `zoomControlsEnabled` | boolean | Whether map zoom controls are enabled or not
-| `scrollGesturesEnabledDuringRotateOrZoom` | boolean | Whether scroll gestures are enabled while rotating or zooming
+| `compassEnabled` | `boolean` | Whether the compass is enabled or not
+| `indoorLevelPickerEnabled` | `boolean` | Whether the indoor level picker is enabled or not
+| `mapToolbarEnabled` | `boolean` | Whether the map toolbar is enabled or not
+| `myLocationButtonEnabled` | `boolean` | Whether the 'My Location' button is enabled or not
+| `rotateGesturesEnabled` | `boolean` | Whether the compass is enabled or not
+| `scrollGesturesEnabled` | `boolean` | Whether map scroll gestures are enabled or not
+| `tiltGesturesEnabled` | `boolean` | Whether map tilt gestures are enabled or not
+| `zoomGesturesEnabled` | `boolean` | Whether map zoom gestures are enabled or not
+| `zoomControlsEnabled` | `boolean` | Whether map zoom controls are enabled or not
+| `scrollGesturesEnabledDuringRotateOrZoom` | `boolean` | Whether scroll gestures are enabled while rotating or zooming
 
-### Map Type
+#### MapType Enum
 
 The Google Maps API offers five types of maps:
 
@@ -337,16 +345,6 @@ The Google Maps API offers five types of maps:
 | `Satellite` |  Satellite photograph data. Road and feature labels are not visible.
 | `Terrain` | Topographic data. The map includes colors, contour lines and labels, and perspective shading. Some roads and labels are also visible.
 | `Hybrid` | Satellite photograph data with road maps added. Road and feature labels are also visible. 
-
-To set the type of a map, adjust the `GoogleMap` objects `mapType`. You can pass in one map type from the `MapType` Enum. For example: 
-
-```ts
-import { GoogleMap, MapType } from '@nativescript/google-map';
-
-...
-map: GoogleMap;
-map.mapType = MapType.Hybrid;
-```
 
 ### Map Styles
 You can customize the presentation of the standard Google Map styles, changing the visual display of features like roads, parks, businesses, and other points of interest. This means that you can emphasize particular components of the map or make the map look good with your app.
@@ -413,9 +411,9 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 | `title` | string | A string that's displayed in the info window when the user taps the marker
 | `snippet` | string | Additional text that's displayed below the title
 | `icon` | ImageSource \| UIImage \| Bitmap | A image that's displayed in place of the default marker image
-| `draggable` | boolean | Set to `true` if you want to allow the user to move the marker. Defaults to `false`
-| `flat` | boolean | By default, markers are oriented against the screen, and will not rotate or tilt with the camera. Flat markers are oriented against the surface of the earth, and will rotate and tilt with the camera
-| `rotation` | boolean | The orientation of the marker, specified in degrees clockwise
+| `draggable` | `boolean` | Set to `true` if you want to allow the user to move the marker. Defaults to `false`
+| `flat` | `boolean` | By default, markers are oriented against the screen, and will not rotate or tilt with the camera. Flat markers are oriented against the surface of the earth, and will rotate and tilt with the camera
+| `rotation` | `boolean` | The orientation of the marker, specified in degrees clockwise
 | `anchorU` | number | Horizontal icon offset from the marker position
 | `anchorV` | number | Vertical icon offset from the marker position
 | `userData` | any | Additional information assigned to the marker
@@ -452,8 +450,8 @@ function addCircle(map: GoogleMap, circleOptions: CircleOptions): Circle {
 `strokeColor` | Color \| string |
 `strokePattern` | PatternItem & Partial\<NativeObject\>[] |
 `strokeWidth` | number |
-`tappable` | boolean |
-`visible` | boolean |
+`tappable` | `boolean` |
+`visible` | `boolean` |
 `zIndex` | number |
 `userData` | `{ [key: string]: any }` |
 
@@ -482,15 +480,15 @@ function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
 |:---------|:-----
 | `points` | Coordinate[] |
 | `holes` | Coordinate[] |
-| `tappable` | boolean |
+| `tappable` | `boolean` |
 | `strokeWidth` | number |
 | `strokeColor` | Color \| string |
 | `fillColor` | Color \| string |
 | `strokePattern` | PatternItem & Partial\<NativeObject\>[] |
 | `zIndex` | number |
-| `geodesic` | boolean |
+| `geodesic` | `boolean` |
 | `strokeJointType` | JointType |
-| `visible` | boolean |
+| `visible` | `boolean` |
 | `userData` | `{ [key: string]: any }` |
 
 ## Removing Polygons
@@ -519,9 +517,9 @@ function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline
 |:---------|:-----
 | `width` | number | 
 | `points` | Coordinate[] | 
-| `tappable` | boolean | 
-| `geodesic` | boolean | 
-| `visible` | boolean | 
+| `tappable` | `boolean` | 
+| `geodesic` | `boolean` | 
+| `visible` | `boolean` | 
 | `zIndex` | number | 
 | `jointType` | JointType | 
 | `pattern` | PatternItem & Partial\<NativeObject\>[] | 
@@ -555,11 +553,11 @@ function addGroundOverlay(map: GoogleMap, groundOverlayOptions: GroundOverlayOpt
 | Property | Type 
 |:---------|:-----
 `zIndex` | number | 
-`visible` | boolean | 
+`visible` | `boolean` | 
 `transparency` | number | 
 `position` | Coordinate | 
 `bounds` | CoordinateBounds | 
-`tappable` | boolean | 
+`tappable` | `boolean` | 
 `bearing` | number | 
 `image` | ImageSource | 
 `userData` | any | 
@@ -594,9 +592,9 @@ function addTileOverlay(map: GoogleMap, tileOverlayOptions: TileOverlayOptions):
 
 | Property | Type 
 |:---------|:-----
-| `fadeIn` | boolean |
+| `fadeIn` | `boolean` |
 | `transparency` | number |
-| `visible` | boolean |
+| `visible` | `boolean` |
 | `tileProvider` | TileProvider & Partial\<NativeObject\> |
 | `zIndex` | number |
 
