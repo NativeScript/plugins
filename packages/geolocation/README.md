@@ -48,7 +48,6 @@ If `iosAllowsBackgroundLocationUpdates` is set to `true`, the following code is 
 
 ## Usage
 
-In short here are the steps to use the plugin:
 
 ### Importing
 
@@ -68,7 +67,7 @@ Before you call any method that gets the user's location, request for the user's
 geolocation.enableLocationRequest().then(() => {
     
     geolocation.getCurrentLocation({ desiredAccuracy: Accuracy.high, maximumAge: 5000, timeout: 20000 }).then((currentLocation) => {
-      
+
       console.log("My current latitude: ", currentLocation.latitude)
     })
   })
