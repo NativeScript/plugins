@@ -1,4 +1,4 @@
-# @nativescript/google-maps
+# @nativescript/googlemap-classs
 NativeScript binding for the Google Maps Android & iOS API.
 
 [](#table-of-contents)
@@ -12,6 +12,14 @@ NativeScript binding for the Google Maps Android & iOS API.
 	* [Vue](#vue)
 	* [Controlling the camera](#controlling-the-camera)
 	* [Setting The Map Type](#setting-the-map-type)
+	* [Styling The Map](#styling-the-map)
+	* [Adding Markers](#adding-markers)
+	* [Removing Markers](#removing-markers)
+	* [Adding Circles](#adding-circles)
+	* [Removing Circles](#removing-circles)
+	* [Adding Polygons](#adding-polygons)
+	* [Removing Polygons](#removing-polygons)
+
 * [API](#api)
 	* [MapView Class](#mapview-class)
 		* [Events](#events)
@@ -19,30 +27,25 @@ NativeScript binding for the Google Maps Android & iOS API.
 	* [GoogleMap Class](#googlemap-class)
 		* [Properties](#properties)
 		* [Methods](#methods)
-		* [Native Map Object](#native-map-object)
-		* [Camera Position](#camera-position)
-		* [Projection](#projection)
-		* [UISettings](#uisettings-interface)
-		* [MapType Enum](#maptype-enum)
-	* [Map Styles](#map-styles)
-* [Adding Markers](#adding-markers)
-	* [Marker Options](#marker-options)
-* [Removing Markers](#removin-gmarkers)
-* [Adding Circles](#adding-circles)
-	* [Circle Options](#circle-options)
-* [Removing Circles](#removing-circles)
-* [Adding Polygons](#adding-polygons)
-	* [Polygon Options](#polygon-options)
-* [Removing Polygons](#removing-polygons)
-* [Adding Polylines](#adding-polylines)
-	* [Polyline Options](#polyline-options)
-* [Removing Polylines](#removing-polylines)
-* [Adding Ground Overlays](#adding-ground-overlays)
-	* [GroundOverlay Options](#ground-overlayoptions)
-* [Removing Ground Overlays](#removing-ground-overlays)
-* [Adding Tile Overlays](#adding-tile-overlays)
-	* [TileOverlay Options](#tile-overlay-options)
-* [Removing Tile Overlays](#removing-tile-overlays)
+	* [Camera Position](#camera-position)
+	* [Projection](#projection)
+	* [UISettings](#uisettings-interface)
+	* [MapType Enum](#maptype-enum)
+	* [MarkerOptions](#markeroptions)
+	* [CircleOptions](#circleoptions)
+	* [PolygonOptions](#polygonoptions)
+	* [Polylines](#polylines)
+		* [Adding Polylines](#adding-polylines)
+		* [PolylineOptions](#polylineoptions)
+		* [Removing Polylines](#removing-polylines)
+	* [Ground Overlays](#ground-overlays)
+		* [Adding Ground Overlays](#adding-ground-overlays)
+		* [GroundOverlayOptions](#groundoverlayoptions)
+		* [Removing Ground Overlays](#removing-ground-overlays)
+	* [Tile Overlays](#tile-overlays)
+		* [Adding Tile Overlays](#adding-tile-overlays)
+		* [TileOverlayOptions](#tileoverlayoptions)
+		* [Removing Tile Overlays](#removing-tile-overlays)
 
 ## Prerequisites
 1. To use the Google Maps API, you must register your app in the [Google API Console](https://console.cloud.google.com/apis/dashboard) and obtain an API key.
@@ -85,7 +88,7 @@ at `App_Resources/iOS`.
 
 ## Installation
 ```cli
-npm install @nativescript/google-maps
+npm install @nativescript/googlemap-classs
 ```
 
 ## Usage
@@ -94,7 +97,7 @@ npm install @nativescript/google-maps
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
-  xmlns:map="@nativescript/google-maps">
+  xmlns:map="@nativescript/googlemap-classs">
 	<map:MapView
 		lat="{{lat}}"
 		lng="{{lng}}"
@@ -112,7 +115,7 @@ To use the plugin in the different NativeScript flavors, modify the `main.ts` to
 
 ### Angular
 ```ts
-import { GoogleMapsModule } from '@nativescript/google-maps/angular';
+import { GoogleMapsModule } from '@nativescript/googlemap-classs/angular';
 
 // Registering
 @NgModule({
@@ -138,7 +141,7 @@ import { GoogleMapsModule } from '@nativescript/google-maps/angular';
 ### Vue
 ```ts
 import { createApp,registerElement } from 'nativescript-vue';
-import GoogleMaps from '@nativescript/google-maps/vue'
+import GoogleMaps from '@nativescript/googlemap-classs/vue'
 
 import Home from './components/Home.vue';
 
@@ -160,7 +163,7 @@ app.use(GoogleMaps)
 ### Controlling the camera
 To programatically update the camera position, call the `animateCamera()` from the `GoogleMap` object.
 ```ts
-import { CameraUpdate } from '@nativescript/google-maps';
+import { CameraUpdate } from '@nativescript/googlemap-classs';
 
 googleMap.animateCamera(
 	CameraUpdate.fromCoordinate({
@@ -176,7 +179,7 @@ googleMap.animateCamera(
 To set the type of a map, the `mapType` property to one of the [MapType](#maptype) options.
 
 ```ts
-import { GoogleMap, MapType } from '@nativescript/google-map';
+import { GoogleMap, MapType } from '@nativescript/googlemap-class';
 
 
 map: GoogleMap;
@@ -184,6 +187,93 @@ map.mapType = MapType.Hybrid;
 ```
 See [CameraUpdate]() for more methods you can call and pass to the `animateCamera()`
 
+### Styling the map
+You can style the map's items, such as roads, parks, businesses, and other points of interest. 
+
+Styling works only on the [normal](#maptype-enum) map type. Styling does not affect indoor maps.
+
+To style your map, use a JSON file generated by the [Google Maps APIs Styling Wizard](https://mapstyle.withgoogle.com). In addition to changing the appearance of features, you can also hide features completely.
+```json
+[
+  {
+    "featureType": "all",
+    "stylers": [
+      { "color": "#C0C0C0" }
+    ]
+  },{
+    "featureType": "road.arterial",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#CCFFFF" }
+    ]
+  },{
+    "featureType": "landscape",
+    "elementType": "labels",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+  }
+]
+```
+To apply a custom style to your map you can set the `mapStyle` property on your `GoogleMap` object:
+```ts
+import { GoogleMap } from '@nativescript/googlemap-class';
+
+map: GoogleMap;
+map.mapStyle = [{
+	"featureType": "landscape",
+	"elementType": "labels",
+	"stylers": [
+		{ "visibility": "off" }
+	]
+}];
+```
+### Adding Markers
+
+You can create markers using the [GoogleMap](#googlemap-class)'s object `addMarker` method by passing it a [MarkerOptions](#markeroptions) object.
+
+```ts
+function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
+	return map.addMarker(markerOptions);
+}
+```
+### Removing Markers
+
+To remove a marker from the map, call the `removeMarker()` method on the [GoogleMap](#googlemap-class) instance and pass it the marker to be removed.
+
+```ts
+function removeMarker(map: GoogleMap, marker: Marker) {
+	map.removeMarker(marker);
+}
+```
+### Adding Circles
+
+To add a circle to the map, call the `addCircle()` method and specify its properties with a [CircleOptions](#circleoptions) object.
+
+```ts
+function addCircle(map: GoogleMap, circleOptions: CircleOptions): Circle {
+	return map.addCircle(circleOptions);
+}
+```
+### Removing Circles
+
+You can remove a circle using the [GoogleMap](#googlemap-class)'s `removeCircle()` method.
+
+```ts
+function removeCircle(map: GoogleMap, circle: Circle) {
+	map.removeCircle(circle);
+}
+```
+
+### Adding Polygons
+
+You can create polygons using the [GoogleMap](#googlemap-class)'s object `addPolygon()` method by passing in the specified [PolygonOptions](#polygonoptions).
+
+```ts
+function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
+	return map.addPolygon(polygonOptions);
+}
+```
 ## API
 
 ### MapView Class
@@ -194,11 +284,11 @@ The following properties are available for adjusting the camera view on initiali
 
 | Property     | Type | Description
 :------------- |:-----| :---------------------------------
-`lat` | number | Latitude, in degrees
-`lng` | number | Longitude, in degrees
-`zoom` | number | Zoom level (described [here](https://developers.google.com/maps/documentation/javascript/tutorial#zoom-levels))
-`bearing` | number | Bearing, in degrees
-`tilt` | number | Tilt, in degrees
+`lat` | `number` | Latitude, in degrees
+`lng` | `number` | Longitude, in degrees
+`zoom` | `number` | Zoom level (described [here](https://developers.google.com/maps/documentation/javascript/tutorial#zoom-levels))
+`bearing` | `number` | Bearing, in degrees
+`tilt` | `number` | Tilt, in degrees
 
 #### Events
 
@@ -206,7 +296,7 @@ The following properties are available for adjusting the camera view on initiali
 
 | Event        | Description
 :------------- | :---------------------------------
-`ready` | Fires when the MapView is ready for use see [GoogleMap](#google-map)
+`ready` | Fires when the MapView is ready for use see [GoogleMap](#googlemap-class)
 `mapTap` | Fires when a coordinate is tapped on the map
 `mapLongPress` | Fires when a coordinate is long-pressed on the map
 `markerTap` | Fires when a marker is tapped
@@ -258,17 +348,17 @@ function onReady(event: MapReadyEvent) {
 #### Methods
 | Method       | Returns |Description
 :--------------- |:------------- |:---------------------------------
-[addMarker](#adding-markers)(marker: [MarkerOptions](#marker-options))| [Marker](#markers) |Adds a [marker](#markers) to the map
+[addMarker](#adding-markers)(marker: [MarkerOptions](#markeroptions))| [Marker](#markers) |Adds a [marker](#markers) to the map
 [removeMarker](#removing-markers)(marker: [Marker](#markers))| `void` | Removes a marker from the map
-[addTileOverlay](#adding-tile-overlays)(options: [TileOverlayOptions](#tileoverlay-options))| [TileOverlay](#tile-overlays) | Adds a tile overlay to the map
+[addTileOverlay](#adding-tile-overlays)(options: [TileOverlayOptions](#tileoverlayoptions))| [TileOverlay](#tile-overlays) | Adds a tile overlay to the map
 [removeTileOverlay](#removing-tile-overlays)(overlay: [TileOverlay](#tile-overlays))| `void` | Removes a tile overlay from the map
-[addCircle](#adding-circles)(circle: [CircleOptions](#circle-options))| [Circle](#circle) | Adds a circle to the map
+[addCircle](#adding-circles)(circle: [CircleOptions](#circleoptions))| [Circle](#circle) | Adds a circle to the map
 [removeCircle](#removing-circles)(circle: [Circle](#circle))| `void` | Removes a circle from the map
-[addGroundOverlay](#adding-ground-overlays)(options: [GroundOverlayOptions](#groundoverlay-options)) | [GroundOverlay](#ground-overlays) | Adds a ground overlay to the map
+[addGroundOverlay](#adding-ground-overlays)(options: [GroundOverlayOptions](#groundoverlayoptions)) | [GroundOverlay](#ground-overlays) | Adds a ground overlay to the map
 [removeGroundOverlay](#removing-ground-overlays)(groundOverlay: [GroundOverlay](#ground-overlays)) | Removes a ground overlay from the map
-[addPolygon](#adding-polygons)(options: [PolygonOptions](#polygon-options)) | [Polygon](#polygons) | Adds a polygon to the map
+[addPolygon](#adding-polygons)(options: [PolygonOptions](#polygonoptions)) | [Polygon](#polygons) | Adds a polygon to the map
 [removePolygon](#removing-polygons)(polygon: [Polygon](#polygons)) | Removes a polygon from the map
-[addPolyline](#adding-polylines)(options: [PolylineOptions](#polyline-options)) | [Polyline](#polyline) | Adds a polyline to the map
+[addPolyline](#adding-polylines)(options: [PolylineOptions](#polylineoptions)) | [Polyline](#polyline) | Adds a polyline to the map
 [removePolyline](#removing-polylines)(polyline: [Polyline](#polyline))| `void` | Removes a polyline from the map
 [animateCamera](#controlling-the-camera)(update: [CameraUpdate](#controlling-the-camera))| `void` | Animates camera to a new position
 `snapshot()`| `Promise<ImageSource>` | Returns a platform-specific image of the map's current viewport
@@ -281,18 +371,18 @@ function onReady(event: MapReadyEvent) {
 consult the appropriate SDK reference on how to use it: [iOS](https://developers.google.com/maps/documentation/ios-sdk/reference/interface_g_m_s_map_view) | [Android](https://developers.google.com/android/reference/com/google/android/gms/maps/GoogleMap)
 
 
-#### Camera Position
+### Camera Position
 
 The map's current camera position can be read from the `cameraPosition` property of a [GoogleMap](#googlemap-class) object.
 
 | Property       | Type | Description
 :--------------- |:---- |:---------------------------------
-`target` | `Coordinate` | The camera target is the location of the center of the map, specified as `lat` and `lng`.
+`target` | [Coordinate](#coordinate) | The camera target is the location of the center of the map, specified as `lat` and `lng`.
 `bearing` | `number` | The direction in which the camera points measured in degrees clockwise from north.
 `tilt` | `number` | The viewing angle of the camera measured in degrees
 `zoom` | `number` | The scale of the map 
 
-#### CameraUpdate Class
+### CameraUpdate Class
 `CameraUpdate` provides multiple methods to create a target CameraPosition. 
 
 | Method |  Description
@@ -300,14 +390,14 @@ The map's current camera position can be read from the `cameraPosition` property
 | `fromCoordinate(coordinate: Coordinate, zoom: number)` | Returns a `CameraUpdate` from a single coordinate
 | `fromCoordinates(coordinates: Coordinate[], padding: number)` | Returns a `CameraUpdate` from multiple coordinates 
 | `fromCoordinates(coordinates: Coordinate[], width: number, height: number, padding: number)` | Returns a `CameraUpdate` from multiple coordinates with specified height, width and padding
-| fromCameraPosition(position: CameraPosition) | Returns a `CameraUpdate` from a CameraPosition 
+| `fromCameraPosition(position: CameraPosition)` | Returns a `CameraUpdate` from a CameraPosition 
 | `zoomIn()` | Returns a `CameraUpdate` that has zoomed in
 | `zoomOut()` | Returns a `CameraUpdate` that has zoomed out
 | `zoomTo(value: number)` | Returns a `CameraUpdate` that has zoomed to a value
 | `zoomBy(amount: number, point?: { x: number; y: number })` | Returns a `CameraUpdate` that has zoomed and panned
 | `scrollBy(x: number, y: number)` | Returns a panned `CameraUpdate`
 
-#### Projection 
+### Projection 
 A projection is used to translate between on screen location and geographic coordinates on the surface of the Earth.
 
 | Method | Description
@@ -317,7 +407,7 @@ A projection is used to translate between on screen location and geographic coor
 | `toScreenLocation(coordinate: Coordinate)` | Returns a screen location that corresponds to a geographical coordinate.
 | `containsCoordinate(coordinate: Coordinate)` | Returns true if the coordinate is visible in the current viewport.
 
-#### UISettings Interface
+### UISettings Interface
 
 You can adjust the maps UI settings from the `GoogleMap` object by configuring the following properties of the `uiSettings` property:
 
@@ -334,7 +424,7 @@ You can adjust the maps UI settings from the `GoogleMap` object by configuring t
 | `zoomControlsEnabled` | `boolean` | Whether map zoom controls are enabled or not
 | `scrollGesturesEnabledDuringRotateOrZoom` | `boolean` | Whether scroll gestures are enabled while rotating or zooming
 
-#### MapType Enum
+### MapType Enum
 
 The Google Maps API offers five types of maps:
 
@@ -346,146 +436,66 @@ The Google Maps API offers five types of maps:
 | `Terrain` | Topographic data. The map includes colors, contour lines and labels, and perspective shading. Some roads and labels are also visible.
 | `Hybrid` | Satellite photograph data with road maps added. Road and feature labels are also visible. 
 
-### Map Styles
-You can customize the presentation of the standard Google Map styles, changing the visual display of features like roads, parks, businesses, and other points of interest. This means that you can emphasize particular components of the map or make the map look good with your app.
+### Marker Class
+This class is used to create a marker for the map. It implements the [MarkerOptions] interface and has the following additional methods.
 
-Styling works only on the `normal` map type. Styling does not affect indoor maps.
-
-To style your map, use a JSON file generated by the [Google Maps APIs Styling Wizard](https://mapstyle.withgoogle.com). In addition to changing the appearance of features, you can also hide features completely.
-```json
-[
-  {
-    "featureType": "all",
-    "stylers": [
-      { "color": "#C0C0C0" }
-    ]
-  },{
-    "featureType": "road.arterial",
-    "elementType": "geometry",
-    "stylers": [
-      { "color": "#CCFFFF" }
-    ]
-  },{
-    "featureType": "landscape",
-    "elementType": "labels",
-    "stylers": [
-      { "visibility": "off" }
-    ]
-  }
-]
-```
-To apply a custom style to your map you can set the `mapStyle` property on your `GoogleMap` object, like so:
-```ts
-import { GoogleMap } from '@nativescript/google-map';
-
-...
-map: GoogleMap;
-map.mapStyle = [{
-	"featureType": "landscape",
-	"elementType": "labels",
-	"stylers": [
-		{ "visibility": "off" }
-	]
-}];
-```
+| Method | Returns 
+|:-------|:-------
+| `hideInfoWindow()`|  `void`
+| `showInfoWindow()`|  `void`
 
 
-# Markers
-
-## Adding Markers
-
-You can create markers using the [GoogleMap](#google-map)s object `addMarker` function by passing in the specified [Marker Options](#marker-options).
-
-```ts
-function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
-	return map.addMarker(markerOptions);
-}
-```
-### Marker Options
+### MarkerOptions
 
 | Property | Type | Description
 |:---------|:-----|:-----------
-| `position` | Coordinate | The position of the marker, specified as `lat` and `lng`
-| `color` | string \| Color | Color of the marker, shades are unavailable.
-| `opacity` | number | Opacity of the marker.
-| `title` | string | A string that's displayed in the info window when the user taps the marker
-| `snippet` | string | Additional text that's displayed below the title
-| `icon` | ImageSource \| UIImage \| Bitmap | A image that's displayed in place of the default marker image
+| `position` | [Coordinate](#coordinate) | The position of the marker, specified as `lat` and `lng`
+| `color` | `string` \| `Color` | Color of the marker, shades are unavailable.
+| `opacity` | `number` | Opacity of the marker.
+| `title` | `string` | A string that's displayed in the info window when the user taps the marker
+| `snippet` | `string` | Additional text that's displayed below the title
+| `icon` | `ImageSource \| UIImage \| Bitmap` | A image that's displayed in place of the default marker image
 | `draggable` | `boolean` | Set to `true` if you want to allow the user to move the marker. Defaults to `false`
 | `flat` | `boolean` | By default, markers are oriented against the screen, and will not rotate or tilt with the camera. Flat markers are oriented against the surface of the earth, and will rotate and tilt with the camera
 | `rotation` | `boolean` | The orientation of the marker, specified in degrees clockwise
-| `anchorU` | number | Horizontal icon offset from the marker position
-| `anchorV` | number | Vertical icon offset from the marker position
-| `userData` | any | Additional information assigned to the marker
-| `zIndex` | number | Z-index of the marker
+| `anchorU` | `number` | Horizontal icon offset from the marker position
+| `anchorV` | `number` | Vertical icon offset from the marker position
+| `userData` | `any` | Additional information assigned to the marker
+| `zIndex` | `number` | Z-index of the marker
+### Coordinate
+| Property | Type
+|:---------|:----
+| `lat` | `number`
+| `lng` | `number`
 
-
-## Removing Markers
-
-You can remove a marker using the [GoogleMap](#google-map)s `removeMarker` function, like so: 
-
-```ts
-function removeMarker(map: GoogleMap, marker: Marker) {
-	map.removeMarker(marker);
-}
-```
-
-# Circle
-## Adding Circles
-
-You can create Circles using the [GoogleMap](#google-map)s object `addCircle` function by passing in the specified [Circle Options](#circle-options).
-
-```ts
-function addCircle(map: GoogleMap, circleOptions: CircleOptions): Circle {
-	return map.addCircle(circleOptions);
-}
-```
-### Circle Options
+### CircleOptions
 
 | Property | Type 
 |:---------|:-----
-`center` | Coordinate |
-`fillColor` | Color \| string |
-`radius` | number |
-`strokeColor` | Color \| string |
+`center` | [Coordinate](#coordinate) |
+`fillColor` | `Color` \| `string` |
+`radius` | `number` |
+`strokeColor` | `Color` \| `string` |
 `strokePattern` | PatternItem & Partial\<NativeObject\>[] |
-`strokeWidth` | number |
+`strokeWidth` | `number` |
 `tappable` | `boolean` |
 `visible` | `boolean` |
-`zIndex` | number |
+`zIndex` | `number` |
 `userData` | `{ [key: string]: any }` |
 
-## Removing Circles
 
-You can remove a Circle using the [GoogleMap](#google-map)s `removeCircle` function, like so: 
-
-```ts
-function removeCircle(map: GoogleMap, circle: Circle) {
-	map.removeCircle(circle);
-}
-```
-# Polygons
-## Adding Polygons
-
-You can create polygons using the [GoogleMap](#google-map)s object `addPolygon` function by passing in the specified [Polygon Options](#polygon-options).
-
-```ts
-function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
-	return map.addPolygon(polygonOptions);
-}
-```
-### Polygon Options
+### PolygonOptions
 
 | Property | Type 
 |:---------|:-----
-| `points` | Coordinate[] |
-| `holes` | Coordinate[] |
+| `points` | [Coordinate](#coordinate)[] |
+| `holes` | [Coordinate](#coordinate)[] |
 | `tappable` | `boolean` |
-| `strokeWidth` | number |
+| `strokeWidth` | `number` |
 | `strokeColor` | Color \| string |
 | `fillColor` | Color \| string |
 | `strokePattern` | PatternItem & Partial\<NativeObject\>[] |
-| `zIndex` | number |
+| `zIndex` | `number` |
 | `geodesic` | `boolean` |
 | `strokeJointType` | JointType |
 | `visible` | `boolean` |
@@ -493,7 +503,7 @@ function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
 
 ## Removing Polygons
 
-You can remove a Polygon using the [GoogleMap](#google-map)s `removePolygon` function, like so: 
+You can remove a Polygon using the [GoogleMap](#googlemap-class)`s `removePolygon` function, like so: 
 
 ```ts
 function removePolygon(map: GoogleMap, polygon: Polygon) {
@@ -501,26 +511,26 @@ function removePolygon(map: GoogleMap, polygon: Polygon) {
 }
 ```
 
-# Polyline
-## Adding Polylines
+### Polylines
+##### Adding Polylines
 
-You can create Polylines using the [GoogleMap](#google-map)s object `addPolyline` function by passing in the specified [Polyline Options](#polyline-options).
+You can create Polylines using the [GoogleMap](#googlemap-class)'s object `addPolyline` function by passing it a [PolylineOptions](#polylineoptions) object.
 
 ```ts
 function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline {
 	return map.addPolyline(polylineOptions);
 }
 ```
-### Polyline Options
+#### PolylineOptions
 
 | Property | Type 
 |:---------|:-----
-| `width` | number | 
-| `points` | Coordinate[] | 
+| `width` | `number` | 
+| `points` | [Coordinate](#coordinate)[] | 
 | `tappable` | `boolean` | 
 | `geodesic` | `boolean` | 
 | `visible` | `boolean` | 
-| `zIndex` | number | 
+| `zIndex` | `number` | 
 | `jointType` | JointType | 
 | `pattern` | PatternItem & Partial\<NativeObject\>[] | 
 | `color` | Color \| string | 
@@ -528,9 +538,9 @@ function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline
 | `endCap` | Cap & Partial\<NativeObject\> | 
 | `userData` | `{ [key: string]: any }` | 
 
-## Removing Polylines
+#### Removing Polylines
 
-You can remove a Polyline using the [GoogleMap](#google-map)s `removePolyline` function, like so: 
+You can remove a Polyline using the [GoogleMap](#googlemap-class)'s `removePolyline` function, like so: 
 
 ```ts
 function removePolyline(map: GoogleMap, polyline: Polyline) {
@@ -538,37 +548,37 @@ function removePolyline(map: GoogleMap, polyline: Polyline) {
 }
 ```
 
-# Ground Overlays
-## Adding Ground Overlays
+### Ground Overlays
+##### Adding Ground Overlays
 
-You can create Ground Overlays using the [GoogleMap](#google-map)s object `addGroundOverlay` function by passing in the specified [GroundOverlay Options](#groundoverlay-options).
+You can create Ground Overlays using the [GoogleMap](#googlemap-class)s object `addGroundOverlay` function by passing in the specified [GroundOverlay Options](#groundoverlayoptions).
 
 ```ts
 function addGroundOverlay(map: GoogleMap, groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
 	return map.addGroundOverlay(groundOverlayOptions);
 }
 ```
-### GroundOverlay Options
+#### GroundOverlayOptions
 
 | Property | Type 
 |:---------|:-----
-`zIndex` | number | 
+`zIndex` | `number` | 
 `visible` | `boolean` | 
-`transparency` | number | 
-`position` | Coordinate | 
+`transparency` | `number` | 
+`position` | [Coordinate](#coordinate) | 
 `bounds` | CoordinateBounds | 
 `tappable` | `boolean` | 
-`bearing` | number | 
+`bearing` | `number` | 
 `image` | ImageSource | 
 `userData` | any | 
-`width` | number | 
-`height` | number | 
-`anchorU` | number | 
-`anchorV` | number | 
+`width` | `number` | 
+`height` | `number` | 
+`anchorU` | `number` | 
+`anchorV` | `number` | 
 
-## Removing Ground Overlays
+#### Removing Ground Overlays
 
-You can remove a GroundOverlay using the [GoogleMap](#google-map)s `removeGroundOverlay` function, like so: 
+You can remove a GroundOverlay using the [GoogleMap](#googlemap-class)'s `removeGroundOverlay` function, like so: 
 
 ```ts
 function removeGroundOverlay(map: GoogleMap, groundOverlay: GroundOverlay) {
@@ -578,29 +588,29 @@ function removeGroundOverlay(map: GoogleMap, groundOverlay: GroundOverlay) {
 
 
 
-# Tile Overlays
-## Adding Tile Overlays
+## Tile Overlays
+#### Adding Tile Overlays
 
-You can create Tile Overlays using the [GoogleMap](#google-map)s object `addTileOverlay` function by passing in the specified [TileOverlay Options](#tileoverlay-options).
+You can create Tile Overlays using the [GoogleMap](#googlemap-class)'s object `addTileOverlay` function by passing in the specified [TileOverlay Options](#tileoverlayoptions).
 
 ```ts
 function addTileOverlay(map: GoogleMap, tileOverlayOptions: TileOverlayOptions): TileOverlay {
 	return map.addTileOverlay(tileOverlayOptions);
 }
 ```
-### TileOverlay Options
+#### TileOverlayOptions
 
 | Property | Type 
 |:---------|:-----
 | `fadeIn` | `boolean` |
-| `transparency` | number |
+| `transparency` | `number` |
 | `visible` | `boolean` |
 | `tileProvider` | TileProvider & Partial\<NativeObject\> |
-| `zIndex` | number |
+| `zIndex` | `number` |
 
-## Removing Tile Overlays
+#### Removing Tile Overlays
 
-You can remove a TileOverlay using the [GoogleMap](#google-map)s `removeTileOverlay` function, like so: 
+You can remove a TileOverlay using the [GoogleMap](#googlemap-class)'s `removeTileOverlay` function, like so: 
 
 ```ts
 function removeTileOverlay(map: GoogleMap, tileOverlay: TileOverlay) {
