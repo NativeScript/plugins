@@ -185,7 +185,7 @@ import { GoogleMap, MapType } from '@nativescript/googlemap-class';
 map: GoogleMap;
 map.mapType = MapType.Hybrid;
 ```
-See [CameraUpdate]() for more methods you can call and pass to the `animateCamera()`
+See [CameraUpdate](#cameraupdate-class) for more methods you can call and pass to the `animateCamera()` method.
 
 ### Styling the map
 You can style the map's items, such as roads, parks, businesses, and other points of interest. 
@@ -383,7 +383,7 @@ The map's current camera position can be read from the `cameraPosition` property
 `zoom` | `number` | The scale of the map 
 
 ### CameraUpdate Class
-`CameraUpdate` provides multiple methods to create a target CameraPosition. 
+`CameraUpdate` provides multiple methods to create a target [CameraPosition](#camera-position). 
 
 | Method |  Description
 |:-------|:-----------
