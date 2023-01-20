@@ -190,7 +190,7 @@ googleMap.animateCamera(
 ```
 
 ### Setting The Map Type
-To set the type of a map, the `mapType` property to one of the [MapType](#maptype) options.
+To set the map type, set the `mapType` property to one of the [MapType](#maptype) options.
 
 ```ts
 import { GoogleMap, MapType } from '@nativescript/googlemap-class';
