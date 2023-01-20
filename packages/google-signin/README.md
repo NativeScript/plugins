@@ -67,7 +67,7 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 ## Usage
 
 ### Signing In
-To sign in the user, call the `signIn()` or the `signInSilently()` method. However, ensure to call `configure()` before calling any of the sign-in methods.
+To sign in the user, call the [signIn()](#signin) or the [signInSilently()](#signinsilently) method. However, ensure to call `configure()` before calling any of those methods.
 ```ts
 import { GoogleSignin } from '@nativescript/google-signin';
 
@@ -83,7 +83,6 @@ try {
 
 ```xml
 <Page xmlns:ui="@nativescript/google-signin">
-
 	<ui:GoogleSigninButton tap="handleSignIn" />
 </Page>
 ```
@@ -144,39 +143,33 @@ The Configuration object has the following properties. All properties are option
 | `hostedDomain` | `string`
 
 #### signIn()
+
 ```ts
-GoogleSignin.signIn()
+user: User = await GoogleSignin.signIn()
 ```
-_Returns_: `Promise<User>`
 
 Prompts a modal to let the user sign in into the application. 
 
 ---
-## signInSilently()
+#### signInSilently()
 ```ts
-GoogleSignin.signInSilently()
+user: User = await GoogleSignin.signInSilently()
 ```
-
-_Returns_: `Promise<User>`
 
 ---
-## isSignedIn()
+#### isSignedIn()
+
 ```ts
-GoogleSignin.isSignedIn()
+isUserSignedIn: boolean
+ = GoogleSignin.isSignedIn()
 ```
-
-_Returns_: `boolean`
-
-
 Checks whether the user is currently signed in.
 
 ---
-## playServicesAvailable()
+#### playServicesAvailable()
 
 ```ts
-import { GoogleSignin } from "@nativescript/google-signin";
-
-playServicesAvailable: boolean = await GoogleSignin.playServicesAvailable();
+isPlayServicesAvailable: boolean = await GoogleSignin.playServicesAvailable();
 ```
 
 Checks if device has Google Play Services installed. Always resolves to `true` on iOS.
@@ -184,21 +177,58 @@ Checks if device has Google Play Services installed. Always resolves to `true` o
 Presence of up-to-date Google Play Services is required to show the sign in modal.
 
 ---
-## signOut()
-
+#### signOut()
+```ts
+GoogleSignin.signOut()
+```
 Signs out the current user.
 
-## disconnect()
-
+---
+#### disconnect()
+```ts
+await GoogleSignin.disconnect()
+```
 Disconnects the current user.
 
-## getTokens()
+---
+#### getTokens()
+```ts
+tokens: { idToken: string; accessToken: string;} = await GoogleSignin.getTokens()
+```
+Resolves with an object containing { idToken: string, accessToken: string, } or rejects with an error. Note that using `accessToken` for identity assertion on your backend server is [discouraged](https://developers.google.com/identity/sign-in/android/migration-guide).
 
-Resolves with an object containing { idToken: string, accessToken: string, } or rejects with an error. Note that using accessToken for identity assertion on your backend server is [discouraged](https://developers.google.com/identity/sign-in/android/migration-guide).
+---
+#### getCurrentUser()
 
-## getCurrentUser()
+```ts
+user : User | null = GoogleSignin.getCurrentUser()
+```
+This method resolves with null or a [User](#user) object.
 
-This method resolves with null or user object.
+#### User
+
+The user object has the following members:
+
+| Property | Type | Description
+|:---------|:-----|:------------
+| `id`	| `string` | _readonly_
+| `displayName` | `string` | _readonly_
+| `email` | `string` | _readonly_
+| `givenName` | `string` | _readonly_
+| `familyName` | `string` | _readonly_
+| `idToken` | `string` | _readonly_
+| `accessToken` | `string` | _readonly_
+| `grantedScopes`| `string[]`| _readonly_
+| `photoUrl` | `string` | _readonly_
+| `serverAuthCode` | `string` | _readonly_
+| `requestScopes(scopes: string[])` | `Promise<IUser>`
+| `native`| [com.google.android.gms.auth.api.signin.GoogleSignInAccount](https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount) \| [GIDGoogleUser](https://developers.google.com/identity/sign-in/ios/reference/Classes/GIDGoogleUser) 
+
+#### GoogleSignInButton
+| Property | Type 
+|:---------|:-----
+| `colorScheme`| `"dark" \| "light" \| "auto"`
+| `colorStyle` | `"standard" \| "wide" \| "icon"`
 
 ## License
 
