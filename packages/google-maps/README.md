@@ -94,7 +94,7 @@ at `App_Resources/iOS`.
 
 ## Installation
 ```cli
-npm install @nativescript/google-mapss
+npm install @nativescript/google-maps
 ```
 
 ## Usage
@@ -120,6 +120,7 @@ To show the map view, add the `<MapView>` element to your HTML. Then to manage t
 ```
 To use the plugin in the different NativeScript flavors, modify the `main.ts` to import and then register it.
 
+> **Note** To handle the map features, see the [GoogleMap object](#googlemap-object) API.
 ### Angular
 ```ts
 import { GoogleMapsModule } from '@nativescript/google-maps/angular';
@@ -145,6 +146,8 @@ import { GoogleMapsModule } from '@nativescript/google-maps/angular';
 >
 </MapView>
 ```
+
+---
 ### Vue
 ```ts
 import { createApp,registerElement } from 'nativescript-vue';
@@ -156,6 +159,9 @@ const app = createApp(Home)
 app.use(GoogleMaps)
 
 ```
+> **Note** To handle the map features, see the [GoogleMap object](#googlemap-object) API.
+
+---
 
 ```html
 <MapView
@@ -166,6 +172,7 @@ app.use(GoogleMaps)
 
 />
 ```
+> **Note** To handle the map features, see the [GoogleMap object](#googlemap-object) API.
 
 ### Controlling the camera
 To programatically update the camera position, call the `animateCamera()` method on the `GoogleMap` object and pass it a [CameraUpdate](#cameraupdate-class) instance.
