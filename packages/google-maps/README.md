@@ -94,7 +94,7 @@ at `App_Resources/iOS`.
 
 ## Installation
 ```cli
-npm install @nativescript/google-mapss
+npm install @nativescript/google-maps
 ```
 
 ## Usage
