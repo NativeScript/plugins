@@ -504,7 +504,7 @@ This class is used to create a marker for the map. It implements the [MarkerOpti
 
 ## Removing Polygons
 
-You can remove a Polygon using the [GoogleMap](#googlemap-class)`s `removePolygon` function, like so: 
+You can remove a Polygon using the [GoogleMap](#googlemap-class)s `removePolygon` function, like so: 
 
 ```ts
 function removePolygon(map: GoogleMap, polygon: Polygon) {
