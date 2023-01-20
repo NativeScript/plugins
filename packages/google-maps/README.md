@@ -72,7 +72,8 @@ In the `AndroidManifest.xml` file, add the `<meta-data>` tag with the `com.googl
 ```
 
 **iOS**
-dd the `TNSGoogleMapsAPIKey` key and the API key as the value to the `Info.plist` file, located
+
+Add the `TNSGoogleMapsAPIKey` key and the API key as the value to the `Info.plist` file, located
 at `App_Resources/iOS`.
 
 ```xml
