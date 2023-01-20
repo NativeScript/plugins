@@ -12,8 +12,20 @@
 		* [Angular](#angular)
 
 * [API](#api)
-	* [GoogleSignin Class](#googlesignin-class)
+	* [GoogleSignin](#googlesignin)
 		* [configure()](#configure)
+			* [Configuration](#configuration)
+		* [signIn()](#signin)
+		* [signInSilently()](#signinsilently)
+		* [isSignedIn()](#issignedin)
+		* [playServicesAvailable()](#playservicesavailable)
+		* [signOut()](#signout)
+		* [disconnect()](#disconnect)
+		* [getTokens()](#gettokens)
+		* [getCurrentUser()](#getcurrentuser)
+	* [User](#user)
+	* [GoogleSignInButton](#googlesigninbutton)
+(#playservicesavailable)
 ## Installation
 
 ```cli
@@ -83,7 +95,7 @@ try {
 
 ```xml
 <Page xmlns:ui="@nativescript/google-signin">
-	<ui:GoogleSigninButton tap="handleSignIn" />
+	<ui:GoogleSigninButton tap="handleSignIn" colorScheme='auto' colorStyle='standard'/>
 </Page>
 ```
 
@@ -99,7 +111,7 @@ try {
 
 #### Angular
 
-In the `module.ts` file:
+Register the button in the `module.ts` file:
 
 ```ts
 import { registerElement } from '@nativescript/angular';
@@ -111,18 +123,31 @@ And then it can be called from your `html` file choosing the desired option for 
 <GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
 ```
 
-`colorScheme` supports 'auto', 'dark' and 'light' options and `colorStyle`supports 'standard'. 'wide' and 'icon'. Since it's a button, you can also set some of its properties such as `height` or `width`.
+#### Vue
+To register the button, add the following code to the `main.ts` file.
 
+```ts 
+registerElement('GoogleSignInButton',()=> require("@nativescript/google-signin").GoogleSignInButton)
+```
+
+Then use it in a `.vue` file as follows:
+
+```xml
+<GoogleSignInButton colorScheme='auto' colorStyle='standard' @tap="yourGoogleSigninFunction"></GoogleSignInButton>
+```
+#### Styling the signin button
+
+[GoogleSignInButton](#googlesigninbutton) is a [View](https://docs.nativescript.org/api-reference/classes/view) instance so you can use the View class styling properties. Additionally, the plugin offers the `colorScheme` and `colorStyle` properties.
+ 
 ## API 
-### GoogleSignin Class
+### GoogleSignin
 The GoogleSignin class has the following methods.
 
 #### configure()
 
 ```ts
-GoogleSignIn.configure(configuration)
+await GoogleSignIn.configure(configuration)
 ```
-_Returns_ : `Promise<void>`
 
 Specifies the properties of the sign-in request, such as scopes,accountName, etc.
 
@@ -221,10 +246,11 @@ The user object has the following members:
 | `grantedScopes`| `string[]`| _readonly_
 | `photoUrl` | `string` | _readonly_
 | `serverAuthCode` | `string` | _readonly_
-| `requestScopes(scopes: string[])` | `Promise<IUser>`
-| `native`| [com.google.android.gms.auth.api.signin.GoogleSignInAccount](https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount) \| [GIDGoogleUser](https://developers.google.com/identity/sign-in/ios/reference/Classes/GIDGoogleUser) 
+| `requestScopes(scopes: string[])` | `Promise<IUser>` | See [User](#user) for the properties of `IUser`
+| `native`| [com.google.android.gms.auth.api.signin.GoogleSignInAccount](https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount) \| [GIDGoogleUser](https://developers.google.com/identity/sign-in/ios/reference/Classes/GIDGoogleUser) | Platform-specific instance.
 
 #### GoogleSignInButton
+
 | Property | Type 
 |:---------|:-----
 | `colorScheme`| `"dark" \| "light" \| "auto"`
