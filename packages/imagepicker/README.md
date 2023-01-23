@@ -1,62 +1,104 @@
 # @nativescript/imagepicker
 
 Imagepicker plugin supporting both single and multiple selection.
-<br />Plugin supports **iOS8+** and uses [QBImagePicker](https://github.com/questbeat/QBImagePicker) cocoa pod.
-<br />For **Android** it uses Intents to open the stock images or file pickers. For Android 6 (API 23) and above the permissions to read file storage should be explicitly required. See demo for implementation details.
+<br />Plugin supports **iOS8+** and uses [QBImagePicker](https://github.com/questbeat/QBImagePicker) cocoapod.
+<br />For **Android** it uses [Intents](https://developer.android.com/reference/android/content/Intent) to open the stock images or file pickers. For Android 6 (API 23) and above, the permissions to read file storage should be explicitly required. 
 
+## Table of Contents
+* [Installation](#installation)
+* [Required Permissions](#required-permissions)
+    * [Android](#android)
+    * [iOS](#ios)
+* [Usage](#usage)
+    * [Importing the plugin](#importing-the-plugin)
+    * [Creating the Imagepicker instance](#creating-the-imagepicker-instance)
+    * [Using the ImagePicker Instance](#using-the-imagepicker-instance)
+* [API](#api)
+    * [ImagePicker](#imagepicker)
+    * [create()](#create)
+    * [Options](#options)
+    * [ImagePickerMediaType](#imagepickermediatype)
+
+## Installation
 ```cli
 npm install @nativescript/imagepicker
 ```
 
+## Required Permissions
+
+### Android
+Add the following permissions to the `App_Resources/Android/src/main/AndroidManifest.xml` file:
+
+- **targetSdkVersion < 33**
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+<application android:requestLegacyExternalStorage="true" ... >
+    ...
+  </application>
+```
+
+- **targetSdkVersion >=33(Android 13+)**
+
+```xml
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+```
+
+See the complete example [here](https://github.com/NativeScript/plugins/blob/main/tools/assets/App_Resources/Android/src/main/AndroidManifest.xml#L14).
+
+### iOS
+Using the plugin on iOS requires the `NSPhotoLibraryUsageDescription` permission. Modify the `app/App_Resources/iOS/Info.plist` file to add it as follows:
+
+```xml
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Description text goes here</string>
+```
+Your app might be rejected from the Apple App Store if you do not describe why you need this permission. The default message `Requires access to photo library.` might not be enough for the App Store reviewers. 
+
 ## Usage
-
-The best way to explore the usage of the plugin is to inspect both demo apps in the plugin repository.
+<!-- TOD: Add Preview -->
+<!-- The best way to explore the usage of the plugin is to inspect both demo apps in the plugin repository.
 In `demo` folder you can find the usage of the plugin for TypeScript non-Angular application. Refer to `demo/app/main-page.ts`.
-In `demo-angular` is the usage in an Angular app. Refer to `demo-angular/app/app.component.ts`.
+In `demo-angular` is the usage in an Angular app. Refer to `demo-angular/app/app.component.ts`. -->
 
-In addition to the plugin usage, both apps are webpack configured.
+### Importing the plugin
 
-In short here are the steps:
-
-### Import the plugin
-
-_TypeScript_
-
+<!--tabs: TS  -->
 ```ts
-import * as imagepicker from "@nativescript/imagepicker";
+import * as imagePickerPlugin from "@nativescript/imagepicker";
 ```
 
-_Javascript_
+<!--tabs: JS  -->
 
 ```js
-var imagepicker = require("@nativescript/imagepicker");
+var imagePickerPlugin = require("@nativescript/imagepicker");
 ```
 
-### Create imagepicker
+### Creating the Imagepicker instance
 
-Create imagepicker in `single` or `multiple` mode to specifiy if the imagepicker will be used for single or multiple selection of images
+Create an Imagepicker instance in `single` or `multiple` mode to specifiy if the image picker will be used for single or multiple selection.
 
-_TypeScript_
-
+<!-- tabs: TS -->
 ```ts
-let context = imagepicker.create({
-    mode: "single" // use "multiple" for multiple selection
-});
+let imagePickerObj: ImagePicker = imagePickerPlugin.create({
+    mode: "single"});
 ```
-
-_Javascript_
-
+<!-- tabs: JS -->
 ```js
-var context = imagepicker.create({ mode: "single" }); // use "multiple" for multiple selection
+var imagePickerObj = imagePickerPlugin.create({ mode: "single" }); 
 ```
 
-### Request permissions, show the images list and process the selection
+### Using the ImagePicker Instance
+
+Once you've created the picker instance, use it to request for permissions, present the list of media assets to be picked from, and process the selection.
 
 ```ts
-context
+imagePickerObj
     .authorize()
     .then(function() {
-        return context.present();
+        return imagePickerObj.present();
     })
     .then(function(selection) {
         selection.forEach(function(selected) {
@@ -67,62 +109,49 @@ context
         // process error
     });
 ```
-
-> **NOTE**: To request permissions for Android 6+ (API 23+) we use [nativescript-permissions](https://www.npmjs.com/package/nativescript-permissions).
-
-> **NOTE**: Apps with a targetSdkVersion <33 To be sure to have permissions add the following lines in AndroidManifest.xml
-
-```xml
-<manifest ... >
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-  <application android:requestLegacyExternalStorage="true" ... >
-    ...
-  </application>
-</manifest>
-```
-
-> **NOTE**:  Apps with a targetSdkVersion >=33 i.e. Android 13+ (API 33+): To be sure to have permissions add the following lines in AndroidManifest.xml
-
-```xml
-<manifest ... >
-    ...
- 	<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-	<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    ...
-  </application>
-</manifest>
-```
-
-> **NOTE**: Using the plugin on iOS requres photo library permission. Your app might be rejected from the Apple App Store if you do not provide a description about why you need this permission. The default message "Requires access to photo library." might not be enough for the App Store reviewers. You can customize it by editing the `app/App_Resources/iOS/Info.plist` file in your app and adding the following key:
-
-```xml
-<key>NSPhotoLibraryUsageDescription</key>
-<string>Description text goes here</string>
-```
+> **Note** To request permissions for Android 6+ (API 23+), use [nativescript-permissions](https://www.npmjs.com/package/nativescript-permissions) plugin.
 
 ## API
 
-### Methods
+### ImagePicker
 
-- create(options) - creates instance of the imagepicker. Possible options are:
+| Method | Returns | Description
+|:-------|:--------|:-----------
+| `constructor(options: Options)` | `ImagePicker` | Instanciates the ImagePicker class with the optional `options` parameter. See [Options](#options)
+| `authorize()` | `Promise<void>` | Requests the required permissions. Call it before calling `present()`. In case of a failed authorization, consider notifying the user for degraded functionality.
+| `present()` | `Promise<ImageAsset[]>` | Presents the image picker UI.
 
-| Option                      | Platform | Default   | Description                                                                                                                                        |
-| --------------------------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| mode                        | both     | multiple  | The mode if the imagepicker. Possible values are `single` for single selection and `multiple` for multiple selection.                              |
-| minimumNumberOfSelection    | iOS      | 0         | The minumum number of selected assets.                                                                                                             |
-| maximumNumberOfSelection    | iOS      | 0         | The maximum number of selected assets.                                                                                                             |
-| showsNumberOfSelectedAssets | iOS      | True      | Display the number of selected assets.                                                                                                             |
-| prompt                      | iOS      | undefined | Display prompt text when selecting assets.                                                                                                         |
-| numberOfColumnsInPortrait   | iOS      | 4         | Set the number of columns in Portrait orientation.                                                                                                 |
-| numberOfColumnsInLandscape  | iOS      | 7         | Set the number of columns in Landscape orientation.                                                                                                |
-| mediaType                   | both     | Any       | Choose whether to pick Image/Video/Any type of assets.                                                                                             |
-| showAdvanced                | Android  | false     | Show internal and removable storage options on Android (**WARNING**: [not supported officially](https://issuetracker.google.com/issues/72053350)). |
+### create()
+```ts
+imagePicker: ImagePicker = imagePickerPlugin.create(options: Options, hostView: View)
+```
 
-The **hostView** parameter can be set to the view that hosts the image picker. Applicable in iOS only, intended to be used when open picker from a modal page.
+Creates an instance of the ImagePicker class. 
 
-- authorize() - request the required permissions.
-- present() - show the albums to present the user the ability to select images. Returns an array of the selected images.
+- _Optional_: `options` - The ImagePicker instance settings. See [Options](#options)
+- _Optional_: (`iOS-only`) `hostView` - Can be set to the view that hosts the image picker. Intended to be used when opening the picker from a modal page.
+
+---
+### Options
+
+| Option | Type | Default |Description                                                          
+|:---------------------------|:-------- |:---------|:-------
+| `mode`                       | `string`     | `multiple`  | The mode of the imagepicker. Possible values are `single` for single selection and `multiple` for multiple selection.                              |
+| `minimumNumberOfSelection`    | `number`      | `0`         | _Optional_:  (`iOS-only`) The minumum number of selected assets.                                                                                                             |
+| `maximumNumberOfSelection`    | `number`      | `0`         | _Optional_:  (`iOS-only`) The maximum number of selected assets.                                                                                                             |
+| `showsNumberOfSelectedAssets` | `boolean`      | `true`      | _Optional_:  (`iOS-only`) Display the number of selected assets.                                                                                                             |
+| `prompt`                      | `string`      | `undefined` | _Optional_:  (`iOS-only`) Display prompt text when selecting assets.                                                                                                         |
+| `numberOfColumnsInPortrait`   | `number`      | `4`         | _Optional_:  (`iOS-only`) Sets the number of columns in Portrait orientation                                                                                                  |
+| `numberOfColumnsInLandscape`  | `number`      | `7`         | _Optional_:  (`iOS-only`) Sets the number of columns in Landscape orientation.                                                                                                |
+| `mediaType`                   | [ImagePickerMediaType](#imagepickermediatype)     | `Any`       |_Optional_: The type of media asset to pick whether to pick Image/Video/Any type of assets. |
+| `showAdvanced `               | `boolean`  | `false`     | _Optional_:(`Android-only`) Show internal and removable storage options on Android (**WARNING**: [not supported officially](https://issuetracker.google.com/issues/72053350)). |
+| `android` | `{read_external_storage: string;}`| _Optional_: (`Android-only`) Provides a reason for permission request to access external storage on API level above 23.
+
+
+### ImagePickerMediaType
+- `Any` = `0`,
+- `Image` = `1`,
+- `Video` = `2`
 
 ## License
 
