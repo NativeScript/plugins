@@ -1,17 +1,43 @@
 # @nativescript/datetimepicker
-
+<!-- TODO: Add flavors -->
 A plugin that provides the UI elements `DatePickerField`, `TimePickerField` and `DateTimePickerFields` for picking a date and a time. The `DatePickerField` and `TimePickerField` components extend the [TextField](https://docs.nativescript.org/ui/textfield) view, while the `DateTimePickerFields` extends the [GridLayout](https://docs.nativescript.org/ui/gridlayout) layout container that contains instances of the `DatePickerField` and `TimePickerField` components. There is also a `DateTimePicker` class which provides static methods `pickDate()` and `pickTime()` that can be called to show the same dialog picker as the fields.
 
 <img alt="DatePickerField on iOS (left) and Android (right)"  src="https://raw.githubusercontent.com/NativeScript/nativescript-datetimepicker/master/docs/date_picker_field.png" width="500px"/>
 
 <img alt="TimePickerField on iOS (left) and Android (right)" src="https://raw.githubusercontent.com/NativeScript/nativescript-datetimepicker/master/docs/time_picker_field.png" width="500px"/>
 
-## Install
+## Table of Contents
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Core](#core)
+    * [Angular](#angular)
+    * [Vue](#vue)
+    * [Setting The Selected Date and Time](#setting-the-selected-date-and-time)
+    * [Changing the Picker Titles and Buttons Labels](#changing-the-picker-titles-and-buttons-labels)
+    * [Setting Localization](#setting-localization)
+    * [Formatting the Date and Time](#formatting-the-date-and-time)
+    * [Setting the Minimum and Maximum Dates](#setting-the-minimum-and-maximum-dates)
+    * [DateTimePickerFields pickers orientation](#datetimepickerfields-pickers-orientation)
+    * [Styling the Pickers with CSS](#styling-the-pickers-with-css)
+    * [DateTimePicker](#datetimepicker)
+    * [Using DateTimePicker](#using-datetimepicker)
+* [API](#api)    
+    * [DatePickerField](#datepickerfield)
+    * [TimePickerField](#timepickerfield)
+    * [DateTimePickerFields](#datetimepickerfields)
+    * [DateTimePicker Class](#datetimepicker-class)
+    * [DatePickerOptions](#datepickeroptions)
+    * [TimePickerOptions](#timepickeroptions)
+    * [DateTimePickerStyle](#datetimepickerstyle)
+* [License](#license)
+
+## Installation
+
 ```cli
 npm install @nativescript/datetimepicker
 ```
 
-## Using datetimepicker
+## Usage
 
 ### Core
 ```xml
@@ -25,7 +51,8 @@ npm install @nativescript/datetimepicker
 
 ### Angular
 
-You need to register the plugin in the module of your component:
+You need to register the plugin in the component's module:
+
 ```ts
 import { NativeScriptDateTimePickerModule } from "@nativescript/datetimepicker/angular";
 ...
@@ -47,7 +74,7 @@ Then use it in HTML as follows:
 
 ### Vue
 
-Once the plugin has been installed, register it in the `main.ts`
+Once the plugin has been installed, register it in the `main.ts` file:
 
 ```ts
 import DateTimePicker   from "@nativescript/datetimepicker/vue"
@@ -67,9 +94,9 @@ Then use it in a `template` as follows:
 <DateTimePickerFields hintDate="select date" hintTime="select time"></DateTimePickerFields>
 ```
 
-### Setting the selected Date and Time 
+### Setting The Selected Date and Time 
 
-To set the selected time of the `TimePickerField` to a specific value, use the `time` property.
+To set the selected time of the `TimePickerField`, use the `time` property.
 ```xml
 <TimePickerField time="01:00"></TimePickerField>
 ```
@@ -82,7 +109,7 @@ The `DatePickerField` and `DateTimePickerFields` components both use the `date` 
 <DateTimePickerFields date="2019/02/24 01:00"></DateTimePickerFields>
 ```
 
-### Changing the Picker Titles and Buttons labels
+### Changing the Picker Titles and Buttons Labels
 
 To change the titles and the button labels of the picker's popups, use the `pickerOkText`, `pickerCancelText` and `pickerTitle` properties.
 
@@ -112,7 +139,7 @@ To localize the `DatePickerField` and `DateTimePickerFields` components, use the
                         pickerTitleDate="Datum auswählen" pickerTitleTime="Zeit wählen" />
 ```
 
-### Formatting the date and time
+### Formatting the Date and Time
 
 Aside from the default formats that are dependent on the value of the `locale` property, you can add your custom format that can include ordering of the date/time values and also custom text. To customize the date format, use the `dateFormat` property.
 
@@ -242,7 +269,7 @@ function createPicker(args: EventData) {
 }
 ```
 
-### DateTimePicker
+### Using DateTimePicker
 
 Internally `DatePickerField` and `TimePickerField` call the `pickDate` and `pickTime` methods of the `DateTimePicker` which are public, so they can also be manually called in case a more customized picker is desired. The `pickDate` method accepts [DatePickerOptions](#datepickeroptions), while the `pickTime` method accepts [TimePickerOptions](#timepickeroptions). These options allow having the same features as in the fields. 
 
@@ -296,7 +323,7 @@ function onPickTimeTap (args: EventData) {
 
 ## API
 
-### DatePickerField API
+### DatePickerField
 
 | Property | Type | Description |
 |------|-------|------------|
@@ -310,7 +337,7 @@ function onPickTimeTap (args: EventData) {
 | `pickerOkText`| `string`      | Text for the confirmation button of the picker (default is `OK` on iOS, localized version of OK on android (based on the devices locale settings)).|
 | `pickerCancelText`| `string`  | Text for the cancel button of the picker (default is `Cancel` on iOS, localized version of Cancel on android (based on the devices locale settings)).|
 
-### TimePickerField API
+### TimePickerField
 
 | Property            | Type | Description |
 | ------------------- | ---------|-------------------- |
@@ -322,7 +349,7 @@ function onPickTimeTap (args: EventData) {
 | `pickerOkText`| `string`      | Text for the confirmation button of the picker (default is OK on iOS, localized version of OK on android (based on the devices locale settings).|
 | `pickerCancelText`| `string`  | Text for the cancel button of the picker (default is Cancel on iOS, localized version of `Cancel` on Android (based on the devices locale settings)).|
 
-### DateTimePickerFields API
+### DateTimePickerFields
 
 | Property            | Type | Description |
 |---------------------|------|-------------|
@@ -340,8 +367,6 @@ function onPickTimeTap (args: EventData) {
 | `orientation`       | `'horizontal'` \| `'vertical'`| Value that indicates how the date and time components will be arranged, default is "horizontal", which means that they will be on the same row. |
 | `hintDate`          | `string` | Text displayed in the date component when `date` is `null`.  |
 | `hintTime`          | `string`  | Text displayed in the time component when `date` is `null`.  |
-
-## DateTimePicker API
 
 ### DateTimePicker Class
 
