@@ -58,10 +58,8 @@ Using the plugin on iOS requires the `NSPhotoLibraryUsageDescription` permission
 Your app might be rejected from the Apple App Store if you do not describe why you need this permission. The default message `Requires access to photo library.` might not be enough for the App Store reviewers. 
 
 ## Usage
-<!-- TOD: Add Preview -->
-<!-- The best way to explore the usage of the plugin is to inspect both demo apps in the plugin repository.
-In `demo` folder you can find the usage of the plugin for TypeScript non-Angular application. Refer to `demo/app/main-page.ts`.
-In `demo-angular` is the usage in an Angular app. Refer to `demo-angular/app/app.component.ts`. -->
+
+You can try the plugin on StackBlitz [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
 
 ### Importing the plugin
 
