@@ -55,11 +55,15 @@ Using the plugin on iOS requires the `NSPhotoLibraryUsageDescription` permission
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Description text goes here</string>
 ```
-Your app might be rejected from the Apple App Store if you do not describe why you need this permission. The default message `Requires access to photo library.` might not be enough for the App Store reviewers. 
+Apple App Store might reject your app if you do not describe why you need this permission. The default message `Requires access to photo library.` might not be enough for the App Store reviewers. 
 
 ## Usage
 
-You can try the plugin on StackBlitz [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
+You can play with the plugin on StackBlitz at the following links:
+
+ - [NativeScript Core](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
+- [NativeScript Angular](https://stackblitz.com/edit/nativescript-stackblitz-templates-cgmwyt?file=src%2Fapp%2Fapp-routing.module.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.module.ts,src%2Fmain.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.component.ts,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.component.html&title=NativeScript%20Starter%20Angular)
+- [NativeScript Vue](https://stackblitz.com/edit/nativescript-vue3-beta-krjk9k?file=app%2Fcomponents%2FHome.vue,app%2Fapp.css)
 
 ### Importing the plugin
 
