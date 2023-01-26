@@ -3,7 +3,7 @@
 A plugin that creates an animated circle (animates the border of the circle) on iOS and Android.
 
 | ![Android animated circle demo video](/packages/animated-circle/images/animated-circle-android.gif) | ![iOS animated circle demo video](/packages/animated-circle/images/animated-circle-ios.gif)
-|:---------|:--------
+|:--------|:---------
 | `Android` | `iOS`
 ## Installation
 
