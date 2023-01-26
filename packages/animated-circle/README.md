@@ -1,12 +1,14 @@
 # @nativescript/animated-circle
 
-```bash
+A plugin that creates an animated circle (animates the border of the circle) on iOS and Android.
+
+## Installation
+
+```cli
 npm install @nativescript/animated-circle
 ```
 
-Creates an animated circle (animates the border of the circle) on iOS and Android.
-
-## Using animated-circle
+## Usage
 
 ### Core
 ```xml
@@ -32,14 +34,12 @@ Creates an animated circle (animates the border of the circle) on iOS and Androi
 ---
 ### Vue
 
-Register the plugin in the `app.ts`:
+First, register the plugin in the `app.ts` file. Then use it in a `.vue` file.
 ```ts
 import { registerElement } from 'nativescript-vue';
 
 registerElement("AnimatedCircle", ()=> require("@nativescript/animated-circle").AnimatedCircle)
 ```
-
-Then in a `.vue` file:
 ```xml
 <AnimatedCircle
         backgroundColor="transparent"
@@ -60,7 +60,7 @@ Then in a `.vue` file:
 ---
 ### Angular
 
-- Add the NativeScriptAnimatedCircleModule to your module imports where you will use the plugin.
+- Add the `NativeScriptAnimatedCircleModule` to your module imports where you will use the plugin.
 
 ```typescript
 import { NativeScriptAnimatedCircleModule } from '@nativescript/animated-circle/angular';
@@ -71,6 +71,33 @@ imports: [NativeScriptAnimatedCircleModule];
 <AnimatedCircle backgroundColor="transparent" width="200" height="200" animated="true" animateFrom="0" rimColor="#fff000" barColor="#ff4081" rimWidth="25" progress="{{ circleProgress }}" text="" textSize="22" textColor="#336699"></AnimatedCircle>
 ```
 ---
+### Svelte
+Register the plugin in the `app.ts` file and then use it in markup as follows:
+
+```ts
+import {registerNativeViewElement} from "svelte-native/dom"
+
+registerNativeViewElement("animatedCircle", ()=> require("@nativescript/animated-circle").AnimatedCircle)
+```
+
+```xml
+<animatedCircle 
+    backgroundColor="transparent"
+    width="200"
+    height="200"
+    animated="true"
+    animateFrom="0"
+    rimColor="#C4BF55"
+    barColor="#000"
+    clockwise="true"
+    rimWidth="20"
+    progress="50"
+    text="80%"
+    textSize="28"
+    textColor="red"
+    />
+```
+
 ## API Reference
 
 
