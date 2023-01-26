@@ -4,6 +4,8 @@ https://ionic.io/docs/portals
 
 > Ionic Portals are supercharged native WebView components for iOS and Android that let you add web-based experiences to native mobile apps.
 
+## Installation
+
 ```cli
 npm install @nativescript/ionic-portals
 ```
@@ -12,10 +14,11 @@ npm install @nativescript/ionic-portals
 
 ### 1. Register portals on app boot
 
-[Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide):
+First, [Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide). Then your portals, call the [IonicPortalManager] class's [register()] method with the key.
 
 ```ts
 import { Application } from '@nativescript/core';
+
 import { IonicPortalManager } from '@nativescript/ionic-portals';
 
 Application.on(Application.launchEvent, () => {
@@ -29,14 +32,14 @@ Application.run({ moduleName: 'app-root' });
 
 Create as many Portals as you need to use in your app.
 
-The app will look for folders within it's resources where the folder name is equal to the portal `id` you use to define each portal.
+The app will look for folders within its resources where the folder name is equal to the portal `id` you use to define each portal.
 
 Given the following examples, ensure your web portal is built into the following folders:
 
 * For iOS: `App_Resources/iOS/webPortal`
 * For Android: `App_Resources/Android/src/main/asssets/webPortal`
 
-### 2. Use in your views
+### 2. Use it in your views
 
 #### Vanilla/Plain/Core
 
@@ -61,32 +64,71 @@ registerElement('IonicPortal', () => IonicPortal);
 <IonicPortal id="webPortal"></IonicPortal>;
 ```
 
-## Communication
+#### Sending events from NativeScript to any web portal
 
-- Send events from NativeScript to any web portal:
+To send events from NativeScript to any web portal, use the [publishTopic()]() method:
 
-```
+```ts
 IonicPortalManager.publishTopic('hello', { name: 'data from NativeScript' });
 ```
 
-- Subscribe to events sent from any web portal:
+#### Subscribing to events sent from web portals
+To subscribe to events sent from any web portal, call the [subscribeToTopic]() method with the event name as the first parameter and the event handler as the second parameter.
 
-```
+```ts
 const subscriptionId = IonicPortalManager.subscribeToTopic('useful-web-event', result => {
   console.log('received web portal useful-web-event with data:', result.data);
 });
 ```
 
-- Unsubscribe from events sent from any web portal:
-
-```
+#### Unsubscribing from events sent from web portals
+To unsubscribe from events sent from any web portal, call the [unsubscribeFromTopic()]() method with
+```ts
 IonicPortalManager.unsubscribeFromTopic('useful-web-event', subscriptionId);
 ```
 
-## API
+## IonicPortalManager API
 
-Interact and configure portals via `IonicPortalManager` which provides the following APIs:
+Allows you to interact with and configure portals via the following APIs:
 
+### register()
+
+```ts
+IonicPortalManager.register(apiKey)
+```
+
+Registers portals. Call it when the app boots, in the handler of the `Application.launchEvent` event.
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `apiKey` | `string` | Your portal API key
+
+---
+
+### setInitialContext()
+```ts
+IonicPortalManager.setInitialContext(id,initialContext)
+```
+Used to set the initial context of any portal id before the portal is shown.
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `id` | `string` | The portal id.
+| `initialContext` | `string` | Data provided as the initial context to the portal.
+
+---
+### setAndroidPlugins()
+```ts
+IonicPortalManager.setAndroidPlugins(plugins: Array<string>)
+```
+
+ Defines the usage of non-official Capacitor Plugins via Android package names
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `plugins` | `string[]` | A list of non-official Capacitor package names.
+
+---
 ```ts
 class IonicPortalManager {
 	/**
