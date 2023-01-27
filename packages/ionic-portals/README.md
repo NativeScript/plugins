@@ -4,29 +4,32 @@ https://ionic.io/docs/portals
 
 > Ionic Portals are supercharged native WebView components for iOS and Android that let you add web-based experiences to native mobile apps.
 
-## Table of Contents
+![Ionic Portal View](/packages/ionic-portals/images/ionic-portal-ios.png)
+## Contents
 1. [Installation](#installation)
-2. [Usage](#usage)
+2. [Prerequisites](#prerequisites)
+3. [Usage](#usage)
 	1. [Register portals on app boot](#1-register-portals-on-app-boot)
-	2. [Use it in your views](#2-use-it-in-your-views)
+	2. [Use it in markup](#2-use-it-in-markup)
 		* [Vanilla/Plain/Core](#vanillaplaincore)
 		* [Angular](#angular)
+		* [Vue](#vue)
 		* [Svelte](#svelte)
 		* [Sending events from NativeScript to any web portal](#sending-events-from-nativescript-to-any-web-portal)
 		* [Subscribing to events sent from web portals](#subscribing-to-events-sent-from-web-portals)
 		* [Unsubscribing to events sent from web portals](#unsubscribing-from-events-sent-from-web-portals)
 
-3. [IonicPortalManager API](#ionicportalmanager-api)
+4. [IonicPortalManager API](#ionicportalmanager-api)
 	* [register()](#register)
 	* [setInitialContext()](#setinitialcontext)
 	* [sendAndroidPlugins](#setandroidplugins)
 	* [publishTopic()](#publishtopic)
 	* [subscribeToTopic()](#subscribetotopic)
 	* [unsubscribeFromTopic()](#unsubscribefromtopic)
-4. [Using Capacitor Plugins with Ionic Portals](#using-capacitor-plugins-with-ionic-portals)
-5. [Notes](#notes)
-6. [Additional Resources](#additional-resources)
-7. [License](#license)
+5. [Using Capacitor Plugins with Ionic Portals](#using-capacitor-plugins-with-ionic-portals)
+6. [Notes](#notes)
+7. [Additional Resources](#additional-resources)
+8. [License](#license)
 
 
 ## Installation
@@ -35,11 +38,14 @@ https://ionic.io/docs/portals
 npm install @nativescript/ionic-portals
 ```
 
+## Prerequisites
+- [Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide). 
+
 ## Usage
 
-### 1. Register portals on app boot
+### 1. Registering portals
 
-First, [Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide). Then your portals, call the [IonicPortalManager] class's [register()] method with the key.
+To register your Ionic Portals, call the [IonicPortalManager] class's [register()](#register) method with the Portal API key.
 
 ```ts
 import { Application } from '@nativescript/core';
@@ -57,16 +63,16 @@ Application.run({ moduleName: 'app-root' });
 
 Create as many Portals as you need to use in your app.
 
-The app will look for folders within its resources where the folder name is equal to the portal `id` you use to define each portal.
+The app will look for folders within its resources where the folder name is equal to the portal `id` you used to define each portal.
 
 Given the following examples, ensure your web portal is built into the following folders:
 
 * For iOS: `App_Resources/iOS/webPortal`
 * For Android: `App_Resources/Android/src/main/asssets/webPortal`
 
-### 2. Use it in your views
+### 2. Use it in markup
 
-#### Vanilla/Plain/Core
+#### Core
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
@@ -90,6 +96,17 @@ registerElement('IonicPortal', () => IonicPortal);
 <IonicPortal id="webPortal"></IonicPortal>;
 ```
 
+#### Vue
+```ts
+import { IonicPortal } from '@nativescript/ionic-portals';
+
+registerElement("IonicPortal", ()=> IonicPortal)
+```
+```xml
+ <gridLayout height="300" class="mt-3 p-3">
+    <IonicPortal id="webPortal"/>
+</gridLayout>
+```
 #### Svelte
 ```ts
 import { IonicPortal } from '@nativescript/ionic-portals';
@@ -111,7 +128,7 @@ IonicPortalManager.publishTopic('hello', { name: 'data from NativeScript' });
 ```
 
 #### Subscribing to events sent from web portals
-To subscribe to events sent from any web portal, call the [subscribeToTopic](#subscribetotopic) method with the event name as the first parameter and the event handler as the second parameter.
+To subscribe to events sent from any web portal, call the [subscribeToTopic](#subscribetotopic) method with the event name as the first argument and the event handler as the second argument.
 
 ```ts
 const subscriptionId = IonicPortalManager.subscribeToTopic('useful-web-event', result => {
@@ -120,14 +137,14 @@ const subscriptionId = IonicPortalManager.subscribeToTopic('useful-web-event', r
 ```
 
 #### Unsubscribing from events sent from web portals
-To unsubscribe from events sent from any web portal, call the [unsubscribeFromTopic()](#unsubscribefromtopic) method with
+To unsubscribe from events sent from any web portal, call the [unsubscribeFromTopic()](#unsubscribefromtopic) method with the event name as the first argument and the subscription id as the second argument.
 ```ts
 IonicPortalManager.unsubscribeFromTopic('useful-web-event', subscriptionId);
 ```
 
 ## IonicPortalManager API
 
-Allows you to interact with and configure portals via the following APIs:
+Allows you to interact with and configure portals via the following APIs.
 
 ### register()
 
@@ -135,7 +152,7 @@ Allows you to interact with and configure portals via the following APIs:
 IonicPortalManager.register(apiKey)
 ```
 
-Registers portals. Call it when the app boots, in the handler of the `Application.launchEvent` event.
+Registers portals. Call it in the `main.ts` file, before the app boots, in the handler of the `Application.launchEvent` event.
 
 | Parameter | Type | Description
 |:----------|:-----|:-----------
@@ -178,7 +195,6 @@ Sends a message to any web portal by publishing a topic (aka. event)
 | `topic` | ` string` | The name of the topic/event
 | `data` | ` any` | _Optional_: The payload to send with the topic.
 
-
 ### subscribeToTopic()
 ```ts
 subscriptionId: number = IonicPortalManager.subscribeToTopic(topic, (data?: any) => void))
@@ -202,7 +218,7 @@ IonicPortalManager.unsubscribeFromTopic(topic, subscriptionId)
 
 ## Using Capacitor Plugins with Ionic Portals
 
-Refer [to this blog post](https://blog.nativescript.org/ionic-portals-with-capacitor-plugins).
+Refer to [this blog post](https://blog.nativescript.org/ionic-portals-with-capacitor-plugins).
 
 ## Notes
 
