@@ -5,6 +5,7 @@ A plugin that creates an animated circle (animates the border of the circle) on 
 | ![Android animated circle demo video](/packages/animated-circle/images/animated-circle-android.gif) | ![iOS animated circle demo video](/packages/animated-circle/images/animated-circle-ios.gif)
 |:--------|:---------
 | `Android` | `iOS`
+
 ## Installation
 
 ```cli
@@ -28,8 +29,8 @@ npm install @nativescript/animated-circle
         fillColor="#eee"
         clockwise="true"
         rimWidth="5"
-        progress="80"
-        text="bam"
+        progress="{{ circleProgress }}"
+        text="{{ circleProgress + '%'}}"
         textSize="28"
         textColor="red" />
 </Page>
@@ -55,8 +56,8 @@ registerElement("AnimatedCircle", ()=> require("@nativescript/animated-circle").
         fillColor="#eee"
         clockwise="true"
         rimWidth="5"
-        progress="80"
-        text="bam"
+        :progress="progress"
+        :text="progress + '%'"
         textSize="28"
         textColor="red" />
 ```
@@ -71,8 +72,9 @@ imports: [NativeScriptAnimatedCircleModule];
 ```
 
 ```xml
-<AnimatedCircle backgroundColor="transparent" width="200" height="200" animated="true" animateFrom="0" rimColor="#fff000" barColor="#ff4081" rimWidth="25" progress="{{ circleProgress }}" text="" textSize="22" textColor="#336699"></AnimatedCircle>
+<AnimatedCircle backgroundColor="transparent" width="200" height="200" animated="true" animateFrom="0" rimColor="#fff000" barColor="#ff4081" rimWidth="25" [progress]="circleProgress" [text]="progress + '%'" textSize="22" textColor="#336699"></AnimatedCircle>
 ```
+
 ---
 ### Svelte
 Register the plugin in the `app.ts` file and then use it in markup as follows:
@@ -93,7 +95,7 @@ registerNativeViewElement("animatedCircle", ()=> require("@nativescript/animated
     barColor="#000"
     clockwise="true"
     rimWidth="20"
-    progress="50"
+    progress={ circleProgress }
     text="80%"
     textSize="28"
     textColor="red"
