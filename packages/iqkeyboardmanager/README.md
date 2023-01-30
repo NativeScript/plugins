@@ -178,8 +178,8 @@ iqKeyboard.overrideKeyboardAppearance = true;
 iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
 ```
 
-For more examples of what's possible, run the demo app (shown in the gif below) or check the example on StackBlitz.
-
+For more examples of what's possible, check the example on StackBlitz at any of the following links.
+* [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-sia8th?file=app/main-page.xml)
 * [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
 
 <img src="https://github.com/tjvantoll/nativescript-IQKeyboardManager/raw/master/demo.gif" width="320px"/>
