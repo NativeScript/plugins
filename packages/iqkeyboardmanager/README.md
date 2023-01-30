@@ -4,6 +4,22 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 
 ![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
 
+## Contents
+* [Installation](#installation)
+* [Usage](#usage)
+	* [Core](#core)
+	* [Angular](#angular)
+	* [Vue](#vue)
+	* [Svelte](#svelte)
+	* [Adding a hint text to a TextView's accessory bar](#adding-a-hint-text-to-a-textviews-accessory-bar)
+		* [Core](#core-1)
+		* [Angular](#angular-1)
+		* [Vue](#vue-1)
+	* [Tweaking the appearance and behavior](#tweaking-the-appearance-and-behavior)
+	* [Multi-factor one-time code auto-fill](#multi-factor-one-time-code-auto-fill)
+* [Documentation](#documentation)
+* [Maintainers](#maintainers)
+* [License](#license)
 ## Installation
 
 ```cli
@@ -41,7 +57,7 @@ import { PreviousNextView } from '@nativescript/iqkeyboardmanager';
 registerElement('PreviousNextView', () => PreviousNextView);
 ```
 
-Then  use the view in the markup as follows:
+Then use the element in the markup as follows:
 
 ```html
 <ScrollView>
@@ -55,7 +71,7 @@ Then  use the view in the markup as follows:
 </ScrollView>
 ```
 
-#### Vue
+### Vue
 
 Add the following code to the `app.ts` file to register the component:
 
@@ -76,12 +92,28 @@ Then use it in a markup file.
 </ScrollView>
 ```
 
+### Svelte
+**Registration**
+Add the following code to the `app.ts` file to register the component:
+
+```ts
+registerNativeViewElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
+```
+**Using**
+```xml
+<previousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
+<stackLayout>
+	<textField hint="Email"/>
+	<textField hint="Password"/>
+</stackLayout>
+</previousNextView>
+```
 ### Adding a hint text to a TextView's accessory bar
 
 By default, when a `TextField` is focused, the keyboard manager shows its hint label in the accessory bar above the keyboard.
 
-For a `TextView`, however, use the `TextViewWithHint` component
-provided by this plugin to add its hint label to the accessory bar. 
+For a `TextView`, however, use the `TextViewWithHint` component,
+provided by this plugin, to add its hint label to the accessory bar. 
 
 #### Core
 
@@ -124,7 +156,7 @@ Register the component.
 .registerElement('TextViewWithHint', () => require('@nativescript/iqkeyboardmanager').TextViewWithHint);
 ```
 
-### Tweaking the appearance and behavior
+#### Tweaking the appearance and behavior
 
 1. Add the following path to your app’s `references.d.ts` file. 
 
@@ -138,7 +170,7 @@ Register the component.
 const iqKeyboard = IQKeyboardManager.sharedManager();
 ```
 
-You now have the full IQKeyboardManager APIs available for you to use. For example you could use the following code to switch to a dark keyboard.
+You now have the full IQKeyboardManager APIs available for you to use. For example, to switch to a dark keyboard you could use the following code.
 
 ```typescript
 const iqKeyboard = IQKeyboardManager.sharedManager();
@@ -146,23 +178,25 @@ iqKeyboard.overrideKeyboardAppearance = true;
 iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
 ```
 
-For more examples of what's possible, run the demo app (shown in the gif below) and check out the [app's `main-view-model.ts` file](https://github.com/NativeScript/plugins/blob/main/apps/demo/src/plugin-demos/iqkeyboardmanager.ts).
+For more examples of what's possible, run the demo app (shown in the gif below) or check the example on StackBlitz.
+
+* [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
 
 <img src="https://github.com/tjvantoll/nativescript-IQKeyboardManager/raw/master/demo.gif" width="320px"/>
 
-### Multi-factor one-time code auto-fill
+#### Multi-factor one-time code auto-fill
 
 While the following is not a feature specific to IQKeyboardManager, you are here because you want the best keyboard experience for your NativeScript app and this may be helpful to know about.
 
-iOS has a feature where a text field's QuickType search suggestion bar can suggest one-time code values for multi-factor authentication that were texted to your device.
+iOS has a feature where a text field's QuickType search suggestion bar can suggest `one-time` code values for multi-factor authentication that were texted to your device.
 
-If the field is specially-identified as a one-time code field, the suggestion will appear for about 3 minutes after being received, and the user simply has to tap the suggestion to fill in the value—no short term memorization or copy/paste gestures required. Examples of message formats are:
+If the field is identified as a `one-time` code field, the suggestion will appear for about 3 minutes after being received, and the user simply has to tap the suggestion to fill in the value—no short-term memorization or copy/paste gestures required. Examples of message formats are:
 
 - 123456 is your App Name code.
 - 123456 is your App Name login code.
 - 123456 is your App Name verification code.
 
-To implement this functionality in your own app, first declare `UITextContentTypeOneTimeCode` near your component imports:
+To implement this functionality in your app, first declare `UITextContentTypeOneTimeCode` near the component imports:
 
 ```typescript
 declare var UITextContentTypeOneTimeCode;
@@ -186,7 +220,7 @@ For more details on how IQKeyboardManager works, including more detailed API doc
 
 ## Maintainers
 
-For maintainer’s of this plugin’s source code: when the [IQKeyboardManager Podfile](https://github.com/NativeScript/plugins/blob/main/packages/iqkeyboardmanager/platforms/ios/Podfile) updates, you should generate new typings for for this plugin to reflect those changes.
+For maintainers of this plugin: when the [IQKeyboardManager Podfile](https://github.com/NativeScript/plugins/blob/main/packages/iqkeyboardmanager/platforms/ios/Podfile) updates, you should generate new typings for the plugin to reflect those changes.
 
 To do so, execute these commands.
 
