@@ -1,4 +1,5 @@
 {
+	"name": "shared-notification-delegate",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/shared-notification-delegate",
 	"projectType": "library",
@@ -30,12 +31,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/shared-notification-delegate"],
+			"outputs": ["{workspaceRoot}/dist/packages/shared-notification-delegate"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts shared-notification-delegate"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages shared-notification-delegate"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

@@ -1,4 +1,5 @@
 {
+	"name": "pdf",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"sourceRoot": "packages/pdf",
@@ -13,6 +14,7 @@
 				"assets": [
 					"packages/pdf/*.md",
 					"packages/pdf/index.d.ts",
+					"packages/pdf/typings/AndroidPdfViewer.d.ts",
 					"LICENSE",
 					{
 						"glob": "**/*",
@@ -29,12 +31,12 @@
 			}
 		},
 		"build.all": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts pdf"],
 				"parallel": false
 			},
-			"outputs": ["dist/packages/pdf"],
+			"outputs": ["{workspaceRoot}/dist/packages/pdf"],
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -47,7 +49,7 @@
 			]
 		},
 		"focus": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages pdf"],
 				"parallel": false

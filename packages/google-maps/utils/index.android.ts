@@ -76,6 +76,10 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(color)));
 	}
 
+	if (typeof options?.opacity === 'number') {
+		opts.alpha(options.opacity);
+	}
+
 	if (typeof options?.rotation === 'number') {
 		opts.rotation(options.rotation);
 	}

@@ -1,0 +1,5 @@
+ module NSCFacebook {
+  umbrella header "NSCFacebookUmbrella.h"
+  export *
+  module * { export * }
+}

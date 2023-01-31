@@ -1,4 +1,5 @@
 import { File, Frame, ImageSource, Utils } from '@nativescript/core';
+import type { ShareImageOptions } from '.';
 
 function share(thingsToShare) {
 	const activityController = UIActivityViewController.alloc().initWithActivityItemsApplicationActivities(thingsToShare, null);
@@ -48,16 +49,27 @@ function getRootViewController() {
 	return win.rootViewController;
 }
 
-export function shareImage(image: ImageSource) {
-	share([image.ios]);
+export function shareImage(image: ImageSource, subjectOrOptions?: string | ShareImageOptions, caption?: string) {
+	if (subjectOrOptions && typeof subjectOrOptions === 'object') {
+		caption = subjectOrOptions.caption;
+	}
+	if (typeof caption === 'string') {
+		share([image.ios, caption]);
+	} else {
+		share([image.ios]);
+	}
 }
 
 export function shareText(text: string) {
 	share([text]);
 }
 
-export function sharePdf(pdf: File) {
-	share([NSURL.fileURLWithPath(pdf.path)]);
+export function sharePdf(pdf: File, subject?: string, caption?: string) {
+	if (typeof caption === 'string') {
+		share([NSURL.fileURLWithPath(pdf.path), caption]);
+	} else {
+		share([NSURL.fileURLWithPath(pdf.path)]);
+	}
 }
 
 export function shareUrl(url, text) {

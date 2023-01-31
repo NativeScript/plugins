@@ -49,7 +49,7 @@ module.exports = function (hookArgs, $logger, $projectData) {
 			};
 			const portalFolderPath = path.join(resourcesPath, ionicPortalName);
 			if (!fs.existsSync(portalFolderPath)) {
-				fs.mkdirSync(portalFolderPath);
+				fs.mkdirSync(portalFolderPath, { recursive: true });
 			}
 			const contents = fs.readdirSync(configAppResourcesPath);
 			copyRecursive(contents);

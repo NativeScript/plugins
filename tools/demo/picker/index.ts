@@ -30,7 +30,9 @@ export class DemoSharedPicker extends DemoSharedBase {
 		let array = new ObservableArray<string>();
 
 		for (let i = 0; i < size; i++) {
-			array.push('Item ' + i);
+			array.push({
+				name: 'Item ' + i,
+			});
 		}
 
 		return array;
