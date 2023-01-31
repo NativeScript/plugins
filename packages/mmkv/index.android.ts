@@ -5,6 +5,7 @@ declare function double(value: number);
 export class NSCMMKV implements INSCMMKV {
 	#native: com.tencent.mmkv.MMKV;
 	constructor(options?: { id?: string; path?: string; encryptionKey?: string; mode?: 'SINGLE' | 'MULTI' }) {
+		com.tencent.mmkv.MMKV.initialize(Utils.android.getApplicationContext());
 		if (!options) {
 			this.#native = com.tencent.mmkv.MMKV.defaultMMKV();
 		} else {

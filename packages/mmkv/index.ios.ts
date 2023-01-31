@@ -11,6 +11,7 @@ function intoString(value: NSData) {
 export class NSCMMKV implements INSCMMKV {
 	#native: MMKV;
 	constructor(options?: { id?: string; path?: string; encryptionKey?: string; mode?: 'SINGLE' | 'MULTI' }) {
+		MMKV.initializeMMKV(null);
 		if (!options) {
 			this.#native = MMKV.defaultMMKV();
 		} else {
