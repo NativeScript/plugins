@@ -1,26 +1,33 @@
 # @nativescript/localize
 
-This is a plugin for NativeScript that implements internationalization (i18n) using the native capabilities of each platform. It is inspired from [nativescript-i18n](https://github.com/rborn/nativescript-i18n)
+A plugin that implements internationalization (i18n) using the native capabilities of each platform. It is inspired by [nativescript-i18n](https://github.com/rborn/nativescript-i18n)
 
 ## Credits
 
-A lot of thanks goes out to [Ludovic Fabrèges (@lfabreges)](https://github.com/lfabreges) for developing and maintaining this plugin in the past. When he had to abandon it due to shifted priorities, he was kind enough to [move the repo to me](https://github.com/EddyVerbruggen/nativescript-localize/issues/73). Eddy then joined NativeScript's Technical Steering Committe and to vastly improve plugin maintenance [it was scoped and moved here](https://github.com/EddyVerbruggen/nativescript-localize/issues/99)!
+A lot of thanks goes out to [Ludovic Fabrèges (@lfabreges)](https://github.com/lfabreges) for developing and maintaining this plugin in the past. When he had to abandon it due to shifted priorities, he was kind enough to [move the repo to me](https://github.com/EddyVerbruggen/nativescript-localize/issues/73). Eddy then joined NativeScript's Technical Steering Committee and to vastly improve plugin maintenance [it was scoped and moved here](https://github.com/EddyVerbruggen/nativescript-localize/issues/99)
 
 ## Table of contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Angular](#angular)
-  - [Javascript](#javascript)
-  - [Vue](#vue)
-- [File format](#file-format)
-- [Frequently asked questions](#frequently-asked-questions)
-  - [How to set the default language?](#how-to-set-the-default-language)
-  - [How to localize the application name?](#how-to-localize-the-application-name)
-  - [How to localize iOS properties?](#how-to-localize-ios-properties)
-  - [How to change the language dynamically at runtime?](#how-to-change-the-language-dynamically-at-runtime)
-- [Troubleshooting](#troubleshooting)
-  - [The angular localization pipe does not work when in a modal context](#the-angular-localization-pipe-does-not-work-when-in-a-modal-context)
+* [Installation](#installation)
+* [Usage](#usage)
+	* [Core](#core)
+	* [Localization in Angular](#localization-in-angular)
+  	* [Localization in Vue](#localization-in-vue)
+  	* [Setting the Default Language](#setting-the-default-language)
+  	* [Localizing the Application Name](#localizing-the-application-name)
+  	* [Localizing iOS properties?](#how-to-localize-ios-properties)
+  	* [Changing the language dynamically at runtime](#changing-the-language-dynamically-at-runtime)
+		* [iOS](#ios)
+		* [Android](#android)
+* [File format](#file-format)
+* [Troubleshooting](#troubleshooting)
+  * [Angular localization pipe and the modal context](#the-angular-localization-pipe-and-the-modal-context)
+  * [Issues with WebView on Android N+](#issues-with-webview-on-android-n)
+* [API](#api)
+	* [localize()](#localize)
+	* [overrideLocale()](#overridelocale)
+	* [androidLaunchEventLocalizationHandler()](#androidlauncheventlocalizationhandler)
+* [License](#license)
 
 ## Installation
 
@@ -30,72 +37,48 @@ npm install @nativescript/localize
 
 ## Usage
 
-Create a folder `i18n` in the `src` folder with the following structure:
+### Core
+1. Create a folder named `i18n` in the `app` folder, with the following structure:
 
 ```
-src
+app
   | i18n
       | en.json           <-- english language
-      | fr.default.json   <-- french language (default)
-      | es.js
+      | es.default.json   <-- spanish language (default)
+     
+```
+`es.default.json` example:
+
+```json
+{
+    "app.name" : "Comida Rica!",
+    
+    "user":{
+        "name": "Paula"
+    }
+}
 ```
 
-You need to [set the default langage](#how-to-set-the-default-language) and make sure it contains
-the [application name](#how-to-localize-the-application-name) to avoid any error.
-
-### Angular
-
-#### app.module.ts
-
-```ts
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { NativeScriptLocalizeModule } from '@nativescript/localize/angular';
-import { NativeScriptModule } from '@nativescript/angular';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-	declarations: [AppComponent],
-	bootstrap: [AppComponent],
-	imports: [NativeScriptModule, NativeScriptLocalizeModule],
-	schemas: [NO_ERRORS_SCHEMA],
-})
-export class AppModule {}
-```
-
-#### Template
-
-```xml
-<Label text="{{ 'Hello world !' | L }}"/>
-<Label text="{{ 'I am %s' | L:'user name' }}"/>
-```
-
-#### Script
-
-```ts
-import { localize } from '@nativescript/localize';
-
-console.log(localize('Hello world !'));
-```
-
-### Javascript / XML
-
-#### app.js
+2. In the `main.ts` file, register the `localize()` function with the `setResources()` method of the [Appilcation](https://docs.nativescript.org/api-reference/modules#application) class, as follows.
 
 ```js
-const application = require('application');
-const { localize } = require('@nativescript/localize');
-application.setResources({ L: localize });
+import { Application } from "@nativescript/core";
+import { localize } from '@nativescript/localize';
+
+Application.setResources({ L: localize });
 ```
 
-#### Template
+Then, use the `L` property in the markup.
 
 ```xml
-<Label text="{{ L('Hello world !') }}"/>
-<Label text="{{ L('I am %s', 'user name') }}"/>
+
+  <StackLayout>
+    <Label text="{{ 'Hello world !' | L }}" />
+    <Label text="{{ 'I am ' + L('user.name') }}" />
+  </StackLayout>
 ```
 
-#### Script
+To localize in code-behind, just call the `localize()` method directly.
 
 ```js
 const { localize } = require('@nativescript/localize');
@@ -113,9 +96,49 @@ const page = args.object;
 page.bindingContext = new Observable();
 ```
 
-### Vue
+### Localization in Angular
 
-#### app.js
+1. Create a folder `i18n` in the `src` folder, with the following structure:
+
+```
+src
+  | i18n
+      | en.json           <-- english language
+      | fr.default.json   <-- french language (default)
+      | es.js
+```
+
+You need to [set the default langage](#how-to-set-the-default-language) and make sure it contains
+the [application name](#how-to-localize-the-application-name) to avoid any errors.
+
+2. Register the localizing module(`NativeScriptLocalizeModule`) in the `app.module.ts` file
+
+```ts
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NativeScriptLocalizeModule } from '@nativescript/localize/angular';
+import { NativeScriptModule } from '@nativescript/angular';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+	declarations: [AppComponent],
+	bootstrap: [AppComponent],
+	imports: [NativeScriptModule, NativeScriptLocalizeModule],
+	schemas: [NO_ERRORS_SCHEMA],
+})
+export class AppModule {}
+```
+
+3. Then, in an HTML file, use the localizer as follows:
+
+```xml
+<Label text="{{ 'Hello world !' | L }}"/>
+<Label text="{{ 'I am %s' | L:'user name' }}"/>
+```
+
+### Localization in Vue
+
+<!-- #### app.js
 
 ```js
 import { localize } from '@nativescript/localize';
@@ -127,11 +150,31 @@ Vue.filter('L', localize);
 
 ```html
 <label :text="'Hello world !'|L"></label> <label :text="'I am %s'|L('user name')"></label>
+``` -->
+
+### Setting the default language
+
+To set the default language, add a `.default` extension to the name of the default language file.
+
+```ts
+fr.default.json
 ```
 
-## File format
+Make sure it contains the [application name](#localizing-the-application-name) to avoid any errors.
 
-Each file is imported using `require`, use the file format of your choice:
+### Localizing the application name
+
+To localize the application name, use the `app.name` key.
+
+```json
+{
+	"app.name": "My app"
+}
+```
+
+### File format
+
+Each file is imported using `require`, so use the file format of your choice:
 
 #### JSON
 
@@ -159,29 +202,10 @@ export const i18n = {
 };
 ```
 
-## Frequently asked questions
+### Localizing iOS properties
 
-### How to set the default language?
+To localize an iOS property, prefix it with `ios.info.plist.`. The example below shows how to localize the [NSLocationWhenInUseUsageDescription](https://developer.apple.com/documentation/bundleresources/information_property_list/nslocationwheninuseusagedescription?language=objc) property.
 
-Add the `.default` extension to the default language file to set it as the fallback language:
-
-```
-fr.default.json
-```
-
-### How to localize the application name?
-
-The `app.name` key is used to localize the application name:
-
-```json
-{
-	"app.name": "My app"
-}
-```
-
-### How to localize iOS properties?
-
-Keys starting with `ios.info.plist.` are used to localize iOS properties:
 
 ```json
 {
@@ -189,20 +213,19 @@ Keys starting with `ios.info.plist.` are used to localize iOS properties:
 }
 ```
 
-### How to change the language dynamically at runtime?
+### Changing the language dynamically at runtime
+To change the language dynamically at runtime, use the [overrideLocale()]() method.
 
-This plugin uses the native capabilities of each platform, language selection is therefore made by the OS.
-
-#### On iOS you can programmatically override this language since plugin version 4.2.0 by doing this:
+#### iOS
 
 ```typescript
 import { overrideLocale } from '@nativescript/localize';
 const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc (or even just the part before the hyphen)
 ```
 
-#### On Android you can programatically override this language since plugin version 4.2.1 by doing this:
+#### Android
 
-In your `app.ts` / `main.ts` / `app.js`
+For Android, first, call the `androidLaunchEventLocalizationHandler()` method in the `launchEvent` handler, in the `main.ts` file.
 
 ```ts
 import { Application } from '@nativescript/core';
@@ -215,14 +238,14 @@ Application.on(Application.launchEvent, (args) => {
 });
 ```
 
-And in your settings page where user chooses the language:
+Then, in your settings page where the user chooses the language, call the `overrideLocale()` method:
 
 ```ts
 import { overrideLocale } from '@nativescript/localize';
 const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc (or even just the part before the hyphen)
 ```
 
-> **Important:** In both cases, after calling override Locale, you must ask the user to restart the app
+> **Important:** On both platforms, after calling `overrideLocale()`, you must ask the user to restart the app.
 
 For Example:
 
@@ -244,7 +267,7 @@ alert({
 });
 ```
 
-> **Important:** In case you are using [Android app bundle](https://docs.nativescript.org/tooling/publishing/android-app-bundle) to release your android app, add this to `App_Resources/Android/app.gradle` to make sure all lanugages are bundled in the split apks
+> **Important:** In case you are using [Android app bundle](https://docs.nativescript.org/tooling/publishing/android-app-bundle) to release your android app, add the following to `App_Resources/Android/app.gradle` to make sure all lanugages are bundled in the split apks
 
 ```groovy
 android {
@@ -259,7 +282,7 @@ android {
 }
 ```
 
-> **Tip:** you can get the default language on user's phone by using this
+> **Tip:** you can get the default language on user's phone via the `language` property of the [Device](https://docs.nativescript.org/api-reference/interfaces/idevice) class.
 
 ```ts
 import { Device } from '@nativescript/core';
@@ -267,7 +290,7 @@ import { Device } from '@nativescript/core';
 console.log("user's language is", Device.language.split('-')[0]);
 ```
 
-> **Tip:** overrideLocale method stores the language in a special key in app-settings, you can access it like this
+> **Tip:** The `overrideLocale()` method stores the language in a special key in app-settings, you can access it like this
 
 ```ts
 import { ApplicationSettings } from '@nativescript/core';
@@ -277,8 +300,9 @@ console.log(ApplicationSettings.getString('__app__language__')); // only availab
 
 ## Troubleshooting
 
-### The angular localization pipe does not work when in a modal context
+### Angular localization pipe and the modal context
 
+The angular localization pipe does not work when in a modal context.
 As a workaround, you can trigger a change detection from within your component constructor:
 
 ```ts
@@ -290,10 +314,10 @@ constructor(
 }
 ```
 
-### Starting from Android N, there is a weird side effect while using a WebView.
+### Issues with WebView on Android N+
 
-For unknown reasons, the very first creation of it resets the application locale to the device default. Therefore, you have to set the desired locale back.
-This is native bug and the workaround is
+On Android N+, the first creation of a WebView resets the application locale to the device default. Therefore, you have to set the desired locale back.
+This is a native bug and the workaround is
 
 ```xml
  <WebView url="https://someurl.com" @loaded="webViewLoaded"/>
@@ -308,6 +332,27 @@ function webViewLoaded() {
 	overrideLocale(locale);
 	androidLaunchEventLocalizationHandler();
 }
+```
+## API
+
+The plugin provides the following functions.
+
+### localize()
+```ts
+localizeString: string = localize(key, ...args)
+```
+Retrieves the translation for the specified `key` from a `.json` file in the `i18n` directory.
+
+---
+### overrideLocale()
+```ts
+isLocaleOverwritten: boolean = overrideLocale(locale)
+```
+
+---
+### androidLaunchEventLocalizationHandler()
+```ts
+androidLaunchEventLocalizationHandler()
 ```
 
 ## License
