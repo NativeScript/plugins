@@ -16,6 +16,7 @@
 	},
 	"private": true,
 	"devDependencies": {
+		"@angular-devkit/build-angular": "^15.0.0",
 		"@angular/animations": "^15.0.0",
 		"@angular/common": "^15.0.0",
 		"@angular/compiler": "^15.0.0",
@@ -39,18 +40,28 @@
 		"nativescript-vue": "~2.9.0",
 		"nativescript-vue-template-compiler": "~2.9.0",
 		"ng-packagr": "^15.0.0",
+		"nx": "^15.4.2",
 		"rxjs": "~7.5.0",
 		"shorthash": "0.0.2",
 		"simple-plist": "^1.1.0",
 		"sprintf-js": "^1.1.1",
 		"typescript": "~4.8.0",
 		"vue": "~2.6.12",
-		"zone.js": "~0.11.1",
-		"@angular-devkit/build-angular": "^15.0.0"
+		"zone.js": "~0.11.1"
 	},
 	"lint-staged": {
 		"**/*.{js,ts,scss,json,html}": [
 			"npx prettier --write"
 		]
+	},
+	"contributors": [
+		{
+			"name": "KefahB",
+			"email": "kefah.bader@gmail.com",
+			"url": "https://github.com/kefahB"
+		}
+	],
+	"dependencies": {
+		"@nativescript/swift-ui": "^1.0.0-beta.0"
 	}
 }
