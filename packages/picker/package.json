@@ -25,6 +25,13 @@
 		"name": "NativeScript",
 		"email": "oss@nativescript.org"
 	},
+	"contributors": [
+		{
+			"name": "KefahB",
+			"email": "kefah.bader@gmail.com",
+			"url": "https://github.com/kefahB"
+		}
+	],
 	"bugs": {
 		"url": "https://github.com/NativeScript/plugins/issues"
 	},

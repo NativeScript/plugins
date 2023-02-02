@@ -410,7 +410,7 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	}
 
 	public static showFilterProperty = new Property<PickerField, boolean>({
-		name: 'hideFilter',
+		name: 'showFilter',
 		defaultValue: false,
 		valueConverter: booleanConverter,
 		valueChanged: PickerField.showFilterChanged,

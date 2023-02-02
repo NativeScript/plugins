@@ -40,7 +40,6 @@
 		"nativescript-vue": "~2.9.0",
 		"nativescript-vue-template-compiler": "~2.9.0",
 		"ng-packagr": "^15.0.0",
-		"nx": "^15.4.2",
 		"rxjs": "~7.5.0",
 		"shorthash": "0.0.2",
 		"simple-plist": "^1.1.0",
@@ -54,13 +53,6 @@
 			"npx prettier --write"
 		]
 	},
-	"contributors": [
-		{
-			"name": "KefahB",
-			"email": "kefah.bader@gmail.com",
-			"url": "https://github.com/kefahB"
-		}
-	],
 	"dependencies": {
 		"@nativescript/swift-ui": "^1.0.0-beta.0"
 	}
