@@ -13,6 +13,7 @@ A lot of thanks goes out to [Ludovic Fabrèges (@lfabreges)](https://github.com/
 	* [Core](#core)
 	* [Localization in Angular](#localization-in-angular)
   	* [Localization in Vue](#localization-in-vue)
+	* [Localization in Svelte](#localization-in-svelte)
   	* [Setting the Default Language](#setting-the-default-language)
   	* [Localizing the Application Name](#localizing-the-application-name)
   	* [Localizing iOS properties?](#how-to-localize-ios-properties)
@@ -81,7 +82,7 @@ Then, use the `L` property in the markup.
 To localize in code-behind, just call the `localize()` method directly.
 
 ```js
-const { localize } = require('@nativescript/localize');
+import { localize } from '@nativescript/localize';
 
 console.log(localize('Hello world !'));
 ```
@@ -137,20 +138,83 @@ export class AppModule {}
 ```
 
 ### Localization in Vue
+1. Create a folder named `i18n` in the `app` folder, with the following structure:
 
-<!-- #### app.js
+```
+app
+  | i18n
+      | en.json           <-- english language
+      | es.default.json   <-- spanish language (default)
+     
+```
+`es.default.json` example:
 
-```js
-import { localize } from '@nativescript/localize';
-
-Vue.filter('L', localize);
+```json
+{
+    "app.name" : "Comida Rica!",
+    
+    "user":{
+        "name": "Paula"
+    }
+}
 ```
 
-#### Template
+2. To localize in Vue3 is simple. Just import the [localize()](#localize) method
+and call it in markup.
 
-```html
-<label :text="'Hello world !'|L"></label> <label :text="'I am %s'|L('user name')"></label>
-``` -->
+```ts
+import { localize } from '@nativescript/localize';
+```
+
+```xml
+<ActionBar>
+	<Label :text="localize('app.name')" class="font-bold text-lg bg-black" />
+</ActionBar>
+
+<StackLayout class="px-4">
+	<Label :text="localize('user.name')" textWrap="true" />
+</StackLayout>
+```
+
+### Localization in Svelte
+
+1. Create a folder named `i18n` in the `app` folder, with the following structure:
+
+```
+app
+  | i18n
+      | en.json           <-- english language
+      | es.default.json   <-- spanish language (default)
+     
+```
+`es.default.json` example:
+
+```json
+{
+    "app.name" : "Comida Rica!",
+    
+    "user":{
+        "name": "Paula"
+    }
+}
+```
+
+2. To localize in Svelte is simple. Just import the [localize()](#localize) method
+and then call it in markup.
+
+```ts
+import { localize } from '@nativescript/localize';
+```
+
+```xml
+<actionBar>
+	<label text={ localize('app.name') } class="font-bold text-lg bg-black" />
+</actionBar>
+
+<stackLayout class="px-4">
+	<label text={ 'Nombre: ' + localize('user.name')}/>
+</stackLayout>
+```
 
 ### Setting the default language
 
