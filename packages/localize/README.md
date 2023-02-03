@@ -226,6 +226,8 @@ fr.default.json
 
 Make sure it contains the [application name](#localizing-the-application-name) to avoid any errors.
 
+Android uses the locale file corresponding to the device's language. For example, if the device's language is set to `Spanish`, the `es.json` will be used.
+
 ### Localizing the application name
 
 To localize the application name, use the `app.name` key.
@@ -412,6 +414,8 @@ Retrieves the translation for the specified `key` from a `.json` file in the `i1
 ```ts
 isLocaleOverwritten: boolean = overrideLocale(locale)
 ```
+
+Overrides the current locale with the specified `locale` parameter.
 
 ---
 ### androidLaunchEventLocalizationHandler()
