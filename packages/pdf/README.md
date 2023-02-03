@@ -1,11 +1,18 @@
 # @nativescript/pdf
 
-A simple PDF viewer.
+A simple PDF viewer. It conveniently uses the iOS `WKWebView`, and for Android it uses [`AndroidPdfViewer`](https://github.com/barteksc/AndroidPdfViewer).
 
 > *Remark* [This repository](https://github.com/NativeScript/plugins/blob/main/packages/pdf) is the replacement for [madmas/nativescript-pdf-view](https://github.com/madmas/nativescript-pdf-view) which was a fork of [the original by Merott](https://github.com/Merott/nativescript-pdf-view) and will be used with his consent to provide further maintenance of this NativeScript plugin.
 
-It serves minimal PDF view implementation that does only one thing, and that is to display PDF files in the simplest way possible. It conveniently uses the iOS `WKWebView`, and for Android it uses [`AndroidPdfViewer`](https://github.com/barteksc/AndroidPdfViewer).
-
+## Contents
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Core](#core)
+  * [Angular](#angular)
+  * [Vue](#vue)
+  * [Svelte](#svelte)
+* [PDFView API](#pdfview-api)
+  * [loadEvent](#loadevent)
 ## Installation
 
 ```
@@ -14,7 +21,7 @@ npm install @nativescript/pdf
 
 ## Usage
 
-### Vanilla NativeScript
+### Core
 
 ```xml
 <Page
@@ -24,6 +31,7 @@ npm install @nativescript/pdf
   <pdf:PDFView src="{{ pdfUrl }}" load="{{ onLoad }}" />
 </Page>
 ```
+See the complete example at [NativeScript TypeScript: pdf](https://stackblitz.com/edit/nativescript-stackblitz-templates-4ofdg2?file=app/main-page.xml)
 
 ### Angular
 
@@ -40,14 +48,59 @@ import { NativeScriptPdfModule } from '@nativescript/pdf/angular'
 ```
 
 ```html
-<PDFView [src]="src" (load)="onLoad()"></PDFView>
+<PDFView [src]="pdfUrl" (load)="onLoad()"></PDFView>
+```
+See the complete example at [NativeScript Angular: pdf](https://stackblitz.com/edit/nativescript-stackblitz-templates-mrakue?file=src/app/pdf/pdf-viewer.component.html)
+
+### Vue
+
+1. Register the component in the `app.ts` file.
+
+```ts
+registerElement('PDFView', () => require('@nativescript/pdf').PDFView);
 ```
 
+2. Then, use it in markup.
+```xml
+ <PDFView :src="pdfUrl" row="1"></PDFView>
+```
 
-## Samples
+### Svelte
 
-There are sample applications avalable:
+1. Register the component in the `app.ts` file.
 
-* *Plain TypeScript*: see [pdf.ts](https://github.com/NativeScript/plugins/tree/main/apps/demo/src/plugin-demos/pdf.ts) and [pdf.xml](https://github.com/NativeScript/plugins/tree/main/apps/demo/src/plugin-demos/pdf.xml) files in this repository
-* *NativeScript+Angular*: [nativescript-pdf-view-angular-sample](https://github.com/madmas/nativescript-pdf-view-angular-sample) repository
-* *NativeScript+VueJs*:  [nativescript-pdf-view-vue-sample](https://github.com/madmas/nativescript-pdf-view-vue-sample) repository
+```ts
+registerElement('pDFView', () => require('@nativescript/pdf').PDFView);
+```
+
+2. Then, use it in markup.
+```xml
+ <pDFView src={ pdfUrl } row="1"></pDFView>
+```
+
+See the complete example [NativeScript Svelte: pdf](https://stackblitz.com/edit/nativescript-stackblitz-templates-neazce?file=app/components/Home.svelte)
+
+## PDFView API
+### loadEvent
+```ts
+PDFView.loadEvent
+```
+
+---
+### src
+
+```ts
+pdfView.src = 'some-pdf-url'
+```
+
+---
+### notifyOfEvent(eventName: string, pdfViewRef: WeakRef<Common>)
+```ts
+PDFView.notifyOfEvent(eventName: string, pdfViewRef: WeakRef<Common>)
+```
+### loadPDF()
+```ts
+pdfView.loadPDF(src)
+```
+
+Loads the PDF file at the specified source.
