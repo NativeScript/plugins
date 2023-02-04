@@ -11,6 +11,7 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 	* [Angular](#angular)
 	* [Vue](#vue)
 	* [Svelte](#svelte)
+	* [React](#react)
 	* [Adding a hint text to a TextView's accessory bar](#adding-a-hint-text-to-a-textviews-accessory-bar)
 		* [Core](#core-1)
 		* [Angular](#angular-1)
@@ -167,6 +168,13 @@ Register the component.
 ```javascript
 .registerNativeViewElement('textViewWithHint', () => require('@nativescript/iqkeyboardmanager').TextViewWithHint);
 ```
+You can find the complete demo at [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
+
+### React
+
+<!-- TODO: Add code snippets -->
+See the full example at [NativeScript React: iqkeyboardmanager](https://stackblitz.com/edit/nativescript-stackblitz-templates-5uygfj?file=src/components/ScreenOne.tsx)
+
 
 #### Tweaking the appearance and behavior
 
@@ -192,7 +200,7 @@ iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
 
 For a full example, check out the example on StackBlitz at any of the following links.
 * [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-sia8th?file=app/main-page.xml)
-* [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
+
 
 <img src="https://github.com/tjvantoll/nativescript-IQKeyboardManager/raw/master/demo.gif" width="320px"/>
 
