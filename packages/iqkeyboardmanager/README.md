@@ -172,7 +172,44 @@ You can find the complete demo at [NativeScript Svelte](https://stackblitz.com/e
 
 ### React
 
-<!-- TODO: Add code snippets -->
+1. Register the component.
+
+```ts
+interface PreviewNextViewAttributes extends ViewAttributes {
+}
+interface TextViewWithHintAttributes extends ViewAttributes {
+text:string;
+hint?: string
+}
+declare global {
+    module JSX {
+        interface IntrinsicElements {
+            /**
+             * If determining the GradientAttributes is too much work,
+             * you could substitute it for `any` type!
+             */
+            previousNextView: NativeScriptProps<PreviewNextViewAttributes, PreviousNextView>,
+            textViewWithHint: NativeScriptProps<TextViewWithHintAttributes, TextViewWithHint>
+        }
+    }
+}
+registerElement("previousNextView", ()=> require("@nativescript/iqkeyboardmanager").PreviousNextView)
+registerElement("textViewWithHint", ()=> require("@nativescript/iqkeyboardmanager").TextViewWithHint)
+
+```
+2. Use it in markup:
+```xml
+<previousNextView>
+	<stackLayout>
+		<textField hint="Email" />
+		<textField hint="Password" />
+		<stackLayout>
+			<textViewWithHint text={textViewWithHintText} hint="Working textView hint 🤪" />
+		</stackLayout>
+	</stackLayout>
+</previousNextView>
+```
+
 See the full example at [NativeScript React: iqkeyboardmanager](https://stackblitz.com/edit/nativescript-stackblitz-templates-5uygfj?file=src/components/ScreenOne.tsx)
 
 
