@@ -12,6 +12,7 @@ A simple PDF viewer. It conveniently uses the iOS `WKWebView`, and for Android i
   * [Angular](#angular)
   * [Vue](#vue)
   * [Svelte](#svelte)
+  * [React](#react)
 * [PDFView API](#pdfview-api)
   * [loadEvent](#loadevent)
   * [src](#src)
@@ -84,6 +85,46 @@ registerElement('pDFView', () => require('@nativescript/pdf').PDFView);
 ```
 
 See the complete example [NativeScript Svelte: pdf](https://stackblitz.com/edit/nativescript-stackblitz-templates-neazce?file=app/components/Home.svelte)
+
+### React
+
+1. Register the component, in the `app.ts` file:
+
+```ts
+interface PDFViewAttributes extends ViewAttributes {
+src:string;
+}
+declare global {
+    module JSX {
+        interface IntrinsicElements {
+          
+          pdfView: NativeScriptProps<PDFViewAttributes, PDFViewCommon>
+            
+        }
+    }
+}
+registerElement("pdfView", ()=> require("@nativescript/pdf").PDFView)
+```
+
+2. Use it in markup as follows:
+
+```xml
+<gridLayout class="px-5" columns="*" rows="auto, *">
+
+  <button
+      height="70"
+      text="Show Another!"
+      class="text-[#76ABEB] font-bold mt-8 mb-5 text-lg"
+      onTap={this.changePDF}
+  >
+  </button>
+
+  <pdfView src={this.state.pdfUrl} row="1" onLoaded={this.onLoaded}></pdfView>
+</gridLayout>
+```
+
+You can find the complete example at StackBlitz [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-v1g5qp?file=src/components/ScreenOne.tsx). 
+
 
 ## PDFView API
 
