@@ -5,6 +5,7 @@ A simple PDF viewer. It conveniently uses the iOS `WKWebView`, and for Android i
 > *Remark* [This repository](https://github.com/NativeScript/plugins/blob/main/packages/pdf) is the replacement for [madmas/nativescript-pdf-view](https://github.com/madmas/nativescript-pdf-view) which was a fork of [the original by Merott](https://github.com/Merott/nativescript-pdf-view) and will be used with his consent to provide further maintenance of this NativeScript plugin.
 
 ## Contents
+
 * [Installation](#installation)
 * [Usage](#usage)
   * [Core](#core)
@@ -13,6 +14,10 @@ A simple PDF viewer. It conveniently uses the iOS `WKWebView`, and for Android i
   * [Svelte](#svelte)
 * [PDFView API](#pdfview-api)
   * [loadEvent](#loadevent)
+  * [src](#src)
+  * [notifyOfEvent()](#notifyofevent)
+  * [loadPDF()](#loadpdf)
+
 ## Installation
 
 ```
@@ -81,7 +86,9 @@ registerElement('pDFView', () => require('@nativescript/pdf').PDFView);
 See the complete example [NativeScript Svelte: pdf](https://stackblitz.com/edit/nativescript-stackblitz-templates-neazce?file=app/components/Home.svelte)
 
 ## PDFView API
+
 ### loadEvent
+
 ```ts
 PDFView.loadEvent
 ```
@@ -93,12 +100,18 @@ PDFView.loadEvent
 pdfView.src = 'some-pdf-url'
 ```
 
+Sets the src of the a pdf file
+
 ---
-### notifyOfEvent(eventName: string, pdfViewRef: WeakRef<Common>)
+### notifyOfEvent()
+
 ```ts
 PDFView.notifyOfEvent(eventName: string, pdfViewRef: WeakRef<Common>)
 ```
+
+---
 ### loadPDF()
+
 ```ts
 pdfView.loadPDF(src)
 ```
