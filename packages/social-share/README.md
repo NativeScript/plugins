@@ -1,48 +1,61 @@
 # @nativescript/social-share
 
+## Installation
+
 ```cli
 npm install @nativescript/social-share
 ```
 
 ## Usage
 
-To use the social share module you must first `require()` it. After you `require()` the module you have access to its APIs.
+### Share an image
 
-```JavaScript
-// ------------ JavaScript ------------------
-var SocialShare = require("@nativescript/social-share");
+To share an image use the [shareImage()](#shareimage) function.
 
-// ------------- TypeScript ------------------
-import * as SocialShare from "@nativescript/social-share";
+```ts
+import { shareImage } from "@nativescript/social-share"
+import { ImageSource } from "@nativescript/core"
+
+async doShareImage() {
+
+  const imageSrc = await ImageSource.fromUrl(
+    'https://thiscatdoesnotexist.com/'
+  );
+  shareImage(imageSrc);
+}
+```
+You can optionally provide a second argument to add more information about the image:
+
+```ts
+shareImage(imageSrc, {
+
+    caption: 'Your favorite cat of all times',
+    subject: "Some subject",
+    fileFormat: "png"
+
+  });
 ```
 
 ## API
 
-### shareImage(ImageSource image, \[optional\] String subject)
-
-The `shareImage()` method expects an [`ImageSource`](https://docs.nativescript.org/api-reference/classes/imagesource.html) object. The code below loads an image from the app and invokes the share widget with it:
-
-```JavaScript
-// ------------ JavaScript ------------------
-var SocialShare = require("@nativescript/social-share");
-var imageSourceModule = require("@nativescript/core");
-
-var image = imageSourceModule.fromFile("~/path/to/myImage.jpg");
-SocialShare.shareImage(image);
-
-// ------------- TypeScript ------------------
-import * as SocialShare from "@nativescript/social-share";
-import { ImageSource } from "@nativescript/core";
-
-let image = ImageSource.fromFile("~/path/to/myImage.jpg");
-SocialShare.shareImage(image);
+### shareImage()
+```ts
+shareImage(imageSource, options)
 ```
 
-You can optionally provide a second argument to configure the subject on Android:
+Allows you to share an [`ImageSource`](https://docs.nativescript.org/api-reference/classes/imagesource.html). 
 
-```JavaScript
-SocialShare.shareImage(image, "How would you like to share this image?");
-```
+| Parameter | Type | Description
+|:----------|:-----|:----------
+| `options` |[ShareOptions](#shareoptions)| _Optional_: An object providing more information about the image. |
+
+### ShareOptions
+
+| Property | Type | Description
+|:---------|:-----|:----------
+| `caption` | `string` | _Optional_: Caption to share alongside the image
+| `subject` | `string` |_Optional_: (`Android-only`)The subject of the share.
+| `fileFormat` | `'png'` \|`'jpg'` |_Optional_: (`Android-only`)The generated image format. Defaults to `'jpg'`.
 
 ### shareText(String text, \[optional\] String subject)
 
