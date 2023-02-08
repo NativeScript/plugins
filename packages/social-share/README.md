@@ -2,6 +2,22 @@
 
 ## Contents
 
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Share an image](#share-an-image)
+  * [Share a URL](#share-a-url)
+  * [Share via the Twitter App](#share-via-the-twitter-app)
+  * [Share a PDF File](#share-a-pdf-file)
+* [API](#api)
+  * [shareImage()](#shareimage)
+    * [ShareOptions](#shareoptions)
+  * [shareText()](#sharetext)
+  * [sharePdf()](#sharepdf)
+  * [shareUrl()](#shareurl)
+  * [shareViaTwitter()](#shareviatwitter)
+  * [shareViaFacebook()](#shareviafacebook)
+* [Tutorials](#tutorials)
+* [License](#license)
 ## Installation
 
 ```cli
@@ -62,7 +78,7 @@ import { shareViaTwitter } from "@nativescript/social-share"
 shareViaTwitter('Home of NativeScript', 'https://www.nativescript.org/')
 ```
 
-### Share a PDF file
+### Share a PDF File
 
 To share a PDF file, use the [sharePdf](#sharepdf) function. 
 
@@ -76,6 +92,7 @@ sharePdf(pdf, "How would you like to share this text?")
 ## API
 
 ### shareImage()
+
 ```ts
 shareImage(imageSource, options)
 ```
@@ -104,6 +121,7 @@ shareText(text,subject)
 ```
 
 Shares the specified text. Expects a simple string.
+
 #### Parameters
 
 | Parameter | Type | Description
@@ -223,7 +241,8 @@ dependencies {
   <string name="facebook_app_id">126035687816994</string>
 </resources>
 ```
-Try the plugin demo at StackBlitz [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-hq3ukc?file=app/main-view-model.ts)
+Try the plugin demo [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-hq3ukc?file=app/main-view-model.ts) on
+StackBlitz. 
 
 ## Tutorials
 
