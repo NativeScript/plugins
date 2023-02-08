@@ -16,7 +16,7 @@
   * [shareUrl()](#shareurl)
   * [shareViaTwitter()](#shareviatwitter)
   * [shareViaFacebook()](#shareviafacebook)
-* [Tutorials](#tutorials)
+* [Demo App](#demo-app)
 * [License](#license)
 ## Installation
 
@@ -241,15 +241,16 @@ dependencies {
   <string name="facebook_app_id">126035687816994</string>
 </resources>
 ```
+## Demo App
 Try the plugin demo [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-hq3ukc?file=app/main-view-model.ts) on
 StackBlitz. 
 
-## Tutorials
+<!-- ## Tutorials
 
 Looking for some extra help getting social sharing working in your mobile application? Check out these resources:
 
 - [Social Media Sharing in a Vanilla NativeScript Application](https://www.thepolyglotdeveloper.com/2016/03/implement-social-media-sharing-nativescript-app/)
-- [Social Media Sharing in a NativeScript with Angular Application](https://www.thepolyglotdeveloper.com/2017/02/social-media-sharing-prompts-nativescript-angular-application/)
+- [Social Media Sharing in a NativeScript with Angular Application](https://www.thepolyglotdeveloper.com/2017/02/social-media-sharing-prompts-nativescript-angular-application/) -->
 
 ## License
 
