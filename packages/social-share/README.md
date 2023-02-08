@@ -1,5 +1,7 @@
 # @nativescript/social-share
 
+## Contents
+
 ## Installation
 
 ```cli
@@ -36,6 +38,41 @@ shareImage(imageSrc, {
   });
 ```
 
+### Share a URL
+
+To share a URL, use the [shareUrl()](#shareurl) function.
+
+```ts
+import { shareUrl } from "@nativescript/social-share"
+
+shareUrl(
+  'https://www.nativescript.org/',
+  'Home of NativeScript',
+  'How would you like to share this url?'
+)
+```
+
+### Share via the Twitter App
+
+To share something via the Twitter mobile application, use the [shareViewTwitter()](#shareviatwitter) function.
+
+```ts
+import { shareViaTwitter } from "@nativescript/social-share"
+
+shareViaTwitter('Home of NativeScript', 'https://www.nativescript.org/')
+```
+
+### Share a PDF file
+
+To share a PDF file, use the [sharePdf](#sharepdf) function. 
+
+```ts
+import { sharePdf } from "@nativescript/social-share"
+
+let pdf = File.fromPath("~/path/to/myPdf.pdf");
+sharePdf(pdf, "How would you like to share this text?")
+```
+
 ## API
 
 ### shareImage()
@@ -47,92 +84,115 @@ Allows you to share an [`ImageSource`](https://docs.nativescript.org/api-referen
 
 | Parameter | Type | Description
 |:----------|:-----|:----------
+| `imageSource` | [ImageSource](https://docs.nativescript.org/api-reference/classes/imagesource) | The image to share.
 | `options` |[ShareOptions](#shareoptions)| _Optional_: An object providing more information about the image. |
 
-### ShareOptions
+#### ShareOptions
 
 | Property | Type | Description
 |:---------|:-----|:----------
-| `caption` | `string` | _Optional_: Caption to share alongside the image
+| `caption` | `string` | _Optional_: The caption to share alongside the image
 | `subject` | `string` |_Optional_: (`Android-only`)The subject of the share.
 | `fileFormat` | `'png'` \|`'jpg'` |_Optional_: (`Android-only`)The generated image format. Defaults to `'jpg'`.
 
-### shareText(String text, \[optional\] String subject)
-
-The `shareText()` method expects a simple string:
+### shareText()
 
 ```js
-SocialShare.shareText('I love NativeScript!')
+import { shareText } from "@nativescript/social-share"
+
+shareText(text,subject)
 ```
 
-Like `shareImage()`, you can optionally pass `shareText()` a second argument to configure the subject on Android:
+Shares the specified text. Expects a simple string.
+#### Parameters
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `text` | `string` | The text to share with the URL. 
+| `subject` | `string` | _Optional_: (`Android-only`)The URL to share. 
+
+
+### sharePdf()
 
 ```js
-SocialShare.shareText('I love NativeScript!', 'How would you like to share this text?')
+import { sharePdf } from "@nativescript/social-share"
+
+sharePdf(pdf, subject)
 ```
 
-### sharePdf(File pdf, \[optional\] String subject)
+Used to share a PDF file.
 
-The `sharePdf()` method expects a File instance:
+#### Parameters
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `pdf` | [File](https://docs.nativescript.org/api-reference/classes/file) | The PDF file to share. 
+| `subject` | `string` | _Optional_: (`Android-only`)The URL to share. 
+
+### shareUrl()
 
 ```js
-let pdf = File.fromPath("~/path/to/myPdf.pdf");
-SocialShare.sharePdf(pdf)
+shareUrl(url, text, subject)
 ```
 
-Like `shareImage()`, you can optionally pass `sharePdf()` a second argument to configure the subject on Android:
+Allows you to share a URL.
 
-```js
-SocialShare.sharePdf(pdf, 'How would you like to share this text?')
+#### Parameters
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `url` | `string` | The URL to share. 
+| `text` | `string` | The text to share with the URL. 
+| `subject` | `string` | _Optional_: (`Android-only`)The URL to share. 
+
+### shareViaTwitter()
+
+```ts
+
+async doShareTwitter() {
+    await shareViaTwitter(text, url);
+  }
 ```
+Shares a text and/or a url via the Twitter app.
 
-### shareUrl(String url, String text, \[optional\] String subject)
+#### Parameters
 
-The `shareUrl()` method excepts a url and a string.
+| Parameter | Type | Description
+|:----------|:-----|:----------
+| `url` | `string` | _Optional_: The URL to share. 
+| `text` | `string` | _Optional_: The text to share. 
 
-```js
-SocialShare.shareUrl('https://www.nativescript.org/', 'Home of NativeScript')
+### shareViaFacebook()
+
+```ts
+
+async doShareFacebook() {
+    await shareViaFacebook(text, url);
+  }
 ```
+Shares a text and/or a url via the Facebook app.
 
-You can optionally pass `shareUrl()` a second argument to configure the subject on Android:
+#### Parameters
 
-```js
-SocialShare.shareUrl(
-  'https://www.nativescript.org/',
-  'Home of NativeScript',
-  'How would you like to share this url?'
-)
-```
+| Parameter | Type | Description
+|:----------|:-----|:----------
+| `url` | `string` | _Optional_: The URL to share. 
+| `text` | `string` | _Optional_: The text to share. 
 
-### shareViaTwitter(text?: string, url?: string): Promise\<void\>;
+> **Note** that `text` will usually be suppressed due to Facebook security/abuse prevention, but the url will go through.
 
-Share text or url via Twitter.
+**Android Only NOTE**
 
-```js
-SocialShare.shareViaTwitter('Home of NativeScript', 'https://www.nativescript.org/')
-```
+1. If you are already using the Facebook Share SDK in your project you likely do _not_ have to add the following.
+If you are not using the sdk explicitly in your project yet, add to your `app.gradle` file:
 
-### shareViaFacebook(text?: string, url?: string): Promise\<void\>;
-
-Share url via Facebook. Note that `text` will usually be suppressed due to Facebook security/abuse prevention, but the url will come through.
-
-```js
-SocialShare.shareViaFacebook('Home of NativeScript', 'https://www.nativescript.org/')
-```
-
-- **Android Only NOTE**:
-
-If you are already using the Facebook Share SDK in your project you likely do _not_ have to add the following.
-
-If you are not using the sdk explicitly in your project yet, add to your `app.gradle`:
-
-```
+```goovy
 dependencies {
 	implementation 'com.facebook.android:facebook-share:[5,6)'
 }
 ```
 
-- Add a `meta-data` section and `provider` section ot your `AndroidManifest.xml` so it becomes similar to this:
+2. Add `meta-data` and `provider` sections to the `AndroidManifest.xml` file:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -155,7 +215,7 @@ dependencies {
    			..>
 ```
 
-- Create a file `facebooklogin.xml` in `App_Resources/Android/src/main/res/values/`. Add this to the file (replace the id):
+3. Create a file `facebooklogin.xml` in `App_Resources/Android/src/main/res/values/`. Add this to the file (replace the id):
 
 ```xml
 <?xml version='1.0' encoding='utf-8' ?>
@@ -163,6 +223,7 @@ dependencies {
   <string name="facebook_app_id">126035687816994</string>
 </resources>
 ```
+Try the plugin demo at StackBlitz [here](https://stackblitz.com/edit/nativescript-stackblitz-templates-hq3ukc?file=app/main-view-model.ts)
 
 ## Tutorials
 
