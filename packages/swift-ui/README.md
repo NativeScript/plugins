@@ -29,7 +29,7 @@ IPHONEOS_DEPLOYMENT_TARGET = 13.0
 ```
 
 ## Usage
-
+![SwiftUI Source Files Example](/packages/swift-ui/swift-ui-source-files-example.png)
 ### 1. Create your SwiftUI view
 
 This can be any SwiftUI view you'd like to create.
