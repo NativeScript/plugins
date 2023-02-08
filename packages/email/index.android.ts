@@ -11,7 +11,7 @@ const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : (
 
 const _determineAvailability = function () {
 	const uri = android.net.Uri.fromParts('mailto', '', null);
-	const intent = new android.content.Intent(android.content.Intent.ACTION_SEND, uri);
+	const intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO, uri);
 	intent.addCategory(android.content.Intent.CATEGORY_DEFAULT);
 	const packageManager = Utils.android.getApplicationContext().getPackageManager();
 	const nrOfMailApps = packageManager.queryIntentActivities(intent, 0).size();
