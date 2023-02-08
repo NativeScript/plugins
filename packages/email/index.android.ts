@@ -1,4 +1,4 @@
-import { Application, File, Folder } from '@nativescript/core';
+import { Application, File, Folder, Utils } from '@nativescript/core';
 
 (function () {
 	_cleanAttachmentFolder();
@@ -11,8 +11,9 @@ const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : (
 
 const _determineAvailability = function () {
 	const uri = android.net.Uri.fromParts('mailto', '', null);
-	const intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO, uri);
-	const packageManager = Application.android.context.getPackageManager();
+	const intent = new android.content.Intent(android.content.Intent.ACTION_SEND, uri);
+	intent.addCategory(android.content.Intent.CATEGORY_DEFAULT);
+	const packageManager = Utils.android.getApplicationContext().getPackageManager();
 	const nrOfMailApps = packageManager.queryIntentActivities(intent, 0).size();
 	return nrOfMailApps > 0;
 };
@@ -31,11 +32,8 @@ export function available() {
 export function compose(arg) {
 	return new Promise(function (resolve, reject) {
 		try {
-			if (!_determineAvailability()) {
-				reject('No mail available');
-			}
-
 			const mail = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
+
 			if (arg.body) {
 				const htmlPattern = java.util.regex.Pattern.compile('.*\\<[^>]+>.*', java.util.regex.Pattern.DOTALL);
 				if (htmlPattern.matcher(arg.body).matches()) {
