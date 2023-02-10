@@ -1,5 +1,6 @@
 # @nativescript/zip
-
+<!-- TODO: Describe "keepParent" and "overwrite" properties
+ -->
 A plugin to zip and unzip files.
 
 ## Contents
@@ -134,7 +135,7 @@ Zips the folder at the path specified in the `directory` property of the `option
 
 #### ZipOptions interface
 
-| Option | Type
+| Property | Type
 |:-------|:----
 | `directory` | `string`| _Optional_: The directory to zip.
 | `archive` | `string` | _Optional_: The path to zip `directory` to.
@@ -157,7 +158,7 @@ Extracts all the files from the zip file specified in the `archive` property of 
 
 #### UnZipOptions interface
 
-| Option | Type
+| Property | Type
 |:-------|:----
 | `directory` | `string`| _Optional_: The path to extract the files to.
 | `archive` | `string` | _Optional_: The path of the zip file.
