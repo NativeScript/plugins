@@ -1,37 +1,60 @@
 # @nativescript/zip
 
+A plugin to zip and unzip files.
+
+## Contents
+
+* [Installation](#installation)
+
+* [Use @nativescript/zip](#use-nativescriptzip)
+	* [Zip a folder](#zip-a-folder)
+	* [Get zip request progress](#get-zip-request-progress)
+	* [Get unzip request progress](#get-unzip-request-progress)
+* [API](#api) 
+	* [Zip class](#zip-class)
+		* [debugEnabled](#debugenabled)
+		* [zip()](#zip)
+			* [ZipOptions interface](#zipoptions-interface)
+		* [unzip()](#unzip)
+			* [UnZipOptions interface](#unzipoptions-interface)
+* [License](#license)
+
 ## Installation
 
 ```cli
 npm install @nativescript/zip
 ```
 
-## Usage
+## Use @nativescript/zip
 
-### Files Zipping
+### Zip a folder
 
-To zip a folder, call the [zip()]() method on the [Zip]() class, passing it a [ZipOptions]() object.
-
-see [ZipOptions](https://github.com/NativeScript/plugins/blob/master/packages/zip/index.d.ts#L1)
+To zip a folder, call the [zip()](#zip) method on the [Zip](#zip-class) class, passing it a [ZipOptions]() object.
 
 ```typescript
+async zip() {
 
-import { Zip } from '@nativescript/zip';
-import { path, knownFolders } from '@nativescript/core';
+        let zipPath = path.join(knownFolders.temp().path, 'stuff.zip');
+        let dest = path.join(knownFolders.currentApp().path, '/assets');
+        
+        const zipped = await Zip.zip({
 
-let zipPath = path.join(knownFolders.temp().path, 'stuff.zip');
-let dest = path.join(knownFolders.documents().path, '/assets');
+            directory: dest,
+            archive: zipPath,
+        }).then((value)=>{
+            console.log("zipped",value)
 
-Zip.zip({
-    directory: dest,
-	archive: zipPath
-});
+        }).catch(err=>{
+            console.error(err)
+        });
+    }
 ```
 
-#### Get Files Zipping Progress
+#### Get zip request progress
 
-To get the progress of the zipping process, set the `onProgress` handler
-in [ZipOptions]() object passed to the [zip()].
+To get the zip request progress, set the `onProgress` property to a function to handle the progress event.
+
+in [ZipOptions](#zipoptions) object passed to the [zip()](#zip).
 
 ```typescript
 import { Zip } from '@nativescript/zip';
@@ -40,19 +63,19 @@ let zipPath = path.join(knownFolders.temp().path, 'stuff.zip');
 let dest = path.join(knownFolders.documents().path, '/assets');
 
 Zip.zip({
-function onProgress(percent: number) {
-	console.log(`unzip progress: ${percent}`);
-    directory: dest,
-		archive: zipPath,
-    onProgress: onZipProgress
+	directory: dest,
+	archive: zipPath,
+	onProgress: onZipProgress
 });
+function onZipProgress(percent: number) {
+
+    console.log(`unzip progress: ${percent}`);
+}
 ```
 
 ### Unzip a folder
 
-To unzip a folder, call the [unzip()]() method on the [Zip]() class, passing it a [UnZipOptions]() object.
-
-see [UnzipOptions](https://github.com/NativeScript/plugins/blob/master/packages/zip/index.d.ts#L9)
+To unzip a folder, call the [unzip()](#unzip) method on the [Zip](#zip-class) class, passing it a [UnZipOptions](#unzipoptions) object.
 
 ```typescript
 import { Zip } from '@nativescript/zip';
@@ -66,18 +89,23 @@ Zip.unzip({
 });
 ```
 
-#### Get Files Unzipping Progress
+#### Get unzip request progress
+To get the unzip request progress, set the `onProgress` property to a function to handle the progress event.
 
 ```typescript
 import { Zip } from '@nativescript/zip';
 import { path, knownFolders } from '@nativescript/core';
 let zipPath = path.join(knownFolders.temp().path, 'stuff.zip');
 let dest = path.join(knownFolders.documents().path, '/assets');
-Zip.unzip({
+async unzip(){
+	
+const unzipped = await Zip.unzip({
 	archive: zipPath,
 	directory: dest,
 	onProgress: onUnZipProgress,
 });
+
+}
 
 function onUnZipProgress(percent: number) {
 	console.log(`unzip progress: ${percent}`);
@@ -85,13 +113,14 @@ function onUnZipProgress(percent: number) {
 ```
 
 ## API 
-### Zip
+
+### Zip class
+
 #### debugEnabled
 ```ts
 Zip.debugEnabled = true
-
 ```
-
+---
 #### zip()
 
 ```ts
@@ -101,37 +130,41 @@ Zip.zip(options).then((zipped: string) => {
 
 })
 ```
+Zips the folder at the path specified in the `directory` property of the `options` parameter. It saves the zipped folder at the path set via `archive` property. The `options` object has the following properties:
+
+#### ZipOptions interface
+
+| Option | Type
+|:-------|:----
+| `directory` | `string`| _Optional_: The directory to zip.
+| `archive` | `string` | _Optional_: The path to zip `directory` to.
+| `onProgress` | `(progress: number) => void` | _Optional_: Zip request progress listener.
+| `keepParent`| `boolean` | _Optional_: 
+| `password`| `string` | _Optional_: The password used to protect the zip file.
+
 
 ---
 #### unzip()
 
 ```ts
-Zip.unzip(options).then((zipped: any) => {
+Zip.unzip(options).then((unZipped: any) => {
 
 }).catch((err) => {
 
 })
 ```
-zip(options: ZipOptions): Promise<string>
-    static unzip(options: UnZipOptions): Promise<any>
-### ZipOptions
-| Option | Type
-|:-------|:----
-| `directory` | `string`| _Optional_
-| `archive` | `string` | _Optional_
-| `onProgress` | `(progress: number) => void` | _Optional_
-| `keepParent`| `boolean` | _Optional_
-| `password`| `string` | _Optional_
+Extracts all the files from the zip file specified in the `archive` property of the `options` parameter. The extracted files are stored at the path specified via the `directory` property. The `options` object has the following properties:
 
-### UnZipOptions
+#### UnZipOptions interface
 
 | Option | Type
 |:-------|:----
-| `directory` | `string`| _Optional_
-| `archive` | `string` | _Optional_
-| `onProgress` | `(progress: number) => void` | _Optional_
+| `directory` | `string`| _Optional_: The path to extract the files to.
+| `archive` | `string` | _Optional_: The path of the zip file.
+| `onProgress` | `(progress: number) => void` | _Optional_: Unzip request progress listener.
 | `overwrite`| `boolean` | _Optional_
-| `password`| `string` | _Optional_
+| `password`| `string` | _Optional_: The password used to protect the zip file.
+
 ## License
 
 Apache License Version 2.0
