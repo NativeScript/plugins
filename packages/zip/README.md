@@ -163,7 +163,7 @@ Extracts all the files from the zip file specified in the `archive` property of 
 | `directory` | `string`| _Optional_: The path to extract the files to.
 | `archive` | `string` | _Optional_: The path of the zip file.
 | `onProgress` | `(progress: number) => void` | _Optional_: Unzip request progress listener.
-| `overwrite`| `boolean` | _Optional_
+| `overwrite`| `boolean` | _Optional_: (`iOS-only`)
 | `password`| `string` | _Optional_: The password used to protect the zip file.
 
 ## License
