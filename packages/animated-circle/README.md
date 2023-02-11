@@ -27,7 +27,7 @@ npm install @nativescript/animated-circle
 
 ### Core
 
-1. Register the plugin namespace with Page's `xmlns` attribute and provide your prefix( `ui`, for example).
+1. Register the plugin namespace with Page's `xmlns` attribute providing your prefix( `ui`, for example).
 
 ```xml
 <Page xmlns:ui="@nativescript/animated-circle">
@@ -63,14 +63,14 @@ npm install @nativescript/animated-circle
 ---
 ### Angular
 
-1. Add `NativeScriptAnimatedCircleModule` to the module imports where you want to use the plugin.
+1. Add `NativeScriptAnimatedCircleModule` to the module imports where you want to use the view.
 
 ```typescript
 import { NativeScriptAnimatedCircleModule } from '@nativescript/animated-circle/angular';
 imports: [NativeScriptAnimatedCircleModule];
 ```
 
-2. Use the plugin in HTML as follows:
+2. Use the view in HTML.
 
 ```xml
 <AnimatedCircle backgroundColor="transparent" width="200" height="200" animated="true" animateFrom="0" rimColor="#fff000" barColor="#ff4081" rimWidth="25" [progress]="circleProgress" [text]="progress + '%'" textSize="22" textColor="#336699"></AnimatedCircle>
@@ -78,13 +78,13 @@ imports: [NativeScriptAnimatedCircleModule];
 ---
 ### Vue
 
-1. Register the plugin in the `app.ts` file. 
+1. Register the view in the `app.ts` file. 
 ```ts
 import { registerElement } from 'nativescript-vue';
 
 registerElement("AnimatedCircle", ()=> require("@nativescript/animated-circle").AnimatedCircle)
 ```
-2. Use it in a `.vue` file.
+2. Use the view in a `.vue` file.
 
 ```xml
 <AnimatedCircle
@@ -105,14 +105,14 @@ registerElement("AnimatedCircle", ()=> require("@nativescript/animated-circle").
 ```
 ---
 ### Svelte
-1. Register the plugin in the `app.ts` file:
+1. Register the plugin's view in the `app.ts` file.
 
 ```ts
 import {registerNativeViewElement} from "svelte-native/dom"
 
 registerNativeViewElement("animatedCircle", ()=> require("@nativescript/animated-circle").AnimatedCircle)
 ```
-2. Use the plugin in markup:
+2. Use the view in markup.
 
 ```xml
 <animatedCircle 
@@ -133,7 +133,7 @@ registerNativeViewElement("animatedCircle", ()=> require("@nativescript/animated
 ```
 ---
 ### React
-1. Register
+1. Register the plugin's view in the `app.ts` file.
 ```ts
 interface AnimatedCircleAttributes extends ViewAttributes {
     progress?: number
@@ -161,7 +161,7 @@ registerElement("animatedCircle", ()=> require("@nativescript/animated-circle").
 
 ```
 
-2. Use the plugin in markup.
+2. Use the view in markup.
 ```xml
 <stackLayout marginTop={30}>
   <animatedCircle
