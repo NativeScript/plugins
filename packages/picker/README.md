@@ -35,6 +35,59 @@ To use the `PickerField` in markup you need to:
    <picker:PickerField hint="Click here" items="{{ pickerItems }}"/>
 ...
 ```
+Or with item template 
+```xml
+<picker:PickerField focusOnShow="true" filterKeyName="name" showFilter="{{ enableFilter }}" pickerTitle="Nativescript Picker" rowHeight="60" id="picker" hint="Click here" textField="name" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
+                    items="{{ pickerItems }}" >
+    <picker:PickerField.itemTemplate>
+        <GridLayout height="60">
+            <Label text="{{ name}}" textWrap="true" verticalAlignment="center" />
+            
+        </GridLayout>
+    </picker:PickerField.itemTemplate>
+</picker:PickerField>
+
+```
+
+## Data filter
+You can filter the data by setting `showFilter="true"`, by default the plugin will look at the `name` key on the items source, but you can control this by setting `filterKeyName="title"` assuming your data Items contains a title key :
+
+> focus the search bar by setting `focusOnShow="true"`
+
+```ts
+let dataItems = new ObservableArray<{title: string, age: number}>();
+
+for(let i = 0; i <= 30; i++) {
+    dataItems.push({
+        title: "Title" + i,
+        age: 30 + i
+    })
+}
+```
+
+<img width="350" src="https://user-images.githubusercontent.com/18148534/210265624-970a308b-1792-4d2b-a54f-4f17bc1dd4c4.gif" />
+
+## Get selected item
+You need to register the callback from pickerClosed property `pickerClosed="onSelectedItem"` this will return the `selectedIndex` :
+
+```ts
+onSelectedItem(args) {
+    let index = args.object?.selectedIndex;
+    console.log('Picker > closed', index);
+    console.log('Picker > closed', dataItems[index].title);
+}
+```
+
+## Style
+You can targed the Picker via thoes css class ex: `.pickerRootModal`:
+- `pickerRootModal` targetting the `Modal` 
+- `pickerPage` targetting the `Page`
+- `pickerGridLayout` targetting the `GridLayout` wraper that contains all the views
+- `pickerListView` targetting the `ListView`
+- `pearchBarContainer` targetting the search bar container `StackLayout`
+- `pickerSearchBar` targetting the search bar `TextField`
+
+[See here also](#pickerfield-1)
 
 - If you are developing a NativeScript Angular app, you need to import the plugin module in the module of your component:
 
@@ -129,6 +182,13 @@ The `PickerField` is a NativeScript `TextField` which means that any functionali
 | `iOSCloseButtonIcon`         | The icon of the 'close' button of the ActionBar of the modal view.                                                                          |
 | `androidCloseButtonPosition` | The position of the 'close' button of the ActionBar of the modal view.                                                                      |
 | `androidCloseButtonIcon`     | The icon of the 'close' button of the ActionBar of the modal view.                                                                          |
+| `showFilter` | Show the search bar |
+| `filterKeyName` | Set object key to use when filtering (see the doc)|
+| `focusOnShow` | Set the focus to the serach bar|
+| `hintText` | Set the hint of the search bar| 
+
+
+
 
 ### PickerField
 

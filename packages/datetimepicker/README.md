@@ -1,5 +1,5 @@
 # @nativescript/datetimepicker
-<!-- TODO: Add flavors -->
+
 A plugin that provides the UI elements `DatePickerField`, `TimePickerField` and `DateTimePickerFields` for picking a date and a time. The `DatePickerField` and `TimePickerField` components extend the [TextField](https://docs.nativescript.org/ui/textfield) view, while the `DateTimePickerFields` extends the [GridLayout](https://docs.nativescript.org/ui/gridlayout) layout container that contains instances of the `DatePickerField` and `TimePickerField` components. There is also a `DateTimePicker` class which provides static methods `pickDate()` and `pickTime()` that can be called to show the same dialog picker as the fields.
 
 <img alt="DatePickerField on iOS (left) and Android (right)"  src="https://raw.githubusercontent.com/NativeScript/nativescript-datetimepicker/master/docs/date_picker_field.png" width="500px"/>
@@ -51,7 +51,7 @@ npm install @nativescript/datetimepicker
 
 ### Angular
 
-You need to register the plugin in the component's module:
+Import the plugin's module:
 
 ```ts
 import { NativeScriptDateTimePickerModule } from "@nativescript/datetimepicker/angular";

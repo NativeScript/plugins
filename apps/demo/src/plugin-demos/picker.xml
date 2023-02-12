@@ -6,9 +6,11 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
+            <Button text="{{ enableFilterText }}" tap="{{toggleFilter}}" />
+            
+            <Button text="Show Picker Programatically" tap="{{showPicker}}" />
 
-            <Button text="Show Picker Programatically" tap="showPicker" />
-            <picker:PickerField rowHeight="60" id="picker" hint="Click here" textField="name" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
+            <picker:PickerField hintText="Search Items..." focusOnShow="true" filterKeyName="name" showFilter="{{ enableFilter }}" pickerTitle="Nativescript Picker" rowHeight="60" id="picker" hint="Click here" textField="name" padding="10" pickerOpened="{{ pickerOpened }}" pickerClosed="{{ pickerClosed }}"
   								items="{{ pickerItems }}" >
                 <picker:PickerField.itemTemplate>
                     <GridLayout height="60">
