@@ -1,14 +1,14 @@
 # @nativescript/auto-fit-text
 
+A plugin that extends the Nativescript [Label](https://docs.nativescript.org/ui/label) with changes to adjust the font size according to the label's width.
+
 ## Installation
 
 ```cli
 npm install @nativescript/auto-fit-text
 ```
 
-This plugin extends the Nativescript [Label](https://docs.nativescript.org/ui/label) with changes to adjust the font size according to the label's width.
-
-## Usage
+## Use nativescript/auto-fit-text
 
 ### Core
 
@@ -44,6 +44,7 @@ import { NativeScriptAutoFitTextModule } from '@nativescript/auto-fit-text/angul
 ```
 
 ### Vue
+
 ```ts
 import { registerElement } from "nativescript-vue"
 
