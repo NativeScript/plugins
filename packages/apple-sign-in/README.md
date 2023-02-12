@@ -14,6 +14,7 @@ npm install @nativescript/apple-sign-in
 
 2. Add the [Sign In with Apple Entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_applesignin?language=objc) to `App_Resources/iOS/app.entitlements`.
 
+Then add the [Sign In with Apple Entitlement](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_applesignin?language=objc) to `App_Resources/iOS/app.entitlements` as follows:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -166,6 +167,7 @@ For more details, visit [NSPersonNameComponents](https://developer.apple.com/doc
 
 ---
 ### CredentialState enum
+
 ```ts
 enum CredentialState {
     Revoked = 'Revoked',
@@ -174,6 +176,7 @@ enum CredentialState {
     Transferred = 'Transferred'
 } 
 ```
+
 For more details, visit [ASAuthorizationAppleIDProviderCredentialState](https://developer.apple.com/documentation/authenticationservices/asauthorizationappleidprovidercredentialstate?language=objc).
 
 ---
@@ -185,6 +188,7 @@ enum UserDetectionStatus {
     LikelyReal = 'LikelyReal'
 }
 ```
+
 For more details, visit [ASUserDetectionStatus](https://developer.apple.com/documentation/authenticationservices/asuserdetectionstatus?language=objc).
 
 ## License
