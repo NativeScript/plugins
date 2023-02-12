@@ -1,66 +1,73 @@
 # @nativescript/background-http
 
+A plugin that allows you to make background HTTP calls.
+
 ## Installation
+
 ```cli
 npm install @nativescript/background-http
 ```
 
-## Usage
+## Use @nativescript/background-http
 
-### Initializing HTTP background service
+To make background HTTP calls, follow these steps:
 
-Before calling any method from the plugin, you should initialize an HTTP background service by calling the `init` method in the `main.ts` file before the app starts.
+1. Initialize a background HTTP service
+
+Call the `init()` function to initialize an HTTP service that runs in the background. Call the method early in your application, in the `main.ts` file, before the app starts.
 
 ```typescript
 import { init } from '@nativescript/background-http';
 init();
 ```
 
-### Uploading files
+2. Upload files
 
-Each session must have a unique `id`, but it can have multiple tasks running simultaneously. The `id` is passed as a parameter when creating the session (the `image-upload` string in the code below):
+    1. Create an upload session by calling the `session()` function and passing it the session's unique identifier string, `image-upload` for example.
+    ```JavaScript
+    // file path and url
+    var file = '/some/local/file/path/and/file/name.jpg';
+    var url = 'https://some.remote.service.com/path';
+    var name = file.substr(file.lastIndexOf('/') + 1);
 
-```JavaScript
-// file path and url
-var file = '/some/local/file/path/and/file/name.jpg';
-var url = 'https://some.remote.service.com/path';
-var name = file.substr(file.lastIndexOf('/') + 1);
+    // upload configuration
+    var bghttp = require('@nativescript/background-http');
 
-// upload configuration
-var bghttp = require('@nativescript/background-http');
-var session = bghttp.session('image-upload');
-var request = {
-	url: url,
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/octet-stream',
-	},
-	description: 'Uploading ' + name,
-};
-```
+    var session = bghttp.session('image-upload');
+    var request = {
+        url: url,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/octet-stream',
+        },
+        description: 'Uploading ' + name,
+    };
+    ```
 
-For a single file upload, use the following code:
+    2. Upload files
 
-```JavaScript
-var task = session.uploadFile(file, request);
-```
+    - For a single file upload, call the `upload()` method on the `session` instance:
 
-For multiple files or to pass additional data, use the `multipartUpload` method. All parameter values must be strings:
+    ```JavaScript
+    var task = session.uploadFile(file, request);
+    ```
+    - To upload multiple files or to pass additional data, call the `multipartUpload()` method. All parameter values must be strings:
 
-```js
-var params = [
-   { name: "test", value: "value" },
-   { name: "fileToUpload", filename: file, mimeType: "image/jpeg" }
-];
-var task = session.multipartUpload(params, request);
-```
+    ```js
+    var params = [
+    { name: "test", value: "value" },
+    { name: "fileToUpload", filename: file, mimeType: "image/jpeg" }
+    ];
+    
+    var task = session.multipartUpload(params, request);
+    ```
 
 For a successful upload, the following must be taken into account:
 
 - the file must be accessible from your app. This may require additional permissions (e.g. access documents and files on the device). 
 - the URL must not be blocked by the OS. Android Pie or later devices require TLS (HTTPS) connection by default and will not upload to an insecure (HTTP) URL.
 
-### Handling upload events
+### Handle upload events
 
 After the upload task is created you can monitor its progress using the following events:
 
