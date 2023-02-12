@@ -1,6 +1,8 @@
 # @nativescript/app-availability
 
-A plugin to check for availability of other apps on the device.
+A plugin to check for the availability of other apps on the device.
+
+## Installation
 
 ```cli
 npm install @nativescript/appavailability
@@ -8,13 +10,15 @@ npm install @nativescript/appavailability
 
 ## Usage
 
-> **Note:** Version 1.3.0 added a synchronous version of this method that doesn't return a Promise. Need that? Use `availableSync` instead of `available`.
-
-### TypeScript
+### Importing
 
 ```typescript
 import { available } from '@nativescript/appavailability';
+//or
+import { availableSync } from '@nativescript/appavailability';
+```
 
+```typescript
 // examples of what to pass:
 // - for iOS: "maps://", "twitter://", "fb://"
 // - for Android: "com.facebook.katana"
@@ -22,36 +26,9 @@ available('twitter://').then((avail: boolean) => {
 	console.log('App available? ' + avail);
 });
 ```
+### Opening an app (with web fallback)
 
-### TypeScript + Angular
-
-```typescript
-import * as appavailability from '@nativescript/appavailability';
-
-// examples of what to pass:
-// - for iOS: "maps://", "twitter://", "fb://"
-// - for Android: "com.facebook.katana"
-appavailability.available('twitter://').then((avail: boolean) => {
-	console.log('App available? ' + avail);
-});
-```
-
-### JavaScript
-
-```javascript
-var appAvailability = require('@nativescript/appavailability');
-
-// examples of what to pass:
-// - for iOS: "maps://", "twitter://", "fb://"
-// - for Android: "com.facebook.katana"
-appAvailability.available('com.facebook.katana').then(function (avail) {
-	console.log('App available? ' + avail);
-});
-```
-
-## Opening an app (with web fallback)
-
-Now that you know whether an app is installed or not, you probably want to launch it.
+Once you have confirmed that the app is installed on the device, you probably want to launch it.
 Here's a snippet that opens the mobile Twitter app and falls back to the website if it's not installed.
 
 ```typescript
@@ -82,27 +59,32 @@ if (availableSync('twitter://')) {
 	Utils.openUrl('https://twitter.com/eddyverbruggen');
 }
 ```
+### Determining the correct identifier for an app.
+
+- `Android:` simply search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
+- `iOS:` this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example `'twitter://'` in the address bar if the app launches you're good.
 
 ## iOS whitelisting
 
-To get useful results on iOS 9 and up you need to whitelist the URL Scheme
-you're querying in the application's `.plist`.
+To get useful results on iOS 9+ you need to whitelist the URL Scheme you're querying in the application's `Info.plist`.
 
-Luckily NativeScript made this pretty easy. Just open `app/App_ResourcesiOS/Info.plist`
-and add this if you want to query for both `twitter://` and `fb://`:
+For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit `app/App_ResourcesiOS/Info.plist` as follows:
 
 ```xml
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fb</string>
-    <string>twitter</string>
-  </array>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+	<string>fb</string>
+	<string>twitter</string>
+	<string>whatsapp</string>
+</array>
 ```
 
-You may wonder how one would determine the correct identifier for an app.
+## API
 
-- Android: simply search the Play Store and use the id in the URL. For Twitter this is com.twitter.android because the URL is https://play.google.com/store/apps/details?id=com.twitter.android.
-- iOS: this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example 'twitter://' in the address bar, if the app launches you're good.
+| Methods| Return Type| Description|
+|--------|------------|------------|
+|`available(packageName:string)`|`Promise<boolean>`| Asynchronously checks if the app with the specified `packageName` is installed on the device.|
+|`availableSync(packageName:string)`|`boolean`| Synchronously checks if the app with the specified `packageName` is installed on the device.|
 
 ## License
 

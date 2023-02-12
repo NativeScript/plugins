@@ -39,6 +39,7 @@ npm install @nativescript/animated-circle
 <ui:AnimatedCircle ... />
 ```
 
+### Core
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
   xmlns:ui="@nativescript/animated-circle">
@@ -181,8 +182,9 @@ registerElement("animatedCircle", ()=> require("@nativescript/animated-circle").
   />
 </stackLayout>
 ```
+---
+## API Reference
 
-## API
 
 | Property          | Type | Default | Description                                            |
 | ----------------- |------| ------- | ------------------------------------------------------ |
