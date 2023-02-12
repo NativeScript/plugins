@@ -22,7 +22,7 @@ available('twitter://').then((avail: boolean) => {
 
 To open an app installed on the device, call the `openUrl()` method on the `Utils` class. Pass the app's identifier URL to the method.
 
-The code below asynchronously check if the Twitter mobile app is available on the device. If the app is availabe, `openUrl()` opens it . Otherwise, `openUrl()` opens the website instead.
+The code below asynchronously checks if the Twitter mobile app is available on the device. If the app is availabe, `openUrl()` opens it . Otherwise, `openUrl()` opens the website instead.
 
 ```typescript
 import { available } from '@nativescript/appavailability';
@@ -52,6 +52,7 @@ if (availableSync('twitter://')) {
 	Utils.openUrl('https://twitter.com/eddyverbruggen');
 }
 ```
+
 ### Determine the correct identifier of an app.
 
 - `Android` : search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
