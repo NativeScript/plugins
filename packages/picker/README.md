@@ -19,7 +19,6 @@ A plugin that provides a UI element for picking an object/value from a list open
     * [Events](#events)
 
 ## Installation
-
 ```cli
 npm install @nativescript/picker
 ```
@@ -141,7 +140,7 @@ You can target the Picker via the following classes:
 
 ### Angular
 
-Register the picker by importing the plugin module in the module of your component:
+Register the picker by importing the plugin module:
 
 ```ts
 import { NativeScriptPickerModule } from "@nativescript/picker/angular";
@@ -198,7 +197,7 @@ for (let i = 0; i < 20; i++) {
 ```
 ### Vue
 
-First, register the picker, in the `app.ts` file for global use.
+First, register the picker in the `app.ts` file for global use.
 
 
 ```ts
@@ -279,4 +278,3 @@ Refreshes the ListView of the picker to reload its items.
 | `pickerClosed` | Emitted when the picker popup close as a result of item selection.  
 | `pickerOpened` | Emitted when the picker popup opens.
 | `itemLoading` |  
-
