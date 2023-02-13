@@ -23,7 +23,8 @@ init();
 
 2. Upload files
 
-    1. Create an upload session by calling the `session()` function and passing it the session's unique identifier string, `image-upload` for example.
+    1. Create an upload session by calling the [session()](#session) function and passing it the session's unique identifier string, `image-upload` for example.
+
     ```JavaScript
     // file path and url
     var file = '/some/local/file/path/and/file/name.jpg';
@@ -46,12 +47,12 @@ init();
 
     2. Upload files
 
-    - For a single file upload, call the `upload()` method on the `session` instance:
+    - To initiate a simple upload request, call the `session`'s `uploadFile()` method and pass it the file path and an [Upload request object](#upload-request-object):
 
     ```JavaScript
-    var task = session.uploadFile(file, request);
+    var task = session.uploadFile(filePath, request);
     ```
-    - To upload multiple files or to pass additional data, call the `multipartUpload()` method. All parameter values must be strings:
+    - To initiate a `multipart/form-data` upload request or to pass additional data, call the `multipartUpload()` method. All parameter values must be strings:
 
     ```js
     var params = [
@@ -62,14 +63,16 @@ init();
     var task = session.multipartUpload(params, request);
     ```
 
-For a successful upload, the following must be taken into account:
+For a successful upload, you should ensure the following are met:
 
-- the file must be accessible from your app. This may require additional permissions (e.g. access documents and files on the device). 
-- the URL must not be blocked by the OS. Android Pie or later devices require TLS (HTTPS) connection by default and will not upload to an insecure (HTTP) URL.
+- The file must be accessible from your app. This may require additional permissions (e.g. access documents and files on the device). 
+- The URL must not be blocked by the OS. Android Pie or later devices require TLS (HTTPS) connection by default and will not upload to an insecure (HTTP) URL.
 
 ### Handle upload events
 
-After the upload task is created you can monitor its progress using the following events:
+Both `uploadFile()` and `multipartUpload()` initiate and return a [Task](#task-object) instance.
+
+After the upload task is initiated, you can monitor its progress using the following events:
 
 ```JavaScript
 task.on("progress", progressHandler);
@@ -79,10 +82,11 @@ task.on("complete", completeHandler);
 task.on("cancelled", cancelledHandler); // Android only
 ```
 
-Each event handler will receive a single parameter with event arguments:
+Each event handler receives a single parameter containing the event data.
 
 ```ts
 function progressHandler(e: ProgressEventData) {
+
     alert("uploaded " + e.currentBytes + " / " + e.totalBytes);
 }
 
@@ -120,6 +124,7 @@ function cancelledHandler(e: EventData) {
     alert("upload cancelled");
 }
 ```
+
 ## API
 
 ### init()
@@ -134,19 +139,30 @@ Initializes an HTTP background service.
 ### session()
 ```ts
 import { session } from '@nativescript/background-http';
-session: Session = session(id: string)
+
+session: Session = session(id)
 ```
 Gets or creates a background download/upload session by id.
 
 ---
-#### Session Object
-The Session object has the following members:
-- `uploadFile(fileUri: string, options: Request): Task`
-- `multipartUpload(params: Array<any>, options: Request): Task`
+### uploadFile()
 
-Both methods initiate a new background file(s) upload task. `uploadFile()` is for a single file upload and `multipartUpload()` is for multiple files upload. `fileUri` is the path of the file to upload. The `options` parameter represents the [Request object](#upload-request-object).
+```ts
+session.uploadFile(filePath)
+```
 
-### Upload Request Object
+A `session` instance method that initiates a background upload [task](#task-object) `application/x-www-form-urlencoded` data.
+
+---
+### multipartUpload()
+```ts
+session.multipartUpload()
+```
+
+A `session` instance method that initiates a background upload [task](#task-object) for `multipart/form-data`.
+ `fileUri` is the path of the file to upload. The `options` parameter represents the [Request object](#upload-request-object).
+
+### Upload request object
 
 The request object parameter has the following properties:
 
@@ -181,7 +197,7 @@ Replaced with the elapsed time `[upload_elapsed_time]`
 
 ### Task object
 
-The task object has the following properties and methods, that can be used to get information about the upload:
+The task object has the following properties and methods.
 
 | Name        | Type     | Description                                                                     |
 | ----------- | -------- | ------------------------------------------------------------------------------- |
@@ -190,9 +206,13 @@ The task object has the following properties and methods, that can be used to ge
 | `status `     | `string` | One of the following: `error`, `uploading`, `complete`, `pending`, `cancelled`. |
 | `description` | `string` | The description set in the request used to create the upload task.              |
 | `cancel()`    | `void`   | Call this method to cancel an upload in progress.                               |
-| `on()` |`void`| The method used to add task events handlers. |
+| `on()` |`void`| The method used to add [Task events](#task-events) handlers.  |
 
-### EventData
+### Task events
+
+The following are the background task events:
+
+- EventData
 |Name | Type | Description|
 |-----|------|------------|
 | `eventName` | `string` | Event name. For example, `progress`. |
@@ -200,26 +220,26 @@ The task object has the following properties and methods, that can be used to ge
 
 All the task events extend the EventData interface.
 
-### ProgressEventData
+- ProgressEventData
 |Name | Type | Description|
 |-----|------|------------|
 |`currentBytes`| `number`| The bytes transfered so far.|
 |`totalBytes`| `number`| The expected bytes to transfer.|
 
-### ResultEventData
+- ResultEventData
 |Name | Type | Description|
 |-----|------|------------|
 |`data`| `string`| The string response from the server.|
 | `responseCode` | `number` | HTTP response code if response object is present. `-1` otherwise. |
 
-### CompleteEventData
+- CompleteEventData
 
 |Name | Type | Description|
 |-----|------|------------|
 | `responseCode` | `number` | HTTP response code if response object is present. `-1` otherwise. |
 | `response`| `net.gotev.uploadservice.ServerResponse` (Android)   \| `NSHTTPURLResponse`(iOS)| The response from server. |
 
-### ErrorEventData
+- ErrorEventData
 
 |Name | Type | Description|
 |-----|------|------------|
