@@ -1,6 +1,20 @@
 # @nativescript/background-http
 
-A plugin that allows you to make background HTTP calls.
+A plugin that allows you to make background HTTP uploads.
+## Contents
+* [Installation](#installation)
+* [Use @nativescript/background-http](#use-nativescriptbackground-http)
+    * [Handle upload task events](#handle-upload-task-events)
+* [API](#api)
+    * [init()](#init)
+    * [session()](#session)
+        * [uploadFile()](#uploadfile)
+        * [multipartUpload()](#multipartupload)
+    * [Upload request object](#upload-request-object) 
+    * [Task object](#task-object)
+        * [Task events](#task-events)
+* [Test the plugin locally](#test-the-plugin-locally)
+* [License](#license)
 
 ## Installation
 
@@ -68,11 +82,13 @@ For a successful upload, you should ensure the following are met:
 - The file must be accessible from your app. This may require additional permissions (e.g. access documents and files on the device). 
 - The URL must not be blocked by the OS. Android Pie or later devices require TLS (HTTPS) connection by default and will not upload to an insecure (HTTP) URL.
 
-### Handle upload events
+### Handle upload task events
 
 Both `uploadFile()` and `multipartUpload()` initiate and return a [Task](#task-object) instance.
 
-After the upload task is initiated, you can monitor its progress using the following events:
+After the upload task is initiated, you can monitor its progress using the following events.
+
+For more information about the events objects, see [Task events](#task-events).
 
 ```JavaScript
 task.on("progress", progressHandler);
@@ -148,10 +164,15 @@ Gets or creates a background download/upload session by id.
 ### uploadFile()
 
 ```ts
-session.uploadFile(filePath)
+session.uploadFile(filePath,requestOptions)
 ```
 
-A `session` instance method that initiates a background upload [task](#task-object) `application/x-www-form-urlencoded` data.
+A method of the `session` object that initiates a background [task](#task-object) to upload the specified file encoded as `application/x-www-form-urlencoded`.
+
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `filePath` | `string` | The path of the file to upload.
+| `request`| [Request](#upload-request-object) | Provides the metadata for background request.
 
 ---
 ### multipartUpload()
@@ -159,8 +180,7 @@ A `session` instance method that initiates a background upload [task](#task-obje
 session.multipartUpload()
 ```
 
-A `session` instance method that initiates a background upload [task](#task-object) for `multipart/form-data`.
- `fileUri` is the path of the file to upload. The `options` parameter represents the [Request object](#upload-request-object).
+A method of the `session` object that initiates a background [task](#task-object) to upload the specified file encoded as `multipart/form-data`.
 
 ### Upload request object
 
@@ -172,28 +192,22 @@ The request object parameter has the following properties:
 | `method`                                | `string`  | The request method (e.g. `POST`).                                                                                                                                                               |
 | `headers`                               | `object`  | Used to specify additional headers.                                                                                                                                                             |
 | `description`                           | `string`  | Used to help identify the upload task locally - not sent to the remote server.                                                                                                                  |
-| `utf8`                                  | `boolean` | (Android only/multipart only) If true, sets the charset for the multipart request to UTF-8. Default is false.                                                                                   |
+| `utf8`                                  | `boolean` | (`Android-only`, `multipartUpload()-only`) If true, sets the charset for the multipart request to UTF-8. Default is `false`.                                                                                   |
 | `androidNotificationOnProgressTitle`    | `string`  | Use this to set the on progress title shown in the Android notifications center.                                                                                                                |
 | `androidNotificationOnProgressMessage`  | `string`  | Use this to set the on progress message shown in the Android notifications center.                                                                                                              |
 | `androidNotificationOnCompleteTitle`    | `string`  | Use this to set the on complete message shown in the Android notifications center.                                                                                                              |
-| `androidNotificationOnCompleteMessage ` | `string`  | Use this to set the on error title shown in the Android notifications center.                                                                                                                   |
+| `androidNotificationOnCompleteMessage ` | `string`  | Use this to set the on complete message shown in the Android notifications center.                                                                  |
 | `androidNotificationOnErrorTitle `      | `string`  | Use this to set the on error title shown in the Android notifications center.                                                                                                                   |
 | `androidNotificationOnErrorMessage`     | `string`  | Use this to set the on error message shown in the Android notifications center.                                                                                                                 |
 | `androidNotificationOnCancelledTitle`   | `string`  | Use this to set the on cancelled title shown in the Android notifications center.                                                                                                               |
 | `androidNotificationOnCancelledMessage` | `string`  | Use this to set the on cancelled message shown in the Android notifications center.                                                                                                             |
-| `androidAutoDeleteAfterUpload`          | `boolean` | (Android only) Used to set if files should be deleted automatically after upload.                                                                                                               |
-| `androidMaxRetries`                     | `number`  | (Android only) Used to set the maximum retry count. The default retry count is 0. https://github.com/gotev/android-upload-service/wiki/Recipes#backoff                                          |
-| `androidAutoClearNotification`          | `boolean` | (Android only) Used to set if notifications should be cleared automatically upon upload completion. Default is false. Please note that setting this to true will also disable the ringtones.    |
-| `androidRingToneEnabled `               | `boolean` | (Android only) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true. |
-| `androidNotificationChannelID`          | `string`  | (Android only) Used to set the channel ID for the notifications.                                                                                                                                |
+| `androidAutoDeleteAfterUpload`          | `boolean` | (`Android-only`) Used to set if files should be deleted automatically after upload.                                                                                                               |
+| `androidMaxRetries`                     | `number`  | (`Android-only`) Used to set the maximum retry count. The default retry count is 0. https://github.com/gotev/android-upload-service/wiki/Recipes#backoff                                          |
+| `androidAutoClearNotification`          | `boolean` | (`Android-only`) Used to set if notifications should be cleared automatically upon upload completion. Default is false. Please note that setting this to true will also disable the ringtones.    |
+| `androidRingToneEnabled `               | `boolean` | (`Android-only`) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true. |
+| `androidNotificationChannelID`          | `string`  | (`Android-only`) Used to set the channel ID for the notifications.                                                                                                                                |
 
-**Note**:- Android Notification titles/messages can be constructed with one of the following placeholders which will be replaced by the system.
-
-Replaced with the current upload rate/speed `[upload_rate]`
-
-Replaced with the current upload progress `[upload_progress]`
-
-Replaced with the elapsed time `[upload_elapsed_time]`
+> **Note**:- The Android Notification titles/messages above can be constructed with one of the following placeholders which will be replaced by the system:<ul><li>`[upload_rate]`: replaced with the current upload rate/speed</li><li>`[upload_progress]`: replaced with the current upload progress</li><li>`[upload_elapsed_time]`: replaced with the elapsed time</li> <br> 
 
 ### Task object
 
@@ -210,36 +224,39 @@ The task object has the following properties and methods.
 
 ### Task events
 
-The following are the background task events:
+The following are events emitted for different progress states of a background task:
 
-- EventData
+- **EventData**
+
 |Name | Type | Description|
 |-----|------|------------|
 | `eventName` | `string` | Event name. For example, `progress`. |
 | `object` | `Task` | The task that triggered the event. |
 
-All the task events extend the EventData interface.
+All the following task events extend the preceding EventData interface.
 
-- ProgressEventData
+- **ProgressEventData**
+
 |Name | Type | Description|
 |-----|------|------------|
 |`currentBytes`| `number`| The bytes transfered so far.|
 |`totalBytes`| `number`| The expected bytes to transfer.|
 
-- ResultEventData
+- **ResultEventData**
+
 |Name | Type | Description|
 |-----|------|------------|
 |`data`| `string`| The string response from the server.|
 | `responseCode` | `number` | HTTP response code if response object is present. `-1` otherwise. |
 
-- CompleteEventData
+- **CompleteEventData**
 
 |Name | Type | Description|
 |-----|------|------------|
 | `responseCode` | `number` | HTTP response code if response object is present. `-1` otherwise. |
 | `response`| `net.gotev.uploadservice.ServerResponse` (Android)   \| `NSHTTPURLResponse`(iOS)| The response from server. |
 
-- ErrorEventData
+- **ErrorEventData**
 
 |Name | Type | Description|
 |-----|------|------------|
@@ -247,9 +264,9 @@ All the task events extend the EventData interface.
 | `responseCode` | `number` | HTTP response code if response object is present. `-1` otherwise. |
 | `response`| `net.gotev.uploadservice.ServerResponse` (Android)   \| `NSHTTPURLResponse`(iOS)| The response from server. |
 
-## Testing the plugin
+## Test the plugin locally
 
-To test the plugin, you must have a server instance to accept the uploads. There are online services that can be used for small file uploads - e.g. `http://httpbin.org/post` However, these cannot be used for large files. The plugin repository comes with a simple server you can run locally. Here is how to start it:
+To test the plugin , you must have a server instance to accept the uploads. There are online services that can be used for small file uploads - e.g. `http://httpbin.org/post` However, these cannot be used for large files. The plugin repository comes with a simple server you can run locally. Here is how to start it:
 
 ```cli
 cd demo-server
