@@ -1,61 +1,59 @@
 # @nativescript/biometrics
 
+A plugin that allows you to authenticate users with biometrics, such as fingerprints, facial recognition, etc. 
+
+> **Note**
+This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
+
 ## Installation
 
 ```cli
 npm install @nativescript/biometrics
 ```
-> **Note**
-This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 
+## Use @nativescript/biometrics
 
-## Usage
+### Check if the device supports biometrics authentification
 
-### Importing
-To use the plugin, you should first import it.
+To check if the device supports biometrics authentication, call the `available()` method on a `BiometricAuth` instance.
+
 ```ts
 import { BiometricAuth, BiometricIDAvailableResult } from "@nativescript/biometrics";
 
-```
-### Checking for support
-
-To check if the device supports biometrics authentication, call the `available()` method.
-
-```js
 var biometricAuth = new BiometricAuth();
 
-biometricAuth.available().then(function (avail) {
-	console.log('Available? ' + avail);
+biometricAuth.available().then((result: BiometricIDAvailableResult) => {
+console.log(`Biometric ID available? ${result.any}`);
+console.log(`Touch? ${result.touch}`);
+console.log(`Face? ${result.face}`);
+console.log(`Biometrics? ${result.biometrics}`);
+
 });
-```
-```typescript
-class MyClass {
-  private biometricAuth: BiometricAuth;
 
-  constructor() {
-    this.biometricAuth = new BiometricAuth();
-	
-	this.biometricAuth.available().then((result: BiometricIDAvailableResult) => {
-    console.log(`Biometric ID available? ${result.any}`);
-    console.log(`Touch? ${result.touch}`);
-    console.log(`Face? ${result.face}`);
-	console.log(`Biometrics? ${result.biometrics}`);
-  });
-  }
-
-  
-}
 ```
-> **Note: Android** 
-It's only supported on `API 23+`. <br> <br>In some devices, face recognition isn't considered secure enough by the system to be used as biometric authentication,therefore it cannot be used for biometric authentication. This is decided by the device itself.
-This is the case in many Samsung devices. For example, Samsung Galaxy S10 has both fingerprint scanner and face recognition but only fingerprints are accepted as biometric authentication. <br> <br>So what happens is: <br>- If the device has Face Recognition enabled and face scan saved,calling `available()` returns `{ any: true, biometrics: false }`. You might expect the device to show Face Recognition when you call `verifyBiometric()` but Samsung does not consider Face Recognition secure on this device so you'll never be prompted. <br>- If you enroll a fingerprint in the Touch Recognition and call the `verifyBiometric()` method, the user will be prompted for the fingerprint scan.
+#### Biometrics authentification support on Android
+
+- It's only supported on `API 23+`. 
+- In some devices, the OS does not consider face recognition secure enough and as a result, your app cannot use it for biometric authentication. 
+This is the case with many Samsung devices. For example, Samsung Galaxy S10 ha Consequently, if the device has Face Recognition enabled and face scan saved, `available()` returns `{ any: true, biometrics: false }`. 
+
+#### Face ID authentification support on iOS
+
+- It is only supported in iOS 11+.
+
+- To allow Face ID support in your app, provide the reason of supporting it as the value of the `NSFaceIDUsageDescription` key in the `app/App_Resources/ios/Info.plist` file:
+
+```xml
+<key>NSFaceIDUsageDescription</key>
+<string>For easy authentication with our app.</string>
+```
+- On a simulator, to enroll a face and test Face ID authentification, use the `Features->Face ID` menu items.
 
 ### Verifying a user's biometric
 
 To verify a user's biometric, call the `verifyBiometric()` method.
 
 > **Note: iOS** 
-Use `Features->Face ID` menu items to enroll a face and signal a successs/failure to recognize a face.
 `verifyBiometric()` will fail on IOS simulator unless the `pinfallBack` option is used.
 
 ```typescript
@@ -74,20 +72,11 @@ biometricAuth
 	.catch((err) => console.log(`Biometric ID NOT OK: ${JSON.stringify(err)}`));
 ```
 
-### Requirements for Face ID Auth (iOS)
+### Detect change in enrolled fingerprints (iOS)
 
-Support for Face ID was added in iOS 11+. To allow Face ID support in your app, you need to state the reason for it by adding the value for the `NSFaceIDUsageDescription` key to the `app/App_Resources/ios/Info.plist` file:
-
-```xml
-<key>NSFaceIDUsageDescription</key>
-<string>For easy authentication with our app.</string>
-```
-
-### Detecting change in enrolled fingerprints (iOS)
-
-Since iOS 9 you can check if there is a change in enrolled fingerprints since
-the last time you checked it. It's recommended you add this check so you can counter hacker attacks
-to your app. See [this article](https://www.linkedin.com/pulse/fingerprint-trojan-per-thorsheim/) for more details.
+For iOS 9+ you can check if there is a change in enrolled fingerprints since
+the last time you checked it. It's recommended you add this check to counter hacker attacks
+on your app. For more details, see [this article](https://www.linkedin.com/pulse/fingerprint-trojan-per-thorsheim/).
 
 To check if there is a change in enrolled fingerprints, call the `didBiometricDatabaseChange()` method. If it returns `true`, you probably want to re-authenticate your user
 before accepting valid fingerprints again.
@@ -111,9 +100,9 @@ biometricAuth.available().then((avail) => {
 
 ### Normal operation
 
-If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometric()` method, then the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea being that the key will not be accessible unless the user has successfully authenticated.
+If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometric()` method, the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea is that the key will not be accessible unless the user has successfully authenticated.
 
-This ,however, is not foolproof and the most secure method is to pass the `secret` and `keyName`options to encrypt/decrypt text.
+This, however, is not foolproof and the most secure method is to pass the `secret` and `keyName`options to encrypt/decrypt text.
 
 ### Encrypting/Decrypting with Authentication
 
@@ -167,7 +156,7 @@ biometricAuth
 
 ### Fallback to Pin
 
-To allow the user to fallback on lock screen credentials, set `pinFallback` to `true`. This also disables cryptography.
+To allow the user authentification to fallback on lock screen credentials, set `pinFallback` to `true`. This also disables cryptography.
 
 ```typescript
 biometricAuth
