@@ -5,6 +5,21 @@ A plugin that allows you to authenticate users with biometrics, such as fingerpr
 > **Note**
 This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 
+## Contents
+* [Installation](#installation)
+* [Use @nativescript/biometrics](#use-nativescriptbiometrics)
+	* [Check if the device supports biometrics authentification](#check-if-the-device-supports-biometrics-authentification)
+	* [Biometrics authentification support on Android](#biometrics-authentification-support-on-android)
+	* [Face ID authentification support on iOS](#face-id-authentification-support-on-ios)
+	* [Verify user biometrics](#verify-user-biometrics)
+* [API](#api)
+	* [BiometricAuth class](#biometricauth-class)
+	* [BiometricIDAvailableResult interface](#biometricidavailableresult-interface)
+	* [IOSOptions interface](#iosoptions-interface)
+	* [Android interface](#androidoptions-interface)
+	* [BiometricResult interface](#biometricresult-interface)
+	* [ERROR_CODES Enum](#error_codes-enum)
+* [License](#license)
 ## Installation
 
 ```cli
@@ -49,9 +64,9 @@ This is the case with many Samsung devices. For example, Samsung Galaxy S10 ha C
 ```
 - On a simulator, to enroll a face and test Face ID authentification, use the `Features->Face ID` menu items.
 
-### Verifying a user's biometric
+### Verify user biometrics
 
-To verify a user's biometric, call the `verifyBiometric()` method.
+To verify user biometrics, call the `verifyBiometric()` method and pass it a [VerifyBiometricOptions](#verifybiometricoptions) object.
 
 > **Note: iOS** 
 `verifyBiometric()` will fail on IOS simulator unless the `pinfallBack` option is used.
@@ -74,11 +89,11 @@ biometricAuth
 
 ### Detect change in enrolled fingerprints (iOS)
 
-For iOS 9+ you can check if there is a change in enrolled fingerprints since
+For iOS 9+ you can check if enrolled fingerprints have changed since
 the last time you checked it. It's recommended you add this check to counter hacker attacks
 on your app. For more details, see [this article](https://www.linkedin.com/pulse/fingerprint-trojan-per-thorsheim/).
 
-To check if there is a change in enrolled fingerprints, call the `didBiometricDatabaseChange()` method. If it returns `true`, you probably want to re-authenticate your user
+To check if enrolled fingerprints have changed, call the `didBiometricDatabaseChange()` method. If it returns `true`, you probably want to re-authenticate your user
 before accepting valid fingerprints again.
 
 ```typescript
@@ -98,19 +113,22 @@ biometricAuth.available().then((avail) => {
 
 ## Biometrics and cryptography
 
-### Normal operation
+To combine biometrics authentification with cryptography, for more secure data protection, set the `secret` and `keyName` options when you call `verifyBiometric()`.
 
-If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometric()` method, the plugin will create a secure key, call the authorization methods to trigger face/fingerprint and then attempt to use the key to encrypt some text. The idea is that the key will not be accessible unless the user has successfully authenticated.
+If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometric()` method, the plugin will automatically:
+1. create a secure key
+2. prompts the user to authenticate for a face/fingerprint
+3. attempts to use the key to encrypt some text. 
 
-This, however, is not foolproof and the most secure method is to pass the `secret` and `keyName`options to encrypt/decrypt text.
+That automatic key generation, however, is not foolproof.
 
-### Encrypting/Decrypting with Authentication
+### Encrypting/Decrypting with biometrics authentication
 
 The best practice is to use the options to encrypt some secret that is validated independently.
 
 #### Encrypting your secret
 
-To encrypt a secret key name, pass the `secret` and `keyName`options to the `verifyBiometric()` method. 
+To encrypt some sensitive string, pass the `secret` and `keyName`options to the `verifyBiometric()` method. Set the sensitive string as the `secret` property's value and the name of the key to access that secret as the value of the `keyName` property.
 
 ```typescript
 biometricAuth
@@ -130,7 +148,7 @@ biometricAuth
     	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
 ```
 
-For Android the encrypted result and vector would then be stored in your app and used the next time when signing in the user by calling `verifyBiometric()` again:
+For Android, the encrypted and initialization vector is then stored in your app and used each time when signing in the user with `verifyBiometric()`:
 
 ####  Decrypting your secret
 
@@ -154,9 +172,9 @@ biometricAuth
     	.catch((err) => this.set('status', `Biometric ID NOT OK: " + ${JSON.stringify(err)}`));
 ```
 
-### Fallback to Pin
+#### Fallback to Pin
 
-To allow the user authentification to fallback on lock screen credentials, set `pinFallback` to `true`. This also disables cryptography.
+To allow biometrics authentification to fallback on lock screen credentials, set `pinFallback` to `true`. This also disables cryptography.
 
 ```typescript
 biometricAuth
@@ -176,15 +194,16 @@ biometricAuth
 ## API
 
 ### BiometricAuth Class
+
 | Name | Return Type | Description|
 |-----|-------|-----------|
 |`available()`|`Promise<BiometricIDAvailableResult>`| Checks if biometric authentification is supported on the device. See [BiometricIDAvailableResult](#biometricidavailableresult) for more details.|
 | `didBiometricDatabaseChange(options?: VerifyBiometricOptions)`|`Promise<boolean>` | Checks if there is a change in a biometric of the user.|
 | `verifyBiometric(options: VerifyBiometricOptions)`|`Promise<BiometricResult>`| Verifies the biometrics auth using the specified [VerifyBiometricOptions](#verifybiometricoptions) object. |
-| `close()` | `void`| Closes Face/Fingerprint prompt. Will not do anything on Android if `pinFallBack` is `true`.|
+| `close()` | `void`| Closes Face/Fingerprint prompt. If `pinFallBack` is `true`, `close()` does not have effect on Android.|
 | `deleteKey(keyName?: string)`|`void`| Deletes the specified key. |
 
-### BiometricIDAvailableResult
+### BiometricIDAvailableResult interface
 | Name | Type| Description|
 |------|-----|------------|
 | `any`| `boolean`| `true` if no biometric authentification is available on android but device has pin/pattern/password set.|
@@ -192,7 +211,7 @@ biometricAuth
 | `face`| `boolean`| _Optional_: `iOS only`|
 | `biometrics` | `boolean` | _Optional_: (`Android only`) indicates if Face/Fingerprint is available.|
 
-### VerifyBiometricOptions
+### VerifyBiometricOptions interface
 | Name | Type| Description|
 |------|-----|------------|
 | `title`| `string`| _Optional_: (`Android only`)The title for the the fingerprint screen. Defaults to whatever the device default is.|
@@ -205,13 +224,13 @@ biometricAuth
 | `android` | [AndroidOptions](#androidoptions) | _Optional_: Android-specific options. |
 | `ios`| [IOSOptions](#iosoptions) | _Optional_: iOS-specific options. |
 
-### IOSOptions
+### IOSOptions interface
 | Name | Type| Description|
 |------|-----|------------|
 | `customFallback` | `boolean` | _Optional_: Indicates whether to allow a custom fallback from biometrics.|
 | `fetchSecret` | `boolean` | _Optional_: Indicates whether to attempt to fetch secret from the specified key.|
 
-### AndroidOptions
+### AndroidOptions interface
 | Name | Type| Description|
 |------|-----|------------|
 | `decryptText` | `string`|  If set and `pinFallback` is `true`, and `keyName` is set then this string will be decrypted via the Biometric controlled Key. |
@@ -219,7 +238,7 @@ biometricAuth
 | `iv`| `string` | _Optional_: Retrieved from the result of an encryption. |
 | `validityDuration` | `number` | _Optional_: The period, in seconds, for which operations on the key are valid without triggering a biometric prompt.|
 
-### BiometricResult
+### BiometricResult interface
 | Name | Type| Description|
 |------|-----|------------|
 |`code`| [ERROR_CODES](#error_codes-enum) |
