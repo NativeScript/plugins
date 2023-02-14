@@ -9,25 +9,34 @@
 > * If an app was run in an emulator 👽
 > * Common reverse engineering tools running on the device 🔭
 
-```javascript
+## Contents
+1. [Installation](#installation)
+2. [Prerequisites](#prerequisites)
+    * [Specifying the URLs to be queried](#specifying-the-urls-to-be-queried)
+3. [Usage](#usage)
+    * [Importing the plugin](#importing-the-plugin)
+    * [Jailbreaking Detection](#jailbreaking-detection)
+    * [Debugger detection](#debugger-detection)
+    * [Preventing Debugger Attachment](#preventing-debugger-attachment)
+    * [Emulator detection](#emulator-detection)
+    * [Detecting reverse engineering tools](#detecting-reverse-engineering-tools)
+    * [System proxy detection](#system-proxy-detection)
+    * [Runtime Hooks Detection](#runtime-hooks-detection)
+    * [App tampering detection](#app-tampering-detection)
+4. [License](#license)
+
+## Installation
+```cli
 npm install @nativescript/ios-security
 ```
 
-## Usage
+## Prerequisites
 
-*TypeScript*
-``` 
-import { IOSSecurity } from "@nativescript/ios-security";
-```
+### Specifying the URLs to be queried
 
-*Javascript*
-``` 
-var IOSSecurity = require("@nativescript/ios-security").IOSSecurity;
-```
+In the jailbreak detection module, there is a check that uses the [canOpenURL(_:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) method and it requires specifying the URLs that will be queried.
 
-### Update Info.plist
-
-After adding ios-security to your project, you will also need to update your Info.plist. There is a check in jailbreak detection module that uses ```canOpenURL(_:)``` method and [requires](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) specifying URLs that will be queried.
+Specify those URLs in the `App_Resources/iOS/Info.plist` file as follows:
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>
@@ -41,42 +50,77 @@ After adding ios-security to your project, you will also need to update your Inf
 </array>
 ```
 
-### Jailbreak detector module
+## Usage
+### Importing the plugin
 
-* **The simplest method** returns true/false if you just want to know if the device is jailbroken or jailed
-
-*Javascript*
+```ts 
+import { IOSSecurity } from "@nativescript/ios-security";
 ```
-if (IOSSecurity.amIJailbroken()) {
+```js 
+var IOSSecurity = require("@nativescript/ios-security").IOSSecurity;
+```
+
+### Jailbreaking Detection
+
+For a simple check of whether the device is jailbroken, use the `amIJailbroken()` method.
+
+```ts
+const isJailBroken: boolean =  IOSSecurity.amIJailbroken()
+if (isJailBroken) {
 	console.log("This device is jailbroken");
 } else {
 	console.log("This device is not jailbroken");
 }
 ```
+---
+### Debugger detection
+To detect if a debugger is attached to the app, use the `amIDebugged()` method.
 
-### Debugger detector module
+```ts
+const amIDebugged: boolean = IOSSecurity.amIDebugged();
 ```
-const amIDebugged = IOSSecurity.amIDebugged();
-```
+---
+### Preventing Debugger Attachment
+To prevent the debugger from being attached to the app, call the `denyDebugger()` method.
 
-### Deny debugger at all
-```
+```ts
 IOSSecurity.denyDebugger();
 ```
+---
+### Emulator detection
+To detect if the app is being run on an emulator, call the `amIRunInEmulator()` method.
 
-### Emulator detector module
+```ts
+const runInEmulator: boolean = IOSSecurity.amIRunInEmulator();
 ```
-const runInEmulator = IOSSecurity.amIRunInEmulator();
+---
+### Detecting reverse engineering tools
+To detect if a common reverse engineering tool is being used on the app, call the `amIReverseEngineered()` method.
+```ts
+const amIReverseEngineered: boolean = IOSSecurity.amIReverseEngineered();
+```
+---
+### System proxy detection
+To detect if the user is using a proxy, call the `amIProxied()` method.
+
+```ts
+const amIProxied: boolean = IOSSecurity.amIProxied();
+```
+---
+### Runtime Hooks Detection
+
+To detect if a hook is placed in the application's code , call the `amIRuntimeHookedWithDyldWhiteListDetectionClassSelectorIsClassMethod()` method.
+
+```ts
+let amIRuntimeHooked: boolean = IOSSecurity.amIRuntimeHookedWithDyldWhiteListDetectionClassSelectorIsClassMethod(dyldWhiteList: NSArray<string> | string[], detectionClass: typeof NSObject, selector: string, isClassMethod: boolean)
 ```
 
-### Reverse engineering tools detector module
-```
-const amIReverseEngineered = IOSSecurity.amIReverseEngineered();
-```
+---
+### App tampering detection
+To detect if an app has been tampered with, call the `amITampered()` method.
 
-### System proxy detector module
-```
-const amIProxied = IOSSecurity.amIProxied();
+```ts
+let amITampered: NSArray<any> =  IOSSecurity.amITampered(checks: NSArray<any> | any[])
 ```
 
 ## License

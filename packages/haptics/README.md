@@ -3,103 +3,122 @@
 > Playing haptics can engage people's sense of touch and bring their familiarity with the physical world into your app or game.
 ~ Developer docs
 
-For iOS and Android development.
 
-Thank you to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-taptic-engine](https://github.com/EddyVerbruggen/nativescript-taptic-engine) as this continues it's evolution by streamlining the API and adding Android support, inspired by [react-native-haptic-feedback](https://github.com/junina-de/react-native-haptic-feedback).
+Thanks to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-taptic-engine](https://github.com/EddyVerbruggen/nativescript-taptic-engine) as this continues its evolution by streamlining the API and adding Android support, inspired by [react-native-haptic-feedback](https://github.com/junina-de/react-native-haptic-feedback).
 
-## Usage
+## Table of Contents
+  * [Installation](#installation)
+  * [API](#api)
+    * [isSupported()](#issupported)
+    * [is6SAnd6SPlusSupported()](#is6sand6splussupported)
+    * [selection()](#selection)
+    * [notifcation()](#notification)
+    * [impact()](#impact)
+    * [HapticsFallback](#hapticsfallback)
+      * [weakBoom()](#weakboom)
+      * [strongBoom()](#strongboom)
+      * [burst()](#burst)
 
-```javascript
+
+## Installation
+
+```cli
 npm install @nativescript/haptics
 ```
 
 ## API
 
-### `selection`
-Use selection feedback generators to indicate a change in selection.
+### isSupported()
+```ts
+isHapticsSupported: boolean = Haptics.isSupported()
+```
+Checks if Haptics is supported.
 
-##### TypeScript
+---
+### is6SAnd6SPlusSupported()
+```ts
+isHapticsSupported: boolean = Haptics.is6SAnd6SPlusSupported()
+```
 
-```js
+Checks if Haptics is supported on iOS.
+
+---
+### selection()
+
+```ts
 import { Haptics } from "@nativescript/haptics";
 
 Haptics.selection();
 ```
 
-##### JavaScript
-```js
-const Haptics = require("@nativescript/haptics").Haptics;
+### notification()
 
-Haptics.selection();
-```
-
-### `notification`
-Use notification feedback generators to indicate successes, failures, and warnings.
-
-There are 3 notification types: `HapticNotificationType.SUCCESS` (default), `.WARNING`, and `.ERROR`.
-
-##### TypeScript
-```js
+```ts
 import { Haptics, HapticNotificationType } from "@nativescript/haptics";
 
 Haptics.notification(HapticNotificationType.ERROR);
 ```
 
-### `impact`
-Use impact feedback generators to indicate that an impact has occurred.
-For example, you might trigger impact feedback when a user interface object
-collides with something or snaps into place.
+Use notification feedback generators to indicate success, failure, and warning.
 
-There are 3 impact styles: `HapticImpactType.LIGHT`, `.MEDIUM` (default), and `.HEAVY`.
+Other haptic notification types are:
+- `SUCCESS`(default)
+- `WARNING`
 
-##### TypeScript
+### impact()
+
 ```js
 import { Haptics, HapticImpactType } from "@nativescript/haptics";
 
 Haptics.impact(HapticImpactType.HEAVY);
 ```
 
+Use impact feedback generators to indicate that an impact has occurred.
+For example, you might trigger impact feedback when a user interface object
+collides with something or snaps into place.
 
-## HapticsFallback (requires at least iPhone 6s)
+There are 3 impact types: 
+- `LIGHT` 
+- `MEDIUM` (default)
+- `HEAVY`.
 
-With older phones you can use the following conditional to use the fallbacks:
+### HapticsFallback
 
-```
+To use the haptics fallbacks, first check if there is support:
+
+```ts
 if (!Haptics.isSupported() && Haptics.is6SAnd6SPlusSupported()) {
   // use HapticsFallback
 }
 ```
 
-__BEWARE__ This uses an undocumented feature which may get your app rejected when reviewed by Apple.
+__BEWARE__ This uses an undocumented feature that may get your app rejected when reviewed by Apple.
 [People have used this approach __without problems__ though.](http://stackoverflow.com/questions/32526868/taptic-in-ios-9)
 
-### `weakBoom`
+### weakBoom()
 This triggers the same effect as the 'Peek' in 'Peek & Pop', a very brief vibration.
 
-##### TypeScript
-```js
+```ts
 import { HapticsFallback } from "@nativescript/haptics";
 
 HapticsFallback.weakBoom();
 ```
 
-##### JavaScript
-```js
-const HapticsFallback = require("@nativescript/haptics").HapticsFallback;
+### strongBoom()
+```ts
+import { HapticsFallback } from "@nativescript/haptics";
 
-HapticsFallback.weakBoom();
+HapticsFallback.strongBoom();
 ```
-
-### `strongBoom`
 This triggers the 'Pop' effect of 'Peek & Pop', which is a bit more profound than the 'Peek' effect.
 
-Codewise this is exactly the same as `weakBoom`, except for the function name of course.
+### burst()
+```ts
+import { HapticsFallback } from "@nativescript/haptics";
 
-
-### `burst`
-This triggers the 'Nope' effect you get when fi. force touching a home icon which doesn't have any action. It's a short burst of 3-ish 'weak booms'.
-
-Codewise this is exactly the same as `weakBoom` and `strongBoom`, except for the function name of course.
+HapticsFallback.burst();
+```
+This triggers the 'Nope' effect you get when force-touching a home icon that doesn't have any action. It's a short burst of 3-ish 'weak booms'.
 
 ## Changelog
 * 3.0.0  Moved to @nativescript/haptics and added Android support. Adjusted naming conventions.

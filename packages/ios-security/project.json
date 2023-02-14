@@ -1,4 +1,5 @@
 {
+	"name": "ios-security",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"generators": {},
@@ -30,8 +31,8 @@
 			]
 		},
 		"build.all": {
-			"executor": "@nrwl/workspace:run-commands",
-			"outputs": ["dist/packages/ios-security"],
+			"executor": "nx:run-commands",
+			"outputs": ["{workspaceRoot}/dist/packages/ios-security"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts ios-security"],
 				"parallel": false
@@ -52,7 +53,7 @@
 			]
 		},
 		"build.native": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["./build.ios.sh"],
 				"cwd": "packages/ios-security/native-src",
@@ -60,7 +61,7 @@
 			}
 		},
 		"focus": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages ios-security"],
 				"parallel": false

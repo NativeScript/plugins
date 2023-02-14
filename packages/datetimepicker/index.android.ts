@@ -41,10 +41,12 @@ function initializeDialogListener(): void {
 			switch (which) {
 				case android.content.DialogInterface.BUTTON_POSITIVE: {
 					if (nativePicker instanceof android.widget.DatePicker) {
+						nativePicker.clearFocus();
 						dateTime.setFullYear(this.nativePicker.getYear());
 						dateTime.setMonth(this.nativePicker.getMonth());
 						dateTime.setDate(this.nativePicker.getDayOfMonth());
 					} else if (nativePicker instanceof android.widget.TimePicker) {
+						nativePicker.clearFocus();
 						dateTime.setHours(this.nativePicker.getCurrentHour());
 						dateTime.setMinutes(this.nativePicker.getCurrentMinute());
 					}

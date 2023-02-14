@@ -7,98 +7,61 @@
 [npm-url]: https://npmjs.org/package/@nativescript/local-notifications
 [downloads-image]: https://img.shields.io/npm/dm/@nativescript/local-notifications.svg
 
-The Local Notifications plugin allows your app to show notifications when the app is not running.
+A plugin that allows your app to show notifications when the app is not running.
 Just like remote push notifications, but a few orders of magnitude easier to set up.
 
+## Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+	* [Importing](#importing)
+	* [Requesting For Permissions](#requesting-for-permissions)
+	* [Scheduling A Notification](#scheduling-a-notification)
+	* [Getting IDs Of All The Scheduled Notifications](#getting-ids-of-all-the-scheduled-notifications)
+	* [Cancelling A Scheduled Notification](#cancelling-a-scheduled-notification)
+	* [Listening to A Notification Tap Event](#listening-to-a-notification-tap-event)
+* [API](#api)
+	* [schedule()](#schedule)
+		* [ScheduleOptions](#scheduleoptions)
+			* [NotificationAction](#notificationaction)
+	* [addOnMessageReceivedCallback()](#addonmessagereceivedcallback)
+	* [addOnMessageClearedCallback()](#addonmessageclearedcallback)
+	* [getScheduledIds()](#getscheduledids)
+	* [cancel()](#cancel)
+	* [cancelAll()](#cancelall)
+	* [requestPermission()](#requestpermission)
+	* [hasPermission()](#haspermission)
+
 ## Installation
-
-From the command prompt go to your app's root folder and execute:
-
-#### NativeScript 7+:
 
 ```cli
 npm install @nativescript/local-notifications
 ```
 
-#### NativeScript prior to 7:
+## Usage
 
-```cli
-tnpm install nativescript-local-notifications@4.2.1
-```
+If, on iOS 10+, notifications are not being received or the method `addOnMessageReceivedCallback` is not invoked, you can try wiring to the [UNUserNotificationCenterDelegate](https://developer.apple.com/documentation/usernotifications/unusernotificationcenterdelegate?language=objc)
+<!-- TODO: UNUserNotificationCenterDelegate Example -->
+### Importing
 
-## Setup
-### Since plugin version 3.0.0
-
-Add this so for iOS 10+ we can do some wiring (set the iOS `UNUserNotificationCenter.delegate`, to be precise).
-Not needed if your app loads the plugin on startup anyway.
-
-You'll know you need this if on iOS 10+ notifications are not received by your app or `addOnMessageReceivedCallback` is not invoked... better safe than sorry, though!
-
-```typescript
+```ts
 // either
 import { LocalNotifications } from '@nativescript/local-notifications';
 // or (if that doesn't work for you)
 import * as LocalNotifications from '@nativescript/local-notifications';
-
-// then use it as:
-LocalNotifications.hasPermission();
 ```
 
-### Since plugin version 6.0.0
+### Requesting For Permissions
 
-Both iOS and Android have to register their delegates and lifecycle callbacks respectively. Hence, if your app does not load this plugin at startup you will have to add the following to your app's `app.ts`/`main.ts` file:
+Automatically, the [schedule()](#schedule) method prompts the user for the permission. For the manual permission request, use the [requestPermission](#requestpermission) method:
 
 ```typescript
-import '@nativescript/local-notifications';
-
-// ... Bootstrap application
+// then use it as:
+LocalNotifications.requestPermission();
 ```
+### Scheduling A Notification
 
-## Plugin API
-
-### schedule
-
-On iOS you need to ask permission to schedule a notification.
-You can have the `schedule` funtion do that for you automatically (the notification will be scheduled in case the user granted permission), or you can manually invoke `requestPermission` if that's your thing.
-
-You can pass several options to this function, everything is optional:
-
-| option                      | description                                                                                                                                                                                                                                                                                                                                        |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `id`                        | A number so you can easily distinguish your notifications. Will be generated if not set.                                                                                                                                                                                                                                                           |
-| `title`                     | The title which is shown in the statusbar. Default not set.                                                                                                                                                                                                                                                                                        |
-| `subtitle`                  | Shown below the title on iOS, and next to the App name on Android. Default not set. All android and iOS >= 10 only.                                                                                                                                                                                                                                |
-| `body`                      | The text below the title. If not provided, the subtitle or title (in this order or priority) will be swapped for it on iOS, as iOS won't display notifications without a body. Default not set on Android, `' '` on iOS, as otherwise the notification won't show up at all.                                                                       |
-| `color`                     | Custom color for the notification icon and title that will be applied when the notification center is expanded. (**Android Only**)                                                                                                                                                                                                                 |
-| `bigTextStyle`              | Allow more than 1 line of the body text to show in the notification centre. Mutually exclusive with `image`. Default `false`. (**Android Only**)                                                                                                                                                                                                   |
-| `groupedMessages`           | An array of at most 5 messages that would be displayed using android's notification [inboxStyle](https://developer.android.com/reference/android/app/Notification.InboxStyle.html). Note: The array would be trimmed from the top if the messages exceed five. Default not set                                                                     |
-| `groupSummary`              | An [inboxStyle](https://developer.android.com/reference/android/app/Notification.InboxStyle.html) notification summary. Default empty                                                                                                                                                                                                              |
-| `ticker`                    | On Android you can show a different text in the statusbar, instead of the `body`. Default not set, so `body` is used.                                                                                                                                                                                                                              |
-| `at`                        | A JavaScript Date object indicating when the notification should be shown. Default not set (the notification will be shown immediately).                                                                                                                                                                                                           |
-| `badge`                     | On iOS (and some Android devices) you see a number on top of the app icon. On most Android devices you'll see this number in the notification center. Default not set (0).                                                                                                                                                                         |
-| `sound`                     | Notification sound. For custom notification sound, copy the file to `App_Resources/iOS` and `App_Resources/Android/src/main/res/raw`. Set this to "default" (or do not set at all) in order to use default OS sound. Set this to `null` to suppress sound.                                                                                         |
-| `interval`                  | Set to one of `second`, `minute`, `hour`, `day`, `week`, `month`, `year`, number (in days) if you want a recurring notification.                                                                                                                                                                                                                   |
-| `icon`                      | On Android you can set a custom icon in the system tray. Pass in `res://filename` (without the extension) which lives in `App_Resouces/Android/drawable` folders. If not passed, we'll look there for a file named `ic_stat_notify.png`. By default the app icon is used. Android < Lollipop (21) only (see `silhouetteIcon` below).               |
-| `silhouetteIcon`            | Same as `icon`, but for Android >= Lollipop (21). Should be an alpha-only image. Defaults to `res://ic_stat_notify_silhouette`, or the app icon if not present.                                                                                                                                                                                    |
-| `image`                     | _URL_ (`http..`) of the image to use as an expandable notification image. On Android this is mutually exclusive with `bigTextStyle`.                                                                                                                                                                                                               |
-| `thumbnail`                 | Custom thumbnail/icon to show in the notification center (to the right) on Android, this can be either: `true` (if you want to use the `image` as the thumbnail), a resource URL (that lives in the `App_Resouces/Android/drawable` folders, e.g.: `res://filename`), or a http URL from anywhere on the web. (**Android Only**). Default not set. |
-| `ongoing`                   | Default is (`false`). Set whether this is an `ongoing` notification. Ongoing notifications cannot be dismissed by the user, so your application must take care of canceling them. (**Android Only**)                                                                                                                                               |
-| `channel`                   | Default is (`Channel`). Set the channel name for Android API >= 26, which is shown when the user longpresses a notification. (**Android Only**)                                                                                                                                                                                                    |
-| `forceShowWhenInForeground` | Default is `false`. Set to `true` to always show the notification. Note that on iOS < 10 this is ignored (the notification is not shown), and on newer Androids it's currently ignored as well (the notification always shows, per platform default).                                                                                              |
-| `priority`                  | Default is `0`. Will override `forceShowWhenInForeground` if set. This can be set to `2` for Android "heads-up" notifications. See [#114](https://github.com/EddyVerbruggen/nativescript-local-notifications/issues/114) for details.                                                                                                              |
-| `actions`                   | Add an array of `NotificationAction` objects (see below) to add buttons or text input to a notification.                                                                                                                                                                                                                                           |
-| `notificationLed`           | Enable the notification LED light on Android (if supported by the device), this can be either: `true` (if you want to use the default color), or a custom color for the notification LED light (if supported by the device). (**Android Only**). Default not set.                                                                                  |
-
-#### `NotificationAction`
-
-| option        | description                                                                                                            |
-|---------------|------------------------------------------------------------------------------------------------------------------------|
-| `id`          | An id so you can easily distinguish your actions.                                                                      |
-| `type`        | Either `button` or `input`.                                                                                            |
-| `title`       | The label for `type` = `button`.                                                                                       |
-| `launch`      | Launch the app when the action completes. This will only work in apps targeting Android 11 or lower (target SDK < 31). |
-| `submitLabel` | The submit button label for `type` = `input`.                                                                          |
-| `placeholder` | The placeholder text for `type` = `input`.                                                                             |
+To schedule a notificaton, call the [schedule()](#schedule) method and pass it an array of the notification objects with the [ScheduleOptions](#scheduleoptions) properties. 
 
 ```js
 LocalNotifications.schedule([
@@ -130,11 +93,103 @@ LocalNotifications.schedule([
 );
 ```
 
-### Notification icons (Android)
+### Getting IDs Of All The Scheduled Notifications
+
+To get the IDs of all the scheduled notifications, call the [getScheduledIds()](#getscheduledids) method:
+
+```ts
+LocalNotifications.getScheduledIds().then((ids: number[]) => {
+	console.log("ID's: " + ids);
+});
+```
+### Cancelling a Scheduled Notification
+
+To cancel a scheduled notification, use the [cancel()](#cancel) method.
+
+```ts
+LocalNotifications.cancel(5).then((foundAndCanceled: boolean) => {
+	if (foundAndCanceled) {
+		console.log("OK, it's gone!");
+	} else {
+		console.log('No ID 5 was scheduled');
+	}
+});
+```
+
+### Listening to A Notification Tap Event
+
+Tapping a notification in the notification center will launch your app.
+
+Note that on iOS it will even be triggered when your app is in the foreground and a notification is received.
+
+To handle a notification tap, call the [addMessageReceivedCallback()](#addonmessagereceivedcallback) method and pass it a callback function.  The callback receives a notification object of type [ReceivedNotification](#receivednotification).
+
+```js
+LocalNotifications.addOnMessageReceivedCallback((notification) => {
+	console.log('ID: ' + notification.id);
+	console.log('Title: ' + notification.title);
+	console.log('Body: ' + notification.body);
+}).then(() => {
+	console.log('Listener added');
+});
+```
+
+## API
+
+### schedule()
+
+```ts
+scheduledNotificationsIDs: Array<number> = await LocalNotifications.schedule(scheduleOptions)
+```
+
+Schedules the specified [scheduleOptions](#scheduleoptions) notification(s), if the user has granted the permission. If the user has not been prompted for the permission, it prompts and schedule the notifcation(s) if permission is granted. For manual permission request, use the [requestPermission()](#requestpermission) method.
+
+---
+#### ScheduleOptions
+
+| Property                      | Type | Description 
+|:----------|:------------|:------------
+| `id`                        | `number` | _Optional_: A unique notification identifier. Will be generated if not set.                                                                                                                                                                                                                                                           |
+| `title`                     | `string` |  _Optional_: The title that is shown in the statusbar.                                                                                                                                                                                                                   |
+| `subtitle`                  | `string` | _Optional_: Shown below the title on iOS, and next to the App name on Android. Default not set. All android and iOS `>= 10` only.                                                                                                                                                                                                                                |
+| `body`                      | `string` | _Optional_: The text below the title. If not provided, the subtitle or title (in this order or priority) will be swapped for it on iOS, as iOS won't display notifications without a body. Default not set on Android, `' '` on iOS, as otherwise the notification won't launch.                                                                       |
+| `color`                     | `string` | _Optional_: (`Android-only`)Custom color for the notification icon and title that will be applied when the notification center is expanded.                                                                                                                                                                      |
+| `bigTextStyle`              | `boolean` | _Optional_: (`Android-only`)Allow more than 1 line of the body text to show in the notification centre. Mutually exclusive with `image`. Default `false`.                                                                                                                              |
+| `groupedMessages`           | `Array<string>` | _Optional_: An array of at most 5 messages that would be displayed using android's notification [inboxStyle](https://developer.android.com/reference/android/app/Notification.InboxStyle.html). Note: The array would be trimmed from the top if the messages exceed five. Default not set .                                                                    |
+| `groupSummary`              | `string` | _Optional_: An [inboxStyle](https://developer.android.com/reference/android/app/Notification.InboxStyle.html) notification summary. Default empty                                                                                                                                                                                                              |
+| `ticker`                    | `string` | _Optional_: On Android you can show a different text in the statusbar, instead of the `body`. Default not set, so `body` is used.                                                                                                                                                                                                                              |
+| `at`                        | `Date` | _Optional_: A JavaScript Date object indicating when the notification should be shown. Default not set (the notification will be shown immediately).                                                                                                                                                                                                           |
+| `badge`                     |  `boolean` |_Optional_: On iOS (and some Android devices) you see a number on top of the app icon. On most Android devices you'll see this number in the notification center. Default not set (0).                                                                                                                                                                         |
+| `sound`                     |  `string` |_Optional_: Notification sound. For custom notification sound, copy the file to `App_Resources/iOS` and `App_Resources/Android/src/main/res/raw`. Set this to "default" (or do not set at all) in order to use default OS sound. Set this to `null` to suppress sound.                                                                                         |
+| `interval`                  | `ScheduleInterval` | _Optional_: Sets to one of `second`, `minute`, `hour`, `day`, `week`, `month`, `year`, number (in days) if you want a recurring notification.                                                                                                                                                                                                                   |
+| `icon`                      |  `string` |_Optional_: On Android you can set a custom icon in the system tray. Pass in `res://filename` (without the extension) which lives in `App_Resouces/Android/drawable` folders. If not passed, we'll look there for a file named `ic_stat_notify.png`. By default the app icon is used. Android < Lollipop (21) only (see `silhouetteIcon` below). See [icon and silhouetteIcon Options (Android-only)](#icon-and-silhouetteicon-options-android-only) for more details             |
+| `silhouetteIcon`            |  `string` |_Optional_: Same as `icon`, but should be an alpha-only image and will be used in Android >= Lollipop (21). Defaults to `res://ic_stat_notify_silhouette`, or the app icon if not present. See [icon and silhouetteIcon Options (Android-only)](#icon-and-silhouetteicon-options-android-only) for more details                                                                                                                                                                                   |
+| `image`                     | `string` |_Optional_: A url of the image to use as an expandable notification image. On Android this is mutually exclusive with `bigTextStyle`.                                                                                                                                                                                                               |
+| `thumbnail`                 |  `boolean` \| `string` | _Optional_: (`Android-only`)Custom thumbnail/icon to show in the notification center (to the right) on Android, this can be either: `true` (if you want to use the `image` as the thumbnail), a resource URL (that lives in the `App_Resouces/Android/drawable` folders, e.g.: `res://filename`), or a http URL from anywhere on the web. Default not set. |
+| `ongoing`                   | `boolean` |_Optional_: (`Android-only`) Sets whether the notification is `ongoing`. Ongoing notifications cannot be dismissed by the user, so your application must take care of canceling them.                                                                                                                         |
+| `channel`                   | `string` |_Optional_: Sets the channel name for `Android API >= 26`, which is shown when the user longpresses a notification.  Default is `Channel`.                                                                                                                                                                       |
+| `forceShowWhenInForeground` | `boolean` | _Optional_: Indicates whether to always show the notification. On iOS < 10 this is ignored (the notification is not shown), and on newer Androids it's currently ignored as well (the notification always shows, per platform default).                                                                                              |
+| `priority`                  | `number` |_Optional_: Overrides `forceShowWhenInForeground` if set. This can be set to `2` for Android `"heads-up"` notifications. See [#114](https://github.com/EddyVerbruggen/nativescript-local-notifications/issues/114) for details. Default is `0`.                                                                                                             |
+| `actions`                   |  [NotificationAction](#notificationaction) | _Optional_: An array of [NotificationAction](#notificationaction) objects for adding buttons or text input to a notification with which the use can interact.                                                                                                                                                                                                                                         |
+| `notificationLed`           |  `boolean` \| [Color](https://docs.nativescript.org/api-reference/classes/color) |_Optional_: (`Android Only`) Indicates whether to enable the notification LED light on Android (if supported by the device), this can be either: `true` (if you want to use the default color), or a custom color for the notification LED light (if supported by the device).Default not set.                                                                                  |
+
+#### NotificationAction
+
+| Property  | Type | Description 
+|:----------|:------------|:------------
+| `id`          |`string` | An id so you can easily distinguish your actions.                                                                      
+| `type`        | `'button' \| 'input'`| The type of the view.                                                      
+| `title`       |  `string` | _Optional_: The label for `type` = `button`.                                                                                       
+| `launch`      | `boolean` | _Optional_: Launch the app when the action completes. This will only work in apps targeting Android 11 or lower (target SDK < 31). 
+| `submitLabel` |  `string` | _Optional_: The submit button label for `type` = `input`.                                                                          
+| `placeholder` |   `string` |  _Optional_: The placeholder text for `type` = `input`.                                                                             
+| `choices` | `Array<string>` | _Optional_: (`Android-only`) For `type` = `'input'`
+| `editable` | `boolean` | _Optional_: (`Android-only`) For `type` = `'input'`. Defaults to  `true`
+
+### icon and silhouetteIcon Options (Android-only)
 
 These options default to `res://ic_stat_notify` and `res://ic_stat_notify_silhouette` respectively, or the app icon if not present.
 
-`silhouetteIcon` should be an alpha-only image and will be used in Android >= Lollipop (21).
 
 [These are the official icon size guidelines](https://developer.android.com/guide/practices/ui_guidelines/icon_design_status_bar.html),
 and [here's a great guide on how to easily create these icons on Android](https://developer.android.com/studio/write/image-asset-studio).
@@ -150,64 +205,82 @@ and [here's a great guide on how to easily create these icons on Android](https:
 
 **Source:** [Density Qualifier Docs](https://developer.android.com/guide/topics/resources/providing-resources.html#DensityQualifier)
 
-### addOnMessageReceivedCallback
-
-Tapping a notification in the notification center will launch your app.
-But what if you scheduled two notifications and you want to know which one the user tapped?
-
-Use this function to have a callback invoked when a notification was used to launch your app.
-Note that on iOS it will even be triggered when your app is in the foreground and a notification is received.
+### addOnMessageReceivedCallback()
 
 ```js
-LocalNotifications.addOnMessageReceivedCallback((notification) => {
-	console.log('ID: ' + notification.id);
-	console.log('Title: ' + notification.title);
-	console.log('Body: ' + notification.body);
+LocalNotifications.addOnMessageReceivedCallback((notification: ReceivedNotification) => {
+	//Handle the received notification
 }).then(() => {
 	console.log('Listener added');
 });
 ```
+Responds to a notification tap event.
 
-### getScheduledIds
+#### ReceivedNotification
 
-If you want to know the ID's of all notifications which have been scheduled, do this:
+| Property | Type | Description
+|:---------|:-----|:---------
+|`id`|`number`| _Optional_: The notification id.
+| `foreground` | `boolean` | _Optional_: Whether the app was in foreground when the notification was received
+| `title` | `string` | _Optional_: The notification title.
+| `body` | `string` | _Optional_: The notification body.
+| `event` | `string` | _Optional_: Whether the response was through a `button` or an `input`
+| `response` | `string` | _Optional_: The user's response to the notification, either what they input in the text field or the option chosen from the button. 
+| `payload` | `any` | _Optional_: The data sent to the user with the notification
+
+---
+### addOnMessageClearedCallback()
 
 ```js
-LocalNotifications.getScheduledIds().then((ids) => {
+LocalNotifications.addOnMessageClearedCallback((notification: ReceivedNotification) => {
+	//Handle the received notification
+}).then(() => {
+	console.log('Listener added');
+});
+```
+Responds to a notification clear event.
+See [ReceivedNotification](#receivednotification) for more info.
+
+---
+### getScheduledIds()
+
+```js
+LocalNotifications.getScheduledIds().then((ids: number[]) => {
 	console.log("ID's: " + ids);
 });
 ```
 
-### cancel
+Returns the ids of all the scheduled notifications.
 
-If you want to cancel a previously scheduled notification (and you know its ID), you can cancel it:
+---
+### cancel()
 
 ```js
-LocalNotifications.cancel(5 /* the ID */).then((foundAndCanceled) => {
+LocalNotifications.cancel(id).then((foundAndCanceled: boolean) => {
 	if (foundAndCanceled) {
-		console.log("OK, it's gone!");
+		//
 	} else {
-		console.log('No ID 5 was scheduled');
+		//
 	}
 });
 ```
+Cancels the scheduled notification with the specified id.
 
-### cancelAll
+| Parameter | Type | Description
+|:----------|:------|:-----------
+|`id` | `number` | The of the scheduled notification to be cancelled. 
 
-If you just want to cancel all previously scheduled notifications, do this:
+---
+### cancelAll()
 
 ```js
 LocalNotifications.cancelAll();
 ```
 
-### requestPermission
+Cancels all the scheduled notifications.
 
-On Android you don't need permission, but on iOS you do. Android will simply return true.
-
-If the `requestPermission` or `schedule` function previously ran the user has already been prompted to grant permission.
-If the user granted permission this function returns `true`, but if he denied permission this function will return `false`,
-since an iOS can only request permission once. In which case the user needs to go to the iOS settings app and manually
-enable permissions for your app.
+---
+### requestPermission() 
 
 ```js
 LocalNotifications.requestPermission().then((granted) => {
@@ -215,14 +288,16 @@ LocalNotifications.requestPermission().then((granted) => {
 });
 ```
 
-### hasPermission
+Requests for the user's permissions for the app to send her notifications. 
+You only need to call this method on iOS. If the permission has already been granted, it returns `true`. Otherwise, it returns `false`.
 
-On Android you don't need permission, but on iOS you do. Android will simply return true.
-
-If the `requestPermission` or `schedule` functions previously ran you may want to check whether or not the user granted permission:
+---
+### hasPermission()
 
 ```js
 LocalNotifications.hasPermission().then((granted) => {
 	console.log('Permission granted? ' + granted);
 });
 ```
+
+Checks if the application has the permission to notify the user.

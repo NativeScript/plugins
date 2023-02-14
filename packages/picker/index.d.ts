@@ -15,9 +15,52 @@ export interface PickerField {
  */
 export class PickerField extends TextField implements TemplatedItemsView {
 	/**
+	 * The search bar using as a filter
+	 */
+	public searchBar: TextField;
+
+	/**
 	 * String value used when hooking to itemLoading event.
 	 */
 	public static itemLoadingEvent: string;
+
+	/**
+	 * Set object key to use when filtering
+	 * {name: "Jean", year: 1986, gender: "Mr"}
+	 * set `filterKeyName="name"` will tell the filer to use this key as flter
+	 */
+	public filterKeyName: boolean;
+
+	/**
+	 * Set the focus to the serach bar
+	 */
+	public focusOnShow: boolean;
+
+	/**
+	 * Show/Hide the search bar
+	 * default `false`
+	 */
+	public showFilter: boolean;
+
+	/**
+	 * The hint text for the search bar
+	 */
+	public hintText: string;
+
+	/**
+	 * Show picker programatically
+	 */
+	public showPicker: Function;
+
+	/**
+	 * Close picker programatically
+	 */
+	public closePicker: Function;
+
+	/**
+	 * Set the `rowHeight` to the Listview
+	 */
+	public static rowHeight: string;
 
 	/**
 	 * Gets or sets the title of the modal view.
@@ -27,7 +70,8 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	/**
 	 * Gets or sets the source collection used to populate the {@link ListView} of the modal view.
 	 */
-	public items: any[] | ItemsSource;
+	public items: any[];
+	//public items: any[] | ItemsSource;
 
 	/**
 	 * Gets or sets the UI template for list view items of the {@link ListView} of the modal view.
@@ -82,6 +126,26 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	refresh();
 
 	/**
+	 * Identifies the {@link filterKeyName} dependency property.
+	 */
+	static filterKeyNameProperty: Property<PickerField, string>;
+
+	/**
+	 * Identifies the {@link focusOnShow} dependency property.
+	 */
+	static focusOnShowProperty: Property<PickerField, boolean>;
+
+	/**
+	 * Identifies the {@link showFilter} dependency property.
+	 */
+	static showFilterProperty: Property<PickerField, boolean>;
+
+	/**
+	 * Identifies the {@link hintText} dependency property.
+	 */
+	static hintTextProperty: Property<PickerField, string>;
+
+	/**
 	 * Identifies the {@link modalAnimated} dependency property.
 	 */
 	static modalAnimatedProperty: Property<PickerField, boolean>;
@@ -90,6 +154,11 @@ export class PickerField extends TextField implements TemplatedItemsView {
 	 * Identifies the {@link textField} dependency property.
 	 */
 	static textFieldProperty: Property<PickerField, string>;
+
+	/**
+	 * Identifies the {@link rowHeight} dependency property.
+	 */
+	static rowHeightProperty: Property<PickerField, string>;
 
 	/**
 	 * Identifies the {@link iOSCloseButtonPosition} dependency property.

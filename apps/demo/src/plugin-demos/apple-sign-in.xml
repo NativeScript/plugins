@@ -4,6 +4,6 @@
         </ActionBar>
     </Page.actionBar>
     <StackLayout class="p-20">
-        <ui:SignInButton tap="{{ login }}"/>
+        <ui:SignInButton tap="{{ login }}" height="56"/>
     </StackLayout>
 </Page>

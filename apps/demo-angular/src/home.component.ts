@@ -82,6 +82,9 @@ export class HomeComponent {
 			name: 'iqkeyboardmanager',
 		},
 		{
+			name: 'jetpack-compose',
+		},
+		{
 			name: 'local-notifications',
 		},
 		{
@@ -98,6 +101,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'social-share',
+		},
+		{
+			name: 'swift-ui',
 		},
 		{
 			name: 'theme-switcher',
