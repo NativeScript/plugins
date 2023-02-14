@@ -7,11 +7,29 @@ A plugin that allows you to take a picture and optionally save it  on the device
 ```cli
 npm install @nativescript/camera --save
 ```
-## Usage
+## Use @nativescript/camera
 
-### Requesting permissions
+### Request user's permissions
 
-Both Android and iOS require explicit permissions in order for the application to have access to the camera and save photos on the device. Once the user has granted permissions the camera module can be used.
+Both Android and iOS require explicit permissions for the application to have access to the camera and save photos on the device.
+
+To ask for user's permission to use their phone's camera, follow these steps:
+
+1. Specify to the system the permissions your app will need the user to grant it.
+
+On Android, you specify the permissions in `App_Resources/Android/src/main/AndroidManifest.xml`.  However, this plugin specifies the required permissions for you.
+
+On iOS, specify the necessary permissions by adding the code below to 
+`app/App_Resources/iOS/Info.plist` and add the following clarifications:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>enter your camera permission request text here</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>enter your photo library permission request text here</string>
+```
+
+2. Request for the permissions
 
 ```TypeScript
 import { requestPermissions } from '@nativescript/camera';
@@ -31,14 +49,16 @@ requestPermissions().then(
 
 > **Note**: (**for iOS**) If the user rejects permissions from the iOS popup, the app is not allowed to ask again. You can instruct the user to go to app settings and enable the camera permission manually from there. Additionally, [App Store Guideline 5.1.1](https://developer.apple.com/app-store/review/guidelines/#data-collection-and-storage) requires apps to clarify the usage of the camera and photo library. To do so, edit your `app/App_Resources/iOS/Info.plist` and add the following clarifications:
 
-```xml
+<!-- ```xml
 <key>NSCameraUsageDescription</key>
 <string>enter your camera permission request text here</string>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>enter your photo library permission request text here</string>
 ```
-> **Note**: For Android, the plugin requests the permissions for you.
-### Checking if the device has a camera
+> **Note**: For Android, the plugin requests the permissions for you. -->
+
+### Check if the device has a camera
+
 Before you take a picture, you should check if the device has an available camera. To do so, call the `isAvailable()` method. This method will return `true` if the camera hardware is ready to use or `false` otherwise.
 
 ```ts
@@ -167,8 +187,8 @@ This could be used to create thumbnails for quick display within your applicatio
 
 ### CameraOptions
 
-| Property        | Default | Platform | Description                                                                                                                                                                                                                                                                                                                                                                              |
-| --------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Property | Default | Platform | Description
+|:---------|:--------|:---------|:-----------
 | `width`           | `0`       | Both     | The desired width of the picture (in device independent pixels). The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).  |
 | `height`          | `0`       | Both     | The desired height of the picture (in device independent pixels). The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions). |
 | `keepAspectRatio` | `true`    | Both     | Defines if camera picture aspect ratio should be kept during picture resizing. The camera will return an image with the correct aspect ratio but generally only one (width or height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image.|
