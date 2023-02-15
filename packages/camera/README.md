@@ -2,7 +2,20 @@
 
 A plugin that allows you to take a picture and optionally save it on the device storage.
 
+## Contents
+* [Installation](#installation)
+* [Use @nativescript/camera](#use-nativescriptcamera)
+    * [Request for user permissions](#request-for-user-permissions)
+    * [Check if the device has a camera](#check-if-the-device-has-a-camera)
+    * [Take a picture](#take-a-picture)
+    * [Take memory efficient picture](#take-memory-efficient-picture)
+    * [Saving a picture to the file system](#saving-a-picture-to-the-file-system)
+* [API](#api)
+    * [Functions](#functions)
+    * [CameraOptions interface](#cameraoptions-interface)
+
 ## Installation
+Run the following command to install the plugin.
 
 ```cli
 npm install @nativescript/camera --save
@@ -13,14 +26,14 @@ npm install @nativescript/camera --save
 
 Both Android and iOS require explicit permissions for the application to have access to the camera and save photos on the device.
 
-To ask a user for permissions to use their phone's camera, follow these steps:
+To ask a user for permission to access their camera and the photo gallery, follow these steps:
 
 1. Specify to the system the permissions your app from the user
 
 On Android, you specify the permissions in `App_Resources/Android/src/main/AndroidManifest.xml`.  However, this plugin specifies the required permissions for you.
 
 On iOS, [App Store Guideline 5.1.1](https://developer.apple.com/app-store/review/guidelines/#data-collection-and-storage) requires apps to clarify the usage of the camera and photo library.
-To add the clarifications, modify `app/App_Resources/iOS/Info.plist` and add them as the values of the [NSCameraUsageDescription]() and [NSPhotoLibraryUsageDescription]() keys, respectively. 
+To add the clarifications, modify `app/App_Resources/iOS/Info.plist` and add them as the values of the `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` keys, respectively. 
 
 ```xml
 <key>NSCameraUsageDescription</key>
@@ -51,7 +64,7 @@ requestPermissions().then(
 
 > **Note**: (**for iOS**) If the user rejects permissions from the iOS popup, the app is not allowed to ask again. You can instruct the user to go to app settings and enable the camera permission manually from there. 
 
-### Check if the device has a camera
+### Check if the device camera is available
 
 Before calling the `takePicture` method to take a picture, call the `isAvailable()` method to check if the device has an available camera. 
 
@@ -162,14 +175,14 @@ This could be used to create thumbnails for quick display within your applicatio
 
 ### CameraOptions interface
 
-| Property | Default | Platform | Description
-|:---------|:--------|:---------|:-----------
-| `width`           | `0`       | Both     | The desired width of the picture (in device independent pixels). The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).  |
-| `height`          | `0`       | Both     | The desired height of the picture (in device independent pixels). The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions). |
-| `keepAspectRatio` | `true`    | Both     | Defines if camera picture aspect ratio should be kept during picture resizing. The camera will return an image with the correct aspect ratio but generally only one (width or height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image.|
-| `saveToGallery`   | `true`    | Both     | A boolean parameter that indicates if the original taken photo will be saved in `Photos` for Android and in `Camera Roll` in iOS.                                                                                                                                                                                                                                                             |
-| `allowsEditing`   | `false`   | iOS      | Defines if camera "Retake" or "Use Photo". Screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                                                                                                                    |
-| `cameraFacing`    | `'rear'`    | Both     | The initial camera facing. Use `'front'` for selfies.                                                           | `modalPresentationStyle`    | `0`    | iOS     | Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen). |
+| Property | Default |  Description
+|:---------|:--------|:-----------
+| `width`           | `0`       | _Optional_: The desired width of the picture (in device independent pixels). The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).  |
+| `height`          | `0`       | _Optional_: The desired height of the picture (in device independent pixels). The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions). |
+| `keepAspectRatio` | `true`    | _Optional_: Defines if camera picture aspect ratio should be kept during picture resizing. The camera will return an image with the correct aspect ratio but generally only one (width or height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image.|
+| `saveToGallery`   | `true`    | _Optional_: A boolean parameter that indicates if the original taken photo will be saved in `Photos` for Android and in `Camera Roll` in iOS.                                                                                                                                                                                                                                                             |
+| `allowsEditing`   | `false`   | _Optional_: (`iOS-only`)Defines if camera "Retake" or "Use Photo". Screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                                                                                                                    |
+| `cameraFacing`    | `'rear'`    | _Optional_: The initial camera facing. Use `'front'` for selfies.                                                           | `modalPresentationStyle`    | `0`    | _Optional_: (`iOS-only`)Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen). |
 
 
 > **Note**: The `saveToGallery` option might have unexpected behavior on Android! Some vendor camera apps (e.g. LG) will save all captured images to the gallery regardless of what the value of `saveToGallery` is. This behavior cannot be controlled by the camera plugin and if you need to exclude the captured image from the photo gallery, you will need to get a local storage read/write permission and write custom code to find the gallery location and delete the new image from there.
