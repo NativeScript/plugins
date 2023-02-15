@@ -1,6 +1,6 @@
 # @nativescript/camera
 
-A plugin that allows you to take a picture and optionally save it  on the device storage.
+A plugin that allows you to take a picture and optionally save it on the device storage.
 
 ## Installation
 
@@ -9,18 +9,18 @@ npm install @nativescript/camera --save
 ```
 ## Use @nativescript/camera
 
-### Request user's permissions
+### Request for user permissions
 
 Both Android and iOS require explicit permissions for the application to have access to the camera and save photos on the device.
 
-To ask for user's permission to use their phone's camera, follow these steps:
+To ask a user for permissions to use their phone's camera, follow these steps:
 
-1. Specify to the system the permissions your app will need the user to grant it.
+1. Specify to the system the permissions your app from the user
 
 On Android, you specify the permissions in `App_Resources/Android/src/main/AndroidManifest.xml`.  However, this plugin specifies the required permissions for you.
 
-On iOS, specify the necessary permissions by adding the code below to 
-`app/App_Resources/iOS/Info.plist` and add the following clarifications:
+On iOS, [App Store Guideline 5.1.1](https://developer.apple.com/app-store/review/guidelines/#data-collection-and-storage) requires apps to clarify the usage of the camera and photo library.
+To add the clarifications, modify `app/App_Resources/iOS/Info.plist` and add them as the values of the [NSCameraUsageDescription]() and [NSPhotoLibraryUsageDescription]() keys, respectively. 
 
 ```xml
 <key>NSCameraUsageDescription</key>
@@ -29,7 +29,9 @@ On iOS, specify the necessary permissions by adding the code below to
 <string>enter your photo library permission request text here</string>
 ```
 
-2. Request for the permissions
+2. Prompt the user for permissions
+
+To prompt the user to grant or deny your app access to their camera and photo gallery, call the `requestPermissions()` method.
 
 ```TypeScript
 import { requestPermissions } from '@nativescript/camera';
@@ -47,28 +49,23 @@ requestPermissions().then(
 ```
 > **Note:** (**for Android**) Older versions of Android that don't use a request permissions popup won't be affected by the usage of the `requestPermissions()` method.
 
-> **Note**: (**for iOS**) If the user rejects permissions from the iOS popup, the app is not allowed to ask again. You can instruct the user to go to app settings and enable the camera permission manually from there. Additionally, [App Store Guideline 5.1.1](https://developer.apple.com/app-store/review/guidelines/#data-collection-and-storage) requires apps to clarify the usage of the camera and photo library. To do so, edit your `app/App_Resources/iOS/Info.plist` and add the following clarifications:
-
-<!-- ```xml
-<key>NSCameraUsageDescription</key>
-<string>enter your camera permission request text here</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>enter your photo library permission request text here</string>
-```
-> **Note**: For Android, the plugin requests the permissions for you. -->
+> **Note**: (**for iOS**) If the user rejects permissions from the iOS popup, the app is not allowed to ask again. You can instruct the user to go to app settings and enable the camera permission manually from there. 
 
 ### Check if the device has a camera
 
-Before you take a picture, you should check if the device has an available camera. To do so, call the `isAvailable()` method. This method will return `true` if the camera hardware is ready to use or `false` otherwise.
+Before calling the `takePicture` method to take a picture, call the `isAvailable()` method to check if the device has an available camera. 
 
 ```ts
 const isAvailable = camera.isAvailable();
 ```
 
-> **Note**: This method will return false when used in iOS simulator (as the simulator does not have camera hardware)
+This method returns `true` if the camera hardware is ready to use or `false` otherwise.
+
+> **Note**: This method returns `false` when used in iOS simulator (as the simulator does not have camera hardware)
 
 
-### Taking a picture
+### Take a picture
+
 To take a picture, call the module's `takePicture()` method.
 
 ```JavaScript
@@ -102,29 +99,9 @@ camera.takePicture()
     });
 ```
 
-### Using the options to take memory efficient picture
+### Take memory efficient picture
 
 By default, the `camera.takePicture()` method takes a huge image (even mid-level devices with a `5MP` camera produce a `2580x2048` image, which in bitmap means approximately `15MB`). So sometimes taking such a big picture is just a waste of memory. The `camera.takePicture()` method accepts an optional [CameraOptions](#cameraoptions) parameter that allows you to adjust the size and other aspects of the picture.
-
-```JavaScript
-// JavaScript
-
-const options = {
-    width: 300,
-    height: 300,
-    keepAspectRatio: false,
-    saveToGallery: true
-};
-
-camera.takePicture(options)
-    .then(function (imageAsset) {
-        console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
-        console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
-        console.log("Photo saved in Photos/Gallery for Android or in Camera Roll for iOS");
-    }).catch(function (err) {
-        console.log("Error -> " + err.message);
-    });
-```
 
 ```TypeScript
 // TypeScript
@@ -147,16 +124,14 @@ camera.takePicture(options)
     });
 ```
 
-### Saving a picture
+### Saving a picture to the file system
 
-To save a picture with the width & height that you have defined you must use the `imageAsset` and save it to the file system as follows:
+To save a picture with the width & height that you have defined, use the `imageAsset` and save it to the file system as follows:
 
 ```TypeScript
 import { ImageSource, knownFolders, path } from '@nativescript/core';
 
-const source = new ImageSource();
-
-source.fromAsset(imageAsset)
+ImageSource.fromAsset(imageAsset)
         .then((imageSource: ImageSource) => {
         const folderPath: string = knownFolders.documents().path;
         const fileName: string = "test.jpg";
@@ -175,9 +150,9 @@ This could be used to create thumbnails for quick display within your applicatio
 
 ## API
 
-### Methods
+### Functions
 
-| Method                               | Return Type | Description                                                                                                             |
+| Function                               | Returns | Description                                                                                                             |
 | ------------------------------------ |------------| ----------------------------------------------------------------------------------------------------------------------- |
 | `takePicture(options?: CameraOptions) `| `Promise<ImageAsset>`| Takes a photo using the camera with an optional parameter for setting different camera options.                          |
 | `requestPermissions()`                 | `Promise<any>`| Requests permission from the user to access their saved photos as well as access their camera.|
@@ -185,7 +160,7 @@ This could be used to create thumbnails for quick display within your applicatio
 | `requestPhotosPermissions()`           | `Promise<any>`|Requests permission from the user for access to their saved photos. Returns a Promise.                                   |
 | `isAvailable()`                        |  `boolean`|Check if the device camera available to use.                                                                                  |
 
-### CameraOptions
+### CameraOptions interface
 
 | Property | Default | Platform | Description
 |:---------|:--------|:---------|:-----------
