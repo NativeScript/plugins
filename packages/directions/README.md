@@ -1,12 +1,15 @@
 # @nativescript/directions
 <!-- TODO: Add Preview -->
+A plugin that allows you to launch the Google Maps app, if it's installed on the device, with some directions. For more information, visit [Directions action](https://developers.google.com/maps/documentation/urls/get-started#directions-action).
+
 ## Installation
 
 ```cli
 npm install @nativescript/directions
 ```
 
-## Usage
+## Use @nativescript/directions
+
 ### Importing
 Once you have installed the plugin, import and create an instance of the `Directions` class.
 ```ts
@@ -15,17 +18,15 @@ import { Directions } from "@nativescript/directions"
 const directions = new Directions()
 ```
 
-### Checking for support
+### Open Google Maps with directions
 
-To check if the device has a Maps application installed, call the `available` method.
-```ts
-directions.available().then((avail:boolean) => {
+To open Google Maps with the desired directions, call the `navigate` method on  `Directions` instance passing it a [NavigateToOptions](#navigatetooptions) object.
 
-	console.log(avail ? 'Yes' : 'No');
-});
-```
-To open the Google (Android) or Apple (iOS) Maps app with the desired directions, call the `navigate` method.
 ```typescript
+import { Directions } from "@nativescript/directions"
+
+const directions = new Directions()
+
 directions
 	.navigate({
 		from: {
@@ -60,10 +61,23 @@ directions
 	);
 ```
 
-## API
-### Method(s)
+### Checking for support
 
-| Name | Return Type | Description |
+If you need to check if the Google Maps application is installed on the device, call the `available` method.
+
+```ts
+const directions = new Directions()
+
+directions.available().then((avail:boolean) => {
+
+	console.log(avail ? 'Yes' : 'No');
+});
+```
+
+## API
+### Directions methods
+
+| Method | Returns | Description |
 |------|-------------|-------------|
 | `available()` | `Promise<boolean>` | Checks if the device has the Maps application installed. |
 | `navigate(options: NavigateToOptions)`| `Promise<void>` | Opens the native Maps app with a predefined `from` and `to` address and [other](#navigatetooptions) optional settings.|
@@ -81,7 +95,8 @@ directions
 ```
 
 ### NavigateToOptions
-| Name| Type | Description|
+
+| Property| Type | Description|
 |-----|------|------------|
 | `from`| [AddressOptions](#addressoptions)| _Optional_: The starting point for the navigation. <br><br>If this option is not passed, the current location of the user will be used.|
 | `to` | [AddressOptions](#addressoptions) \| Array<[AddressOptions](#addressoptions)>| The destination of the navigation. If it's an array of addresses, then the last item is the destination, the others become 'waypoints'.|
