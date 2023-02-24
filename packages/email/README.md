@@ -1,5 +1,9 @@
 # @nativescript/Email
 
+A plugin to compose an e-mail, have the user edit the draft manually and send it.
+
+> **Note:** This plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
+
 [npm-image]: https://img.shields.io/npm/v/nativescript-email.svg
 [npm-url]: https://npmjs.org/package/nativescript-email
 [downloads-image]: https://img.shields.io/npm/dm/nativescript-email.svg
@@ -7,47 +11,51 @@
 [twitter-image]: https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]: https://twitter.com/eddyverbruggen
 
-You can use this plugin to compose an e-mail, have the user edit the draft manually, and send it.
-
-> **Note:** This plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
+## Contents
+* [Installation](#installation)
+* [Use @nativescript/email](#use-nativescriptemail)
+	* [Check for availability](#check-for-availability)
+	* [Compose an email](#compose-an-email)
+	* [Usage with Angular](#usage-with-angular)
+* [API](#api)
+	* [Functions](#functions)
+	* [ComposeOptions](#composeoptions)
+* [Known issues](#known-issues)
 
 ## Installation
+
+To install the plugin, run the following command:
 
 ```cli
 npm install @nativescript/email
 ```
 
-## Usage
-### Importing
-Once you've installed the plugin, the next step is to import it before using it.
-```ts
-import * as email from '@nativescript/email';
-// or
-import { compose } from '@nativescript/email';
-// or even
-import { compose as composeEmail } from '@nativescript/email';
-```
+## Use @nativescript/email
 
-### Checking the availability
+### Check for availability
 
-To check if the device has a mail app installed, call the `available` method.
+To check if the device has the Mail app installed, call the `available` method.
 
 ```ts
-email.available().then((avail: boolean) => {
+import { available() } from '@nativescript/email';
+
+available().then((avail: boolean) => {
 	console.log('Email available? ' + avail);
 });
 ```
-### Composing an email
+### Compose an email
+
 To compose an email, use the `compose` method.
 
 ```js
-// let's first create a File object
+import { compose } from '@nativescript/email';
+
+// irst create a File object
 import { knownFolders } from '@nativescript/core';
 var appPath = knownFolders.currentApp().path;
 var logoPath = appPath + '/res/telerik-logo.png';
 
-email
-	.compose({
+compose({
 		subject: 'Yo',
 		body: 'Hello <strong>dude</strong> :)',
 		to: ['eddyverbruggen@gmail.com', 'to@person2.com'],
@@ -75,22 +83,20 @@ email
 		}
 	);
 ```
+
+### Usage with Angular
+
+Check out [this tutorial (YouTube)](https://www.youtube.com/watch?v=fSnQb9-Gtdk) to learn how to use this plugin in a NativeScript-Angular app.
+
 ## API
-### Method(s)
-| Name | Return Type | Description |
+### Functions
+| Function | Return Type | Description |
 |------|------|-------------|
 | `available()` | `Promise<boolean>`|  Checks for availability of a mail app.|
 | `compose(options: ComposeOptions)` | `Promise<boolean>` | Composes and sends a [ComposeOptions](#composeoptions) email.|
 
-### Attachment
-
-| Name | Type | Description |
-|------|------|-------------|
-| `fileName`| `string` | The name used for the attachment.<br>Example: fileName: 'Cute-Kitten.png'|
-| `path` | `string` | The to the file to be attached. |
-| `mimeType` | `string` | (`iOS-only`)Used to help the iOS device figure out how to send the file.Example:mimeType: 'image/png'|
-
 ### ComposeOptions
+
 | Name | Type | Description |
 |------|------|-------------|
 | `subject`| `string`| _Optional_: The subject of the email.|
@@ -103,14 +109,18 @@ email
 | `iosViewController` | `any` | _Optional_: (`iOS-only`) iOS View Controller to open `compose` from.|
 
 
-## Usage with Angular
+#### Attachment
 
-Check out [this tutorial (YouTube)](https://www.youtube.com/watch?v=fSnQb9-Gtdk) to learn how to use this plugin in a NativeScript-Angular app.
+| Name | Type | Description |
+|------|------|-------------|
+| `fileName`| `string` | The name used for the attachment.<br>Example: fileName: 'Cute-Kitten.png'|
+| `path` | `string` | The to the file to be attached. |
+| `mimeType` | `string` | (`iOS-only`)Used to help the iOS device figure out how to send the file.Example:mimeType: 'image/png'|
+
 
 ## Known issues
 
-On iOS you can't use the simulator to test the plugin because of an iOS limitation.
-To prevent a crash, this plugin returns `false` when `available` is invoked on the iOS simulator.
+- On iOS, you can't use the simulator to test the plugin because of an iOS limitation. To prevent a crash, this plugin returns `false` when `available` is invoked on the iOS simulator.
 
 ## License
 
