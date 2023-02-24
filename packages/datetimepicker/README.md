@@ -105,6 +105,17 @@ app.start();
 <TimePickerField hint="select time"></TimePickerField>
 <DateTimePickerFields hintDate="select date" hintTime="select time"></DateTimePickerFields>
 ```
+### Svelte
+
+Once you have installed the plugin, register the `DateTimePickerFields` with your app, in the `app.ts` file.
+
+```ts
+registerNativeViewElement("dateTimePickerFields", ()=> require("@nativescript/datetimepicker").DateTimePickerFields)
+```
+Next, use the picker in markup by adding the `dateTimePickerFields` element.
+```xml
+<dateTimePickerFields hintDate="pick a date" hintTime="pick time"></dateTimePicker>
+```
 
 ### Set the selected date and time 
 
