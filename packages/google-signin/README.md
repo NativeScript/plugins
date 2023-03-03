@@ -1,7 +1,7 @@
 # @nativescript/google-signin
-A plugin that allows you to authenticate users with [Google]
-## Contents
+A plugin that allows you to authenticate users with Google Sign-In.
 
+## Contents
 * [Installation](#installation)
 * [Android prerequisites](#android-prerequisites)
 * [iOS prerequisites](#ios-prerequisites)
@@ -34,7 +34,13 @@ npm install @nativescript/google-signin
 
 ## Android prerequisites
 
-1. To use GoogleSignIn for Android, [register your application](https://firebase.google.com/docs/android/setup). You don't need to include the `google-services.json` file in your app unless you are using other Google services that require it.
+1. To use GoogleSignIn for Android, visit [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and follow the 2 steps below. 
+
+- [Create a Firebase project](https://firebase.google.com/docs/android/setup#create-firebase-project)
+
+- [Register your app with Firebase](https://firebase.google.com/docs/android/setup#register-app)
+
+You don't need to include the `google-services.json` file mentioned in [Add a Firebase configuration file](https://firebase.google.com/docs/android/setup#add-config-file) in your app unless you are using other Google services that require it.
 
 2. Enable the OAuth APIs that you want, using the [Google Cloud Platform API manager](https://console.developers.google.com/).
 Make sure you've filled out all the required fields in the console for [OAuth consent screen](https://console.developers.google.com/apis/credentials/consent). Otherwise, you may encounter APIException errors.
@@ -43,7 +49,7 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 
 1. This plugin requires `iOS 9.0+`.
 
-2. To use GoogleSignIn in your iOS app, set up the app with Firebase with the following steps at [Add Firebase to your Apple project](https://firebase.google.com/docs/ios/setup):
+2. To use GoogleSignIn for iOS, set up the app with Firebase with the following steps at [Add Firebase to your Apple project](https://firebase.google.com/docs/ios/setup):
 
 	1. [Create a Firebase project](https://firebase.google.com/docs/ios/setup#create-firebase-project)
 	2. [Register your app with Firebase](https://firebase.google.com/docs/ios/setup#register-app)
