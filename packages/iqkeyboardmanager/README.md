@@ -6,7 +6,7 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 
 ## Contents
 * [Installation](#installation)
-* [Usage](#usage)
+* [Use @nativescript/iqkeyboardmanager](#usage)
 	* [Core](#core)
 	* [Angular](#angular)
 	* [Vue](#vue)
@@ -30,18 +30,19 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 npm install @nativescript/iqkeyboardmanager
 ```
 
-## Usage
+## Use @nativescript/iqkeyboardmanager
+The following sections describe how to use the `@nativescript/iqkeyboardmanager` plugin in the different flavors supported by NativeScript.
 
-Related text fields should be siblings for the IQKeyboardManager to automatically
+> **Note** Make related text fields siblings for the IQKeyboardManager to automatically
 add the `previous`(`<`) and `next`(`>`) buttons to the accessory bar. The user can then use those buttons to jump back and forth.
 
 ### Core
-To register the plugin in core/plain NativeScript, use the `xmlns` attribute to add it to the xml namespace.
+To register the plugin in core/plain NativeScript, use the `xmlns` attribute to add it to the XML namespace under a prefix(`IQKeyboardManager` for example).
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript-iqkeyboardmanager">
   <ScrollView>
-    <IQKeyboardManager.PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
+    <IQKeyboardManager:PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
       <StackLayout>
           <TextField hint="Email"/>
           <TextField hint="Password"/>
