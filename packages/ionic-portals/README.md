@@ -1,23 +1,24 @@
 # @nativescript/ionic-portals
-
-https://ionic.io/docs/portals
+A plugin that allows you to use [Ionic Portals](https://ionic.io/docs/portals) in NativeScript.
 
 > Ionic Portals are supercharged native WebView components for iOS and Android that let you add web-based experiences to native mobile apps.
 
 ![Ionic Portal View](/packages/ionic-portals/images/ionic-portal-ios.png)
+
 ## Contents
+
 1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-	1. [Register portals on app boot](#1-register-portals-on-app-boot)
-	2. [Use it in markup](#2-use-it-in-markup)
-		* [Vanilla/Plain/Core](#vanillaplaincore)
+3. [Enable Ionic Portals in your app](#enable-ionic-portals-in-your-app)
+	1. [Get a Portal API Key](#1-get-a-portal-api-key)
+	2. [Register portals on app boot](#2-register-portals)
+	3. [Add portals view to markup](#3-add-portals-view-to-markup)
+		* [Core](#core)
 		* [Angular](#angular)
 		* [Vue](#vue)
 		* [Svelte](#svelte)
-		* [Sending events from NativeScript to any web portal](#sending-events-from-nativescript-to-any-web-portal)
-		* [Subscribing to events sent from web portals](#subscribing-to-events-sent-from-web-portals)
-		* [Unsubscribing to events sent from web portals](#unsubscribing-from-events-sent-from-web-portals)
+	* [Send events from NativeScript to any web portal](#send-events-from-nativescript-to-any-web-portal)
+	* [Subscribe to events sent from web portals](#subscribe-to-events-sent-from-web-portals)
+	* [Unsubscribe to events sent from web portals](#unsubscribe-from-events-sent-from-web-portals)
 
 4. [IonicPortalManager API](#ionicportalmanager-api)
 	* [register()](#register)
@@ -38,14 +39,17 @@ https://ionic.io/docs/portals
 npm install @nativescript/ionic-portals
 ```
 
-## Prerequisites
-- [Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide). 
+## Enable Ionic portals in your app
 
-## Usage
+Below are the steps to enable Ionic Portal in your app.
 
-### 1. Registering portals
+### 1. Get a Portal API Key
 
-To register your Ionic Portals, call the [IonicPortalManager] class's [register()](#register) method with the Portal API key.
+[Get a Portal API Key here](https://ionic.io/docs/portals/getting-started/guide). 
+
+### 2. Register portals
+
+Register your Ionic Portals, by calling the [IonicPortalManager] class's [register()](#register) method with the [Portal API key](#1-get-a-portal-api-key).
 
 ```ts
 import { Application } from '@nativescript/core';
@@ -70,9 +74,22 @@ Given the following examples, ensure your web portal is built into the following
 * For iOS: `App_Resources/iOS/webPortal`
 * For Android: `App_Resources/Android/src/main/asssets/webPortal`
 
-### 2. Use it in markup
+### 3. Add portals view to markup
 
 #### Core
+
+1. Register the plugin namespace with Page's `xmlns` attribute providing your prefix( `ionic`, for example).
+
+```xml
+<Page xmlns:ionic="@nativescript/ionic-portals">
+```
+2. Access the `IonicPortal` view through the prefix and add it to markup.
+
+```xml
+<ionic:IonicPortal id="webPortal">
+    </ionic:IonicPortal>
+```
+**Full code**
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd"
@@ -86,40 +103,53 @@ Given the following examples, ensure your web portal is built into the following
 
 #### Angular
 
+1. To add the `IonicPortal` view to the markup of any component, register it by adding the following code to the `main.ts` file:
+
 ```ts
 import { registerElement } from '@nativescript/angular';
 import { IonicPortal } from '@nativescript/ionic-portals';
 registerElement('IonicPortal', () => IonicPortal);
 ```
 
+2. Add `IonicPortal` to markup.
 ```html
 <IonicPortal id="webPortal"></IonicPortal>;
 ```
 
 #### Vue
+
+1. To add the `IonicPortal` view in the markup of any component, register it by adding the following code to the `app.ts` file:
+
 ```ts
 import { IonicPortal } from '@nativescript/ionic-portals';
 
 registerElement("IonicPortal", ()=> IonicPortal)
 ```
+2. Add `IonicPortal` to markup.
+
 ```xml
- <gridLayout height="300" class="mt-3 p-3">
+ <GridLayout height="300" class="mt-3 p-3">
     <IonicPortal id="webPortal"/>
-</gridLayout>
+</GridLayout>
 ```
 #### Svelte
+
+1. To use the `IonicPortal` view in the markup of any component, register it by adding the following code to the `app.ts` file:
+
 ```ts
 import { IonicPortal } from '@nativescript/ionic-portals';
 
 import {registerNativeViewElement} from "svelte-native/dom"
 registerNativeViewElement("ionicPortal", ()=> IonicPortal)
 ```
+
+2. Add `IonicPortal` to markup.
 ```xml
 <gridLayout height="300" class="mt-3 p-3">
     <ionicPortal id="webPortal"/>
 </gridLayout>
 ```
-#### Sending events from NativeScript to any web portal
+### Send events from NativeScript to any web portal
 
 To send events from NativeScript to any web portal, use the [publishTopic()](#publishtopic) method:
 
@@ -127,7 +157,8 @@ To send events from NativeScript to any web portal, use the [publishTopic()](#pu
 IonicPortalManager.publishTopic('hello', { name: 'data from NativeScript' });
 ```
 
-#### Subscribing to events sent from web portals
+#### Subscribe to events sent from web portals
+
 To subscribe to events sent from any web portal, call the [subscribeToTopic](#subscribetotopic) method with the event name as the first argument and the event handler as the second argument.
 
 ```ts
@@ -136,7 +167,8 @@ const subscriptionId = IonicPortalManager.subscribeToTopic('useful-web-event', r
 });
 ```
 
-#### Unsubscribing from events sent from web portals
+#### Unsubscribe from events sent from web portals
+
 To unsubscribe from events sent from any web portal, call the [unsubscribeFromTopic()](#unsubscribefromtopic) method with the event name as the first argument and the subscription id as the second argument.
 ```ts
 IonicPortalManager.unsubscribeFromTopic('useful-web-event', subscriptionId);
