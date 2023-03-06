@@ -4,29 +4,27 @@ Imagepicker plugin supporting both single and multiple selection.
 <br />Plugin supports **iOS8+** and uses [QBImagePicker](https://github.com/questbeat/QBImagePicker) cocoapod.
 <br />For **Android** it uses [Intents](https://developer.android.com/reference/android/content/Intent) to open the stock images or file pickers. For Android 6 (API 23) and above, the permissions to read file storage should be explicitly required. 
 
-## Table of Contents
+## Contents
+
 * [Installation](#installation)
-* [Required Permissions](#required-permissions)
-    * [Android](#android)
-    * [iOS](#ios)
-* [Usage](#usage)
-    * [Importing the plugin](#importing-the-plugin)
-    * [Creating the Imagepicker instance](#creating-the-imagepicker-instance)
-    * [Using the ImagePicker Instance](#using-the-imagepicker-instance)
+    * [Android required permissions](#android-required-permissions)
+    * [iOS required permissions](#ios-required-permissions)
+* [Pick images](#pick-images)
+    * [Demo](#demo)
 * [API](#api)
-    * [ImagePicker](#imagepicker)
+    * [ImagePicker class](#imagepicker-class)
     * [create()](#create)
     * [Options](#options)
     * [ImagePickerMediaType](#imagepickermediatype)
 
 ## Installation
+Install the plugin by running the following command in the root directory of your app.
+
 ```cli
 npm install @nativescript/imagepicker
 ```
 
-## Required Permissions
-
-### Android
+## Android required permissions
 Add the following permissions to the `App_Resources/Android/src/main/AndroidManifest.xml` file:
 
 - **targetSdkVersion < 33**
@@ -48,7 +46,8 @@ Add the following permissions to the `App_Resources/Android/src/main/AndroidMani
 
 See the complete example [here](https://github.com/NativeScript/plugins/blob/main/tools/assets/App_Resources/Android/src/main/AndroidManifest.xml#L14).
 
-### iOS
+### iOS required permissions
+
 Using the plugin on iOS requires the `NSPhotoLibraryUsageDescription` permission. Modify the `app/App_Resources/iOS/Info.plist` file to add it as follows:
 
 ```xml
@@ -57,45 +56,35 @@ Using the plugin on iOS requires the `NSPhotoLibraryUsageDescription` permission
 ```
 Apple App Store might reject your app if you do not describe why you need this permission. The default message `Requires access to photo library.` might not be enough for the App Store reviewers. 
 
-## Usage
+## Pick images
 
-You can play with the plugin on StackBlitz at the following links:
+To pick images (and/or videos) with the plugin, take the steps below:
 
- - [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
-- [NativeScript Angular](https://stackblitz.com/edit/nativescript-stackblitz-templates-cgmwyt?file=src%2Fapp%2Fapp-routing.module.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.module.ts,src%2Fmain.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.component.ts,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.component.html&title=NativeScript%20Starter%20Angular)
-- [NativeScript Vue](https://stackblitz.com/edit/nativescript-vue3-beta-krjk9k?file=app%2Fcomponents%2FHome.vue,app%2Fapp.css)
-- [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-afrudj?file=app%2Fcomponents%2FHome.svelte)
-
-### Importing the plugin
+1. Import the plugin
 
 <!--tabs: TS  -->
 ```ts
 import * as imagePickerPlugin from "@nativescript/imagepicker";
 ```
 
-<!--tabs: JS  -->
+2. Instantiate the picker with selection mode
 
-```js
-var imagePickerPlugin = require("@nativescript/imagepicker");
-```
-
-### Creating the Imagepicker instance
-
-Create an Imagepicker instance in `single` or `multiple` mode to specifiy if the image picker will be used for single or multiple selection.
+Instantiate the picker with selection mode by calling the `create` funciton of the plugin passing it an object that specifies mode(`single` or `multiple`) of media assets selection.
 
 <!-- tabs: TS -->
 ```ts
 let imagePickerObj: ImagePicker = imagePickerPlugin.create({
     mode: "single"});
 ```
-<!-- tabs: JS -->
-```js
-var imagePickerObj = imagePickerPlugin.create({ mode: "single" }); 
-```
 
-### Using the ImagePicker Instance
+3. Pick the images
 
-Once you've created the picker instance, use it to request for permissions, present the list of media assets to be picked from, and process the selection.
+- Request for permission
+Request for permission to access photo library by calling the asynchronous `authorize` method.
+- Present the list of media assets
+If authorization request promise has resolved(e.i. the user has granted the permission), present the list of media assets to be picked from by calling the `present` method.
+- Process the selection
+The `present` method resolves with the selected media assets that can you to process and consume.
 
 ```ts
 imagePickerObj
@@ -114,9 +103,18 @@ imagePickerObj
 ```
 > **Note** To request permissions for Android 6+ (API 23+), use [nativescript-permissions](https://www.npmjs.com/package/nativescript-permissions) plugin.
 
+### Demo
+You can play with the plugin on StackBlitz at any of the following links:
+
+ - [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
+- [NativeScript Angular](https://stackblitz.com/edit/nativescript-stackblitz-templates-cgmwyt?file=src%2Fapp%2Fapp-routing.module.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.module.ts,src%2Fmain.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.component.ts,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fimage-picker%2Fimagepicker.component.html&title=NativeScript%20Starter%20Angular)
+- [NativeScript Vue](https://stackblitz.com/edit/nativescript-vue3-beta-krjk9k?file=app%2Fcomponents%2FHome.vue,app%2Fapp.css)
+- [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-afrudj?file=app%2Fcomponents%2FHome.svelte)
 ## API
 
-### ImagePicker
+### ImagePicker class
+
+The class that provides the media selection API.
 
 | Method | Returns | Description
 |:-------|:--------|:-----------
@@ -129,13 +127,14 @@ imagePickerObj
 imagePicker: ImagePicker = imagePickerPlugin.create(options: Options, hostView: View)
 ```
 
-Creates an instance of the ImagePicker class. 
+Creates an instance of the [ImagePicker class](#imagepicker-class). 
 
 - _Optional_: `options` - The ImagePicker instance settings. See [Options](#options)
 - _Optional_: (`iOS-only`) `hostView` - Can be set to the view that hosts the image picker. Intended to be used when opening the picker from a modal page.
 
 ---
 ### Options
+An object passed to the [create](#create) method to specify the characteristics of a media selection.
 
 | Option | Type | Default |Description                                                          
 |:---------------------------|:-------- |:---------|:-------
@@ -152,6 +151,8 @@ Creates an instance of the ImagePicker class.
 
 
 ### ImagePickerMediaType
+The type of media assets to be selected.
+
 - `Any` = `0`,
 - `Image` = `1`,
 - `Video` = `2`
