@@ -20,7 +20,7 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 	* [Demo app](#demo-apps)
 	* [Tweaking the appearance and behavior](#tweaking-the-appearance-and-behavior)
 	* [Multi-factor one-time code auto-fill](#multi-factor-one-time-code-auto-fill)
-* [Documentation](#documentation)
+* [Native documentation](#native-documentation)
 * [Maintainers](#maintainers)
 * [License](#license)
 
@@ -288,7 +288,7 @@ if (mfaCodeField !== null && mfaCodeField.ios) {
 
 There are other `textContentType` values you might want to use. You can read more about the property in [this article](https://medium.com/developerinsider/ios12-password-autofill-automatic-strong-password-and-security-code-autofill-6e7db8da1810).
 
-## Documentation
+## Native documentation
 
 For more details on how IQKeyboardManager works, including more detailed API documentation, refer to [the library's CocoaPod page](https://cocoapods.org/pods/IQKeyboardManager).
 
