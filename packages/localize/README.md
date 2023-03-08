@@ -6,7 +6,7 @@ A plugin that implements internationalization (i18n) using the native capabiliti
 
 * [Installation](#installation)
 * [Use @nativescript/localize](#use-nativescriptlocalize)
-	* [Core](#core)
+	* [Localization in NativeScript Core](#localization-in-nativescript-core)
 		* [Quirks](#quirks)
 	* [Localization in Angular](#localization-in-angular)
   	* [Localization in Vue](#localization-in-vue)
@@ -25,9 +25,13 @@ A plugin that implements internationalization (i18n) using the native capabiliti
 	* [localize()](#localize)
 	* [overrideLocale()](#overridelocale)
 	* [androidLaunchEventLocalizationHandler()](#androidlauncheventlocalizationhandler)
+* [Credits](#credits)
 * [License](#license)
 
+
 ## Installation
+
+To install the plugin, run the following command in the root of your project.
 
 ```cli
 npm install @nativescript/localize
@@ -35,7 +39,9 @@ npm install @nativescript/localize
 
 ## Use @nativescript/localize
 
-### Core
+This section describes how to use the `@nativescript/localize` plugin in several flavors that NativeScript supports.
+
+### Localization in NativeScript Core
 1. Create a folder named `i18n` in the `app` folder, with the following structure:
 
 ```
