@@ -1,26 +1,16 @@
 # @nativescript/local-notifications
 
-[![NPM version][npm-image]][npm-url]
-[![Downloads][downloads-image]][npm-url]
-
-[npm-image]: https://img.shields.io/npm/v/@nativescript/local-notifications.svg
-[npm-url]: https://npmjs.org/package/@nativescript/local-notifications
-[downloads-image]: https://img.shields.io/npm/dm/@nativescript/local-notifications.svg
-
-A plugin that allows your app to show notifications when the app is not running.
-Just like remote push notifications, but a few orders of magnitude easier to set up.
-
 ## Contents
 
+* [Intro](#intro)
 * [Installation](#installation)
-
-* [Use @nativescript/local-notifications](#usage)
-	* [Import the plugin](#importing)
-	* [Requesting for permissions](#requesting-for-permissions)
-	* [Scheduling a notification](#scheduling-a-notification)
-	* [Getting IDs of all the scheduled notifications](#getting-ids-of-all-the-scheduled-notifications)
-	* [Canceling a scheduled notification](#canceling-a-scheduled-notification)
-	* [Listening to a notification tap event](#listening-to-a-notification-tap-event)
+* [Use @nativescript/local-notifications](#use-nativescriptlocal-notifications)
+	* [Import the plugin](#import-the-plugin)
+	* [Request for permissions](#request-for-permissions)
+	* [Schedule a notification](#schedule-a-notification)
+	* [Get the IDs of all the scheduled notifications](#get-the-ids-of-all-the-scheduled-notifications)
+	* [Cancel a scheduled notification](#cancel-a-scheduled-notification)
+	* [Listen to a notification tap event](#listen-to-a-notification-tap-event)
 * [API](#api)
 	* [schedule()](#schedule)
 		* [ScheduleOptions](#scheduleoptions)
@@ -33,7 +23,21 @@ Just like remote push notifications, but a few orders of magnitude easier to set
 	* [requestPermission()](#requestpermission)
 	* [hasPermission()](#haspermission)
 
+## Intro
+[![NPM version][npm-image]][npm-url]
+[![Downloads][downloads-image]][npm-url]
+
+[npm-image]: https://img.shields.io/npm/v/@nativescript/local-notifications.svg
+[npm-url]: https://npmjs.org/package/@nativescript/local-notifications
+[downloads-image]: https://img.shields.io/npm/dm/@nativescript/local-notifications.svg
+
+A plugin that allows your app to show notifications when the app is not running.
+Just like remote push notifications, but a few orders of magnitude easier to set up.
+
+
 ## Installation
+
+Install the plugin by running the following command in the root directory of your project.
 
 ```cli
 npm install @nativescript/local-notifications
@@ -41,10 +45,11 @@ npm install @nativescript/local-notifications
 
 ## Use @nativescript/local-notifications
 
-> **Note** If on `iOS 10+` notifications are not being received or the method `addOnMessageReceivedCallback` is not invoked, you can try wiring to the [UNUserNotificationCenterDelegate](https://developer.apple.com/documentation/usernotifications/unusernotificationcenterdelegate?language=objc)
+> **Note: Advanced!** If on `iOS 10+` notifications are not being received or the method `addOnMessageReceivedCallback` is not invoked, you can try wiring to the [UNUserNotificationCenterDelegate](https://developer.apple.com/documentation/usernotifications/unusernotificationcenterdelegate?language=objc)
 <!-- TODO: UNUserNotificationCenterDelegate Example -->
 
 ### Import the plugin
+
 To import the plugin, use either of the 2 ways below.
 
 ```ts
@@ -54,7 +59,7 @@ import { LocalNotifications } from '@nativescript/local-notifications';
 import * as LocalNotifications from '@nativescript/local-notifications';
 ```
 
-### Requesting for permissions
+### Request for permissions
 
 By default, the [schedule](#schedule) method prompts the user for permission for you. For a manual permission request, use the [requestPermission](#requestpermission) method:
 
@@ -62,7 +67,7 @@ By default, the [schedule](#schedule) method prompts the user for permission for
 // then use it as:
 LocalNotifications.requestPermission();
 ```
-### Scheduling A Notification
+### Schedule a notification
 
 To schedule a notification, call the [schedule](#schedule) method and pass it an array of notification objects. For a list of members of a notification object, see [ScheduleOptions](#scheduleoptions). 
 
@@ -96,10 +101,17 @@ LocalNotifications.schedule([
 );
 ```
 
-### Getting IDs of all the scheduled notifications
+### Get the IDs of all the scheduled notifications
 
 To get the IDs of all the scheduled notifications, call the [getScheduledIds](#getscheduledids) method:
-Canceling a scheduled notification
+
+```ts
+LocalNotifications.getScheduledIds().then((ids: number[]) => {
+  console.log("ID's: " + ids)
+})
+```
+
+### Cancel a scheduled notification
 
 To cancel a scheduled notification, use the [cancel](#cancel) method.
 
@@ -113,11 +125,11 @@ LocalNotifications.cancel(5).then((foundAndCanceled: boolean) => {
 });
 ```
 
-### Listening to A Notification Tap Event
+### Listen to a notification tap event
 
 Tapping a notification in the notification center will launch your app.
 
-Note that on iOS it will even be triggered when your app is in the foreground and a notification is received.
+On iOS it can even be triggered when your app is in the foreground and a notification is received.
 
 To handle a notification tap, call the [addMessageReceivedCallback](#addonmessagereceivedcallback) method and pass it a callback function.  The callback receives a notification object of type [ReceivedNotification](#receivednotification).
 
