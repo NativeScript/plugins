@@ -49,7 +49,7 @@ This workspace manages the suite of plugins listed above.
 ## Prerequisites
 
 - Node 18+ is recommended
-- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) is recommended
+- [yarn v1](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) is required
 
 ### Note about "focus modes"
 
