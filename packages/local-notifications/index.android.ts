@@ -1,4 +1,5 @@
 import { Application, Device, Utils } from '@nativescript/core';
+import { hasPermission, requestPermission } from 'nativescript-permissions';
 import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
 
 declare const com, global: any;
@@ -71,7 +72,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 	hasPermission(): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			try {
-				resolve(LocalNotificationsImpl.hasPermission());
+				resolve(LocalNotificationsImpl.canSend());
 			} catch (ex) {
 				console.log('Error in LocalNotifications.hasPermission: ' + ex);
 				reject(ex);
@@ -79,16 +80,17 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	requestPermission(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			try {
-				// AFAIK can't do it on this platform.. when 'false' is returned, the app could prompt the user to manually enable them in the Device Settings
-				resolve(LocalNotificationsImpl.hasPermission());
-			} catch (ex) {
-				console.log('Error in LocalNotifications.requestPermission: ' + ex);
-				reject(ex);
+	async requestPermission(): Promise<boolean> {
+		try {
+			if (!LocalNotificationsImpl.hasPermission()) {
+				await requestPermission(android.Manifest.permission.POST_NOTIFICATIONS);
 			}
-		});
+			// AFAIK can't do it on this platform. when 'false' is returned, the app could prompt the user to manually enable them in the Device Settings
+			return LocalNotificationsImpl.areEnabled();
+		} catch (ex) {
+			console.log('Error in LocalNotifications.requestPermission: ' + ex);
+			throw ex;
+		}
 	}
 
 	addOnMessageReceivedCallback(onReceived: (data: ReceivedNotification) => void): Promise<void> {
@@ -189,7 +191,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 	schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
 		return new Promise((resolve, reject) => {
 			try {
-				if (!LocalNotificationsImpl.hasPermission()) {
+				if (!LocalNotificationsImpl.canSend()) {
 					reject('Permission not granted');
 					return;
 				}
@@ -234,9 +236,18 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	private static hasPermission(): boolean {
+	private static canSend(): boolean {
+		return LocalNotificationsImpl.hasPermission() && LocalNotificationsImpl.areEnabled();
+	}
+
+	private static areEnabled(): boolean {
 		const context = Utils.android.getApplicationContext();
 		return !context || NotificationManagerCompatPackageName.NotificationManagerCompat.from(context).areNotificationsEnabled();
+	}
+
+	private static hasPermission(): boolean {
+		if (android.os.Build.VERSION.SDK_INT < 33) return true; // Before Android 13 all apps have permission to send notifications
+		return hasPermission(android.Manifest.permission.POST_NOTIFICATIONS);
 	}
 }
 
