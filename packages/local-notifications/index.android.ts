@@ -82,14 +82,11 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 	async requestPermission(): Promise<boolean> {
 		try {
-			if (!LocalNotificationsImpl.hasPermission()) {
-				await requestPermission(android.Manifest.permission.POST_NOTIFICATIONS);
-			}
-			// AFAIK can't do it on this platform. when 'false' is returned, the app could prompt the user to manually enable them in the Device Settings
-			return LocalNotificationsImpl.areEnabled();
+			await LocalNotificationsImpl.ensurePreconditions();
+			return true;
 		} catch (ex) {
 			console.log('Error in LocalNotifications.requestPermission: ' + ex);
-			throw ex;
+			return false;
 		}
 	}
 
@@ -188,52 +185,57 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
-		return new Promise((resolve, reject) => {
-			try {
-				if (!LocalNotificationsImpl.canSend()) {
-					reject('Permission not granted');
-					return;
+	async schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
+		try {
+			await LocalNotificationsImpl.ensurePreconditions();
+
+			const context = Utils.android.getApplicationContext();
+			const resources = context.getResources();
+			const scheduledIds: Array<number> = [];
+
+			// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
+			// the persisted options are exactly like the original ones.
+
+			for (let n in scheduleOptions) {
+				const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
+
+				options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
+
+				options.atTime = options.at ? options.at.getTime() : 0;
+
+				// Used when restoring the notification after a reboot:
+				options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
+
+				if (options.color) {
+					options.color = options.color.android;
 				}
 
-				const context = Utils.android.getApplicationContext();
-				const resources = context.getResources();
-				const scheduledIds: Array<number> = [];
-
-				// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
-				// the persisted options are exactly like the original ones.
-
-				for (let n in scheduleOptions) {
-					const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
-
-					options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
-
-					options.atTime = options.at ? options.at.getTime() : 0;
-
-					// Used when restoring the notification after a reboot:
-					options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
-
-					if (options.color) {
-						options.color = options.color.android;
-					}
-
-					if (options.notificationLed && options.notificationLed !== true) {
-						options.notificationLed = options.notificationLed.android;
-					}
-
-					LocalNotificationsImpl.ensureID(options);
-
-					com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
-
-					scheduledIds.push(options.id);
+				if (options.notificationLed && options.notificationLed !== true) {
+					options.notificationLed = options.notificationLed.android;
 				}
 
-				resolve(scheduledIds);
-			} catch (ex) {
-				console.log('Error in LocalNotifications.schedule: ' + ex);
-				reject(ex);
+				LocalNotificationsImpl.ensureID(options);
+
+				com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
+
+				scheduledIds.push(options.id);
 			}
-		});
+
+			return scheduledIds;
+		} catch (ex) {
+			console.log('Error in LocalNotifications.schedule: ' + ex);
+			throw ex;
+		}
+	}
+
+	private static async ensurePreconditions(): Promise<void> {
+		if (!LocalNotificationsImpl.hasPermission()) {
+			const granted = await LocalNotificationsImpl.requestPermission();
+			if (!granted) throw new Error('Permission not granted');
+		}
+		// AFAIK can't do it on this platform. when 'false' is returned, the app could prompt the user to manually enable them in the Device Settings
+		const enabled = LocalNotificationsImpl.areEnabled();
+		if (!enabled) throw new Error('Notifications were manually disabled');
 	}
 
 	private static canSend(): boolean {
@@ -248,6 +250,15 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 	private static hasPermission(): boolean {
 		if (android.os.Build.VERSION.SDK_INT < 33) return true; // Before Android 13 all apps have permission to send notifications
 		return hasPermission(android.Manifest.permission.POST_NOTIFICATIONS);
+	}
+
+	private static async requestPermission(): Promise<boolean> {
+		try {
+			await requestPermission(android.Manifest.permission.POST_NOTIFICATIONS);
+			return true;
+		} catch (ex) {
+			return false;
+		}
 	}
 }
 
