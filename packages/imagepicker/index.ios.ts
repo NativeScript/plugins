@@ -96,7 +96,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 		let assets = [];
 
 		for (let i = 0; i < iosAssets.count; i++) {
-			let asset = new ImageAsset(iosAssets[i]);
+			const asset = new ImageAsset(iosAssets.objectAtIndex(i));
 
 			// this fixes the image aspect ratio in tns-core-modules version < 4.0
 			if (!asset.options) {

@@ -12,7 +12,7 @@ A plugin that extends the Nativescript [Label](https://docs.nativescript.org/ui/
   * [Svelte](#svelte)
 * [Credits](#credits)
 * [License](#license)
-  
+
 ## Installation
 
 ```cli
@@ -87,6 +87,7 @@ import { registerElement } from "nativescript-vue"
 
 registerElement("AutoFitText", ()=>require("@nativescript/auto-fit-text").AutoFitText)
 ```
+
 2. Use the view in markup.
 
 ```vue
