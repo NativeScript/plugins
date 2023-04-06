@@ -1,11 +1,7 @@
 # @nativescript/biometrics
 
-A plugin that allows you to authenticate users with biometrics, such as fingerprints, facial recognition, etc. 
-
-> **Note**
-This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
-
 ## Contents
+* [Intro](#intro)
 * [Installation](#installation)
 * [Use @nativescript/biometrics](#use-nativescriptbiometrics)
 	* [Check if the device supports biometrics authentification](#check-if-the-device-supports-biometrics-authentification)
@@ -20,13 +16,22 @@ This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 	* [BiometricResult interface](#biometricresult-interface)
 	* [ERROR_CODES Enum](#error_codes-enum)
 * [License](#license)
+
+## Intro
+A plugin that allows you to authenticate users with biometrics, such as fingerprints, facial recognition, etc. 
+
+> **Note**
+This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
+
 ## Installation
 
 ```cli
 npm install @nativescript/biometrics
 ```
+> **Note**
+This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
 
-## Use @nativescript/biometrics
+## Use the @nativescript/biometrics plugin
 
 ### Check if the device supports biometrics authentification
 
@@ -46,6 +51,7 @@ console.log(`Biometrics? ${result.biometrics}`);
 });
 
 ```
+
 #### Biometrics authentification support on Android
 
 - It's only supported on `API 23+`. 
@@ -87,6 +93,7 @@ biometricAuth
 	.catch((err) => console.log(`Biometric ID NOT OK: ${JSON.stringify(err)}`));
 ```
 
+
 ### Detect change in enrolled fingerprints (iOS)
 
 For iOS 9+ you can check if enrolled fingerprints have changed since
@@ -122,11 +129,13 @@ If you do not pass the `pinFallback` or `keyName` options to the `verifyBiometri
 
 That automatic key generation, however, is not foolproof.
 
+
 ### Encrypting/Decrypting with biometrics authentication
 
 The best practice is to use the options to encrypt some secret that is validated independently.
 
 #### Encrypting your secret
+
 
 To encrypt some sensitive string, pass the `secret` and `keyName`options to the `verifyBiometric()` method. Set the sensitive string as the `secret` property's value and the name of the key to access that secret as the value of the `keyName` property.
 
@@ -174,7 +183,8 @@ biometricAuth
 
 #### Fallback to Pin
 
-To allow biometrics authentification to fallback on lock screen credentials, set `pinFallback` to `true`. This also disables cryptography.
+To allow biometrics authentification to fallback on lock screen credentials, set `pinFallback` to `true`. Note that thissetting also disables cryptography.
+
 
 ```typescript
 biometricAuth
@@ -204,6 +214,7 @@ biometricAuth
 | `deleteKey(keyName?: string)`|`void`| Deletes the specified key. |
 
 ### BiometricIDAvailableResult interface
+
 | Name | Type| Description|
 |------|-----|------------|
 | `any`| `boolean`| `true` if no biometric authentification is available on android but device has pin/pattern/password set.|
@@ -212,6 +223,7 @@ biometricAuth
 | `biometrics` | `boolean` | _Optional_: (`Android only`) indicates if Face/Fingerprint is available.|
 
 ### VerifyBiometricOptions interface
+
 | Name | Type| Description|
 |------|-----|------------|
 | `title`| `string`| _Optional_: (`Android only`)The title for the the fingerprint screen. Defaults to whatever the device default is.|
@@ -225,12 +237,14 @@ biometricAuth
 | `ios`| [IOSOptions](#iosoptions) | _Optional_: iOS-specific options. |
 
 ### IOSOptions interface
+
 | Name | Type| Description|
 |------|-----|------------|
 | `customFallback` | `boolean` | _Optional_: Indicates whether to allow a custom fallback from biometrics.|
 | `fetchSecret` | `boolean` | _Optional_: Indicates whether to attempt to fetch secret from the specified key.|
 
 ### AndroidOptions interface
+
 | Name | Type| Description|
 |------|-----|------------|
 | `decryptText` | `string`|  If set and `pinFallback` is `true`, and `keyName` is set then this string will be decrypted via the Biometric controlled Key. |
@@ -238,7 +252,9 @@ biometricAuth
 | `iv`| `string` | _Optional_: Retrieved from the result of an encryption. |
 | `validityDuration` | `number` | _Optional_: The period, in seconds, for which operations on the key are valid without triggering a biometric prompt.|
 
+
 ### BiometricResult interface
+
 | Name | Type| Description|
 |------|-----|------------|
 |`code`| [ERROR_CODES](#error_codes-enum) |

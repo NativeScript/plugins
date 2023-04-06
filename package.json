@@ -16,6 +16,7 @@
 	},
 	"private": true,
 	"devDependencies": {
+		"@angular-devkit/build-angular": "^15.0.0",
 		"@angular/animations": "^15.0.0",
 		"@angular/common": "^15.0.0",
 		"@angular/compiler": "^15.0.0",
@@ -45,12 +46,14 @@
 		"sprintf-js": "^1.1.1",
 		"typescript": "~4.8.0",
 		"vue": "~2.6.12",
-		"zone.js": "~0.11.1",
-		"@angular-devkit/build-angular": "^15.0.0"
+		"zone.js": "~0.11.1"
 	},
 	"lint-staged": {
 		"**/*.{js,ts,scss,json,html}": [
 			"npx prettier --write"
 		]
+	},
+	"dependencies": {
+		"@nativescript/swift-ui": "^1.0.0-beta.0"
 	}
 }
