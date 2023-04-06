@@ -1,5 +1,5 @@
 import { Application, Device, Utils } from '@nativescript/core';
-import { hasPermission, requestPermission } from 'nativescript-permissions';
+import { check, request, Result } from '@nativescript-community/perms';
 import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
 
 declare const com, global: any;
@@ -69,15 +69,13 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		com.telerik.localnotifications.Store.remove(context, id);
 	}
 
-	hasPermission(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			try {
-				resolve(LocalNotificationsImpl.canSend());
-			} catch (ex) {
-				console.log('Error in LocalNotifications.hasPermission: ' + ex);
-				reject(ex);
-			}
-		});
+	async hasPermission(): Promise<boolean> {
+		try {
+			return await LocalNotificationsImpl.canSend();
+		} catch (ex) {
+			console.log('Error in LocalNotifications.hasPermission: ' + ex);
+			throw ex;
+		}
 	}
 
 	async requestPermission(): Promise<boolean> {
@@ -229,7 +227,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 	}
 
 	private static async ensurePreconditions(): Promise<void> {
-		if (!LocalNotificationsImpl.hasPermission()) {
+		const hasPermission = await LocalNotificationsImpl.hasPermission();
+		if (!hasPermission) {
 			const granted = await LocalNotificationsImpl.requestPermission();
 			if (!granted) throw new Error('Permission not granted');
 		}
@@ -238,8 +237,10 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		if (!enabled) throw new Error('Notifications were manually disabled');
 	}
 
-	private static canSend(): boolean {
-		return LocalNotificationsImpl.hasPermission() && LocalNotificationsImpl.areEnabled();
+	private static async canSend(): Promise<boolean> {
+		const hasPermission = await LocalNotificationsImpl.hasPermission();
+		const areEnabled = LocalNotificationsImpl.areEnabled();
+		return hasPermission && areEnabled;
 	}
 
 	private static areEnabled(): boolean {
@@ -247,18 +248,23 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		return !context || NotificationManagerCompatPackageName.NotificationManagerCompat.from(context).areNotificationsEnabled();
 	}
 
-	private static hasPermission(): boolean {
-		if (android.os.Build.VERSION.SDK_INT < 33) return true; // Before Android 13 all apps have permission to send notifications
-		return hasPermission(android.Manifest.permission.POST_NOTIFICATIONS);
+	private static async hasPermission(): Promise<boolean> {
+		const result = await check('notification');
+		return LocalNotificationsImpl.isAuthorized(result);
 	}
 
 	private static async requestPermission(): Promise<boolean> {
 		try {
-			await requestPermission(android.Manifest.permission.POST_NOTIFICATIONS);
-			return true;
+			const result = await request('notification');
+			return LocalNotificationsImpl.isAuthorized(result);
 		} catch (ex) {
 			return false;
 		}
+	}
+
+	private static isAuthorized(result: Result): boolean {
+		const [status, _] = result;
+		return status === 'authorized';
 	}
 }
 
