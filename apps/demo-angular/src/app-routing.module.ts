@@ -35,6 +35,8 @@ const routes: Routes = [
 	{ path: 'jetpack-compose', loadChildren: () => import('./plugin-demos/jetpack-compose.module').then((m) => m.JetpackComposeModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then((m) => m.LocalNotificationsModule) },
 	{ path: 'localize', loadChildren: () => import('./plugin-demos/localize.module').then((m) => m.LocalizeModule) },
+	{ path: 'mmkv', loadChildren: () => import('./plugin-demos/mmkv.module').then((m) => m.MmkvModule) },
+	{ path: 'mmkv-metal', loadChildren: () => import('./plugin-demos/mmkv-metal.module').then((m) => m.MmkvMetalModule) },
 	{ path: 'pdf', loadChildren: () => import('./plugin-demos/pdf.module').then((m) => m.PdfModule) },
 	{ path: 'picker', loadChildren: () => import('./plugin-demos/picker.module').then((m) => m.PickerModule) },
 	{ path: 'shared-notification-delegate', loadChildren: () => import('./plugin-demos/shared-notification-delegate.module').then((m) => m.SharedNotificationDelegateModule) },

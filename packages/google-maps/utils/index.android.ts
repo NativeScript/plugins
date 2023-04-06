@@ -76,7 +76,7 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(color)));
 	}
 
-	if(typeof options?.opacity === 'number') {
+	if (typeof options?.opacity === 'number') {
 		opts.alpha(options.opacity);
 	}
 
@@ -275,10 +275,7 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	}
 
 	if (options?.bounds) {
-		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(
-			new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng),
-			new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)
-		));
+		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng), new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)));
 	}
 
 	if (typeof options?.transparency) {

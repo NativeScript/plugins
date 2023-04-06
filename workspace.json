@@ -31,6 +31,8 @@
 		"jetpack-compose": "packages/jetpack-compose",
 		"local-notifications": "packages/local-notifications",
 		"localize": "packages/localize",
+		"mmkv": "packages/mmkv",
+		"mmkv-metal": "packages/mmkv-metal",
 		"pdf": "packages/pdf",
 		"picker": "packages/picker",
 		"shared-notification-delegate": "packages/shared-notification-delegate",

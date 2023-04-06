@@ -91,6 +91,12 @@ export class HomeComponent {
 			name: 'localize',
 		},
 		{
+			name: 'mmkv',
+		},
+		{
+			name: 'mmkv-metal',
+		},
+		{
 			name: 'pdf',
 		},
 		{

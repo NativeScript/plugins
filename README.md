@@ -33,6 +33,8 @@ npm start
 - [@nativescript/jetpack-compose](packages/jetpack-compose/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
+- [@nativescript/mmkv](packages/mmkv/README.md)
+- [@nativescript/mmkv-metal](packages/mmkv-metal/README.md)
 - [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)

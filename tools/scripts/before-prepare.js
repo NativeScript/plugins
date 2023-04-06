@@ -15,6 +15,11 @@ module.exports = function (hookArgs, $logger, $projectData) {
 		try {
 			//copy files
 			const resourcesPath = path.join(packagePath, '../../../tools/assets/App_Resources', platform === 'ios' ? 'iOS' : 'Android/src/main/assets');
+			if (platform === 'android') {
+				if (!fs.existsSync(resourcesPath)) {
+					fs.mkdirSync(resourcesPath);
+				}
+			}
 			const copyRecursive = (contents, subPath = '') => {
 				contents.forEach(function (contentPath) {
 					const fullFilePath = path.join(configAppResourcesPath, subPath, contentPath);

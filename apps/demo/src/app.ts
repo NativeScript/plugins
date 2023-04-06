@@ -1,4 +1,5 @@
 import { Application } from '@nativescript/core';
+import '@nativescript/mmkv-metal/local-storage';
 
 // uncomment to test local notifications
 // import "@nativescript/local-notifications";
