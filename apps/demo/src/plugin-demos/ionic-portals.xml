@@ -8,12 +8,14 @@
     <StackLayout row="0" class="p-t-20 p-l-20 p-r-20">
       <Label text="Ionic Portal inside NativeScript" class="text-center font-weight-bold m-b-5" fontSize="22"></Label>
       <Label text="Mix native and webviews for unlimited creativity" fontSize="15" class="font-italic m-b-10 text-center" color="green"></Label>
-      <Button text="Bounce with Joy 🎉" tap="{{ testIt }}" class="btn btn-primary m-b-20"/>
+      <Button text="Bounce with Joy 🎉" tap="{{ testIt }}" margin="0" padding="0" color="blue" height="24"/>
+      <Button text="Sync Now" tap="{{ syncNow }}" margin="0" padding="0" color="blue" height="24"/>
+      <Button text="Reload" tap="{{ reload }}" margin="0" padding="0" color="blue" height="24"/>
     </StackLayout>
 
     <!-- backgroundColor is used to ensure the Portal sizes itself on orientation change - when working properly the yellow should never show when changing size -->
     <!-- adding iosOverflowSafeArea="true" helps stretch width full device when rotating so just depends on what the use case desires-->
-    <ionic:IonicPortal row="1" id="ionicWebPortalSample" iosOverflowSafeArea="true">
+    <ionic:IonicPortal row="1" id="ionicWebPortalSample" iosOverflowSafeArea="true" loaded="{{loadedPortal}}">
     </ionic:IonicPortal>
   </GridLayout>
 </Page>
