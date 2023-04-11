@@ -293,10 +293,24 @@ module.exports = {
 				},
 			},
 			// @nativescript/pdf
-			'pdf': {
+			pdf: {
 				build: {
 					script: 'nx run pdf:build.all',
 					description: '@nativescript/pdf: Build',
+				},
+			},
+			// @nativescript/swift-ui
+			'swift-ui': {
+				build: {
+					script: 'nx run swift-ui:build.all',
+					description: '@nativescript/swift-ui: Build',
+				},
+			},
+			// @nativescript/jetpack-compose
+			'jetpack-compose': {
+				build: {
+					script: 'nx run jetpack-compose:build.all',
+					description: '@nativescript/jetpack-compose: Build',
 				},
 			},
 			'build-all': {
@@ -441,9 +455,17 @@ module.exports = {
 				script: 'nx run haptics:focus',
 				description: 'Focus on @nativescript/haptics',
 			},
-			'pdf': {
+			pdf: {
 				script: 'nx run pdf:focus',
 				description: 'Focus on @nativescript/pdf',
+			},
+			'swift-ui': {
+				script: 'nx run swift-ui:focus',
+				description: 'Focus on @nativescript/swift-ui',
+			},
+			'jetpack-compose': {
+				script: 'nx run jetpack-compose:focus',
+				description: 'Focus on @nativescript/jetpack-compose',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

@@ -1116,6 +1116,14 @@ export class Marker extends OverLayBase implements IMarker {
 		}
 	}
 
+	get opacity(): number {
+		return this.native.getAlpha();
+	}
+
+	set opacity(value) {
+		this.native.setAlpha(value);
+	}
+
 	get icon(): any {
 		return this.#icon;
 	}
@@ -1911,6 +1919,14 @@ export class Projection implements IProjection {
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number } {
 		const point = this.native.toScreenLocation(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
 		return { x: point.x, y: point.y };
+	}
+
+	containsCoordinate(coordinate: Coordinate): boolean {
+		const visibleRegion = this.native.getVisibleRegion();
+		if (visibleRegion) {
+			return visibleRegion?.latLngBounds?.contains?.(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
+		}
+		return false;
 	}
 }
 

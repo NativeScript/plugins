@@ -1,4 +1,5 @@
-import { Application, Device, File, Utils } from '@nativescript/core';
+import { Application, Device, File, Utils, ImageSource } from '@nativescript/core';
+import type { ShareImageOptions } from '.';
 
 let numberOfImagesCreated = 0;
 const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : (<any>android).support.v4.content;
@@ -19,15 +20,49 @@ function useAndroidX() {
 	return global.androidx && global.androidx.appcompat;
 }
 
-export function shareImage(image, subject) {
+const imageProperties: {
+	[format: string]: () => {
+		mimeType: string;
+		compressFormat: android.graphics.Bitmap.CompressFormat;
+		extension: string;
+	};
+} = {
+	png: () => ({
+		mimeType: 'image/png',
+		compressFormat: android.graphics.Bitmap.CompressFormat.PNG,
+		extension: 'png',
+	}),
+	jpg: () => ({
+		mimeType: 'image/jpeg',
+		compressFormat: android.graphics.Bitmap.CompressFormat.JPEG,
+		extension: 'jpg',
+	}),
+};
+
+export function shareImage(image: ImageSource, subjectOrOptions?: string | ShareImageOptions, caption?: string) {
+	let subject: string;
+	let fileFormat = 'jpg';
+	if (typeof subjectOrOptions === 'string') {
+		subject = subjectOrOptions;
+	} else if (subjectOrOptions && typeof subjectOrOptions === 'object') {
+		subject = subjectOrOptions.subject;
+		caption = subjectOrOptions.caption;
+		fileFormat = subjectOrOptions.fileFormat || fileFormat;
+		if (!Object.hasOwnProperty.call(fileFormat)) {
+			fileFormat = 'jpg';
+		}
+	}
 	numberOfImagesCreated++;
 
-	const intent = getIntent('image/jpeg');
+	const properties = imageProperties[fileFormat]();
+
+	const intent = getIntent(properties.mimeType);
 
 	const stream = new java.io.ByteArrayOutputStream();
-	image.android.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, stream);
+	const bitmap: android.graphics.Bitmap = image.android;
+	bitmap.compress(properties.compressFormat, 100, stream);
 
-	const imageFileName = 'socialsharing' + numberOfImagesCreated + '.jpg';
+	const imageFileName = `socialsharing${numberOfImagesCreated}.${properties.extension}`;
 	const newFile = new java.io.File((<android.content.Context>Utils.android.getApplicationContext()).getExternalFilesDir(null), imageFileName);
 
 	const fos = new java.io.FileOutputStream(newFile);
@@ -45,6 +80,10 @@ export function shareImage(image, subject) {
 	}
 	intent.putExtra(android.content.Intent.EXTRA_STREAM, shareableFileUri);
 
+	if (typeof caption === 'string') {
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, caption);
+	}
+
 	share(intent, subject);
 }
 
@@ -55,7 +94,7 @@ export function shareText(text, subject) {
 	share(intent, subject);
 }
 
-export function sharePdf(pdf: File, subject?: string) {
+export function sharePdf(pdf: File, subject?: string, caption?: string) {
 	const intent = getIntent('application/pdf');
 	const fileName = pdf.name;
 	const newFile = new java.io.File((<android.content.Context>Utils.android.getApplicationContext()).getExternalFilesDir(null), fileName);
@@ -75,6 +114,10 @@ export function sharePdf(pdf: File, subject?: string) {
 	}
 
 	intent.putExtra(android.content.Intent.EXTRA_STREAM, shareableFileUri);
+
+	if (typeof caption === 'string') {
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, caption);
+	}
 
 	share(intent, subject);
 }
@@ -135,7 +178,7 @@ export function shareViaFacebook(text?: string, url?: string): Promise<void> {
 					reject();
 					return;
 				}
-				let manager = (<any>com).facebook.CallbackManager.Factory.create();
+				const manager = (<any>com).facebook.CallbackManager.Factory.create();
 				Application.android.off('activityResult');
 				Application.android.on('activityResult', (args) => {
 					manager.onActivityResult(args.requestCode, args.resultCode, args.intent);

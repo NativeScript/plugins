@@ -1,6 +1,48 @@
 import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
-import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, CircleTapEvent, PolygonTapEvent, PolylineTapEvent, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, ICap, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
+import {
+	ActiveBuildingEvent,
+	ActiveLevelEvent,
+	CameraPositionEvent,
+	CameraPositionStartEvent,
+	CircleOptions,
+	Coordinate,
+	CoordinateBounds,
+	GroundOverlayOptions,
+	CircleTapEvent,
+	PolygonTapEvent,
+	PolylineTapEvent,
+	GroundOverlayTapEvent,
+	ICameraPosition,
+	ICameraUpdate,
+	ICircle,
+	IGoogleMap,
+	IGroundOverlay,
+	IIndoorBuilding,
+	IIndoorLevel,
+	IMarker,
+	InfoWindowEvent,
+	IPatternItem,
+	ICap,
+	IPoi,
+	IPolygon,
+	IPolyline,
+	IProjection,
+	ITileOverlay,
+	ITileProvider,
+	IUISettings,
+	IVisibleRegion,
+	MapTapEvent,
+	MarkerDragEvent,
+	MarkerInfoEvent,
+	MarkerOptions,
+	MarkerTapEvent,
+	PoiTapEvent,
+	PolygonOptions,
+	PolylineOptions,
+	Style,
+	TileOverlayOptions,
+} from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
@@ -1031,6 +1073,14 @@ export class Marker extends OverLayBase implements IMarker {
 		}
 	}
 
+	get opacity(): number {
+		return this.native.opacity;
+	}
+
+	set opacity(value) {
+		this.native.opacity = value;
+	}
+
 	get native() {
 		return this.#native;
 	}
@@ -1773,6 +1823,10 @@ export class Projection implements IProjection {
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number } {
 		const point = this.native.pointForCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
 		return { x: point.x, y: point.y };
+	}
+
+	containsCoordinate(coordinate: Coordinate): boolean {
+		return this.native.containsCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
 	}
 }
 

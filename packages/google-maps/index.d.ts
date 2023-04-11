@@ -290,8 +290,9 @@ export interface IMarker {
 	position: Coordinate;
 	title: string;
 	snippet: string;
-	icon: any /* Image, ImageSource, UIImage & Bitmap */;
+	icon: any /* ImageSource, UIImage & Bitmap */;
 	color: Color | string;
+	opacity: number;
 	rotation: number;
 	visible: boolean;
 	flat: boolean;
@@ -312,6 +313,7 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	snippet: string;
 	icon: any; /* Image, ImageSource, UIImage & Bitmap */
 	color: Color | string;
+	opacity: number;
 	rotation: number;
 	visible: boolean;
 	flat: boolean;
@@ -346,14 +348,20 @@ export interface IProjection {
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number };
 
 	visibleRegion(): VisibleRegion;
+
+	containsCoordinate(coordinate: Coordinate): boolean;
 }
 
-export class Projection implements IProjection {
+export class Projection implements IProjection, Partial<NativeObject> {
 	coordinateForPoint(point: { x: number; y: number }): Coordinate;
 
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number };
 
 	visibleRegion(): VisibleRegion;
+
+	containsCoordinate(coordinate: Coordinate): boolean;
+
+	native?: any;
 }
 
 export interface TileOverlayOptions extends ITileOverlay {}

@@ -1,4 +1,4 @@
-import { Enums, Application, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings } from '@nativescript/core';
+import { Application, CoreTypes, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings, Utils } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
 import * as permissions from 'nativescript-permissions';
@@ -16,7 +16,7 @@ let attachedForErrorHandling = false;
 
 function _ensureLocationClient() {
 	// Wrapped in a function as we should not access java object there because of the snapshots.
-	fusedLocationClient = fusedLocationClient || com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(Application.android.context);
+	fusedLocationClient = fusedLocationClient || com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(Utils.android.getApplicationContext());
 }
 
 Application.android.on(AndroidApplication.activityResultEvent, function (args: any) {
@@ -37,7 +37,7 @@ function isAirplaneModeOn(): boolean {
 
 function isProviderEnabled(provider: string): boolean {
 	try {
-		const locationManager: android.location.LocationManager = (<android.content.Context>Application.android.context).getSystemService(android.content.Context.LOCATION_SERVICE);
+		const locationManager: android.location.LocationManager = (<android.content.Context>Utils.android.getApplicationContext()).getSystemService(android.content.Context.LOCATION_SERVICE);
 		return locationManager.isProviderEnabled(provider);
 	} catch (ex) {
 		return false;
@@ -102,21 +102,18 @@ function _getLocationCallback(watchId, onLocation): any {
 }
 
 function _getLocationRequest(options: Options): any {
-	const mLocationRequest = new com.google.android.gms.location.LocationRequest();
-	const updateTime = options?.updateTime ?? minTimeUpdate;
-	mLocationRequest.setInterval(updateTime);
-	const minUpdateTime = options?.minimumUpdateTime ?? Math.min(updateTime, fastestTimeUpdate);
-	mLocationRequest.setFastestInterval(minUpdateTime);
-	if (options?.updateDistance) {
-		mLocationRequest.setSmallestDisplacement(options.updateDistance);
-	}
-	if (options?.desiredAccuracy === Enums.Accuracy.high) {
-		mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY);
-	} else {
-		mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+	const priority = com.google.android.gms.location.Priority[options?.desiredAccuracy === CoreTypes.Accuracy.high ? 'PRIORITY_HIGH_ACCURACY' : 'PRIORITY_BALANCED_POWER_ACCURACY'];
+	const updateIntervalMillis = options?.updateTime ?? minTimeUpdate;
+	const minUpdateIntervalMillis = options?.minimumUpdateTime ?? Math.min(updateIntervalMillis, fastestTimeUpdate);
+	const minUpdateDistanceMeters = options?.updateDistance;
+
+	const mLocationRequestBuilder = new com.google.android.gms.location.LocationRequest.Builder(priority, updateIntervalMillis);
+	mLocationRequestBuilder.setMinUpdateIntervalMillis(minUpdateIntervalMillis);
+	if (minUpdateDistanceMeters) {
+		mLocationRequestBuilder.setMinUpdateDistanceMeters(minUpdateDistanceMeters);
 	}
 
-	return mLocationRequest;
+	return mLocationRequestBuilder.build();
 }
 
 function _requestLocationPermissions(always: boolean): Promise<void> {
@@ -208,7 +205,7 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
 
 export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType) {
 	const zonedErrorCallback = zonedCallback(errorCallback);
-	zonedErrorCallback(new Error("watchPermissionStatus() is not available on Android"));
+	zonedErrorCallback(new Error('watchPermissionStatus() is not available on Android'));
 	return null;
 }
 
@@ -286,7 +283,7 @@ function _isGooglePlayServicesAvailable(): boolean {
 
 	let isLocationServiceEnabled = true;
 	const googleApiAvailability = com.google.android.gms.common.GoogleApiAvailability.getInstance();
-	const resultCode = googleApiAvailability.isGooglePlayServicesAvailable(Application.android.context);
+	const resultCode = googleApiAvailability.isGooglePlayServicesAvailable(Utils.android.getApplicationContext());
 	if (resultCode !== com.google.android.gms.common.ConnectionResult.SUCCESS) {
 		isLocationServiceEnabled = false;
 	}
@@ -301,18 +298,18 @@ function _isLocationServiceEnabled(options?: Options): Promise<boolean> {
 			return;
 		}
 
-		options = options || { desiredAccuracy: Enums.Accuracy.high, updateTime: 0, updateDistance: 0, maximumAge: 0, timeout: 0 };
+		options = options || { desiredAccuracy: CoreTypes.Accuracy.high, updateTime: 0, updateDistance: 0, maximumAge: 0, timeout: 0 };
 		const locationRequest = _getLocationRequest(options);
 		const locationSettingsBuilder = new com.google.android.gms.location.LocationSettingsRequest.Builder();
 		locationSettingsBuilder.addLocationRequest(locationRequest);
 		locationSettingsBuilder.setAlwaysShow(true);
-		const locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Application.android.context);
+		const locationSettingsClient = com.google.android.gms.location.LocationServices.getSettingsClient(Utils.android.getApplicationContext());
 		locationSettingsClient.checkLocationSettings(locationSettingsBuilder.build()).addOnSuccessListener(_getTaskSuccessListener(resolve)).addOnFailureListener(_getTaskFailListener(reject));
 	});
 }
 
 function _goToPhoneSettings() {
-	const intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts('package', Application.android.context.getPackageName(), null));
+	const intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, android.net.Uri.fromParts('package', Utils.android.getApplicationContext().getPackageName(), null));
 	const activity = Application.android.foregroundActivity || Application.android.startActivity;
 	intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
 	activity.startActivity(intent);
