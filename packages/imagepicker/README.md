@@ -110,7 +110,10 @@ imagePickerObj
     })
     .then(function(selection) {
         selection.forEach(function(selected) {
-            // process the selected image
+            this.imageSource = selected.asset;
+            this.type = selected.type;
+            this.filesize = selected.filesize;
+            //etc
         });
         list.items = selection;
     }).catch(function (e) {
