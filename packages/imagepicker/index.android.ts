@@ -1,9 +1,25 @@
-import { ImageAsset, Application, AndroidApplication, Utils } from '@nativescript/core';
+import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders } from '@nativescript/core';
 import * as permissions from 'nativescript-permissions';
 
 import { ImagePickerMediaType, Options } from './common';
 export * from './common';
-
+let copyToAppFolder;
+let renameFileTo;
+let fileMap = {};
+let videoFiles = {
+	mp4: true,
+	mov: true,
+	avi: true,
+	mkv: true,
+	wmv: true,
+	flv: true,
+	m4v: true,
+	'3gp': true,
+	'3g2': true,
+	mpeg: true,
+	mpeg4: true,
+	mpeg2: true,
+};
 class UriHelper {
 	public static _calculateFileUri(uri: android.net.Uri) {
 		let DocumentsContract = (<any>android.provider).DocumentsContract;
@@ -140,6 +156,8 @@ export class ImagePicker {
 
 	constructor(options: Options) {
 		this._options = options;
+		copyToAppFolder = options.copyToAppFolder;
+		renameFileTo = options.renameFileTo;
 	}
 
 	get mode(): string {
@@ -202,6 +220,47 @@ export class ImagePicker {
 				let resultCode = args.resultCode;
 				let data = args.intent;
 
+				const handle = (selectedAsset, i?) => {
+					const file = File.fromPath(selectedAsset.android);
+					let copiedFile: any = false;
+
+					let item: any = {
+						asset: selectedAsset,
+						filename: file.name,
+						originalFilename: file.name,
+						type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
+						path: file.path,
+					};
+					if (copyToAppFolder) {
+						let extension = file.name.split('.').pop();
+						let filename = file.name;
+						if (renameFileTo) {
+							if (i || i === 0) {
+								filename = renameFileTo + '-' + i + '.' + extension;
+							} else {
+								filename = renameFileTo + '.' + extension;
+							}
+							item.filename = filename;
+						}
+						let newPath = knownFolders.documents().path + '/' + copyToAppFolder + '/' + filename;
+						copiedFile = File.fromPath(newPath);
+						item.path = newPath;
+						item.asset.android = item.path;
+						copiedFile.writeSync(file.readSync());
+						item.filesize = new java.io.File(item.path).length();
+					}
+					if (item.type == 'video') {
+						let thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
+						let retriever = new android.media.MediaMetadataRetriever();
+						retriever.setDataSource(item.path);
+						item.thumbnail = thumb;
+						let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
+						let duration = parseInt(time) / 1000;
+						item.duration = duration;
+					}
+					return item;
+				};
+
 				if (requestCode === RESULT_CODE_PICKER_IMAGES) {
 					if (resultCode === android.app.Activity.RESULT_OK) {
 						try {
@@ -217,7 +276,8 @@ export class ImagePicker {
 										if (uri) {
 											const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
 											const selectedAsset = new ImageAsset(val);
-											results.push(selectedAsset);
+											let item = handle(selectedAsset, i);
+											results.push(item);
 										}
 									}
 								}
@@ -225,7 +285,8 @@ export class ImagePicker {
 								const uri = data.getData();
 								const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
 								const selectedAsset = new ImageAsset(val);
-								results.push(selectedAsset);
+								let item = handle(selectedAsset);
+								results.push(item);
 							}
 
 							Application.android.off(AndroidApplication.activityResultEvent, onResult);
