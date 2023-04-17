@@ -1,5 +1,5 @@
 import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders } from '@nativescript/core';
-import * as permissions from 'nativescript-permissions';
+import * as permissions from '@nativescript-community/perms';
 
 import { ImagePickerMediaType, Options } from './common';
 export * from './common';
@@ -188,23 +188,26 @@ export class ImagePicker {
 		return mimeTypes;
 	}
 
-	authorize(): Promise<void> {
+	authorize(): Promise<permissions.MultiResult | permissions.Result> {
 		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
-			const requested = [];
+			let requested: { [key: string]: permissions.PermissionOptions } = {};
+			const mediaPerms = {
+				photo: { reason: 'To pick images from your gallery' },
+				video: { reason: 'To pick videos from your gallery' },
+			};
 			if (this.mediaType === 'image/*') {
-				requested.push((<any>android).Manifest.permission.READ_MEDIA_IMAGES);
+				requested['photo'] = mediaPerms['photo'];
 			} else if (this.mediaType === 'video/*') {
-				requested.push((<any>android).Manifest.permission.READ_MEDIA_VIDEO);
+				requested['video'] = mediaPerms['video'];
 			} else {
-				requested.push((<any>android).Manifest.permission.READ_MEDIA_IMAGES);
-				requested.push((<any>android).Manifest.permission.READ_MEDIA_VIDEO);
+				requested = mediaPerms;
 			}
 
-			return permissions.requestPermission(requested);
+			return permissions.request(requested);
 		} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
-			return permissions.requestPermission([(<any>android).Manifest.permission.READ_EXTERNAL_STORAGE]);
+			return permissions.request('storage', { read: true });
 		} else {
-			return Promise.resolve();
+			return Promise.resolve({ storage: 'authorized' });
 		}
 	}
 

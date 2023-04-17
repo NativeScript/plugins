@@ -10,19 +10,23 @@ As of 2.0, it returns rich information about your selection including filesize, 
 
 
 ## Table of Contents
-* [Installation](#installation)
-* [Required Permissions](#required-permissions)
-    * [Android](#android)
-    * [iOS](#ios)
-* [Usage](#usage)
-    * [Importing the plugin](#importing-the-plugin)
-    * [Creating the Imagepicker instance](#creating-the-imagepicker-instance)
-    * [Using the ImagePicker Instance](#using-the-imagepicker-instance)
-* [API](#api)
-    * [ImagePicker](#imagepicker)
-    * [create()](#create)
-    * [Options](#options)
-    * [ImagePickerMediaType](#imagepickermediatype)
+- [@nativescript/imagepicker](#nativescriptimagepicker)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Required Permissions](#required-permissions)
+    - [Android](#android)
+    - [iOS](#ios)
+  - [Usage](#usage)
+    - [Importing the plugin](#importing-the-plugin)
+    - [Creating the Imagepicker instance](#creating-the-imagepicker-instance)
+    - [Using the ImagePicker Instance](#using-the-imagepicker-instance)
+  - [API](#api)
+    - [ImagePicker](#imagepicker)
+    - [create()](#create)
+    - [Response](#response)
+    - [Options](#options)
+    - [ImagePickerMediaType](#imagepickermediatype)
+  - [License](#license)
 
 ## Installation
 ```cli
@@ -120,7 +124,7 @@ imagePickerObj
         // process error
     });
 ```
-> **Note** To request permissions for Android 6+ (API 23+), use [nativescript-permissions](https://www.npmjs.com/package/nativescript-permissions) plugin.
+> **Note** To request permissions for Android 6+ (API 23+), use [@nativescript-community/perms](https://www.npmjs.com/package/@nativescript-community/perms) plugin.
 
 ## API
 
