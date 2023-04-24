@@ -1,38 +1,38 @@
 {
-  "name": "@nativescript/geolocation",
-  "version": "8.0.2",
-  "description": "Provides API for getting and monitoring location for NativeScript app.",
-  "main": "index",
-  "typings": "index.d.ts",
-  "nativescript": {
-    "platforms": {
-      "ios": "6.0.0",
-      "android": "6.0.0"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NativeScript/plugins.git"
-  },
-  "keywords": [
-    "NativeScript",
-    "JavaScript",
-    "TypeScript",
-    "iOS",
-    "Android"
-  ],
-  "author": {
-    "name": "NativeScript",
-    "email": "oss@nativescript.org"
-  },
-  "bugs": {
-    "url": "https://github.com/NativeScript/plugins/issues"
-  },
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/NativeScript/plugins",
-  "readmeFilename": "README.md",
-  "bootstrapper": "@nativescript/plugin-seed",
-  "dependencies": {
-    "nativescript-permissions": "1.3.11"
-  }
+	"name": "@nativescript/geolocation",
+	"version": "8.2.0",
+	"description": "Provides API for getting and monitoring location for NativeScript app.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "6.0.0",
+			"android": "6.0.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS",
+		"Android"
+	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed",
+	"dependencies": {
+		"nativescript-permissions": "1.3.11"
+	}
 }

@@ -1,5 +1,6 @@
 {
-	"root": "packages/local-notifications",
+	"name": "local-notifications",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/local-notifications",
 	"projectType": "library",
 	"generators": {},
@@ -30,12 +31,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/local-notifications"],
+			"outputs": ["{workspaceRoot}/dist/packages/local-notifications"],
 			"options": {
-				"commands": ["node tools/scripts/build-finish.ts local-notifications"],
+				"commands": ["node tools/scripts/build-finish.ts local-notifications", "mkdirp dist/packages/local-notifications/platforms/android", "cp -R packages/local-notifications/platforms/android/app-release.aar dist/packages/local-notifications/platforms/android/app-release.aar"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages local-notifications"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

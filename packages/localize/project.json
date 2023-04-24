@@ -1,5 +1,6 @@
 {
-	"root": "packages/localize",
+	"name": "localize",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/localize",
 	"projectType": "library",
 	"generators": {},
@@ -32,12 +33,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/localize"],
+			"outputs": ["{workspaceRoot}/dist/packages/localize"],
 			"options": {
 				"commands": ["./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -54,7 +55,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages localize"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

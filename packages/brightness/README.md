@@ -1,43 +1,37 @@
 # @nativescript/brightness
 
 ```cli
-ns plugin add @nativescript/brightness
+npm install @nativescript/brightness
 ```
 
-This command automatically installs the necessary files, as well as stores @nativescript/brightness as a dependency in your project's `package.json` file.
-
-> **Note:** This plugin requires `<uses-permission android:name="android.permission.WRITE_SETTINGS"/>` to be added in the android manifest.
+> **Note:** This plugin requires `<uses-permission android:name="android.permission.WRITE_SETTINGS"/>` to be added in the `AndroidManifest.xml`.
 
 ## Usage
 
-To use the brightness module you must first `require()` and instantiate it:
-
-```javascript
-// JavaScript
-var nativescriptBrightness = require('@nativescript/brightness');
-var brightness = new nativescriptBrightness.Brightness();
-```
-
-Or if you’re using TypeScript, `import` the module:
-
+To use the plugin, you should first import it.
 ```typescript
 // TypeScript
 import { Brightness } from '@nativescript/brightness';
-const brightness = new Brightness();
 ```
 
-After you have a reference to the module you can then call its `get()` and `set()` methods. For example, the code below updates you screen's brightness with an `intensity` setting of 25%.
-
-The `intensity` can be set to a value from 1 to 100.
+### Setting the device brightness level
+To set the brightness level of the device, call the `set()` method passing it the [BrightnessOptions](#brightnessoptions) object with the desired `intensity` value.
 
 ```js
 // TypeScript
-import { Brightness } from '@nativescript/brightness';
 const brightness = new Brightness();
 
 brightness.set({
 	intensity: 25,
 });
+```
+
+The `intensity` value can range from `1` to `100`.
+
+### Getting the device brightness Level
+To get the device's brightness, call the `get()` method.
+```ts
+bightnessLevel : number = brightness.get()
 ```
 
 ## API
@@ -46,9 +40,9 @@ brightness.set({
 
 | Method                          | Description                                                                                                                    |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| set(options: BrightnessOptions) | set screen's brightness to the desired intensity                                                                               |
-| get                             | returns current screen brightness value as a number between 0 and 100                                                          |
-| getNative                       | returns current screen brightness value as returned from the native api: between 0.0 and 1.0 for iOS and 0 and 255 for android |
+| `set(options: BrightnessOptions)` | Sets screen's brightness to the desired intensity                                                                               |
+| `get()`                            | Returns current screen brightness value as a number between `0` and `100`                                                          |
+| `getNative() `                      | returns current screen brightness value as returned from the native api: between` 0.0` and `1.0` for iOS and `0` and `255` for android |
 
 ### BrightnessOptions
 

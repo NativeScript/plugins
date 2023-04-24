@@ -62,6 +62,10 @@
         <string>zbra</string>
         <string>filza</string>
         <string>activator</string>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
     </array>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
@@ -71,5 +75,20 @@
     <array>
         <string>_dartobservatory._tcp</string>
     </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb431933348854875</string>
+      </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>431933348854875</string>
+    <key>FacebookClientToken</key>
+    <string>900653422146a6765055f76de2d60e19</string>
+    <key>FacebookDisplayName</key>
+    <string>NativeScriptPluginsDemo</string>
   </dict>
 </plist>

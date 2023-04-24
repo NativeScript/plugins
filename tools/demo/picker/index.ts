@@ -10,27 +10,31 @@ interface IDataItem {
 }
 
 export class DemoSharedPicker extends DemoSharedBase {
-	pickerItems: ObservableArray<string>;
+	pickerItems: ObservableArray<any>;
 	observableDataItems: ObservableArray<IDataItem>;
 
 	constructor() {
 		super();
 
-		this.pickerItems = this.getItems(100);
+		this.pickerItems = this.getDataItems(100);
 	}
+
 	pickerOpened(args: EventData) {
 		console.log('Picker > Opened', (<any>args.object).className);
 	}
 
-	pickerClosed(args: EventData) {
-		console.log('Picker > Closed', (<any>args.object).className);
+	pickerClosed(args) {
+		let index = args.object?.selectedIndex;
+		console.log('Picker > Closed', index);
 	}
 
 	getItems(size: number) {
-		let array = new ObservableArray<string>();
+		let array = new ObservableArray<any>();
 
 		for (let i = 0; i < size; i++) {
-			array.push('Item ' + i);
+			array.push({
+				name: 'Item ' + i,
+			});
 		}
 
 		return array;

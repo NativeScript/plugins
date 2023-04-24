@@ -1,7 +1,49 @@
 import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
-import { ActiveBuildingEvent, ActiveLevelEvent, CameraPositionEvent, CameraPositionStartEvent, CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, GroundOverlayTapEvent, ICameraPosition, ICameraUpdate, ICircle, IGoogleMap, IGroundOverlay, IIndoorBuilding, IIndoorLevel, IMarker, InfoWindowEvent, IPatternItem, IPoi, IPolygon, IPolyline, IProjection, ITileOverlay, ITileProvider, IUISettings, IVisibleRegion, MapTapEvent, MarkerDragEvent, MarkerInfoEvent, MarkerOptions, MarkerTapEvent, PoiTapEvent, PolygonOptions, PolylineOptions, Style, TileOverlayOptions } from '.';
-import { bearingProperty, JointType, latProperty, lngProperty, MapViewBase, tiltProperty, zoomProperty } from './common';
+import {
+	ActiveBuildingEvent,
+	ActiveLevelEvent,
+	CameraPositionEvent,
+	CameraPositionStartEvent,
+	CircleOptions,
+	Coordinate,
+	CoordinateBounds,
+	GroundOverlayOptions,
+	CircleTapEvent,
+	PolygonTapEvent,
+	PolylineTapEvent,
+	GroundOverlayTapEvent,
+	ICameraPosition,
+	ICameraUpdate,
+	ICircle,
+	IGoogleMap,
+	IGroundOverlay,
+	IIndoorBuilding,
+	IIndoorLevel,
+	IMarker,
+	InfoWindowEvent,
+	IPatternItem,
+	ICap,
+	IPoi,
+	IPolygon,
+	IPolyline,
+	IProjection,
+	ITileOverlay,
+	ITileProvider,
+	IUISettings,
+	IVisibleRegion,
+	MapTapEvent,
+	MarkerDragEvent,
+	MarkerInfoEvent,
+	MarkerOptions,
+	MarkerTapEvent,
+	PoiTapEvent,
+	PolygonOptions,
+	PolylineOptions,
+	Style,
+	TileOverlayOptions,
+} from '.';
+import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
 export class CameraUpdate implements ICameraUpdate {
@@ -298,7 +340,25 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	}
 
 	mapViewDidTapOverlay(mapView: GMSMapView, overlay: GMSOverlay): void {
-		if (overlay instanceof GMSGroundOverlay) {
+		if (overlay instanceof GMSCircle) {
+			this._owner?.get?.().notify?.(<CircleTapEvent>{
+				eventName: MapView.circleTapEvent,
+				object: this._owner?.get?.(),
+				circle: Circle.fromNative(overlay),
+			});
+		} else if (overlay instanceof GMSPolygon) {
+			this._owner?.get?.().notify?.(<PolygonTapEvent>{
+				eventName: MapView.polygonTapEvent,
+				object: this._owner?.get?.(),
+				polygon: Polygon.fromNative(overlay),
+			});
+		} else if (overlay instanceof GMSPolyline) {
+			this._owner?.get?.().notify?.(<PolylineTapEvent>{
+				eventName: MapView.polylineTapEvent,
+				object: this._owner?.get?.(),
+				polyline: Polyline.fromNative(overlay),
+			});
+		} else if (overlay instanceof GMSGroundOverlay) {
 			this._owner?.get?.().notify?.(<GroundOverlayTapEvent>{
 				eventName: MapView.groundOverlayTapEvent,
 				object: this._owner?.get?.(),
@@ -781,7 +841,7 @@ export class GoogleMap implements IGoogleMap {
 	}
 
 	set cameraPosition(value) {
-		this.native.camera = value.native;
+		this.native.moveCamera(CameraUpdate.fromCameraPosition(value).native);
 	}
 
 	get maxZoomLevel(): number {
@@ -818,6 +878,41 @@ export class GoogleMap implements IGoogleMap {
 
 	get uiSettings(): IUISettings {
 		return UISettings.fromNative(this.native.settings);
+	}
+
+	get mapType() {
+		switch (this.native.mapType) {
+			case GMSMapViewType.kGMSTypeNone:
+				return MapType.None;
+			case GMSMapViewType.kGMSTypeNormal:
+				return MapType.Normal;
+			case GMSMapViewType.kGMSTypeSatellite:
+				return MapType.Satellite;
+			case GMSMapViewType.kGMSTypeTerrain:
+				return MapType.Terrain;
+			case GMSMapViewType.kGMSTypeHybrid:
+				return MapType.Hybrid;
+		}
+	}
+
+	set mapType(value: MapType) {
+		switch (value) {
+			case MapType.None:
+				this.native.mapType = GMSMapViewType.kGMSTypeNone;
+				break;
+			case MapType.Normal:
+				this.native.mapType = GMSMapViewType.kGMSTypeNormal;
+				break;
+			case MapType.Satellite:
+				this.native.mapType = GMSMapViewType.kGMSTypeSatellite;
+				break;
+			case MapType.Terrain:
+				this.native.mapType = GMSMapViewType.kGMSTypeTerrain;
+				break;
+			case MapType.Hybrid:
+				this.native.mapType = GMSMapViewType.kGMSTypeHybrid;
+				break;
+		}
 	}
 
 	#mapStyle: Style[];
@@ -874,6 +969,10 @@ export class GoogleMap implements IGoogleMap {
 		const polyline = Polyline.fromNative(intoNativePolylineOptions(options));
 		polyline.native.map = this.native;
 		return polyline;
+	}
+
+	moveCamera(update: CameraUpdate) {
+		this.native.moveCamera(update.native);
 	}
 
 	animateCamera(update: CameraUpdate) {
@@ -949,6 +1048,7 @@ abstract class OverLayBase {
 export class Marker extends OverLayBase implements IMarker {
 	#native: GMSMarker;
 	#color = new Color('red');
+	#visible = true;
 	static fromNative(nativeMarker: GMSMarker) {
 		if (nativeMarker instanceof GMSMarker) {
 			const marker = new Marker();
@@ -971,6 +1071,14 @@ export class Marker extends OverLayBase implements IMarker {
 			this.#color = new Color(value);
 			this.native.icon = GMSMarker.markerImageWithColor(this.#color.ios);
 		}
+	}
+
+	get opacity(): number {
+		return this.native.opacity;
+	}
+
+	set opacity(value) {
+		this.native.opacity = value;
 	}
 
 	get native() {
@@ -1042,6 +1150,15 @@ export class Marker extends OverLayBase implements IMarker {
 
 	set rotation(value: number) {
 		this.native.rotation = value;
+	}
+
+	get visible(): boolean {
+		return this.#visible;
+	}
+
+	set visible(value: boolean) {
+		this.#visible = value;
+		this.native.opacity = this.visible ? 1 : 0;
 	}
 
 	get flat(): boolean {
@@ -1382,7 +1499,7 @@ export class Polyline extends OverLayBase implements IPolyline {
 	}
 
 	jointType: JointType;
-	pattern: any[];
+	pattern: PatternItem[];
 
 	get color(): Color {
 		return Color.fromIosColor(this.native.strokeColor);
@@ -1396,8 +1513,8 @@ export class Polyline extends OverLayBase implements IPolyline {
 		}
 	}
 
-	startCap: any;
-	endCap: any;
+	startCap: Cap;
+	endCap: Cap;
 }
 
 export class GroundOverlay extends OverLayBase implements IGroundOverlay {
@@ -1707,6 +1824,10 @@ export class Projection implements IProjection {
 		const point = this.native.pointForCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
 		return { x: point.x, y: point.y };
 	}
+
+	containsCoordinate(coordinate: Coordinate): boolean {
+		return this.native.containsCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
+	}
 }
 
 export class VisibleRegion implements IVisibleRegion {
@@ -1759,3 +1880,4 @@ export class VisibleRegion implements IVisibleRegion {
 }
 
 export class PatternItem implements IPatternItem {}
+export class Cap implements ICap {}

@@ -285,11 +285,39 @@ module.exports = {
 					description: '@nativescript/ionic-portals: Build',
 				},
 			},
-			// @nativescript/sflutterkia
+			// @nativescript/flutter
 			flutter: {
 				build: {
 					script: 'nx run flutter:build.all',
 					description: '@nativescript/flutter: Build',
+				},
+			},
+			// @nativescript/haptics
+			haptics: {
+				build: {
+					script: 'nx run haptics:build.all',
+					description: '@nativescript/haptics: Build',
+				},
+			},
+			// @nativescript/pdf
+			pdf: {
+				build: {
+					script: 'nx run pdf:build.all',
+					description: '@nativescript/pdf: Build',
+				},
+			},
+			// @nativescript/swift-ui
+			'swift-ui': {
+				build: {
+					script: 'nx run swift-ui:build.all',
+					description: '@nativescript/swift-ui: Build',
+				},
+			},
+			// @nativescript/jetpack-compose
+			'jetpack-compose': {
+				build: {
+					script: 'nx run jetpack-compose:build.all',
+					description: '@nativescript/jetpack-compose: Build',
 				},
 			},
 			'build-all': {
@@ -433,6 +461,22 @@ module.exports = {
 			flutter: {
 				script: 'nx run flutter:focus',
 				description: 'Focus on @nativescript/flutter',
+			},
+			haptics: {
+				script: 'nx run haptics:focus',
+				description: 'Focus on @nativescript/haptics',
+			},
+			pdf: {
+				script: 'nx run pdf:focus',
+				description: 'Focus on @nativescript/pdf',
+			},
+			'swift-ui': {
+				script: 'nx run swift-ui:focus',
+				description: 'Focus on @nativescript/swift-ui',
+			},
+			'jetpack-compose': {
+				script: 'nx run jetpack-compose:focus',
+				description: 'Focus on @nativescript/jetpack-compose',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

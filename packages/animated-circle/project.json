@@ -1,5 +1,6 @@
 {
-	"root": "packages/animated-circle",
+	"name": "animated-circle",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/animated-circle",
 	"projectType": "library",
 	"generators": {},
@@ -30,12 +31,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/animated-circle"],
+			"outputs": ["{workspaceRoot}/dist/packages/animated-circle"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts animated-circle"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages animated-circle"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

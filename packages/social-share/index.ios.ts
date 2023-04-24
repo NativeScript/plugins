@@ -1,4 +1,5 @@
-import { Frame, ImageSource, Utils } from '@nativescript/core';
+import { File, Frame, ImageSource, Utils } from '@nativescript/core';
+import type { ShareImageOptions } from '.';
 
 function share(thingsToShare) {
 	const activityController = UIActivityViewController.alloc().initWithActivityItemsApplicationActivities(thingsToShare, null);
@@ -6,14 +7,12 @@ function share(thingsToShare) {
 	const presentViewController = activityController.popoverPresentationController;
 	if (presentViewController) {
 		const page = Frame.topmost().currentPage;
-		if (page && page.ios.navigationItem.rightBarButtonItems && page.ios.navigationItem.rightBarButtonItems.count > 0) {
+		if (page?.ios?.navigationItem?.rightBarButtonItems?.count > 0) {
 			presentViewController.barButtonItem = page.ios.navigationItem.rightBarButtonItems[0];
-		} else {
+		} else if (page?.ios?.view) {
 			presentViewController.sourceView = page.ios.view;
 			presentViewController.permittedArrowDirections = UIPopoverArrowDirection.Unknown;
-			if (page && page.ios && page.ios.view) {
-				presentViewController.sourceRect = CGRectMake(CGRectGetMidX(page.ios.view.bounds), CGRectGetMaxY(page.ios.view.bounds), 0, 0);
-			}
+			presentViewController.sourceRect = CGRectMake(CGRectGetMidX(page.ios.view.bounds), CGRectGetMaxY(page.ios.view.bounds), 0, 0);
 		}
 	}
 
@@ -50,12 +49,27 @@ function getRootViewController() {
 	return win.rootViewController;
 }
 
-export function shareImage(image: ImageSource) {
-	share([image.ios]);
+export function shareImage(image: ImageSource, subjectOrOptions?: string | ShareImageOptions, caption?: string) {
+	if (subjectOrOptions && typeof subjectOrOptions === 'object') {
+		caption = subjectOrOptions.caption;
+	}
+	if (typeof caption === 'string') {
+		share([image.ios, caption]);
+	} else {
+		share([image.ios]);
+	}
 }
 
 export function shareText(text: string) {
 	share([text]);
+}
+
+export function sharePdf(pdf: File, subject?: string, caption?: string) {
+	if (typeof caption === 'string') {
+		share([NSURL.fileURLWithPath(pdf.path), caption]);
+	} else {
+		share([NSURL.fileURLWithPath(pdf.path)]);
+	}
 }
 
 export function shareUrl(url, text) {

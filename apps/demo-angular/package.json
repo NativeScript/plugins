@@ -2,7 +2,7 @@
 	"main": "./src/main.ts",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/flutter": "file:../../dist/packages/flutter",
+		"@nativescript/jetpack-compose": "file:../../dist/packages/jetpack-compose",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -20,24 +20,28 @@
 		"@nativescript/email": "file:../../dist/packages/email",
 		"@nativescript/facebook": "file:../../dist/packages/facebook",
 		"@nativescript/fingerprint-auth": "file:../../dist/packages/fingerprint-auth",
+		"@nativescript/flutter": "file:../../dist/packages/flutter",
 		"@nativescript/geolocation": "file:../../dist/packages/geolocation",
 		"@nativescript/google-maps": "file:../../dist/packages/google-maps",
 		"@nativescript/google-signin": "file:../../dist/packages/google-signin",
+		"@nativescript/haptics": "file:../../dist/packages/haptics",
 		"@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
 		"@nativescript/ionic-portals": "file:../../dist/packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../dist/packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/pdf": "file:../../dist/packages/pdf",
 		"@nativescript/picker": "file:../../dist/packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",
+		"@nativescript/swift-ui": "file:../../dist/packages/swift-ui",
 		"@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
 		"@nativescript/twitter": "file:../../dist/packages/twitter",
 		"@nativescript/zip": "file:../../dist/packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.2.0",
-		"@nativescript/ios": "~8.2.0"
+		"@nativescript/android": "~8.4.0",
+		"@nativescript/ios": "~8.4.0"
 	}
 }

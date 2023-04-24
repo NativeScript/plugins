@@ -1,7 +1,8 @@
 {
+	"name": "picker",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"generators": {},
-	"root": "packages/picker",
 	"sourceRoot": "packages/picker",
 	"targets": {
 		"build": {
@@ -34,8 +35,8 @@
 				"commands": ["node tools/scripts/build-finish.ts picker"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
-			"outputs": ["dist/packages/picker"],
+			"executor": "nx:run-commands",
+			"outputs": ["{workspaceRoot}/dist/packages/picker"],
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages picker"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

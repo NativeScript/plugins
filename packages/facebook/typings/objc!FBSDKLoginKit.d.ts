@@ -34,6 +34,10 @@ declare class FBSDKDeviceLoginCodeInfo extends NSObject {
 	readonly pollingInterval: number;
 
 	readonly verificationURL: NSURL;
+
+	constructor(o: { identifier: string; loginCode: string; verificationURL: NSURL; expirationDate: Date; pollingInterval: number });
+
+	initWithIdentifierLoginCodeVerificationURLExpirationDatePollingInterval(identifier: string, loginCode: string, verificationURL: NSURL, expirationDate: Date, pollingInterval: number): this;
 }
 
 declare const enum FBSDKDeviceLoginError {
@@ -118,7 +122,7 @@ declare class FBSDKDeviceLoginManager extends NSObject implements NSNetServiceDe
 	start(): void;
 }
 
-interface FBSDKDeviceLoginManagerDelegate extends NSObjectProtocol {
+interface FBSDKDeviceLoginManagerDelegate {
 	deviceLoginManagerCompletedWithResultError(loginManager: FBSDKDeviceLoginManager, result: FBSDKDeviceLoginManagerResult, error: NSError): void;
 
 	deviceLoginManagerStartedWithCodeInfo(loginManager: FBSDKDeviceLoginManager, codeInfo: FBSDKDeviceLoginCodeInfo): void;
@@ -134,7 +138,11 @@ declare class FBSDKDeviceLoginManagerResult extends NSObject {
 
 	readonly accessToken: FBSDKAccessToken;
 
-	readonly cancelled: boolean;
+	readonly isCancelled: boolean;
+
+	constructor(o: { token: FBSDKAccessToken; isCancelled: boolean });
+
+	initWithTokenIsCancelled(token: FBSDKAccessToken, cancelled: boolean): this;
 }
 
 declare var FBSDKLoginAuthTypeReauthorize: string;
@@ -150,11 +158,11 @@ declare class FBSDKLoginButton extends FBSDKButton {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKLoginButton; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginButton; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginButton; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKLoginButton; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginButton; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginButton; // inherited from UIAppearance
 
 	static buttonWithConfigurationPrimaryAction(configuration: UIButtonConfiguration, primaryAction: UIAction): FBSDKLoginButton; // inherited from UIButton
 
@@ -208,10 +216,46 @@ declare const enum FBSDKLoginButtonTooltipBehavior {
 	Disable = 2,
 }
 
+declare class FBSDKLoginCompletionParameters extends NSObject {
+	static alloc(): FBSDKLoginCompletionParameters; // inherited from NSObject
+
+	static new(): FBSDKLoginCompletionParameters; // inherited from NSObject
+
+	accessTokenString: string;
+
+	appID: string;
+
+	authenticationToken: FBSDKAuthenticationToken;
+
+	authenticationTokenString: string;
+
+	challenge: string;
+
+	code: string;
+
+	dataAccessExpirationDate: Date;
+
+	declinedPermissions: NSSet<FBSDKPermission>;
+
+	error: NSError;
+
+	expirationDate: Date;
+
+	expiredPermissions: NSSet<FBSDKPermission>;
+
+	graphDomain: string;
+
+	nonceString: string;
+
+	permissions: NSSet<FBSDKPermission>;
+
+	profile: FBSDKProfile;
+
+	userID: string;
+}
+
 declare class FBSDKLoginConfiguration extends NSObject {
 	static alloc(): FBSDKLoginConfiguration; // inherited from NSObject
-
-	static authTypeForString(rawValue: string): string;
 
 	static new(): FBSDKLoginConfiguration; // inherited from NSObject
 
@@ -222,6 +266,8 @@ declare class FBSDKLoginConfiguration extends NSObject {
 	readonly messengerPageId: string;
 
 	readonly nonce: string;
+
+	readonly requestedPermissions: NSSet<FBSDKPermission>;
 
 	readonly tracking: FBSDKLoginTracking;
 
@@ -284,20 +330,70 @@ declare const enum FBSDKLoginError {
 
 declare var FBSDKLoginErrorDomain: string;
 
-declare class FBSDKLoginManager extends NSObject {
+declare class FBSDKLoginManager extends NSObject implements FBSDKURLOpening {
 	static alloc(): FBSDKLoginManager; // inherited from NSObject
+
+	static makeOpener(): FBSDKLoginManager;
 
 	static new(): FBSDKLoginManager; // inherited from NSObject
 
 	defaultAudience: FBSDKDefaultAudience;
 
+	readonly debugDescription: string; // inherited from NSObjectProtocol
+
+	readonly description: string; // inherited from NSObjectProtocol
+
+	readonly hash: number; // inherited from NSObjectProtocol
+
+	readonly isProxy: boolean; // inherited from NSObjectProtocol
+
+	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
+
+	readonly; // inherited from NSObjectProtocol
+
+	constructor(o: { defaultAudience: FBSDKDefaultAudience });
+
+	applicationDidBecomeActive(application: UIApplication): void;
+
+	applicationOpenURLSourceApplicationAnnotation(application: UIApplication, url: NSURL, sourceApplication: string, annotation: any): boolean;
+
+	canOpenURLForApplicationSourceApplicationAnnotation(url: NSURL, application: UIApplication, sourceApplication: string, annotation: any): boolean;
+
+	class(): typeof NSObject;
+
+	conformsToProtocol(aProtocol: any /* Protocol */): boolean;
+
+	initWithDefaultAudience(defaultAudience: FBSDKDefaultAudience): this;
+
+	isAuthenticationURL(url: NSURL): boolean;
+
+	isEqual(object: any): boolean;
+
+	isKindOfClass(aClass: typeof NSObject): boolean;
+
+	isMemberOfClass(aClass: typeof NSObject): boolean;
+
 	logInFromViewControllerConfigurationCompletion(viewController: UIViewController, configuration: FBSDKLoginConfiguration, completion: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
 
-	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], fromViewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+	logInWithPermissionsFromViewControllerHandler(permissions: NSArray<string> | string[], viewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
 
 	logOut(): void;
 
-	reauthorizeDataAccessHandler(fromViewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+	performSelector(aSelector: string): any;
+
+	performSelectorWithObject(aSelector: string, object: any): any;
+
+	performSelectorWithObjectWithObject(aSelector: string, object1: any, object2: any): any;
+
+	reauthorizeDataAccessHandler(viewController: UIViewController, handler: (p1: FBSDKLoginManagerLoginResult, p2: NSError) => void): void;
+
+	respondsToSelector(aSelector: string): boolean;
+
+	retainCount(): number;
+
+	self(): this;
+
+	shouldStopPropagationOfURL(url: NSURL): boolean;
 }
 
 declare class FBSDKLoginManagerLoginResult extends NSObject {
@@ -305,15 +401,15 @@ declare class FBSDKLoginManagerLoginResult extends NSObject {
 
 	static new(): FBSDKLoginManagerLoginResult; // inherited from NSObject
 
-	authenticationToken: FBSDKAuthenticationToken;
+	readonly authenticationToken: FBSDKAuthenticationToken;
 
-	declinedPermissions: NSSet<string>;
+	readonly declinedPermissions: NSSet<string>;
 
-	grantedPermissions: NSSet<string>;
+	readonly grantedPermissions: NSSet<string>;
 
 	readonly isCancelled: boolean;
 
-	token: FBSDKAccessToken;
+	readonly token: FBSDKAccessToken;
 
 	constructor(o: { token: FBSDKAccessToken; authenticationToken: FBSDKAuthenticationToken; isCancelled: boolean; grantedPermissions: NSSet<string>; declinedPermissions: NSSet<string> });
 
@@ -329,20 +425,22 @@ declare class FBSDKLoginTooltipView extends FBSDKTooltipView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKLoginTooltipView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginTooltipView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginTooltipView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKLoginTooltipView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginTooltipView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginTooltipView; // inherited from UIAppearance
 
 	static new(): FBSDKLoginTooltipView; // inherited from NSObject
 
 	delegate: FBSDKLoginTooltipViewDelegate;
 
 	forceDisplay: boolean;
+
+	shouldForceDisplay: boolean;
 }
 
-interface FBSDKLoginTooltipViewDelegate extends NSObjectProtocol {
+interface FBSDKLoginTooltipViewDelegate {
 	loginTooltipViewShouldAppear?(view: FBSDKLoginTooltipView, appIsEligible: boolean): boolean;
 
 	loginTooltipViewWillAppear?(view: FBSDKLoginTooltipView): void;
@@ -357,6 +455,20 @@ declare const enum FBSDKLoginTracking {
 	Enabled = 0,
 
 	Limited = 1,
+}
+
+declare class FBSDKPermission extends NSObject {
+	static alloc(): FBSDKPermission; // inherited from NSObject
+
+	static new(): FBSDKPermission; // inherited from NSObject
+
+	static permissionsFromRawPermissions(rawPermissions: NSSet<string>): NSSet<FBSDKPermission>;
+
+	static rawPermissionsFromPermissions(permissions: NSSet<FBSDKPermission>): NSSet<string>;
+
+	constructor(o: { string: string });
+
+	initWithString(string: string): this;
 }
 
 declare const enum FBSDKTooltipColorStyle {
@@ -374,11 +486,11 @@ declare class FBSDKTooltipView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKTooltipView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKTooltipView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKTooltipView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKTooltipView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKTooltipView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKTooltipView; // inherited from UIAppearance
 
 	static new(): FBSDKTooltipView; // inherited from NSObject
 
@@ -398,7 +510,7 @@ declare class FBSDKTooltipView extends UIView {
 
 	presentFromView(anchorView: UIView): void;
 
-	presentInViewWithArrowPositionDirection(view: UIView, arrowPosition: CGPoint, arrowDirection: FBSDKTooltipViewArrowDirection): void;
+	presentInViewWithArrowPositionDirection(view: UIView, arrowPosition: CGPoint, direction: FBSDKTooltipViewArrowDirection): void;
 }
 
 declare const enum FBSDKTooltipViewArrowDirection {
@@ -406,19 +518,3 @@ declare const enum FBSDKTooltipViewArrowDirection {
 
 	Up = 1,
 }
-
-interface FBSDKUserInterfaceElementProviding {
-	topMostViewController(): UIViewController;
-
-	viewControllerForView(view: UIView): UIViewController;
-}
-declare var FBSDKUserInterfaceElementProviding: {
-	prototype: FBSDKUserInterfaceElementProviding;
-};
-
-interface FBSDKUserInterfaceStringProviding {
-	bundleForStrings: NSBundle;
-}
-declare var FBSDKUserInterfaceStringProviding: {
-	prototype: FBSDKUserInterfaceStringProviding;
-};

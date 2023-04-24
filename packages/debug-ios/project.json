@@ -1,7 +1,8 @@
 {
+	"name": "debug-ios",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"generators": {},
-	"root": "packages/debug-ios",
 	"sourceRoot": "packages/debug-ios",
 	"targets": {
 		"build": {
@@ -34,8 +35,8 @@
 				"commands": ["node tools/scripts/build-finish.ts debug-ios"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
-			"outputs": ["dist/packages/debug-ios"],
+			"executor": "nx:run-commands",
+			"outputs": ["{workspaceRoot}/dist/packages/debug-ios"],
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages debug-ios"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

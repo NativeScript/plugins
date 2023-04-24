@@ -1,0 +1,65 @@
+{
+	"name": "swift-ui",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/swift-ui",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/swift-ui",
+				"tsConfig": "packages/swift-ui/tsconfig.json",
+				"packageJson": "packages/swift-ui/package.json",
+				"main": "packages/swift-ui/index.d.ts",
+				"assets": [
+					"packages/swift-ui/*.md",
+					"packages/swift-ui/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/swift-ui/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts swift-ui"],
+				"parallel": false
+			},
+			"outputs": ["{workspaceRoot}/dist/packages/swift-ui"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages swift-ui"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/swift-ui/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

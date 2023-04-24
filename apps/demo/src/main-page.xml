@@ -26,15 +26,19 @@
         <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="haptics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ionic-portals" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="jetpack-compose" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="localize" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="pdf" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="picker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="swift-ui" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

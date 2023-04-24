@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/camera",
-	"version": "5.0.12",
+	"version": "5.0.15",
 	"description": "Provides API for using device camera",
 	"main": "index",
 	"typings": "index.d.ts",

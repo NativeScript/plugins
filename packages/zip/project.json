@@ -1,5 +1,6 @@
 {
-	"root": "packages/zip",
+	"name": "zip",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/zip",
 	"projectType": "library",
 	"generators": {},
@@ -30,12 +31,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/zip"],
+			"outputs": ["{workspaceRoot}/dist/packages/zip"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts zip"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages zip"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

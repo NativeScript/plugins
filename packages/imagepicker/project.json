@@ -1,5 +1,6 @@
 {
-	"root": "packages/imagepicker",
+	"name": "imagepicker",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "packages/imagepicker",
 	"projectType": "library",
 	"generators": {},
@@ -30,12 +31,12 @@
 			]
 		},
 		"build.all": {
-			"outputs": ["dist/packages/imagepicker"],
+			"outputs": ["{workspaceRoot}/dist/packages/imagepicker"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts imagepicker"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages imagepicker"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

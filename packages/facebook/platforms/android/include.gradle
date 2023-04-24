@@ -1,8 +1,8 @@
 repositories {
-    mavenCentral() 
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.facebook.android:facebook-core:13.1.0'
-    implementation 'com.facebook.android:facebook-login:13.1.0'
+    implementation 'com.facebook.android:facebook-core:16.0.0'
+    implementation 'com.facebook.android:facebook-login:16.0.0'
 }

@@ -1,3 +1,31 @@
+declare var FBLink_NSBundle_InfoDictionaryProviding: interop.Pointer | interop.Reference<any>;
+
+declare var FBLink_NSData_FileDataExtracting: interop.Pointer | interop.Reference<any>;
+
+declare var FBLink_NSFileManager_FileManaging: interop.Pointer | interop.Reference<any>;
+
+declare var FBLink_NSNotificationCenter_NotificationDelivering: interop.Pointer | interop.Reference<any>;
+
+declare var FBLink_NSURLSessionTask_NetworkTask: interop.Pointer | interop.Reference<any>;
+
+declare var FBLink_NSURLSession_URLSessionProviding: interop.Pointer | interop.Reference<any>;
+
+declare var FBLink_NSUserDefaults_DataPersisting: interop.Pointer | interop.Reference<any>;
+
+declare var FBLinkable_NSBundle_InfoDictionaryProviding: number;
+
+declare var FBLinkable_NSData_FileDataExtracting: number;
+
+declare var FBLinkable_NSFileManager_FileManaging: number;
+
+declare var FBLinkable_NSNotificationCenter_NotificationDelivering: number;
+
+declare var FBLinkable_NSURLSessionTask_NetworkTask: number;
+
+declare var FBLinkable_NSURLSession_URLSessionProviding: number;
+
+declare var FBLinkable_NSUserDefaults_DataPersisting: number;
+
 declare class FBSDKBase64 extends NSObject {
 	static alloc(): FBSDKBase64; // inherited from NSObject
 
@@ -64,12 +92,16 @@ declare class FBSDKCrashHandler extends NSObject implements FBSDKCrashHandlerPro
 	clearCrashReportFiles(): void;
 
 	disable(): void;
+
+	saveException(exception: NSException): void;
 }
 
 interface FBSDKCrashHandlerProtocol {
 	addObserver(observer: FBSDKCrashObserving): void;
 
 	clearCrashReportFiles(): void;
+
+	saveException(exception: NSException): void;
 }
 declare var FBSDKCrashHandlerProtocol: {
 	prototype: FBSDKCrashHandlerProtocol;
@@ -87,19 +119,19 @@ declare var FBSDKCrashObserving: {
 };
 
 interface FBSDKDataPersisting {
-	dataForKey(defaultName: string): NSData;
+	fb_dataForKey(key: string): NSData;
 
-	integerForKey(defaultName: string): number;
+	fb_integerForKey(key: string): number;
 
-	objectForKey(defaultName: string): any;
+	fb_objectForKey(key: string): any;
 
-	removeObjectForKey(defaultName: string): void;
+	fb_removeObjectForKey(key: string): void;
 
-	setIntegerForKey(value: number, defaultName: string): void;
+	fb_setIntegerForKey(integer: number, key: string): void;
 
-	setObjectForKey(value: any, defaultName: string): void;
+	fb_setObjectForKey(object: any, key: string): void;
 
-	stringForKey(defaultName: string): string;
+	fb_stringForKey(key: string): string;
 }
 declare var FBSDKDataPersisting: {
 	prototype: FBSDKDataPersisting;
@@ -109,30 +141,28 @@ interface FBSDKFileDataExtracting {}
 declare var FBSDKFileDataExtracting: {
 	prototype: FBSDKFileDataExtracting;
 
-	dataWithContentsOfFileOptionsError(path: string, readOptionsMask: NSDataReadingOptions): NSData;
+	fb_dataWithContentsOfFileOptionsError(path: string, readOptionsMask: NSDataReadingOptions): NSData;
 };
 
 interface FBSDKFileManaging {
-	URLForDirectoryInDomainAppropriateForURLCreateError(directory: NSSearchPathDirectory, domain: NSSearchPathDomainMask, url: NSURL, shouldCreate: boolean): NSURL;
+	fb_contentsOfDirectoryAtPathError(path: string): NSArray<string>;
 
-	contentsOfDirectoryAtPathError(path: string): NSArray<string>;
+	fb_createDirectoryAtPathWithIntermediateDirectoriesAttributesError(path: string, createIntermediates: boolean, attributes: NSDictionary<string, any>): boolean;
 
-	createDirectoryAtPathWithIntermediateDirectoriesAttributesError(path: string, createIntermediates: boolean, attributes: NSDictionary<string, any>): boolean;
+	fb_fileExistsAtPath(path: string): boolean;
 
-	fileExistsAtPath(path: string): boolean;
-
-	removeItemAtPathError(path: string): boolean;
+	fb_removeItemAtPathError(path: string): boolean;
 }
 declare var FBSDKFileManaging: {
 	prototype: FBSDKFileManaging;
 };
 
 interface FBSDKInfoDictionaryProviding {
-	bundleIdentifier: string;
+	fb_bundleIdentifier: string;
 
-	infoDictionary: NSDictionary<string, any>;
+	fb_infoDictionary: NSDictionary<string, any>;
 
-	objectForInfoDictionaryKey(key: string): any;
+	fb_objectForInfoDictionaryKey(key: string): any;
 }
 declare var FBSDKInfoDictionaryProviding: {
 	prototype: FBSDKInfoDictionaryProviding;
@@ -148,22 +178,26 @@ declare class FBSDKLibAnalyzer extends NSObject {
 	static symbolicateCallstackMethodMapping(callstack: NSArray<string> | string[], methodMapping: NSDictionary<string, any>): NSArray<string>;
 }
 
-interface FBSDKSessionDataTask extends NSObjectProtocol {
-	state: NSURLSessionTaskState;
+interface FBSDKNetworkTask extends NSObjectProtocol {
+	fb_state: NSURLSessionTaskState;
 
-	cancel(): void;
+	fb_cancel(): void;
 
-	resume(): void;
+	fb_resume(): void;
 }
-declare var FBSDKSessionDataTask: {
-	prototype: FBSDKSessionDataTask;
+declare var FBSDKNetworkTask: {
+	prototype: FBSDKNetworkTask;
 };
 
-interface FBSDKSessionProviding extends NSObjectProtocol {
-	dataTaskWithRequestCompletionHandler(request: NSURLRequest, completionHandler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void): FBSDKSessionDataTask;
+interface FBSDKNotificationDelivering {
+	fb_addObserverForNameObjectQueueUsingBlock(name: string, obj: any, queue: NSOperationQueue, block: (p1: NSNotification) => void): NSObjectProtocol;
+
+	fb_addObserverSelectorNameObject(observer: any, selector: string, name: string, object: any): void;
+
+	fb_removeObserver(observer: any): void;
 }
-declare var FBSDKSessionProviding: {
-	prototype: FBSDKSessionProviding;
+declare var FBSDKNotificationDelivering: {
+	prototype: FBSDKNotificationDelivering;
 };
 
 declare class FBSDKTypeUtility extends NSObject {
@@ -234,6 +268,13 @@ declare class FBSDKURLSession extends NSObject {
 	valid(): boolean;
 }
 
+interface FBSDKURLSessionProviding extends NSObjectProtocol {
+	fb_dataTaskWithRequestCompletionHandler(request: NSURLRequest, completionHandler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void): FBSDKNetworkTask;
+}
+declare var FBSDKURLSessionProviding: {
+	prototype: FBSDKURLSessionProviding;
+};
+
 declare class FBSDKURLSessionTask extends NSObject {
 	static alloc(): FBSDKURLSessionTask; // inherited from NSObject
 
@@ -249,13 +290,13 @@ declare class FBSDKURLSessionTask extends NSObject {
 
 	readonly state: NSURLSessionTaskState;
 
-	task: FBSDKSessionDataTask;
+	task: FBSDKNetworkTask;
 
-	constructor(o: { request: NSURLRequest; fromSession: FBSDKSessionProviding; completionHandler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void });
+	constructor(o: { request: NSURLRequest; fromSession: FBSDKURLSessionProviding; completionHandler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void });
 
 	cancel(): void;
 
-	initWithRequestFromSessionCompletionHandler(request: NSURLRequest, session: FBSDKSessionProviding, handler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void): this;
+	initWithRequestFromSessionCompletionHandler(request: NSURLRequest, session: FBSDKURLSessionProviding, handler: (p1: NSData, p2: NSURLResponse, p3: NSError) => void): this;
 
 	start(): void;
 }

@@ -1,20 +1,16 @@
 # @nativescript/app-availability
 
-A plugin to check for availability of other apps on the device.
+A plugin that checks if an app is installed on a device.
+
+## Installation
 
 ```cli
-ns plugin add @nativescript/appavailability
+npm install @nativescript/appavailability
 ```
 
-## Usage
-
-> **Note:** Version 1.3.0 added a synchronous version of this method that doesn't return a Promise. Need that? Use `availableSync` instead of `available`.
-
-### TypeScript
+## Use @nativescript/app-availability
 
 ```typescript
-import { available } from '@nativescript/appavailability';
-
 // examples of what to pass:
 // - for iOS: "maps://", "twitter://", "fb://"
 // - for Android: "com.facebook.katana"
@@ -22,37 +18,11 @@ available('twitter://').then((avail: boolean) => {
 	console.log('App available? ' + avail);
 });
 ```
+### Open an app (with web fallback)
 
-### TypeScript + Angular
+To open an app installed on the device, call the `openUrl()` method on the `Utils` class. Pass the app's identifier URL to the method.
 
-```typescript
-import * as appavailability from '@nativescript/appavailability';
-
-// examples of what to pass:
-// - for iOS: "maps://", "twitter://", "fb://"
-// - for Android: "com.facebook.katana"
-appavailability.available('twitter://').then((avail: boolean) => {
-	console.log('App available? ' + avail);
-});
-```
-
-### JavaScript
-
-```javascript
-var appAvailability = require('@nativescript/appavailability');
-
-// examples of what to pass:
-// - for iOS: "maps://", "twitter://", "fb://"
-// - for Android: "com.facebook.katana"
-appAvailability.available('com.facebook.katana').then(function (avail) {
-	console.log('App available? ' + avail);
-});
-```
-
-## Opening an app (with web fallback)
-
-Now that you know whether an app is installed or not, you probably want to launch it.
-Here's a snippet that opens the mobile Twitter app and falls back to the website if it's not installed.
+The code below asynchronously checks if the Twitter mobile app is available on the device. If the app is availabe, `openUrl()` opens it . Otherwise, `openUrl()` opens the website instead.
 
 ```typescript
 import { available } from '@nativescript/appavailability';
@@ -70,7 +40,7 @@ available(twitterScheme).then((available) => {
 });
 ```
 
-And a more concise, synchronous way would be:
+To synchronously check for an app's availability, use the `availableSync()` function.
 
 ```typescript
 import { availableSync } from '@nativescript/appavailability';
@@ -83,26 +53,33 @@ if (availableSync('twitter://')) {
 }
 ```
 
+### Determine the correct identifier of an app.
+
+- `Android` : search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
+
+- `iOS`:  Open Safari on your iPhone and type, for example,`'twitter://'` in the address bar. If the app launches, use that URL as the identifier.
+
 ## iOS whitelisting
 
-To get useful results on iOS 9 and up you need to whitelist the URL Scheme
-you're querying in the application's `.plist`.
+To get useful results on iOS 9+, whitelist the URL Scheme you're querying in the application's `Info.plist`.
 
-Luckily NativeScript made this pretty easy. Just open `app/App_ResourcesiOS/Info.plist`
-and add this if you want to query for both `twitter://` and `fb://`:
+For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit `app/App_ResourcesiOS/Info.plist` as follows:
 
 ```xml
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fb</string>
-    <string>twitter</string>
-  </array>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+	<string>fb</string>
+	<string>twitter</string>
+	<string>whatsapp</string>
+</array>
 ```
 
-You may wonder how one would determine the correct identifier for an app.
+## API
 
-- Android: simply search the Play Store and use the id in the URL. For Twitter this is com.twitter.android because the URL is https://play.google.com/store/apps/details?id=com.twitter.android.
-- iOS: this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example 'twitter://' in the address bar, if the app launches you're good.
+| Methods| Return Type| Description|
+|--------|------------|------------|
+|`available(packageName:string)`|`Promise<boolean>`| Asynchronously checks if the app with the specified `packageName` is installed on the device.|
+|`availableSync(packageName:string)`|`boolean`| Synchronously checks if the app with the specified `packageName` is installed on the device.|
 
 ## License
 

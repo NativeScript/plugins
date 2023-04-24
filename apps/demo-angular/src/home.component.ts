@@ -70,6 +70,9 @@ export class HomeComponent {
 			name: 'google-signin',
 		},
 		{
+			name: 'haptics',
+		},
+		{
 			name: 'imagepicker',
 		},
 		{
@@ -82,10 +85,16 @@ export class HomeComponent {
 			name: 'iqkeyboardmanager',
 		},
 		{
+			name: 'jetpack-compose',
+		},
+		{
 			name: 'local-notifications',
 		},
 		{
 			name: 'localize',
+		},
+		{
+			name: 'pdf',
 		},
 		{
 			name: 'picker',
@@ -95,6 +104,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'social-share',
+		},
+		{
+			name: 'swift-ui',
 		},
 		{
 			name: 'theme-switcher',

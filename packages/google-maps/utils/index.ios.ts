@@ -60,8 +60,16 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		}
 	}
 
+	if (typeof options?.opacity === 'number') {
+		opts.opacity = options.opacity;
+	}
+
 	if (typeof options?.rotation === 'number') {
 		opts.rotation = options.rotation;
+	}
+
+	if (typeof options?.visible === 'boolean') {
+		opts.opacity = options.visible ? 1 : 0;
 	}
 
 	if (typeof options?.flat === 'boolean') {
@@ -259,6 +267,13 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 		// TODO
 	}
 
+	if (options?.bounds) {
+		opts.bounds = new GMSCoordinateBounds({
+			coordinate: CLLocationCoordinate2DMake(options.bounds.southwest.lat, options.bounds.southwest.lng),
+			coordinate2: CLLocationCoordinate2DMake(options.bounds.northeast.lat, options.bounds.northeast.lng),
+		});
+	}
+
 	if (typeof options?.anchorU === 'number' || typeof options?.anchorV === 'number') {
 		opts.anchor = CGPointMake(options?.anchorU ?? opts.anchor.x, options?.anchorV ?? opts.anchor.y);
 	}
@@ -361,7 +376,7 @@ export function serialize(data: any): any {
 			}
 
 			if (!data) {
-				return null;
+				return NSNull.new();
 			}
 
 			if (Array.isArray(data)) {
@@ -377,6 +392,6 @@ export function serialize(data: any): any {
 		}
 
 		default:
-			return null;
+			return NSNull.new();
 	}
 }

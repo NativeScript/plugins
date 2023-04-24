@@ -1,0 +1,65 @@
+{
+	"name": "haptics",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/haptics",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/haptics",
+				"tsConfig": "packages/haptics/tsconfig.json",
+				"packageJson": "packages/haptics/package.json",
+				"main": "packages/haptics/index.d.ts",
+				"assets": [
+					"packages/haptics/*.md",
+					"packages/haptics/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/haptics/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts haptics"],
+				"parallel": false
+			},
+			"outputs": ["{workspaceRoot}/dist/packages/haptics"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages haptics"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/haptics/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

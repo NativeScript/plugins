@@ -1,0 +1,7 @@
+<ActionBar title="SwiftUI" class="action-bar"> </ActionBar>
+<StackLayout class="p-20">
+	<SwiftUI swiftId="basicView" [data]="demoShared.nativeCount" (swiftUIEvent)="demoShared.onEvent($event)" (loaded)="demoShared.loadedSwiftUI($event)" height="150"></SwiftUI>
+	<Label row="1" [text]="'NativeScript Label: ' + demoShared.nativeCount.count" class="h2" marginTop="60"></Label>
+	<Button row="2" text="NativeScript data bindings: Decrement" (tap)="demoShared.updateNativeScriptData()" class="btn btn-primary m-t-30"></Button>
+	<Button row="3" text="SwiftUI data bindings: Decrement" (tap)="demoShared.updateSwiftData()" class="btn btn-primary"></Button>
+</StackLayout>

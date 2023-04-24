@@ -1,0 +1,9 @@
+<Page
+	xmlns="http://schemas.nativescript.org/tns.xsd"
+	xmlns:pdf="@nativescript/pdf"
+	navigatingTo="navigatingTo" class="page">
+	<FlexboxLayout flexDirection="column">
+		<Button height="70" text="Show Another!" tap="{{ changePDF }}"/>
+		<pdf:PDFView flexGrow="1" src="{{ pdfUrl }}" load="{{ onLoad }}" enableAnnotationRendering="{{ enableAnnotationRendering }}"/>
+	</FlexboxLayout>
+</Page>
