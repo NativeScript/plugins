@@ -28,9 +28,9 @@
 		"@angular/router": "^15.0.0",
 		"@nativescript-community/perms": "^2.3.0",
 		"@nativescript/angular": "^15.0.0",
-		"@nativescript/core": "~8.4.0",
+		"@nativescript/core": "~8.5.0",
 		"@nativescript/plugin-tools": "5.1.0",
-		"@nativescript/types": "~8.4.0",
+		"@nativescript/types": "~8.5.0",
 		"@nativescript/webpack": "~5.0.5",
 		"@ngtools/webpack": "^15.0.0",
 		"@types/mkdirp": "^1.0.1",
@@ -41,7 +41,7 @@
 		"nativescript-vue": "~2.9.0",
 		"nativescript-vue-template-compiler": "~2.9.0",
 		"ng-packagr": "^15.0.0",
-		"rxjs": "~7.6.0",
+		"rxjs": "~7.8.0",
 		"shorthash": "0.0.2",
 		"simple-plist": "^1.1.0",
 		"sprintf-js": "^1.1.1",
@@ -55,6 +55,6 @@
 		]
 	},
 	"dependencies": {
-		"@nativescript/swift-ui": "^1.0.0-beta.0"
+		"@nativescript/swift-ui": "^1.0.0"
 	}
 }
