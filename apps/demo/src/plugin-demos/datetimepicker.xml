@@ -80,6 +80,10 @@
                 <datetime:TimePickerField time="16:00" timeFormat="HH:mm" locale="en_GB" />
                 <StackLayout class="hr-light m-10" android:visibility="collapse"/>
 
+                <Label text="time interval 5min" class="content"/>
+                <datetime:TimePickerField time="16:00" timeFormat="HH:mm" timeInterval="10"/>
+                <StackLayout class="hr-light m-10" android:visibility="collapse"/>
+
                 <Label text="modified picker texts" class="content"/>
                 <datetime:TimePickerField hint="tap to choose" pickerOkText="Approve" pickerCancelText="Reject"
                     pickerTitle="Confirm predefined time selection" pickerDefaultTime="22:00"/>

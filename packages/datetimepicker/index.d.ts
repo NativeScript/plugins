@@ -69,7 +69,7 @@ export interface TimePickerOptions extends PickerOptions {
 	is24Hours?: boolean;
 
 	/**
-	 * This value will be used on iOS for determine the minute interval of the picker
+	 * This value will be used to determine the minute interval of the picker
 	 */
 	timeInterval?: number;
 }
