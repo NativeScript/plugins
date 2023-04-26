@@ -6,30 +6,34 @@ https://ionic.io/docs/portals
 
 ![Ionic Portal View](/packages/ionic-portals/images/ionic-portal-ios.png)
 ## Contents
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-	1. [Register portals on app boot](#1-register-portals-on-app-boot)
-	2. [Use it in markup](#2-use-it-in-markup)
-		* [Vanilla/Plain/Core](#vanillaplaincore)
-		* [Angular](#angular)
-		* [Vue](#vue)
-		* [Svelte](#svelte)
-		* [Sending events from NativeScript to any web portal](#sending-events-from-nativescript-to-any-web-portal)
-		* [Subscribing to events sent from web portals](#subscribing-to-events-sent-from-web-portals)
-		* [Unsubscribing to events sent from web portals](#unsubscribing-from-events-sent-from-web-portals)
-
-4. [IonicPortalManager API](#ionicportalmanager-api)
-	* [register()](#register)
-	* [setInitialContext()](#setinitialcontext)
-	* [sendAndroidPlugins](#setandroidplugins)
-	* [publishTopic()](#publishtopic)
-	* [subscribeToTopic()](#subscribetotopic)
-	* [unsubscribeFromTopic()](#unsubscribefromtopic)
-5. [Using Capacitor Plugins with Ionic Portals](#using-capacitor-plugins-with-ionic-portals)
-6. [Notes](#notes)
-7. [Additional Resources](#additional-resources)
-8. [License](#license)
+- [@nativescript/ionic-portals](#nativescriptionic-portals)
+	- [Contents](#contents)
+	- [Installation](#installation)
+	- [Prerequisites](#prerequisites)
+	- [Usage](#usage)
+		- [1. Registering portals](#1-registering-portals)
+		- [2. Use it in markup](#2-use-it-in-markup)
+			- [Core](#core)
+			- [Angular](#angular)
+			- [Vue](#vue)
+			- [Svelte](#svelte)
+			- [Sending events from NativeScript to any web portal](#sending-events-from-nativescript-to-any-web-portal)
+			- [Subscribing to events sent from web portals](#subscribing-to-events-sent-from-web-portals)
+			- [Unsubscribing from events sent from web portals](#unsubscribing-from-events-sent-from-web-portals)
+	- [IonicPortalManager API](#ionicportalmanager-api)
+		- [register()](#register)
+		- [setInitialContext()](#setinitialcontext)
+		- [setAndroidPlugins()](#setandroidplugins)
+		- [publishTopic()](#publishtopic)
+		- [subscribeToTopic()](#subscribetotopic)
+		- [unsubscribeFromTopic()](#unsubscribefromtopic)
+		- [configureLiveUpdates](#configureliveupdates)
+		- [syncNow](#syncnow)
+		- [getLastSync](#getlastsync)
+	- [Using Capacitor Plugins with Ionic Portals](#using-capacitor-plugins-with-ionic-portals)
+	- [Notes](#notes)
+	- [Additional Resources](#additional-resources)
+	- [License](#license)
 
 
 ## Installation
@@ -45,7 +49,7 @@ npm install @nativescript/ionic-portals
 
 ### 1. Registering portals
 
-To register your Ionic Portals, call the [IonicPortalManager] class's [register()](#register) method with the Portal API key.
+To register your Ionic Portals, call the [IonicPortalManager] class's [register](#register) method with the Portal API key.
 
 ```ts
 import { Application } from '@nativescript/core';
@@ -215,6 +219,44 @@ IonicPortalManager.unsubscribeFromTopic(topic, subscriptionId)
 |:----------|:-----|:-----------
 | `topic` | ` string` | The name of the topic/event to unsubscribe from.
 | `subscriptionId` | `number` | The subscription id returned by [subscribeToTopic()](#subscribetotopic).
+
+### configureLiveUpdates
+
+Note: configure before displaying the portal.
+
+```ts
+IonicPortalManager.configureLiveUpdates('webPortal', {
+	appId: 'e2abc12',
+	channel: 'production',
+	syncOnAdd: true
+})
+```
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `portalId` | ` string` | The portal id.
+| `config` | `IonicPortalLiveUpdateConfig` | Live update configuration.
+
+### syncNow
+
+```ts
+IonicPortalManager.syncNow(['e2abc12'], false, status => {
+	console.log('sync complete:', status)
+})
+```
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `appIds` | `Array<string>` | Portal app ids to sync.
+| `isParallel` | `boolean` | Whether to sync in parallel or not.
+| `complete` | `(status: string) => void` | Complete callback.
+
+### getLastSync
+
+```ts
+const lastSync = IonicPortalManager.getLastSync('e2abc12')
+```
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `appId` | `string` | Portal app id to check last sync.
 
 ## Using Capacitor Plugins with Ionic Portals
 

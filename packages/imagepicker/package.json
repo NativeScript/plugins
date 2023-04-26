@@ -1,13 +1,13 @@
 {
 	"name": "@nativescript/imagepicker",
-	"version": "1.0.10",
+	"version": "2.0.0",
 	"description": "A plugin for the NativeScript framework implementing multiple image picker",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
 		"platforms": {
-			"ios": "6.0.0",
-			"android": "6.0.0"
+			"ios": "~8.5.0",
+			"android": "~8.5.0"
 		}
 	},
 	"repository": {
@@ -33,6 +33,6 @@
 	"readmeFilename": "README.md",
 	"bootstrapper": "@nativescript/plugin-seed",
 	"dependencies": {
-		"nativescript-permissions": "1.3.11"
+		"@nativescript-community/perms": "~2.3.0"
 	}
 }
