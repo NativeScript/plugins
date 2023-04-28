@@ -16,7 +16,7 @@ export class DemoModel extends DemoSharedFlutter {
 
 	openFlutter() {
 		this.page.showModal('modals/modal-flutter', <ShowModalOptions>{
-			fullscreen: false,
+			fullscreen: global.isAndroid ? true : false,
 		});
 	}
 

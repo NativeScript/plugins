@@ -152,6 +152,7 @@ export interface DelegateObserver {
 	 */
 	observerUniqueKey?: any;
 }
+//@ts-ignore
 export class SharedNotificationDelegateImpl extends SharedNotificationDelegateCommon {
 	_observers: Array<{ observer: DelegateObserver; priority: number }> = [];
 	disableUnhandledWarning = false;

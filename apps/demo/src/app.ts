@@ -25,6 +25,8 @@ import { FlutterDelegate } from '@nativescript/flutter';
 // 	IonicPortalManager.register('<portal-api-key>');
 // });
 
-Application.ios.delegate = FlutterDelegate;
+if (global.isIOS) {
+	Application.ios.delegate = FlutterDelegate;
+}
 
 Application.run({ moduleName: 'app-root' });
