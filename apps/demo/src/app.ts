@@ -1,6 +1,6 @@
 import { Application } from '@nativescript/core';
-import { FlutterDelegate } from '@nativescript/flutter';
-
+import { FlutterDelegate, init } from '@nativescript/flutter';
+init();
 // uncomment to test local notifications
 // import "@nativescript/local-notifications";
 

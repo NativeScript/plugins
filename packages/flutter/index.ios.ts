@@ -3,6 +3,8 @@ import { FlutterCommon } from './common';
 
 let flutterEngineGroup: FlutterEngineGroup;
 
+export function init() {}
+
 export class Flutter extends FlutterCommon {
 	flutterViewController: FlutterViewController;
 	platformChannel: FlutterMethodChannel;

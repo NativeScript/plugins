@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(const MyApp());
 
@@ -46,8 +47,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  MethodChannel platform = const MethodChannel("nativescript");
+  void _incrementCounter() async {
+    int level = await platform.invokeMethod("getBatteryLevel");
 
-  void _incrementCounter() {
+    print("level $level");
+    
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
