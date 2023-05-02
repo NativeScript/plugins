@@ -1,6 +1,5 @@
 import { Application, Observable, Utils, fromObject } from '@nativescript/core';
 import { FlutterCommon } from './common';
-
 function makeFragmentName(viewId: number): string {
 	return 'android:flutter:' + viewId;
 }
@@ -10,45 +9,55 @@ let flutterEngine: io.flutter.embedding.engine.FlutterEngine;
 let channel: io.flutter.plugin.common.MethodChannel;
 let listener;
 const instances = new Map();
+let MethodCallClazz: java.lang.Class<io.flutter.plugin.common.MethodCall>;
+let argumentsMethod;
 export function init() {
 	if (!didInit) {
+		// todo remove remove after fixing runtime;
+		MethodCallClazz = java.lang.Class.forName('io.flutter.plugin.common.MethodCall');
+		argumentsMethod = MethodCallClazz.getDeclaredMethod('arguments', []);
+
 		flutterEngine = new io.flutter.embedding.engine.FlutterEngine(Utils.android.getApplicationContext());
 		flutterEngine.getDartExecutor().executeDartEntrypoint(io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint.createDefault());
 		io.flutter.embedding.engine.FlutterEngineCache.getInstance().put('default_nativescript', flutterEngine);
 		io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister.registerGeneratedPlugins(flutterEngine);
-		channel = new io.flutter.plugin.common.MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), 'nativescript');
+		channel = new io.flutter.plugin.common.MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), 'org.nativescript.flutter/channel');
 		listener = new io.flutter.plugin.common.MethodChannel.MethodCallHandler({
 			onMethodCall(call: io.flutter.plugin.common.MethodCall, result: io.flutter.plugin.common.MethodChannel.Result) {
-				const method = call.method;
-				if (method.startsWith('__notify:')) {
-					try {
+				try {
+					const method = call.method;
+					if (method.startsWith('__notify:')) {
 						const eventName = method.replace('__notify:', '');
+						const args = argumentsMethod.invoke(call, null); //call.arguments();
+						const data = Utils.dataDeserialize(args);
 						Flutter.events.notify({
 							eventName,
 							object: fromObject({}),
-							data: Utils.dataDeserialize(call.arguments()),
+							data,
 						});
 						result.success(null);
-					} catch (error) {
-						result.error('1000', error.message, '');
-					}
-				} else if (method === 'log') {
-					console.log(Utils.dataDeserialize(call.arguments()));
-				} else {
-					const data = Utils.dataDeserialize(call.arguments());
-					const instance: string | null = data?.instance;
-					if (instance?.startsWith('__nativeNS:')) {
-						const ret = eval(instance.replace('__nativeNS:', ''));
-						result.success(Utils.dataSerialize(ret, true));
-						return;
-					} else if (instance?.startsWith('__nativeInstance:')) {
-						const id = instance.replace('__nativeInstance:', '');
-						const nativeInstance = instances.get(id);
-						if (nativeInstance) {
-						} else {
+					} else if (method === 'log') {
+						const args = argumentsMethod.invoke(call, null); //call.arguments();
+						console.log(Utils.dataDeserialize(args));
+					} else {
+						const args = argumentsMethod.invoke(call, null); //call.arguments();
+						const data = Utils.dataDeserialize(args);
+						const instance: string | null = data?.instance;
+						if (instance?.startsWith('__nativeNS:')) {
+							const ret = eval(instance.replace('__nativeNS:', ''));
+							result.success(Utils.dataSerialize(ret, true));
+							return;
+						} else if (instance?.startsWith('__nativeInstance:')) {
+							const id = instance.replace('__nativeInstance:', '');
+							const nativeInstance = instances.get(id);
+							if (nativeInstance) {
+							} else {
+							}
 						}
+						console.log('method', method, 'arguments', args);
 					}
-					console.log('method', method, 'arguments', call.arguments());
+				} catch (error) {
+					result.error('1000', error.message, '');
 				}
 			},
 		});
@@ -60,7 +69,7 @@ export function init() {
 }
 
 export class Flutter extends FlutterCommon {
-	_fragment: io.flutter.embedding.android.FlutterFragment & androidx.fragment.app.Fragment;
+	_fragment: io.flutter.embedding.android.FlutterFragment;
 	_androidViewId: number = -1;
 	_activityCallbacks: android.app.Application.ActivityLifecycleCallbacks;
 	_channel: io.flutter.plugin.common.MethodChannel;
@@ -119,8 +128,8 @@ export class Flutter extends FlutterCommon {
 
 		const tr = fm.beginTransaction();
 
-		tr.replace(this._androidViewId, this._fragment, name);
+		tr.replace(this._androidViewId, this._fragment as any, name);
 
-		tr.commitAllowingStateLoss();
+		tr.commit();
 	}
 }

@@ -10,6 +10,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+     NativeScript.getInstance()
+        .notify("incrementCounter", 0);
+        
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -75,8 +79,9 @@ class NativeScriptObject {
   }
 }
 
+const MethodChannel nsc = MethodChannel('org.nativescript.flutter/channel');
+
 class NativeScriptProxy {
-  static const MethodChannel nsc = MethodChannel('nativescript');
   static final Map<Symbol, dynamic> objects = {};
 
   NativeScriptProxy();
@@ -143,22 +148,28 @@ class NativeScriptProxy {
 }
 
 class NativeScript {
-  NativeScript();
+  NativeScript._();
+
+  static NativeScript getInstance(){
+    return nativeScript;
+  }
 
   final dynamic native = NativeScriptProxy();
 
-  Future<void> notify(String event, dynamic data) async {
-    return NativeScriptProxy.nsc.invokeMethod<void>("__notify:$event", data);
+  Future<void> notify(String event, dynamic data) {
+    return nsc.invokeMethod<void>("__notify:$event", data);
   }
 
-  Future<void> log(dynamic data) async {
-    return NativeScriptProxy.nsc.invokeMethod<void>("log", data);
+  Future<void> log(dynamic data) {
+    return nsc.invokeMethod<void>("log", data);
   }
 }
 
+final NativeScript nativeScript = NativeScript._();
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  NativeScript nativescript = NativeScript();
+  NativeScript nativescript = NativeScript.getInstance();
 
   Future<void> _incrementCounter() async {
     setState(() {
@@ -178,11 +189,11 @@ class _MyHomePageState extends State<MyHomePage> {
     await nativescript
         .notify("incrementCounter", _counter);
 
-      // int matchParent = await nativescript
-      //     .native.android.widget.LinearLayout.LayoutParams.MATCH_PARENT
-      //     .get();
+      int matchParent = await nativescript
+          .native.android.widget.LinearLayout.LayoutParams.MATCH_PARENT
+          .get();
 
-      // await nativescript.log("MATCH_PARENT: $matchParent ${matchParent == -1}");
+      await nativescript.log("MATCH_PARENT: $matchParent ${matchParent == -1}");
 
       String schemeContent = await nativescript
           .native.android.content.ContentResolver.SCHEME_CONTENT
