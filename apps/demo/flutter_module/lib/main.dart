@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(const MyApp());
 
@@ -44,10 +46,121 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+extension SymbolName on Symbol {
+  String get name {
+    var str = toString();
+    str = str.substring(8, str.length - 2);
+    if (str.endsWith('=')) str = str.substring(0, str.length - 1);
+    return str;
+  }
+}
+
+class NativeScriptObject {
+  String? _id;
+  bool isClass;
+  String? _parent;
+  String? _name;
+
+  NativeScriptObject._(this._id, this.isClass, this._parent, this._name);
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    if (invocation.isGetter && invocation.memberName != #get) {
+      String name = invocation.memberName.name;
+      return NativeScriptObject._(
+          null, false, "${_parent != null ? "$_parent." : ""}$_name", name);
+    }
+
+    return NativeScriptProxy.handleInvocation(this, invocation);
+  }
+}
+
+class NativeScriptProxy {
+  static const MethodChannel nsc = MethodChannel('nativescript');
+  static final Map<Symbol, dynamic> objects = {};
+
+  NativeScriptProxy();
+
+  static dynamic handleInvocation(dynamic object, Invocation invocation) {
+    if (invocation.isGetter && invocation.memberName != #get) {
+      String name = invocation.memberName.name;
+      dynamic ret = NativeScriptObject._(null, false, null, name);
+      objects[invocation.memberName] = ret;
+      return ret;
+    }
+
+    Map<String, dynamic> namedArguments =
+        invocation.namedArguments.map((key, value) {
+      if (value is NativeScriptObject) {
+        if (value._id != null) {
+          return MapEntry(key.name, "__nativeInstance:${value._id}");
+        }
+
+        return MapEntry(key.name, "__nativeNS:${value._parent}.${value._name}");
+      }
+      return MapEntry(key.name, value);
+    });
+
+    String? instance;
+
+    if (object != null) {
+      if (object._id != null) {
+        instance = "__nativeInstance:${object._id}";
+      } else {
+        instance = "__nativeNS:${object._parent}.${object._name}";
+      }
+    }
+
+    return nsc.invokeMethod("__native", {
+      "instance": instance,
+      "isAccessor": invocation.isAccessor,
+      "isGetter": invocation.isGetter,
+      "isMethod": invocation.isMethod,
+      "isSetter": invocation.isSetter,
+      "memberName": invocation.memberName.name,
+      "positionalArguments": invocation.positionalArguments.map((e) {
+        if (e is NativeScriptObject) {
+          if (e._id != null) {
+            return "__nativeInstance:${e._id}";
+          }
+
+          return "__nativeNS:${e._parent}.${e._name}";
+        }
+        return e;
+      }).toList(),
+      "namedArguments": namedArguments,
+      "typeArguments":
+          invocation.typeArguments.map<String>((e) => e.toString()).toList()
+    });
+
+    // return super.noSuchMethod(invocation);
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    return handleInvocation(null, invocation);
+  }
+}
+
+class NativeScript {
+  NativeScript();
+
+  final dynamic native = NativeScriptProxy();
+
+  Future<void> notify(String event, dynamic data) async {
+    return NativeScriptProxy.nsc.invokeMethod<void>("__notify:$event", data);
+  }
+
+  Future<void> log(dynamic data) async {
+    return NativeScriptProxy.nsc.invokeMethod<void>("log", data);
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  NativeScript nativescript = NativeScript();
 
-  void _incrementCounter() {
+  Future<void> _incrementCounter() async {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -56,6 +169,30 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+
+    // nativescript.native.Osei;
+
+    try {
+
+    // nsc.invokeMethod('incrementCounter', _counter);
+    await nativescript
+        .notify("incrementCounter", _counter);
+
+      // int matchParent = await nativescript
+      //     .native.android.widget.LinearLayout.LayoutParams.MATCH_PARENT
+      //     .get();
+
+      // await nativescript.log("MATCH_PARENT: $matchParent ${matchParent == -1}");
+
+      String schemeContent = await nativescript
+          .native.android.content.ContentResolver.SCHEME_CONTENT
+          .get();
+
+      await nativescript
+          .log("SCHEME_CONTENT: $schemeContent ${schemeContent == "content"}");
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override

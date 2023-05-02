@@ -1,9 +1,17 @@
+import { fromObject } from '@nativescript/core';
 import { FlutterCommon } from './common';
 
 let rootFlutterVc: FlutterViewController;
 
+export function init() {}
+
 export class Flutter extends FlutterCommon {
 	flutterViewController: FlutterViewController;
+
+	static _events = fromObject({});
+	static get events() {
+		return this._events;
+	}
 
 	createNativeView() {
 		this.flutterViewController = FlutterViewController.alloc().initWithEngineNibNameBundle((<any>UIApplication.sharedApplication.delegate)._flutterEngine, null, null);

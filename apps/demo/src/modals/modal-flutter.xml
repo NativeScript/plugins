@@ -1,5 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" shownModally="shownModally" class="page" xmlns:ui="@nativescript/flutter">
-    <GridLayout>
-        <ui:Flutter width="100%" width="100%"></ui:Flutter>
+    <GridLayout rows="auto, *">
+        <Label text="{{'Flutter data: ' + data}}"/>
+        <ui:Flutter row="1" width="100%" width="100%"></ui:Flutter>
     </GridLayout>
 </Page>
