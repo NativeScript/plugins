@@ -1,5 +1,5 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" shownModally="shownModally" class="page" xmlns:ui="@nativescript/flutter">
     <GridLayout>
-        <ui:Flutter width="100%" width="100%"></ui:Flutter>
+        <ui:Flutter id="countMain" channel="{{channel}}" width="100%" width="100%"></ui:Flutter>
     </GridLayout>
 </Page>
