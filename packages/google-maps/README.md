@@ -699,8 +699,8 @@ Tile providers are objects that provide tiles to be used in a Tile Overlay.
 For example a `UrlTileProvider` can be created like so:
 
 ```ts
-const tileProvider = new UrlTileProvider((x, y, zoom) => {
-	return `https://tiles.example.com/${zoom}/${x}/${y}.png`;
+const tileProvider = new UrlTileProvider((x, y, z) => {
+	return `https://tiles.example.com/${z}/${x}/${y}.png`;
 });
 ```
 
