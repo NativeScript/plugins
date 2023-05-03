@@ -51,6 +51,7 @@ NativeScript binding for the Google Maps Android & iOS API.
 		* [Adding Tile Overlays](#adding-tile-overlays)
 		* [TileOverlayOptions](#tileoverlayoptions)
 		* [Removing Tile Overlays](#removing-tile-overlays)
+		* [TileProvider](#tile-providers)
 
 ## Prerequisites
 1. To use the Google Maps API, you must register your app in the [Google API Console](https://console.cloud.google.com/apis/dashboard) and obtain an API key.
@@ -146,8 +147,10 @@ import { GoogleMapsModule } from '@nativescript/google-maps/angular';
 >
 </MapView>
 ```
+> **Note** To handle the map features, see the [GoogleMap object](#googlemap-object) API.
 
 ---
+
 ### Vue
 ```ts
 import { createApp,registerElement } from 'nativescript-vue';
@@ -159,9 +162,7 @@ const app = createApp(Home)
 app.use(GoogleMaps)
 
 ```
-> **Note** To handle the map features, see the [GoogleMap object](#googlemap-object) API.
 
----
 
 ```html
 <MapView
@@ -173,6 +174,8 @@ app.use(GoogleMaps)
 />
 ```
 > **Note** To handle the map features, see the [GoogleMap object](#googlemap-object) API.
+
+---
 
 ### Controlling the camera
 To programatically update the camera position, call the `animateCamera()` method on the `GoogleMap` object and pass it a [CameraUpdate](#cameraupdate-class) instance.
@@ -624,7 +627,7 @@ function addTileOverlay(map: GoogleMap, tileOverlayOptions: TileOverlayOptions):
 | `fadeIn` | `boolean` |
 | `transparency` | `number` |
 | `visible` | `boolean` |
-| `tileProvider` | TileProvider & Partial\<NativeObject\> |
+| `tileProvider` | [TileProvider](#tile-providers) & Partial\<NativeObject\> |
 | `zIndex` | `number` |
 
 #### Removing Tile Overlays
@@ -637,6 +640,25 @@ function removeTileOverlay(map: GoogleMap, tileOverlay: TileOverlay) {
 }
 ```
 
+#### Tile Providers
+
+Tile providers are objects that provide tiles to be used in a Tile Overlay.
+
+| Provider | Description |
+|:---------|:------------|
+| `TileProvider` | Base class for tile providers |
+| `UrlTileProvider` | Tile provider that returns a tile from a URL |
+
+
+For example a `UrlTileProvider` can be created like so:
+
+```ts
+const tileProvider = new UrlTileProvider({
+	url: 'https://tile.example.org/{z}/{x}/{y}.png',
+	tileSize: 256,
+	maximumZ: 19
+});
+```
 
 ---
 
