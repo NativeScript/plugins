@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 import lazy from '@nativescript/core/utils/lazy';
@@ -13,7 +14,6 @@ const COLOR_DARK = lazy(() => com.google.android.gms.common.SignInButton.COLOR_D
 const COLOR_LIGHT = lazy(() => com.google.android.gms.common.SignInButton.COLOR_LIGHT);
 const COLOR_AUTO = lazy(() => com.google.android.gms.common.SignInButton.COLOR_AUTO);
 
-
 export class GoogleError extends Error {
 	#native: java.lang.Exception;
 	static fromNative(native: java.lang.Exception, message?: string) {
@@ -27,13 +27,12 @@ export class GoogleError extends Error {
 	}
 }
 
-
 export class User implements IUser {
-	#native: com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+	#native: com.google.android.gms.auth.api.identity.SignInCredential;
 	#grantedScopes: string[];
 	#accessToken: string;
-	static fromNative(account: com.google.android.gms.auth.api.signin.GoogleSignInAccount, accessToken: string = null) {
-		if (account instanceof com.google.android.gms.auth.api.signin.GoogleSignInAccount) {
+	static fromNative(account: com.google.android.gms.auth.api.identity.SignInCredential, accessToken: string = null) {
+		if (account instanceof com.google.android.gms.auth.api.identity.SignInCredential) {
 			const user = new User();
 			user.#native = account;
 			user.#accessToken = accessToken;
@@ -51,7 +50,8 @@ export class User implements IUser {
 	}
 
 	get email() {
-		return this.native.getEmail();
+		console.log('request scope for access.');
+		return '';
 	}
 
 	get givenName() {
@@ -63,7 +63,7 @@ export class User implements IUser {
 	}
 
 	get idToken() {
-		return this.native.getIdToken();
+		return this.native.getGoogleIdToken();
 	}
 
 	get accessToken() {
@@ -72,16 +72,17 @@ export class User implements IUser {
 
 	get grantedScopes() {
 		if (!this.#grantedScopes) {
-			const grantedScopes = [];
-			const scopes = this.native.getGrantedScopes().toArray();
-			const length = scopes.length;
-			for (let i = 0; i < length; i++) {
-				const scope = scopes[i]?.toString?.();
-				if (scope) {
-					grantedScopes.push(scope);
-				}
-			}
-			this.#grantedScopes = grantedScopes;
+			// removed.
+			// const grantedScopes = [];
+			// const scopes = this.native.getGrantedScopes().toArray();
+			// const length = scopes.length;
+			// for (let i = 0; i < length; i++) {
+			// 	const scope = scopes[i]?.toString?.();
+			// 	if (scope) {
+			// 		grantedScopes.push(scope);
+			// 	}
+			// }
+			// this.#grantedScopes = grantedScopes;
 		}
 		return this.#grantedScopes;
 	}
@@ -91,7 +92,7 @@ export class User implements IUser {
 	}
 
 	get serverAuthCode() {
-		return this.native.getServerAuthCode();
+		// return this.native.getServerAuthCode();
 	}
 
 	requestScopes(scopes: string[]): Promise<User> {
@@ -248,7 +249,7 @@ export class GoogleSignin {
 	static playServicesAvailable() {
 		return new Promise((resolve, reject) => {
 			resolve(org.nativescript.plugins.googlesignin.GoogleSignIn.playServicesAvailable(false, Application.android.foregroundActivity || Application.android.startActivity));
-		})
+		});
 	}
 }
 

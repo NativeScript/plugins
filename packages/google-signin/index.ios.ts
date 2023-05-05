@@ -17,6 +17,7 @@ export class GoogleError extends Error {
 export class User implements IUser {
 	#native: GIDGoogleUser;
 	#grantedScopes: string[];
+	private _serverAuthCode: string;
 	static fromNative(user: GIDGoogleUser) {
 		if (user instanceof GIDGoogleUser) {
 			const usr = new User();
@@ -47,11 +48,11 @@ export class User implements IUser {
 	}
 
 	get idToken() {
-		return this.native?.authentication?.idToken;
+		return this.native?.idToken.tokenString;
 	}
 
 	get accessToken() {
-		return this.native?.authentication?.accessToken;
+		return this.native?.accessToken.tokenString;
 	}
 
 	get grantedScopes() {
@@ -75,16 +76,17 @@ export class User implements IUser {
 	}
 
 	get serverAuthCode() {
-		return this.native.serverAuthCode;
+		return this._serverAuthCode;
 	}
 
 	requestScopes(scopes: string[]): Promise<User> {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.addScopesPresentingViewControllerCallback(scopes, GoogleSignin.topViewController, (user, error) => {
+			GIDSignIn.sharedInstance.signInWithPresentingViewControllerHintAdditionalScopesCompletion(GoogleSignin.topViewController, 'Requesting additional scopes', scopes, (result, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
-					resolve(User.fromNative(user));
+					this._serverAuthCode = result.serverAuthCode;
+					resolve(User.fromNative(result.user));
 				}
 			});
 		});
@@ -150,7 +152,7 @@ export class GoogleSignin {
 
 	static disconnect(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.disconnectWithCallback((error) => {
+			GIDSignIn.sharedInstance.disconnectWithCompletion((error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
@@ -162,11 +164,11 @@ export class GoogleSignin {
 
 	static signIn() {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.signInWithConfigurationPresentingViewControllerCallback(this.#nativeConfig, this.topViewController, (user, error) => {
+			GIDSignIn.sharedInstance.signInWithPresentingViewControllerCompletion(this.topViewController, (result, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
-					resolve(User.fromNative(user));
+					resolve(User.fromNative(result?.user));
 				}
 			});
 		});
@@ -174,7 +176,7 @@ export class GoogleSignin {
 
 	static signInSilently(): Promise<User> {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.restorePreviousSignInWithCallback((user, error) => {
+			GIDSignIn.sharedInstance.restorePreviousSignInWithCompletion((user, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
@@ -199,7 +201,7 @@ export class GoogleSignin {
 				return;
 			}
 
-			user.authentication.doWithFreshTokens((auth, error) => {
+			user.refreshTokensIfNeededWithCompletion((auth, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
