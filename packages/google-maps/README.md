@@ -50,6 +50,7 @@ A plugin that allows you to use the [Maps SDK](https://developers.google.com/map
 		* [Adding Tile Overlays](#adding-tile-overlays)
 		* [TileOverlayOptions](#tileoverlayoptions)
 		* [Removing Tile Overlays](#removing-tile-overlays)
+		* [Tile Providers](#tile-providers)
 
 ## Prerequisites
 1. To use the Google Maps API, register your app in the [Google API Console](https://console.cloud.google.com/apis/dashboard) and obtain an API key.
@@ -672,7 +673,7 @@ function addTileOverlay(map: GoogleMap, tileOverlayOptions: TileOverlayOptions):
 | `fadeIn` | `boolean` |
 | `transparency` | `number` |
 | `visible` | `boolean` |
-| `tileProvider` | TileProvider & Partial\<NativeObject\> |
+| `tileProvider` | [TileProvider](#tile-providers) & Partial\<NativeObject\> |
 | `zIndex` | `number` |
 
 #### Removing Tile Overlays
@@ -685,6 +686,23 @@ function removeTileOverlay(map: GoogleMap, tileOverlay: TileOverlay) {
 }
 ```
 
+#### Tile Providers
+
+Tile providers are objects that provide tiles to be used in a Tile Overlay.
+
+| Provider | Description |
+|:---------|:------------|
+| `TileProvider` | Base class for tile providers |
+| `UrlTileProvider` | Tile provider that returns a tile from a URL |
+
+
+For example a `UrlTileProvider` can be created like so:
+
+```ts
+const tileProvider = new UrlTileProvider((x, y, z) => {
+	return `https://tiles.example.com/${z}/${x}/${y}.png`;
+});
+```
 
 ---
 
