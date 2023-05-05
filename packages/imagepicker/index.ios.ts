@@ -119,7 +119,9 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 					fileMap[existingFileName].path = urlAsset.URL.toString().replace('file://', '');
 				});
 			} else {
-				phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(new PHContentEditingInputRequestOptions(), (thing) => {
+				let imageOptions = new PHContentEditingInputRequestOptions();
+				imageOptions.networkAccessAllowed = true;
+				phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(imageOptions, (thing) => {
 					fileMap[existingFileName].path = thing.fullSizeImageURL.toString().replace('file://', '');
 				});
 			}
