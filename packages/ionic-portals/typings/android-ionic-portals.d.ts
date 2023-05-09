@@ -1,6 +1,21 @@
 declare module io {
 	export module ionic {
 		export module portals {
+			export class AssetMap {
+				public static class: java.lang.Class<io.ionic.portals.AssetMap>;
+				public getAssetPath(): string;
+				public getVirtualPath(): string;
+				public constructor(param0: string, param1: string, param2: string);
+				public getName(): string;
+				public getPath(): string;
+			}
+		}
+	}
+}
+
+declare module io {
+	export module ionic {
+		export module portals {
 			export class BuildConfig {
 				public static class: java.lang.Class<io.ionic.portals.BuildConfig>;
 				public static DEBUG: boolean;
@@ -23,16 +38,22 @@ declare module io {
 				public getLiveUpdateOnAppLoad(): boolean;
 				public setInitialContext(param0: string): void;
 				public setLiveUpdateOnAppLoad(param0: boolean): void;
+				public addPluginInstance(param0: com.getcapacitor.Plugin): void;
+				public getPluginInstances$IonicPortals_release(): java.util.ArrayList<com.getcapacitor.Plugin>;
 				public getLiveUpdateConfig(): io.ionic.liveupdates.LiveUpdate;
 				public getName(): string;
 				public setInitialContext(param0: java.util.Map<string, any>): void;
+				public addAssetMaps(param0: java.util.LinkedHashMap<string, io.ionic.portals.AssetMap>): void;
 				public setPortalFragmentType(param0: java.lang.Class<any>): void;
 				public constructor(param0: string);
 				public getInitialContext(): any;
 				public addPlugin(param0: java.lang.Class<any>): void;
 				public getStartDir(): string;
+				public setAssetMaps$IonicPortals_release(param0: java.util.LinkedHashMap<string, io.ionic.portals.AssetMap>): void;
 				public setLiveUpdateConfig(param0: io.ionic.liveupdates.LiveUpdate): void;
 				public getPlugins$IonicPortals_release(): java.util.ArrayList<java.lang.Class<any>>;
+				public addPluginInstances(param0: java.util.List<any>): void;
+				public getAssetMaps$IonicPortals_release(): java.util.LinkedHashMap<string, io.ionic.portals.AssetMap>;
 				public getPortalFragmentType(): java.lang.Class<any>;
 			}
 		}
@@ -48,13 +69,16 @@ declare module io {
 				public addPlugin(param0: java.lang.Class<any>): io.ionic.portals.PortalBuilder;
 				public create(): io.ionic.portals.Portal;
 				public setLiveUpdateConfig(param0: globalAndroid.content.Context, param1: io.ionic.liveupdates.LiveUpdate, param2: boolean): io.ionic.portals.PortalBuilder;
-				public setInitialContext(param0: any): io.ionic.portals.PortalBuilder;
+				public addAssetMap(param0: io.ionic.portals.AssetMap): io.ionic.portals.PortalBuilder;
 				public setPortalFragmentType(param0: java.lang.Class<any>): io.ionic.portals.PortalBuilder;
-				public constructor(param0: string, param1: kotlin.jvm.functions.Function1<any, kotlin.Unit>);
+				public setAssetMaps(param0: java.util.LinkedHashMap<string, io.ionic.portals.AssetMap>): io.ionic.portals.PortalBuilder;
 				public getName(): string;
 				public setPlugins(param0: java.util.List<java.lang.Class<any>>): io.ionic.portals.PortalBuilder;
 				public constructor(param0: string);
 				public setLiveUpdateConfig(param0: globalAndroid.content.Context, param1: io.ionic.liveupdates.LiveUpdate): io.ionic.portals.PortalBuilder;
+				public setInitialContext(param0: any): io.ionic.portals.PortalBuilder;
+				public constructor(param0: string, param1: any);
+				public addPluginInstance(param0: com.getcapacitor.Plugin): io.ionic.portals.PortalBuilder;
 			}
 		}
 	}
@@ -67,23 +91,33 @@ declare module io {
 				public static class: java.lang.Class<io.ionic.portals.PortalFragment>;
 				public constructor(param0: io.ionic.portals.Portal);
 				public getPORTAL_NAME(): string;
-				public linkMessageReceivers(param0: any): void;
-				public onResume(): void;
 				public setPortal(param0: io.ionic.portals.Portal): void;
 				public getLiveUpdateFiles(): java.io.File;
+				public constructor(param0: io.ionic.portals.Portal, param1: any, param2: any);
 				public onPause(): void;
 				public reload(): void;
+				public setWebVitalsCallback(param0: any): void;
+				public getPortal(): io.ionic.portals.Portal;
+				public constructor();
+				public addPlugin(param0: java.lang.Class<any>): void;
+				public getInitialContext(): any;
+				public getBridge(): com.getcapacitor.Bridge;
+				public onConfigurationChanged(param0: globalAndroid.content.res.Configuration): void;
+				public getOnBridgeAvailable(): any;
+				public linkMessageReceivers(param0: any): void;
+				public onResume(): void;
+				public setOnBridgeAvailable(param0: any): void;
+				public addPluginInstance(param0: com.getcapacitor.Plugin): void;
 				public onCreateView(param0: globalAndroid.view.LayoutInflater, param1: globalAndroid.view.ViewGroup, param2: globalAndroid.os.Bundle): globalAndroid.view.View;
 				public setLiveUpdateFiles(param0: java.io.File): void;
 				public onSaveInstanceState(param0: globalAndroid.os.Bundle): void;
 				public addWebViewListener(param0: com.getcapacitor.WebViewListener): void;
-				public getPortal(): io.ionic.portals.Portal;
-				public constructor();
-				public addPlugin(param0: java.lang.Class<any>): void;
-				public getBridge(): com.getcapacitor.Bridge;
+				public setInitialContext(param0: any): void;
+				public getWebVitalsCallback(): any;
+				public constructor(param0: io.ionic.portals.Portal, param1: any);
+				public constructor(param0: io.ionic.portals.Portal, param1: any);
 				public onDestroy(): void;
 				public setConfig(param0: com.getcapacitor.CapConfig): void;
-				public onConfigurationChanged(param0: globalAndroid.content.res.Configuration): void;
 				public onViewCreated(param0: globalAndroid.view.View, param1: globalAndroid.os.Bundle): void;
 			}
 		}
@@ -129,6 +163,7 @@ declare module io {
 		export module portals {
 			export class PortalView {
 				public static class: java.lang.Class<io.ionic.portals.PortalView>;
+				public constructor(param0: globalAndroid.content.Context, param1: string, param2: any, param3: any);
 				public constructor(param0: globalAndroid.content.Context, param1: string);
 				public setPortalId(param0: string): void;
 				public onApplyWindowInsets(param0: globalAndroid.view.WindowInsets): globalAndroid.view.WindowInsets;
@@ -137,6 +172,7 @@ declare module io {
 				public removeView(param0: globalAndroid.view.View): void;
 				public getViewId(): string;
 				public removeAllViewsInLayout(): void;
+				public constructor(param0: globalAndroid.content.Context, param1: string, param2: any);
 				public getPortalFragment(): io.ionic.portals.PortalFragment;
 				public removeViewAt(param0: number): void;
 				public setDrawDisappearingViewsLast(param0: boolean): void;
@@ -144,6 +180,8 @@ declare module io {
 				public removeViews(param0: number, param1: number): void;
 				public getPortalId(): string;
 				public setTag(param0: string): void;
+				public constructor(param0: globalAndroid.content.Context, param1: string, param2: string, param3: any, param4: any);
+				public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet, param2: number, param3: any);
 				public removeViewsInLayout(param0: number, param1: number): void;
 				public setViewId(param0: string): void;
 				public setLayoutTransition(param0: globalAndroid.animation.LayoutTransition): void;
@@ -151,9 +189,9 @@ declare module io {
 				public constructor(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet);
 				public removeViewInLayout(param0: globalAndroid.view.View): void;
 				public getTag(): string;
+				public constructor(param0: globalAndroid.content.Context, param1: string, param2: any);
 				public dispatchDraw(param0: globalAndroid.graphics.Canvas): void;
 				public startViewTransition(param0: globalAndroid.view.View): void;
-				public constructor(param0: globalAndroid.content.Context, param1: string, param2: string);
 				public loadPortal(param0: globalAndroid.content.Context, param1: globalAndroid.util.AttributeSet): void;
 				public drawChild(param0: globalAndroid.graphics.Canvas, param1: globalAndroid.view.View, param2: number): boolean;
 				public endViewTransition(param0: globalAndroid.view.View): void;
@@ -167,8 +205,7 @@ declare module io {
 		export module portals {
 			export class PortalsPlugin {
 				public static class: java.lang.Class<io.ionic.portals.PortalsPlugin>;
-				public static Companion: io.ionic.portals.PortalsPlugin.Companion;
-				public static subscribe(param0: string, param1: kotlin.jvm.functions.Function1<any, kotlin.Unit>): number;
+				public static subscribe(param0: string, param1: any): number;
 				public subscribeNative(param0: com.getcapacitor.PluginCall): void;
 				public static publish(param0: string, param1: any): void;
 				public static getSubscriptionRef(): number;
@@ -176,20 +213,20 @@ declare module io {
 				public static unsubscribe(param0: string, param1: number): void;
 				public publishNative(param0: com.getcapacitor.PluginCall): void;
 				public unsubscribeNative(param0: com.getcapacitor.PluginCall): void;
-				public static setSubscriptions(param0: java.util.Map<string, java.util.Map<java.lang.Integer, kotlin.jvm.functions.Function1<io.ionic.portals.SubscriptionResult, kotlin.Unit>>>): void;
+				public static setSubscriptions(param0: any): void;
 				public constructor();
-				public static getSubscriptions(): java.util.Map<string, java.util.Map<java.lang.Integer, kotlin.jvm.functions.Function1<io.ionic.portals.SubscriptionResult, kotlin.Unit>>>;
+				public static getSubscriptions(): java.util.Map<any>;
 			}
 			export module PortalsPlugin {
 				export class Companion {
 					public static class: java.lang.Class<io.ionic.portals.PortalsPlugin.Companion>;
-					public setSubscriptions(param0: java.util.Map<string, java.util.Map<java.lang.Integer, kotlin.jvm.functions.Function1<io.ionic.portals.SubscriptionResult, kotlin.Unit>>>): void;
+					public setSubscriptions(param0: java.util.Map<any>): void;
 					public unsubscribe(param0: string, param1: number): void;
 					public getSubscriptionRef(): number;
-					public subscribe(param0: string, param1: kotlin.jvm.functions.Function1<any, kotlin.Unit>): number;
+					public subscribe(param0: string, param1: any): number;
 					public publish(param0: string, param1: any): void;
 					public setSubscriptionRef(param0: number): void;
-					public getSubscriptions(): java.util.Map<string, java.util.Map<java.lang.Integer, kotlin.jvm.functions.Function1<io.ionic.portals.SubscriptionResult, kotlin.Unit>>>;
+					public getSubscriptions(): java.util.Map<any>;
 				}
 			}
 		}
@@ -199,9 +236,12 @@ declare module io {
 declare module io {
 	export module ionic {
 		export module portals {
-			export class PortalsPluginKt {
-				public static class: java.lang.Class<io.ionic.portals.PortalsPluginKt>;
-				public static toMap(param0: org.json.JSONObject): java.util.Map<string, any>;
+			export class PortalsRouteProcessor {
+				public static class: java.lang.Class<io.ionic.portals.PortalsRouteProcessor>;
+				public process(param0: string, param1: string): com.getcapacitor.ProcessedRoute;
+				public getContext(): globalAndroid.content.Context;
+				public getAssetMaps(): java.util.LinkedHashMap<string, io.ionic.portals.AssetMap>;
+				public constructor(param0: globalAndroid.content.Context, param1: java.util.LinkedHashMap<string, io.ionic.portals.AssetMap>);
 			}
 		}
 	}
@@ -232,15 +272,24 @@ declare module io {
 declare module io {
 	export module ionic {
 		export module portals {
-			export class Test {
-				public static class: java.lang.Class<io.ionic.portals.Test>;
-				public static Companion: io.ionic.portals.Test.Companion;
-				public constructor();
+			export class WebVitals {
+				public static class: java.lang.Class<io.ionic.portals.WebVitals>;
+				public constructor(param0: string, param1: any);
+				public getCallback(): any;
+				public fcp(param0: number): void;
+				public fid(param0: number): void;
+				public ttfb(param0: number): void;
+				public getJs(): string;
+				public getPortalName(): string;
 			}
-			export module Test {
-				export class Companion {
-					public static class: java.lang.Class<io.ionic.portals.Test.Companion>;
-					public helloWorld(): void;
+			export module WebVitals {
+				export class Metric {
+					public static class: java.lang.Class<io.ionic.portals.WebVitals.Metric>;
+					public static FCP: io.ionic.portals.WebVitals.Metric;
+					public static FID: io.ionic.portals.WebVitals.Metric;
+					public static TTFB: io.ionic.portals.WebVitals.Metric;
+					public static values(): androidNative.Array<io.ionic.portals.WebVitals.Metric>;
+					public static valueOf(param0: string): io.ionic.portals.WebVitals.Metric;
 				}
 			}
 		}
