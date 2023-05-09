@@ -3,6 +3,7 @@ import * as imagepicker from '@nativescript/imagepicker';
 import { ItemEventData, Label } from '@nativescript/core';
 
 export class DemoSharedImagepicker extends DemoSharedBase {
+	private _selection: any;
 	private _imageSrc: any;
 	private _imageAssets: Array<any>;
 	private _isSingleMode: boolean;
@@ -23,6 +24,17 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		if (this._imageSrc !== value) {
 			this._imageSrc = value;
 			this.notifyPropertyChange('imageSrc', value);
+		}
+	}
+
+	get selection(): any {
+		return this._selection;
+	}
+
+	set selection(value: any) {
+		if (this._selection !== value) {
+			this._selection = value;
+			this.notifyPropertyChange('selection', value);
 		}
 	}
 
@@ -48,22 +60,25 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		}
 	}
 
-	public onItemLoading(args: ItemEventData) {
-		let label = args.view.getViewById<Label>('imageLabel');
-		label.text = 'image ' + args.index;
-	}
-
 	public onSelectMultipleTap(args) {
 		this.isSingleMode = false;
 		let context = imagepicker.create({
 			mode: 'multiple',
+			mediaType: imagepicker.ImagePickerMediaType.Any,
+			copyToAppFolder: 'media',
+			renameFileTo: 'foobarmultiple',
 		});
 		this.startSelection(context);
 	}
 
 	public onSelectSingleTap(args) {
 		this.isSingleMode = true;
-		let context = imagepicker.create({ mode: 'single' });
+		let context = imagepicker.create({
+			mode: 'single',
+			mediaType: imagepicker.ImagePickerMediaType.Any,
+			copyToAppFolder: 'media',
+			renameFileTo: 'foobar',
+		});
 		this.startSelection(context);
 	}
 
@@ -73,22 +88,28 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			.then(() => {
 				this.imageAssets = [];
 				this.imageSrc = null;
+				this.selection = null;
 				return context.present();
 			})
-			.then((selection) => {
-				console.log('Selection done: ' + JSON.stringify(selection));
-				this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0] : null;
+			.then((selection: imagepicker.ImagePickerSelection[]) => {
+				console.log('Selection done: ', selection);
+				this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
+				if (selection[0].thumbnail) {
+					this.imageSrc = selection[0].thumbnail;
+				}
+				this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
 
 				// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
 				selection.forEach((element) => {
-					element.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
-					element.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
+					let asset = element.asset;
+					asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
+					asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
 				});
 
 				this.imageAssets = selection;
 			})
 			.catch(function (e) {
-				console.log(e);
+				console.log('selection error', e);
 			});
 	}
 }

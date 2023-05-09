@@ -1,5 +1,19 @@
 # @nativescript/Email
 
+## Contents
+* [Intro](#intro)
+* [Installation](#installation)
+* [Use @nativescript/email](#use-nativescriptemail)
+	* [Check for availability](#check-for-availability)
+	* [Compose an email](#compose-an-email)
+	* [Usage with Angular](#usage-with-angular)
+* [API](#api)
+	* [Functions](#functions)
+	* [ComposeOptions](#composeoptions)
+* [Known issues](#known-issues)
+
+## Intro
+
 A plugin to compose an e-mail, have the user edit the draft manually and send it.
 
 > **Note:** This plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
@@ -11,20 +25,9 @@ A plugin to compose an e-mail, have the user edit the draft manually and send it
 [twitter-image]: https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]: https://twitter.com/eddyverbruggen
 
-## Contents
-* [Installation](#installation)
-* [Use @nativescript/email](#use-nativescriptemail)
-	* [Check for availability](#check-for-availability)
-	* [Compose an email](#compose-an-email)
-	* [Usage with Angular](#usage-with-angular)
-* [API](#api)
-	* [Functions](#functions)
-	* [ComposeOptions](#composeoptions)
-* [Known issues](#known-issues)
-
 ## Installation
 
-To install the plugin, run the following command:
+To install the plugin, run the following command in the root directory of your project:
 
 ```cli
 npm install @nativescript/email
@@ -50,7 +53,7 @@ To compose an email, use the `compose` method.
 ```js
 import { compose } from '@nativescript/email';
 
-// irst create a File object
+// first create a File object
 import { knownFolders } from '@nativescript/core';
 var appPath = knownFolders.currentApp().path;
 var logoPath = appPath + '/res/telerik-logo.png';
@@ -83,6 +86,12 @@ compose({
 		}
 	);
 ```
+## API
+### Method(s)
+| Name | Return Type | Description |
+|------|------|-------------|
+| `available()` | `Promise<boolean>`|  Checks for availability of a mail app.|
+| `compose(options: ComposeOptions)` | `Promise<boolean>` | Composes and sends a [ComposeOptions](#composeoptions) email.|
 
 ### Usage with Angular
 

@@ -4,6 +4,8 @@ declare var FBLink_NSData_FileDataExtracting: interop.Pointer | interop.Referenc
 
 declare var FBLink_NSFileManager_FileManaging: interop.Pointer | interop.Reference<any>;
 
+declare var FBLink_NSNotificationCenter_NotificationDelivering: interop.Pointer | interop.Reference<any>;
+
 declare var FBLink_NSURLSessionTask_NetworkTask: interop.Pointer | interop.Reference<any>;
 
 declare var FBLink_NSURLSession_URLSessionProviding: interop.Pointer | interop.Reference<any>;
@@ -15,6 +17,8 @@ declare var FBLinkable_NSBundle_InfoDictionaryProviding: number;
 declare var FBLinkable_NSData_FileDataExtracting: number;
 
 declare var FBLinkable_NSFileManager_FileManaging: number;
+
+declare var FBLinkable_NSNotificationCenter_NotificationDelivering: number;
 
 declare var FBLinkable_NSURLSessionTask_NetworkTask: number;
 
@@ -88,12 +92,16 @@ declare class FBSDKCrashHandler extends NSObject implements FBSDKCrashHandlerPro
 	clearCrashReportFiles(): void;
 
 	disable(): void;
+
+	saveException(exception: NSException): void;
 }
 
 interface FBSDKCrashHandlerProtocol {
 	addObserver(observer: FBSDKCrashObserving): void;
 
 	clearCrashReportFiles(): void;
+
+	saveException(exception: NSException): void;
 }
 declare var FBSDKCrashHandlerProtocol: {
 	prototype: FBSDKCrashHandlerProtocol;
@@ -179,6 +187,17 @@ interface FBSDKNetworkTask extends NSObjectProtocol {
 }
 declare var FBSDKNetworkTask: {
 	prototype: FBSDKNetworkTask;
+};
+
+interface FBSDKNotificationDelivering {
+	fb_addObserverForNameObjectQueueUsingBlock(name: string, obj: any, queue: NSOperationQueue, block: (p1: NSNotification) => void): NSObjectProtocol;
+
+	fb_addObserverSelectorNameObject(observer: any, selector: string, name: string, object: any): void;
+
+	fb_removeObserver(observer: any): void;
+}
+declare var FBSDKNotificationDelivering: {
+	prototype: FBSDKNotificationDelivering;
 };
 
 declare class FBSDKTypeUtility extends NSObject {
