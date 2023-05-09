@@ -1,8 +1,8 @@
 # @nativescript/camera
 
-A plugin that allows you to take a picture and optionally save it on the device storage.
-
 ## Contents
+
+* [Intro](#intro)
 * [Installation](#installation)
 * [Use @nativescript/camera](#use-nativescriptcamera)
     * [Request for user permissions](#request-for-user-permissions)
@@ -14,8 +14,13 @@ A plugin that allows you to take a picture and optionally save it on the device 
     * [Functions](#functions)
     * [CameraOptions interface](#cameraoptions-interface)
 
+## Intro
+
+A plugin that allows you to take a picture and optionally save it on the device storage.
+
 ## Installation
-Run the following command to install the plugin.
+
+To install the plugin, run the following command in the root directory of your project:
 
 ```cli
 npm install @nativescript/camera --save
@@ -71,11 +76,13 @@ Before calling the `takePicture` method to take a picture, call the `isAvailable
 ```ts
 const isAvailable = camera.isAvailable();
 ```
+> **Note**: For Android, the plugin requests the permissions for you.
+### Checking if the device has a camera
+Before you take a picture, you should check if the device has an available camera. To do so, call the `isAvailable()` method. This method will return `true` if the camera hardware is ready to use or `false` otherwise.
 
 This method returns `true` if the camera hardware is ready to use or `false` otherwise.
 
 > **Note**: This method returns `false` when used in iOS simulator (as the simulator does not have camera hardware)
-
 
 ### Take a picture
 
