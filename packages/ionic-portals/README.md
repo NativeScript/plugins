@@ -1,5 +1,35 @@
 # @nativescript/ionic-portals
 
+## Contents
+
+* [Intro](#intro)
+* [Installation](#installation)
+* [Enable Ionic Portals in your app](#enable-ionic-portals-in-your-app)
+	* [Get a Portal API Key](#1-get-a-portal-api-key)
+	* [Register portals on app boot](#2-register-portals)
+	* [Add portals view to markup](#3-add-portals-view-to-markup)
+		* [Core](#core)
+		* [Angular](#angular)
+		* [Vue](#vue)
+		* [Svelte](#svelte)
+	* [Send events from NativeScript to any web portal](#send-events-from-nativescript-to-any-web-portal)
+	* [Subscribe to events sent from web portals](#subscribe-to-events-sent-from-web-portals)
+	* [Unsubscribe to events sent from web portals](#unsubscribe-from-events-sent-from-web-portals)
+* [IonicPortalManager API](#ionicportalmanager-api)
+	* [register()](#register)
+	* [setInitialContext()](#setinitialcontext)
+	* [sendAndroidPlugins](#setandroidplugins)
+	* [publishTopic()](#publishtopic)
+	* [subscribeToTopic()](#subscribetotopic)
+	* [unsubscribeFromTopic()](#unsubscribefromtopic)
+	* [configureLiveUpdates()](#configureliveupdates)
+	* [syncNow()](#syncnow)
+	* [getLastSync()](#getlastsync)
+* [Using Capacitor Plugins with Ionic Portals](#using-capacitor-plugins-with-ionic-portals)
+* [Notes](#notes)
+* [Additional Resources](#additional-resources)
+* [License](#license)
+
 ## Intro
 
 A plugin that allows you to use [Ionic Portals](https://ionic.io/docs/portals) in NativeScript.
@@ -8,35 +38,9 @@ A plugin that allows you to use [Ionic Portals](https://ionic.io/docs/portals) i
 
 ![Ionic Portal View](/packages/ionic-portals/images/ionic-portal-ios.png)
 
-## Contents
-
-1. [Installation](#installation)
-3. [Enable Ionic Portals in your app](#enable-ionic-portals-in-your-app)
-	1. [Get a Portal API Key](#1-get-a-portal-api-key)
-	2. [Register portals on app boot](#2-register-portals)
-	3. [Add portals view to markup](#3-add-portals-view-to-markup)
-		* [Core](#core)
-		* [Angular](#angular)
-		* [Vue](#vue)
-		* [Svelte](#svelte)
-	* [Send events from NativeScript to any web portal](#send-events-from-nativescript-to-any-web-portal)
-	* [Subscribe to events sent from web portals](#subscribe-to-events-sent-from-web-portals)
-	* [Unsubscribe to events sent from web portals](#unsubscribe-from-events-sent-from-web-portals)
-
-4. [IonicPortalManager API](#ionicportalmanager-api)
-	* [register()](#register)
-	* [setInitialContext()](#setinitialcontext)
-	* [sendAndroidPlugins](#setandroidplugins)
-	* [publishTopic()](#publishtopic)
-	* [subscribeToTopic()](#subscribetotopic)
-	* [unsubscribeFromTopic()](#unsubscribefromtopic)
-5. [Using Capacitor Plugins with Ionic Portals](#using-capacitor-plugins-with-ionic-portals)
-6. [Notes](#notes)
-7. [Additional Resources](#additional-resources)
-8. [License](#license)
-
-
 ## Installation
+
+To install the plugin, run the following command from the root of your project:
 
 ```cli
 npm install @nativescript/ionic-portals
@@ -231,6 +235,7 @@ Sends a message to any web portal by publishing a topic (aka. event)
 | `data` | ` any` | _Optional_: The payload to send with the topic.
 
 ### subscribeToTopic()
+
 ```ts
 subscriptionId: number = IonicPortalManager.subscribeToTopic(topic, (data?: any) => void))
 ```
@@ -243,6 +248,7 @@ Listens to any message sent from any web portal by subscribing to the specified 
 
 ---
 ### unsubscribeFromTopic()
+
 ```ts
 IonicPortalManager.unsubscribeFromTopic(topic, subscriptionId)
 ```
