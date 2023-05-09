@@ -1,0 +1,1751 @@
+{
+	"ABIRoot": {
+		"kind": "Root",
+		"name": "TopLevel",
+		"printedName": "TopLevel",
+		"children": [
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "MachO",
+				"printedName": "MachO",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "MachO",
+				"printedName": "MachO",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "Import",
+				"name": "CommonCrypto",
+				"printedName": "CommonCrypto",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "TypeDecl",
+				"name": "FileIntegrityCheck",
+				"printedName": "FileIntegrityCheck",
+				"children": [
+					{
+						"kind": "Var",
+						"name": "bundleID",
+						"printedName": "bundleID",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.FileIntegrityCheck.Type) -> (Swift.String) -> NativeScriptIOSSecurity.FileIntegrityCheck",
+								"children": [
+									{
+										"kind": "TypeFunc",
+										"name": "Function",
+										"printedName": "(Swift.String) -> NativeScriptIOSSecurity.FileIntegrityCheck",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											},
+											{
+												"kind": "TypeNominal",
+												"name": "String",
+												"printedName": "Swift.String",
+												"usr": "s:SS"
+											}
+										]
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO8bundleIDyACSScACmF",
+						"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO8bundleIDyACSScACmF",
+						"moduleName": "NativeScriptIOSSecurity",
+						"declAttributes": ["RawDocComment"]
+					},
+					{
+						"kind": "Var",
+						"name": "mobileProvision",
+						"printedName": "mobileProvision",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.FileIntegrityCheck.Type) -> (Swift.String) -> NativeScriptIOSSecurity.FileIntegrityCheck",
+								"children": [
+									{
+										"kind": "TypeFunc",
+										"name": "Function",
+										"printedName": "(Swift.String) -> NativeScriptIOSSecurity.FileIntegrityCheck",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											},
+											{
+												"kind": "TypeNominal",
+												"name": "String",
+												"printedName": "Swift.String",
+												"usr": "s:SS"
+											}
+										]
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO15mobileProvisionyACSScACmF",
+						"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO15mobileProvisionyACSScACmF",
+						"moduleName": "NativeScriptIOSSecurity",
+						"declAttributes": ["RawDocComment"]
+					},
+					{
+						"kind": "Var",
+						"name": "machO",
+						"printedName": "machO",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.FileIntegrityCheck.Type) -> (Swift.String, Swift.String) -> NativeScriptIOSSecurity.FileIntegrityCheck",
+								"children": [
+									{
+										"kind": "TypeFunc",
+										"name": "Function",
+										"printedName": "(Swift.String, Swift.String) -> NativeScriptIOSSecurity.FileIntegrityCheck",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											},
+											{
+												"kind": "TypeNominal",
+												"name": "Tuple",
+												"printedName": "(Swift.String, Swift.String)",
+												"children": [
+													{
+														"kind": "TypeNominal",
+														"name": "String",
+														"printedName": "Swift.String",
+														"usr": "s:SS"
+													},
+													{
+														"kind": "TypeNominal",
+														"name": "String",
+														"printedName": "Swift.String",
+														"usr": "s:SS"
+													}
+												]
+											}
+										]
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO5machOyACSS_SStcACmF",
+						"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO5machOyACSS_SStcACmF",
+						"moduleName": "NativeScriptIOSSecurity",
+						"declAttributes": ["RawDocComment"]
+					},
+					{
+						"kind": "Var",
+						"name": "description",
+						"printedName": "description",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "String",
+								"printedName": "Swift.String",
+								"usr": "s:SS"
+							}
+						],
+						"declKind": "Var",
+						"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO11descriptionSSvp",
+						"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO11descriptionSSvp",
+						"moduleName": "NativeScriptIOSSecurity",
+						"declAttributes": ["AccessControl"],
+						"isFromExtension": true,
+						"accessors": [
+							{
+								"kind": "Accessor",
+								"name": "Get",
+								"printedName": "Get()",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "String",
+										"printedName": "Swift.String",
+										"usr": "s:SS"
+									}
+								],
+								"declKind": "Accessor",
+								"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO11descriptionSSvg",
+								"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO11descriptionSSvg",
+								"moduleName": "NativeScriptIOSSecurity",
+								"isFromExtension": true,
+								"accessorKind": "get"
+							}
+						]
+					}
+				],
+				"declKind": "Enum",
+				"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO",
+				"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["AccessControl"]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "MachO",
+				"printedName": "MachO",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "MachO",
+				"printedName": "MachO",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "UIKit",
+				"printedName": "UIKit",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "Import",
+				"name": "Darwin",
+				"printedName": "Darwin",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "Import",
+				"name": "MachO",
+				"printedName": "MachO",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "TypeDecl",
+				"name": "JailbreakCheck",
+				"printedName": "JailbreakCheck",
+				"children": [
+					{
+						"kind": "Var",
+						"name": "urlSchemes",
+						"printedName": "urlSchemes",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO10urlSchemesyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO10urlSchemesyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Var",
+						"name": "existenceOfSuspiciousFiles",
+						"printedName": "existenceOfSuspiciousFiles",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO26existenceOfSuspiciousFilesyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO26existenceOfSuspiciousFilesyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Var",
+						"name": "suspiciousFilesCanBeOpened",
+						"printedName": "suspiciousFilesCanBeOpened",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO26suspiciousFilesCanBeOpenedyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO26suspiciousFilesCanBeOpenedyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Var",
+						"name": "restrictedDirectoriesWriteable",
+						"printedName": "restrictedDirectoriesWriteable",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO30restrictedDirectoriesWriteableyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO30restrictedDirectoriesWriteableyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Var",
+						"name": "fork",
+						"printedName": "fork",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO4forkyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO4forkyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Var",
+						"name": "symbolicLinks",
+						"printedName": "symbolicLinks",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO13symbolicLinksyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO13symbolicLinksyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Var",
+						"name": "dyld",
+						"printedName": "dyld",
+						"children": [
+							{
+								"kind": "TypeFunc",
+								"name": "Function",
+								"printedName": "(NativeScriptIOSSecurity.JailbreakCheck.Type) -> NativeScriptIOSSecurity.JailbreakCheck",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Metatype",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck.Type",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										]
+									}
+								]
+							}
+						],
+						"declKind": "EnumElement",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO4dyldyA2CmF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO4dyldyA2CmF",
+						"moduleName": "NativeScriptIOSSecurity"
+					},
+					{
+						"kind": "Function",
+						"name": "==",
+						"printedName": "==(_:_:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "JailbreakCheck",
+								"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+								"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "JailbreakCheck",
+								"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+								"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO2eeoiySbAC_ACtFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO2eeoiySbAC_ACtFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"implicit": true,
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Var",
+						"name": "hashValue",
+						"printedName": "hashValue",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Int",
+								"printedName": "Swift.Int",
+								"usr": "s:Si"
+							}
+						],
+						"declKind": "Var",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO9hashValueSivp",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO9hashValueSivp",
+						"moduleName": "NativeScriptIOSSecurity",
+						"implicit": true,
+						"accessors": [
+							{
+								"kind": "Accessor",
+								"name": "Get",
+								"printedName": "Get()",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Int",
+										"printedName": "Swift.Int",
+										"usr": "s:Si"
+									}
+								],
+								"declKind": "Accessor",
+								"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO9hashValueSivg",
+								"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO9hashValueSivg",
+								"moduleName": "NativeScriptIOSSecurity",
+								"implicit": true,
+								"accessorKind": "get"
+							}
+						]
+					},
+					{
+						"kind": "Function",
+						"name": "hash",
+						"printedName": "hash(into:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Void",
+								"printedName": "()"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Hasher",
+								"printedName": "Swift.Hasher",
+								"paramValueOwnership": "InOut",
+								"usr": "s:s6HasherV"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO4hash4intoys6HasherVz_tF",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO4hash4intoys6HasherVz_tF",
+						"moduleName": "NativeScriptIOSSecurity",
+						"implicit": true,
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Var",
+						"name": "allCases",
+						"printedName": "allCases",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Array",
+								"printedName": "[NativeScriptIOSSecurity.JailbreakCheck]",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "JailbreakCheck",
+										"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+										"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+									}
+								],
+								"usr": "s:Sa"
+							}
+						],
+						"declKind": "Var",
+						"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO8allCasesSayACGvpZ",
+						"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO8allCasesSayACGvpZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"implicit": true,
+						"accessors": [
+							{
+								"kind": "Accessor",
+								"name": "Get",
+								"printedName": "Get()",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Array",
+										"printedName": "[NativeScriptIOSSecurity.JailbreakCheck]",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										],
+										"usr": "s:Sa"
+									}
+								],
+								"declKind": "Accessor",
+								"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO8allCasesSayACGvgZ",
+								"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO8allCasesSayACGvgZ",
+								"moduleName": "NativeScriptIOSSecurity",
+								"static": true,
+								"implicit": true,
+								"accessorKind": "get"
+							}
+						]
+					}
+				],
+				"declKind": "Enum",
+				"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO",
+				"mangledName": "$s23NativeScriptIOSSecurity14JailbreakCheckO",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["AccessControl"],
+				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Equatable",
+						"printedName": "Equatable",
+						"usr": "s:SQ",
+						"mangledName": "$sSQ"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Hashable",
+						"printedName": "Hashable",
+						"usr": "s:SH",
+						"mangledName": "$sSH"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CaseIterable",
+						"printedName": "CaseIterable",
+						"children": [
+							{
+								"kind": "TypeWitness",
+								"name": "AllCases",
+								"printedName": "AllCases",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Array",
+										"printedName": "[NativeScriptIOSSecurity.JailbreakCheck]",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "JailbreakCheck",
+												"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+												"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+											}
+										],
+										"usr": "s:Sa"
+									}
+								]
+							}
+						],
+						"usr": "s:s12CaseIterableP",
+						"mangledName": "$ss12CaseIterableP"
+					}
+				]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "TypeDecl",
+				"name": "FileIntegrityCheckFacade",
+				"printedName": "FileIntegrityCheckFacade",
+				"children": [
+					{
+						"kind": "Var",
+						"name": "origin",
+						"printedName": "origin",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "FileIntegrityCheck",
+								"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+								"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+							}
+						],
+						"declKind": "Var",
+						"usr": "s:23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0Ovp",
+						"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0Ovp",
+						"moduleName": "NativeScriptIOSSecurity",
+						"declAttributes": ["HasStorage", "AccessControl"],
+						"hasStorage": true,
+						"accessors": [
+							{
+								"kind": "Accessor",
+								"name": "Get",
+								"printedName": "Get()",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "FileIntegrityCheck",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+										"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+									}
+								],
+								"declKind": "Accessor",
+								"usr": "s:23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0Ovg",
+								"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0Ovg",
+								"moduleName": "NativeScriptIOSSecurity",
+								"implicit": true,
+								"accessorKind": "get"
+							},
+							{
+								"kind": "Accessor",
+								"name": "Set",
+								"printedName": "Set()",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Void",
+										"printedName": "()"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "FileIntegrityCheck",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+										"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+									}
+								],
+								"declKind": "Accessor",
+								"usr": "s:23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0Ovs",
+								"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0Ovs",
+								"moduleName": "NativeScriptIOSSecurity",
+								"implicit": true,
+								"accessorKind": "set"
+							},
+							{
+								"kind": "Accessor",
+								"name": "Modify",
+								"printedName": "Modify()",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Void",
+										"printedName": "()"
+									}
+								],
+								"declKind": "Accessor",
+								"usr": "s:23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0OvM",
+								"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC6originAA0deF0OvM",
+								"moduleName": "NativeScriptIOSSecurity",
+								"implicit": true,
+								"accessorKind": "_modify"
+							}
+						]
+					},
+					{
+						"kind": "Constructor",
+						"name": "init",
+						"printedName": "init(bundleID:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "FileIntegrityCheckFacade",
+								"printedName": "NativeScriptIOSSecurity.FileIntegrityCheckFacade",
+								"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "String",
+								"printedName": "Swift.String",
+								"usr": "s:SS"
+							}
+						],
+						"declKind": "Constructor",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade(im)initWithBundleID:",
+						"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC8bundleIDACSS_tcfc",
+						"moduleName": "NativeScriptIOSSecurity",
+						"objc_name": "initWithBundleID:",
+						"declAttributes": ["AccessControl", "ObjC"],
+						"init_kind": "Designated"
+					},
+					{
+						"kind": "Constructor",
+						"name": "init",
+						"printedName": "init(mobileProvision:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "FileIntegrityCheckFacade",
+								"printedName": "NativeScriptIOSSecurity.FileIntegrityCheckFacade",
+								"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "String",
+								"printedName": "Swift.String",
+								"usr": "s:SS"
+							}
+						],
+						"declKind": "Constructor",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade(im)initWithMobileProvision:",
+						"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC15mobileProvisionACSS_tcfc",
+						"moduleName": "NativeScriptIOSSecurity",
+						"objc_name": "initWithMobileProvision:",
+						"declAttributes": ["AccessControl", "ObjC"],
+						"init_kind": "Designated"
+					},
+					{
+						"kind": "Constructor",
+						"name": "init",
+						"printedName": "init(machO:machO1:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "FileIntegrityCheckFacade",
+								"printedName": "NativeScriptIOSSecurity.FileIntegrityCheckFacade",
+								"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "String",
+								"printedName": "Swift.String",
+								"usr": "s:SS"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "String",
+								"printedName": "Swift.String",
+								"usr": "s:SS"
+							}
+						],
+						"declKind": "Constructor",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade(im)initWithMachO:machO1:",
+						"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC5machO0H2O1ACSS_SStcfc",
+						"moduleName": "NativeScriptIOSSecurity",
+						"objc_name": "initWithMachO:machO1:",
+						"declAttributes": ["AccessControl", "ObjC"],
+						"init_kind": "Designated"
+					},
+					{
+						"kind": "Constructor",
+						"name": "init",
+						"printedName": "init()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "FileIntegrityCheckFacade",
+								"printedName": "NativeScriptIOSSecurity.FileIntegrityCheckFacade",
+								"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade"
+							}
+						],
+						"declKind": "Constructor",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade(im)init",
+						"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeCACycfc",
+						"moduleName": "NativeScriptIOSSecurity",
+						"overriding": true,
+						"implicit": true,
+						"objc_name": "init",
+						"declAttributes": ["Dynamic", "ObjC", "Override"],
+						"init_kind": "Designated"
+					}
+				],
+				"declKind": "Class",
+				"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade",
+				"mangledName": "$s23NativeScriptIOSSecurity24FileIntegrityCheckFacadeC",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["AccessControl", "ObjC"],
+				"superclassUsr": "c:objc(cs)NSObject",
+				"superclassNames": ["ObjectiveC.NSObject"],
+				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Equatable",
+						"printedName": "Equatable",
+						"usr": "s:SQ",
+						"mangledName": "$sSQ"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Hashable",
+						"printedName": "Hashable",
+						"usr": "s:SH",
+						"mangledName": "$sSH"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CVarArg",
+						"printedName": "CVarArg",
+						"usr": "s:s7CVarArgP",
+						"mangledName": "$ss7CVarArgP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "_KeyValueCodingAndObservingPublishing",
+						"printedName": "_KeyValueCodingAndObservingPublishing",
+						"usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+						"mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "_KeyValueCodingAndObserving",
+						"printedName": "_KeyValueCodingAndObserving",
+						"usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+						"mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CustomStringConvertible",
+						"printedName": "CustomStringConvertible",
+						"usr": "s:s23CustomStringConvertibleP",
+						"mangledName": "$ss23CustomStringConvertibleP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CustomDebugStringConvertible",
+						"printedName": "CustomDebugStringConvertible",
+						"usr": "s:s28CustomDebugStringConvertibleP",
+						"mangledName": "$ss28CustomDebugStringConvertibleP"
+					}
+				]
+			},
+			{
+				"kind": "TypeDecl",
+				"name": "SecurityFacade",
+				"printedName": "SecurityFacade",
+				"children": [
+					{
+						"kind": "Function",
+						"name": "amIJailbroken",
+						"printedName": "amIJailbroken()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amIJailbroken",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC13amIJailbrokenSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIDebugged",
+						"printedName": "amIDebugged()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amIDebugged",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC11amIDebuggedSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIRunInEmulator",
+						"printedName": "amIRunInEmulator()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amIRunInEmulator",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC16amIRunInEmulatorSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "denyDebugger",
+						"printedName": "denyDebugger()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Void",
+								"printedName": "()"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)denyDebugger",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC12denyDebuggeryyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIReverseEngineered",
+						"printedName": "amIReverseEngineered()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amIReverseEngineered",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC20amIReverseEngineeredSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIProxied",
+						"printedName": "amIProxied()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amIProxied",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC10amIProxiedSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amITampered",
+						"printedName": "amITampered(_:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Array",
+								"printedName": "[Any]",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "ProtocolComposition",
+										"printedName": "Any"
+									}
+								],
+								"usr": "s:Sa"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Array",
+								"printedName": "[NativeScriptIOSSecurity.FileIntegrityCheckFacade]",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "FileIntegrityCheckFacade",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheckFacade",
+										"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)FileIntegrityCheckFacade"
+									}
+								],
+								"usr": "s:Sa"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amITampered:",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC11amITamperedySayypGSayAA018FileIntegrityCheckE0CGFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIRuntimeHooked",
+						"printedName": "amIRuntimeHooked(dyldWhiteList:detectionClass:selector:isClassMethod:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Array",
+								"printedName": "[Swift.String]",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "String",
+										"printedName": "Swift.String",
+										"usr": "s:SS"
+									}
+								],
+								"usr": "s:Sa"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "ExistentialMetatype",
+								"printedName": "AnyObject.Type",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "ProtocolComposition",
+										"printedName": "AnyObject"
+									}
+								]
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Selector",
+								"printedName": "ObjectiveC.Selector",
+								"usr": "s:10ObjectiveC8SelectorV"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(cm)amIRuntimeHookedWithDyldWhiteList:detectionClass:selector:isClassMethod:",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC16amIRuntimeHooked13dyldWhiteList14detectionClass8selector02isM6MethodSbSaySSG_yXlXp10ObjectiveC8SelectorVSbtFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"objc_name": "amIRuntimeHookedWithDyldWhiteList:detectionClass:selector:isClassMethod:",
+						"declAttributes": ["Final", "AccessControl", "ObjC"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Constructor",
+						"name": "init",
+						"printedName": "init()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "SecurityFacade",
+								"printedName": "NativeScriptIOSSecurity.SecurityFacade",
+								"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade"
+							}
+						],
+						"declKind": "Constructor",
+						"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade(im)init",
+						"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeCACycfc",
+						"moduleName": "NativeScriptIOSSecurity",
+						"overriding": true,
+						"implicit": true,
+						"objc_name": "init",
+						"declAttributes": ["Dynamic", "ObjC", "Override"],
+						"init_kind": "Designated"
+					}
+				],
+				"declKind": "Class",
+				"usr": "c:@M@NativeScriptIOSSecurity@objc(cs)SecurityFacade",
+				"mangledName": "$s23NativeScriptIOSSecurity14SecurityFacadeC",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["AccessControl", "ObjC"],
+				"superclassUsr": "c:objc(cs)NSObject",
+				"inheritsConvenienceInitializers": true,
+				"superclassNames": ["ObjectiveC.NSObject"],
+				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Equatable",
+						"printedName": "Equatable",
+						"usr": "s:SQ",
+						"mangledName": "$sSQ"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Hashable",
+						"printedName": "Hashable",
+						"usr": "s:SH",
+						"mangledName": "$sSH"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CVarArg",
+						"printedName": "CVarArg",
+						"usr": "s:s7CVarArgP",
+						"mangledName": "$ss7CVarArgP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "_KeyValueCodingAndObservingPublishing",
+						"printedName": "_KeyValueCodingAndObservingPublishing",
+						"usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+						"mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "_KeyValueCodingAndObserving",
+						"printedName": "_KeyValueCodingAndObserving",
+						"usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+						"mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CustomStringConvertible",
+						"printedName": "CustomStringConvertible",
+						"usr": "s:s23CustomStringConvertibleP",
+						"mangledName": "$ss23CustomStringConvertibleP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "CustomDebugStringConvertible",
+						"printedName": "CustomDebugStringConvertible",
+						"usr": "s:s28CustomDebugStringConvertibleP",
+						"mangledName": "$ss28CustomDebugStringConvertibleP"
+					}
+				]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "Foundation",
+				"printedName": "Foundation",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["RawDocComment"]
+			},
+			{
+				"kind": "Import",
+				"name": "MachO",
+				"printedName": "MachO",
+				"declKind": "Import",
+				"moduleName": "NativeScriptIOSSecurity"
+			},
+			{
+				"kind": "TypeDecl",
+				"name": "IOSSecuritySuite",
+				"printedName": "IOSSecuritySuite",
+				"children": [
+					{
+						"kind": "Function",
+						"name": "amIJailbroken",
+						"printedName": "amIJailbroken()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC13amIJailbrokenSbyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC13amIJailbrokenSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIJailbrokenWithFailMessage",
+						"printedName": "amIJailbrokenWithFailMessage()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Tuple",
+								"printedName": "(jailbroken: Swift.Bool, failMessage: Swift.String)",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Bool",
+										"printedName": "Swift.Bool",
+										"usr": "s:Sb"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "String",
+										"printedName": "Swift.String",
+										"usr": "s:SS"
+									}
+								]
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC28amIJailbrokenWithFailMessageSb10jailbroken_SS04failI0tyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC28amIJailbrokenWithFailMessageSb10jailbroken_SS04failI0tyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIJailbrokenWithFailedChecks",
+						"printedName": "amIJailbrokenWithFailedChecks()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Tuple",
+								"printedName": "(jailbroken: Swift.Bool, failedChecks: [(check: NativeScriptIOSSecurity.JailbreakCheck, failMessage: Swift.String)])",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Bool",
+										"printedName": "Swift.Bool",
+										"usr": "s:Sb"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Array",
+										"printedName": "[(check: NativeScriptIOSSecurity.JailbreakCheck, failMessage: Swift.String)]",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "Tuple",
+												"printedName": "(check: NativeScriptIOSSecurity.JailbreakCheck, failMessage: Swift.String)",
+												"children": [
+													{
+														"kind": "TypeNominal",
+														"name": "JailbreakCheck",
+														"printedName": "NativeScriptIOSSecurity.JailbreakCheck",
+														"usr": "s:23NativeScriptIOSSecurity14JailbreakCheckO"
+													},
+													{
+														"kind": "TypeNominal",
+														"name": "String",
+														"printedName": "Swift.String",
+														"usr": "s:SS"
+													}
+												]
+											}
+										],
+										"usr": "s:Sa"
+									}
+								]
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC29amIJailbrokenWithFailedChecksSb10jailbroken_SayAA14JailbreakCheckO5check_SS11failMessagetG06failedI0tyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC29amIJailbrokenWithFailedChecksSb10jailbroken_SayAA14JailbreakCheckO5check_SS11failMessagetG06failedI0tyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIRunInEmulator",
+						"printedName": "amIRunInEmulator()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC16amIRunInEmulatorSbyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC16amIRunInEmulatorSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIDebugged",
+						"printedName": "amIDebugged()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC11amIDebuggedSbyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC11amIDebuggedSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "denyDebugger",
+						"printedName": "denyDebugger()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Void",
+								"printedName": "()"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC12denyDebuggeryyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC12denyDebuggeryyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amITampered",
+						"printedName": "amITampered(_:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Tuple",
+								"printedName": "(result: Swift.Bool, hitChecks: [NativeScriptIOSSecurity.FileIntegrityCheck])",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "Bool",
+										"printedName": "Swift.Bool",
+										"usr": "s:Sb"
+									},
+									{
+										"kind": "TypeNominal",
+										"name": "Array",
+										"printedName": "[NativeScriptIOSSecurity.FileIntegrityCheck]",
+										"children": [
+											{
+												"kind": "TypeNominal",
+												"name": "FileIntegrityCheck",
+												"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+												"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+											}
+										],
+										"usr": "s:Sa"
+									}
+								]
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Array",
+								"printedName": "[NativeScriptIOSSecurity.FileIntegrityCheck]",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "FileIntegrityCheck",
+										"printedName": "NativeScriptIOSSecurity.FileIntegrityCheck",
+										"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO"
+									}
+								],
+								"usr": "s:Sa"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC11amITamperedySb6result_SayAA18FileIntegrityCheckOG9hitCheckstAHFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC11amITamperedySb6result_SayAA18FileIntegrityCheckOG9hitCheckstAHFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIReverseEngineered",
+						"printedName": "amIReverseEngineered()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC20amIReverseEngineeredSbyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC20amIReverseEngineeredSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIRuntimeHooked",
+						"printedName": "amIRuntimeHooked(dyldWhiteList:detectionClass:selector:isClassMethod:)",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Array",
+								"printedName": "[Swift.String]",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "String",
+										"printedName": "Swift.String",
+										"usr": "s:SS"
+									}
+								],
+								"usr": "s:Sa"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "ExistentialMetatype",
+								"printedName": "AnyObject.Type",
+								"children": [
+									{
+										"kind": "TypeNominal",
+										"name": "ProtocolComposition",
+										"printedName": "AnyObject"
+									}
+								]
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Selector",
+								"printedName": "ObjectiveC.Selector",
+								"usr": "s:10ObjectiveC8SelectorV"
+							},
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC16amIRuntimeHooked13dyldWhiteList14detectionClass8selector02isL6MethodSbSaySSG_yXlXp10ObjectiveC8SelectorVSbtFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC16amIRuntimeHooked13dyldWhiteList14detectionClass8selector02isL6MethodSbSaySSG_yXlXp10ObjectiveC8SelectorVSbtFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					},
+					{
+						"kind": "Function",
+						"name": "amIProxied",
+						"printedName": "amIProxied()",
+						"children": [
+							{
+								"kind": "TypeNominal",
+								"name": "Bool",
+								"printedName": "Swift.Bool",
+								"usr": "s:Sb"
+							}
+						],
+						"declKind": "Func",
+						"usr": "s:23NativeScriptIOSSecurity0C5SuiteC10amIProxiedSbyFZ",
+						"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC10amIProxiedSbyFZ",
+						"moduleName": "NativeScriptIOSSecurity",
+						"static": true,
+						"declAttributes": ["Final", "AccessControl", "RawDocComment"],
+						"funcSelfKind": "NonMutating"
+					}
+				],
+				"declKind": "Class",
+				"usr": "s:23NativeScriptIOSSecurity0C5SuiteC",
+				"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC",
+				"moduleName": "NativeScriptIOSSecurity",
+				"declAttributes": ["AccessControl", "Available"],
+				"hasMissingDesignatedInitializers": true
+			}
+		],
+		"json_format_version": 8
+	},
+	"ConstValues": [
+		{
+			"filePath": "/Users/nandesoratjihero/Documents/github/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/SecurityFacade.swift",
+			"kind": "StringLiteral",
+			"offset": 328,
+			"length": 24,
+			"value": "\"NativeScriptIOSSecurity.FileIntegrityCheckFacade\""
+		}
+	]
+}
