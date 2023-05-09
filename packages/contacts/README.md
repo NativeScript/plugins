@@ -81,8 +81,7 @@ For API level `23+`, inform Android about which permissions your app needs from 
 
 ## Use @nativescript/contacts
 
-
-Then, to request for the permissions, you can call the `requestPermissions()` method from the `nativescript-permissions` plugin. 
+Once you've indicated the permissions your app needs from a user, you can request the permissions from the user by calling the `requestPermissions()` method from the `nativescript-permissions` plugin. 
 
 ```ts
 import { Contact } from '@nativescript/contacts';
@@ -127,7 +126,7 @@ Contacts.getContact().then(function (args) {
 
 ### Create a new contact
 
-To create a new contact, first instatiate the `Contact` class, set the various data of the contact and then to save the contact, call the `save()` method on the instance.
+To create a new contact, first instantiate the `Contact` class, set the various data of the contact and then to save the contact, call the `save()` method on the instance.
 
 ```ts
 import { Contact, KnownLabel } from '@nativescript/contacts';
@@ -257,7 +256,7 @@ Contacts.getAllContacts(contactFields).then(
 
 ### Get a contact by id
 
-To find a contact with ta specific identifier, use the `getContactById()` method. The method returns an `iOS-specific` [GetFetchResult](#getfetchresult-object-structure) objectx.
+To find a contact with ta specific identifier, use the `getContactById()` method. The method returns an `iOS-specific` [GetFetchResult](#getfetchresult-object-structure) object.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
