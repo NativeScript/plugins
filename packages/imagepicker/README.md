@@ -25,7 +25,10 @@ Imagepicker plugin supporting both single and multiple selection.
 ## Installation
 Install the plugin by running the following command in the root directory of your app.
 
----
+```cli
+npm install @nativescript/imagepicker
+```
+
 **Note: Version 2.0 contains breaking changes. In order supply more information about your selection, the ImageSource asset is nested in the response so you'll need to update your code to use `result.asset` instead of `result` as your src for your Images.**
 
 ## Android required permissions
