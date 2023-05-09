@@ -1,9 +1,7 @@
 # @nativescript/geolocation
 
-Geolocation plugin to use for getting current location, monitor movement, etc.
-
 ## Contents
-
+* [Intro](#intro)
 * [Installation](#installation)
 * [Android permissions requirements](#android-permissions-requirements)
 * [iOS permissions requirements](#ios-permissions-requirements)
@@ -16,8 +14,13 @@ Geolocation plugin to use for getting current location, monitor movement, etc.
 * [Known Issues](#known-issues)
   * [Version conflicts with Google Play Services](#version-conflicts-with-google-play-services)
   * [openSettingsIfLocationHasBeenDenied on Android API level 30](#opensettingsiflocationhasbeendenied-on-android-api-level-30)
-  
+
+## Intro
+
+A geolocation plugin to use for getting current location, monitor movement, etc.
+
 ## Installation
+
 To install the plugin, run the following command in the  root  of your project.
 
 ```cli
@@ -46,7 +49,7 @@ More information can be found in the [Android docs here](https://developer.andro
 
 ## iOS permissions requirements
 
-If `iosAllowsBackgroundLocationUpdates` property of the [options](#options) object is set to `true`, the following code is required in the `App_Resources/iOS/Info.plist` file:
+If `iosAllowsBackgroundLocationUpdates` property of the [options](#options-interface) object is set to `true`, the following code is required in the `App_Resources/iOS/Info.plist` file:
 
 ```xml
 <key>UIBackgroundModes</key>
