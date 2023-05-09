@@ -28,35 +28,6 @@ A plugin that allows you to authenticate users with Google Sign-In.
 
 Install the plugin by running the following command at the root of the project.
 
-## Table of Contents
-* [Installation](#installation)
-* [Prerequisites](#prerequisites)
-	* [Android](#android)
-	* [iOS](#ios)
-* [Usage](#usage)
-	* [Signing In](#signing-in)
-	* [GoogleSignInButton](#googlesigninbutton)
-		* [Core](#core)
-		* [Angular](#angular)
-
-* [API](#api)
-	* [GoogleSignin](#googlesignin)
-		* [configure()](#configure)
-			* [Configuration](#configuration)
-		* [signIn()](#signin)
-		* [signInSilently()](#signinsilently)
-		* [isSignedIn()](#issignedin)
-		* [playServicesAvailable()](#playservicesavailable)
-		* [signOut()](#signout)
-		* [disconnect()](#disconnect)
-		* [getTokens()](#gettokens)
-		* [getCurrentUser()](#getcurrentuser)
-	* [User](#user)
-	* [GoogleSignInButton](#googlesigninbutton)
-(#playservicesavailable)
-
-## Installation
-
 ```cli
 npm install @nativescript/google-signin
 ```
