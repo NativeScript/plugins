@@ -1,4 +1,7 @@
 # @nativescript/ionic-portals
+
+## Intro
+
 A plugin that allows you to use [Ionic Portals](https://ionic.io/docs/portals) in NativeScript.
 
 > Ionic Portals are supercharged native WebView components for iOS and Android that let you add web-based experiences to native mobile apps.
@@ -247,6 +250,44 @@ IonicPortalManager.unsubscribeFromTopic(topic, subscriptionId)
 |:----------|:-----|:-----------
 | `topic` | ` string` | The name of the topic/event to unsubscribe from.
 | `subscriptionId` | `number` | The subscription id returned by [subscribeToTopic()](#subscribetotopic).
+
+### configureLiveUpdates()
+
+Note: configure before displaying the portal.
+
+```ts
+IonicPortalManager.configureLiveUpdates('webPortal', {
+	appId: 'e2abc12',
+	channel: 'production',
+	syncOnAdd: true
+})
+```
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `portalId` | ` string` | The portal id.
+| `config` | `IonicPortalLiveUpdateConfig` | Live update configuration.
+
+### syncNow()
+
+```ts
+IonicPortalManager.syncNow(['e2abc12'], false, status => {
+	console.log('sync complete:', status)
+})
+```
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `appIds` | `Array<string>` | Portal app ids to sync.
+| `isParallel` | `boolean` | Whether to sync in parallel or not.
+| `complete` | `(status: string) => void` | Complete callback.
+
+### getLastSync()
+
+```ts
+const lastSync = IonicPortalManager.getLastSync('e2abc12')
+```
+| Parameter | Type | Description
+|:----------|:-----|:-----------
+| `appId` | `string` | Portal app id to check last sync.
 
 ## Using Capacitor Plugins with Ionic Portals
 

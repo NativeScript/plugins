@@ -4,6 +4,8 @@
   <string name="app_name">"Demo"</string>
   <string name="title_activity_kimera">"Demo"</string>
   <string name="_hello_world_Z2tF6Gu">"Bonjour le monde ! Hello world !"</string>
+  <string name="facebook_client_token">"08e5dd2ed4a0130b2f4404448702f30d"</string>
+  <string name="fb_login_protocol_scheme">"fb680941809251035"</string>
   <string name="facebook_app_id">"680941809251035"</string>
   <string name="_not_found_in_en_default_8PvJR">"not found in en.default"</string>
 </resources>
