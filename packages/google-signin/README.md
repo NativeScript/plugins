@@ -22,7 +22,6 @@ A plugin that allows you to authenticate users with Google Sign-In.
 		* [getCurrentUser()](#getcurrentuser)
 	* [User](#user)
 	* [GoogleSignInButton](#googlesigninbutton)
-(#playservicesavailable)
 
 ## Installation
 
