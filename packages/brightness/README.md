@@ -38,7 +38,6 @@ Add the following permission to the `App_Resources/src/main/AndroidManifest.xml`
 
 ## Use @nativescript/brightness
 
-
 ### Set the device brightness level
 
 To set the device's brightness level, call the `set()` method on an instance of the [Brightness class](#brightness-class), passing it the [BrightnessOptions](#brightnessoptions) object with the desired `intensity` value.
@@ -46,7 +45,6 @@ To set the device's brightness level, call the `set()` method on an instance of 
 ```typescript
 
 import { Brightness } from '@nativescript/brightness';
-
 const brightness = new Brightness();
 
 brightness.set({

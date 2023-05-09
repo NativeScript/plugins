@@ -242,7 +242,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 		const subViewsCount = uiView.subviews.count;
 		for (let i = 0; i < subViewsCount; i++) {
-			DateTimePicker._clearVibrancyEffects(uiView.subviews[i]);
+			DateTimePicker._clearVibrancyEffects(uiView.subviews.objectAtIndex(i));
 		}
 	}
 
@@ -259,7 +259,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 		const subViewsCount = uiView.subviews.count;
 		for (let i = 0; i < subViewsCount; i++) {
-			let label = DateTimePicker._findLabelWithText(uiView.subviews[i], text);
+			const label = DateTimePicker._findLabelWithText(uiView.subviews.objectAtIndex(i), text);
 			if (label) {
 				return label;
 			}
