@@ -9,6 +9,7 @@ A plugin that allows you to add haptics to your app.
 Thanks to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-taptic-engine](https://github.com/EddyVerbruggen/nativescript-taptic-engine) as this continues its evolution by streamlining the API and adding Android support, inspired by [react-native-haptic-feedback](https://github.com/junina-de/react-native-haptic-feedback).
 
 ## Contents
+
   * [Installation](#installation)
   * [Use @nativescript/haptics](#use-nativescripthaptics)
   * [API](#api)

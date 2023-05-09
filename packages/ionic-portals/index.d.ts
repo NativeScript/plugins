@@ -1,4 +1,4 @@
-import { IonicPortalCommon, IonicPortalManagerCommon } from './common';
+import { IonicPortalCommon, IonicPortalManagerCommon, IonicPortalLiveUpdateConfig } from './common';
 
 export declare class IonicPortalManager extends IonicPortalManagerCommon {
 	/**
@@ -18,6 +18,27 @@ export declare class IonicPortalManager extends IonicPortalManagerCommon {
 	 * @param plugins list of non-official Capacitor package names
 	 */
 	static setAndroidPlugins(plugins: Array<string>): void;
+	/**
+	 * Configure Live Updates
+	 * @param portalId portal id
+	 * @param config live update configuration
+	 */
+	static configureLiveUpdates(portalId: string, config: IonicPortalLiveUpdateConfig): void;
+
+	/**
+	 * Sync Live Updates for given app ids
+	 * @param appIds portal ids to sync
+	 * @param isParallel whether to sync in parallel or not
+	 * @param complete callback to receive sync status when complete or errors
+	 */
+	static syncNow(appIds: Array<string>, isParallel: boolean = false, complete: (status: string) => void = (status: string) => {}): void;
+
+	/**
+	 * Get last synced date from given portal id
+	 * @param appId portal id
+	 * @return datetimestamp
+	 */
+	static getLastSync(appId: string): number;
 	/**
 	 * Send a message to any web portal via publishing a topic (aka. event)
 	 * @param topic name of topic/event
