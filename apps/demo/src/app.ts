@@ -13,6 +13,11 @@ import { Application } from '@nativescript/core';
 
 // uncomment to test Ionic Portals
 // import { IonicPortalManager } from '@nativescript/ionic-portals';
+// IonicPortalManager.configureLiveUpdates('ionicWebPortalSample', {
+//     appId: 'e29e2c2e',
+//     channel: 'production',
+//     syncOnAdd: true
+// })
 
 // Application.on(Application.launchEvent, () => {
 // 	// Register IonicPortals

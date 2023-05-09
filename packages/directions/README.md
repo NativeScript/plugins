@@ -1,5 +1,6 @@
 # @nativescript/directions
 <!-- TODO: Add Preview -->
+
 A plugin that allows you to launch the Google Maps app, if it's installed on the device, with some directions. For more information, visit [Directions action](https://developers.google.com/maps/documentation/urls/get-started#directions-action).
 
 ## Contents
@@ -101,6 +102,7 @@ The `Directions` class has the following two methods:
 >**Note** that if there's an ocean in between `from` and `to` you won't be able to get directions, don't blame this plugin for that 😁.
 
 #### AddressOptions
+
 | Name| Type | Description|
 |-----|------|------------|
 | `lat` | `number` | _Optional_: The latitude. Ignored if `address`' is set.|
@@ -119,6 +121,7 @@ The `Directions` class has the following two methods:
 | `allowGoogleMapsWeb`| `boolean` | If waypoints are passed in and Google Maps is not installed, you can either open Apple Maps and the first waypoint is used as the to-address (the rest is ignored), or you can set this option to `true` to open Google Maps on web so all waypoints are shown.|
 
 #### AndroidOptions
+
 | Name| Type | Description|
 |-----|------|------------|
 | `newTask` | `boolean` | _Optional_: Indicates whether to start directions as new task.|
