@@ -118,17 +118,18 @@ class GoogleSignIn {
 
 				retrieveAccessToken = parsedOptions.optBoolean("retrieveAccessToken", false)
 
-				val clientIdIdentifier: Int = activity
-					.resources
-					.getIdentifier("default_web_client_id", "string", activity.packageName)
-
 				val clientId = parsedOptions.optString("clientId")
 				if (clientId.isNotEmpty()) {
 					builder.requestIdToken(clientId)
 					builder.requestServerAuthCode(clientId)
 				} else {
-					builder.requestIdToken(activity.getString(clientIdIdentifier))
-					builder.requestServerAuthCode(activity.getString(clientIdIdentifier))
+					val clientIdIdentifier: Int = activity.resources.getIdentifier("default_web_client_id", "string", activity.packageName)
+					if (clientIdIdentifier != 0) {
+						builder.requestIdToken(activity.getString(clientIdIdentifier))
+						builder.requestServerAuthCode(activity.getString(clientIdIdentifier))
+					} else {
+						throw Exception("Failed to find string resource with identifier 'default_web_client_id'")
+					}
 				}
 
 				val accountName = parsedOptions.optString("accountName")

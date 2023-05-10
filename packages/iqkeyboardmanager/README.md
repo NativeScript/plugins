@@ -1,10 +1,7 @@
 # @nativescript/iqkeyboardmanager
 
-A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org/pods/IQKeyboardManager) iOS framework, which provides an elegant solution for preventing the iOS keyboard from covering `UITextView` controls.
-
-![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
-
 ## Contents
+* [Intro](#intro)
 * [Installation](#installation)
 * [Use @nativescript/iqkeyboardmanager](#use-nativescriptiqkeyboardmanager)
 	* [Core](#core)
@@ -12,7 +9,7 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 	* [Vue](#vue)
 	* [Svelte](#svelte)
 	* [React](#react)
-	* [Adding a hint text to TextView's accessory bar](#adding-a-hint-text-to-textview-accessory-bar)
+	* [Adding a hint text to the TextView accessory bar](#adding-a-hint-text-to-the-textview-accessory-bar)
 		* [Core](#core-1)
 		* [Angular](#angular-1)
 		* [Vue](#vue-1)
@@ -24,13 +21,23 @@ A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org
 * [Maintainers](#maintainers)
 * [License](#license)
 
+## Intro
+
+A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org/pods/IQKeyboardManager) iOS framework, which provides an elegant solution for preventing the iOS keyboard from covering `UITextView` controls.
+
+![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
+
+
 ## Installation
+
+To install the plugin, run the following command from the root folder of your project: 
 
 ```cli
 npm install @nativescript/iqkeyboardmanager
 ```
 
 ## Use @nativescript/iqkeyboardmanager
+
 The following sections describe how to use the `@nativescript/iqkeyboardmanager` plugin in the different flavors that NativeScript supports.
 
 > **Note** Make related text fields siblings for the IQKeyboardManager to automatically
@@ -57,7 +64,7 @@ The 2 preceding steps result in the code below:
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript-iqkeyboardmanager">
   <ScrollView>
-    <IQKeyboardManager:PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
+    <IQKeyboardManager.PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
       <StackLayout>
           <TextField hint="Email"/>
           <TextField hint="Password"/>
@@ -70,6 +77,7 @@ The 2 preceding steps result in the code below:
 ### Angular
 
 1. Register the `PreviousNextView` element in the `.modules.ts` file where you want to use this feature (or the `app.module.ts` for global access).
+
 ```ts
 import { registerElement } from '@nativescript/angular';
 import { PreviousNextView } from '@nativescript/iqkeyboardmanager';
