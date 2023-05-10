@@ -1,7 +1,5 @@
 # @nativescript/localize
 
-A plugin that implements internationalization (i18n) using the native capabilities of each platform. It is inspired by [nativescript-i18n](https://github.com/rborn/nativescript-i18n)
-
 ## Contents
 
 * [Installation](#installation)
@@ -28,6 +26,10 @@ A plugin that implements internationalization (i18n) using the native capabiliti
 * [Credits](#credits)
 * [License](#license)
 
+## Intro
+
+A plugin that implements internationalization (i18n) using the native capabilities of each platform. It is inspired by [nativescript-i18n](https://github.com/rborn/nativescript-i18n)
+
 
 ## Installation
 
@@ -42,6 +44,7 @@ npm install @nativescript/localize
 This section describes how to use the `@nativescript/localize` plugin in several flavors that NativeScript supports.
 
 ### Localization in NativeScript Core
+
 1. Create a folder named `i18n` in the `app` folder, with the following structure:
 
 ```
@@ -162,7 +165,7 @@ app
 }
 ```
 
-2. To localize in Vue3 is simple. Just import the [localize](#localize) method
+2. To localize in Vue3, import the [localize](#localize) method
 and call it in markup.
 
 ```ts
@@ -202,8 +205,7 @@ app
 }
 ```
 
-2. To localize in Svelte is simple. Just import the [localize](#localize) method
-and then call it in markup.
+2. To localize in Svelte, import the [localize](#localize) method and then call it in markup.
 
 ```ts
 import { localize } from '@nativescript/localize';
@@ -314,7 +316,7 @@ import { overrideLocale } from '@nativescript/localize';
 const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc (or even just the part before the hyphen)
 ```
 
-> **Important:** On both platforms, after calling `overrideLocale`, you must ask the user to restart the app.
+> **Important:** On both platforms, after calling `overrideLocale` method, you must ask the user to restart the app.
 
 For Example:
 
