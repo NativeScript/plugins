@@ -1,5 +1,24 @@
 # @nativescript/ios-security
 
+## Contents
+
+* [Intro](#intro)
+* [Installation](#installation)
+* [Prerequisites](#prerequisites)
+    * [Specify the URLs to be queried](#specify-the-urls-to-be-queried)
+* [Use @nativescript/ios-security](#use-nativescriptios-security)
+    * [Detect jailbreaking](#detect-jailbreaking)
+    * [Detect debugger attachment](#detect-bebugger-attachment)
+    * [Prevent Debugger Attachment](#prevent-debugger-attachment)
+    * [Emulator detection](#emulator-detection)
+    * [Detect the use of reverse engineering tools](#detect-the-use-of-reverse-engineering-tools)
+    * [System proxy detection](#system-proxy-detection)
+    * [Runtime Hooks Detection](#runtime-hooks-detection)
+    * [App tampering detection](#app-tampering-detection)
+* [License](#license)
+
+## Intro
+
 🔒 [IOSSecuritySuite](https://github.com/securing/IOSSecuritySuite) for NativeScript.
 
 > 🌏 iOS Security Suite is an advanced and easy-to-use platform security & anti-tampering library. If you are developing for iOS and you want to protect your app according to the OWASP [MASVS](https://github.com/OWASP/owasp-masvs) standard, chapter v8, then this library could save you a lot of time. 🚀
@@ -9,22 +28,9 @@
 > * If an app was run in an emulator 👽
 > * Common reverse engineering tools running on the device 🔭
 
-## Contents
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-    * [Specify the URLs to be queried](#specify-the-urls-to-be-queried)
-3. [Use @nativescript/ios-security](#use-nativescriptios-security)
-    * [Detect jailbreaking](#detect-jailbreaking)
-    * [Detect debugger attachment](#detect-bebugger-attachment)
-    * [Prevent Debugger Attachment](#prevent-debugger-attachment)
-    * [Emulator detection](#emulator-detection)
-    * [Detect the use of reverse engineering tools](#detect-the-use-of-reverse-engineering-tools)
-    * [System proxy detection](#system-proxy-detection)
-    * [Runtime Hooks Detection](#runtime-hooks-detection)
-    * [App tampering detection](#app-tampering-detection)
-4. [License](#license)
-
 ## Installation
+
+To install the plugin, run the following command in your app's root folder:
 
 ```cli
 npm install @nativescript/ios-security
@@ -91,12 +97,14 @@ const runInEmulator: boolean = IOSSecurity.amIRunInEmulator();
 ```
 ---
 ### Detect the use of reverse engineering tools
+
 To detect if a common reverse engineering tool is being used on the app, call the `amIReverseEngineered()` method.
 ```ts
 const amIReverseEngineered: boolean = IOSSecurity.amIReverseEngineered();
 ```
 ---
 ### System proxy detection
+
 To detect if the user is using a proxy, call the `amIProxied()` method.
 
 ```ts

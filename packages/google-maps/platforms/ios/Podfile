@@ -1,1 +1,1 @@
-pod 'GoogleMaps', '6.2.1'
+pod 'GoogleMaps', '~> 7.3.0'

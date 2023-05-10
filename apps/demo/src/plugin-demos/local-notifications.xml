@@ -9,9 +9,8 @@
 
               <Label row="0" colSpan="2" text="You need permission before being able to schedule local notifications. Either defer to when you schedule it, or do it when the app first loads." class="hint" textWrap="true" />
               <Button row="1" col="0" text="has permission?" tap="{{ doCheckHasPermission }}" class="button button-neutral"/>
-              <iOS>
-                <Button row="1" col="1" text="request perm." tap="{{ doRequestPermission }}" class="button button-neutral"/>
-              </iOS>
+							<Button row="1" col="1" text="request perm." tap="{{ doRequestPermission }}" class="button button-neutral"/>
+
 
               <Label row="2" colSpan="2" text="After scheduling a notification, it pops up after 10 sec. In some cases you'll need to close the app first (see 'forceShowWhenInForeground')." class="hint" textWrap="true" />
 
