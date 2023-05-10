@@ -151,7 +151,7 @@ LocalNotifications.addOnMessageReceivedCallback((notification) => {
 scheduledNotificationsIDs: Array<number> = await LocalNotifications.schedule(scheduleOptions)
 ```
 
-Schedules the specified [scheduleOptions](#scheduleoptions) notification(s), if the user has granted the permission. If the user has not been prompted for permission, it prompts and schedules the notification(s) if permission is granted. For a manual permission request, use the [requestPermission](#requestpermission) method.
+Schedules the specified [scheduleOptions](#scheduleoptions) notification(s), if the user has granted the permission. If the user has not been prompted for permission, it prompts the user for permission and schedules the notification(s) if permission is granted. For a manual permission request, use the [requestPermission](#requestpermission) method.
 
 ---
 #### ScheduleOptions

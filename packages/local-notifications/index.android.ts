@@ -1,4 +1,5 @@
 import { Application, Device, Utils } from '@nativescript/core';
+import { check, request, Result } from '@nativescript-community/perms';
 import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
 
 declare const com, global: any;
@@ -68,27 +69,23 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		com.telerik.localnotifications.Store.remove(context, id);
 	}
 
-	hasPermission(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			try {
-				resolve(LocalNotificationsImpl.hasPermission());
-			} catch (ex) {
-				console.log('Error in LocalNotifications.hasPermission: ' + ex);
-				reject(ex);
-			}
-		});
+	async hasPermission(): Promise<boolean> {
+		try {
+			return await LocalNotificationsImpl.canSend();
+		} catch (ex) {
+			console.log('Error in LocalNotifications.hasPermission: ' + ex);
+			throw ex;
+		}
 	}
 
-	requestPermission(): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			try {
-				// AFAIK can't do it on this platform.. when 'false' is returned, the app could prompt the user to manually enable them in the Device Settings
-				resolve(LocalNotificationsImpl.hasPermission());
-			} catch (ex) {
-				console.log('Error in LocalNotifications.requestPermission: ' + ex);
-				reject(ex);
-			}
-		});
+	async requestPermission(): Promise<boolean> {
+		try {
+			await LocalNotificationsImpl.ensurePreconditions();
+			return true;
+		} catch (ex) {
+			console.log('Error in LocalNotifications.requestPermission: ' + ex);
+			return false;
+		}
 	}
 
 	addOnMessageReceivedCallback(onReceived: (data: ReceivedNotification) => void): Promise<void> {
@@ -186,57 +183,88 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
-		return new Promise((resolve, reject) => {
-			try {
-				if (!LocalNotificationsImpl.hasPermission()) {
-					reject('Permission not granted');
-					return;
+	async schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
+		try {
+			await LocalNotificationsImpl.ensurePreconditions();
+
+			const context = Utils.android.getApplicationContext();
+			const resources = context.getResources();
+			const scheduledIds: Array<number> = [];
+
+			// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
+			// the persisted options are exactly like the original ones.
+
+			for (let n in scheduleOptions) {
+				const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
+
+				options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
+
+				options.atTime = options.at ? options.at.getTime() : 0;
+
+				// Used when restoring the notification after a reboot:
+				options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
+
+				if (options.color) {
+					options.color = options.color.android;
 				}
 
-				const context = Utils.android.getApplicationContext();
-				const resources = context.getResources();
-				const scheduledIds: Array<number> = [];
-
-				// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
-				// the persisted options are exactly like the original ones.
-
-				for (let n in scheduleOptions) {
-					const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
-
-					options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
-
-					options.atTime = options.at ? options.at.getTime() : 0;
-
-					// Used when restoring the notification after a reboot:
-					options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
-
-					if (options.color) {
-						options.color = options.color.android;
-					}
-
-					if (options.notificationLed && options.notificationLed !== true) {
-						options.notificationLed = options.notificationLed.android;
-					}
-
-					LocalNotificationsImpl.ensureID(options);
-
-					com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
-
-					scheduledIds.push(options.id);
+				if (options.notificationLed && options.notificationLed !== true) {
+					options.notificationLed = options.notificationLed.android;
 				}
 
-				resolve(scheduledIds);
-			} catch (ex) {
-				console.log('Error in LocalNotifications.schedule: ' + ex);
-				reject(ex);
+				LocalNotificationsImpl.ensureID(options);
+
+				com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
+
+				scheduledIds.push(options.id);
 			}
-		});
+
+			return scheduledIds;
+		} catch (ex) {
+			console.log('Error in LocalNotifications.schedule: ' + ex);
+			throw ex;
+		}
 	}
 
-	private static hasPermission(): boolean {
+	private static async ensurePreconditions(): Promise<void> {
+		const hasPermission = await LocalNotificationsImpl.hasPermission();
+		if (!hasPermission) {
+			const granted = await LocalNotificationsImpl.requestPermission();
+			if (!granted) throw new Error('Permission not granted');
+		}
+		// AFAIK can't do it on this platform. when 'false' is returned, the app could prompt the user to manually enable them in the Device Settings
+		const enabled = LocalNotificationsImpl.areEnabled();
+		if (!enabled) throw new Error('Notifications were manually disabled');
+	}
+
+	private static async canSend(): Promise<boolean> {
+		const hasPermission = await LocalNotificationsImpl.hasPermission();
+		const areEnabled = LocalNotificationsImpl.areEnabled();
+		return hasPermission && areEnabled;
+	}
+
+	private static areEnabled(): boolean {
 		const context = Utils.android.getApplicationContext();
 		return !context || NotificationManagerCompatPackageName.NotificationManagerCompat.from(context).areNotificationsEnabled();
+	}
+
+	private static async hasPermission(): Promise<boolean> {
+		const result = await check('notification');
+		return LocalNotificationsImpl.isAuthorized(result);
+	}
+
+	private static async requestPermission(): Promise<boolean> {
+		try {
+			const result = await request('notification');
+			return LocalNotificationsImpl.isAuthorized(result);
+		} catch (ex) {
+			return false;
+		}
+	}
+
+	private static isAuthorized(result: Result): boolean {
+		const [status, _] = result;
+		return status === 'authorized';
 	}
 }
 

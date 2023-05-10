@@ -11,6 +11,7 @@ extension SwiftUIProvider {
     
     func setupSwiftUIView<Content>(content: Content) where Content: View {
         let childVC = buildViewController(content: content)
+        childVC.view.backgroundColor = .clear
         addChild(childVC)
         childVC.view.translatesAutoresizingMaskIntoConstraints = false
         childVC.view.frame = view.frame

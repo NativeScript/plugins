@@ -1,6 +1,6 @@
 # @nativescript/app-availability
 
-A plugin to check for the availability of other apps on the device.
+A plugin that checks if an app is installed on a device.
 
 ## Installation
 
@@ -8,15 +8,7 @@ A plugin to check for the availability of other apps on the device.
 npm install @nativescript/appavailability
 ```
 
-## Usage
-
-### Importing
-
-```typescript
-import { available } from '@nativescript/appavailability';
-//or
-import { availableSync } from '@nativescript/appavailability';
-```
+## Use @nativescript/app-availability
 
 ```typescript
 // examples of what to pass:
@@ -26,10 +18,11 @@ available('twitter://').then((avail: boolean) => {
 	console.log('App available? ' + avail);
 });
 ```
-### Opening an app (with web fallback)
+### Open an app (with web fallback)
 
-Once you have confirmed that the app is installed on the device, you probably want to launch it.
-Here's a snippet that opens the mobile Twitter app and falls back to the website if it's not installed.
+To open an app installed on the device, call the `openUrl()` method on the `Utils` class. Pass the app's identifier URL to the method.
+
+The code below asynchronously checks if the Twitter mobile app is available on the device. If the app is availabe, `openUrl()` opens it . Otherwise, `openUrl()` opens the website instead.
 
 ```typescript
 import { available } from '@nativescript/appavailability';
@@ -47,7 +40,7 @@ available(twitterScheme).then((available) => {
 });
 ```
 
-And a more concise, synchronous way would be:
+To synchronously check for an app's availability, use the `availableSync()` function.
 
 ```typescript
 import { availableSync } from '@nativescript/appavailability';
@@ -59,14 +52,16 @@ if (availableSync('twitter://')) {
 	Utils.openUrl('https://twitter.com/eddyverbruggen');
 }
 ```
-### Determining the correct identifier for an app.
 
-- `Android:` simply search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
-- `iOS:` this one is a bit harder but this site should cover most apps you're interested in. When in doubt you can always fire up Safari on your iPhone and type for example `'twitter://'` in the address bar if the app launches you're good.
+### Determine the correct identifier of an app.
+
+- `Android` : search the Play Store and use the id in the URL. For Twitter this is `com.twitter.android` because the URL is `https://play.google.com/store/apps/details?id=com.twitter.android`.
+
+- `iOS`:  Open Safari on your iPhone and type, for example,`'twitter://'` in the address bar. If the app launches, use that URL as the identifier.
 
 ## iOS whitelisting
 
-To get useful results on iOS 9+ you need to whitelist the URL Scheme you're querying in the application's `Info.plist`.
+To get useful results on iOS 9+, whitelist the URL Scheme you're querying in the application's `Info.plist`.
 
 For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit `app/App_ResourcesiOS/Info.plist` as follows:
 
