@@ -1,3 +1,4 @@
+import { Utils } from '@nativescript/core';
 import { IonicPortalCommon, IonicPortalManagerCommon } from './common';
 
 declare var com, kotlin;
@@ -8,6 +9,25 @@ export class IonicPortalManager extends IonicPortalManagerCommon {
 	}
 	static publishTopic(topic: string, data?: any) {
 		io.ionic.portals.PortalsPlugin.publish(topic, dataSerialize(data, true));
+	}
+	static syncNow(appIds: Array<string>, isParallel: boolean = false, complete: (status: string) => void = (status: string) => {}) {
+		io.ionic.liveupdates.LiveUpdateManager.sync(
+			Utils.android.getApplicationContext(),
+			Utils.dataSerialize(appIds),
+			isParallel,
+			new io.ionic.liveupdates.network.SyncCallback({
+				onAppComplete(status: io.ionic.liveupdates.data.model.SyncResult | io.ionic.liveupdates.data.model.FailResult) {
+					complete(status.toString());
+				},
+				onSyncComplete() {
+					complete('success');
+				},
+			})
+		);
+	}
+
+	static getLastSync(appId: string): number {
+		return io.ionic.liveupdates.LiveUpdateManager.getLastSync(Utils.android.getApplicationContext(), appId);
 	}
 
 	static subscribeToTopic(topic: string, callback: (data?: any) => void): number {
@@ -97,6 +117,10 @@ export class IonicPortal extends IonicPortalCommon {
 		if (list) {
 			builder.setPlugins(list);
 		}
+		if (IonicPortalManager.LiveUpdateConfigs?.[this.id]) {
+			const config = IonicPortalManager.LiveUpdateConfigs[this.id];
+			builder.setLiveUpdateConfig(Utils.android.getApplicationContext(), new io.ionic.liveupdates.LiveUpdate(config.appId, config.channel, config.syncOnAdd));
+		}
 		builder.create();
 
 		const portalWebView = new io.ionic.portals.PortalView(this._context);
@@ -115,6 +139,12 @@ export class IonicPortal extends IonicPortalCommon {
 		this.nativeViewProtected.setId(this._androidViewId);
 
 		this.nativeViewProtected.loadPortal(this._getFragmentManager() ?? this._context, null);
+	}
+
+	reload() {
+		if (this.android) {
+			this.android.getPortalFragment().reload();
+		}
 	}
 }
 const dataDeserialize = function (nativeData?: any) {

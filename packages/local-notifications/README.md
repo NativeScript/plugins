@@ -289,7 +289,7 @@ LocalNotifications.requestPermission().then((granted) => {
 ```
 
 Requests for the user's permissions for the app to send her notifications. 
-You only need to call this method on iOS. If the permission has already been granted, it returns `true`. Otherwise, it returns `false`.
+If the permission has already been granted, it returns `true`. Otherwise, it returns `false`.
 
 ---
 ### hasPermission()

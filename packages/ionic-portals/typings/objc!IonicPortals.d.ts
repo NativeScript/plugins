@@ -3,13 +3,19 @@ declare class IONPortal extends NSObject {
 
 	static new(): IONPortal; // inherited from NSObject
 
+	bundle: NSBundle;
+
 	initialContext: NSDictionary<string, any>;
 
 	readonly name: string;
 
 	readonly startDir: string;
 
+	constructor(o: { name: string; startDir: string; bundle: NSBundle; initialContext: NSDictionary<string, any> });
+
 	constructor(o: { name: string; startDir: string; initialContext: NSDictionary<string, any> });
+
+	initWithNameStartDirBundleInitialContext(name: string, startDir: string, bundle: NSBundle, initialContext: NSDictionary<string, any>): this;
 
 	initWithNameStartDirInitialContext(name: string, startDir: string, initialContext: NSDictionary<string, any>): this;
 
@@ -25,11 +31,11 @@ declare class IONPortalUIView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): IONPortalUIView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): IONPortalUIView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): IONPortalUIView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): IONPortalUIView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): IONPortalUIView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): IONPortalUIView; // inherited from UIAppearance
 
 	static new(): IONPortalUIView; // inherited from NSObject
 
@@ -68,11 +74,7 @@ declare class IONPortalsRegistrationManager extends NSObject {
 
 declare var IonicPortalsVersionNumber: number;
 
-declare var IonicPortalsVersionNumberVar: number;
-
 declare var IonicPortalsVersionString: interop.Reference<number>;
-
-declare var IonicPortalsVersionStringVar: interop.Reference<number>;
 
 declare class UnregisteredView extends UIView {
 	static alloc(): UnregisteredView; // inherited from NSObject
@@ -83,11 +85,11 @@ declare class UnregisteredView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): UnregisteredView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): UnregisteredView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): UnregisteredView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): UnregisteredView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): UnregisteredView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): UnregisteredView; // inherited from UIAppearance
 
 	static new(): UnregisteredView; // inherited from NSObject
 }
