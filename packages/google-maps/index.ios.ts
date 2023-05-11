@@ -490,6 +490,7 @@ class GMSSyncTileLayerImpl extends GMSSyncTileLayer {
 }
 
 export class MapView extends MapViewBase {
+	// @ts-ignore
 	nativeView: GMSMapView;
 	#delegate: GMSMapViewDelegateImpl;
 	#indoorDelegate: GMSIndoorDisplayDelegateImpl;
