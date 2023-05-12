@@ -52,7 +52,6 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 
 	1. [Create a Firebase project](https://firebase.google.com/docs/ios/setup#create-firebase-project)
 	2. [Register your app with Firebase](https://firebase.google.com/docs/ios/setup#register-app)
-
 	3. [Add a Firebase configuration file](https://firebase.google.com/docs/ios/setup#add-config-file), `GoogleService-Info.plist.` to `App_Resources/iOS/`.
 
 3. Open Xcode 
@@ -91,19 +90,20 @@ To sign in a user with GoogleSignIn, follow the steps below.
 
 1. Register and add the [GoogleSignInButton](#googlesigninbutton) to your markup to be able to initiate GoogleSigIn.
 
-### GoogleSignInButton
 
-#### Core
+1. Register and add the [GoogleSignInButton](#googlesigninbutton) to your markup to be able to initiate GoogleSigIn.
+
+- **Core**
+
 
 ```xml
 <Page xmlns:ui="@nativescript/google-signin">
 	<ui:GoogleSigninButton tap="handleSignIn" colorScheme='auto' colorStyle='standard'/>
 </Page>
 ```
+- **Angular**
 
-#### Angular
-
-Register the button in the `module.ts` file:
+Register the button as follows:
 
 ```ts
 import { registerElement } from '@nativescript/angular';
@@ -115,9 +115,10 @@ Next, add it to your `html` file setting the desired option for `colorScheme` an
 <GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
 ```
 
-#### Vue
+- **Vue**
 
-To register the button, add the following code to the `main.ts` file.
+Register the button by adding the following code to the `main.ts` file.
+
 
 ```ts 
 registerElement('GoogleSignInButton',()=> require("@nativescript/google-signin").GoogleSignInButton)
