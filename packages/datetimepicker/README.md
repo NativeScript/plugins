@@ -86,7 +86,7 @@ import { NativeScriptDateTimePickerModule } from "@nativescript/datetimepicker/a
 
 ### Vue
 
-1. Register the plugin with your app, in the `main.ts` file for global access.
+1. Once the plugin has been installed, register it with your app project, in the `main.ts` file for global access.
 
 ```ts
 import DateTimePicker   from "@nativescript/datetimepicker/vue"

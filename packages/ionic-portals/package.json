@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/ionic-portals",
-	"version": "1.1.0",
+	"version": "1.2.1",
 	"description": "Ionic Portals - Supercharged Web Views for iOS and Android",
 	"main": "index",
 	"typings": "index.d.ts",

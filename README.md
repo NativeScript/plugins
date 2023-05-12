@@ -46,6 +46,18 @@ npm start
 
 This workspace manages the suite of plugins listed above. 
 
+## Prerequisites
+
+- Node 18+ is recommended
+- [yarn v1](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) is required
+
+### Note about "focus modes"
+
+`npm start` > `focus.{any-plugin}` ENTER will focus the workspace to a single plugin for working on it in isolation.
+
+Generally we try to keep "UI" plugins away from "SDK" related plugins since UI plugins often bring in aspects which may need more resource setup. For example, since the swift-ui plugin is currently managed here, we have testing code for it here: https://github.com/NativeScript/plugins/blob/main/tools/assets/App_Resources/iOS/src/BasicViewProvider.swift ... however when focusing on any other plugins, you would need to rename those .swift > .off so they aren't included in the demo to work with other plugins. Since the supporting .swift files include SwiftUIProvider which comes from only the swift-ui plugin.
+To help contributors in the future, we will likely split some of these plugins out across other workspaces to pair it down. For now that tip can be applied where needed to work on any plugin.
+
 In general, when in doubt with what to do, just `npm start`.
 
 ```bash
