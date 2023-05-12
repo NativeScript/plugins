@@ -19,6 +19,11 @@
 						"glob": "**/*",
 						"input": "packages/iqkeyboardmanager/platforms/",
 						"output": "./platforms/"
+					},
+					{
+						"glob": "**/*",
+						"input": "packages/iqkeyboardmanager/typings/",
+						"output": "./typings/"
 					}
 				]
 			},

@@ -1,8 +1,22 @@
 # @nativescript/Email
 
-[![NPM version][npm-image]][npm-url]
-[![Downloads][downloads-image]][npm-url]
-[![Twitter Follow][twitter-image]][twitter-url]
+## Contents
+* [Intro](#intro)
+* [Installation](#installation)
+* [Use @nativescript/email](#use-nativescriptemail)
+	* [Check for availability](#check-for-availability)
+	* [Compose an email](#compose-an-email)
+	* [Usage with Angular](#usage-with-angular)
+* [API](#api)
+	* [Functions](#functions)
+	* [ComposeOptions](#composeoptions)
+* [Known issues](#known-issues)
+
+## Intro
+
+A plugin to compose an e-mail, have the user edit the draft manually and send it.
+
+> **Note:** This plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
 
 [npm-image]: https://img.shields.io/npm/v/nativescript-email.svg
 [npm-url]: https://npmjs.org/package/nativescript-email
@@ -11,66 +25,40 @@
 [twitter-image]: https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]: https://twitter.com/eddyverbruggen
 
-You can use this plugin to compose an e-mail, have the user edit the draft manually, and send it.
+## Installation
 
-> **Note:** This plugin depends on the default mail app. If you want a fallback to a third party client app like Gmail or Outlook, then check for availability, and if not available use a solution like [the Social Share plugin](https://github.com/tjvantoll/nativescript-social-share).
+To install the plugin, run the following command in the root directory of your project:
 
 ```cli
 npm install @nativescript/email
 ```
 
-## Usage
+## Use @nativescript/email
 
-## API
+### Check for availability
 
-To use this plugin you must first require/import it:
+To check if the device has the Mail app installed, call the `available` method.
 
-#### TypeScript
+```ts
+import { available() } from '@nativescript/email';
 
-```typescript
-import * as email from '@nativescript/email';
-// or
+available().then((avail: boolean) => {
+	console.log('Email available? ' + avail);
+});
+```
+### Compose an email
+
+To compose an email, use the `compose` method.
+
+```js
 import { compose } from '@nativescript/email';
-// or even
-import { compose as composeEmail } from '@nativescript/email';
-```
 
-#### JavaScript
-
-```js
-var email = require('@nativescript/email');
-```
-
-### `available`
-
-#### TypeScript
-
-```typescript
-email.available().then((avail: boolean) => {
-	console.log('Email available? ' + avail);
-});
-```
-
-#### JavaScript
-
-```js
-email.available().then(function (avail) {
-	console.log('Email available? ' + avail);
-});
-```
-
-### `compose`
-
-#### JavaScript
-
-```js
-// let's first create a File object
+// first create a File object
 import { knownFolders } from '@nativescript/core';
 var appPath = knownFolders.currentApp().path;
 var logoPath = appPath + '/res/telerik-logo.png';
 
-email
-	.compose({
+compose({
 		subject: 'Yo',
 		body: 'Hello <strong>dude</strong> :)',
 		to: ['eddyverbruggen@gmail.com', 'to@person2.com'],
@@ -98,19 +86,50 @@ email
 		}
 	);
 ```
+## API
+### Method(s)
+| Name | Return Type | Description |
+|------|------|-------------|
+| `available()` | `Promise<boolean>`|  Checks for availability of a mail app.|
+| `compose(options: ComposeOptions)` | `Promise<boolean>` | Composes and sends a [ComposeOptions](#composeoptions) email.|
 
-Full attachment support has been added to 1.3.0 per the example above.
-
-Since 1.4.0 the promise will be rejected in case a file can't be found.
-
-## Usage with Angular
+### Usage with Angular
 
 Check out [this tutorial (YouTube)](https://www.youtube.com/watch?v=fSnQb9-Gtdk) to learn how to use this plugin in a NativeScript-Angular app.
 
+## API
+### Functions
+| Function | Return Type | Description |
+|------|------|-------------|
+| `available()` | `Promise<boolean>`|  Checks for availability of a mail app.|
+| `compose(options: ComposeOptions)` | `Promise<boolean>` | Composes and sends a [ComposeOptions](#composeoptions) email.|
+
+### ComposeOptions
+
+| Name | Type | Description |
+|------|------|-------------|
+| `subject`| `string`| _Optional_: The subject of the email.|
+| `body`| `string`| _Optional_: The body of the email. The plugin will automatically handle plain and html email content.|
+| `body`| `string`| _Optional_: The body of the email. The plugin will automatically handle plain and html email content.|
+| `to` | `string[]` |  _Optional_: An array of email addresses of the direct recipients. On Android only the first item in the array is used.|
+| `cc` | `string[]` |  _Optional_: An array of email addresses of the `cc` recipients.|
+| `bcc` | `string[]` |  _Optional_: An array of email addresses of the `bcc` recipients.|
+| `attachments`| Array<[Attachment](#attachment)>| The files to be attached to the email.|
+| `iosViewController` | `any` | _Optional_: (`iOS-only`) iOS View Controller to open `compose` from.|
+
+
+#### Attachment
+
+| Name | Type | Description |
+|------|------|-------------|
+| `fileName`| `string` | The name used for the attachment.<br>Example: fileName: 'Cute-Kitten.png'|
+| `path` | `string` | The to the file to be attached. |
+| `mimeType` | `string` | (`iOS-only`)Used to help the iOS device figure out how to send the file.Example:mimeType: 'image/png'|
+
+
 ## Known issues
 
-On iOS you can't use the simulator to test the plugin because of an iOS limitation.
-To prevent a crash this plugin returns `false` when `available` is invoked on the iOS sim.
+- On iOS, you can't use the simulator to test the plugin because of an iOS limitation. To prevent a crash, this plugin returns `false` when `available` is invoked on the iOS simulator.
 
 ## License
 
