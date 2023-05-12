@@ -1,12 +1,26 @@
 # @nativescript/jetpack-compose
 
-Jetpack Compose for NativeScript.
+A plugin that allows you to use Jetpack Compose in NativeScript.
 
-```javascript
+## Contents
+* [Installation](#installation)
+* [Use @nativescript/jetpack-compose](#use-nativescriptjetpack-compose)
+    * [Add Jetpack Compose version and dependencies](#add-jetpack-compose-version-and-dependencies)
+    * [Create a Compose view](#create-a-compose-view)
+    * [Register your Compose view](#register-your-compose-view)
+    * [Use Compose view with any NativeScript layout](#use-compose-view-with-any-nativescript-layout)
+    * [Use Jetpack Compose with Angular](#use-jetpack-compose-with-angular)
+* [Credits](#credits)
+
+## Installation
+
+```cli
 npm install @nativescript/jetpack-compose
 ```
 
-## Usage
+## Use @nativescript/jetpack-compose
+
+### Add Jetpack Compose version and dependencies
 
 Adjust `App_Resources/Android/app.gradle` to include your desired Jetpack Compose version and dependencies:
 
@@ -98,7 +112,7 @@ registerJetpackCompose('flyingHearts', (view) => new ComposeDataDriver(new com.e
 
 This illustrates what is often called a "vanilla" flavored NativeScript app. However, you can use this plugin with any flavor (Angular, React, Svelte, Vue, etc.)
 
-```
+```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page" xmlns:jc="@nativescript/jetpack-compose">
   <StackLayout>
     <jc:JetpackCompose composeId="flyingHearts" composeEvent="{{ onEvent }}" data="{{ text }}"/>
@@ -106,7 +120,7 @@ This illustrates what is often called a "vanilla" flavored NativeScript app. How
 </Page>
 ```
 
-#### To use with Angular
+### Use Jetpack Compose with Angular
 
 ```ts
 import { registerElement } from '@nativescript/angular'
@@ -117,7 +131,7 @@ registerElement('JetpackCompose', () => JetpackCompose)
 
 It can now be used within any Angular component, eg:
 
-```
+```xml
 <StackLayout>
     <JetpackCompose composeId="flyingHearts" (composeEvent)="onEvent($event)" [data]="data"></JetpackCompose>
 </StackLayout>
@@ -127,7 +141,7 @@ It can now be used within any Angular component, eg:
 
 <img src="https://raw.githubusercontent.com/valor-software/.github/d947b8547a9d5a6021e4f6af7b1df816c1c5f268/profile/valor-logo%20for-light.png#gh-light-mode-only" alt="Valor Software" width="200" />
 
-NativeScript is proudly supported by Valor Software as official partners. We are proud to offer guidance, consulting, and development assistance in all things NativeScript.
+NativeScript is proudly supported by Valor Software as an official partner. We are proud to offer guidance, consulting, and development assistance in all things NativeScript.
 
 [Contact Valor for assistance](https://valor-software.com/).
 
