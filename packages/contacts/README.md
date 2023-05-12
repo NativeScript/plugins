@@ -1,27 +1,61 @@
 # @nativescript/contacts
 
-Easy access to iOS and Android contact directory. It allows you to pick a contact, update it, delete it, or add a new one.
+A plugin that allows you to access Contacts directory on iOS and Android. You can pick a contact, update it, delete it, or add a new one.
+
+## Contents
+* [Installation](#installation)
+* [Permissions requirements](#permissions-requirements)
+	* [iOS Permission Requirements](#ios-permission-requirements)
+	* [Android Permission Requirements](#android-permission-requirements)
+* [Use @nativescript/contacts](#use-nativescriptcontacts)
+	* [Get a contact](#get-a-contact)
+	* [Create a new contact](#create-a-new-contact)
+	* [Update a contact](#update-a-contact)
+	* [Delete a contact](#delete-a-contact)
+	* [Check if a contact is unified/linked](#check-if-a-contact-is-unifiedlinked-ios-specific)
+	* [Get contacts by name](#get-contacts-by-name)
+	* [Get all the contacts](#get-all-the-contacts)
+	* [Get a contact by id](#get-a-contact-by-id)
+	* [Get a group or groups of contacts](#get-a-group-or-groups-of-contacts)
+	* [Create a new contacts group](#create-a-new-contacts-group)
+	* [Delete a group of contacts](#delete-a-group-of-contacts)
+	* [Add a contact to a group](#add-a-contact-to-a-group)
+	* [Remove a contact from a group](#remove-a-contact-from-a-group)
+	* [Get all the contacts of a group](#get-all-the-contacts-of-a-group)
+
+* [API](#api)
+	* [Group object structure](#group-object-structure)
+	* [Contact class](#contact-class)
+	* [PhoneNumber/EmailAddress structure](#phonenumberemailaddress-structure)
+	* [Url structure](#url-structure)
+	* [PostalAddress structure](#postaladdress-structure)
+	* [Known Labels (for Urls, Addresses and Phones)](#known-labels-for-urls-addresses-and-phones)
+	* [GetFetchResult object structure](#getfetchresult-object-structure)
+	* [iOS contact object](#ios-contact-object)
+* [Credits](#credits)
+* [License](#license)
 
 ## Installation
+
+Run the following command to install the plugin:
+
 ```cli
 npm install @nativescript/contacts
 ```
+### Permissions requirements
 
-## Usage
-
-### Requesting for Permissions
-For the app to access the user's Contacts app, the user must grant it the permission. Before requesting for permissions, ensure that the following requirements are met. 
+For the app to access the user's Contacts app, the user must grant it the permission to do. Before requesting for permissions, ensure that the following requirements are met. 
 
 #### iOS Permission Requirements
 
-Add following key to the `App_Resources/iOS/Info.plist` file to clarify why you need the permission to access the user's contacts.
+- To clarify why your app needs the permission to access the user's contacts, add the `NSContactsUsageDescription` key to the `App_Resources/iOS/Info.plist` file,  and your clarification as its value.
 
 ```xml
 <key>NSContactsUsageDescription</key>
 <string>Kindly provide permission to access contacts on your device.</string>
 ```
 
-For iOS 13+, you need to add the following [entitlement](https://developer.apple.com/documentation/contacts/requesting_authorization_to_access_contacts) to the `App_Resources/iOS/app.entitlements` file. If the file does not exist, you should create it.
+- For iOS 13+, add the [com.apple.developer.contacts.notes](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_contacts_notes?language=objc) [entitlement](https://developer.apple.com/documentation/contacts/requesting_authorization_to_access_contacts) to the `App_Resources/iOS/app.entitlements` file. If the file does not exist, you should create it.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -36,7 +70,7 @@ For iOS 13+, you need to add the following [entitlement](https://developer.apple
 
 #### Android Permission Requirements
 
-For API level `23+` you need to check for the appropriate permissions to access the contacts. To inform Android about which permissions your app needs from the user in order to access contacts, list the following permissions in the  `AndroidManifest.xml`:
+For API level `23+`, inform Android about which permissions your app needs from the user in order to access contacts by listing the following permissions in the  `AndroidManifest.xml`:
 
 ```xml
 <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -45,7 +79,9 @@ For API level `23+` you need to check for the appropriate permissions to access 
 <uses-permission android:name="android.permission.GLOBAL_SEARCH" />
 ```
 
-Then, to request for the permissions, you can call the `requestPermissions()` method from the `nativescript-permissions` plugin. 
+## Use @nativescript/contacts
+
+Once you've indicated the permissions your app needs from a user, you can request the permissions from the user by calling the `requestPermissions()` method from the `nativescript-permissions` plugin. 
 
 ```ts
 import { Contact } from '@nativescript/contacts';
@@ -59,8 +95,9 @@ requestPermissions([android.Manifest.permission.GET_ACCOUNTS, android.Manifest.p
 });
 ```
 
-### Getting a contact
-To get a contact, call the `getContact()` method of the `Contacts` class.
+### Get a contact
+
+To get a selected contact, call the `getContact()` method of the `Contacts` class.
 
 ```ts
 import { Contact } from '@nativescript/contacts';
@@ -73,10 +110,8 @@ Contacts.getContact().then(function (args) {
 	if (args.response === 'selected') {
 		const contact = args.data; //See data structure below
 
-		// lets say you wanted to grab first name and last name
 		console.log(contact.name.given + ' ' + contact.name.family);
 
-		//lets say you want to get the phone numbers
 		contact.phoneNumbers.forEach(function (phone) {
 			console.log(phone.value);
 		});
@@ -89,8 +124,9 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Saving a new contact
-To save a new contact, first instatiate the `Contact` class, set the various data of the contact and then call the `save()` method on the instance.
+### Create a new contact
+
+To create a new contact, first instantiate the `Contact` class, set the various data of the contact and then to save the contact, call the `save()` method on the instance.
 
 ```ts
 import { Contact, KnownLabel } from '@nativescript/contacts';
@@ -109,6 +145,7 @@ newContact.save();
 ```
 
 ### Update a contact
+
 To update an existing contact, get it with the `getContact()` method, edit it and then call the `save()` method to update it.
 ```ts
 import { Application, ImageSource } from '@nativescript/core';
@@ -128,7 +165,8 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Deleting a contact
+### Delete a contact
+
 To delete a contact, get it with the `getContact()` method and then call the `delete()` method on it.
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -144,14 +182,16 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Checking if contact is Unified/Linked (iOS Specific)
+### Check if a contact is unified/linked (iOS Specific)
+
+To check if a contact is unified, call the `isUnified()` on the contact.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
 
 Contacts.getContact().then(function (args) {
 	/// args.data: Generic cross platform JSON object
-	/// args.reponse: "selected" or "cancelled" depending on wheter the user selected a contact.
+	/// args.reponse: "selected" or "cancelled" depending on whether the user selected a contact.
 
 	if (args.response === 'selected') {
 		const contact = args.data; //See data structure below
@@ -160,8 +200,9 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Getting A Contact By Name 
-To find all contacts matching a certain name, use the `getContactsByName()` method. Returns an array of contact data.
+### Get contacts by name 
+
+To find all the contacts matching a certain name, use the `getContactsByName()` method. Returns an array of contact data.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -185,8 +226,9 @@ Contacts.getContactsByName('Hicks', contactFields).then(
 );
 ```
 
-### Getting all the contacts
-To read all the contacts, use the `getAllContacts()` method. Returns an array of contact data.
+### Get all the contacts
+
+To read all the contacts, use the `getAllContacts()` method. It returns a a promise with an array of `Contact` instances.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -212,9 +254,9 @@ Contacts.getAllContacts(contactFields).then(
 );
 ```
 
-### Getting a contact by id
+### Get a contact by id
 
-To find a contact with ta specific identifier, use the `getContactById` method. Returns GetFetchResult. _(iOS Only)_
+To find a contact with ta specific identifier, use the `getContactById()` method. The method returns an `iOS-specific` [GetFetchResult](#getfetchresult-object-structure) object.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -234,8 +276,9 @@ Contacts.getContactById(contactId).then(
 );
 ```
 
-### Getting contacts groups
-To get contacts group(s), use the `getGroups()` method. To get a contacts group with a specific name, call the method with the name of the group.
+### Get a group or groups of contacts
+
+To get a group or groups of contacts, use the `getGroups()` method. To get a group of contacts with a specific name, call the method passing it the name of the group.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -261,8 +304,9 @@ Contacts
 	);
 ```
 
-### Creating a new contacts group
-To save a new contacts group, create an instance of the `Group` class, set the name and call the `save()` method on the instance.
+### Create a new contacts group
+
+To create a new contacts group, create an instance of the `Group` class, set group's name and call the `save()` method on the instance to save it.
 ```ts
 import { Group } from '@nativescript/contacts/models';
 
@@ -274,7 +318,8 @@ groupModel.name = 'Test Group';
 groupModel.save(false);
 ```
 
-### Deleting A Contacts Group
+### Delete a group of contacts
+
 To delete a contacts group, call the `getGroups()` method to first get the group of interest. Then call the `delete()` method on that group to delete it.
 
 ```ts
@@ -299,8 +344,9 @@ Contacts.getGroups('Test Group').then(
 );
 ```
 
-### Adding A Contact To A Group
-To add a contact to a group, get the references to the contact and the group and then call the `addMember()` on the group passing it the contact to to add.
+### Add a contact to a group
+
+To add a contact to a group, get the references to the contact and the group of interest. Next, call the `addMember()` method on the group passing it the contact reference to add.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -325,7 +371,9 @@ Contacts.getContact().then(function (args) {
 });
 ```
 
-### Removing A Contact From Group
+### Remove a contact from a group
+
+Call the `removeMember()` on `Group` class instance passing it the contact to remove.
 
 ```ts
 import { Contacts } from '@nativescript/contacts';
@@ -361,7 +409,8 @@ Contacts
 	);
 ```
 
-### Getting All The Contacts From A Group
+### Get all the contacts of a group
+
 To get all of a group's contacts, use the `Contacts.getContactsInGroup()` method passing it the group instance.
 
 
@@ -394,7 +443,9 @@ Contacts
 	);
 ```
 
-### Single Contact Data Structure
+### Contact class
+
+The Contact class has following structure
 
 ```ts
 {
@@ -434,7 +485,7 @@ Contacts
 }
 ```
 
-### PhoneNumber / EmailAddress Structure
+### PhoneNumber/EmailAddress structure
 
 ```ts
 {
@@ -531,7 +582,7 @@ The plugin exposes the following labels via the `KnownLabel` object to be used f
 
 Those are the system labels but you can also use any custom label you want.
 
-### Single Group Data Structure
+### Group object structure
 
 ```ts
 {
@@ -543,9 +594,9 @@ Those are the system labels but you can also use any custom label you want.
 }
 ```
 
-### `GetFetchResult` Data Structure
+### GetFetchResult object structure
 
-The object returned by contact fetch requests.
+The object returned by the `getContactById()` method of the `Contacts` class.
 
 ```ts
 {
@@ -554,16 +605,16 @@ The object returned by contact fetch requests.
 }
 ```
 
-### iOS
+### iOS contact object
 
-See apples docs on properties available:
+See Apple docs on properties available:
 https://developer.apple.com/library/mac/documentation/Contacts/Reference/CNContact_Class/index.html#//apple_ref/occ/cl/CNContact
 
-NOTE: Since the plugin uses the Contact framework, it is supported only on iOS 9.0 and above!
+> **NOTE:** The plugin uses the Contact framework and it is supported only on iOS 9.0 and above!
 
 ## Credits
 
-All credit to original author [Ryan Lebel](https://github.com/firescript) for creating [nativescript-contacts](https://github.com/firescript/nativescript-contacts).
+All credits to the original author [Ryan Lebel](https://github.com/firescript) for creating [nativescript-contacts](https://github.com/firescript/nativescript-contacts).
 
 ## License
 
