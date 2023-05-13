@@ -314,7 +314,10 @@ The request object parameter has the following properties:
 | `androidRingToneEnabled `               | `boolean` | (`Android-only`) Used to set if a ringtone should be played upon upload completion. Default is true. Please note that this flag has no effect when `androidAutoClearNotification` is set to true. |
 | `androidNotificationChannelID`          | `string`  | (`Android-only`) Used to set the channel ID for the notifications.                                                                                                                                |
 
-> **Note**:- The Android Notification titles/messages above can be constructed with one of the following placeholders which will be replaced by the system:<ul><li>`[upload_rate]`: replaced with the current upload rate/speed</li><li>`[upload_progress]`: replaced with the current upload progress</li><li>`[upload_elapsed_time]`: replaced with the elapsed time</li> <br> 
+> **Note**: The Android Notification titles/messages above can be constructed with one of the following placeholders which will be replaced by the system:
+>  - `[upload_rate]`: replaced with the current upload rate/speed
+>  - `[upload_progress]`: replaced with the current upload progress
+>  - `[upload_elapsed_time]`: replaced with the elapsed time
 
 ### Task object
 
