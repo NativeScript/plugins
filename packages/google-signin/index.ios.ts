@@ -2,26 +2,26 @@ import { Application, Utils } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 
 export class GoogleError extends Error {
-	#native: NSError;
+	private _native: NSError;
 	static fromNative(native: NSError, message?: string) {
 		const error = new GoogleError(message || native?.localizedDescription);
-		error.#native = native;
+		error._native = native;
 		return error;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 }
 
 export class User implements IUser {
-	#native: GIDGoogleUser;
-	#grantedScopes: string[];
+	private _native: GIDGoogleUser;
+	private _grantedScopes: string[];
 	private _serverAuthCode: string;
 	static fromNative(user: GIDGoogleUser) {
 		if (user instanceof GIDGoogleUser) {
 			const usr = new User();
-			usr.#native = user;
+			usr._native = user;
 			return usr;
 		}
 		return null;
@@ -56,16 +56,16 @@ export class User implements IUser {
 	}
 
 	get grantedScopes() {
-		if (!this.#grantedScopes) {
+		if (!this._grantedScopes) {
 			const grantedScopes = [];
 			const count = this.native.grantedScopes.count;
 			for (let i = 0; i < count; i++) {
 				grantedScopes.push(this.native.grantedScopes.objectAtIndex(i));
 			}
-			this.#grantedScopes = grantedScopes;
+			this._grantedScopes = grantedScopes;
 		}
 
-		return this.#grantedScopes;
+		return this._grantedScopes;
 	}
 
 	get photoUrl() {
@@ -93,7 +93,7 @@ export class User implements IUser {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -102,8 +102,8 @@ export class User implements IUser {
 }
 
 export class GoogleSignin {
-	static #nativeConfig: GIDConfiguration;
-	static #profileImageSize = 120;
+	static _nativeConfig: GIDConfiguration;
+	static _profileImageSize = 120;
 	static configure(configuration: Configuration = {}): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const pathName = configuration['googleServicePlistPath'] ? configuration['googleServicePlistPath'] : 'GoogleService-Info';
@@ -134,10 +134,10 @@ export class GoogleSignin {
 				serverClientId = plist.objectForKey('SERVER_CLIENT_ID');
 			}
 
-			this.#profileImageSize = Number(configuration['profileImageSize']) ?? 120;
+			this._profileImageSize = Number(configuration['profileImageSize']) ?? 120;
 
 			const config = GIDConfiguration.alloc().initWithClientIDServerClientIDHostedDomainOpenIDRealm(clientId, serverClientId, configuration.hostedDomain || null, configuration['openIDRealm'] || null);
-			this.#nativeConfig = config;
+			this._nativeConfig = config;
 			resolve();
 		});
 	}
