@@ -31,11 +31,11 @@ declare class IONPortalUIView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): IONPortalUIView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): IONPortalUIView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): IONPortalUIView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): IONPortalUIView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): IONPortalUIView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): IONPortalUIView; // inherited from UIAppearance
 
 	static new(): IONPortalUIView; // inherited from NSObject
 
@@ -85,11 +85,11 @@ declare class UnregisteredView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): UnregisteredView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): UnregisteredView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): UnregisteredView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): UnregisteredView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): UnregisteredView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): UnregisteredView; // inherited from UIAppearance
 
 	static new(): UnregisteredView; // inherited from NSObject
 }

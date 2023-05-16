@@ -1548,11 +1548,11 @@ declare class FBSDKButton extends FBSDKImpressionLoggingButton {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKButton; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKButton; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKButton; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKButton; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKButton; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKButton; // inherited from UIAppearance
 
 	static buttonWithConfigurationPrimaryAction(configuration: UIButtonConfiguration, primaryAction: UIAction): FBSDKButton; // inherited from UIButton
 
@@ -2586,11 +2586,11 @@ declare class FBSDKImpressionLoggingButton extends UIButton {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKImpressionLoggingButton; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKImpressionLoggingButton; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKImpressionLoggingButton; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKImpressionLoggingButton; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKImpressionLoggingButton; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKImpressionLoggingButton; // inherited from UIAppearance
 
 	static buttonWithConfigurationPrimaryAction(configuration: UIButtonConfiguration, primaryAction: UIAction): FBSDKImpressionLoggingButton; // inherited from UIButton
 
@@ -3369,11 +3369,11 @@ declare class FBSDKProfilePictureView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKProfilePictureView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKProfilePictureView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKProfilePictureView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKProfilePictureView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKProfilePictureView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKProfilePictureView; // inherited from UIAppearance
 
 	static new(): FBSDKProfilePictureView; // inherited from NSObject
 
@@ -4351,11 +4351,11 @@ declare class FBSDKWebDialogView extends UIView {
 
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKWebDialogView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKWebDialogView; // inherited from UIAppearance
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKWebDialogView; // inherited from UIAppearance
 
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKWebDialogView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKWebDialogView; // inherited from UIAppearance
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKWebDialogView; // inherited from UIAppearance
 
 	static configureWithWebViewProviderUrlOpenerErrorFactory(webViewProvider: FBSDKWebViewProviding, urlOpener: FBSDKInternalURLOpener, errorFactory: FBSDKErrorCreating): void;
 

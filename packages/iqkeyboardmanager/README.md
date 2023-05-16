@@ -1,42 +1,65 @@
 # @nativescript/iqkeyboardmanager
 
-A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org/pods/IQKeyboardManager) iOS framework, which provides an elegant solution for preventing the iOS keyboard from covering `UITextView` controls.
-
-![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
-
 ## Contents
+* [Intro](#intro)
 * [Installation](#installation)
-* [Usage](#usage)
+* [Use @nativescript/iqkeyboardmanager](#use-nativescriptiqkeyboardmanager)
 	* [Core](#core)
 	* [Angular](#angular)
 	* [Vue](#vue)
 	* [Svelte](#svelte)
 	* [React](#react)
-	* [Adding a hint text to a TextView's accessory bar](#adding-a-hint-text-to-a-textviews-accessory-bar)
+	* [Adding a hint text to the TextView accessory bar](#adding-a-hint-text-to-the-textview-accessory-bar)
 		* [Core](#core-1)
 		* [Angular](#angular-1)
 		* [Vue](#vue-1)
 		* [Svelte](#svelte-1)
-
+	* [Demo app](#demo-apps)
 	* [Tweaking the appearance and behavior](#tweaking-the-appearance-and-behavior)
 	* [Multi-factor one-time code auto-fill](#multi-factor-one-time-code-auto-fill)
-* [Documentation](#documentation)
+* [Native documentation](#native-documentation)
 * [Maintainers](#maintainers)
 * [License](#license)
 
+## Intro
+
+A NativeScript wrapper for the popular [IQKeyboardManager](https://cocoapods.org/pods/IQKeyboardManager) iOS framework, which provides an elegant solution for preventing the iOS keyboard from covering `UITextView` controls.
+
+![Example of using the IQKeyBoardManager NativeScript plugin on an iOS device](https://raw.githubusercontent.com/NativeScript/nativescript-IQKeyboardManager/master/screenshot.gif)
+
+
 ## Installation
+
+To install the plugin, run the following command from the root folder of your project: 
 
 ```cli
 npm install @nativescript/iqkeyboardmanager
 ```
 
-## Usage
+## Use @nativescript/iqkeyboardmanager
 
-Related text fields should be siblings for the IQKeyboardManager to automatically
+The following sections describe how to use the `@nativescript/iqkeyboardmanager` plugin in the different flavors that NativeScript supports.
+
+> **Note** Make related text fields siblings for the IQKeyboardManager to automatically
 add the `previous`(`<`) and `next`(`>`) buttons to the accessory bar. The user can then use those buttons to jump back and forth.
 
 ### Core
-To register the plugin in core/plain NativeScript, use the `xmlns` attribute to add it to the xml namespace.
+1. Register the plugin namespace with Page's `xmlns` attribute under a prefix( `IQKeyboardManager` for example) that you can use to access the `PreviousNextView`.
+
+```xml
+<Page xmlns:IQKeyboardManager="@nativescript-iqkeyboardmanager">
+```
+2. Access the `PreviousNextView` using the prefix.
+
+```xml
+<IQKeyboardManager:PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
+      <StackLayout>
+          <TextField hint="Email"/>
+          <TextField hint="Password"/>
+      </StackLayout>
+    </IQKeyboardManager:PreviousNextView>
+```
+The 2 preceding steps result in the code below:
 
 ```xml
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript-iqkeyboardmanager">
@@ -53,14 +76,15 @@ To register the plugin in core/plain NativeScript, use the `xmlns` attribute to 
 
 ### Angular
 
-Register the `PreviousNextView` element in the `.modules.ts` file where you want to use this feature (or the `app.module.ts`).
+1. Register the `PreviousNextView` element in the `.modules.ts` file where you want to use this feature (or the `app.module.ts` for global access).
+
 ```ts
 import { registerElement } from '@nativescript/angular';
 import { PreviousNextView } from '@nativescript/iqkeyboardmanager';
 registerElement('PreviousNextView', () => PreviousNextView);
 ```
 
-Then use the element in the markup as follows:
+2. Add `PreviousNextView` to the markup as follows:
 
 ```html
 <ScrollView>
@@ -76,12 +100,12 @@ Then use the element in the markup as follows:
 
 ### Vue
 
-Register the component by adding the following code to the `app.ts` file.
+1. Register `PreviousNextView` by adding the following code to the `app.ts` file.
 
 ```ts
 registerElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
 ```
-Then use it in a markup file.
+2. Use `PreviousNextView` in markup.
 
 ```xml
 <ScrollView>
@@ -97,12 +121,12 @@ Then use it in a markup file.
 
 ### Svelte
 
-Register the component by adding the following code to the `app.ts` file.
+1. Register `PreviousNextView` by adding the following code to the `app.ts` file.
 
 ```ts
-registerNativeViewElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
+registerNativeViewElement('previousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
 ```
-Then use it.
+2. Add `previousNextView` to markup.
 
 ```xml
 <previousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
@@ -112,8 +136,9 @@ Then use it.
 </stackLayout>
 </previousNextView>
 ```
+For a demo app, visit [NativeScript Svelte:  IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte).
 
-### Adding a hint text to a TextView's accessory bar
+### Adding a hint text to the TextView accessory bar
 
 By default, when a `TextField` is focused, the keyboard manager shows the field's hint label in the accessory bar above the keyboard.
 
@@ -168,11 +193,10 @@ Register the component.
 ```javascript
 .registerNativeViewElement('textViewWithHint', () => require('@nativescript/iqkeyboardmanager').TextViewWithHint);
 ```
-You can find the complete demo at [NativeScript Svelte](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
 
 ### React
 
-1. Register the component.
+1. Register the `TextViewWithHint` component.
 
 ```ts
 interface PreviewNextViewAttributes extends ViewAttributes {
@@ -197,7 +221,7 @@ registerElement("previousNextView", ()=> require("@nativescript/iqkeyboardmanage
 registerElement("textViewWithHint", ()=> require("@nativescript/iqkeyboardmanager").TextViewWithHint)
 
 ```
-2. Use it in markup:
+2. Use `TextViewWithHint` in markup:
 ```xml
 <previousNextView>
 	<stackLayout>
@@ -209,11 +233,18 @@ registerElement("textViewWithHint", ()=> require("@nativescript/iqkeyboardmanage
 	</stackLayout>
 </previousNextView>
 ```
+### Demo apps
 
-See the full example at [NativeScript React: iqkeyboardmanager](https://stackblitz.com/edit/nativescript-stackblitz-templates-5uygfj?file=src/components/ScreenOne.tsx)
+The following are links to the plugin demo apps in the different JS flavors.
+
+* [NativeScript TS: IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-sia8th?file=app/main-page.xml).
+* [NativeScript Svelte: IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
+* [NativeScript React: IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-5uygfj?file=src/components/ScreenOne.tsx)
 
 
-#### Tweaking the appearance and behavior
+### Tweaking the appearance and behavior
+
+To tweak the appearance and behavior of `PreviousNextView`, follow the steps below:
 
 1. Add the following path to your app’s `references.d.ts` file. 
 
@@ -235,17 +266,13 @@ iqKeyboard.overrideKeyboardAppearance = true;
 iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
 ```
 
-For a full example, check out the example on StackBlitz at any of the following links.
-* [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-sia8th?file=app/main-page.xml)
-
-
 <img src="https://github.com/tjvantoll/nativescript-IQKeyboardManager/raw/master/demo.gif" width="320px"/>
 
 #### Multi-factor one-time code auto-fill
 
 iOS has a feature where a text field's QuickType search suggestion bar can suggest `one-time` code values for multi-factor authentication that were texted to your device.
 
-If the field is identified as a `one-time` code field, the suggestion will appear for about 3 minutes after being received. The user simply has to tap the suggestion to fill in the value — no short-term memorization or copy/paste gestures required. Examples of message formats are:
+If the field is identified as a `one-time` code field, the suggestion will appear for about 3 minutes after being received. The user simply has to tap the suggestion to fill in the value — no short-term memorization or copy/paste gestures are required. Examples of message formats are:
 
 - 123456 is your App Name code.
 - 123456 is your App Name login code.
@@ -269,7 +296,7 @@ if (mfaCodeField !== null && mfaCodeField.ios) {
 
 There are other `textContentType` values you might want to use. You can read more about the property in [this article](https://medium.com/developerinsider/ios12-password-autofill-automatic-strong-password-and-security-code-autofill-6e7db8da1810).
 
-## Documentation
+## Native documentation
 
 For more details on how IQKeyboardManager works, including more detailed API documentation, refer to [the library's CocoaPod page](https://cocoapods.org/pods/IQKeyboardManager).
 
