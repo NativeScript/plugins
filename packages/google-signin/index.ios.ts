@@ -1,4 +1,4 @@
-import { Application, Utils } from '@nativescript/core';
+import { Application, Utils, View } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 
 export class GoogleError extends Error {
@@ -261,12 +261,21 @@ export class GoogleSignin {
 }
 
 export class GoogleSignInButton extends GoogleSignInButtonBase {
+	private _tapHandler: NSObject;
+
 	createNativeView() {
 		return GIDSignInButton.new();
 	}
 
-	initNativeView() {
+	public initNativeView(): void {
 		super.initNativeView();
+		this._tapHandler = TapHandlerImpl.initWithOwner(new WeakRef(this));
+		this.nativeViewProtected.addTargetActionForControlEvents(this._tapHandler, 'tap', UIControlEvents.TouchUpInside);
+	}
+
+	public disposeNativeView(): void {
+		this._tapHandler = null;
+		super.disposeNativeView();
 	}
 
 	[colorSchemeProperty.setNative](value: ColorSchemeType) {
@@ -307,12 +316,62 @@ export class GoogleSignInButton extends GoogleSignInButtonBase {
 		}
 	}
 
-	public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
-		const nativeView = this.nativeView;
+	public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number): void {
+		const layout = Utils.layout;
+
+		const nativeView = this.nativeViewProtected;
+
 		if (nativeView) {
-			const width = Utils.layout.getMeasureSpecSize(widthMeasureSpec);
-			const height = Utils.layout.getMeasureSpecSize(heightMeasureSpec);
-			this.setMeasuredDimension(width, height);
+			const width = layout.getMeasureSpecSize(widthMeasureSpec);
+			const widthMode = layout.getMeasureSpecMode(widthMeasureSpec);
+			const height = layout.getMeasureSpecSize(heightMeasureSpec);
+			const heightMode = layout.getMeasureSpecMode(heightMeasureSpec);
+
+			const horizontalPadding = this.effectivePaddingLeft + this.effectiveBorderLeftWidth + this.effectivePaddingRight + this.effectiveBorderRightWidth;
+			let verticalPadding = this.effectivePaddingTop + this.effectiveBorderTopWidth + this.effectivePaddingBottom + this.effectiveBorderBottomWidth;
+
+			// The default button padding for UIButton - 6dip top and bottom.
+			if (verticalPadding === 0) {
+				verticalPadding = layout.toDevicePixels(12);
+			}
+
+			const desiredSize = layout.measureNativeView(nativeView, width - horizontalPadding, widthMode, height - verticalPadding, heightMode);
+
+			desiredSize.width = desiredSize.width + horizontalPadding;
+			desiredSize.height = desiredSize.height + verticalPadding;
+
+			const measureWidth = Math.max(desiredSize.width, this.effectiveMinWidth);
+			const measureHeight = Math.max(desiredSize.height, this.effectiveMinHeight);
+
+			const widthAndState = View.resolveSizeAndState(measureWidth, width, widthMode, 0);
+			const heightAndState = View.resolveSizeAndState(measureHeight, height, heightMode, 0);
+
+			this.setMeasuredDimension(widthAndState, heightAndState);
 		}
 	}
+}
+
+@NativeClass
+class TapHandlerImpl extends NSObject {
+	private _owner: WeakRef<GoogleSignInButton>;
+
+	public static initWithOwner(owner: WeakRef<GoogleSignInButton>): TapHandlerImpl {
+		const handler = <TapHandlerImpl>TapHandlerImpl.new();
+		handler._owner = owner;
+		return handler;
+	}
+
+	public tap(args) {
+		// _owner is a {N} view which could get destroyed when a tap initiates (protect!)
+		if (this._owner) {
+			const owner = this._owner?.deref();
+			if (owner) {
+				owner._emit(GoogleSignInButton.tapEvent);
+			}
+		}
+	}
+
+	public static ObjCExposedMethods = {
+		tap: { returns: interop.types.void, params: [interop.types.id] },
+	};
 }
