@@ -25,7 +25,7 @@ class UriHelper {
 		let DocumentsContract = (<any>android.provider).DocumentsContract;
 		let isKitKat = android.os.Build.VERSION.SDK_INT >= 19; // android.os.Build.VERSION_CODES.KITKAT
 
-		if (isKitKat && DocumentsContract.isDocumentUri(Application.android.context, uri)) {
+		if (isKitKat && DocumentsContract.isDocumentUri(Utils.android.getApplicationContext(), uri)) {
 			let docId, id, type;
 			let contentUri: android.net.Uri = null;
 
@@ -40,7 +40,7 @@ class UriHelper {
 				} else {
 					if (android.os.Build.VERSION.SDK_INT > 23) {
 						(this.getContentResolver() as any).takePersistableUriPermission(uri, android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-						const externalMediaDirs = Application.android.context.getExternalMediaDirs();
+						const externalMediaDirs = Utils.android.getApplicationContext().getExternalMediaDirs();
 						if (externalMediaDirs.length > 1) {
 							let filePath = externalMediaDirs[1].getAbsolutePath();
 							filePath = filePath.substring(0, filePath.indexOf('Android')) + id;
@@ -233,6 +233,7 @@ export class ImagePicker {
 						originalFilename: file.name,
 						type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
 						path: file.path,
+						filesize: file.size,
 					};
 					if (copyToAppFolder) {
 						let extension = file.name.split('.').pop();
@@ -326,6 +327,7 @@ export class ImagePicker {
 
 			intent.putExtra(android.content.Intent.EXTRA_LOCAL_ONLY, true);
 			intent.setAction('android.intent.action.OPEN_DOCUMENT');
+			intent.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 			let chooser = Intent.createChooser(intent, 'Select Picture');
 			(Application.android.foregroundActivity || Application.android.startActivity).startActivityForResult(intent, RESULT_CODE_PICKER_IMAGES);
 		});
