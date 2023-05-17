@@ -48,6 +48,8 @@ export const colorStyleProperty = new Property<GoogleSignInButtonBase, ColorStyl
 
 @CSSType('GoogleSignInButton')
 export class GoogleSignInButtonBase extends View {
+	public static tapEvent = 'tap';
+
 	colorScheme: ColorSchemeType;
 	colorStyle: ColorStyleType;
 }

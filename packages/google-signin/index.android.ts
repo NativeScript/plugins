@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 import lazy from '@nativescript/core/utils/lazy';
@@ -251,9 +250,41 @@ export class GoogleSignin {
 	}
 }
 
+@NativeClass
+@Interfaces([android.view.View.OnClickListener])
+class ClickListenerImpl extends java.lang.Object implements android.view.View.OnClickListener {
+	constructor(public owner: GoogleSignInButton) {
+		super();
+
+		return global.__native(this);
+	}
+
+	public onClick(v: android.view.View): void {
+		const owner = this.owner;
+		if (owner) {
+			owner._emit(GoogleSignInButton.tapEvent);
+		}
+	}
+}
+
 export class GoogleSignInButton extends GoogleSignInButtonBase {
 	createNativeView() {
 		return new com.google.android.gms.common.SignInButton(this._context);
+	}
+
+	initNativeView(): void {
+		super.initNativeView();
+		const nativeView = this.nativeViewProtected as com.google.android.gms.common.SignInButton;
+		const clickListener = new ClickListenerImpl(this);
+		nativeView.setOnClickListener(clickListener);
+		(<any>nativeView).clickListener = clickListener;
+	}
+
+	public disposeNativeView() {
+		if ((<any>this.nativeViewProtected)?.clickListener) {
+			(<any>this.nativeViewProtected).clickListener.owner = null;
+		}
+		super.disposeNativeView();
 	}
 
 	[colorSchemeProperty.setNative](value: ColorSchemeType) {
