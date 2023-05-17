@@ -253,14 +253,14 @@ export class GoogleSignin {
 @NativeClass
 @Interfaces([android.view.View.OnClickListener])
 class ClickListenerImpl extends java.lang.Object implements android.view.View.OnClickListener {
-	constructor(public owner: GoogleSignInButton) {
+	constructor(public owner: WeakRef<GoogleSignInButton>) {
 		super();
 
 		return global.__native(this);
 	}
 
 	public onClick(v: android.view.View): void {
-		const owner = this.owner;
+		const owner = this.owner?.get();
 		if (owner) {
 			owner._emit(GoogleSignInButton.tapEvent);
 		}
@@ -268,22 +268,22 @@ class ClickListenerImpl extends java.lang.Object implements android.view.View.On
 }
 
 export class GoogleSignInButton extends GoogleSignInButtonBase {
+	clickListener: ClickListenerImpl;
+	// @ts-ignore
+	nativeView: com.google.android.gms.common.SignInButton;
+
 	createNativeView() {
 		return new com.google.android.gms.common.SignInButton(this._context);
 	}
 
 	initNativeView(): void {
 		super.initNativeView();
-		const nativeView = this.nativeViewProtected as com.google.android.gms.common.SignInButton;
-		const clickListener = new ClickListenerImpl(this);
-		nativeView.setOnClickListener(clickListener);
-		(<any>nativeView).clickListener = clickListener;
+		this.clickListener = new ClickListenerImpl(new WeakRef(this));
+		this.nativeView.setOnClickListener(this.clickListener);
 	}
 
 	public disposeNativeView() {
-		if ((<any>this.nativeViewProtected)?.clickListener) {
-			(<any>this.nativeViewProtected).clickListener.owner = null;
-		}
+		this.clickListener = null;
 		super.disposeNativeView();
 	}
 
