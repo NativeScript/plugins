@@ -15,27 +15,27 @@ const COLOR_LIGHT = lazy(() => com.google.android.gms.common.SignInButton.COLOR_
 const COLOR_AUTO = lazy(() => com.google.android.gms.common.SignInButton.COLOR_AUTO);
 
 export class GoogleError extends Error {
-	#native: java.lang.Exception;
+	_native: java.lang.Exception;
 	static fromNative(native: java.lang.Exception, message?: string) {
 		const error = new GoogleError(message || native?.getMessage?.());
-		error.#native = native;
+		error._native = native;
 		return error;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 }
 
 export class User implements IUser {
-	#native: com.google.android.gms.auth.api.identity.SignInCredential;
-	#grantedScopes: string[];
-	#accessToken: string;
-	static fromNative(account: com.google.android.gms.auth.api.identity.SignInCredential, accessToken: string = null) {
-		if (account instanceof com.google.android.gms.auth.api.identity.SignInCredential) {
+	_native: com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+	_grantedScopes: string[];
+	_accessToken: string;
+	static fromNative(account: com.google.android.gms.auth.api.signin.GoogleSignInAccount, accessToken: string = null) {
+		if (account instanceof com.google.android.gms.auth.api.signin.GoogleSignInAccount) {
 			const user = new User();
-			user.#native = account;
-			user.#accessToken = accessToken;
+			user._native = account;
+			user._accessToken = accessToken;
 			return user;
 		}
 		return null;
@@ -50,8 +50,7 @@ export class User implements IUser {
 	}
 
 	get email() {
-		console.log('request scope for access.');
-		return '';
+		return this.native.getEmail();
 	}
 
 	get givenName() {
@@ -63,28 +62,27 @@ export class User implements IUser {
 	}
 
 	get idToken() {
-		return this.native.getGoogleIdToken();
+		return this.native.getIdToken();
 	}
 
 	get accessToken() {
-		return this.#accessToken;
+		return this._accessToken;
 	}
 
 	get grantedScopes() {
-		if (!this.#grantedScopes) {
-			// removed.
-			// const grantedScopes = [];
-			// const scopes = this.native.getGrantedScopes().toArray();
-			// const length = scopes.length;
-			// for (let i = 0; i < length; i++) {
-			// 	const scope = scopes[i]?.toString?.();
-			// 	if (scope) {
-			// 		grantedScopes.push(scope);
-			// 	}
-			// }
-			// this.#grantedScopes = grantedScopes;
+		if (!this._grantedScopes) {
+			const grantedScopes = [];
+			const scopes = this.native.getGrantedScopes().toArray();
+			const length = scopes.length;
+			for (let i = 0; i < length; i++) {
+				const scope = scopes[i]?.toString?.();
+				if (scope) {
+					grantedScopes.push(scope);
+				}
+			}
+			this._grantedScopes = grantedScopes;
 		}
-		return this.#grantedScopes;
+		return this._grantedScopes;
 	}
 
 	get photoUrl() {
@@ -92,7 +90,7 @@ export class User implements IUser {
 	}
 
 	get serverAuthCode() {
-		// return this.native.getServerAuthCode();
+		return this.native.getServerAuthCode();
 	}
 
 	requestScopes(scopes: string[]): Promise<User> {
@@ -121,7 +119,7 @@ export class User implements IUser {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
