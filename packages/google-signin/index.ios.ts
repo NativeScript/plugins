@@ -1,26 +1,27 @@
-import { Application, Utils } from '@nativescript/core';
+import { Application, Utils, View } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 
 export class GoogleError extends Error {
-	#native: NSError;
+	private _native: NSError;
 	static fromNative(native: NSError, message?: string) {
 		const error = new GoogleError(message || native?.localizedDescription);
-		error.#native = native;
+		error._native = native;
 		return error;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 }
 
 export class User implements IUser {
-	#native: GIDGoogleUser;
-	#grantedScopes: string[];
+	private _native: GIDGoogleUser;
+	private _grantedScopes: string[];
+	private _serverAuthCode: string;
 	static fromNative(user: GIDGoogleUser) {
 		if (user instanceof GIDGoogleUser) {
 			const usr = new User();
-			usr.#native = user;
+			usr._native = user;
 			return usr;
 		}
 		return null;
@@ -47,24 +48,24 @@ export class User implements IUser {
 	}
 
 	get idToken() {
-		return this.native?.authentication?.idToken;
+		return this.native?.idToken.tokenString;
 	}
 
 	get accessToken() {
-		return this.native?.authentication?.accessToken;
+		return this.native?.accessToken.tokenString;
 	}
 
 	get grantedScopes() {
-		if (!this.#grantedScopes) {
+		if (!this._grantedScopes) {
 			const grantedScopes = [];
 			const count = this.native.grantedScopes.count;
 			for (let i = 0; i < count; i++) {
 				grantedScopes.push(this.native.grantedScopes.objectAtIndex(i));
 			}
-			this.#grantedScopes = grantedScopes;
+			this._grantedScopes = grantedScopes;
 		}
 
-		return this.#grantedScopes;
+		return this._grantedScopes;
 	}
 
 	get photoUrl() {
@@ -75,23 +76,24 @@ export class User implements IUser {
 	}
 
 	get serverAuthCode() {
-		return this.native.serverAuthCode;
+		return this._serverAuthCode;
 	}
 
 	requestScopes(scopes: string[]): Promise<User> {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.addScopesPresentingViewControllerCallback(scopes, GoogleSignin.topViewController, (user, error) => {
+			GIDSignIn.sharedInstance.signInWithPresentingViewControllerHintAdditionalScopesCompletion(GoogleSignin.topViewController, 'Requesting additional scopes', scopes, (result, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
-					resolve(User.fromNative(user));
+					this._serverAuthCode = result.serverAuthCode;
+					resolve(User.fromNative(result.user));
 				}
 			});
 		});
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -100,8 +102,8 @@ export class User implements IUser {
 }
 
 export class GoogleSignin {
-	static #nativeConfig: GIDConfiguration;
-	static #profileImageSize = 120;
+	static _nativeConfig: GIDConfiguration;
+	static _profileImageSize = 120;
 	static configure(configuration: Configuration = {}): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const pathName = configuration['googleServicePlistPath'] ? configuration['googleServicePlistPath'] : 'GoogleService-Info';
@@ -132,10 +134,10 @@ export class GoogleSignin {
 				serverClientId = plist.objectForKey('SERVER_CLIENT_ID');
 			}
 
-			this.#profileImageSize = Number(configuration['profileImageSize']) ?? 120;
+			this._profileImageSize = Number(configuration['profileImageSize']) ?? 120;
 
 			const config = GIDConfiguration.alloc().initWithClientIDServerClientIDHostedDomainOpenIDRealm(clientId, serverClientId, configuration.hostedDomain || null, configuration['openIDRealm'] || null);
-			this.#nativeConfig = config;
+			this._nativeConfig = config;
 			resolve();
 		});
 	}
@@ -150,7 +152,7 @@ export class GoogleSignin {
 
 	static disconnect(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.disconnectWithCallback((error) => {
+			GIDSignIn.sharedInstance.disconnectWithCompletion((error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
@@ -162,11 +164,11 @@ export class GoogleSignin {
 
 	static signIn() {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.signInWithConfigurationPresentingViewControllerCallback(this.#nativeConfig, this.topViewController, (user, error) => {
+			GIDSignIn.sharedInstance.signInWithPresentingViewControllerCompletion(this.topViewController, (result, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
-					resolve(User.fromNative(user));
+					resolve(User.fromNative(result?.user));
 				}
 			});
 		});
@@ -174,7 +176,7 @@ export class GoogleSignin {
 
 	static signInSilently(): Promise<User> {
 		return new Promise((resolve, reject) => {
-			GIDSignIn.sharedInstance.restorePreviousSignInWithCallback((user, error) => {
+			GIDSignIn.sharedInstance.restorePreviousSignInWithCompletion((user, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
@@ -199,7 +201,7 @@ export class GoogleSignin {
 				return;
 			}
 
-			user.authentication.doWithFreshTokens((auth, error) => {
+			user.refreshTokensIfNeededWithCompletion((auth, error) => {
 				if (error) {
 					reject(GoogleError.fromNative(error));
 				} else {
@@ -259,12 +261,21 @@ export class GoogleSignin {
 }
 
 export class GoogleSignInButton extends GoogleSignInButtonBase {
+	private _tapHandler: NSObject;
+
 	createNativeView() {
 		return GIDSignInButton.new();
 	}
 
-	initNativeView() {
+	public initNativeView(): void {
 		super.initNativeView();
+		this._tapHandler = TapHandlerImpl.initWithOwner(new WeakRef(this));
+		this.nativeViewProtected.addTargetActionForControlEvents(this._tapHandler, 'tap', UIControlEvents.TouchUpInside);
+	}
+
+	public disposeNativeView(): void {
+		this._tapHandler = null;
+		super.disposeNativeView();
 	}
 
 	[colorSchemeProperty.setNative](value: ColorSchemeType) {
@@ -305,12 +316,62 @@ export class GoogleSignInButton extends GoogleSignInButtonBase {
 		}
 	}
 
-	public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number) {
-		const nativeView = this.nativeView;
+	public onMeasure(widthMeasureSpec: number, heightMeasureSpec: number): void {
+		const layout = Utils.layout;
+
+		const nativeView = this.nativeViewProtected;
+
 		if (nativeView) {
-			const width = Utils.layout.getMeasureSpecSize(widthMeasureSpec);
-			const height = Utils.layout.getMeasureSpecSize(heightMeasureSpec);
-			this.setMeasuredDimension(width, height);
+			const width = layout.getMeasureSpecSize(widthMeasureSpec);
+			const widthMode = layout.getMeasureSpecMode(widthMeasureSpec);
+			const height = layout.getMeasureSpecSize(heightMeasureSpec);
+			const heightMode = layout.getMeasureSpecMode(heightMeasureSpec);
+
+			const horizontalPadding = this.effectivePaddingLeft + this.effectiveBorderLeftWidth + this.effectivePaddingRight + this.effectiveBorderRightWidth;
+			let verticalPadding = this.effectivePaddingTop + this.effectiveBorderTopWidth + this.effectivePaddingBottom + this.effectiveBorderBottomWidth;
+
+			// The default button padding for UIButton - 6dip top and bottom.
+			if (verticalPadding === 0) {
+				verticalPadding = layout.toDevicePixels(12);
+			}
+
+			const desiredSize = layout.measureNativeView(nativeView, width - horizontalPadding, widthMode, height - verticalPadding, heightMode);
+
+			desiredSize.width = desiredSize.width + horizontalPadding;
+			desiredSize.height = desiredSize.height + verticalPadding;
+
+			const measureWidth = Math.max(desiredSize.width, this.effectiveMinWidth);
+			const measureHeight = Math.max(desiredSize.height, this.effectiveMinHeight);
+
+			const widthAndState = View.resolveSizeAndState(measureWidth, width, widthMode, 0);
+			const heightAndState = View.resolveSizeAndState(measureHeight, height, heightMode, 0);
+
+			this.setMeasuredDimension(widthAndState, heightAndState);
 		}
 	}
+}
+
+@NativeClass
+class TapHandlerImpl extends NSObject {
+	private _owner: WeakRef<GoogleSignInButton>;
+
+	public static initWithOwner(owner: WeakRef<GoogleSignInButton>): TapHandlerImpl {
+		const handler = <TapHandlerImpl>TapHandlerImpl.new();
+		handler._owner = owner;
+		return handler;
+	}
+
+	public tap(args) {
+		// _owner is a {N} view which could get destroyed when a tap initiates (protect!)
+		if (this._owner) {
+			const owner = this._owner?.deref();
+			if (owner) {
+				owner._emit(GoogleSignInButton.tapEvent);
+			}
+		}
+	}
+
+	public static ObjCExposedMethods = {
+		tap: { returns: interop.types.void, params: [interop.types.id] },
+	};
 }
