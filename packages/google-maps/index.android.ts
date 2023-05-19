@@ -1920,6 +1920,14 @@ export class Projection implements IProjection {
 		const point = this.native.toScreenLocation(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
 		return { x: point.x, y: point.y };
 	}
+
+	containsCoordinate(coordinate: Coordinate): boolean {
+		const visibleRegion = this.native.getVisibleRegion();
+		if (visibleRegion) {
+			return visibleRegion?.latLngBounds?.contains?.(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
+		}
+		return false;
+	}
 }
 
 export class VisibleRegion implements IVisibleRegion {

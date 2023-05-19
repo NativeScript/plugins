@@ -4,6 +4,7 @@
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
 		"@nativescript/google-maps": "file:../../dist/packages/google-maps",
 		"@nativescript/google-maps-utils": "file:../../dist/packages/google-maps-utils",
+		"@nativescript/jetpack-compose": "file:../../dist/packages/jetpack-compose",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -34,12 +35,13 @@
 		"@nativescript/picker": "file:../../dist/packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",
+		"@nativescript/swift-ui": "file:../../dist/packages/swift-ui",
 		"@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
 		"@nativescript/twitter": "file:../../dist/packages/twitter",
 		"@nativescript/zip": "file:../../dist/packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.3.0",
-		"@nativescript/ios": "~8.3.0"
+		"@nativescript/android": "~8.4.0",
+		"@nativescript/ios": "~8.4.0"
 	}
 }
