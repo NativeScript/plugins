@@ -81,16 +81,12 @@ declare module com {
 		export module maps {
 			export module android {
 				export module clustering {
-					export class Cluster<T>  extends java.lang.Object {
+					export class Cluster<T> extends java.lang.Object {
 						public static class: java.lang.Class<com.google.maps.android.clustering.Cluster<any>>;
 						/**
 						 * Constructs a new instance of the com.google.maps.android.clustering.Cluster<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							getPosition(): com.google.android.gms.maps.model.LatLng;
-							getItems(): java.util.Collection<T>;
-							getSize(): number;
-						});
+						public constructor(implementation: { getPosition(): com.google.android.gms.maps.model.LatLng; getItems(): java.util.Collection<T>; getSize(): number });
 						public constructor();
 						public getSize(): number;
 						public getPosition(): com.google.android.gms.maps.model.LatLng;
@@ -112,12 +108,9 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.google.maps.android.clustering.ClusterItem interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							getPosition(): com.google.android.gms.maps.model.LatLng;
-							getTitle(): string;
-							getSnippet(): string;
-						});
+						public constructor(implementation: { getPosition(): com.google.android.gms.maps.model.LatLng; getTitle(): string; getSnippet(): string; getZIndex(): java.lang.Float });
 						public constructor();
+						public getZIndex(): java.lang.Float;
 						public getPosition(): com.google.android.gms.maps.model.LatLng;
 						public getSnippet(): string;
 						public getTitle(): string;
@@ -133,7 +126,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module clustering {
-					export class ClusterManager<T>  extends java.lang.Object {
+					export class ClusterManager<T> extends java.lang.Object {
 						public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager<any>>;
 						public setOnClusterItemInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowClickListener<T>): void;
 						public updateItem(param0: T): boolean;
@@ -164,74 +157,62 @@ declare module com {
 						public getMarkerManager(): com.google.maps.android.collections.MarkerManager;
 					}
 					export module ClusterManager {
-						export class ClusterTask extends globalAndroid.os.AsyncTask<java.lang.Float,java.lang.Void,java.util.Set<any>> {
+						export class ClusterTask extends globalAndroid.os.AsyncTask<java.lang.Float, java.lang.Void, java.util.Set<any>> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.ClusterTask>;
 							public doInBackground(param0: androidNative.Array<java.lang.Float>): java.util.Set<any>;
 							public onPostExecute(param0: java.util.Set<any>): void;
 						}
-						export class OnClusterClickListener<T>  extends java.lang.Object {
+						export class OnClusterClickListener<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.ClusterManager$OnClusterClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onClusterClick(param0: com.google.maps.android.clustering.Cluster<T>): boolean;
-							});
+							public constructor(implementation: { onClusterClick(param0: com.google.maps.android.clustering.Cluster<T>): boolean });
 							public constructor();
 							public onClusterClick(param0: com.google.maps.android.clustering.Cluster<T>): boolean;
 						}
-						export class OnClusterInfoWindowClickListener<T>  extends java.lang.Object {
+						export class OnClusterInfoWindowClickListener<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.ClusterManager$OnClusterInfoWindowClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onClusterInfoWindowClick(param0: com.google.maps.android.clustering.Cluster<T>): void;
-							});
+							public constructor(implementation: { onClusterInfoWindowClick(param0: com.google.maps.android.clustering.Cluster<T>): void });
 							public constructor();
 							public onClusterInfoWindowClick(param0: com.google.maps.android.clustering.Cluster<T>): void;
 						}
-						export class OnClusterInfoWindowLongClickListener<T>  extends java.lang.Object {
+						export class OnClusterInfoWindowLongClickListener<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowLongClickListener<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.ClusterManager$OnClusterInfoWindowLongClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onClusterInfoWindowLongClick(param0: com.google.maps.android.clustering.Cluster<T>): void;
-							});
+							public constructor(implementation: { onClusterInfoWindowLongClick(param0: com.google.maps.android.clustering.Cluster<T>): void });
 							public constructor();
 							public onClusterInfoWindowLongClick(param0: com.google.maps.android.clustering.Cluster<T>): void;
 						}
-						export class OnClusterItemClickListener<T>  extends java.lang.Object {
+						export class OnClusterItemClickListener<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.ClusterManager$OnClusterItemClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onClusterItemClick(param0: T): boolean;
-							});
+							public constructor(implementation: { onClusterItemClick(param0: T): boolean });
 							public constructor();
 							public onClusterItemClick(param0: T): boolean;
 						}
-						export class OnClusterItemInfoWindowClickListener<T>  extends java.lang.Object {
+						export class OnClusterItemInfoWindowClickListener<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowClickListener<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.ClusterManager$OnClusterItemInfoWindowClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onClusterItemInfoWindowClick(param0: T): void;
-							});
+							public constructor(implementation: { onClusterItemInfoWindowClick(param0: T): void });
 							public constructor();
 							public onClusterItemInfoWindowClick(param0: T): void;
 						}
-						export class OnClusterItemInfoWindowLongClickListener<T>  extends java.lang.Object {
+						export class OnClusterItemInfoWindowLongClickListener<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowLongClickListener<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.ClusterManager$OnClusterItemInfoWindowLongClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onClusterItemInfoWindowLongClick(param0: T): void;
-							});
+							public constructor(implementation: { onClusterItemInfoWindowLongClick(param0: T): void });
 							public constructor();
 							public onClusterItemInfoWindowLongClick(param0: T): void;
 						}
@@ -248,7 +229,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export abstract class AbstractAlgorithm<T>  extends com.google.maps.android.clustering.algo.Algorithm<any> {
+						export abstract class AbstractAlgorithm<T> extends com.google.maps.android.clustering.algo.Algorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.AbstractAlgorithm<any>>;
 							public constructor();
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -277,25 +258,12 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class Algorithm<T>  extends java.lang.Object {
+						export class Algorithm<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.Algorithm<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.algo.Algorithm<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								addItem(param0: T): boolean;
-								addItems(param0: java.util.Collection<T>): boolean;
-								clearItems(): void;
-								removeItem(param0: T): boolean;
-								updateItem(param0: T): boolean;
-								removeItems(param0: java.util.Collection<T>): boolean;
-								getClusters(param0: number): java.util.Set<any>;
-								getItems(): java.util.Collection<T>;
-								setMaxDistanceBetweenClusteredItems(param0: number): void;
-								getMaxDistanceBetweenClusteredItems(): number;
-								lock(): void;
-								unlock(): void;
-							});
+							public constructor(implementation: { addItem(param0: T): boolean; addItems(param0: java.util.Collection<T>): boolean; clearItems(): void; removeItem(param0: T): boolean; updateItem(param0: T): boolean; removeItems(param0: java.util.Collection<T>): boolean; getClusters(param0: number): java.util.Set<any>; getItems(): java.util.Collection<T>; setMaxDistanceBetweenClusteredItems(param0: number): void; getMaxDistanceBetweenClusteredItems(): number; lock(): void; unlock(): void });
 							public constructor();
 							public addItem(param0: T): boolean;
 							public updateItem(param0: T): boolean;
@@ -323,7 +291,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class GridBasedAlgorithm<T>  extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
+						export class GridBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.GridBasedAlgorithm<any>>;
 							public constructor();
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -352,7 +320,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class NonHierarchicalDistanceBasedAlgorithm<T>  extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
+						export class NonHierarchicalDistanceBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm<any>>;
 							public constructor();
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -370,7 +338,7 @@ declare module com {
 							public removeItems(param0: java.util.Collection<any>): boolean;
 						}
 						export module NonHierarchicalDistanceBasedAlgorithm {
-							export class QuadItem<T>  extends java.lang.Object {
+							export class QuadItem<T> extends java.lang.Object {
 								public static class: java.lang.Class<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem<any>>;
 								public getItems(): java.util.Set<T>;
 								public equals(param0: any): boolean;
@@ -394,7 +362,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class NonHierarchicalViewBasedAlgorithm<T>  extends com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm<any> implements com.google.maps.android.clustering.algo.ScreenBasedAlgorithm<any>  {
+						export class NonHierarchicalViewBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm<any> implements com.google.maps.android.clustering.algo.ScreenBasedAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.NonHierarchicalViewBasedAlgorithm<any>>;
 							public constructor();
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -428,7 +396,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class PreCachingAlgorithmDecorator<T>  extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
+						export class PreCachingAlgorithmDecorator<T> extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.PreCachingAlgorithmDecorator<any>>;
 							public constructor();
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -465,7 +433,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class ScreenBasedAlgorithm<T>  extends com.google.maps.android.clustering.algo.Algorithm<any> {
+						export class ScreenBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.Algorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.ScreenBasedAlgorithm<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.algo.ScreenBasedAlgorithm<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
@@ -515,7 +483,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class ScreenBasedAlgorithmAdapter<T>  extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> implements com.google.maps.android.clustering.algo.ScreenBasedAlgorithm<any>  {
+						export class ScreenBasedAlgorithmAdapter<T> extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> implements com.google.maps.android.clustering.algo.ScreenBasedAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.ScreenBasedAlgorithmAdapter<any>>;
 							public constructor();
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -547,7 +515,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
-						export class StaticCluster<T>  extends com.google.maps.android.clustering.Cluster<any> {
+						export class StaticCluster<T> extends com.google.maps.android.clustering.Cluster<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.StaticCluster<any>>;
 							public add(param0: any): boolean;
 							public getSize(): number;
@@ -572,7 +540,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module view {
-						export class ClusterRenderer<T>  extends java.lang.Object {
+						export class ClusterRenderer<T> extends java.lang.Object {
 							public static class: java.lang.Class<com.google.maps.android.clustering.view.ClusterRenderer<any>>;
 							/**
 							 * Constructs a new instance of the com.google.maps.android.clustering.view.ClusterRenderer<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
@@ -586,20 +554,26 @@ declare module com {
 								setOnClusterItemInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowClickListener<T>): void;
 								setOnClusterItemInfoWindowLongClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowLongClickListener<T>): void;
 								setAnimation(param0: boolean): void;
+								setAnimationDuration(param0: number): void;
 								onAdd(): void;
 								onRemove(): void;
+								getColor(param0: number): number;
+								getClusterTextAppearance(param0: number): number;
 							});
 							public constructor();
 							public setOnClusterItemInfoWindowLongClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowLongClickListener<T>): void;
-							public setOnClusterClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<T>): void;
 							public onClustersChanged(param0: java.util.Set<any>): void;
 							public setOnClusterInfoWindowLongClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowLongClickListener<T>): void;
 							public setOnClusterItemInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowClickListener<T>): void;
-							public onRemove(): void;
 							public setOnClusterInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<T>): void;
 							public setOnClusterItemClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener<T>): void;
-							public setAnimation(param0: boolean): void;
 							public onAdd(): void;
+							public setOnClusterClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<T>): void;
+							public getColor(param0: number): number;
+							public onRemove(): void;
+							public setAnimation(param0: boolean): void;
+							public setAnimationDuration(param0: number): void;
+							public getClusterTextAppearance(param0: number): number;
 						}
 					}
 				}
@@ -614,7 +588,7 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module view {
-						export class DefaultClusterRenderer<T>  extends com.google.maps.android.clustering.view.ClusterRenderer<any> {
+						export class DefaultClusterRenderer<T> extends com.google.maps.android.clustering.view.ClusterRenderer<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.view.DefaultClusterRenderer<any>>;
 							public onClusterItemUpdated(param0: any, param1: com.google.android.gms.maps.model.Marker): void;
 							public getClusterText(param0: number): string;
@@ -635,6 +609,7 @@ declare module com {
 							public getDescriptorForCluster(param0: com.google.maps.android.clustering.Cluster<any>): com.google.android.gms.maps.model.BitmapDescriptor;
 							public getMinClusterSize(): number;
 							public constructor(param0: globalAndroid.content.Context, param1: com.google.android.gms.maps.GoogleMap, param2: com.google.maps.android.clustering.ClusterManager<any>);
+							public getClusterTextAppearance(param0: number): number;
 							public setOnClusterInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<any>): void;
 							public setOnClusterClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<any>): void;
 							public onBeforeClusterItemRendered(param0: any, param1: com.google.android.gms.maps.model.MarkerOptions): void;
@@ -645,6 +620,7 @@ declare module com {
 							public shouldRenderAsCluster(param0: com.google.maps.android.clustering.Cluster<any>): boolean;
 							public onClusterItemRendered(param0: any, param1: com.google.android.gms.maps.model.Marker): void;
 							public getMarker(param0: any): com.google.android.gms.maps.model.Marker;
+							public setAnimationDuration(param0: number): void;
 						}
 						export module DefaultClusterRenderer {
 							export class AnimationTask {
@@ -658,7 +634,7 @@ declare module com {
 								public static class: java.lang.Class<com.google.maps.android.clustering.view.DefaultClusterRenderer.CreateMarkerTask>;
 								public constructor(param0: com.google.maps.android.clustering.Cluster<any>, param1: java.util.Set<com.google.maps.android.clustering.view.DefaultClusterRenderer.MarkerWithPosition>, param2: com.google.android.gms.maps.model.LatLng);
 							}
-							export class MarkerCache<T>  extends java.lang.Object {
+							export class MarkerCache<T> extends java.lang.Object {
 								public static class: java.lang.Class<com.google.maps.android.clustering.view.DefaultClusterRenderer.MarkerCache<any>>;
 								public put(param0: T, param1: com.google.android.gms.maps.model.Marker): void;
 								public remove(param0: com.google.android.gms.maps.model.Marker): void;
@@ -706,7 +682,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module collections {
-					export class CircleManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Circle,com.google.maps.android.collections.CircleManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnCircleClickListener  {
+					export class CircleManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Circle, com.google.maps.android.collections.CircleManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnCircleClickListener {
 						public static class: java.lang.Class<com.google.maps.android.collections.CircleManager>;
 						public newCollection(): com.google.maps.android.collections.CircleManager.Collection;
 						public removeObjectFromMap(param0: com.google.android.gms.maps.model.Circle): void;
@@ -725,7 +701,7 @@ declare module com {
 							public showAll(): void;
 							public remove(param0: com.google.android.gms.maps.model.Circle): boolean;
 							public hideAll(): void;
-							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any,any>);
+							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any, any>);
 							public addAll(param0: java.util.Collection<com.google.android.gms.maps.model.CircleOptions>, param1: boolean): void;
 							public addCircle(param0: com.google.android.gms.maps.model.CircleOptions): com.google.android.gms.maps.model.Circle;
 							public constructor(param0: com.google.maps.android.collections.CircleManager);
@@ -743,7 +719,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module collections {
-					export class GroundOverlayManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.GroundOverlay,com.google.maps.android.collections.GroundOverlayManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener  {
+					export class GroundOverlayManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.GroundOverlay, com.google.maps.android.collections.GroundOverlayManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener {
 						public static class: java.lang.Class<com.google.maps.android.collections.GroundOverlayManager>;
 						public newCollection(): com.google.maps.android.collections.GroundOverlayManager.Collection;
 						public removeObjectFromMap(param0: any): void;
@@ -762,7 +738,7 @@ declare module com {
 							public addAll(param0: java.util.Collection<com.google.android.gms.maps.model.GroundOverlayOptions>): void;
 							public addAll(param0: java.util.Collection<com.google.android.gms.maps.model.GroundOverlayOptions>, param1: boolean): void;
 							public hideAll(): void;
-							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any,any>);
+							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any, any>);
 							public setOnGroundOverlayClickListener(param0: com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener): void;
 							public remove(param0: com.google.android.gms.maps.model.GroundOverlay): boolean;
 							public getGroundOverlays(): java.util.Collection<com.google.android.gms.maps.model.GroundOverlay>;
@@ -780,10 +756,10 @@ declare module com {
 		export module maps {
 			export module android {
 				export module collections {
-					export abstract class MapObjectManager<O, C>  extends java.lang.Object {
-						public static class: java.lang.Class<com.google.maps.android.collections.MapObjectManager<any,any>>;
+					export abstract class MapObjectManager<O, C> extends java.lang.Object {
+						public static class: java.lang.Class<com.google.maps.android.collections.MapObjectManager<any, any>>;
 						public mMap: com.google.android.gms.maps.GoogleMap;
-						public mAllObjects: java.util.Map<O,C>;
+						public mAllObjects: java.util.Map<O, C>;
 						public removeObjectFromMap(param0: O): void;
 						public newCollection(param0: string): C;
 						public newCollection(): C;
@@ -798,7 +774,7 @@ declare module com {
 							public getObjects(): java.util.Collection<any>;
 							public remove(param0: any): boolean;
 							public clear(): void;
-							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any,any>);
+							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any, any>);
 						}
 					}
 				}
@@ -812,7 +788,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module collections {
-					export class MarkerManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Marker,com.google.maps.android.collections.MarkerManager.Collection> {
+					export class MarkerManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Marker, com.google.maps.android.collections.MarkerManager.Collection> {
 						public static class: java.lang.Class<com.google.maps.android.collections.MarkerManager>;
 						public onInfoWindowLongClick(param0: com.google.android.gms.maps.model.Marker): void;
 						public onMarkerDragStart(param0: com.google.android.gms.maps.model.Marker): void;
@@ -837,7 +813,7 @@ declare module com {
 							public getMarkers(): java.util.Collection<com.google.android.gms.maps.model.Marker>;
 							public showAll(): void;
 							public hideAll(): void;
-							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any,any>);
+							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any, any>);
 							public addAll(param0: java.util.Collection<com.google.android.gms.maps.model.MarkerOptions>): void;
 							public addAll(param0: java.util.Collection<com.google.android.gms.maps.model.MarkerOptions>, param1: boolean): void;
 							public setOnInfoWindowClickListener(param0: com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener): void;
@@ -860,7 +836,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module collections {
-					export class PolygonManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Polygon,com.google.maps.android.collections.PolygonManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnPolygonClickListener  {
+					export class PolygonManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Polygon, com.google.maps.android.collections.PolygonManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnPolygonClickListener {
 						public static class: java.lang.Class<com.google.maps.android.collections.PolygonManager>;
 						public newCollection(): com.google.maps.android.collections.PolygonManager.Collection;
 						public removeObjectFromMap(param0: any): void;
@@ -880,7 +856,7 @@ declare module com {
 							public showAll(): void;
 							public setOnPolygonClickListener(param0: com.google.android.gms.maps.GoogleMap.OnPolygonClickListener): void;
 							public hideAll(): void;
-							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any,any>);
+							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any, any>);
 							public getPolygons(): java.util.Collection<com.google.android.gms.maps.model.Polygon>;
 							public remove(param0: com.google.android.gms.maps.model.Polygon): boolean;
 							public addAll(param0: java.util.Collection<com.google.android.gms.maps.model.PolygonOptions>, param1: boolean): void;
@@ -897,7 +873,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module collections {
-					export class PolylineManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Polyline,com.google.maps.android.collections.PolylineManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnPolylineClickListener  {
+					export class PolylineManager extends com.google.maps.android.collections.MapObjectManager<com.google.android.gms.maps.model.Polyline, com.google.maps.android.collections.PolylineManager.Collection> implements com.google.android.gms.maps.GoogleMap.OnPolylineClickListener {
 						public static class: java.lang.Class<com.google.maps.android.collections.PolylineManager>;
 						public onPolylineClick(param0: com.google.android.gms.maps.model.Polyline): void;
 						public removeObjectFromMap(param0: any): void;
@@ -920,7 +896,7 @@ declare module com {
 							public remove(param0: com.google.android.gms.maps.model.Polyline): boolean;
 							public hideAll(): void;
 							public getPolylines(): java.util.Collection<com.google.android.gms.maps.model.Polyline>;
-							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any,any>);
+							public constructor(param0: com.google.maps.android.collections.MapObjectManager<any, any>);
 						}
 					}
 				}
@@ -934,17 +910,12 @@ declare module com {
 		export module maps {
 			export module android {
 				export module data {
-					export class DataPolygon<T>  extends com.google.maps.android.data.Geometry<any> {
+					export class DataPolygon<T> extends com.google.maps.android.data.Geometry<any> {
 						public static class: java.lang.Class<com.google.maps.android.data.DataPolygon<any>>;
 						/**
 						 * Constructs a new instance of the com.google.maps.android.data.DataPolygon<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							getOuterBoundaryCoordinates(): java.util.List<com.google.android.gms.maps.model.LatLng>;
-							getInnerBoundaryCoordinates(): java.util.List<java.util.List<com.google.android.gms.maps.model.LatLng>>;
-							getGeometryType(): string;
-							getGeometryObject(): any;
-						});
+						public constructor(implementation: { getOuterBoundaryCoordinates(): java.util.List<com.google.android.gms.maps.model.LatLng>; getInnerBoundaryCoordinates(): java.util.List<java.util.List<com.google.android.gms.maps.model.LatLng>>; getGeometryType(): string; getGeometryObject(): any });
 						public constructor();
 						public getInnerBoundaryCoordinates(): java.util.List<java.util.List<com.google.android.gms.maps.model.LatLng>>;
 						public getGeometryType(): string;
@@ -965,14 +936,14 @@ declare module com {
 					export class Feature {
 						public static class: java.lang.Class<com.google.maps.android.data.Feature>;
 						public mId: string;
-						public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.Map<string,string>);
+						public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.Map<string, string>);
 						public hasGeometry(): boolean;
 						public getPropertyKeys(): java.lang.Iterable<string>;
 						public removeProperty(param0: string): string;
 						public setGeometry(param0: com.google.maps.android.data.Geometry<any>): void;
 						public hasProperty(param0: string): boolean;
 						public getGeometry(): com.google.maps.android.data.Geometry<any>;
-						public getProperties(): java.lang.Iterable;
+						public getProperties(): java.lang.Iterable<any>;
 						public getId(): string;
 						public getProperty(param0: string): string;
 						public hasProperties(): boolean;
@@ -989,15 +960,12 @@ declare module com {
 		export module maps {
 			export module android {
 				export module data {
-					export class Geometry<T>  extends java.lang.Object {
+					export class Geometry<T> extends java.lang.Object {
 						public static class: java.lang.Class<com.google.maps.android.data.Geometry<any>>;
 						/**
 						 * Constructs a new instance of the com.google.maps.android.data.Geometry<any> interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							getGeometryType(): string;
-							getGeometryObject(): T;
-						});
+						public constructor(implementation: { getGeometryType(): string; getGeometryObject(): T });
 						public constructor();
 						public getGeometryType(): string;
 						public getGeometryObject(): T;
@@ -1044,9 +1012,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.maps.android.data.Layer$OnFeatureClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onFeatureClick(param0: com.google.maps.android.data.Feature): void;
-							});
+							public constructor(implementation: { onFeatureClick(param0: com.google.maps.android.data.Feature): void });
 							public constructor();
 							public onFeatureClick(param0: com.google.maps.android.data.Feature): void;
 						}
@@ -1128,12 +1094,12 @@ declare module com {
 						public downloadFinished(): void;
 						public removeFeature(param0: com.google.maps.android.data.Feature): void;
 						public getMap(): com.google.android.gms.maps.GoogleMap;
-						public getStylesRenderer(): java.util.HashMap<string,com.google.maps.android.data.kml.KmlStyle>;
-						public getGroundOverlayMap(): java.util.HashMap<com.google.maps.android.data.kml.KmlGroundOverlay,com.google.android.gms.maps.model.GroundOverlay>;
+						public getStylesRenderer(): java.util.HashMap<string, com.google.maps.android.data.kml.KmlStyle>;
+						public getGroundOverlayMap(): java.util.HashMap<com.google.maps.android.data.kml.KmlGroundOverlay, com.google.android.gms.maps.model.GroundOverlay>;
 						public addFeature(param0: com.google.maps.android.data.Feature): void;
 						public addKmlPlacemarkToMap(param0: com.google.maps.android.data.kml.KmlPlacemark, param1: com.google.maps.android.data.Geometry<any>, param2: com.google.maps.android.data.kml.KmlStyle, param3: com.google.maps.android.data.kml.KmlStyle, param4: boolean): any;
 						public getMarkerIconUrls(): java.util.Set<string>;
-						public assignStyleMap(param0: java.util.HashMap<string,string>, param1: java.util.HashMap<string,com.google.maps.android.data.kml.KmlStyle>): void;
+						public assignStyleMap(param0: java.util.HashMap<string, string>, param1: java.util.HashMap<string, com.google.maps.android.data.kml.KmlStyle>): void;
 						public getPlacemarkStyle(param0: string): com.google.maps.android.data.kml.KmlStyle;
 						public checkClearBitmapCache(): void;
 						public getCachedMarkerImage(param0: string, param1: number): com.google.android.gms.maps.model.BitmapDescriptor;
@@ -1141,19 +1107,19 @@ declare module com {
 						public static getPlacemarkVisibility(param0: com.google.maps.android.data.Feature): boolean;
 						public constructor(param0: com.google.android.gms.maps.GoogleMap, param1: globalAndroid.content.Context, param2: com.google.maps.android.collections.MarkerManager, param3: com.google.maps.android.collections.PolygonManager, param4: com.google.maps.android.collections.PolylineManager, param5: com.google.maps.android.collections.GroundOverlayManager, param6: com.google.maps.android.data.Renderer.ImagesCache);
 						public downloadStarted(): void;
-						public constructor(param0: com.google.android.gms.maps.GoogleMap, param1: java.util.HashMap<any,any>, param2: com.google.maps.android.collections.MarkerManager, param3: com.google.maps.android.collections.PolygonManager, param4: com.google.maps.android.collections.PolylineManager, param5: com.google.maps.android.collections.GroundOverlayManager);
+						public constructor(param0: com.google.android.gms.maps.GoogleMap, param1: java.util.HashMap<any, any>, param2: com.google.maps.android.collections.MarkerManager, param3: com.google.maps.android.collections.PolygonManager, param4: com.google.maps.android.collections.PolylineManager, param5: com.google.maps.android.collections.GroundOverlayManager);
 						public putStyles(): void;
-						public getAllFeatures(): java.util.HashMap<any,any>;
+						public getAllFeatures(): java.util.HashMap<any, any>;
 						public addGeoJsonFeatureToMap(param0: com.google.maps.android.data.Feature, param1: com.google.maps.android.data.Geometry<any>): any;
 						public cacheBitmap(param0: string, param1: globalAndroid.graphics.Bitmap): void;
-						public getStyleMaps(): java.util.HashMap<string,string>;
-						public removeFeatures(param0: java.util.HashMap<any,any>): void;
-						public removeGroundOverlays(param0: java.util.HashMap<com.google.maps.android.data.kml.KmlGroundOverlay,com.google.android.gms.maps.model.GroundOverlay>): void;
+						public getStyleMaps(): java.util.HashMap<string, string>;
+						public removeFeatures(param0: java.util.HashMap<any, any>): void;
+						public removeGroundOverlays(param0: java.util.HashMap<com.google.maps.android.data.kml.KmlGroundOverlay, com.google.android.gms.maps.model.GroundOverlay>): void;
 						public getValues(): java.util.Collection<any>;
-						public storeData(param0: java.util.HashMap<string,com.google.maps.android.data.kml.KmlStyle>, param1: java.util.HashMap<string,string>, param2: java.util.HashMap<com.google.maps.android.data.kml.KmlPlacemark,any>, param3: java.util.ArrayList<com.google.maps.android.data.kml.KmlContainer>, param4: java.util.HashMap<com.google.maps.android.data.kml.KmlGroundOverlay,com.google.android.gms.maps.model.GroundOverlay>): void;
+						public storeData(param0: java.util.HashMap<string, com.google.maps.android.data.kml.KmlStyle>, param1: java.util.HashMap<string, string>, param2: java.util.HashMap<com.google.maps.android.data.kml.KmlPlacemark, any>, param3: java.util.ArrayList<com.google.maps.android.data.kml.KmlContainer>, param4: java.util.HashMap<com.google.maps.android.data.kml.KmlGroundOverlay, com.google.android.gms.maps.model.GroundOverlay>): void;
 						public attachGroundOverlay(param0: com.google.android.gms.maps.model.GroundOverlayOptions): com.google.android.gms.maps.model.GroundOverlay;
 						public getContainerList(): java.util.ArrayList<com.google.maps.android.data.kml.KmlContainer>;
-						public putStyles(param0: java.util.HashMap<string,com.google.maps.android.data.kml.KmlStyle>): void;
+						public putStyles(param0: java.util.HashMap<string, com.google.maps.android.data.kml.KmlStyle>): void;
 						public getFeatures(): java.util.Set<com.google.maps.android.data.Feature>;
 						public putContainerFeature(param0: any, param1: com.google.maps.android.data.Feature): void;
 						public isLayerOnMap(): boolean;
@@ -1203,7 +1169,7 @@ declare module com {
 			export module android {
 				export module data {
 					export module geojson {
-						export class BiMultiMap<K>  extends java.util.HashMap<any,any> {
+						export class BiMultiMap<K> extends java.util.HashMap<any, any> {
 							public static class: java.lang.Class<com.google.maps.android.data.geojson.BiMultiMap<any>>;
 							public constructor();
 							public clone(): com.google.maps.android.data.geojson.BiMultiMap<any>;
@@ -1211,8 +1177,8 @@ declare module com {
 							public getKey(param0: any): any;
 							public clear(): void;
 							public put(param0: any, param1: any): any;
-							public put(param0: any, param1: java.util.Collection): any;
-							public putAll(param0: java.util.Map<any,any>): void;
+							public put(param0: any, param1: java.util.Collection<any>): any;
+							public putAll(param0: java.util.Map<any, any>): void;
 						}
 					}
 				}
@@ -1239,10 +1205,10 @@ declare module com {
 							public update(param0: java.util.Observable, param1: any): void;
 							public setProperty(param0: string, param1: string): string;
 							public removeProperty(param0: string): string;
-							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.HashMap<string,string>, param3: com.google.android.gms.maps.model.LatLngBounds);
+							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.HashMap<string, string>, param3: com.google.android.gms.maps.model.LatLngBounds);
 							public getMarkerOptions(): com.google.android.gms.maps.model.MarkerOptions;
 							public setGeometry(param0: com.google.maps.android.data.Geometry<any>): void;
-							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.Map<string,string>);
+							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.Map<string, string>);
 							public setPointStyle(param0: com.google.maps.android.data.geojson.GeoJsonPointStyle): void;
 							public getPolygonStyle(): com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
 							public getLineStringStyle(): com.google.maps.android.data.geojson.GeoJsonLineStringStyle;
@@ -1306,9 +1272,7 @@ declare module com {
 								/**
 								 * Constructs a new instance of the com.google.maps.android.data.geojson.GeoJsonLayer$GeoJsonOnFeatureClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 								 */
-								public constructor(implementation: {
-									onFeatureClick(param0: com.google.maps.android.data.Feature): void;
-								});
+								public constructor(implementation: { onFeatureClick(param0: com.google.maps.android.data.Feature): void });
 								public constructor();
 								public onFeatureClick(param0: com.google.maps.android.data.Feature): void;
 							}
@@ -1642,11 +1606,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.maps.android.data.geojson.GeoJsonStyle interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getGeometryType(): androidNative.Array<string>;
-								isVisible(): boolean;
-								setVisible(param0: boolean): void;
-							});
+							public constructor(implementation: { getGeometryType(): androidNative.Array<string>; isVisible(): boolean; setVisible(param0: boolean): void });
 							public constructor();
 							public setVisible(param0: boolean): void;
 							public isVisible(): boolean;
@@ -1889,8 +1849,8 @@ declare module com {
 						export class KmlPlacemark extends com.google.maps.android.data.Feature {
 							public static class: java.lang.Class<com.google.maps.android.data.kml.KmlPlacemark>;
 							public getStyleId(): string;
-							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: com.google.maps.android.data.kml.KmlStyle, param3: java.util.Map<string,string>);
-							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.Map<string,string>);
+							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: com.google.maps.android.data.kml.KmlStyle, param3: java.util.Map<string, string>);
+							public constructor(param0: com.google.maps.android.data.Geometry<any>, param1: string, param2: java.util.Map<string, string>);
 							public getPolylineOptions(): com.google.android.gms.maps.model.PolylineOptions;
 							public getPolygonOptions(): com.google.android.gms.maps.model.PolygonOptions;
 							public toString(): string;
@@ -1966,13 +1926,13 @@ declare module com {
 							public addLayerToMap(): void;
 						}
 						export module KmlRenderer {
-							export class GroundOverlayImageDownload extends globalAndroid.os.AsyncTask<string,java.lang.Void,globalAndroid.graphics.Bitmap> {
+							export class GroundOverlayImageDownload extends globalAndroid.os.AsyncTask<string, java.lang.Void, globalAndroid.graphics.Bitmap> {
 								public static class: java.lang.Class<com.google.maps.android.data.kml.KmlRenderer.GroundOverlayImageDownload>;
 								public onPostExecute(param0: globalAndroid.graphics.Bitmap): void;
 								public constructor(param0: com.google.maps.android.data.kml.KmlRenderer, param1: string);
 								public doInBackground(param0: androidNative.Array<string>): globalAndroid.graphics.Bitmap;
 							}
-							export class MarkerIconImageDownload extends globalAndroid.os.AsyncTask<string,java.lang.Void,globalAndroid.graphics.Bitmap> {
+							export class MarkerIconImageDownload extends globalAndroid.os.AsyncTask<string, java.lang.Void, globalAndroid.graphics.Bitmap> {
 								public static class: java.lang.Class<com.google.maps.android.data.kml.KmlRenderer.MarkerIconImageDownload>;
 								public onPostExecute(param0: globalAndroid.graphics.Bitmap): void;
 								public constructor(param0: com.google.maps.android.data.kml.KmlRenderer, param1: string);
@@ -1995,7 +1955,7 @@ declare module com {
 						export class KmlStyle extends com.google.maps.android.data.Style {
 							public static class: java.lang.Class<com.google.maps.android.data.kml.KmlStyle>;
 							public hasOutline(): boolean;
-							public getBalloonOptions(): java.util.HashMap<string,string>;
+							public getBalloonOptions(): java.util.HashMap<string, string>;
 							public static computeRandomColor(param0: number): number;
 							public getPolylineOptions(): com.google.android.gms.maps.model.PolylineOptions;
 							public getPolygonOptions(): com.google.android.gms.maps.model.PolygonOptions;
@@ -2045,11 +2005,11 @@ declare module com {
 							public constructor(param0: java.util.ArrayList<com.google.android.gms.maps.model.LatLng>, param1: java.util.ArrayList<java.lang.Double>);
 							public getTimestamps(): java.util.ArrayList<java.lang.Long>;
 							public constructor(param0: java.util.ArrayList<com.google.android.gms.maps.model.LatLng>);
-							public getProperties(): java.util.HashMap<string,string>;
+							public getProperties(): java.util.HashMap<string, string>;
 							public getGeometryObject(): java.util.ArrayList<com.google.android.gms.maps.model.LatLng>;
 							public constructor(param0: java.util.List<com.google.android.gms.maps.model.LatLng>);
 							public getGeometryObject(): java.util.List<com.google.android.gms.maps.model.LatLng>;
-							public constructor(param0: java.util.ArrayList<com.google.android.gms.maps.model.LatLng>, param1: java.util.ArrayList<java.lang.Double>, param2: java.util.ArrayList<java.lang.Long>, param3: java.util.HashMap<string,string>);
+							public constructor(param0: java.util.ArrayList<com.google.android.gms.maps.model.LatLng>, param1: java.util.ArrayList<java.lang.Double>, param2: java.util.ArrayList<java.lang.Long>, param3: java.util.HashMap<string, string>);
 							public getGeometryObject(): any;
 						}
 					}
@@ -2238,7 +2198,7 @@ declare module com {
 		export module maps {
 			export module android {
 				export module quadtree {
-					export class PointQuadTree<T>  extends java.lang.Object {
+					export class PointQuadTree<T> extends java.lang.Object {
 						public static class: java.lang.Class<com.google.maps.android.quadtree.PointQuadTree<any>>;
 						public search(param0: com.google.maps.android.geometry.Bounds): java.util.Collection<T>;
 						public constructor(param0: com.google.maps.android.geometry.Bounds);
@@ -2253,11 +2213,43 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.maps.android.quadtree.PointQuadTree$Item interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getPoint(): com.google.maps.android.geometry.Point;
-							});
+							public constructor(implementation: { getPoint(): com.google.maps.android.geometry.Point });
 							public constructor();
 							public getPoint(): com.google.maps.android.geometry.Point;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export module ui {
+					export class AnimationUtil {
+						public static class: java.lang.Class<com.google.maps.android.ui.AnimationUtil>;
+						public constructor();
+						public static animateMarkerTo(param0: com.google.android.gms.maps.model.Marker, param1: com.google.android.gms.maps.model.LatLng): void;
+					}
+					export module AnimationUtil {
+						export class LatLngInterpolator {
+							public static class: java.lang.Class<com.google.maps.android.ui.AnimationUtil.LatLngInterpolator>;
+							/**
+							 * Constructs a new instance of the com.google.maps.android.ui.AnimationUtil$LatLngInterpolator interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
+							 */
+							public constructor(implementation: { interpolate(param0: number, param1: com.google.android.gms.maps.model.LatLng, param2: com.google.android.gms.maps.model.LatLng): com.google.android.gms.maps.model.LatLng });
+							public constructor();
+							public interpolate(param0: number, param1: com.google.android.gms.maps.model.LatLng, param2: com.google.android.gms.maps.model.LatLng): com.google.android.gms.maps.model.LatLng;
+						}
+						export module LatLngInterpolator {
+							export class Linear extends com.google.maps.android.ui.AnimationUtil.LatLngInterpolator {
+								public static class: java.lang.Class<com.google.maps.android.ui.AnimationUtil.LatLngInterpolator.Linear>;
+								public interpolate(param0: number, param1: com.google.android.gms.maps.model.LatLng, param2: com.google.android.gms.maps.model.LatLng): com.google.android.gms.maps.model.LatLng;
+								public constructor();
+							}
 						}
 					}
 				}
@@ -2599,21 +2591,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.internal.maps.zzag interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzd(): number;
-								zze(): number;
-								zzf(): number;
-								zzg(): string;
-								zzh(): void;
-								zzi(): void;
-								zzj(param0: boolean): void;
-								zzk(param0: number): void;
-								zzl(param0: boolean): void;
-								zzm(param0: number): void;
-								zzn(param0: any /* com.google.android.gms.internal.maps.zzag*/): boolean;
-								zzo(): boolean;
-								zzp(): boolean;
-							});
+							public constructor(implementation: { zzd(): number; zze(): number; zzf(): number; zzg(): string; zzh(): void; zzi(): void; zzj(param0: boolean): void; zzk(param0: number): void; zzl(param0: boolean): void; zzm(param0: number): void; zzn(param0: any /* com.google.android.gms.internal.maps.zzag*/): boolean; zzo(): boolean; zzp(): boolean });
 							public constructor();
 						}
 					}
@@ -2668,9 +2646,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.internal.maps.zzaj interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: number, param1: number, param2: number): com.google.android.gms.maps.model.Tile;
-							});
+							public constructor(implementation: { zzb(param0: number, param1: number, param2: number): com.google.android.gms.maps.model.Tile });
 							public constructor();
 						}
 					}
@@ -2743,8 +2719,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.internal.maps.zze interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-							});
+							public constructor(implementation: {});
 							public constructor();
 						}
 					}
@@ -2813,15 +2788,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.internal.maps.zzi interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzd(): com.google.android.gms.dynamic.IObjectWrapper;
-								zze(param0: number): com.google.android.gms.dynamic.IObjectWrapper;
-								zzf(param0: string): com.google.android.gms.dynamic.IObjectWrapper;
-								zzg(param0: globalAndroid.graphics.Bitmap): com.google.android.gms.dynamic.IObjectWrapper;
-								zzh(param0: string): com.google.android.gms.dynamic.IObjectWrapper;
-								zzi(param0: string): com.google.android.gms.dynamic.IObjectWrapper;
-								zzj(param0: number): com.google.android.gms.dynamic.IObjectWrapper;
-							});
+							public constructor(implementation: { zzd(): com.google.android.gms.dynamic.IObjectWrapper; zze(param0: number): com.google.android.gms.dynamic.IObjectWrapper; zzf(param0: string): com.google.android.gms.dynamic.IObjectWrapper; zzg(param0: globalAndroid.graphics.Bitmap): com.google.android.gms.dynamic.IObjectWrapper; zzh(param0: string): com.google.android.gms.dynamic.IObjectWrapper; zzi(param0: string): com.google.android.gms.dynamic.IObjectWrapper; zzj(param0: number): com.google.android.gms.dynamic.IObjectWrapper });
 							public constructor();
 						}
 					}
@@ -3031,14 +2998,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.internal.maps.zzr interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzd(): number;
-								zze(): number;
-								zzf(): number;
-								zzg(): java.util.List<globalAndroid.os.IBinder>;
-								zzh(param0: any /* com.google.android.gms.internal.maps.zzr*/): boolean;
-								zzi(): boolean;
-							});
+							public constructor(implementation: { zzd(): number; zze(): number; zzf(): number; zzg(): java.util.List<globalAndroid.os.IBinder>; zzh(param0: any /* com.google.android.gms.internal.maps.zzr*/): boolean; zzi(): boolean });
 							public constructor();
 						}
 					}
@@ -3091,13 +3051,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.internal.maps.zzu interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzd(): number;
-								zze(): string;
-								zzf(): string;
-								zzg(): void;
-								zzh(param0: any /* com.google.android.gms.internal.maps.zzu*/): boolean;
-							});
+							public constructor(implementation: { zzd(): number; zze(): string; zzf(): string; zzg(): void; zzh(param0: any /* com.google.android.gms.internal.maps.zzu*/): boolean });
 							public constructor();
 						}
 					}
@@ -3347,10 +3301,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$CancelableCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCancel(): void;
-								onFinish(): void;
-							});
+							public constructor(implementation: { onCancel(): void; onFinish(): void });
 							public constructor();
 							public onFinish(): void;
 							public onCancel(): void;
@@ -3360,10 +3311,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$InfoWindowAdapter interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getInfoContents(param0: com.google.android.gms.maps.model.Marker): globalAndroid.view.View;
-								getInfoWindow(param0: com.google.android.gms.maps.model.Marker): globalAndroid.view.View;
-							});
+							public constructor(implementation: { getInfoContents(param0: com.google.android.gms.maps.model.Marker): globalAndroid.view.View; getInfoWindow(param0: com.google.android.gms.maps.model.Marker): globalAndroid.view.View });
 							public constructor();
 							public getInfoContents(param0: com.google.android.gms.maps.model.Marker): globalAndroid.view.View;
 							public getInfoWindow(param0: com.google.android.gms.maps.model.Marker): globalAndroid.view.View;
@@ -3373,9 +3321,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnCameraChangeListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCameraChange(param0: com.google.android.gms.maps.model.CameraPosition): void;
-							});
+							public constructor(implementation: { onCameraChange(param0: com.google.android.gms.maps.model.CameraPosition): void });
 							public constructor();
 							public onCameraChange(param0: com.google.android.gms.maps.model.CameraPosition): void;
 						}
@@ -3384,9 +3330,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnCameraIdleListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCameraIdle(): void;
-							});
+							public constructor(implementation: { onCameraIdle(): void });
 							public constructor();
 							public onCameraIdle(): void;
 						}
@@ -3395,9 +3339,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnCameraMoveCanceledListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCameraMoveCanceled(): void;
-							});
+							public constructor(implementation: { onCameraMoveCanceled(): void });
 							public constructor();
 							public onCameraMoveCanceled(): void;
 						}
@@ -3406,9 +3348,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnCameraMoveListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCameraMove(): void;
-							});
+							public constructor(implementation: { onCameraMove(): void });
 							public constructor();
 							public onCameraMove(): void;
 						}
@@ -3417,9 +3357,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnCameraMoveStartedListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCameraMoveStarted(param0: number): void;
-							});
+							public constructor(implementation: { onCameraMoveStarted(param0: number): void });
 							public constructor();
 							public static REASON_DEVELOPER_ANIMATION: number;
 							public static REASON_API_ANIMATION: number;
@@ -3431,9 +3369,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnCircleClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onCircleClick(param0: com.google.android.gms.maps.model.Circle): void;
-							});
+							public constructor(implementation: { onCircleClick(param0: com.google.android.gms.maps.model.Circle): void });
 							public constructor();
 							public onCircleClick(param0: com.google.android.gms.maps.model.Circle): void;
 						}
@@ -3442,9 +3378,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnGroundOverlayClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onGroundOverlayClick(param0: com.google.android.gms.maps.model.GroundOverlay): void;
-							});
+							public constructor(implementation: { onGroundOverlayClick(param0: com.google.android.gms.maps.model.GroundOverlay): void });
 							public constructor();
 							public onGroundOverlayClick(param0: com.google.android.gms.maps.model.GroundOverlay): void;
 						}
@@ -3453,10 +3387,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnIndoorStateChangeListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onIndoorBuildingFocused(): void;
-								onIndoorLevelActivated(param0: com.google.android.gms.maps.model.IndoorBuilding): void;
-							});
+							public constructor(implementation: { onIndoorBuildingFocused(): void; onIndoorLevelActivated(param0: com.google.android.gms.maps.model.IndoorBuilding): void });
 							public constructor();
 							public onIndoorLevelActivated(param0: com.google.android.gms.maps.model.IndoorBuilding): void;
 							public onIndoorBuildingFocused(): void;
@@ -3466,9 +3397,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnInfoWindowClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onInfoWindowClick(param0: com.google.android.gms.maps.model.Marker): void;
-							});
+							public constructor(implementation: { onInfoWindowClick(param0: com.google.android.gms.maps.model.Marker): void });
 							public constructor();
 							public onInfoWindowClick(param0: com.google.android.gms.maps.model.Marker): void;
 						}
@@ -3477,9 +3406,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnInfoWindowCloseListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onInfoWindowClose(param0: com.google.android.gms.maps.model.Marker): void;
-							});
+							public constructor(implementation: { onInfoWindowClose(param0: com.google.android.gms.maps.model.Marker): void });
 							public constructor();
 							public onInfoWindowClose(param0: com.google.android.gms.maps.model.Marker): void;
 						}
@@ -3488,9 +3415,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnInfoWindowLongClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onInfoWindowLongClick(param0: com.google.android.gms.maps.model.Marker): void;
-							});
+							public constructor(implementation: { onInfoWindowLongClick(param0: com.google.android.gms.maps.model.Marker): void });
 							public constructor();
 							public onInfoWindowLongClick(param0: com.google.android.gms.maps.model.Marker): void;
 						}
@@ -3499,9 +3424,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMapClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMapClick(param0: com.google.android.gms.maps.model.LatLng): void;
-							});
+							public constructor(implementation: { onMapClick(param0: com.google.android.gms.maps.model.LatLng): void });
 							public constructor();
 							public onMapClick(param0: com.google.android.gms.maps.model.LatLng): void;
 						}
@@ -3510,9 +3433,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMapLoadedCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMapLoaded(): void;
-							});
+							public constructor(implementation: { onMapLoaded(): void });
 							public constructor();
 							public onMapLoaded(): void;
 						}
@@ -3521,9 +3442,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMapLongClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMapLongClick(param0: com.google.android.gms.maps.model.LatLng): void;
-							});
+							public constructor(implementation: { onMapLongClick(param0: com.google.android.gms.maps.model.LatLng): void });
 							public constructor();
 							public onMapLongClick(param0: com.google.android.gms.maps.model.LatLng): void;
 						}
@@ -3532,9 +3451,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMarkerClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMarkerClick(param0: com.google.android.gms.maps.model.Marker): boolean;
-							});
+							public constructor(implementation: { onMarkerClick(param0: com.google.android.gms.maps.model.Marker): boolean });
 							public constructor();
 							public onMarkerClick(param0: com.google.android.gms.maps.model.Marker): boolean;
 						}
@@ -3543,11 +3460,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMarkerDragListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMarkerDrag(param0: com.google.android.gms.maps.model.Marker): void;
-								onMarkerDragEnd(param0: com.google.android.gms.maps.model.Marker): void;
-								onMarkerDragStart(param0: com.google.android.gms.maps.model.Marker): void;
-							});
+							public constructor(implementation: { onMarkerDrag(param0: com.google.android.gms.maps.model.Marker): void; onMarkerDragEnd(param0: com.google.android.gms.maps.model.Marker): void; onMarkerDragStart(param0: com.google.android.gms.maps.model.Marker): void });
 							public constructor();
 							public onMarkerDragStart(param0: com.google.android.gms.maps.model.Marker): void;
 							public onMarkerDragEnd(param0: com.google.android.gms.maps.model.Marker): void;
@@ -3558,9 +3471,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMyLocationButtonClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMyLocationButtonClick(): boolean;
-							});
+							public constructor(implementation: { onMyLocationButtonClick(): boolean });
 							public constructor();
 							public onMyLocationButtonClick(): boolean;
 						}
@@ -3569,9 +3480,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMyLocationChangeListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMyLocationChange(param0: globalAndroid.location.Location): void;
-							});
+							public constructor(implementation: { onMyLocationChange(param0: globalAndroid.location.Location): void });
 							public constructor();
 							public onMyLocationChange(param0: globalAndroid.location.Location): void;
 						}
@@ -3580,9 +3489,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnMyLocationClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onMyLocationClick(param0: globalAndroid.location.Location): void;
-							});
+							public constructor(implementation: { onMyLocationClick(param0: globalAndroid.location.Location): void });
 							public constructor();
 							public onMyLocationClick(param0: globalAndroid.location.Location): void;
 						}
@@ -3591,9 +3498,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnPoiClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onPoiClick(param0: com.google.android.gms.maps.model.PointOfInterest): void;
-							});
+							public constructor(implementation: { onPoiClick(param0: com.google.android.gms.maps.model.PointOfInterest): void });
 							public constructor();
 							public onPoiClick(param0: com.google.android.gms.maps.model.PointOfInterest): void;
 						}
@@ -3602,9 +3507,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnPolygonClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onPolygonClick(param0: com.google.android.gms.maps.model.Polygon): void;
-							});
+							public constructor(implementation: { onPolygonClick(param0: com.google.android.gms.maps.model.Polygon): void });
 							public constructor();
 							public onPolygonClick(param0: com.google.android.gms.maps.model.Polygon): void;
 						}
@@ -3613,9 +3516,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$OnPolylineClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onPolylineClick(param0: com.google.android.gms.maps.model.Polyline): void;
-							});
+							public constructor(implementation: { onPolylineClick(param0: com.google.android.gms.maps.model.Polyline): void });
 							public constructor();
 							public onPolylineClick(param0: com.google.android.gms.maps.model.Polyline): void;
 						}
@@ -3624,9 +3525,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.GoogleMap$SnapshotReadyCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onSnapshotReady(param0: globalAndroid.graphics.Bitmap): void;
-							});
+							public constructor(implementation: { onSnapshotReady(param0: globalAndroid.graphics.Bitmap): void });
 							public constructor();
 							public onSnapshotReady(param0: globalAndroid.graphics.Bitmap): void;
 						}
@@ -3704,10 +3603,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.google.android.gms.maps.LocationSource interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							activate(param0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener): void;
-							deactivate(): void;
-						});
+						public constructor(implementation: { activate(param0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener): void; deactivate(): void });
 						public constructor();
 						public activate(param0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener): void;
 						public deactivate(): void;
@@ -3718,9 +3614,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.LocationSource$OnLocationChangedListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onLocationChanged(param0: globalAndroid.location.Location): void;
-							});
+							public constructor(implementation: { onLocationChanged(param0: globalAndroid.location.Location): void });
 							public constructor();
 							public onLocationChanged(param0: globalAndroid.location.Location): void;
 						}
@@ -3829,9 +3723,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.google.android.gms.maps.OnMapReadyCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onMapReady(param0: com.google.android.gms.maps.GoogleMap): void;
-						});
+						public constructor(implementation: { onMapReady(param0: com.google.android.gms.maps.GoogleMap): void });
 						public constructor();
 						public onMapReady(param0: com.google.android.gms.maps.GoogleMap): void;
 					}
@@ -3851,9 +3743,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.google.android.gms.maps.OnMapsSdkInitializedCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onMapsSdkInitialized(param0: com.google.android.gms.maps.MapsInitializer.Renderer): void;
-						});
+						public constructor(implementation: { onMapsSdkInitialized(param0: com.google.android.gms.maps.MapsInitializer.Renderer): void });
 						public constructor();
 						public onMapsSdkInitialized(param0: com.google.android.gms.maps.MapsInitializer.Renderer): void;
 					}
@@ -3873,9 +3763,7 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onStreetViewPanoramaReady(param0: com.google.android.gms.maps.StreetViewPanorama): void;
-						});
+						public constructor(implementation: { onStreetViewPanoramaReady(param0: com.google.android.gms.maps.StreetViewPanorama): void });
 						public constructor();
 						public onStreetViewPanoramaReady(param0: com.google.android.gms.maps.StreetViewPanorama): void;
 					}
@@ -3939,9 +3827,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.StreetViewPanorama$OnStreetViewPanoramaCameraChangeListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onStreetViewPanoramaCameraChange(param0: com.google.android.gms.maps.model.StreetViewPanoramaCamera): void;
-							});
+							public constructor(implementation: { onStreetViewPanoramaCameraChange(param0: com.google.android.gms.maps.model.StreetViewPanoramaCamera): void });
 							public constructor();
 							public onStreetViewPanoramaCameraChange(param0: com.google.android.gms.maps.model.StreetViewPanoramaCamera): void;
 						}
@@ -3950,9 +3836,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.StreetViewPanorama$OnStreetViewPanoramaChangeListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onStreetViewPanoramaChange(param0: com.google.android.gms.maps.model.StreetViewPanoramaLocation): void;
-							});
+							public constructor(implementation: { onStreetViewPanoramaChange(param0: com.google.android.gms.maps.model.StreetViewPanoramaLocation): void });
 							public constructor();
 							public onStreetViewPanoramaChange(param0: com.google.android.gms.maps.model.StreetViewPanoramaLocation): void;
 						}
@@ -3961,9 +3845,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.StreetViewPanorama$OnStreetViewPanoramaClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onStreetViewPanoramaClick(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void;
-							});
+							public constructor(implementation: { onStreetViewPanoramaClick(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void });
 							public constructor();
 							public onStreetViewPanoramaClick(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void;
 						}
@@ -3972,9 +3854,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.StreetViewPanorama$OnStreetViewPanoramaLongClickListener interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								onStreetViewPanoramaLongClick(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void;
-							});
+							public constructor(implementation: { onStreetViewPanoramaLongClick(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void });
 							public constructor();
 							public onStreetViewPanoramaLongClick(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void;
 						}
@@ -4411,10 +4291,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.ILocationSourceDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								deactivate(): void;
-								activate(param0: any /* com.google.android.gms.maps.internal.zzaj*/): void;
-							});
+							public constructor(implementation: { deactivate(): void; activate(param0: any /* com.google.android.gms.maps.internal.zzaj*/): void });
 							public constructor();
 							public activate(param0: any /* com.google.android.gms.maps.internal.zzaj*/): void;
 							public deactivate(): void;
@@ -4491,21 +4368,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.IMapViewDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getView(): com.google.android.gms.dynamic.IObjectWrapper;
-								getMap(): com.google.android.gms.maps.internal.IGoogleMapDelegate;
-								onCreate(param0: globalAndroid.os.Bundle): void;
-								onDestroy(): void;
-								onEnterAmbient(param0: globalAndroid.os.Bundle): void;
-								onExitAmbient(): void;
-								onLowMemory(): void;
-								onPause(): void;
-								onResume(): void;
-								onSaveInstanceState(param0: globalAndroid.os.Bundle): void;
-								onStart(): void;
-								onStop(): void;
-								getMapAsync(param0: any /* com.google.android.gms.maps.internal.zzar*/): void;
-							});
+							public constructor(implementation: { getView(): com.google.android.gms.dynamic.IObjectWrapper; getMap(): com.google.android.gms.maps.internal.IGoogleMapDelegate; onCreate(param0: globalAndroid.os.Bundle): void; onDestroy(): void; onEnterAmbient(param0: globalAndroid.os.Bundle): void; onExitAmbient(): void; onLowMemory(): void; onPause(): void; onResume(): void; onSaveInstanceState(param0: globalAndroid.os.Bundle): void; onStart(): void; onStop(): void; getMapAsync(param0: any /* com.google.android.gms.maps.internal.zzar*/): void });
 							public constructor();
 							public getMapAsync(param0: any /* com.google.android.gms.maps.internal.zzar*/): void;
 							public onStop(): void;
@@ -4539,11 +4402,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.IProjectionDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								toScreenLocation(param0: com.google.android.gms.maps.model.LatLng): com.google.android.gms.dynamic.IObjectWrapper;
-								fromScreenLocation(param0: com.google.android.gms.dynamic.IObjectWrapper): com.google.android.gms.maps.model.LatLng;
-								getVisibleRegion(): com.google.android.gms.maps.model.VisibleRegion;
-							});
+							public constructor(implementation: { toScreenLocation(param0: com.google.android.gms.maps.model.LatLng): com.google.android.gms.dynamic.IObjectWrapper; fromScreenLocation(param0: com.google.android.gms.dynamic.IObjectWrapper): com.google.android.gms.maps.model.LatLng; getVisibleRegion(): com.google.android.gms.maps.model.VisibleRegion });
 							public constructor();
 							public fromScreenLocation(param0: com.google.android.gms.dynamic.IObjectWrapper): com.google.android.gms.maps.model.LatLng;
 							public getVisibleRegion(): com.google.android.gms.maps.model.VisibleRegion;
@@ -4683,19 +4542,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.IStreetViewPanoramaViewDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getView(): com.google.android.gms.dynamic.IObjectWrapper;
-								getStreetViewPanorama(): com.google.android.gms.maps.internal.IStreetViewPanoramaDelegate;
-								onCreate(param0: globalAndroid.os.Bundle): void;
-								onDestroy(): void;
-								onLowMemory(): void;
-								onPause(): void;
-								onResume(): void;
-								onSaveInstanceState(param0: globalAndroid.os.Bundle): void;
-								onStart(): void;
-								onStop(): void;
-								getStreetViewPanoramaAsync(param0: any /* com.google.android.gms.maps.internal.zzbr*/): void;
-							});
+							public constructor(implementation: { getView(): com.google.android.gms.dynamic.IObjectWrapper; getStreetViewPanorama(): com.google.android.gms.maps.internal.IStreetViewPanoramaDelegate; onCreate(param0: globalAndroid.os.Bundle): void; onDestroy(): void; onLowMemory(): void; onPause(): void; onResume(): void; onSaveInstanceState(param0: globalAndroid.os.Bundle): void; onStart(): void; onStop(): void; getStreetViewPanoramaAsync(param0: any /* com.google.android.gms.maps.internal.zzbr*/): void });
 							public constructor();
 							public getStreetViewPanorama(): com.google.android.gms.maps.internal.IStreetViewPanoramaDelegate;
 							public onLowMemory(): void;
@@ -4791,9 +4638,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.MapLifecycleDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getMapAsync(param0: com.google.android.gms.maps.OnMapReadyCallback): void;
-							});
+							public constructor(implementation: { getMapAsync(param0: com.google.android.gms.maps.OnMapReadyCallback): void });
 							public constructor();
 							public getMapAsync(param0: com.google.android.gms.maps.OnMapReadyCallback): void;
 						}
@@ -4815,9 +4660,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.StreetViewLifecycleDelegate interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getStreetViewPanoramaAsync(param0: com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback): void;
-							});
+							public constructor(implementation: { getStreetViewPanoramaAsync(param0: com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback): void });
 							public constructor();
 							public getStreetViewPanoramaAsync(param0: com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback): void;
 						}
@@ -4873,10 +4716,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzab interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): void;
-								zzc(param0: any /* com.google.android.gms.internal.maps.zzr*/): void;
-							});
+							public constructor(implementation: { zzb(): void; zzc(param0: any /* com.google.android.gms.internal.maps.zzr*/): void });
 							public constructor();
 						}
 					}
@@ -4915,9 +4755,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzad interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void });
 							public constructor();
 						}
 					}
@@ -4956,9 +4794,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzaf interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void });
 							public constructor();
 						}
 					}
@@ -4997,9 +4833,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzah interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void });
 							public constructor();
 						}
 					}
@@ -5036,9 +4870,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzaj interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzd(param0: globalAndroid.location.Location): void;
-							});
+							public constructor(implementation: { zzd(param0: globalAndroid.location.Location): void });
 							public constructor();
 						}
 					}
@@ -5077,9 +4909,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzal interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.LatLng): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.LatLng): void });
 							public constructor();
 						}
 					}
@@ -5118,9 +4948,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzan interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): void;
-							});
+							public constructor(implementation: { zzb(): void });
 							public constructor();
 						}
 					}
@@ -5159,9 +4987,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzap interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.LatLng): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.LatLng): void });
 							public constructor();
 						}
 					}
@@ -5200,9 +5026,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzar interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.internal.IGoogleMapDelegate): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.internal.IGoogleMapDelegate): void });
 							public constructor();
 						}
 					}
@@ -5241,9 +5065,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzat interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): boolean;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): boolean });
 							public constructor();
 						}
 					}
@@ -5282,11 +5104,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzav interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void;
-								zzc(param0: any /* com.google.android.gms.internal.maps.zzx*/): void;
-								zzd(param0: any /* com.google.android.gms.internal.maps.zzx*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): void; zzc(param0: any /* com.google.android.gms.internal.maps.zzx*/): void; zzd(param0: any /* com.google.android.gms.internal.maps.zzx*/): void });
 							public constructor();
 						}
 					}
@@ -5325,9 +5143,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzax interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): boolean;
-							});
+							public constructor(implementation: { zzb(): boolean });
 							public constructor();
 						}
 					}
@@ -5366,9 +5182,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzaz interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.dynamic.IObjectWrapper): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.dynamic.IObjectWrapper): void });
 							public constructor();
 						}
 					}
@@ -5434,9 +5248,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbb interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: globalAndroid.location.Location): void;
-							});
+							public constructor(implementation: { zzb(param0: globalAndroid.location.Location): void });
 							public constructor();
 						}
 					}
@@ -5475,9 +5287,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbd interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.PointOfInterest): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.PointOfInterest): void });
 							public constructor();
 						}
 					}
@@ -5516,9 +5326,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbf interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzaa*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzaa*/): void });
 							public constructor();
 						}
 					}
@@ -5557,9 +5365,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbh interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzad*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzad*/): void });
 							public constructor();
 						}
 					}
@@ -5598,9 +5404,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbj interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaCamera): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaCamera): void });
 							public constructor();
 						}
 					}
@@ -5639,9 +5443,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbl interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaLocation): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaLocation): void });
 							public constructor();
 						}
 					}
@@ -5680,9 +5482,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbn interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void });
 							public constructor();
 						}
 					}
@@ -5721,9 +5521,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbp interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.StreetViewPanoramaOrientation): void });
 							public constructor();
 						}
 					}
@@ -5762,9 +5560,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbr interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.internal.IStreetViewPanoramaDelegate): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.internal.IStreetViewPanoramaDelegate): void });
 							public constructor();
 						}
 					}
@@ -5822,10 +5618,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzbu interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: globalAndroid.graphics.Bitmap): void;
-								zzc(param0: com.google.android.gms.dynamic.IObjectWrapper): void;
-							});
+							public constructor(implementation: { zzb(param0: globalAndroid.graphics.Bitmap): void; zzc(param0: com.google.android.gms.dynamic.IObjectWrapper): void });
 							public constructor();
 						}
 					}
@@ -6029,10 +5822,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzd interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): void;
-								zzc(): void;
-							});
+							public constructor(implementation: { zzb(): void; zzc(): void });
 							public constructor();
 						}
 					}
@@ -6209,10 +5999,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzi interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): com.google.android.gms.dynamic.IObjectWrapper;
-								zzc(param0: any /* com.google.android.gms.internal.maps.zzx*/): com.google.android.gms.dynamic.IObjectWrapper;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzx*/): com.google.android.gms.dynamic.IObjectWrapper; zzc(param0: any /* com.google.android.gms.internal.maps.zzx*/): com.google.android.gms.dynamic.IObjectWrapper });
 							public constructor();
 						}
 					}
@@ -6332,9 +6119,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzn interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: com.google.android.gms.maps.model.CameraPosition): void;
-							});
+							public constructor(implementation: { zzb(param0: com.google.android.gms.maps.model.CameraPosition): void });
 							public constructor();
 						}
 					}
@@ -6373,9 +6158,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzp interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): void;
-							});
+							public constructor(implementation: { zzb(): void });
 							public constructor();
 						}
 					}
@@ -6414,9 +6197,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzr interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): void;
-							});
+							public constructor(implementation: { zzb(): void });
 							public constructor();
 						}
 					}
@@ -6455,9 +6236,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzt interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(): void;
-							});
+							public constructor(implementation: { zzb(): void });
 							public constructor();
 						}
 					}
@@ -6496,9 +6275,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzv interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: number): void;
-							});
+							public constructor(implementation: { zzb(param0: number): void });
 							public constructor();
 						}
 					}
@@ -6537,9 +6314,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzx interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzl*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzl*/): void });
 							public constructor();
 						}
 					}
@@ -6578,9 +6353,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.internal.zzz interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								zzb(param0: any /* com.google.android.gms.internal.maps.zzo*/): void;
-							});
+							public constructor(implementation: { zzb(param0: any /* com.google.android.gms.internal.maps.zzo*/): void });
 							public constructor();
 						}
 					}
@@ -7723,10 +7496,7 @@ declare module com {
 							/**
 							 * Constructs a new instance of the com.google.android.gms.maps.model.TileProvider interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 							 */
-							public constructor(implementation: {
-								getTile(param0: number, param1: number, param2: number): com.google.android.gms.maps.model.Tile;
-								<clinit>(): void;
-							});
+							public constructor(implementation: { getTile(param0: number, param1: number, param2: number): com.google.android.gms.maps.model.Tile; <clinit>(): void });
 							public constructor();
 							public static NO_TILE: com.google.android.gms.maps.model.Tile;
 							public getTile(param0: number, param1: number, param2: number): com.google.android.gms.maps.model.Tile;
@@ -8977,4 +8747,3 @@ declare module com {
 }
 
 //Generics information:
-

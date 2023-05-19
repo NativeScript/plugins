@@ -25,13 +25,10 @@ export function installMixins() {
 }
 
 export class GoogleMapUtils {
-	heatmapProvider(options: HeatmapOptions) {
-		return HeatmapTileProvider.fromNative(intoNativeHeatmapProvider(options));
-	}
-
 	clusterManager(markers: MarkerOptions[]) {
-		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(this as unknown as GoogleMap));
-		const renderer = new ClusterRenderer(this as unknown as GoogleMap, clusterManager);
+		const GMap = this as unknown as GoogleMap;
+		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(GMap));
+		const renderer = new ClusterRenderer(GMap, clusterManager);
 		clusterManager.setRenderer(renderer);
 
 		const clusters = markers.map((marker) => new ClusterItem(marker));
@@ -72,6 +69,12 @@ export class GoogleMapUtils {
 
 export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider {
 	#native: com.google.maps.android.heatmaps.HeatmapTileProvider;
+
+	constructor(options?: HeatmapOptions) {
+		if (options) {
+			this.#native = intoNativeHeatmapProvider(options);
+		}
+	}
 
 	static fromNative(nativeHeatmap: com.google.maps.android.heatmaps.HeatmapTileProvider) {
 		if (nativeHeatmap instanceof com.google.maps.android.heatmaps.HeatmapTileProvider) {
@@ -133,7 +136,6 @@ export class ClusterItem extends com.google.maps.android.clustering.ClusterItem 
 	}
 }
 
-@NativeClass()
 export class ClusterRenderer extends com.google.maps.android.clustering.view.DefaultClusterRenderer<any> {
 	constructor(map: GoogleMap, clusterManager: ClusterManager) {
 		super(Utils.ad.getApplicationContext(), map.native, clusterManager.native);
@@ -257,6 +259,9 @@ export class ClusterManager implements IClusterManager {
 	}
 }
 
+/**
+ * EXPERIMENTAL - DO NOT USE
+ */
 export abstract class DataLayer<T extends com.google.maps.android.data.Layer> {
 	abstract readonly native: T;
 

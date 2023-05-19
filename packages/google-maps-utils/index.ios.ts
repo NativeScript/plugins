@@ -26,10 +26,6 @@ export function installMixins() {
 }
 
 export class GoogleMapUtils {
-	heatmapProvider(options: HeatmapOptions) {
-		return HeatmapTileProvider.fromNative(intoNativeHeatmapProvider(options));
-	}
-
 	clusterManager(markers: MarkerOptions[]) {
 		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(this as unknown as GoogleMap));
 
@@ -74,6 +70,10 @@ export class GoogleMapUtils {
 
 export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider {
 	#native: GMUHeatmapTileLayer;
+
+	constructor(options?: HeatmapOptions) {
+		this.#native = intoNativeHeatmapProvider(options);
+	}
 
 	static fromNative(nativeHeatmap: GMUHeatmapTileLayer) {
 		if (nativeHeatmap instanceof GMUHeatmapTileLayer) {

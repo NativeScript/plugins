@@ -20,15 +20,16 @@ onMapReady(args: MapReadyEvent) {
 }
 ```
 
+---
 
-### HeatMaps
+## HeatMaps
 ```javascript
 import { HeatmapTileProvider, HeatmapOptions } from '@nativescript/google-maps-utils';
 import { GoogleMap, Coordinate } from '@nativescript/google-maps';
 
 addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
 	// Create a new heat map tile provider
-	const heatmapProvider: HeatmapTileProvider = map.heatmapProvider(heatmapOptions);
+	const heatmapProvider = new HeatmapTileProvider(heatmapOptions);
 	// Pass tile provider to Google Maps 
 	const heatmapOverlay = map.addTileOverlay({
 		tileProvider: heatmapProvider,
@@ -36,7 +37,19 @@ addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
 }
 ```
 
-### Clustering
+### HeatmapOptions
+
+| Property | Type 
+|:---------|:-----
+|	`coordinates` | `Coordinate[]`;
+|	`opacity` | `number`;
+|	`radius` | `number`;
+|	`maxIntensity` | `number`;
+|	`gradient` | ` IGradient[]`;
+
+---
+
+## Clustering
 ```javascript
 import { ClusterManager } from '@nativescript/google-maps-utils';
 import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
@@ -45,6 +58,8 @@ addClusteredMarkers(map: GoogleMap, markers: MarkerOptions[]) {
 	const clusterManager: ClusterManager = map.clusterManager(markers);
 }
 ```
+
+---
 
 ## Experimental Features
 Features that are not yet fully implemented or likely to change.
@@ -77,7 +92,6 @@ removeGeoJsonLayer(map: GoogleMap, layer: GeoJsonLayer) {
 }
 ```
 
-### Custom Markers
 
 ## License
 

@@ -18,8 +18,6 @@ declare module '@nativescript/google-maps' {
 }
 
 export class GoogleMapUtils {
-	constructor(map: GoogleMap);
-
 	heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
 	clusterManager(markers: MarkerOptions[]): ClusterManager;
 
@@ -49,6 +47,7 @@ export interface IHeatmapTileProvider {
 }
 
 export class HeatmapTileProvider implements IHeatmapTileProvider {
+	constructor(options: HeatmapOptions);
 	static fromNative: (nativeHeatmap: any) => HeatmapTileProvider;
 	setData: (coordinates: Coordinate[]) => void;
 	setGradient: (gradient: IGradient[]) => void;

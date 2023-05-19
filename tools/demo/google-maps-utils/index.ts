@@ -1,8 +1,10 @@
 import { DemoSharedBase } from '../utils';
-import { GeoJsonLayer, ClusterManager, ClusterItem, HeatmapTileProvider, IHeatmapOptions, IconFactory, GoogleMapUtils } from '@nativescript/google-maps-utils';
+import { GeoJsonLayer, HeatmapTileProvider, GoogleMapUtils } from '@nativescript/google-maps-utils';
 import { Color } from '@nativescript/core';
 import { CameraUpdate, GoogleMap, MapReadyEvent, MarkerOptions } from '@nativescript/google-maps';
+import { installMixins } from '@nativescript/google-maps-utils';
 import { australia } from './geojson.example';
+installMixins();
 
 function generateRandomPosition(position, distance) {
 	var r = distance / 111300;
@@ -30,30 +32,19 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	heatmapOverlay;
 
 	testIt() {
-		this.geoJson = new GeoJsonLayer(this.map, australia, {
+		this.geoJson = this.map.addGeoJson(australia, {
 			fillColor: new Color('blue'),
 			strokeColor: new Color('red'),
 			width: 4,
 		});
 
-		this.geoJson.addLayerToMap();
 		const features = this.geoJson.features;
-		// features[0].style.fillColor = new Color('green');
-		// features[1].style.strokeColor = new Color('yellow');
-
-		// features[0].properties = {
-		// 	STATE_NAME: 'blueberry',
-		// };
-
-		// console.log(features[0].properties);
-
-		// this.geoJson.removeLayerFromMap();
+		features[0].style.fillColor = new Color('green');
+		features[1].style.strokeColor = new Color('yellow');
 	}
 
 	async onMapReady(args: MapReadyEvent) {
 		this.map = args.map;
-
-		this.googleMapsUtils = new GoogleMapUtils(this.map);
 
 		this.map.animateCamera(
 			CameraUpdate.fromCoordinate(
@@ -70,7 +61,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			positionSet.push(generateRandomPosition([-32.093407, 116.240609], 10000));
 		}
 
-		this.heatmapProvider = this.googleMapsUtils.addHeatmapLayer({
+		this.heatmapProvider = new HeatmapTileProvider({
 			coordinates: positionSet,
 			gradient: [
 				{ color: 'blue', stop: 0.2 },
@@ -83,10 +74,15 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			tileProvider: this.heatmapProvider,
 		} as any);
 
-		// this.heatmapProvider.setData(positionSet);
-		// this.heatmapProvider.opacity = 0.3;
-		// // Need to clear cache to show adjustments
-		// this.heatmapOverlay.clearTileCache();
+		this.heatmapProvider.setData(positionSet);
+		this.heatmapProvider.opacity = 0.3;
+		this.heatmapProvider.setGradient([
+			{ color: 'red', stop: 0.2 },
+			{ color: 'yellow', stop: 0.5 },
+			{ color: 'black', stop: 0.9 },
+		]);
+		// Need to clear cache to show adjustments
+		this.heatmapOverlay.clearTileCache();
 
 		//building marker list;
 		const clusterSet: MarkerOptions[] = [];
@@ -105,17 +101,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			clusterSet.push(clusterItem);
 		}
 
-		this.googleMapsUtils.addClusterManager(clusterSet);
-
-		const iconFactory = new IconFactory();
-		iconFactory.color = new Color('#3592ea');
-
-		this.map.addMarker({
-			position: {
-				lat: -32.123,
-				lng: 122.312,
-			},
-			icon: iconFactory.makeIcon('B'),
-		});
+		this.map.clusterManager(clusterSet);
 	}
 }
