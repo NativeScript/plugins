@@ -2183,3 +2183,5 @@ export class Dot extends PatternItem {
 		return this.native;
 	}
 }
+
+export { MapType, JointType };

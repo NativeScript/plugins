@@ -1882,3 +1882,4 @@ export class VisibleRegion implements IVisibleRegion {
 
 export class PatternItem implements IPatternItem {}
 export class Cap implements ICap {}
+export { MapType, JointType };
