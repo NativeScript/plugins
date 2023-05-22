@@ -1706,6 +1706,10 @@ export class TileOverlay implements Partial<ITileOverlay> {
 	set zIndex(value) {
 		this.native.zIndex = value;
 	}
+
+	clearTileCache() {
+		this.native.clearTileCache();
+	}
 }
 
 export class Tile {
