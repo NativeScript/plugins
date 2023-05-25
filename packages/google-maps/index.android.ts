@@ -1782,6 +1782,10 @@ export class TileOverlay implements Partial<ITileOverlay> {
 	set zIndex(value) {
 		this.native.setZIndex(value);
 	}
+
+	clearTileCache() {
+		this.native.clearTileCache();
+	}
 }
 
 export class Tile {
@@ -2183,3 +2187,5 @@ export class Dot extends PatternItem {
 		return this.native;
 	}
 }
+
+export { MapType, JointType };

@@ -490,6 +490,7 @@ class GMSSyncTileLayerImpl extends GMSSyncTileLayer {
 }
 
 export class MapView extends MapViewBase {
+	// @ts-ignore
 	nativeView: GMSMapView;
 	#delegate: GMSMapViewDelegateImpl;
 	#indoorDelegate: GMSIndoorDisplayDelegateImpl;
@@ -1705,6 +1706,10 @@ export class TileOverlay implements Partial<ITileOverlay> {
 	set zIndex(value) {
 		this.native.zIndex = value;
 	}
+
+	clearTileCache() {
+		this.native.clearTileCache();
+	}
 }
 
 export class Tile {
@@ -1881,3 +1886,4 @@ export class VisibleRegion implements IVisibleRegion {
 
 export class PatternItem implements IPatternItem {}
 export class Cap implements ICap {}
+export { MapType, JointType };

@@ -6,6 +6,6 @@ framework module NativeScriptIOSSecurity {
 }
 
 module NativeScriptIOSSecurity.Swift {
-    header "NativeScriptIOSSecurity-Swift.h"
-    requires objc
+  header "NativeScriptIOSSecurity-Swift.h"
+  requires objc
 }
