@@ -1871,6 +1871,7 @@ export class TileProvider implements ITileProvider {
 export class UrlTileProvider extends TileProvider {
 	_native: com.google.android.gms.maps.model.UrlTileProvider;
 
+	// @ts-ignore
 	_callback: (x: number, y: number, zoom: number) => string;
 
 	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
