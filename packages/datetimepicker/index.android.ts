@@ -106,8 +106,8 @@ export class DateTimePicker extends DateTimePickerBase {
 	private static _defaultsInitialized = false;
 	private static _nativeDialog: android.app.AlertDialog = null;
 
-	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<{ year: number; month: number; date: number }> {
-		const pickDate = new Promise<{ year: number; month: number; date: number }>((resolve) => {
+	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<Date> {
+		const pickDate = new Promise<Date>((resolve) => {
 			let originalLocale: java.util.Locale;
 			if (options.locale) {
 				originalLocale = java.util.Locale.getDefault();
@@ -115,22 +115,15 @@ export class DateTimePicker extends DateTimePickerBase {
 				java.util.Locale.setDefault(preferredLocale);
 			}
 
-			const nativeDatePicker = DateTimePicker._createNativeDatePicker(options, (result: { year: number; month: number; date: number }) => {
+			const nativeDatePicker = DateTimePicker._createNativeDatePicker(options, (result: { param1: number; param2: number; param3: number }) => {
 				if (originalLocale) {
 					java.util.Locale.setDefault(originalLocale);
 				}
 
-				resolve(result);
+				resolve(new Date(new Date().setUTCFullYear(result.param1, result.param2, result.param3)));
 			});
 
-			// const nativeDialogBuilder = DateTimePicker._createNativeDialog(nativeDatePicker, options, options.date, (result: Date) => {
-			// 	if (originalLocale) {
-			// 		java.util.Locale.setDefault(originalLocale);
-			// 	}
-			// 	resolve(result);
-			// });
-			// // Setting the private nativeDialog to allow dismissing Programmatically
-			// DateTimePicker._nativeDialog = DateTimePicker._showNativeDialog(nativeDialogBuilder, nativeDatePicker, style);
+			nativeDatePicker.show();
 		});
 
 		return pickDate;
@@ -178,7 +171,7 @@ export class DateTimePicker extends DateTimePickerBase {
 
 		const dialogListener = new DatePickerListener(callback);
 
-		let datePickerDialog = new android.app.DatePickerDialog(context, dialogListener, date.getFullYear(), date.getMonth(), date.getDate());
+		let datePickerDialog = new android.app.DatePickerDialog(context, android.R.style.Theme_DeviceDefault_Light_Dialog, dialogListener, date.getFullYear(), date.getMonth(), date.getDate());
 		let datePicker = datePickerDialog.getDatePicker();
 
 		if (options.maxDate) {
@@ -233,7 +226,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		} else {
 			dateTime = nativePicker instanceof android.widget.DatePicker ? getDateToday() : getDateNow();
 		}
-		const nativeDialogBuilder = new android.app.AlertDialog.Builder(context);
+		const nativeDialogBuilder = new android.app.AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth);
 		const dialogListener = new DialogListener(nativePicker, dateTime, callback, minuteInterval);
 		if (options.title) {
 			nativeDialogBuilder.setTitle(options.title);
