@@ -8,7 +8,7 @@ export const BUTTON_OK_CSS_NAME = 'date-time-picker-button-ok';
 export const BUTTON_CANCEL_CSS_NAME = 'date-time-picker-button-cancel';
 
 export class DateTimePickerBase implements DateTimePickerDefinition {
-	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyleDefinition): Promise<Date> {
+	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyleDefinition): Promise<Date | { year: number; month: number; date: number }> {
 		return Promise.resolve(null);
 	}
 	static pickTime(options: TimePickerOptions, style?: DateTimePickerStyleDefinition): Promise<Date> {

@@ -5,6 +5,7 @@ export * from './ui';
 export * from './utils';
 
 let DialogListener: any;
+let DatePickerListener: any;
 let AppCompatNamespace: any;
 declare let global: any;
 
@@ -75,6 +76,28 @@ function initializeDialogListener(): void {
 	DialogListener = DialogListenerImpl;
 }
 
+function initializeDatePickerListener() {
+	if (DatePickerListener) {
+		return;
+	}
+
+	@NativeClass()
+	@Interfaces([android.app.DatePickerDialog.OnDateSetListener])
+	class DaterPickerListener extends java.lang.Object implements android.app.DatePickerDialog.OnDateSetListener {
+		constructor(public callback: Function) {
+			super();
+
+			return global.__native(this);
+		}
+
+		public onDateSet(param0: globalAndroid.widget.DatePicker, param1: number, param2: number, param3: number): void {
+			this.callback({ param1, param2, param3 });
+		}
+	}
+
+	DatePickerListener = DaterPickerListener;
+}
+
 export class DateTimePickerStyle extends DateTimePickerStyleBase {}
 
 export class DateTimePicker extends DateTimePickerBase {
@@ -83,24 +106,33 @@ export class DateTimePicker extends DateTimePickerBase {
 	private static _defaultsInitialized = false;
 	private static _nativeDialog: android.app.AlertDialog = null;
 
-	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<Date> {
-		const pickDate = new Promise<Date>((resolve) => {
+	static pickDate(options: DatePickerOptions, style?: DateTimePickerStyle): Promise<{ year: number; month: number; date: number }> {
+		const pickDate = new Promise<{ year: number; month: number; date: number }>((resolve) => {
 			let originalLocale: java.util.Locale;
 			if (options.locale) {
 				originalLocale = java.util.Locale.getDefault();
 				let preferredLocale = LocalizationUtils.createNativeLocale(options.locale);
 				java.util.Locale.setDefault(preferredLocale);
 			}
-			const nativeDatePicker = DateTimePicker._createNativeDatePicker(options);
-			const nativeDialogBuilder = DateTimePicker._createNativeDialog(nativeDatePicker, options, options.date, (result: Date) => {
+
+			const nativeDatePicker = DateTimePicker._createNativeDatePicker(options, (result: { year: number; month: number; date: number }) => {
 				if (originalLocale) {
 					java.util.Locale.setDefault(originalLocale);
 				}
+
 				resolve(result);
 			});
-			// Setting the private nativeDialog to allow dismissing Programmatically
-			DateTimePicker._nativeDialog = DateTimePicker._showNativeDialog(nativeDialogBuilder, nativeDatePicker, style);
+
+			// const nativeDialogBuilder = DateTimePicker._createNativeDialog(nativeDatePicker, options, options.date, (result: Date) => {
+			// 	if (originalLocale) {
+			// 		java.util.Locale.setDefault(originalLocale);
+			// 	}
+			// 	resolve(result);
+			// });
+			// // Setting the private nativeDialog to allow dismissing Programmatically
+			// DateTimePicker._nativeDialog = DateTimePicker._showNativeDialog(nativeDialogBuilder, nativeDatePicker, style);
 		});
+
 		return pickDate;
 	}
 
@@ -137,19 +169,26 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 	}
 
-	static _createNativeDatePicker(options: DatePickerOptions): android.widget.DatePicker {
+	static _createNativeDatePicker(options: DatePickerOptions, callback: Function): android.app.DatePickerDialog {
 		const date = options.date ? new Date(options.date.getTime()) : getDateToday();
+
 		const context = options.context;
-		let datePicker = new android.widget.DatePicker(context);
-		datePicker.init(date.getFullYear(), date.getMonth(), date.getDate(), null);
-		datePicker.setCalendarViewShown(false);
+
+		initializeDatePickerListener();
+
+		const dialogListener = new DatePickerListener(callback);
+
+		let datePickerDialog = new android.app.DatePickerDialog(context, dialogListener, date.getFullYear(), date.getMonth(), date.getDate());
+		let datePicker = datePickerDialog.getDatePicker();
+
 		if (options.maxDate) {
 			datePicker.setMaxDate(options.maxDate.getTime());
 		}
 		if (options.minDate) {
 			datePicker.setMinDate(options.minDate.getTime());
 		}
-		return datePicker;
+
+		return datePickerDialog;
 	}
 
 	static _createNativeTimePicker(options: TimePickerOptions): android.widget.TimePicker {
