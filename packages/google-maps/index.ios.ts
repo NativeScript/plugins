@@ -47,12 +47,12 @@ import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewB
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
 
 export class CameraUpdate implements ICameraUpdate {
-	#native: GMSCameraUpdate;
+	_native: GMSCameraUpdate;
 
 	static fromNative(nativeUpdate: GMSCameraUpdate) {
 		if (nativeUpdate instanceof GMSCameraUpdate) {
 			const update = new CameraUpdate();
-			update.#native = nativeUpdate;
+			update._native = nativeUpdate;
 			return update;
 		}
 		return null;
@@ -114,7 +114,7 @@ export class CameraUpdate implements ICameraUpdate {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -123,19 +123,19 @@ export class CameraUpdate implements ICameraUpdate {
 }
 
 export class CameraPosition implements ICameraPosition {
-	#native: GMSCameraPosition;
+	_native: GMSCameraPosition;
 
 	constructor(target: Coordinate, zoom: number, bearing?: number, tilt?: number) {
 		if (target && typeof zoom === 'number') {
 			if (arguments.length === 2) {
-				this.#native = GMSCameraPosition.cameraWithLatitudeLongitudeZoom(target.lat, target.lng, zoom);
+				this._native = GMSCameraPosition.cameraWithLatitudeLongitudeZoom(target.lat, target.lng, zoom);
 			} else {
 				if (typeof bearing === 'number' && typeof tilt === 'number') {
-					this.#native = GMSCameraPosition.cameraWithLatitudeLongitudeZoomBearingViewingAngle(target.lat, target.lng, zoom, bearing, tilt);
+					this._native = GMSCameraPosition.cameraWithLatitudeLongitudeZoomBearingViewingAngle(target.lat, target.lng, zoom, bearing, tilt);
 				} else {
 					const native = GMSCameraPosition.cameraWithLatitudeLongitudeZoom(target.lat, target.lng, zoom);
 
-					this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(native.target, native.zoom, bearing ?? native.bearing, tilt ?? native.viewingAngle);
+					this._native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(native.target, native.zoom, bearing ?? native.bearing, tilt ?? native.viewingAngle);
 				}
 			}
 		}
@@ -144,14 +144,14 @@ export class CameraPosition implements ICameraPosition {
 	static fromNative(nativePosition: GMSCameraPosition) {
 		if (nativePosition instanceof GMSCameraPosition) {
 			const position = new CameraPosition(null, null);
-			position.#native = nativePosition;
+			position._native = nativePosition;
 			return position;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -163,7 +163,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set bearing(value) {
-		this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, this.native.zoom, value, this.native.viewingAngle);
+		this._native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, this.native.zoom, value, this.native.viewingAngle);
 	}
 
 	get target(): Coordinate {
@@ -174,7 +174,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set target(value) {
-		this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(CLLocationCoordinate2DMake(value.lat, value.lng), this.native.zoom, this.native.bearing, this.native.viewingAngle);
+		this._native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(CLLocationCoordinate2DMake(value.lat, value.lng), this.native.zoom, this.native.bearing, this.native.viewingAngle);
 	}
 
 	get tilt(): number {
@@ -182,7 +182,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set tilt(value) {
-		this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, this.native.zoom, this.native.bearing, value);
+		this._native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, this.native.zoom, this.native.bearing, value);
 	}
 
 	get zoom(): number {
@@ -190,7 +190,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set zoom(value) {
-		this.#native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, value, this.native.bearing, this.native.viewingAngle);
+		this._native = GMSCameraPosition.cameraWithTargetZoomBearingViewingAngle(this.native.target, value, this.native.bearing, this.native.viewingAngle);
 	}
 
 	toJSON() {
@@ -492,12 +492,12 @@ class GMSSyncTileLayerImpl extends GMSSyncTileLayer {
 export class MapView extends MapViewBase {
 	// @ts-ignore
 	nativeView: GMSMapView;
-	#delegate: GMSMapViewDelegateImpl;
-	#indoorDelegate: GMSIndoorDisplayDelegateImpl;
-	static #didInit = false;
+	_delegate: GMSMapViewDelegateImpl;
+	_indoorDelegate: GMSIndoorDisplayDelegateImpl;
+	static _didInit = false;
 
-	static #init() {
-		if (this.#didInit) {
+	static _init() {
+		if (this._didInit) {
 			return;
 		}
 		const info = NSBundle.mainBundle.pathForResourceOfType('Info', '.plist');
@@ -508,27 +508,33 @@ export class MapView extends MapViewBase {
 		} else {
 			console.error('Failed to load APIKey');
 		}
-		this.#didInit = true;
+		this._didInit = true;
 	}
 
 	createNativeView() {
-		MapView.#init();
+		MapView._init();
 		const nativeView = GMSMapView.mapWithFrameCamera(CGRectZero, null);
-		this.#delegate = GMSMapViewDelegateImpl.initWithOwner(new WeakRef(this));
-		this.#indoorDelegate = GMSIndoorDisplayDelegateImpl.initWithOwner(new WeakRef(this));
+		this._delegate = GMSMapViewDelegateImpl.initWithOwner(new WeakRef(this));
+		this._indoorDelegate = GMSIndoorDisplayDelegateImpl.initWithOwner(new WeakRef(this));
 		return nativeView;
 	}
 
 	initNativeView(): void {
 		super.initNativeView();
-		this.nativeView.delegate = this.#delegate;
-		this.nativeView.indoorDisplay.delegate = this.#indoorDelegate;
+		this.nativeView.delegate = this._delegate;
+		this.nativeView.indoorDisplay.delegate = this._indoorDelegate;
 	}
 
-	#isReady = false;
+	public disposeNativeView() {
+		this.nativeView.delegate = null;
+		this.nativeView.indoorDisplay.delegate = null;
+		super.disposeNativeView();
+	}
+
+	_isReady = false;
 	public onLoaded(): void {
 		super.onLoaded();
-		if (!this.#isReady) {
+		if (!this._isReady) {
 			this._updateCamera(this.nativeView, {
 				lat: this.lat,
 				lng: this.lng,
@@ -542,7 +548,7 @@ export class MapView extends MapViewBase {
 				object: this,
 				map: GoogleMap.fromNative(this.nativeView),
 			});
-			this.#isReady = true;
+			this._isReady = true;
 		}
 	}
 
@@ -649,19 +655,19 @@ export class MapView extends MapViewBase {
 }
 
 export class IndoorLevel implements IIndoorLevel {
-	#native: GMSIndoorLevel;
+	_native: GMSIndoorLevel;
 
 	static fromNative(nativeIndoorLevel: GMSIndoorLevel) {
 		if (nativeIndoorLevel instanceof GMSIndoorLevel) {
 			const indoorLevel = new IndoorLevel();
-			indoorLevel.#native = nativeIndoorLevel;
+			indoorLevel._native = nativeIndoorLevel;
 			return indoorLevel;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -678,19 +684,19 @@ export class IndoorLevel implements IIndoorLevel {
 }
 
 export class IndoorBuilding implements IIndoorBuilding {
-	#native: GMSIndoorBuilding;
+	_native: GMSIndoorBuilding;
 
 	static fromNative(nativeIndoorBuilding: GMSIndoorBuilding) {
 		if (nativeIndoorBuilding instanceof GMSIndoorBuilding) {
 			const indoorBuilding = new IndoorBuilding();
-			indoorBuilding.#native = nativeIndoorBuilding;
+			indoorBuilding._native = nativeIndoorBuilding;
 			return indoorBuilding;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -718,19 +724,19 @@ export class IndoorBuilding implements IIndoorBuilding {
 }
 
 export class UISettings implements IUISettings {
-	#native: GMSUISettings;
+	_native: GMSUISettings;
 
 	static fromNative(nativeUiSettings: GMSUISettings) {
 		if (nativeUiSettings instanceof GMSUISettings) {
 			const settings = new UISettings();
-			settings.#native = nativeUiSettings;
+			settings._native = nativeUiSettings;
 			return settings;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -810,19 +816,19 @@ export class UISettings implements IUISettings {
 }
 
 export class GoogleMap implements IGoogleMap {
-	#native: GMSMapView;
+	_native: GMSMapView;
 
 	static fromNative(nativeMap: GMSMapView) {
 		if (nativeMap instanceof GMSMapView) {
 			const map = new GoogleMap();
-			map.#native = nativeMap;
+			map._native = nativeMap;
 			return map;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -916,14 +922,14 @@ export class GoogleMap implements IGoogleMap {
 		}
 	}
 
-	#mapStyle: Style[];
+	_mapStyle: Style[];
 	get mapStyle() {
-		return this.#mapStyle;
+		return this._mapStyle;
 	}
 
 	set mapStyle(value) {
 		try {
-			this.#mapStyle = value;
+			this._mapStyle = value;
 			const style = JSON.stringify(value);
 			this.native.mapStyle = GMSMapStyle.styleWithJSONStringError(style);
 		} catch (e) {
@@ -1047,30 +1053,30 @@ abstract class OverLayBase {
 }
 
 export class Marker extends OverLayBase implements IMarker {
-	#native: GMSMarker;
-	#color = new Color('red');
-	#visible = true;
+	_native: GMSMarker;
+	_color = new Color('red');
+	_visible = true;
 	static fromNative(nativeMarker: GMSMarker) {
 		if (nativeMarker instanceof GMSMarker) {
 			const marker = new Marker();
-			marker.#native = nativeMarker;
-			marker.#icon = new ImageSource();
+			marker._native = nativeMarker;
+			marker._icon = new ImageSource();
 			return marker;
 		}
 		return null;
 	}
 
 	get color(): string | Color {
-		return this.#color;
+		return this._color;
 	}
 
 	set color(value: string | Color) {
 		if (value instanceof Color) {
-			this.#color = value;
+			this._color = value;
 			this.native.icon = GMSMarker.markerImageWithColor(value.ios);
 		} else if (typeof value === 'string') {
-			this.#color = new Color(value);
-			this.native.icon = GMSMarker.markerImageWithColor(this.#color.ios);
+			this._color = new Color(value);
+			this.native.icon = GMSMarker.markerImageWithColor(this._color.ios);
 		}
 	}
 
@@ -1083,29 +1089,29 @@ export class Marker extends OverLayBase implements IMarker {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
 		return this.native;
 	}
 
-	#icon: ImageSource = null;
+	_icon: ImageSource = null;
 	get icon(): any {
-		if (this.#icon?.ios === this.native.icon) {
-			return this.#icon;
+		if (this._icon?.ios === this.native.icon) {
+			return this._icon;
 		} else if (this.native.icon) {
-			this.#icon.setNativeSource(this.native.icon);
+			this._icon.setNativeSource(this.native.icon);
 		}
-		return this.#icon;
+		return this._icon;
 	}
 
 	set icon(value) {
 		if (value instanceof UIImage) {
 			this.native.icon = value;
-			this.#icon.setNativeSource(value);
+			this._icon.setNativeSource(value);
 		} else if (value instanceof ImageSource) {
-			this.#icon = value;
+			this._icon = value;
 			this.native.icon = value.ios;
 		}
 	}
@@ -1154,11 +1160,11 @@ export class Marker extends OverLayBase implements IMarker {
 	}
 
 	get visible(): boolean {
-		return this.#visible;
+		return this._visible;
 	}
 
 	set visible(value: boolean) {
-		this.#visible = value;
+		this._visible = value;
 		this.native.opacity = this.visible ? 1 : 0;
 	}
 
@@ -1194,19 +1200,19 @@ export class Marker extends OverLayBase implements IMarker {
 }
 
 export class Circle extends OverLayBase implements ICircle {
-	#native: GMSCircle;
+	_native: GMSCircle;
 
 	static fromNative(nativeCircle: GMSCircle) {
 		if (nativeCircle instanceof GMSCircle) {
 			const circle = new Circle();
-			circle.#native = nativeCircle;
+			circle._native = nativeCircle;
 			return circle;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1286,19 +1292,19 @@ export class Circle extends OverLayBase implements ICircle {
 }
 
 export class Polygon extends OverLayBase implements IPolygon {
-	#native: GMSPolygon;
+	_native: GMSPolygon;
 
 	static fromNative(nativePolygon: GMSPolygon) {
 		if (nativePolygon instanceof GMSPolygon) {
 			const polygon = new Polygon();
-			polygon.#native = nativePolygon;
+			polygon._native = nativePolygon;
 			return polygon;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1421,19 +1427,19 @@ export class Polygon extends OverLayBase implements IPolygon {
 }
 
 export class Polyline extends OverLayBase implements IPolyline {
-	#native: GMSPolyline;
+	_native: GMSPolyline;
 
 	static fromNative(nativePolyline: GMSPolyline) {
 		if (nativePolyline instanceof GMSPolyline) {
 			const polyline = new Polyline();
-			polyline.#native = nativePolyline;
+			polyline._native = nativePolyline;
 			return polyline;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1519,24 +1525,24 @@ export class Polyline extends OverLayBase implements IPolyline {
 }
 
 export class GroundOverlay extends OverLayBase implements IGroundOverlay {
-	#native: GMSGroundOverlay;
+	_native: GMSGroundOverlay;
 
 	constructor() {
 		super();
-		this.#image = new ImageSource();
+		this._image = new ImageSource();
 	}
 
 	static fromNative(nativeGroundOverlayOptions: GMSGroundOverlay) {
 		if (nativeGroundOverlayOptions instanceof GMSGroundOverlay) {
 			const groundOverlayOptions = new GroundOverlay();
-			groundOverlayOptions.#native = nativeGroundOverlayOptions;
+			groundOverlayOptions._native = nativeGroundOverlayOptions;
 			return groundOverlayOptions;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1616,33 +1622,33 @@ export class GroundOverlay extends OverLayBase implements IGroundOverlay {
 		this.native.bearing = value;
 	}
 
-	#image: ImageSource;
+	_image: ImageSource;
 	get image(): ImageSource {
-		return this.#image;
+		return this._image;
 	}
 
 	set image(value) {
 		if (value instanceof UIImage) {
 			this.native.icon = value;
-			this.#image.setNativeSource(value);
+			this._image.setNativeSource(value);
 		} else if (value instanceof ImageSource) {
-			this.#image = value;
+			this._image = value;
 			this.native.icon = value.ios;
 		}
 	}
 }
 
 export class Poi implements IPoi {
-	#name: string;
-	#placeId: string;
-	#coord: CLLocationCoordinate2D;
+	_name: string;
+	_placeId: string;
+	_coord: CLLocationCoordinate2D;
 
 	static fromNative(placeID: string, name: string, location: CLLocationCoordinate2D) {
 		if (arguments.length === 3) {
 			const poi = new Poi();
-			poi.#placeId = placeID;
-			poi.#name = name;
-			poi.#coord = location;
+			poi._placeId = placeID;
+			poi._name = name;
+			poi._coord = location;
 		}
 		return null;
 	}
@@ -1657,34 +1663,34 @@ export class Poi implements IPoi {
 
 	get coordinate(): Coordinate {
 		return {
-			lat: this.#coord.latitude,
-			lng: this.#coord.longitude,
+			lat: this._coord.latitude,
+			lng: this._coord.longitude,
 		};
 	}
 
 	get name(): string {
-		return this.#name;
+		return this._name;
 	}
 
 	get placeId(): string {
-		return this.#placeId;
+		return this._placeId;
 	}
 }
 
 export class TileOverlay implements Partial<ITileOverlay> {
-	#native: GMSTileLayer;
+	_native: GMSTileLayer;
 
 	static fromNative(nativeOverlay: GMSTileLayer) {
 		if (nativeOverlay instanceof GMSTileLayer) {
 			const overlay = new TileOverlay();
-			overlay.#native = nativeOverlay;
+			overlay._native = nativeOverlay;
 			return overlay;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1713,20 +1719,20 @@ export class TileOverlay implements Partial<ITileOverlay> {
 }
 
 export class Tile {
-	#native: UIImage;
-	static #NONE;
+	_native: UIImage;
+	static _NONE;
 
 	static get NONE() {
-		if (!this.#NONE) {
-			this.#NONE = Tile.fromNative(kGMSTileLayerNoTile);
+		if (!this._NONE) {
+			this._NONE = Tile.fromNative(kGMSTileLayerNoTile);
 		}
-		return this.#NONE;
+		return this._NONE;
 	}
 
 	static fromNative(nativeTile: UIImage) {
 		if (nativeTile instanceof UIImage) {
 			const tileTile = new Tile();
-			tileTile.#native = nativeTile;
+			tileTile._native = nativeTile;
 			return tileTile;
 		}
 		return null;
@@ -1737,7 +1743,7 @@ export class Tile {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1746,25 +1752,25 @@ export class Tile {
 }
 
 export class TileProvider implements ITileProvider {
-	#native: GMSTileLayer;
+	_native: GMSTileLayer;
 
 	constructor(callback: (x: number, y: number, zoom: number) => Tile) {
 		if (typeof callback === 'function') {
-			this.#native = GMSSyncTileLayerImpl.initWithCallback(callback);
+			this._native = GMSSyncTileLayerImpl.initWithCallback(callback);
 		}
 	}
 
 	static fromNative(nativeTileProvider: GMSSyncTileLayer) {
 		if (nativeTileProvider instanceof GMSSyncTileLayer) {
 			const tileTileProvider = new TileProvider(null);
-			tileTileProvider.#native = nativeTileProvider;
+			tileTileProvider._native = nativeTileProvider;
 			return tileTileProvider;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1773,19 +1779,19 @@ export class TileProvider implements ITileProvider {
 }
 
 export class UrlTileProvider extends TileProvider {
-	#native: GMSURLTileLayer;
+	_native: GMSURLTileLayer;
 
 	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
 		super(null);
 		const ref = new WeakRef(this);
-		this.#native = GMSURLTileLayer.tileLayerWithURLConstructor((x, y, zoom) => {
+		this._native = GMSURLTileLayer.tileLayerWithURLConstructor((x, y, zoom) => {
 			return NSURL.URLWithString(callback(x, y, zoom));
 		});
-		this.#native.tileSize = size;
+		this._native.tileSize = size;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1794,19 +1800,19 @@ export class UrlTileProvider extends TileProvider {
 }
 
 export class Projection implements IProjection {
-	#native: GMSProjection;
+	_native: GMSProjection;
 
 	static fromNative(nativeProjection: GMSProjection) {
 		if (nativeProjection instanceof GMSProjection) {
 			const projection = new Projection();
-			projection.#native = nativeProjection;
+			projection._native = nativeProjection;
 			return projection;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
@@ -1836,19 +1842,19 @@ export class Projection implements IProjection {
 }
 
 export class VisibleRegion implements IVisibleRegion {
-	#native: GMSVisibleRegion;
+	_native: GMSVisibleRegion;
 
 	static fromNative(nativeVisibleRegion: GMSVisibleRegion) {
 		if (nativeVisibleRegion instanceof GMSVisibleRegion) {
 			const region = new VisibleRegion();
-			region.#native = nativeVisibleRegion;
+			region._native = nativeVisibleRegion;
 			return region;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get ios() {
