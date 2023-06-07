@@ -1,3 +1,13 @@
+
+repositories {
+<<<<<<< HEAD
+    
+    jcenter()
+=======
+   jcenter()
+>>>>>>> parent of 6b51057 (Revert "fix(twitter): Could not find com.twitter.sdk.android")
+}
+
 dependencies {
     implementation('com.twitter.sdk.android:twitter-core:3.3.0') {
         transitive = true
