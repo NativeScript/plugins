@@ -228,7 +228,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		} else {
 			dateTime = nativePicker instanceof android.widget.DatePicker ? getDateToday() : getDateNow();
 		}
-		const nativeDialogBuilder = new android.app.AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth);
+		const nativeDialogBuilder = new android.app.AlertDialog.Builder(context);
 		const dialogListener = new DialogListener(nativePicker, dateTime, callback, minuteInterval);
 		if (options.title) {
 			nativeDialogBuilder.setTitle(options.title);
