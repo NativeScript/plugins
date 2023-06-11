@@ -1,5 +1,4 @@
 # @nativescript/google-signin
-A plugin that allows you to authenticate users with Google Sign-In.
 
 ## Contents
 * [Installation](#installation)
@@ -22,6 +21,11 @@ A plugin that allows you to authenticate users with Google Sign-In.
 		* [getCurrentUser()](#getcurrentuser)
 	* [User](#user)
 	* [GoogleSignInButton](#googlesigninbutton)
+
+
+## Intro
+
+A plugin that allows you to authenticate users with Google Sign-In.
 
 ## Installation
 
@@ -127,13 +131,13 @@ Then use it in a `.vue` file as follows:
 
 2. Call the [signIn()](#signin) method on GoogleSignInButton tap
 
-Before you call the [signIn()](#signin) or the [signInSilently()](#signinsilently) method to sign in the user, call `configure()` to initialize Firebase.
+Before you call the [signIn()](#signin) or the [signInSilently()](#signinsilently) method to sign in the user, call `configure()` to initialize Firebase. If you do want to set any configuration options, you can pass an empty object `{}` as a parameter to [configure](#configure).
 
 ```ts
 import { GoogleSignin } from '@nativescript/google-signin';
 
 try {
-	await GoogleSignin.configure();
+	await GoogleSignin.configure({});
 	const user = await GoogleSignin.signIn();
 } catch (e) {}
 ```
