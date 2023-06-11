@@ -13,13 +13,14 @@ extension SwiftUIProvider {
         let childVC = buildViewController(content: content)
         childVC.view.backgroundColor = .clear
         addChild(childVC)
-        childVC.view.translatesAutoresizingMaskIntoConstraints = false
-        childVC.view.frame = view.frame
+        // childVC.view.translatesAutoresizingMaskIntoConstraints = false
+        childVC.view.frame = view.bounds
+        childVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(childVC.view)
-        childVC.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        childVC.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        childVC.view.widthAnchor.constraint(equalToConstant: 128).isActive = true
-        childVC.view.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        // childVC.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        // childVC.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        // childVC.view.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        // childVC.view.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         childVC.didMove(toParent: self)
     }
     

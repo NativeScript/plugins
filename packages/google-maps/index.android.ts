@@ -69,80 +69,13 @@ export class MapView extends MapViewBase {
 	lifeCycleHooks;
 	createdBundle = null;
 	savedBundle = null;
-	#listener: com.google.android.gms.maps.OnMapReadyCallback;
+	_listener: com.google.android.gms.maps.OnMapReadyCallback;
 	_map: com.google.android.gms.maps.GoogleMap;
-	constructor() {
-		super();
-		const ref = new WeakRef(this);
-		this.lifeCycleHooks = new android.app.Application.ActivityLifecycleCallbacks(<any>{
-			onActivityCreated(param0: android.app.Activity, param1: android.os.Bundle): void {
-				if (param0 !== Application.android.startActivity) {
-					return;
-				}
-				const owner = ref?.get?.();
-				if (owner) {
-					owner.createdBundle = param1;
-					if (owner.mapView) {
-						owner.mapView.onCreate(param1);
-					}
-				}
-			},
-			onActivityStarted(param0: android.app.Activity): void {
-				const owner = ref?.get?.();
-				if (owner?.mapView) {
-					owner.mapView.onStart();
-				}
-			},
-			onActivityResumed(param0: android.app.Activity): void {
-				const owner = ref?.get?.();
-				if (owner?.mapView) {
-					owner.mapView.onResume();
-				}
-			},
-			onActivityPaused(param0: android.app.Activity): void {
-				const owner = ref?.get?.();
-				if (owner?.mapView) {
-					owner.mapView.onPause();
-				}
-			},
-			onActivityStopped(param0: android.app.Activity): void {
-				const owner = ref?.get?.();
-				if (owner?.mapView) {
-					owner.mapView.onStop();
-				}
-			},
-			onActivitySaveInstanceState(param0: android.app.Activity, param1: android.os.Bundle): void {
-				if (param0 !== Application.android.startActivity) {
-					return;
-				}
-				const owner = ref?.get?.();
-				if (owner) {
-					owner.savedBundle = param1;
-					if (owner.mapView) {
-						owner.mapView.onSaveInstanceState(param1);
-					}
-				}
-			},
-			onActivityDestroyed(param0: android.app.Activity): void {
-				if (param0 !== Application.android.startActivity) {
-					return;
-				}
-				const owner = ref?.get?.();
-				if (owner) {
-					owner.createdBundle = null;
-					owner.savedBundle = null;
-					if (owner.mapView) {
-						owner.mapView.onDestroy();
-					}
-				}
-			},
-		});
-		Utils.android.getApplication().registerActivityLifecycleCallbacks(this.lifeCycleHooks);
-	}
-
+	_destroyed = false;
 	createNativeView() {
+		this._destroyed = false;
 		const ref = new WeakRef(this);
-		this.#listener = new com.google.android.gms.maps.OnMapReadyCallback({
+		this._listener = new com.google.android.gms.maps.OnMapReadyCallback({
 			onMapReady(map: com.google.android.gms.maps.GoogleMap): void {
 				const owner = ref.get?.();
 				container.addView(nativeView as any);
@@ -375,15 +308,88 @@ export class MapView extends MapViewBase {
 		});
 		const container = new android.widget.LinearLayout(this._context);
 		const nativeView = new com.google.android.gms.maps.MapView(this._context);
-		nativeView.getMapAsync(this.#listener);
-		this.mapView = nativeView;
 		nativeView.onCreate(this.createdBundle);
 		nativeView.onResume();
+		nativeView.getMapAsync(this._listener);
+		this.mapView = nativeView;
 		return container;
 	}
 
 	initNativeView(): void {
 		super.initNativeView();
+		const ref = new WeakRef(this);
+		this.lifeCycleHooks = new android.app.Application.ActivityLifecycleCallbacks(<any>{
+			onActivityCreated(param0: android.app.Activity, param1: android.os.Bundle): void {
+				if (param0 !== Application.android.startActivity) {
+					return;
+				}
+				const owner = ref?.get?.();
+				if (owner) {
+					owner.createdBundle = param1;
+					if (!owner?._destroyed && owner.mapView) {
+						owner.mapView.onCreate(param1);
+					}
+				}
+			},
+			onActivityStarted(param0: android.app.Activity): void {
+				const owner = ref?.get?.();
+				if (!owner?._destroyed && owner?.mapView) {
+					owner.mapView.onStart();
+				}
+			},
+			onActivityResumed(param0: android.app.Activity): void {
+				const owner = ref?.get?.();
+				if (!owner?._destroyed && owner?.mapView) {
+					owner.mapView.onResume();
+				}
+			},
+			onActivityPaused(param0: android.app.Activity): void {
+				const owner = ref?.get?.();
+				if (!owner?._destroyed && owner?.mapView) {
+					owner.mapView.onPause();
+				}
+			},
+			onActivityStopped(param0: android.app.Activity): void {
+				const owner = ref?.get?.();
+				if (!owner?._destroyed && owner?.mapView) {
+					owner.mapView.onStop();
+				}
+			},
+			onActivitySaveInstanceState(param0: android.app.Activity, param1: android.os.Bundle): void {
+				if (param0 !== Application.android.startActivity) {
+					return;
+				}
+				const owner = ref?.get?.();
+				if (owner) {
+					owner.savedBundle = param1;
+					if (!owner?._destroyed && owner.mapView) {
+						owner.mapView.onSaveInstanceState(param1);
+					}
+				}
+			},
+			onActivityDestroyed(param0: android.app.Activity): void {
+				if (param0 !== Application.android.startActivity) {
+					return;
+				}
+				const owner = ref?.get?.();
+				if (owner) {
+					owner.createdBundle = null;
+					owner.savedBundle = null;
+					if (!owner?._destroyed && owner.mapView) {
+						owner.mapView.onDestroy();
+					}
+				}
+			},
+		});
+		Utils.android.getApplication().registerActivityLifecycleCallbacks(this.lifeCycleHooks);
+	}
+
+	disposeNativeView() {
+		Utils.android.getApplication().unregisterActivityLifecycleCallbacks(this.lifeCycleHooks);
+		this.lifeCycleHooks = null;
+		this._map = null;
+		super.disposeNativeView();
+		this._destroyed = true;
 	}
 
 	[latProperty.setNative](value) {
@@ -480,19 +486,19 @@ export class MapView extends MapViewBase {
 }
 
 export class IndoorLevel implements IIndoorLevel {
-	#native: com.google.android.gms.maps.model.IndoorLevel;
+	_native: com.google.android.gms.maps.model.IndoorLevel;
 
 	static fromNative(nativeIndoorLevel: com.google.android.gms.maps.model.IndoorLevel) {
 		if (nativeIndoorLevel instanceof com.google.android.gms.maps.model.IndoorLevel) {
 			const indoorLevel = new IndoorLevel();
-			indoorLevel.#native = nativeIndoorLevel;
+			indoorLevel._native = nativeIndoorLevel;
 			return indoorLevel;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -509,19 +515,19 @@ export class IndoorLevel implements IIndoorLevel {
 }
 
 export class IndoorBuilding implements IIndoorBuilding {
-	#native: com.google.android.gms.maps.model.IndoorBuilding;
+	_native: com.google.android.gms.maps.model.IndoorBuilding;
 
 	static fromNative(nativeIndoorBuilding: com.google.android.gms.maps.model.IndoorBuilding) {
 		if (nativeIndoorBuilding instanceof com.google.android.gms.maps.model.IndoorBuilding) {
 			const indoorBuilding = new IndoorBuilding();
-			indoorBuilding.#native = nativeIndoorBuilding;
+			indoorBuilding._native = nativeIndoorBuilding;
 			return indoorBuilding;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -548,19 +554,19 @@ export class IndoorBuilding implements IIndoorBuilding {
 }
 
 export class UISettings implements IUISettings {
-	#native: com.google.android.gms.maps.UiSettings;
+	_native: com.google.android.gms.maps.UiSettings;
 
 	static fromNative(nativeUiSettings: com.google.android.gms.maps.UiSettings) {
 		if (nativeUiSettings instanceof com.google.android.gms.maps.UiSettings) {
 			const settings = new UISettings();
-			settings.#native = nativeUiSettings;
+			settings._native = nativeUiSettings;
 			return settings;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -653,19 +659,19 @@ export class UISettings implements IUISettings {
 }
 
 export class GoogleMap implements IGoogleMap {
-	#native: com.google.android.gms.maps.GoogleMap;
+	_native: com.google.android.gms.maps.GoogleMap;
 
 	static fromNative(nativeMap: com.google.android.gms.maps.GoogleMap) {
 		if (nativeMap instanceof com.google.android.gms.maps.GoogleMap) {
 			const map = new GoogleMap();
-			map.#native = nativeMap;
+			map._native = nativeMap;
 			return map;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -763,13 +769,13 @@ export class GoogleMap implements IGoogleMap {
 		return Projection.fromNative(this.native.getProjection());
 	}
 
-	#mapStyle: Style[];
+	_mapStyle: Style[];
 	get mapStyle() {
-		return this.#mapStyle;
+		return this._mapStyle;
 	}
 
 	set mapStyle(value) {
-		this.#mapStyle = value;
+		this._mapStyle = value;
 		try {
 			const style = new com.google.android.gms.maps.model.MapStyleOptions(JSON.stringify(value));
 			this.native.setMapStyle(style);
@@ -872,12 +878,12 @@ export class GoogleMap implements IGoogleMap {
 }
 
 export class CameraUpdate implements ICameraUpdate {
-	#native: com.google.android.gms.maps.CameraUpdate;
+	_native: com.google.android.gms.maps.CameraUpdate;
 
 	static fromNative(nativeUpdate: com.google.android.gms.maps.CameraUpdate) {
 		if (nativeUpdate instanceof com.google.android.gms.maps.CameraUpdate) {
 			const update = new CameraUpdate();
-			update.#native = nativeUpdate;
+			update._native = nativeUpdate;
 			return update;
 		}
 		return null;
@@ -937,7 +943,7 @@ export class CameraUpdate implements ICameraUpdate {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -946,7 +952,7 @@ export class CameraUpdate implements ICameraUpdate {
 }
 
 export class CameraPosition implements ICameraPosition {
-	#native: com.google.android.gms.maps.model.CameraPosition;
+	_native: com.google.android.gms.maps.model.CameraPosition;
 
 	constructor(target: Coordinate, zoom: number, bearing?: number, tilt?: number) {
 		if (target && typeof zoom === 'number') {
@@ -964,21 +970,21 @@ export class CameraPosition implements ICameraPosition {
 				builder.tilt(tilt);
 			}
 
-			this.#native = builder.build();
+			this._native = builder.build();
 		}
 	}
 
 	static fromNative(nativePosition: com.google.android.gms.maps.model.CameraPosition) {
 		if (nativePosition instanceof com.google.android.gms.maps.model.CameraPosition) {
 			const position = new CameraPosition(null, null);
-			position.#native = nativePosition;
+			position._native = nativePosition;
 			return position;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -990,7 +996,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set bearing(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, this.native.zoom, this.native.tilt, value);
+		this._native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, this.native.zoom, this.native.tilt, value);
 	}
 
 	get target(): Coordinate {
@@ -1001,7 +1007,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set target(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(new com.google.android.gms.maps.model.LatLng(value.lat, value.lng), this.native.zoom, this.native.tilt, this.native.bearing);
+		this._native = new com.google.android.gms.maps.model.CameraPosition(new com.google.android.gms.maps.model.LatLng(value.lat, value.lng), this.native.zoom, this.native.tilt, this.native.bearing);
 	}
 
 	get tilt(): number {
@@ -1009,7 +1015,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set tilt(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, this.native.zoom, value, this.native.bearing);
+		this._native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, this.native.zoom, value, this.native.bearing);
 	}
 
 	get zoom(): number {
@@ -1017,7 +1023,7 @@ export class CameraPosition implements ICameraPosition {
 	}
 
 	set zoom(value) {
-		this.#native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, value, this.native.tilt, this.native.bearing);
+		this._native = new com.google.android.gms.maps.model.CameraPosition(this.native.target, value, this.native.tilt, this.native.bearing);
 	}
 
 	toJSON() {
@@ -1051,31 +1057,31 @@ abstract class OverLayBase {
 }
 
 export class Marker extends OverLayBase implements IMarker {
-	#native: com.google.android.gms.maps.model.Marker;
-	#color: Color;
-	#icon: ImageSource;
+	_native: com.google.android.gms.maps.model.Marker;
+	_color: Color;
+	_icon: ImageSource;
 
 	constructor() {
 		super();
-		this.#icon = new ImageSource();
-		this.#color = new Color('red');
+		this._icon = new ImageSource();
+		this._color = new Color('red');
 	}
 
 	static fromNative(nativeMarker: com.google.android.gms.maps.model.Marker) {
 		if (nativeMarker instanceof com.google.android.gms.maps.model.Marker) {
 			const marker = new Marker();
-			marker.#native = nativeMarker;
+			marker._native = nativeMarker;
 			return marker;
 		}
 		return null;
 	}
 
 	_setIcon(icon) {
-		this.#icon = icon;
+		this._icon = icon;
 	}
 
 	_setColor(color) {
-		this.#color = color;
+		this._color = color;
 	}
 
 	get rotation(): number {
@@ -1103,16 +1109,16 @@ export class Marker extends OverLayBase implements IMarker {
 	}
 
 	get color(): Color {
-		return this.#color;
+		return this._color;
 	}
 
 	set color(value: string | Color) {
 		if (value instanceof Color) {
-			this.#color = value;
-			this.native.setIcon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(this.#color)));
+			this._color = value;
+			this.native.setIcon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(this._color)));
 		} else if (typeof value === 'string') {
-			this.#color = new Color(value);
-			this.native.setIcon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(this.#color)));
+			this._color = new Color(value);
+			this.native.setIcon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(this._color)));
 		}
 	}
 
@@ -1125,16 +1131,16 @@ export class Marker extends OverLayBase implements IMarker {
 	}
 
 	get icon(): any {
-		return this.#icon;
+		return this._icon;
 	}
 
 	set icon(value) {
 		if (value instanceof android.graphics.Bitmap) {
 			const desc = com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(value);
 			this.native.setIcon(desc);
-			this.#icon.setNativeSource(value);
+			this._icon.setNativeSource(value);
 		} else if (value instanceof ImageSource) {
-			this.#icon = value;
+			this._icon = value;
 			const desc = com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(value.android);
 			this.native.setIcon(desc);
 		}
@@ -1149,7 +1155,7 @@ export class Marker extends OverLayBase implements IMarker {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1203,19 +1209,19 @@ export class Marker extends OverLayBase implements IMarker {
 }
 
 export class Circle extends OverLayBase implements ICircle {
-	#native: com.google.android.gms.maps.model.Circle;
+	_native: com.google.android.gms.maps.model.Circle;
 
 	static fromNative(nativeCircle: com.google.android.gms.maps.model.Circle) {
 		if (nativeCircle instanceof com.google.android.gms.maps.model.Circle) {
 			const circle = new Circle();
-			circle.#native = nativeCircle;
+			circle._native = nativeCircle;
 			return circle;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1308,19 +1314,19 @@ export class Circle extends OverLayBase implements ICircle {
 }
 
 export class Polygon extends OverLayBase implements IPolygon {
-	#native: com.google.android.gms.maps.model.Polygon;
+	_native: com.google.android.gms.maps.model.Polygon;
 
 	static fromNative(nativePolygon: com.google.android.gms.maps.model.Polygon) {
 		if (nativePolygon instanceof com.google.android.gms.maps.model.Polygon) {
 			const polygon = new Polygon();
-			polygon.#native = nativePolygon;
+			polygon._native = nativePolygon;
 			return polygon;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1462,19 +1468,19 @@ export class Polygon extends OverLayBase implements IPolygon {
 }
 
 export class Polyline extends OverLayBase implements IPolyline {
-	#native: com.google.android.gms.maps.model.Polyline;
+	_native: com.google.android.gms.maps.model.Polyline;
 
 	static fromNative(nativePolyline: com.google.android.gms.maps.model.Polyline) {
 		if (nativePolyline instanceof com.google.android.gms.maps.model.Polyline) {
 			const polyline = new Polyline();
-			polyline.#native = nativePolyline;
+			polyline._native = nativePolyline;
 			return polyline;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1590,24 +1596,24 @@ export class Polyline extends OverLayBase implements IPolyline {
 }
 
 export class GroundOverlay extends OverLayBase implements IGroundOverlay {
-	#native: com.google.android.gms.maps.model.GroundOverlay;
+	_native: com.google.android.gms.maps.model.GroundOverlay;
 
 	constructor() {
 		super();
-		this.#image = new ImageSource();
+		this._image = new ImageSource();
 	}
 
 	static fromNative(nativeGroundOverlayOptions: com.google.android.gms.maps.model.GroundOverlay) {
 		if (nativeGroundOverlayOptions instanceof com.google.android.gms.maps.model.GroundOverlay) {
 			const groundOverlayOptions = new GroundOverlay();
-			groundOverlayOptions.#native = nativeGroundOverlayOptions;
+			groundOverlayOptions._native = nativeGroundOverlayOptions;
 			return groundOverlayOptions;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1688,26 +1694,26 @@ export class GroundOverlay extends OverLayBase implements IGroundOverlay {
 		this.native.setBearing(value);
 	}
 
-	#image: ImageSource;
+	_image: ImageSource;
 	get image(): ImageSource {
-		return this.#image;
+		return this._image;
 	}
 }
 
 export class Poi implements IPoi {
-	#native: com.google.android.gms.maps.model.PointOfInterest;
+	_native: com.google.android.gms.maps.model.PointOfInterest;
 
 	static fromNative(nativePoi: com.google.android.gms.maps.model.PointOfInterest) {
 		if (nativePoi instanceof com.google.android.gms.maps.model.PointOfInterest) {
 			const poi = new Poi();
-			poi.#native = nativePoi;
+			poi._native = nativePoi;
 			return poi;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1732,19 +1738,19 @@ export class Poi implements IPoi {
 }
 
 export class TileOverlay implements Partial<ITileOverlay> {
-	#native: com.google.android.gms.maps.model.TileOverlay;
+	_native: com.google.android.gms.maps.model.TileOverlay;
 
 	static fromNative(nativeOverlay: com.google.android.gms.maps.model.TileOverlay) {
 		if (nativeOverlay instanceof com.google.android.gms.maps.model.TileOverlay) {
 			const overlay = new TileOverlay();
-			overlay.#native = nativeOverlay;
+			overlay._native = nativeOverlay;
 			return overlay;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1782,23 +1788,27 @@ export class TileOverlay implements Partial<ITileOverlay> {
 	set zIndex(value) {
 		this.native.setZIndex(value);
 	}
+
+	clearTileCache() {
+		this.native.clearTileCache();
+	}
 }
 
 export class Tile {
-	#native: com.google.android.gms.maps.model.Tile;
-	static #NONE;
+	_native: com.google.android.gms.maps.model.Tile;
+	static _NONE;
 
 	static get NONE() {
-		if (!this.#NONE) {
-			this.#NONE = Tile.fromNative(com.google.android.gms.maps.model.TileProvider.NO_TILE);
+		if (!this._NONE) {
+			this._NONE = Tile.fromNative(com.google.android.gms.maps.model.TileProvider.NO_TILE);
 		}
-		return this.#NONE;
+		return this._NONE;
 	}
 
 	static fromNative(nativeTile: com.google.android.gms.maps.model.Tile) {
 		if (nativeTile instanceof com.google.android.gms.maps.model.Tile) {
 			const tileTile = new Tile();
-			tileTile.#native = nativeTile;
+			tileTile._native = nativeTile;
 			return tileTile;
 		}
 		return null;
@@ -1812,7 +1822,7 @@ export class Tile {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1821,18 +1831,18 @@ export class Tile {
 }
 
 export class TileProvider implements ITileProvider {
-	#native: com.google.android.gms.maps.model.TileProvider;
-	#callback: (x: number, y: number, zoom: number) => Tile;
+	_native: com.google.android.gms.maps.model.TileProvider;
+	_callback: (x: number, y: number, zoom: number) => Tile;
 
 	constructor(callback: (x: number, y: number, zoom: number) => Tile) {
 		if (typeof callback === 'function') {
-			this.#callback = callback;
+			this._callback = callback;
 			const ref = new WeakRef(this);
-			this.#native = new com.google.android.gms.maps.model.TileProvider(<any>{
+			this._native = new com.google.android.gms.maps.model.TileProvider(<any>{
 				getTile(x: number, y: number, zoom: number): com.google.android.gms.maps.model.Tile {
 					const owner = ref.get();
 					if (owner) {
-						return owner.#callback(x, y, zoom)?.native || null;
+						return owner._callback(x, y, zoom)?.native || null;
 					}
 					return null;
 				},
@@ -1843,14 +1853,14 @@ export class TileProvider implements ITileProvider {
 	static fromNative(nativeTileProvider: com.google.android.gms.maps.model.TileProvider) {
 		if (nativeTileProvider instanceof com.google.android.gms.maps.model.TileProvider) {
 			const tileTileProvider = new TileProvider(null);
-			tileTileProvider.#native = nativeTileProvider;
+			tileTileProvider._native = nativeTileProvider;
 			return tileTileProvider;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1859,45 +1869,46 @@ export class TileProvider implements ITileProvider {
 }
 
 export class UrlTileProvider extends TileProvider {
-	#native: com.google.android.gms.maps.model.UrlTileProvider;
+	_native: com.google.android.gms.maps.model.UrlTileProvider;
 
-	#callback: (x: number, y: number, zoom: number) => string;
+	// @ts-ignore
+	_callback: (x: number, y: number, zoom: number) => string;
 
 	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
 		super(null);
-		this.#callback = callback;
+		this._callback = callback;
 		const ref = new WeakRef(this);
 		const provider = (<any>com).google.android.gms.maps.model.UrlTileProvider.extend(<com.google.android.gms.maps.model.UrlTileProvider>{
 			getTileUrl(x: number, y: number, zoom: number): java.net.URL {
 				const owner = ref.get();
 				if (owner) {
-					return new java.net.URL(owner.#callback(x, y, zoom) || null);
+					return new java.net.URL(owner._callback(x, y, zoom) || null);
 				}
 				return null;
 			},
 		});
-		this.#native = new provider(size, size);
+		this._native = new provider(size, size);
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 }
 
 export class Projection implements IProjection {
-	#native: com.google.android.gms.maps.Projection;
+	_native: com.google.android.gms.maps.Projection;
 
 	static fromNative(nativeProjection: com.google.android.gms.maps.Projection) {
 		if (nativeProjection instanceof com.google.android.gms.maps.Projection) {
 			const projection = new Projection();
-			projection.#native = nativeProjection;
+			projection._native = nativeProjection;
 			return projection;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1931,19 +1942,19 @@ export class Projection implements IProjection {
 }
 
 export class VisibleRegion implements IVisibleRegion {
-	#native: com.google.android.gms.maps.model.VisibleRegion;
+	_native: com.google.android.gms.maps.model.VisibleRegion;
 
 	static fromNative(nativeVisibleRegion: com.google.android.gms.maps.model.VisibleRegion) {
 		if (nativeVisibleRegion instanceof com.google.android.gms.maps.model.VisibleRegion) {
 			const region = new VisibleRegion();
-			region.#native = nativeVisibleRegion;
+			region._native = nativeVisibleRegion;
 			return region;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -1980,19 +1991,19 @@ export class VisibleRegion implements IVisibleRegion {
 }
 
 export class Cap implements ICap {
-	#native: com.google.android.gms.maps.model.Cap;
+	_native: com.google.android.gms.maps.model.Cap;
 
 	static fromNative(nativeCap: com.google.android.gms.maps.model.Cap) {
 		if (nativeCap instanceof com.google.android.gms.maps.model.Cap) {
 			const cap = new Cap();
-			cap.#native = nativeCap;
+			cap._native = nativeCap;
 			return cap;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2001,13 +2012,13 @@ export class Cap implements ICap {
 }
 
 export class ButtCap extends Cap {
-	#native: com.google.android.gms.maps.model.ButtCap;
+	_native: com.google.android.gms.maps.model.ButtCap;
 
 	constructor();
 	constructor(nativeCap: com.google.android.gms.maps.model.ButtCap);
 	constructor(nativeCap?: com.google.android.gms.maps.model.ButtCap) {
 		super();
-		this.#native = nativeCap || new com.google.android.gms.maps.model.ButtCap();
+		this._native = nativeCap || new com.google.android.gms.maps.model.ButtCap();
 	}
 
 	static fromNative(nativeCap: com.google.android.gms.maps.model.ButtCap) {
@@ -2018,7 +2029,7 @@ export class ButtCap extends Cap {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2027,13 +2038,13 @@ export class ButtCap extends Cap {
 }
 
 export class RoundCap extends Cap {
-	#native: com.google.android.gms.maps.model.RoundCap;
+	_native: com.google.android.gms.maps.model.RoundCap;
 
 	constructor();
 	constructor(nativeCap: com.google.android.gms.maps.model.RoundCap);
 	constructor(nativeCap?: com.google.android.gms.maps.model.RoundCap) {
 		super();
-		this.#native = nativeCap || new com.google.android.gms.maps.model.RoundCap();
+		this._native = nativeCap || new com.google.android.gms.maps.model.RoundCap();
 	}
 
 	static fromNative(nativeCap: com.google.android.gms.maps.model.RoundCap) {
@@ -2044,7 +2055,7 @@ export class RoundCap extends Cap {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2053,13 +2064,13 @@ export class RoundCap extends Cap {
 }
 
 export class SquareCap extends Cap {
-	#native: com.google.android.gms.maps.model.SquareCap;
+	_native: com.google.android.gms.maps.model.SquareCap;
 
 	constructor();
 	constructor(nativeCap: com.google.android.gms.maps.model.SquareCap);
 	constructor(nativeCap?: com.google.android.gms.maps.model.SquareCap) {
 		super();
-		this.#native = nativeCap || new com.google.android.gms.maps.model.SquareCap();
+		this._native = nativeCap || new com.google.android.gms.maps.model.SquareCap();
 	}
 
 	static fromNative(nativeCap: com.google.android.gms.maps.model.SquareCap) {
@@ -2070,7 +2081,7 @@ export class SquareCap extends Cap {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2079,19 +2090,19 @@ export class SquareCap extends Cap {
 }
 
 export class CustomCap extends Cap {
-	#native: com.google.android.gms.maps.model.CustomCap;
+	_native: com.google.android.gms.maps.model.CustomCap;
 
 	constructor(image: ImageSource, refWidth?: number);
 	constructor(nativeCap: com.google.android.gms.maps.model.CustomCap);
 	constructor(nativeCapOrImage: com.google.android.gms.maps.model.CustomCap | ImageSource, refWidth?: number) {
 		super();
 		if (nativeCapOrImage instanceof com.google.android.gms.maps.model.CustomCap) {
-			this.#native = nativeCapOrImage;
+			this._native = nativeCapOrImage;
 		} else {
 			if (typeof refWidth === 'number') {
-				this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(nativeCapOrImage.android), refWidth);
+				this._native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(nativeCapOrImage.android), refWidth);
 			} else if (nativeCapOrImage) {
-				this.#native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(nativeCapOrImage.android));
+				this._native = new com.google.android.gms.maps.model.CustomCap(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(nativeCapOrImage.android));
 			}
 		}
 	}
@@ -2104,7 +2115,7 @@ export class CustomCap extends Cap {
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2113,19 +2124,19 @@ export class CustomCap extends Cap {
 }
 
 export class PatternItem implements IPatternItem {
-	#native: com.google.android.gms.maps.model.PatternItem;
+	_native: com.google.android.gms.maps.model.PatternItem;
 
 	static fromNative(nativePattern: com.google.android.gms.maps.model.PatternItem) {
 		if (nativePattern instanceof com.google.android.gms.maps.model.PatternItem) {
 			const pattern = new PatternItem();
-			pattern.#native = nativePattern;
+			pattern._native = nativePattern;
 			return pattern;
 		}
 		return null;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2134,15 +2145,15 @@ export class PatternItem implements IPatternItem {
 }
 
 export class Dash extends PatternItem {
-	#native: com.google.android.gms.maps.model.Dash;
+	_native: com.google.android.gms.maps.model.Dash;
 
 	constructor(length: number) {
 		super();
-		this.#native = new com.google.android.gms.maps.model.Dash(Utils.layout.toDevicePixels(length));
+		this._native = new com.google.android.gms.maps.model.Dash(Utils.layout.toDevicePixels(length));
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2151,15 +2162,15 @@ export class Dash extends PatternItem {
 }
 
 export class Gap extends PatternItem {
-	#native: com.google.android.gms.maps.model.Gap;
+	_native: com.google.android.gms.maps.model.Gap;
 
 	constructor(length: number) {
 		super();
-		this.#native = new com.google.android.gms.maps.model.Gap(Utils.layout.toDevicePixels(length));
+		this._native = new com.google.android.gms.maps.model.Gap(Utils.layout.toDevicePixels(length));
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -2168,18 +2179,20 @@ export class Gap extends PatternItem {
 }
 
 export class Dot extends PatternItem {
-	#native: com.google.android.gms.maps.model.Dot;
+	_native: com.google.android.gms.maps.model.Dot;
 
 	constructor() {
 		super();
-		this.#native = new com.google.android.gms.maps.model.Dot();
+		this._native = new com.google.android.gms.maps.model.Dot();
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
 		return this.native;
 	}
 }
+
+export { MapType, JointType };
