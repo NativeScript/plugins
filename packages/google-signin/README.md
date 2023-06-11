@@ -45,8 +45,29 @@ npm install @nativescript/google-signin
 
 You don't need to include the `google-services.json` file mentioned in [Add a Firebase configuration file](https://firebase.google.com/docs/android/setup#add-config-file) in your app unless you are using other Google services that require it.
 
-2. Enable the OAuth APIs that you want, using the [Google Cloud Platform API manager](https://console.developers.google.com/).
+2. Generate debug SHA-1 fingerprint and add it to your Firebase project.
+
+Generate the SHA-1 fingerprint for the debug keystore on your machine and add it to your app's Firebase project. Failure to do so will result in the `Error: 10` error.
+
+To generate the SHA-1 fingerprint for the debug keystore with the following commands. For the debug keystore, the password is `android`.
+
+- **macOS/Linux**
+```cli
+keytool -list -v \
+-alias androiddebugkey -keystore ~/.android/debug.keystore
+```
+
+- **Windows**
+
+```cli
+keytool -list -v \
+-alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
+```
+
+3. Enable the OAuth APIs that you want, using the [Google Cloud Platform API manager](https://console.developers.google.com/).
 Make sure you've filled out all the required fields in the console for [OAuth consent screen](https://console.developers.google.com/apis/credentials/consent). Otherwise, you may encounter APIException errors.
+
+
 
 ## iOS prerequisites
 
