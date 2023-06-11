@@ -129,8 +129,6 @@ class GoogleSignIn {
 					if (clientIdIdentifier != 0) {
 						builder.requestIdToken(activity.getString(clientIdIdentifier))
 						builder.requestServerAuthCode(activity.getString(clientIdIdentifier))
-					} else {
-						throw Exception("Failed to find string resource with identifier 'default_web_client_id'")
 					}
 				}
 
