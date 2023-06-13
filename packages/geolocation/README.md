@@ -126,26 +126,6 @@ The following are the properties of the options object that you pass to the geol
 
 ## Known issues
 
-### Version conflicts with Google Play Services
-
-If you have installed multiple plugins that use the Google Play Services you might run into version conflicts. For example, you may encounter the error below when using the [nativescript-google-maps-sdk](https://github.com/dapriett/nativescript-google-maps-sdk) plugin:
-
-```ts
-"Cannot enable the location service. Error: java.lang.NoClassDefFoundError: Failed resolution of: Lcom/google/android/gms/internal/zzbck;"
-```
-
-To fix that error, you might pin the version number in your `app/App_Resources/Android/before-plugins.gradle` file (if the file does not exist, create it):
-
-```gradle
-android {  
-  // other stuff here
-
-  project.ext {
-    googlePlayServicesVersion = "16.+"
-  }
-}
-```
-
 ### openSettingsIfLocationHasBeenDenied on Android API level 30
 
 If the user declines the permission twice during the installation lifetime of the app on Android API level 30 , the user won't be taken to the settings even if the `openSettingsIfLocationHasBeenDenied` option is true for `enableLocationRequest()`.
