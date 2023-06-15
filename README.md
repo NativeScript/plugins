@@ -1,3 +1,10 @@
+# @nativescript/\* plugins
+
+```
+npm run setup
+npm start
+```
+
 - [@nativescript/animated-circle](packages/animated-circle/README.md)
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/apple-sign-in](packages/apple-sign-in/README.md)
