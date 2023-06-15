@@ -1,14 +1,33 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="secure-storage" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <StackLayout class="p-20">
-        <ScrollView class="h-full">
-          <StackLayout>
-            <Button text="Test secure-storage" tap="{{ testIt }}" class="btn btn-primary"/>
+  <Page.actionBar>
+    <ActionBar title="secure-storage" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <StackLayout class="p-20">
+    <ScrollView class="h-full">
+      <StackLayout>
+        <Image margin="0" src="~/res/securestorage.png" width="100%" />
 
-          </StackLayout>
-        </ScrollView>
-    </StackLayout>
+        <Button text="Set a value, sync" tap="{{ doSetSync }}" class="button-a button-group-first" />
+        <Button text="Set a value, async" tap="{{ doSet }}" class="button-a" />
+
+        <Button text="Get a value, sync" tap="{{ doGetSync }}" class="button-b button-group-first" />
+        <Button text="Get a value, async" tap="{{ doGet }}" class="button-b" />
+
+        <Label text="{{ lastRetrievedValue }}" class="message" textWrap="true" />
+
+        <Button text="Remove a value, sync" tap="{{ doRemoveSync }}" class="button-c" />
+        <Button text="Remove a value, async" tap="{{ doRemove }}" class="button-c" />
+
+        <Button text="Remove all values, sync" tap="{{ doRemoveAllSync }}" class="button-d button-group-first" />
+        <Button text="Remove all values, async" tap="{{ doRemoveAll }}" class="button-d" />
+
+        <Button text="Clear all on first run sync" tap="{{ doClearAllOnFirstRunSync }}" class="button-e button-group-first" />
+        <Button text="Clear all on first run, async" tap="{{ doClearAllOnFirstRun }}" class="button-e" />
+
+        <Button text="{{ 'Is first run (sync)? ' + (isFirstRun === undefined ? '' : isFirstRun) }}" tap="{{ doIsFirstRunSync }}" class="button-f button-group-first" />
+        <Button text="{{ 'Is first run (async)? ' + (isFirstRun === undefined ? '' : isFirstRun) }}" tap="{{ doIsFirstRun }}" class="button-f" />
+      </StackLayout>
+    </ScrollView>
+  </StackLayout>
 </Page>
