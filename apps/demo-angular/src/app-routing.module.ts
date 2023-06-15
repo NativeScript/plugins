@@ -37,6 +37,7 @@ const routes: Routes = [
 	{ path: 'localize', loadChildren: () => import('./plugin-demos/localize.module').then((m) => m.LocalizeModule) },
 	{ path: 'pdf', loadChildren: () => import('./plugin-demos/pdf.module').then((m) => m.PdfModule) },
 	{ path: 'picker', loadChildren: () => import('./plugin-demos/picker.module').then((m) => m.PickerModule) },
+	{ path: 'secure-storage', loadChildren: () => import('./plugin-demos/secure-storage.module').then((m) => m.SecureStorageModule) },
 	{ path: 'shared-notification-delegate', loadChildren: () => import('./plugin-demos/shared-notification-delegate.module').then((m) => m.SharedNotificationDelegateModule) },
 	{ path: 'social-share', loadChildren: () => import('./plugin-demos/social-share.module').then((m) => m.SocialShareModule) },
 	{ path: 'swift-ui', loadChildren: () => import('./plugin-demos/swift-ui.module').then((m) => m.SwiftUiModule) },

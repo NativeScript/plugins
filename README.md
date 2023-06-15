@@ -1,10 +1,3 @@
-# @nativescript/\* plugins
-
-```
-npm run setup
-npm start
-```
-
 - [@nativescript/animated-circle](packages/animated-circle/README.md)
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/apple-sign-in](packages/apple-sign-in/README.md)
@@ -35,6 +28,7 @@ npm start
 - [@nativescript/localize](packages/localize/README.md)
 - [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
+- [@nativescript/secure-storage](packages/secure-storage/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
 - [@nativescript/swift-ui](packages/swift-ui/README.md)

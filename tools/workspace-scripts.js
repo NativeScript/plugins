@@ -313,6 +313,13 @@ module.exports = {
 					description: '@nativescript/jetpack-compose: Build',
 				},
 			},
+			// @nativescript/secure-storage
+			'secure-storage': {
+				build: {
+					script: 'nx run secure-storage:build.all',
+					description: '@nativescript/secure-storage: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -466,6 +473,10 @@ module.exports = {
 			'jetpack-compose': {
 				script: 'nx run jetpack-compose:focus',
 				description: 'Focus on @nativescript/jetpack-compose',
+			},
+			'secure-storage': {
+				script: 'nx run secure-storage:focus',
+				description: 'Focus on @nativescript/secure-storage',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

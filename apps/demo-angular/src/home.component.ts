@@ -97,6 +97,9 @@ export class HomeComponent {
 			name: 'picker',
 		},
 		{
+			name: 'secure-storage',
+		},
+		{
 			name: 'shared-notification-delegate',
 		},
 		{

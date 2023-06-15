@@ -62,7 +62,8 @@
 			"@nativescript/swift-ui": ["packages/swift-ui/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"],
+			"@nativescript/secure-storage": ["packages/secure-storage/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
