@@ -35,6 +35,7 @@ npm start
 - [@nativescript/localize](packages/localize/README.md)
 - [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
+- [@nativescript/secure-storage](packages/secure-storage/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
 - [@nativescript/swift-ui](packages/swift-ui/README.md)

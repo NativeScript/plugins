@@ -37,7 +37,8 @@
 		"@nativescript/swift-ui": "file:../../dist/packages/swift-ui",
 		"@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
 		"@nativescript/twitter": "file:../../dist/packages/twitter",
-		"@nativescript/zip": "file:../../dist/packages/zip"
+		"@nativescript/zip": "file:../../dist/packages/zip",
+		"@nativescript/secure-storage": "file:../../dist/packages/secure-storage"
 	},
 	"devDependencies": {
 		"@nativescript/android": "~8.5.0",

@@ -1,0 +1,64 @@
+{
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/secure-storage",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/secure-storage",
+				"tsConfig": "packages/secure-storage/tsconfig.json",
+				"packageJson": "packages/secure-storage/package.json",
+				"main": "packages/secure-storage/index.d.ts",
+				"assets": [
+					"packages/secure-storage/*.md",
+					"packages/secure-storage/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/secure-storage/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts secure-storage"],
+				"parallel": false
+			},
+			"outputs": ["dist/packages/secure-storage"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "@nrwl/workspace:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages secure-storage"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/secure-storage/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

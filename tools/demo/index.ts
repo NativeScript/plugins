@@ -29,6 +29,7 @@ export * from './local-notifications';
 export * from './localize';
 export * from './pdf';
 export * from './picker';
+export * from './secure-storage';
 export * from './shared-notification-delegate';
 export * from './social-share';
 export * from './swift-ui';
