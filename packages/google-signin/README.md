@@ -1,5 +1,4 @@
 # @nativescript/google-signin
-A plugin that allows you to authenticate users with Google Sign-In.
 
 ## Contents
 * [Installation](#installation)
@@ -23,6 +22,11 @@ A plugin that allows you to authenticate users with Google Sign-In.
 	* [User](#user)
 	* [GoogleSignInButton](#googlesigninbutton)
 
+
+## Intro
+
+A plugin that allows you to authenticate users with Google Sign-In.
+
 ## Installation
 
 Install the plugin by running the following command at the root of the project.
@@ -41,8 +45,29 @@ npm install @nativescript/google-signin
 
 You don't need to include the `google-services.json` file mentioned in [Add a Firebase configuration file](https://firebase.google.com/docs/android/setup#add-config-file) in your app unless you are using other Google services that require it.
 
-2. Enable the OAuth APIs that you want, using the [Google Cloud Platform API manager](https://console.developers.google.com/).
+2. Generate debug SHA-1 fingerprint and add it to your Firebase project.
+
+Generate the SHA-1 fingerprint for the debug keystore on your machine and add it to your app's Firebase project. Failure to do so will result in the `Error: 10` error.
+
+To generate the SHA-1 fingerprint for the debug keystore with the following commands. For the debug keystore, the password is `android`.
+
+- **macOS/Linux**
+```cli
+keytool -list -v \
+-alias androiddebugkey -keystore ~/.android/debug.keystore
+```
+
+- **Windows**
+
+```cli
+keytool -list -v \
+-alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
+```
+
+3. Enable the OAuth APIs that you want, using the [Google Cloud Platform API manager](https://console.developers.google.com/).
 Make sure you've filled out all the required fields in the console for [OAuth consent screen](https://console.developers.google.com/apis/credentials/consent). Otherwise, you may encounter APIException errors.
+
+
 
 ## iOS prerequisites
 
@@ -90,11 +115,7 @@ To sign in a user with GoogleSignIn, follow the steps below.
 
 1. Register and add the [GoogleSignInButton](#googlesigninbutton) to your markup to be able to initiate GoogleSigIn.
 
-
-1. Register and add the [GoogleSignInButton](#googlesigninbutton) to your markup to be able to initiate GoogleSigIn.
-
 - **Core**
-
 
 ```xml
 <Page xmlns:ui="@nativescript/google-signin">
@@ -115,10 +136,9 @@ Next, add it to your `html` file setting the desired option for `colorScheme` an
 <GoogleSignInButton colorScheme='auto' colorStyle='standard' (tap)="yourGoogleSigninFunction()"></GoogleSignInButton>
 ```
 
-- **Vue**
+#### Vue
 
-Register the button by adding the following code to the `main.ts` file.
-
+To register the button, add the following code to the `main.ts` file.
 
 ```ts 
 registerElement('GoogleSignInButton',()=> require("@nativescript/google-signin").GoogleSignInButton)
@@ -132,13 +152,13 @@ Then use it in a `.vue` file as follows:
 
 2. Call the [signIn()](#signin) method on GoogleSignInButton tap
 
-Before you call the [signIn()](#signin) or the [signInSilently()](#signinsilently) method to sign in the user, call `configure()` to initialize Firebase.
+Before you call the [signIn()](#signin) or the [signInSilently()](#signinsilently) method to sign in the user, call `configure()` to initialize Firebase. If you do want to set any configuration options, you can pass an empty object `{}` as a parameter to [configure](#configure).
 
 ```ts
 import { GoogleSignin } from '@nativescript/google-signin';
 
 try {
-	await GoogleSignin.configure();
+	await GoogleSignin.configure({});
 	const user = await GoogleSignin.signIn();
 } catch (e) {}
 ```
