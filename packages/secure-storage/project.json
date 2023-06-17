@@ -29,7 +29,7 @@
 			}
 		},
 		"build.all": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts secure-storage"],
 				"parallel": false
@@ -47,7 +47,7 @@
 			]
 		},
 		"focus": {
-			"executor": "@nrwl/workspace:run-commands",
+			"executor": "nx:run-commands",
 			"options": {
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages secure-storage"],
 				"parallel": false

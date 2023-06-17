@@ -1,8 +1,8 @@
 {
 	"name": "@nativescript/secure-storage",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Secure Storage NativeScript plugin",
-	"main": "secure-storage",
+	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
 		"platforms": {
@@ -22,13 +22,13 @@
 		"Android"
 	],
 	"author": {
-		"name": "NativeScript",
-		"email": "oss@nativescript.org"
+		"name": "Eddy Verbruggen",
+		"email": "eddyverbruggen@gmail.com"
 	},
 	"contributors": [
 		{
-			"name": "Eddy Verbruggen",
-			"email": "eddyverbruggen@gmail.com"
+			"name": "NativeScript",
+			"email": "oss@nativescript.org"
 		}
 	],
 	"bugs": {

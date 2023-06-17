@@ -33,7 +33,7 @@ export class SecureStorage extends SecureStorageCommon {
 		this.accessibilityType = accessibilityType;
 	}
 
-	public get(arg: GetOptions): Promise<any> {
+	get(arg: GetOptions): Promise<any> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
 				resolve(NSUserDefaults.standardUserDefaults.objectForKey(arg.key));
@@ -69,7 +69,7 @@ export class SecureStorage extends SecureStorageCommon {
 		}
 	}
 
-	public set(arg: SetOptions): Promise<boolean> {
+	set(arg: SetOptions): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
 				NSUserDefaults.standardUserDefaults.setObjectForKey(arg.value, arg.key);
@@ -100,7 +100,7 @@ export class SecureStorage extends SecureStorageCommon {
 		return query.save();
 	}
 
-	public remove(arg: RemoveOptions): Promise<boolean> {
+	remove(arg: RemoveOptions): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
 				NSUserDefaults.standardUserDefaults.removeObjectForKey(arg.key);
@@ -135,7 +135,7 @@ export class SecureStorage extends SecureStorageCommon {
 		}
 	}
 
-	public removeAll(arg?: RemoveAllOptions): Promise<boolean> {
+	removeAll(arg?: RemoveAllOptions): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
 				let defaults = NSUserDefaults.standardUserDefaults;
@@ -164,7 +164,7 @@ export class SecureStorage extends SecureStorageCommon {
 		});
 	}
 
-	public removeAllSync(arg?: RemoveAllOptions): boolean {
+	removeAllSync(arg?: RemoveAllOptions): boolean {
 		if (this.isSimulator) {
 			let defaults = NSUserDefaults.standardUserDefaults;
 			let bundleId = NSBundle.mainBundle.bundleIdentifier;
