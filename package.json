@@ -53,8 +53,5 @@
 		"**/*.{js,ts,scss,json,html}": [
 			"npx prettier --write"
 		]
-	},
-	"dependencies": {
-		"@nativescript/swift-ui": "^1.0.0"
 	}
 }
