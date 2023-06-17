@@ -278,13 +278,6 @@ module.exports = {
 					description: '@nativescript/contacts: Build',
 				},
 			},
-			// @nativescript/ionic-portals
-			'ionic-portals': {
-				build: {
-					script: 'nx run ionic-portals:build.all',
-					description: '@nativescript/ionic-portals: Build',
-				},
-			},
 			// @nativescript/haptics
 			haptics: {
 				build: {
@@ -297,20 +290,6 @@ module.exports = {
 				build: {
 					script: 'nx run pdf:build.all',
 					description: '@nativescript/pdf: Build',
-				},
-			},
-			// @nativescript/swift-ui
-			'swift-ui': {
-				build: {
-					script: 'nx run swift-ui:build.all',
-					description: '@nativescript/swift-ui: Build',
-				},
-			},
-			// @nativescript/jetpack-compose
-			'jetpack-compose': {
-				build: {
-					script: 'nx run jetpack-compose:build.all',
-					description: '@nativescript/jetpack-compose: Build',
 				},
 			},
 			// @nativescript/secure-storage
@@ -454,10 +433,6 @@ module.exports = {
 				script: 'nx run contacts:focus',
 				description: 'Focus on @nativescript/contacts',
 			},
-			'ionic-portals': {
-				script: 'nx run ionic-portals:focus',
-				description: 'Focus on @nativescript/ionic-portals',
-			},
 			haptics: {
 				script: 'nx run haptics:focus',
 				description: 'Focus on @nativescript/haptics',
@@ -465,14 +440,6 @@ module.exports = {
 			pdf: {
 				script: 'nx run pdf:focus',
 				description: 'Focus on @nativescript/pdf',
-			},
-			'swift-ui': {
-				script: 'nx run swift-ui:focus',
-				description: 'Focus on @nativescript/swift-ui',
-			},
-			'jetpack-compose': {
-				script: 'nx run jetpack-compose:focus',
-				description: 'Focus on @nativescript/jetpack-compose',
 			},
 			'secure-storage': {
 				script: 'nx run secure-storage:focus',
