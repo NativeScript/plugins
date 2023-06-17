@@ -73,16 +73,10 @@ export class HomeComponent {
 			name: 'imagepicker',
 		},
 		{
-			name: 'ionic-portals',
-		},
-		{
 			name: 'ios-security',
 		},
 		{
 			name: 'iqkeyboardmanager',
-		},
-		{
-			name: 'jetpack-compose',
 		},
 		{
 			name: 'local-notifications',
@@ -104,9 +98,6 @@ export class HomeComponent {
 		},
 		{
 			name: 'social-share',
-		},
-		{
-			name: 'swift-ui',
 		},
 		{
 			name: 'theme-switcher',
