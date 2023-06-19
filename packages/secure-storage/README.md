@@ -117,6 +117,40 @@ Currently this plugin defaults to using `NSUserDefaults` on **iOS Simulators**. 
 
 If you're running into issues similar to [issue_10](https://github.com/EddyVerbruggen/nativescript-secure-storage/issues/10), consider using the default behaviour again.
 
+## iOS Keychain Access/App Groups
+
+You can share secrets between iOS apps/extensions via Keychain access groups, or App Groups, see [here](https://developer.apple.com/documentation/security/keychain_services/keychain_items/sharing_access_to_keychain_items_among_a_collection_of_apps#) for details.
+
+To setup:
+
+* Add a keychain access group entitlement to your app
+  by adding an entry in the ```app/App_Resources/iOS/<someName>.entitlements``` file.
+
+  e.g.
+  ```xml
+  <key>keychain-access-groups</key>
+  <array>
+    <string>$(AppIdentifierPrefix)com.my.app.sharedgroup</string>
+  </array>
+  ```
+* Then in your app specify the ```accessGroup``` property when getting/setting values.
+  e.g. 
+
+  ```typescript
+  import { SecureStorage } from "nativescript-secure-storage";
+  export class MyComponent {
+    secureStorage = new SecureStorage();
+    // a method that can be called from your view
+    setSecureValue() {
+      this.secureStorage.set({
+        accessGroup:"<TeamID>.com.my.app.sharedgroup",
+        key: 'myKey',
+        value: 'my value'
+      }).then(success => { console.log(success)});
+    }
+  }
+  ```
+
 ## Credits
 * On __iOS__ we're leveraging the KeyChain using the [SAMKeychain](https://github.com/soffes/SAMKeychain) library (on the Simulator `NSUserDefaults`),
 * On __Android__ we're using [Hawk](https://github.com/orhanobut/hawk) library which internally uses [Facebook conceal](https://github.com/facebook/conceal).

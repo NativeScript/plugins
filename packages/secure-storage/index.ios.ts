@@ -43,7 +43,9 @@ export class SecureStorage extends SecureStorageCommon {
 			let query = SAMKeychainQuery.new();
 			query.service = arg.service || SecureStorage.defaultService;
 			query.account = arg.key;
-
+			if (arg.accessGroup) {
+				query.accessGroup = arg.accessGroup;
+			}
 			try {
 				query.fetch();
 				resolve(query.password);
@@ -61,6 +63,9 @@ export class SecureStorage extends SecureStorageCommon {
 		let query = SAMKeychainQuery.new();
 		query.service = arg.service || SecureStorage.defaultService;
 		query.account = arg.key;
+		if (arg.accessGroup) {
+			query.accessGroup = arg.accessGroup;
+		}
 		try {
 			query.fetch();
 			return query.password;
@@ -82,6 +87,9 @@ export class SecureStorage extends SecureStorageCommon {
 			query.service = arg.service || SecureStorage.defaultService;
 			query.account = arg.key;
 			query.password = arg.value;
+			if (arg.accessGroup) {
+				query.accessGroup = arg.accessGroup;
+			}
 			resolve(query.save());
 		});
 	}
@@ -97,6 +105,9 @@ export class SecureStorage extends SecureStorageCommon {
 		query.service = arg.service || SecureStorage.defaultService;
 		query.account = arg.key;
 		query.password = arg.value;
+		if (arg.accessGroup) {
+			query.accessGroup = arg.accessGroup;
+		}
 		return query.save();
 	}
 
@@ -111,6 +122,9 @@ export class SecureStorage extends SecureStorageCommon {
 			let query = SAMKeychainQuery.new();
 			query.service = arg.service || SecureStorage.defaultService;
 			query.account = arg.key;
+			if (arg.accessGroup) {
+				query.accessGroup = arg.accessGroup;
+			}
 			try {
 				resolve(query.deleteItem());
 			} catch (e) {
@@ -128,6 +142,9 @@ export class SecureStorage extends SecureStorageCommon {
 		let query = SAMKeychainQuery.new();
 		query.service = arg.service || SecureStorage.defaultService;
 		query.account = arg.key;
+		if (arg.accessGroup) {
+			query.accessGroup = arg.accessGroup;
+		}
 		try {
 			return query.deleteItem();
 		} catch (e) {
