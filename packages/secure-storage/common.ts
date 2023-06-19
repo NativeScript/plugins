@@ -1,17 +1,20 @@
 import { ApplicationSettings } from '@nativescript/core';
 
 export interface SetOptions {
+	accessGroup?: string;
 	service?: string;
 	key: string;
 	value: string;
 }
 
 export interface GetOptions {
+	accessGroup?: string;
 	service?: string;
 	key: string;
 }
 
 export interface RemoveOptions {
+	accessGroup?: string;
 	service?: string;
 	key: string;
 }
