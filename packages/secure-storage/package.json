@@ -1,13 +1,13 @@
 {
-	"name": "@nativescript/twitter",
-	"version": "1.0.1",
-	"description": "Twitter for your NativeScript applications",
+	"name": "@nativescript/secure-storage",
+	"version": "3.0.2",
+	"description": "Secure Storage NativeScript plugin",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
 		"platforms": {
-			"ios": "6.0.0",
-			"android": "6.0.0"
+			"android": "7.0.0",
+			"ios": "7.0.0"
 		}
 	},
 	"repository": {
@@ -22,13 +22,19 @@
 		"Android"
 	],
 	"author": {
-		"name": "NativeScript",
-		"email": "oss@nativescript.org"
+		"name": "Eddy Verbruggen",
+		"email": "eddyverbruggen@gmail.com"
 	},
+	"contributors": [
+		{
+			"name": "NativeScript",
+			"email": "oss@nativescript.org"
+		}
+	],
 	"bugs": {
 		"url": "https://github.com/NativeScript/plugins/issues"
 	},
-	"license": "Apache-2.0",
+	"license": "MIT",
 	"homepage": "https://github.com/NativeScript/plugins",
 	"readmeFilename": "README.md",
 	"bootstrapper": "@nativescript/plugin-seed"
