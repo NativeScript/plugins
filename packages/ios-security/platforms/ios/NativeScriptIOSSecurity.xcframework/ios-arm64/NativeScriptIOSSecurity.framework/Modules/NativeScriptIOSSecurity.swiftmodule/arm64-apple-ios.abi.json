@@ -2097,21 +2097,21 @@
 	},
 	"ConstValues": [
 		{
-			"filePath": "/Users/nandesoratjihero/Documents/github/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/FishHookChecker.swift",
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/FishHookChecker.swift",
 			"kind": "IntegerLiteral",
 			"offset": 5439,
 			"length": 3,
 			"value": "102"
 		},
 		{
-			"filePath": "/Users/nandesoratjihero/Documents/github/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/RuntimeHookChecker.swift",
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/RuntimeHookChecker.swift",
 			"kind": "StringLiteral",
 			"offset": 365,
 			"length": 8,
 			"value": "\"dladdr\""
 		},
 		{
-			"filePath": "/Users/nandesoratjihero/Documents/github/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/SecurityFacade.swift",
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/SecurityFacade.swift",
 			"kind": "StringLiteral",
 			"offset": 328,
 			"length": 24,
