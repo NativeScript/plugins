@@ -278,13 +278,6 @@ module.exports = {
 					description: '@nativescript/contacts: Build',
 				},
 			},
-			// @nativescript/ionic-portals
-			'ionic-portals': {
-				build: {
-					script: 'nx run ionic-portals:build.all',
-					description: '@nativescript/ionic-portals: Build',
-				},
-			},
 			// @nativescript/haptics
 			haptics: {
 				build: {
@@ -293,10 +286,17 @@ module.exports = {
 				},
 			},
 			// @nativescript/pdf
-			'pdf': {
+			pdf: {
 				build: {
 					script: 'nx run pdf:build.all',
 					description: '@nativescript/pdf: Build',
+				},
+			},
+			// @nativescript/secure-storage
+			'secure-storage': {
+				build: {
+					script: 'nx run secure-storage:build.all',
+					description: '@nativescript/secure-storage: Build',
 				},
 			},
 			'build-all': {
@@ -433,17 +433,17 @@ module.exports = {
 				script: 'nx run contacts:focus',
 				description: 'Focus on @nativescript/contacts',
 			},
-			'ionic-portals': {
-				script: 'nx run ionic-portals:focus',
-				description: 'Focus on @nativescript/ionic-portals',
-			},
 			haptics: {
 				script: 'nx run haptics:focus',
 				description: 'Focus on @nativescript/haptics',
 			},
-			'pdf': {
+			pdf: {
 				script: 'nx run pdf:focus',
 				description: 'Focus on @nativescript/pdf',
+			},
+			'secure-storage': {
+				script: 'nx run secure-storage:focus',
+				description: 'Focus on @nativescript/secure-storage',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

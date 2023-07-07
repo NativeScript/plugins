@@ -1,4 +1,5 @@
 {
+	"name": "debug-android",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"generators": {},
@@ -34,8 +35,8 @@
 				"commands": ["node tools/scripts/build-finish.ts debug-android"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands",
-			"outputs": ["dist/packages/debug-android"],
+			"executor": "nx:run-commands",
+			"outputs": ["{workspaceRoot}/dist/packages/debug-android"],
 			"dependsOn": [
 				{
 					"target": "build.all",
@@ -52,7 +53,7 @@
 				"commands": ["nx g @nativescript/plugin-tools:focus-packages debug-android"],
 				"parallel": false
 			},
-			"executor": "@nrwl/workspace:run-commands"
+			"executor": "nx:run-commands"
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",

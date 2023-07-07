@@ -1,10 +1,3 @@
-# @nativescript/\* plugins
-
-```
-npm run setup
-npm start
-```
-
 - [@nativescript/animated-circle](packages/animated-circle/README.md)
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/apple-sign-in](packages/apple-sign-in/README.md)
@@ -27,13 +20,13 @@ npm start
 - [@nativescript/google-signin](packages/google-signin/README.md)
 - [@nativescript/haptics](packages/haptics/README.md)
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
-- [@nativescript/ionic-portals](packages/ionic-portals/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)
 - [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
 - [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
+- [@nativescript/secure-storage](packages/secure-storage/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
 - [@nativescript/theme-switcher](packages/theme-switcher/README.md)
@@ -43,6 +36,11 @@ npm start
 # How to use?
 
 This workspace manages the suite of plugins listed above. 
+
+## Prerequisites
+
+- Node 18+ is recommended
+- [yarn v1](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) is required
 
 In general, when in doubt with what to do, just `npm start`.
 

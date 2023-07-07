@@ -73,9 +73,6 @@ export class HomeComponent {
 			name: 'imagepicker',
 		},
 		{
-			name: 'ionic-portals',
-		},
-		{
 			name: 'ios-security',
 		},
 		{
@@ -92,6 +89,9 @@ export class HomeComponent {
 		},
 		{
 			name: 'picker',
+		},
+		{
+			name: 'secure-storage',
 		},
 		{
 			name: 'shared-notification-delegate',

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.google.android.gms.auth.GoogleAuthException
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.UserRecoverableAuthException
@@ -49,10 +50,11 @@ class GoogleSignIn {
 					)
 					GoogleSignIn.requestPermissions(activity, REQUEST_CODE_REQUEST_SCOPE, user, *scopeArgs)
 				} catch (e: Exception) {
+				  Log.d("GoogleSignIn", e.toString())
 				}
 			}
 
-			const val REQUEST_CODE_REQUEST_SCOPE = 10211
+			private const val REQUEST_CODE_REQUEST_SCOPE = 10211
 		}
 	}
 
@@ -118,17 +120,18 @@ class GoogleSignIn {
 
 				retrieveAccessToken = parsedOptions.optBoolean("retrieveAccessToken", false)
 
-				val clientIdIdentifier: Int = activity
-					.resources
-					.getIdentifier("default_web_client_id", "string", activity.packageName)
-
 				val clientId = parsedOptions.optString("clientId")
 				if (clientId.isNotEmpty()) {
 					builder.requestIdToken(clientId)
 					builder.requestServerAuthCode(clientId)
 				} else {
-					builder.requestIdToken(activity.getString(clientIdIdentifier))
-					builder.requestServerAuthCode(activity.getString(clientIdIdentifier))
+					val clientIdIdentifier: Int = activity.resources.getIdentifier("default_web_client_id", "string", activity.packageName)
+					if (clientIdIdentifier != 0) {
+						builder.requestIdToken(activity.getString(clientIdIdentifier))
+						builder.requestServerAuthCode(activity.getString(clientIdIdentifier))
+					} else {
+						throw Exception("Failed to find string resource with identifier 'default_web_client_id'")
+					}
 				}
 
 				val accountName = parsedOptions.optString("accountName")
@@ -176,6 +179,7 @@ class GoogleSignIn {
 							token = getAccessToken(googleSignInClient!!.applicationContext, it.result)
 							accessToken = token
 						} catch (e: Exception) {
+							Log.d("GoogleSignIn", e.toString())
 						}
 					}
 					val user = GoogleUser(
@@ -267,13 +271,13 @@ class GoogleSignIn {
 			return getAccessToken(context, GoogleSignIn.getLastSignedInAccount(context))
 		}
 
-		private const val GET_TOKENS_ERROR = "getTokens requires a user to be signed in";
+		private const val GET_TOKENS_ERROR = "getTokens requires a user to be signed in"
 
 		private fun getAccessToken(context: Context, account: GoogleSignInAccount?): String? {
 			if (account?.account != null) {
 				return GoogleAuthUtil.getToken(
 					context,
-					account.account,
+					account.account!!,
 					scopesToString(account.grantedScopes)
 				)
 			} else {
@@ -347,6 +351,6 @@ class GoogleSignIn {
 			handler.post(runnable)
 		}
 
-		const val REQUEST_CODE_SIGNIN = 10210
+		private const val REQUEST_CODE_SIGNIN = 10210
 	}
 }

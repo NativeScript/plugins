@@ -5,7 +5,6 @@
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
-		"@nativescript/pdf": "file:../../packages/pdf",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -28,20 +27,21 @@
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/haptics": "file:../../packages/haptics",
 		"@nativescript/imagepicker": "file:../../packages/imagepicker",
-		"@nativescript/ionic-portals": "file:../../packages/ionic-portals",
 		"@nativescript/ios-security": "file:../../packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",
-		"@nativescript/localize": "file:../../packages/localize",
+		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/pdf": "file:../../packages/pdf",
 		"@nativescript/picker": "file:../../packages/picker",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",
 		"@nativescript/theme-switcher": "file:../../packages/theme-switcher",
 		"@nativescript/twitter": "file:../../packages/twitter",
-		"@nativescript/zip": "file:../../packages/zip"
+		"@nativescript/zip": "file:../../packages/zip",
+		"@nativescript/secure-storage": "file:../../packages/secure-storage"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.3.0",
-		"@nativescript/ios": "~8.3.0"
+		"@nativescript/android": "~8.5.0",
+		"@nativescript/ios": "~8.5.0"
 	}
 }

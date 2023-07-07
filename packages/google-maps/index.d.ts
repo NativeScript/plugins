@@ -348,14 +348,20 @@ export interface IProjection {
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number };
 
 	visibleRegion(): VisibleRegion;
+
+	containsCoordinate(coordinate: Coordinate): boolean;
 }
 
-export class Projection implements IProjection {
+export class Projection implements IProjection, Partial<NativeObject> {
 	coordinateForPoint(point: { x: number; y: number }): Coordinate;
 
 	pointForCoordinate(coordinate: Coordinate): { x: number; y: number };
 
 	visibleRegion(): VisibleRegion;
+
+	containsCoordinate(coordinate: Coordinate): boolean;
+
+	native?: any;
 }
 
 export interface TileOverlayOptions extends ITileOverlay {}
@@ -736,6 +742,7 @@ export interface ITileOverlay {
 	visible: boolean;
 	tileProvider: TileProvider & Partial<NativeObject>;
 	zIndex: number;
+	clearTileCache(): void;
 }
 
 export class Tile {
