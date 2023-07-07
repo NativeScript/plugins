@@ -306,18 +306,11 @@ module.exports = {
 					description: '@nativescript/pdf: Build',
 				},
 			},
-			// @nativescript/swift-ui
-			'swift-ui': {
+			// @nativescript/secure-storage
+			'secure-storage': {
 				build: {
-					script: 'nx run swift-ui:build.all',
-					description: '@nativescript/swift-ui: Build',
-				},
-			},
-			// @nativescript/jetpack-compose
-			'jetpack-compose': {
-				build: {
-					script: 'nx run jetpack-compose:build.all',
-					description: '@nativescript/jetpack-compose: Build',
+					script: 'nx run secure-storage:build.all',
+					description: '@nativescript/secure-storage: Build',
 				},
 			},
 			'build-all': {
@@ -470,13 +463,9 @@ module.exports = {
 				script: 'nx run pdf:focus',
 				description: 'Focus on @nativescript/pdf',
 			},
-			'swift-ui': {
-				script: 'nx run swift-ui:focus',
-				description: 'Focus on @nativescript/swift-ui',
-			},
-			'jetpack-compose': {
-				script: 'nx run jetpack-compose:focus',
-				description: 'Focus on @nativescript/jetpack-compose',
+			'secure-storage': {
+				script: 'nx run secure-storage:focus',
+				description: 'Focus on @nativescript/secure-storage',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

@@ -742,6 +742,7 @@ export interface ITileOverlay {
 	visible: boolean;
 	tileProvider: TileProvider & Partial<NativeObject>;
 	zIndex: number;
+	clearTileCache(): void;
 }
 
 export class Tile {
