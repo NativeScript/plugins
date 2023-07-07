@@ -218,10 +218,6 @@ export class MapView extends MapViewBase {
 								ref?.get?.().notify({
 									eventName: MapView.myLocationButtonTapEvent,
 									object: ref?.get?.(),
-									location: {
-										lat: location.getLatitude(),
-										lng: location.getLongitude(),
-									},
 								});
 							} else {
 								ref?.get?.().notify(<EventData>{
