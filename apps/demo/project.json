@@ -21,10 +21,9 @@
 				}
 			]
 		},
-		"ios": {
-			"executor": "@nativescript/nx:build",
+		"debug": {
+			"executor": "@nativescript/nx:debug",
 			"options": {
-				"platform": "ios",
 				"noHmr": true
 			},
 			"dependsOn": [
@@ -34,10 +33,9 @@
 				}
 			]
 		},
-		"android": {
-			"executor": "@nativescript/nx:build",
+		"prepare": {
+			"executor": "@nativescript/nx:prepare",
 			"options": {
-				"platform": "android",
 				"noHmr": true
 			},
 			"dependsOn": [
@@ -48,10 +46,8 @@
 			]
 		},
 		"clean": {
-			"executor": "@nativescript/nx:build",
-			"options": {
-				"clean": true
-			}
+			"executor": "@nativescript/nx:clean",
+			"options": {}
 		},
 		"lint": {
 			"executor": "@nx/linter:eslint",
