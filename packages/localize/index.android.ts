@@ -41,9 +41,9 @@ export function androidLaunchEventLocalizationHandler() {
 }
 
 export function overrideLocale(locale: string): boolean {
-	let language_code = locale.substring(0, 2)
+	let language_code = locale.substring(0, 2);
 	if (locale.indexOf('-') < 0 && locale.length == 3) {
-		language_code = locale
+		language_code = locale;
 	}
 	ApplicationSettings.setString('__app__language__', language_code);
 	return true;

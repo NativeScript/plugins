@@ -30,9 +30,9 @@ export function androidLaunchEventLocalizationHandler() {
 }
 
 export function overrideLocale(locale: string): boolean {
-	let language_code = locale.substring(0, 2)
+	let language_code = locale.substring(0, 2);
 	if (locale.indexOf('-') < 0 && locale.length == 3) {
-		language_code = locale
+		language_code = locale;
 	}
 
 	const path = NSBundle.mainBundle.pathForResourceOfType(language_code, 'lproj');
