@@ -30,7 +30,12 @@ export function androidLaunchEventLocalizationHandler() {
 }
 
 export function overrideLocale(locale: string): boolean {
-	const path = NSBundle.mainBundle.pathForResourceOfType(locale.substring(0, 2), 'lproj');
+	let language_code = locale.substring(0, 2);
+	if (locale.indexOf('-') < 0 && locale.length == 3) {
+		language_code = locale;
+	}
+
+	const path = NSBundle.mainBundle.pathForResourceOfType(language_code, 'lproj');
 
 	if (!path) {
 		return false;
@@ -39,7 +44,7 @@ export function overrideLocale(locale: string): boolean {
 	bundle = NSBundle.bundleWithPath(path);
 	NSUserDefaults.standardUserDefaults.setObjectForKey([locale], 'AppleLanguages');
 	NSUserDefaults.standardUserDefaults.synchronize();
-	ApplicationSettings.setString('__app__language__', locale.substring(0, 2));
+	ApplicationSettings.setString('__app__language__', language_code);
 
 	return true;
 }
