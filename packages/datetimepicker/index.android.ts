@@ -175,8 +175,11 @@ export class DateTimePicker extends DateTimePickerBase {
 
 		let datePickerDialog = new android.app.DatePickerDialog(context, dialogRes ? dialogRes : android.R.style.Theme_DeviceDefault_Light_Dialog, dialogListener, date.getFullYear(), date.getMonth(), date.getDate());
 
-		datePickerDialog.setButton(android.content.DialogInterface.BUTTON_POSITIVE, options.okButtonText ? options.okButtonText : this._defaultOkText, datePickerDialog);
-		datePickerDialog.setButton(android.content.DialogInterface.BUTTON_NEGATIVE, options.cancelButtonText ? options.cancelButtonText : this._defaultCancelText, datePickerDialog);
+		let okButtonText = options.okButtonText ? options.okButtonText : this._defaultOkText;
+		let cancelButtonText = options.cancelButtonText ? options.cancelButtonText : this._defaultCancelText;
+
+		datePickerDialog.setButton(android.content.DialogInterface.BUTTON_POSITIVE, okButtonText.toUpperCase(), datePickerDialog);
+		datePickerDialog.setButton(android.content.DialogInterface.BUTTON_NEGATIVE, cancelButtonText.toUpperCase(), datePickerDialog);
 
 		let datePicker = datePickerDialog.getDatePicker();
 
