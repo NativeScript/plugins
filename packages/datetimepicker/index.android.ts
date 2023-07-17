@@ -174,6 +174,10 @@ export class DateTimePicker extends DateTimePickerBase {
 		const dialogRes = context.getResources().getIdentifier('dialogTheme', 'style', context.getApplicationInfo().packageName);
 
 		let datePickerDialog = new android.app.DatePickerDialog(context, dialogRes ? dialogRes : android.R.style.Theme_DeviceDefault_Light_Dialog, dialogListener, date.getFullYear(), date.getMonth(), date.getDate());
+
+		datePickerDialog.setButton(android.content.DialogInterface.BUTTON_POSITIVE, options.okButtonText ? options.okButtonText : this._defaultOkText, datePickerDialog);
+		datePickerDialog.setButton(android.content.DialogInterface.BUTTON_NEGATIVE, options.cancelButtonText ? options.cancelButtonText : this._defaultCancelText, datePickerDialog);
+
 		let datePicker = datePickerDialog.getDatePicker();
 
 		if (options.maxDate) {
