@@ -85,7 +85,7 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 	2. Select `GoogleService-Info.plist` from the file manager.
 	3. Select the `Runner` target from the dialog that appears.
 
-4. Add the `CFBundleURLTypes` attributes below to the `App_Resources/iOS/Info.plist` file.
+  4. Add the `CFBundleURLTypes` and `GIDClientID` attributes below to the `App_Resources/iOS/Info.plist` file.
 
 ```xml
 <!-- Google Sign-in Section -->
@@ -102,6 +102,9 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 		</array>
 	</dict>
 </array>
+<key>GIDClientID</key>
+<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
+<string><749673967192-c24phj29u2otpict36e71ocjo2g5i3hs.apps.googleusercontent.com/string>
 <!-- End of the Google Sign-in Section -->
 ```
 

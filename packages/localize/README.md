@@ -2,29 +2,34 @@
 
 ## Contents
 
-* [Installation](#installation)
-* [Use @nativescript/localize](#use-nativescriptlocalize)
-	* [Localization in NativeScript Core](#localization-in-nativescript-core)
-		* [Quirks](#quirks)
-	* [Localization in Angular](#localization-in-angular)
-  	* [Localization in Vue](#localization-in-vue)
-	* [Localization in Svelte](#localization-in-svelte)
-  	* [Setting the Default Language](#setting-the-default-language)
-  	* [Localizing the Application Name](#localizing-the-application-name)
-  	* [Localizing iOS properties?](#how-to-localize-ios-properties)
-  	* [Changing the language dynamically at runtime](#changing-the-language-dynamically-at-runtime)
-		* [iOS](#ios)
-		* [Android](#android)
-* [File format](#file-format)
-* [Troubleshooting](#troubleshooting)
-  * [Angular localization pipe and the modal context](#the-angular-localization-pipe-and-the-modal-context)
-  * [Issues with WebView on Android N+](#issues-with-webview-on-android-n)
-* [API](#api)
-	* [localize()](#localize)
-	* [overrideLocale()](#overridelocale)
-	* [androidLaunchEventLocalizationHandler()](#androidlauncheventlocalizationhandler)
-* [Credits](#credits)
-* [License](#license)
+- [@nativescript/localize](#nativescriptlocalize)
+	- [Contents](#contents)
+	- [Intro](#intro)
+	- [Installation](#installation)
+	- [Use @nativescript/localize](#use-nativescriptlocalize)
+		- [Localization in NativeScript Core](#localization-in-nativescript-core)
+			- [Quirks](#quirks)
+		- [Localization in Angular](#localization-in-angular)
+		- [Localization in Vue](#localization-in-vue)
+		- [Localization in Svelte](#localization-in-svelte)
+		- [Setting the default language](#setting-the-default-language)
+		- [Localizing the application name](#localizing-the-application-name)
+		- [File format](#file-format)
+			- [JSON](#json)
+			- [Javascript](#javascript)
+		- [Localizing iOS properties](#localizing-ios-properties)
+		- [Changing the language dynamically at runtime](#changing-the-language-dynamically-at-runtime)
+			- [iOS](#ios)
+			- [Android](#android)
+	- [Troubleshooting](#troubleshooting)
+		- [Angular localization pipe and the modal context](#angular-localization-pipe-and-the-modal-context)
+		- [Issues with WebView on Android N+](#issues-with-webview-on-android-n)
+	- [API](#api)
+		- [localize()](#localize)
+		- [overrideLocale()](#overridelocale)
+		- [androidLaunchEventLocalizationHandler()](#androidlauncheventlocalizationhandler)
+	- [Credits](#credits)
+	- [License](#license)
 
 ## Intro
 
@@ -321,7 +326,7 @@ const localeOverriddenSuccessfully = overrideLocale('en-GB'); // or "nl-NL", etc
 For Example:
 
 ```ts
-import { Application } from '@nativescript/core';
+import { Application, Utils } from '@nativescript/core';
 import { overrideLocale } from '@nativescript/localize';
 
 alert({
@@ -331,7 +336,7 @@ alert({
 }).then(() => {
 	L.localize.overrideLocale(selectedLang);
 	if (isAndroid) {
-		(Application.android.foregroundActivity || Application.android.startActivity).finish();
+		Utils.android.getCurrentActivity().finish();
 	} else {
 		exit(0);
 	}
