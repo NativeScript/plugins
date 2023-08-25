@@ -144,12 +144,17 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	const opts = path ? GMSPolygon.polygonWithPath(path) : GMSPolygon.new();
 
 	if (Array.isArray(options?.holes)) {
-		if (options.holes.length) {
-			opts.holes = options.holes.map((hole) => {
-				const res = GMSMutablePath.path();
-				res.addCoordinate(CLLocationCoordinate2DMake(hole.lat, hole.lng));
-			}) as any;
-		}
+		const nativeHoles = NSMutableArray.new<GMSMutablePath>();
+		options.holes.forEach((hole) => {
+			if (Array.isArray(hole) && hole.length) {
+				const path = GMSMutablePath.path();
+				hole.forEach((coordinate) => {
+					path.addCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
+				});
+				nativeHoles.addObject(path);
+			}
+		});
+		opts.holes = nativeHoles;
 	}
 
 	if (typeof options?.tappable === 'boolean') {
