@@ -1,1 +1,2 @@
-pod 'GoogleMaps', '~> 7.3.0'
+# pod 'GoogleMaps', '~> 7.3.0' # requires ios deployment target 13.0 or later
+pod 'GoogleMaps', '~> 6.2.1'
