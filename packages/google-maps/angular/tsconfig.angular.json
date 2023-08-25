@@ -4,7 +4,7 @@
 		"types": ["node"],
 		"baseUrl": ".",
 		"paths": {
-			"@nativescript/google-maps": ["../../../dist/packages/google-maps"]
+			"@rebootmobility/google-maps": ["../../../dist/packages/google-maps"]
 		},
 		"outDir": "../../../dist/out-tsc",
 		"declarationDir": "../../../dist/out-tsc"
