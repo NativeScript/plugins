@@ -1,10 +1,3 @@
-# @nativescript/\* plugins
-
-```
-npm run setup
-npm start
-```
-
 - [@nativescript/animated-circle](packages/animated-circle/README.md)
 - [@nativescript/appavailability](packages/appavailability/README.md)
 - [@nativescript/apple-sign-in](packages/apple-sign-in/README.md)
@@ -27,17 +20,15 @@ npm start
 - [@nativescript/google-signin](packages/google-signin/README.md)
 - [@nativescript/haptics](packages/haptics/README.md)
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
-- [@nativescript/ionic-portals](packages/ionic-portals/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)
 - [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
-- [@nativescript/jetpack-compose](packages/jetpack-compose/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
 - [@nativescript/pdf](packages/pdf/README.md)
 - [@nativescript/picker](packages/picker/README.md)
+- [@nativescript/secure-storage](packages/secure-storage/README.md)
 - [@nativescript/shared-notification-delegate](packages/shared-notification-delegate/README.md)
 - [@nativescript/social-share](packages/social-share/README.md)
-- [@nativescript/swift-ui](packages/swift-ui/README.md)
 - [@nativescript/theme-switcher](packages/theme-switcher/README.md)
 - [@nativescript/twitter](packages/twitter/README.md)
 - [@nativescript/zip](packages/zip/README.md)
@@ -50,13 +41,6 @@ This workspace manages the suite of plugins listed above.
 
 - Node 18+ is recommended
 - [yarn v1](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) is required
-
-### Note about "focus modes"
-
-`npm start` > `focus.{any-plugin}` ENTER will focus the workspace to a single plugin for working on it in isolation.
-
-Generally we try to keep "UI" plugins away from "SDK" related plugins since UI plugins often bring in aspects which may need more resource setup. For example, since the swift-ui plugin is currently managed here, we have testing code for it here: https://github.com/NativeScript/plugins/blob/main/tools/assets/App_Resources/iOS/src/BasicViewProvider.swift ... however when focusing on any other plugins, you would need to rename those .swift > .off so they aren't included in the demo to work with other plugins. Since the supporting .swift files include SwiftUIProvider which comes from only the swift-ui plugin.
-To help contributors in the future, we will likely split some of these plugins out across other workspaces to pair it down. For now that tip can be applied where needed to work on any plugin.
 
 In general, when in doubt with what to do, just `npm start`.
 

@@ -74,6 +74,23 @@ For example, to query for `twitter://`, `whatsapp://` and `fb://`, edit `app/App
 </array>
 ```
 
+## Android Query Permission
+
+Starting from Android API level 30 (Android 11), you must explicitly declare your app's intent to interact with other apps in the Android manifest file `AndroidManifest.xml`.
+
+```xml
+<manifest>
+    <queries> 
+        <package android:name="com.whatsapp" /> 
+    </queries>
+  
+    <application ...>
+    </application>
+</manifest>
+```
+
+Replace `com.whatsapp` with the package name of the app you want to interact with.
+
 ## API
 
 | Methods| Return Type| Description|
