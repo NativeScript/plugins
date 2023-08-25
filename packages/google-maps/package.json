@@ -1,5 +1,8 @@
 {
-	"name": "@nativescript/google-maps",
+	"name": "@rebootmobility/google-maps",
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
 	"version": "1.5.2",
 	"description": "Google Maps SDK",
 	"main": "index",
