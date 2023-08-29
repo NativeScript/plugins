@@ -494,7 +494,7 @@ export class Circle implements ICircle {
 
 export interface IPolygon {
 	points: Coordinate[];
-	holes: Coordinate[];
+	holes: Coordinate[][];
 	tappable: boolean;
 	strokeWidth: number;
 	strokeColor: Color | string;
@@ -512,7 +512,7 @@ export interface PolygonOptions extends Partial<IPolygon> {}
 export class Polygon implements IPolygon {
 	fillColor: Color | string;
 	geodesic: boolean;
-	holes: Coordinate[];
+	holes: Coordinate[][];
 	points: Coordinate[];
 	strokeColor: Color | string;
 	strokeJointType: JointType;
