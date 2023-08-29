@@ -11,3 +11,4 @@
 /// <reference path="./node_modules/@nativescript/types-ios/lib/ios/objc-x86_64/objc!Contacts.d.ts" />
 /// <reference path="./node_modules/@nativescript/types-ios/lib/ios/objc-x86_64/objc!AddressBook.d.ts" />
 /// <reference path="./node_modules/@nativescript/types-ios/lib/ios/objc-x86_64/objc!ContactsUI.d.ts" />
+/// <reference path="./node_modules/@nativescript/types-ios/lib/ios/objc-x86_64/objc!AssetsLibrary.d.ts" />

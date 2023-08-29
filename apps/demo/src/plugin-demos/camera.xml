@@ -1,6 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
     <ScrollView>
-        <GridLayout rows="auto, *, auto, auto">
+        <GridLayout rows="auto, *, auto, auto, auto">
             <StackLayout row="0" orientation="vertical" padding="5">
                 <StackLayout orientation="horizontal" row="0" padding="5">
                     <Label text="saveToGallery" />
@@ -24,6 +24,7 @@
             <Image row="1" src="{{ cameraImage }}" id="image" stretch="aspectFit" margin="10"/>
             <TextView row="2" text="{{ labelText }}" editable="false"></TextView>>
             <Button row="3"  text="Take Picture" tap="{{ onTakePictureTap }}"  padding="10"/>
+            <Button row="4"  text="Record Video" tap="{{ onRecordVideoTap }}"  padding="10"/>
         </GridLayout>
     </ScrollView>
 </Page>
