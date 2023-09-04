@@ -1,4 +1,4 @@
-import { Observable, ImageSource, ImageAsset, View } from '@nativescript/core';
+import { ImageSource, ImageAsset, View } from '@nativescript/core';
 
 export class ImagePicker {
 	constructor(options?: Options);

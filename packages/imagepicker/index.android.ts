@@ -1,12 +1,12 @@
 import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders } from '@nativescript/core';
 import * as permissions from '@nativescript-community/perms';
 
-import { ImagePickerMediaType, Options } from './common';
+import { ImagePickerMediaType, Options, ImagePickerApi } from './common';
 export * from './common';
 let copyToAppFolder;
 let renameFileTo;
-let fileMap = {};
-let videoFiles = {
+
+const videoFiles = {
 	mp4: true,
 	mov: true,
 	avi: true,
@@ -22,8 +22,8 @@ let videoFiles = {
 };
 class UriHelper {
 	public static _calculateFileUri(uri: android.net.Uri) {
-		let DocumentsContract = (<any>android.provider).DocumentsContract;
-		let isKitKat = android.os.Build.VERSION.SDK_INT >= 19; // android.os.Build.VERSION_CODES.KITKAT
+		const DocumentsContract = (<any>android.provider).DocumentsContract;
+		const isKitKat = android.os.Build.VERSION.SDK_INT >= 19; // android.os.Build.VERSION_CODES.KITKAT
 
 		if (isKitKat && DocumentsContract.isDocumentUri(Utils.android.getApplicationContext(), uri)) {
 			let docId, id, type;
@@ -56,7 +56,7 @@ class UriHelper {
 			// MediaProvider
 			else if (UriHelper.isMediaDocument(uri)) {
 				docId = DocumentsContract.getDocumentId(uri);
-				let split = docId.split(':');
+				const split = docId.split(':');
 				type = split[0];
 				id = split[1];
 
@@ -68,8 +68,8 @@ class UriHelper {
 					contentUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 				}
 
-				let selection = '_id=?';
-				let selectionArgs = [id];
+				const selection = '_id=?';
+				const selectionArgs = [id];
 
 				return UriHelper.getDataColumn(contentUri, selection, selectionArgs, false);
 			}
@@ -89,13 +89,13 @@ class UriHelper {
 
 	private static getDataColumn(uri: android.net.Uri, selection, selectionArgs, isDownload: boolean) {
 		let cursor = null;
-		let filePath;
+		let filePath: string;
 		if (isDownload) {
-			let columns = ['_display_name'];
+			const columns = ['_display_name'];
 			try {
 				cursor = this.getContentResolver().query(uri, columns, selection, selectionArgs, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					let column_index = cursor.getColumnIndexOrThrow(columns[0]);
+					const column_index = cursor.getColumnIndexOrThrow(columns[0]);
 					filePath = cursor.getString(column_index);
 					if (filePath) {
 						const dl = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
@@ -111,13 +111,13 @@ class UriHelper {
 				}
 			}
 		} else {
-			let columns = [android.provider.MediaStore.MediaColumns.DATA];
+			const columns = [android.provider.MediaStore.MediaColumns.DATA];
 			let filePath;
 
 			try {
 				cursor = this.getContentResolver().query(uri, columns, selection, selectionArgs, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					let column_index = cursor.getColumnIndexOrThrow(columns[0]);
+					const column_index = cursor.getColumnIndexOrThrow(columns[0]);
 					filePath = cursor.getString(column_index);
 					if (filePath) {
 						return filePath;
@@ -151,7 +151,7 @@ class UriHelper {
 	}
 }
 
-export class ImagePicker {
+export class ImagePicker implements ImagePickerApi {
 	private _options: Options;
 
 	constructor(options: Options) {
@@ -176,8 +176,8 @@ export class ImagePicker {
 	}
 
 	get mimeTypes() {
-		let length = this.mediaType === '*/*' ? 2 : 1;
-		let mimeTypes = Array.create(java.lang.String, length);
+		const length = this.mediaType === '*/*' ? 2 : 1;
+		const mimeTypes = Array.create(java.lang.String, length);
 
 		if (this.mediaType === '*/*') {
 			mimeTypes[0] = 'image/*';
@@ -189,8 +189,8 @@ export class ImagePicker {
 	}
 
 	authorize(): Promise<permissions.MultiResult | permissions.Result> {
+		let requested: { [key: string]: permissions.PermissionOptions } = {};
 		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
-			let requested: { [key: string]: permissions.PermissionOptions } = {};
 			const mediaPerms = {
 				photo: { reason: 'To pick images from your gallery' },
 				video: { reason: 'To pick videos from your gallery' },
@@ -205,7 +205,8 @@ export class ImagePicker {
 
 			return permissions.request(requested);
 		} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
-			return permissions.request('storage', { read: true });
+			requested['storage'] = { read: true, write: false };
+			return permissions.request(requested);
 		} else {
 			return Promise.resolve({ storage: 'authorized' });
 		}

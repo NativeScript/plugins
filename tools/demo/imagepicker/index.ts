@@ -85,7 +85,8 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 	private startSelection(context) {
 		context
 			.authorize()
-			.then(() => {
+			.then((authResult) => {
+				console.log(authResult);
 				this.imageAssets = [];
 				this.imageSrc = null;
 				this.selection = null;

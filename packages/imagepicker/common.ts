@@ -1,4 +1,5 @@
 import { ImageAsset } from '@nativescript/core';
+import { MultiResult, Result } from '@nativescript-community/perms';
 
 export enum ImagePickerMediaType {
 	Any = 0,
@@ -115,4 +116,23 @@ export interface Options {
 		 */
 		read_external_storage?: string;
 	};
+}
+
+export interface ImagePickerApi {
+	/**
+	 * Call this before 'present' to request any additional permissions that may be necessary.
+	 * In case of failed authorization consider notifying the user for degraded functionality.
+	 */
+	authorize(): Promise<AuthorizationResult>;
+
+	/**
+	 * Present the image picker UI.
+	 * The result will be an array of SelectedAsset instances provided when the promise is fulfilled.
+	 */
+	present(): Promise<ImagePickerSelection[]>;
+}
+
+export interface AuthorizationResult {
+	authorised: boolean;
+	details: MultiResult | Result;
 }
