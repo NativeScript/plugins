@@ -30,7 +30,7 @@ npm install @nativescript/imagepicker
 ```
 
 **Note: Version 3.0 contains breaking changes:**
-* authorise() now returns a `Promise<AuthorizationResult>` for both android and ios.
+* authorize() now returns a `Promise<AuthorizationResult>` for both android and ios.
 * In the returned result from `present()` each `result[i].thumbnail` is now an `ImageSource`.
 * `result[i].duration` is now typed correctly as a `number`.
 
