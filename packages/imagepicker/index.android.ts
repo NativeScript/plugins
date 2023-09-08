@@ -1,7 +1,7 @@
-import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders } from '@nativescript/core';
+import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders, ImageSource } from '@nativescript/core';
 import * as permissions from '@nativescript-community/perms';
 
-import { ImagePickerMediaType, Options, ImagePickerApi } from './common';
+import { ImagePickerMediaType, Options, AuthorizationResult, ImagePickerBase, ImagePickerSelection } from './common';
 export * from './common';
 let copyToAppFolder;
 let renameFileTo;
@@ -151,10 +151,11 @@ class UriHelper {
 	}
 }
 
-export class ImagePicker implements ImagePickerApi {
+export class ImagePicker extends ImagePickerBase {
 	private _options: Options;
 
 	constructor(options: Options) {
+		super();
 		this._options = options;
 		copyToAppFolder = options.copyToAppFolder;
 		renameFileTo = options.renameFileTo;
@@ -188,7 +189,7 @@ export class ImagePicker implements ImagePickerApi {
 		return mimeTypes;
 	}
 
-	authorize(): Promise<permissions.MultiResult | permissions.Result> {
+	authorize(): Promise<AuthorizationResult> {
 		let requested: { [key: string]: permissions.PermissionOptions } = {};
 		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
 			const mediaPerms = {
@@ -203,16 +204,16 @@ export class ImagePicker implements ImagePickerApi {
 				requested = mediaPerms;
 			}
 
-			return permissions.request(requested);
+			return permissions.request(requested).then((result) => this.mapResult(result));
 		} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
 			requested['storage'] = { read: true, write: false };
-			return permissions.request(requested);
+			return permissions.request(requested).then((result) => this.mapResult(result));
 		} else {
-			return Promise.resolve({ storage: 'authorized' });
+			return Promise.resolve({ details: null, authorized: true });
 		}
 	}
 
-	present(): Promise<ImageAsset[]> {
+	present(): Promise<ImagePickerSelection[]> {
 		return new Promise((resolve, reject) => {
 			// WARNING: If we want to support multiple pickers we will need to have a range of IDs here:
 			let RESULT_CODE_PICKER_IMAGES = 9192;
@@ -228,7 +229,7 @@ export class ImagePicker implements ImagePickerApi {
 					const file = File.fromPath(selectedAsset.android);
 					let copiedFile: any = false;
 
-					let item: any = {
+					const item: ImagePickerSelection = {
 						asset: selectedAsset,
 						filename: file.name,
 						originalFilename: file.name,
@@ -255,10 +256,10 @@ export class ImagePicker implements ImagePickerApi {
 						item.filesize = new java.io.File(item.path).length();
 					}
 					if (item.type == 'video') {
-						let thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
+						const thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
 						let retriever = new android.media.MediaMetadataRetriever();
 						retriever.setDataSource(item.path);
-						item.thumbnail = thumb;
+						item.thumbnail = new ImageSource(thumb);
 						let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
 						let duration = parseInt(time) / 1000;
 						item.duration = duration;

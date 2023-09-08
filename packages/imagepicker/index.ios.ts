@@ -1,13 +1,16 @@
 import { ImageAsset, View, Utils, Application, path, knownFolders, ImageSource } from '@nativescript/core';
-import { Options } from './common';
+import { AuthorizationResult, ImagePickerBase, ImagePickerSelection, Options } from './common';
 import { getFile } from '@nativescript/core/http';
+import * as permissions from '@nativescript-community/perms';
 export * from './common';
-
+type FileMap = {
+	[key: string]: ImagePickerSelection;
+};
 const defaultAssetCollectionSubtypes: NSArray<any> = NSArray.arrayWithArray(<any>[PHAssetCollectionSubtype.SmartAlbumRecentlyAdded, PHAssetCollectionSubtype.SmartAlbumUserLibrary, PHAssetCollectionSubtype.AlbumMyPhotoStream, PHAssetCollectionSubtype.SmartAlbumFavorites, PHAssetCollectionSubtype.SmartAlbumPanoramas, PHAssetCollectionSubtype.SmartAlbumBursts, PHAssetCollectionSubtype.AlbumCloudShared, PHAssetCollectionSubtype.SmartAlbumSelfPortraits, PHAssetCollectionSubtype.SmartAlbumScreenshots, PHAssetCollectionSubtype.SmartAlbumLivePhotos]);
 let copyToAppFolder;
 let renameFileTo;
-let fileMap = {};
-export class ImagePicker {
+let fileMap: FileMap = {};
+export class ImagePicker extends ImagePickerBase {
 	_imagePickerController: QBImagePickerController;
 	_hostView: View;
 	_delegate: ImagePickerControllerDelegate;
@@ -26,6 +29,7 @@ export class ImagePicker {
 	}
 
 	constructor(options: Options = {}, hostView: View) {
+		super();
 		this._hostView = hostView;
 
 		const imagePickerController = QBImagePickerController.alloc().init();
@@ -44,24 +48,14 @@ export class ImagePicker {
 		this._imagePickerController = imagePickerController;
 	}
 
-	authorize(): Promise<void> {
+	authorize(): Promise<AuthorizationResult> {
 		console.log('authorizing...');
-
-		return new Promise<void>((resolve, reject) => {
-			const runloop = CFRunLoopGetCurrent();
-			PHPhotoLibrary.requestAuthorization(function (result) {
-				if (result === PHAuthorizationStatus.Authorized) {
-					resolve();
-				} else {
-					reject(new Error('Authorization failed. Status: ' + result));
-				}
-			});
-		});
+		return permissions.request('photo').then((result) => this.mapResult(result));
 	}
 
-	present() {
+	present(): Promise<ImagePickerSelection[]> {
 		fileMap = {};
-		return new Promise<void>((resolve, reject) => {
+		return new Promise<ImagePickerSelection[]>((resolve, reject) => {
 			this._delegate = ImagePickerControllerDelegate.initWithOwner(this, resolve, reject);
 			this._imagePickerController.delegate = this._delegate;
 
@@ -101,11 +95,13 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 			// this fixes the image aspect ratio in tns-core-modules version < 4.0
 			if (!asset.options) asset.options = { keepAspectRatio: true };
 			const existingFileName = phAssetImage.valueForKey('filename');
-			const pickerSelection: any = {
+			const pickerSelection: ImagePickerSelection = {
 				asset: asset,
 				type: phAssetImage.mediaType == 2 ? 'video' : 'image',
 				filename: existingFileName,
 				originalFilename: existingFileName,
+				filesize: 0,
+				path: '',
 			};
 			if (pickerSelection.type == 'video') pickerSelection.duration = parseInt(phAssetImage.duration.toFixed(0));
 			fileMap[existingFileName] = pickerSelection;
@@ -168,7 +164,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 				}
 
 				Promise.all(promises).then(() => {
-					const results = [];
+					const results: ImagePickerSelection[] = [];
 					for (const key in fileMap) {
 						results.push(fileMap[key]);
 					}
