@@ -1,4 +1,5 @@
-import { ImageAsset } from '@nativescript/core';
+import { ImageAsset, ImageSource } from '@nativescript/core';
+import { MultiResult, Result } from '@nativescript-community/perms';
 
 export enum ImagePickerMediaType {
 	Any = 0,
@@ -40,12 +41,12 @@ export interface ImagePickerSelection {
 	/**
 	 * The duration of the video. Only passed if type is 'video'
 	 */
-	duration?: string;
+	duration?: number;
 
 	/**
 	 * An image to use for the video thumbnail. Only passed if type is 'video'
 	 */
-	thumbnail?: ImageAsset;
+	thumbnail?: ImageSource;
 }
 
 /**
@@ -115,4 +116,47 @@ export interface Options {
 		 */
 		read_external_storage?: string;
 	};
+}
+
+export interface ImagePickerApi {
+	/**
+	 * Call this before 'present' to request any additional permissions that may be necessary.
+	 * In case of failed authorization consider notifying the user for degraded functionality.
+	 */
+	authorize(): Promise<AuthorizationResult>;
+
+	/**
+	 * Present the image picker UI.
+	 * The result will be an array of SelectedAsset instances provided when the promise is fulfilled.
+	 */
+	present(): Promise<ImagePickerSelection[]>;
+}
+
+export interface AuthorizationResult {
+	authorized: boolean;
+	details: MultiResult | Result;
+}
+const requestingPermissions = ['android.permission.READ_MEDIA_IMAGES', 'android.permission.READ_MEDIA_VIDEO'];
+
+export abstract class ImagePickerBase implements ImagePickerApi {
+	abstract authorize(): Promise<AuthorizationResult>;
+	abstract present(): Promise<ImagePickerSelection[]>;
+	protected mapResult(result: MultiResult | Result): AuthorizationResult {
+		let authorized = true;
+		if (Array.isArray(result) && result.length == 2) {
+			// is of type Result
+			authorized = result[0] === 'authorized';
+		} else {
+			const t = result as MultiResult;
+			requestingPermissions.forEach((permission) => {
+				if (t[permission] !== undefined) {
+					authorized = authorized && t[permission] === 'authorized';
+				}
+			});
+		}
+		return {
+			details: result,
+			authorized,
+		};
+	}
 }

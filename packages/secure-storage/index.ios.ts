@@ -36,7 +36,7 @@ export class SecureStorage extends SecureStorageCommon {
 	get(arg: GetOptions): Promise<any> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
-				resolve(NSUserDefaults.standardUserDefaults.objectForKey(arg.key));
+				resolve(this.getUserDefaultsValue(arg));
 				return;
 			}
 
@@ -57,7 +57,7 @@ export class SecureStorage extends SecureStorageCommon {
 
 	getSync(arg: GetOptions): any {
 		if (this.isSimulator) {
-			return NSUserDefaults.standardUserDefaults.objectForKey(arg.key);
+			return this.getUserDefaultsValue(arg);
 		}
 
 		let query = SAMKeychainQuery.new();
@@ -77,7 +77,7 @@ export class SecureStorage extends SecureStorageCommon {
 	set(arg: SetOptions): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
-				NSUserDefaults.standardUserDefaults.setObjectForKey(arg.value, arg.key);
+				this.setUserDefaultsValue(arg);
 				resolve(true);
 				return;
 			}
@@ -96,7 +96,7 @@ export class SecureStorage extends SecureStorageCommon {
 
 	setSync(arg: SetOptions): boolean {
 		if (this.isSimulator) {
-			NSUserDefaults.standardUserDefaults.setObjectForKey(arg.value, arg.key);
+			this.setUserDefaultsValue(arg);
 			return true;
 		}
 
@@ -114,7 +114,7 @@ export class SecureStorage extends SecureStorageCommon {
 	remove(arg: RemoveOptions): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			if (this.isSimulator) {
-				NSUserDefaults.standardUserDefaults.removeObjectForKey(arg.key);
+				this.removeUserDefaultsValue(arg);
 				resolve(true);
 				return;
 			}
@@ -135,7 +135,7 @@ export class SecureStorage extends SecureStorageCommon {
 
 	removeSync(arg: RemoveOptions): boolean {
 		if (this.isSimulator) {
-			NSUserDefaults.standardUserDefaults.removeObjectForKey(arg.key);
+			this.removeUserDefaultsValue(arg);
 			return true;
 		}
 
@@ -204,5 +204,22 @@ export class SecureStorage extends SecureStorageCommon {
 			}
 		}
 		return true;
+	}
+
+	private setUserDefaultsValue(arg: SetOptions) {
+		this.getUserDefaultToUse(arg.accessGroup).setValueForKey(arg.value, arg.key);
+	}
+	private getUserDefaultsValue(arg: GetOptions) {
+		return this.getUserDefaultToUse(arg.accessGroup).objectForKey(arg.key);
+	}
+	private removeUserDefaultsValue(arg: RemoveOptions) {
+		return this.getUserDefaultToUse(arg.accessGroup).removeObjectForKey(arg.key);
+	}
+	private getUserDefaultToUse(accessGroup?: string): NSUserDefaults {
+		if (accessGroup) {
+			return new NSUserDefaults({ suiteName: accessGroup });
+		} else {
+			return NSUserDefaults.standardUserDefaults;
+		}
 	}
 }

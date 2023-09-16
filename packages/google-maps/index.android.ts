@@ -1356,26 +1356,36 @@ export class Polygon extends OverLayBase implements IPolygon {
 		}
 	}
 
-	get holes(): Coordinate[] {
-		const array: androidNative.Array<com.google.android.gms.maps.model.LatLng> = this.native.getHoles().toArray();
-		const holes: Coordinate[] = [];
+	get holes(): Coordinate[][] {
+		const array: androidNative.Array<java.util.List<com.google.android.gms.maps.model.LatLng>> = this.native.getHoles().toArray();
+		const holes: Coordinate[][] = [];
 		for (let i = 0; i < array.length; i++) {
-			const hole = array[i];
-			holes.push({
-				lat: hole.latitude,
-				lng: hole.longitude,
-			});
+			const nativeHole = array[i].toArray();
+			const hole: Coordinate[] = [];
+			for (let j = 0; j < nativeHole.length; j++) {
+				hole.push({
+					lat: nativeHole[j].latitude,
+					lng: nativeHole[j].longitude,
+				});
+			}
+			holes.push(hole);
 		}
 		return holes;
 	}
 
-	set holes(value) {
+	set holes(value: Coordinate[][]) {
 		if (Array.isArray(value)) {
-			const nativeArray = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
+			const nativeHoles = new java.util.ArrayList<java.util.ArrayList<com.google.android.gms.maps.model.LatLng>>();
 			value.forEach((hole) => {
-				nativeArray.add(new com.google.android.gms.maps.model.LatLng(hole.lat, hole.lng));
+				if (Array.isArray(hole) && hole.length) {
+					const nativeHole = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
+					hole.forEach((coordinate) => {
+						nativeHole.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
+					});
+					nativeHoles.add(nativeHole);
+				}
 			});
-			this.native.setHoles(nativeArray);
+			this.native.setHoles(nativeHoles);
 		}
 	}
 

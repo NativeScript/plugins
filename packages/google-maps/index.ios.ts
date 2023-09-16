@@ -1336,31 +1336,39 @@ export class Polygon extends OverLayBase implements IPolygon {
 		this.native.path = points;
 	}
 
-	get holes(): Coordinate[] {
+	get holes(): Coordinate[][] {
 		const nativeHoles = this.native?.holes;
 		const count = nativeHoles?.count || 0;
-		const holes: Coordinate[] = [];
+		const holes: Coordinate[][] = [];
 		for (let i = 0; i < count; i++) {
-			const hole = nativeHoles.objectAtIndex(i);
-			const coord = hole.coordinateAtIndex(0);
-			holes.push({
-				lat: coord.latitude,
-				lng: coord.longitude,
-			});
+			const nativeHole = nativeHoles.objectAtIndex(i);
+			const hole: Coordinate[] = [];
+			for (let j = 0; j < nativeHole.count(); j++) {
+				const coord = nativeHole.coordinateAtIndex(j);
+				hole.push({
+					lat: coord.latitude,
+					lng: coord.longitude,
+				});
+			}
+			holes.push(hole);
 		}
 		return holes;
 	}
 
-	set holes(value) {
-		const holes = [];
+	set holes(value: Coordinate[][]) {
+		const nativeHoles = [];
 		if (Array.isArray(value)) {
 			value.forEach((hole) => {
-				const path = GMSMutablePath.path();
-				path.addCoordinate(CLLocationCoordinate2DMake(hole.lat, hole.lng));
-				holes.push(path);
+				if (Array.isArray(hole) && hole.length) {
+					const path = GMSMutablePath.path();
+					hole.forEach((coordinate) => {
+						path.addCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
+					});
+					nativeHoles.push(path);
+				}
 			});
 		}
-		this.native.holes = holes as any;
+		this.native.holes = nativeHoles as any;
 	}
 
 	get tappable(): boolean {

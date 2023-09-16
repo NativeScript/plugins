@@ -29,6 +29,11 @@ Install the plugin by running the following command in the root directory of you
 npm install @nativescript/imagepicker
 ```
 
+**Note: Version 3.0 contains breaking changes:**
+* authorize() now returns a `Promise<AuthorizationResult>` for both android and ios.
+* In the returned result from `present()` each `result[i].thumbnail` is now an `ImageSource`.
+* `result[i].duration` is now typed correctly as a `number`.
+
 **Note: Version 2.0 contains breaking changes. In order supply more information about your selection, the ImageSource asset is nested in the response so you'll need to update your code to use `result.asset` instead of `result` as your src for your Images.**
 
 ## Android required permissions
@@ -97,22 +102,25 @@ The `present` method resolves with the selected media assets that can you to pro
 ```ts
 imagePickerObj
     .authorize()
-    .then(function() {
-        return imagePickerObj.present();
-    })
-    .then(function(selection) {
-        selection.forEach(function(selected) {
-            this.imageSource = selected.asset;
-            this.type = selected.type;
-            this.filesize = selected.filesize;
-            //etc
-        });
-        list.items = selection;
-    }).catch(function (e) {
+    .then((authResult) => {
+        if(authResult.authorized) {
+            return imagePickerObj.present()
+                .then(function(selection) {
+                    selection.forEach(function(selected) {
+                        this.imageSource = selected.asset;
+                        this.type = selected.type;
+                        this.filesize = selected.filesize;
+                        //etc
+                    });
+                });
+        } else {
+            // process authorization not granted.
+        }
+    })    
+    .catch(function (e) {
         // process error
     });
 ```
-> **Note** To request permissions for Android 6+ (API 23+), use [nativescript-permissions](https://www.npmjs.com/package/nativescript-permissions) plugin.
 
 ### Demo
 You can play with the plugin on StackBlitz at any of the following links:
@@ -131,8 +139,8 @@ The class that provides the media selection API. It offers the following methods
 | Method | Returns | Description
 |:-------|:--------|:-----------
 | `constructor(options: Options)` | `ImagePicker` | Instanciates the ImagePicker class with the optional `options` parameter. See [Options](#options)
-| `authorize()` | `Promise<void>` | Requests the required permissions. Call it before calling `present()`. In case of a failed authorization, consider notifying the user for degraded functionality.
-| `present()` | `Promise<ImageAsset[]>` | Presents the image picker UI.
+| `authorize()` | `Promise<AuthorizationResult>` | Requests the required permissions. Call it before calling `present()`. In case of a failed authorization, consider notifying the user for degraded functionality.  The returned `AuthorizationResult` will have it's `authorized` property set to `true` if permission has been granted.
+| `present()` | `Promise<ImagePickerSelection[]>` | Presents the image picker UI.
 | `create(options: Options, hostView: View)` | `ImagePicker` | Creates an instance of the ImagePicker class. The `hostView` parameter can be set to the view that hosts the image picker. Intended to be used when opening the picker from a modal page.
 
 ### Options
