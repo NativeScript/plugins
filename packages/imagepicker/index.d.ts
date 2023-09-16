@@ -1,13 +1,13 @@
-import { Observable, ImageSource, ImageAsset, View } from '@nativescript/core';
-
-export class ImagePicker {
+import { ImageSource, ImageAsset, View } from '@nativescript/core';
+import { AuthorizationResult, ImagePickerApi } from './common';
+export class ImagePicker implements ImagePickerApi {
 	constructor(options?: Options);
 
 	/**
 	 * Call this before 'present' to request any additional permissions that may be necessary.
 	 * In case of failed authorization consider notifying the user for degraded functionality.
 	 */
-	authorize(): Promise<void>;
+	authorize(): Promise<AuthorizationResult>;
 
 	/**
 	 * Present the image picker UI.

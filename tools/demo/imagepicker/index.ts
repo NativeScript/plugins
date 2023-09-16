@@ -1,10 +1,10 @@
 import { DemoSharedBase } from '../utils';
 import * as imagepicker from '@nativescript/imagepicker';
-import { ItemEventData, Label } from '@nativescript/core';
+import { ImageAsset, ImageSource, ItemEventData, Label } from '@nativescript/core';
 
 export class DemoSharedImagepicker extends DemoSharedBase {
 	private _selection: any;
-	private _imageSrc: any;
+	private _imageSrc: ImageSource | ImageAsset;
 	private _imageAssets: Array<any>;
 	private _isSingleMode: boolean;
 
@@ -16,11 +16,11 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		return 300;
 	}
 
-	get imageSrc(): any {
+	get imageSrc(): ImageSource | ImageAsset {
 		return this._imageSrc;
 	}
 
-	set imageSrc(value: any) {
+	set imageSrc(value: ImageSource | ImageAsset) {
 		if (this._imageSrc !== value) {
 			this._imageSrc = value;
 			this.notifyPropertyChange('imageSrc', value);
@@ -82,31 +82,35 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		this.startSelection(context);
 	}
 
-	private startSelection(context) {
+	private startSelection(context: imagepicker.ImagePicker) {
 		context
 			.authorize()
-			.then(() => {
-				this.imageAssets = [];
-				this.imageSrc = null;
-				this.selection = null;
-				return context.present();
-			})
-			.then((selection: imagepicker.ImagePickerSelection[]) => {
-				console.log('Selection done: ', selection);
-				this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
-				if (selection[0].thumbnail) {
-					this.imageSrc = selection[0].thumbnail;
+			.then((authResult) => {
+				console.log(authResult);
+				if (authResult.authorized) {
+					this.imageAssets = [];
+					this.imageSrc = null;
+					this.selection = null;
+					return context.present().then((selection: imagepicker.ImagePickerSelection[]) => {
+						console.log('Selection done: ', selection);
+						this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
+						if (selection[0].thumbnail) {
+							this.imageSrc = selection[0].thumbnail;
+						}
+						this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
+
+						// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
+						selection.forEach((element) => {
+							let asset = element.asset;
+							asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
+							asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
+						});
+
+						this.imageAssets = selection;
+					});
+				} else {
+					console.log('UnAuthorized');
 				}
-				this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
-
-				// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
-				selection.forEach((element) => {
-					let asset = element.asset;
-					asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
-					asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
-				});
-
-				this.imageAssets = selection;
 			})
 			.catch(function (e) {
 				console.log('selection error', e);
