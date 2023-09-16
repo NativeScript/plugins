@@ -1741,7 +1741,7 @@
 	},
 	"ConstValues": [
 		{
-			"filePath": "/Users/nandesoratjihero/Documents/github/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/SecurityFacade.swift",
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/SecurityFacade.swift",
 			"kind": "StringLiteral",
 			"offset": 328,
 			"length": 24,

@@ -1,35 +1,35 @@
 {
-    "name": "@nativescript/appavailability",
-    "version": "2.0.0",
-    "description": "A NativeScript plugin to check for availability of other apps on the device.",
-    "main": "index",
-    "typings": "index.d.ts",
-    "nativescript": {
-        "platforms": {
-            "ios": "6.0.0",
-            "android": "6.0.0"
-        }
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/NativeScript/plugins.git"
-    },
-    "keywords": [
-        "NativeScript",
-        "JavaScript",
-        "TypeScript",
-        "iOS",
-        "Android"
-    ],
-    "author": {
-        "name": "NativeScript",
-        "email": "oss@nativescript.org"
-    },
-    "bugs": {
-        "url": "https://github.com/NativeScript/plugins/issues"
-    },
-    "license": "Apache-2.0",
-    "homepage": "https://github.com/NativeScript/plugins",
-    "readmeFilename": "README.md",
-    "bootstrapper": "@nativescript/plugin-seed"
+	"name": "@nativescript/appavailability",
+	"version": "2.0.0",
+	"description": "A NativeScript plugin to check for availability of other apps on the device.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "6.0.0",
+			"android": "6.0.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS",
+		"Android"
+	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed"
 }
