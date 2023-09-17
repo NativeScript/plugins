@@ -1,13 +1,16 @@
-import { Observable, ImageAsset, View, Utils, Application, path, knownFolders, Folder, File, ImageSource } from '@nativescript/core';
-import { Options, ImagePickerMediaType } from './common';
+import { ImageAsset, View, Utils, Application, path, knownFolders, ImageSource } from '@nativescript/core';
+import { AuthorizationResult, ImagePickerBase, ImagePickerSelection, Options } from './common';
 import { getFile } from '@nativescript/core/http';
+import * as permissions from '@nativescript-community/perms';
 export * from './common';
-
+type FileMap = {
+	[key: string]: ImagePickerSelection;
+};
 const defaultAssetCollectionSubtypes: NSArray<any> = NSArray.arrayWithArray(<any>[PHAssetCollectionSubtype.SmartAlbumRecentlyAdded, PHAssetCollectionSubtype.SmartAlbumUserLibrary, PHAssetCollectionSubtype.AlbumMyPhotoStream, PHAssetCollectionSubtype.SmartAlbumFavorites, PHAssetCollectionSubtype.SmartAlbumPanoramas, PHAssetCollectionSubtype.SmartAlbumBursts, PHAssetCollectionSubtype.AlbumCloudShared, PHAssetCollectionSubtype.SmartAlbumSelfPortraits, PHAssetCollectionSubtype.SmartAlbumScreenshots, PHAssetCollectionSubtype.SmartAlbumLivePhotos]);
 let copyToAppFolder;
 let renameFileTo;
-let fileMap = {};
-export class ImagePicker extends Observable {
+let fileMap: FileMap = {};
+export class ImagePicker extends ImagePickerBase {
 	_imagePickerController: QBImagePickerController;
 	_hostView: View;
 	_delegate: ImagePickerControllerDelegate;
@@ -27,10 +30,9 @@ export class ImagePicker extends Observable {
 
 	constructor(options: Options = {}, hostView: View) {
 		super();
-
 		this._hostView = hostView;
 
-		let imagePickerController = QBImagePickerController.alloc().init();
+		const imagePickerController = QBImagePickerController.alloc().init();
 
 		imagePickerController.assetCollectionSubtypes = defaultAssetCollectionSubtypes;
 		imagePickerController.mediaType = options.mediaType ? <QBImagePickerMediaType>options.mediaType.valueOf() : QBImagePickerMediaType.Any;
@@ -46,24 +48,14 @@ export class ImagePicker extends Observable {
 		this._imagePickerController = imagePickerController;
 	}
 
-	authorize(): Promise<void> {
+	authorize(): Promise<AuthorizationResult> {
 		console.log('authorizing...');
-
-		return new Promise<void>((resolve, reject) => {
-			let runloop = CFRunLoopGetCurrent();
-			PHPhotoLibrary.requestAuthorization(function (result) {
-				if (result === PHAuthorizationStatus.Authorized) {
-					resolve();
-				} else {
-					reject(new Error('Authorization failed. Status: ' + result));
-				}
-			});
-		});
+		return permissions.request('photo').then((result) => this.mapResult(result));
 	}
 
-	present() {
+	present(): Promise<ImagePickerSelection[]> {
 		fileMap = {};
-		return new Promise<void>((resolve, reject) => {
+		return new Promise<ImagePickerSelection[]>((resolve, reject) => {
 			this._delegate = ImagePickerControllerDelegate.initWithOwner(this, resolve, reject);
 			this._imagePickerController.delegate = this._delegate;
 
@@ -99,27 +91,29 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 	qb_imagePickerControllerDidFinishPickingAssets?(imagePickerController: QBImagePickerController, iosAssets: NSArray<any>): void {
 		for (let i = 0; i < iosAssets.count; i++) {
 			const asset = new ImageAsset(iosAssets.objectAtIndex(i));
-			let phAssetImage: PHAsset = (<any>asset)._ios;
+			const phAssetImage: PHAsset = (<any>asset)._ios;
 			// this fixes the image aspect ratio in tns-core-modules version < 4.0
 			if (!asset.options) asset.options = { keepAspectRatio: true };
-			let existingFileName = phAssetImage.valueForKey('filename');
-			let pickerSelection: any = {
+			const existingFileName = phAssetImage.valueForKey('filename');
+			const pickerSelection: ImagePickerSelection = {
 				asset: asset,
 				type: phAssetImage.mediaType == 2 ? 'video' : 'image',
 				filename: existingFileName,
 				originalFilename: existingFileName,
+				filesize: 0,
+				path: '',
 			};
 			if (pickerSelection.type == 'video') pickerSelection.duration = parseInt(phAssetImage.duration.toFixed(0));
 			fileMap[existingFileName] = pickerSelection;
 			if (pickerSelection.type == 'video') {
-				let manager = new PHImageManager();
-				let options = new PHVideoRequestOptions();
+				const manager = new PHImageManager();
+				const options = new PHVideoRequestOptions();
 				options.networkAccessAllowed = true;
 				manager.requestAVAssetForVideoOptionsResultHandler(phAssetImage, options, (urlAsset: AVURLAsset, audioMix, info) => {
 					fileMap[existingFileName].path = urlAsset.URL.toString().replace('file://', '');
 				});
 			} else {
-				let imageOptions = new PHContentEditingInputRequestOptions();
+				const imageOptions = new PHContentEditingInputRequestOptions();
 				imageOptions.networkAccessAllowed = true;
 				phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(imageOptions, (thing) => {
 					fileMap[existingFileName].path = thing.fullSizeImageURL.toString().replace('file://', '');
@@ -129,16 +123,16 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 
 		if (this._resolve) {
 			setTimeout(() => {
-				let promises = [];
+				const promises = [];
 				let count = 0;
-				for (var key in fileMap) {
-					let item = fileMap[key];
+				for (const key in fileMap) {
+					const item = fileMap[key];
 					const folder = knownFolders.documents();
-					let extension = item.filename.split('.').pop();
+					const extension = item.filename.split('.').pop();
 					let filename = renameFileTo ? renameFileTo + '.' + extension : item.filename;
 					if (iosAssets.count > 1) filename = renameFileTo ? renameFileTo + '-' + count + '.' + extension : item.filename;
 					fileMap[item.filename].filename = filename;
-					let fileManager = new NSFileManager();
+					const fileManager = new NSFileManager();
 					if (copyToAppFolder) {
 						const filePath = path.join(folder.path + '/' + copyToAppFolder, filename);
 						promises.push(
@@ -170,8 +164,8 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 				}
 
 				Promise.all(promises).then(() => {
-					let results = [];
-					for (var key in fileMap) {
+					const results: ImagePickerSelection[] = [];
+					for (const key in fileMap) {
 						results.push(fileMap[key]);
 					}
 					this._resolve(results);

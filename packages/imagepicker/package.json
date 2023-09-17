@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/imagepicker",
-	"version": "2.0.2",
+	"version": "3.0.0",
 	"description": "A plugin for the NativeScript framework implementing multiple image picker",
 	"main": "index",
 	"typings": "index.d.ts",
@@ -33,6 +33,6 @@
 	"readmeFilename": "README.md",
 	"bootstrapper": "@nativescript/plugin-seed",
 	"dependencies": {
-		"@nativescript-community/perms": "~2.3.0"
+		"@nativescript-community/perms": "^2.3.0"
 	}
 }
