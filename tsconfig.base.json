@@ -43,6 +43,7 @@
 			"@nativescript/fingerprint-auth": ["packages/fingerprint-auth/index.d.ts"],
 			"@nativescript/geolocation": ["packages/geolocation/index.d.ts"],
 			"@nativescript/google-maps": ["packages/google-maps/index.d.ts"],
+			"@nativescript/google-maps-utils": ["packages/google-maps-utils/index.d.ts"],
 			"@nativescript/google-maps/angular": ["packages/google-maps/angular/index.ts"],
 			"@nativescript/google-signin": ["packages/google-signin/index.d.ts"],
 			"@nativescript/haptics": ["packages/haptics/index.d.ts"],

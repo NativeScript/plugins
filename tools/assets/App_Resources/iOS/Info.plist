@@ -67,6 +67,8 @@
       <string>fbauth2</string>
       <string>fbshareextension</string>
     </array>
+    <key>TNSGoogleMapsAPIKey</key>
+    <string>yourKey</string>
     <key>NSContactsUsageDescription</key>
     <string>Kindly provide permission to access contact on your device.</string>
     <key>CFBundleURLTypes</key>

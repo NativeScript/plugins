@@ -2,6 +2,9 @@
 	"main": "./src/main.ts",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/google-maps": "file:../../dist/packages/google-maps",
+		"@nativescript/google-maps-utils": "file:../../dist/packages/google-maps-utils",
+		"@nativescript/jetpack-compose": "file:../../dist/packages/jetpack-compose",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -20,7 +23,6 @@
 		"@nativescript/facebook": "file:../../dist/packages/facebook",
 		"@nativescript/fingerprint-auth": "file:../../dist/packages/fingerprint-auth",
 		"@nativescript/geolocation": "file:../../dist/packages/geolocation",
-		"@nativescript/google-maps": "file:../../dist/packages/google-maps",
 		"@nativescript/google-signin": "file:../../dist/packages/google-signin",
 		"@nativescript/haptics": "file:../../dist/packages/haptics",
 		"@nativescript/imagepicker": "file:../../dist/packages/imagepicker",

@@ -5,6 +5,9 @@
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/google-maps": "file:../../packages/google-maps",
+		"@nativescript/google-maps-utils": "file:../../packages/google-maps-utils",
+		"@nativescript/jetpack-compose": "file:../../packages/jetpack-compose",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -23,7 +26,6 @@
 		"@nativescript/facebook": "file:../../packages/facebook",
 		"@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
 		"@nativescript/geolocation": "file:../../packages/geolocation",
-		"@nativescript/google-maps": "file:../../packages/google-maps",
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/haptics": "file:../../packages/haptics",
 		"@nativescript/imagepicker": "file:../../packages/imagepicker",

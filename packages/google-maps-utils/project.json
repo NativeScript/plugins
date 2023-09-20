@@ -1,0 +1,72 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/google-maps-utils",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "options": {
+        "outputPath": "dist/packages/google-maps-utils",
+        "tsConfig": "packages/google-maps-utils/tsconfig.json",
+        "packageJson": "packages/google-maps-utils/package.json",
+        "main": "packages/google-maps-utils/index.d.ts",
+        "assets": [
+          "packages/google-maps-utils/*.md",
+          "packages/google-maps-utils/index.d.ts",
+          "LICENSE",
+          {
+            "glob": "**/*",
+            "input": "packages/google-maps-utils/platforms/",
+            "output": "./platforms/"
+          }
+        ],
+        "dependsOn": [
+          {
+            "target": "build.all",
+            "projects": "dependencies"
+          }
+        ]
+      }
+    },
+    "build.all": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "node tools/scripts/build-finish.ts google-maps-utils"
+        ],
+        "parallel": false
+      },
+      "outputs": [
+        "dist/packages/google-maps-utils"
+      ],
+      "dependsOn": [
+        {
+          "target": "build.all",
+          "projects": "dependencies"
+        },
+        {
+          "target": "build",
+          "projects": "self"
+        }
+      ]
+    },
+    "focus": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx g @nativescript/plugin-tools:focus-packages google-maps-utils,google-maps"
+        ],
+        "parallel": false
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "packages/google-maps-utils/**/*.ts"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
