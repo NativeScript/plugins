@@ -82,6 +82,12 @@ export class MapView extends MapViewBase {
 				(<any>org).nativescript.plugins.google_maps.GoogleMaps.registerMapListeners(
 					map,
 					new (<any>org).nativescript.plugins.google_maps.GoogleMaps.Callback({
+						onMapLoaded() {
+							ref?.get?.().notify({
+								eventName: MapView.mapLoadedEvent,
+								object: ref?.get?.(),
+							});
+						},
 						onCameraEvent(position: com.google.android.gms.maps.model.CameraPosition, event: string, isGesture: boolean) {
 							if (event === 'start') {
 								ref?.get?.().notify(<CameraPositionStartEvent>{
@@ -1356,6 +1362,20 @@ export class Polygon extends OverLayBase implements IPolygon {
 		}
 	}
 
+	addPoint(point: Coordinate) {
+		const points = this.native.getPoints();
+		points.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		this.native.setPoints(points);
+	}
+
+	addPoints(points: Coordinate[]) {
+		const nativePoints = this.native.getPoints();
+		points.forEach((point) => {
+			nativePoints.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		});
+		this.native.setPoints(nativePoints);
+	}
+
 	get holes(): Coordinate[][] {
 		const array: androidNative.Array<java.util.List<com.google.android.gms.maps.model.LatLng>> = this.native.getHoles().toArray();
 		const holes: Coordinate[][] = [];
@@ -1526,6 +1546,20 @@ export class Polyline extends OverLayBase implements IPolyline {
 			});
 			this.native.setPoints(nativeArray);
 		}
+	}
+
+	addPoint(point: Coordinate) {
+		const points = this.native.getPoints();
+		points.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		this.native.setPoints(points);
+	}
+
+	addPoints(points: Coordinate[]) {
+		const nativePoints = this.native.getPoints();
+		points.forEach((point) => {
+			nativePoints.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		});
+		this.native.setPoints(nativePoints);
 	}
 
 	get tappable(): boolean {
@@ -1884,7 +1918,7 @@ export class UrlTileProvider extends TileProvider {
 	// @ts-ignore
 	_callback: (x: number, y: number, zoom: number) => string;
 
-	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
+	constructor(callback: (x: number, y: number, zoom: number) => string, size = 256) {
 		super(null);
 		this._callback = callback;
 		const ref = new WeakRef(this);

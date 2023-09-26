@@ -1336,6 +1336,20 @@ export class Polygon extends OverLayBase implements IPolygon {
 		this.native.path = points;
 	}
 
+	addPoint(point: Coordinate) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		this.native.path = path;
+	}
+
+	addPoints(points: Coordinate[]) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		points.forEach((point) => {
+			path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		});
+		this.native.path = path;
+	}
+
 	get holes(): Coordinate[][] {
 		const nativeHoles = this.native?.holes;
 		const count = nativeHoles?.count || 0;
@@ -1485,6 +1499,20 @@ export class Polyline extends OverLayBase implements IPolyline {
 		}
 
 		this.native.path = points;
+	}
+
+	addPoint(point: Coordinate) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		this.native.path = path;
+	}
+
+	addPoints(points: Coordinate[]) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		points.forEach((point) => {
+			path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		});
+		this.native.path = path;
 	}
 
 	get tappable(): boolean {
@@ -1789,7 +1817,7 @@ export class TileProvider implements ITileProvider {
 export class UrlTileProvider extends TileProvider {
 	_native: GMSURLTileLayer;
 
-	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
+	constructor(callback: (x: number, y: number, zoom: number) => string, size = 256) {
 		super(null);
 		const ref = new WeakRef(this);
 		this._native = GMSURLTileLayer.tileLayerWithURLConstructor((x, y, zoom) => {

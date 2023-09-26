@@ -49,6 +49,9 @@ public class GoogleMaps {
 
 
   public interface Callback {
+		
+		void onMapLoaded();
+    
     void onCameraEvent(CameraPosition position, String event, boolean isGesture);
 
     void onMarkerEvent(Marker marker, String event);
@@ -67,30 +70,15 @@ public class GoogleMaps {
   }
 
   public static void registerMapListeners(final GoogleMap map, final Callback callback) {
-    map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-      @Override
-      public void onCameraIdle() {
-        callback.onCameraEvent(map.getCameraPosition(), CAMERA_POSITION_EVENT_IDLE, false);
-      }
-    });
+		map.setOnMapLoadedCallback(callback::onMapLoaded);
+    map.setOnCameraIdleListener(() -> callback.onCameraEvent(map.getCameraPosition(), CAMERA_POSITION_EVENT_IDLE, false));
 
-    map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-      @Override
-      public void onCameraMove() {
-        callback.onCameraEvent(map.getCameraPosition(), CAMERA_POSITION_EVENT_MOVE, false);
-      }
-    });
+    map.setOnCameraMoveListener(() -> callback.onCameraEvent(map.getCameraPosition(), CAMERA_POSITION_EVENT_MOVE, false));
 
-    map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
-      @Override
-      public void onCameraMoveStarted(int i) {
-        boolean isGesture = false;
-        if (i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
-          isGesture = true;
-        }
-        callback.onCameraEvent(map.getCameraPosition(), CAMERA_POSITION_EVENT_START, isGesture);
-      }
-    });
+    map.setOnCameraMoveStartedListener(i -> {
+			boolean isGesture = i == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE;
+			callback.onCameraEvent(map.getCameraPosition(), CAMERA_POSITION_EVENT_START, isGesture);
+		});
 
 
     map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -110,79 +98,33 @@ public class GoogleMaps {
       }
     });
 
-    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-      @Override
-      public boolean onMarkerClick(@NonNull Marker marker) {
-        callback.onMarkerEvent(marker, MARKER_EVENT_CLICK);
-        return false;
-      }
-    });
+    map.setOnMarkerClickListener(marker -> {
+			callback.onMarkerEvent(marker, MARKER_EVENT_CLICK);
+			return false;
+		});
 
 
-    map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-      @Override
-      public void onMapClick(@NonNull LatLng latLng) {
-        callback.onMapClickEvent(latLng, false);
-      }
-    });
+    map.setOnMapClickListener(latLng -> callback.onMapClickEvent(latLng, false));
 
-    map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-      @Override
-      public void onMapLongClick(@NonNull LatLng latLng) {
-        callback.onMapClickEvent(latLng, true);
-      }
-    });
+    map.setOnMapLongClickListener(latLng -> callback.onMapClickEvent(latLng, true));
 
 
-    map.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
-      @Override
-      public void onMyLocationClick(@NonNull Location location) {
-        callback.onMyLocationEvent(location);
-      }
-    });
+    map.setOnMyLocationClickListener(callback::onMyLocationEvent);
 
-    map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-      @Override
-      public boolean onMyLocationButtonClick() {
-        callback.onMyLocationEvent(null);
-        return false;
-      }
-    });
+    map.setOnMyLocationButtonClickListener(() -> {
+			callback.onMyLocationEvent(null);
+			return false;
+		});
 
-    map.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
-      @Override
-      public void onCircleClick(@NonNull Circle circle) {
-        callback.onItemClickEvent(circle, ITEM_CLICK_EVENT_CIRCLE);
-      }
-    });
+    map.setOnCircleClickListener(circle -> callback.onItemClickEvent(circle, ITEM_CLICK_EVENT_CIRCLE));
 
-    map.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
-      @Override
-      public void onPolygonClick(@NonNull Polygon polygon) {
-        callback.onItemClickEvent(polygon, ITEM_CLICK_EVENT_POLYGON);
-      }
-    });
+    map.setOnPolygonClickListener(polygon -> callback.onItemClickEvent(polygon, ITEM_CLICK_EVENT_POLYGON));
 
-    map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
-      @Override
-      public void onPolylineClick(@NonNull Polyline polyline) {
-        callback.onItemClickEvent(polyline, ITEM_CLICK_EVENT_POLYLINE);
-      }
-    });
+    map.setOnPolylineClickListener(polyline -> callback.onItemClickEvent(polyline, ITEM_CLICK_EVENT_POLYLINE));
 
-    map.setOnPoiClickListener(new GoogleMap.OnPoiClickListener() {
-      @Override
-      public void onPoiClick(@NonNull PointOfInterest pointOfInterest) {
-        callback.onItemClickEvent(pointOfInterest, ITEM_CLICK_EVENT_POI);
-      }
-    });
+    map.setOnPoiClickListener(pointOfInterest -> callback.onItemClickEvent(pointOfInterest, ITEM_CLICK_EVENT_POI));
 
-    map.setOnGroundOverlayClickListener(new GoogleMap.OnGroundOverlayClickListener() {
-      @Override
-      public void onGroundOverlayClick(@NonNull GroundOverlay groundOverlay) {
-        callback.onItemClickEvent(groundOverlay, ITEM_CLICK_EVENT_GROUND_OVERLAY);
-      }
-    });
+    map.setOnGroundOverlayClickListener(groundOverlay -> callback.onItemClickEvent(groundOverlay, ITEM_CLICK_EVENT_GROUND_OVERLAY));
 
     map.setOnIndoorStateChangeListener(new GoogleMap.OnIndoorStateChangeListener() {
       @Override
@@ -196,26 +138,11 @@ public class GoogleMaps {
       }
     });
 
-    map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-      @Override
-      public void onInfoWindowClick(@NonNull Marker marker) {
-        callback.onInfoWindowEvent(marker, INFO_WINDOW_EVENT_CLICK, false);
-      }
-    });
+    map.setOnInfoWindowClickListener(marker -> callback.onInfoWindowEvent(marker, INFO_WINDOW_EVENT_CLICK, false));
 
-    map.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
-      @Override
-      public void onInfoWindowClose(@NonNull Marker marker) {
-        callback.onInfoWindowEvent(marker, INFO_WINDOW_EVENT_CLOSE, false);
-      }
-    });
+    map.setOnInfoWindowCloseListener(marker -> callback.onInfoWindowEvent(marker, INFO_WINDOW_EVENT_CLOSE, false));
 
-    map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
-      @Override
-      public void onInfoWindowLongClick(@NonNull Marker marker) {
-        callback.onInfoWindowEvent(marker, INFO_WINDOW_EVENT_CLICK, true);
-      }
-    });
+    map.setOnInfoWindowLongClickListener(marker -> callback.onInfoWindowEvent(marker, INFO_WINDOW_EVENT_CLICK, true));
 
     map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
       @Nullable
