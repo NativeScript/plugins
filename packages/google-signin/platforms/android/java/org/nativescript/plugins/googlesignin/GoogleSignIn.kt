@@ -97,7 +97,7 @@ class GoogleSignIn {
 		@JvmStatic
 		fun configure(
 			options: String,
-			activity: Activity,
+			context: Context,
 			callback: Callback<Void>
 		) {
 			try {
@@ -125,10 +125,10 @@ class GoogleSignIn {
 					builder.requestIdToken(clientId)
 					builder.requestServerAuthCode(clientId)
 				} else {
-					val clientIdIdentifier: Int = activity.resources.getIdentifier("default_web_client_id", "string", activity.packageName)
+					val clientIdIdentifier: Int = context.resources.getIdentifier("default_web_client_id", "string", context.packageName)
 					if (clientIdIdentifier != 0) {
-						builder.requestIdToken(activity.getString(clientIdIdentifier))
-						builder.requestServerAuthCode(activity.getString(clientIdIdentifier))
+						builder.requestIdToken(context.getString(clientIdIdentifier))
+						builder.requestServerAuthCode(context.getString(clientIdIdentifier))
 					}
 				}
 
@@ -145,7 +145,7 @@ class GoogleSignIn {
 					builder.setHostedDomain(hostedDomain)
 				}
 
-				googleSignInClient = GoogleSignIn.getClient(activity, builder.build())
+				googleSignInClient = GoogleSignIn.getClient(context, builder.build())
 
 				callback.onSuccess(null)
 
