@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/google-signin",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"description": "Google Sign-in for your NativeScript applications",
 	"main": "index",
 	"typings": "index.d.ts",
