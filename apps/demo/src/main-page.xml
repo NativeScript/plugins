@@ -29,6 +29,7 @@
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="keyboard-toolbar" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="localize" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="pdf" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>

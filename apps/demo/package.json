@@ -5,6 +5,7 @@
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/keyboard-toolbar": "file:../../packages/keyboard-toolbar",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -30,15 +31,15 @@
 		"@nativescript/ios-security": "file:../../packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../packages/iqkeyboardmanager",
 		"@nativescript/local-notifications": "file:../../packages/local-notifications",
-		"@nativescript/localize": "file:../../dist/packages/localize",
+		"@nativescript/localize": "file:../../packages/localize",
 		"@nativescript/pdf": "file:../../packages/pdf",
 		"@nativescript/picker": "file:../../packages/picker",
+		"@nativescript/secure-storage": "file:../../packages/secure-storage",
 		"@nativescript/shared-notification-delegate": "file:../../packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../packages/social-share",
 		"@nativescript/theme-switcher": "file:../../packages/theme-switcher",
 		"@nativescript/twitter": "file:../../packages/twitter",
-		"@nativescript/zip": "file:../../packages/zip",
-		"@nativescript/secure-storage": "file:../../packages/secure-storage"
+		"@nativescript/zip": "file:../../packages/zip"
 	},
 	"devDependencies": {
 		"@nativescript/android": "~8.5.0",
