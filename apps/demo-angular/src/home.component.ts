@@ -79,6 +79,9 @@ export class HomeComponent {
 			name: 'iqkeyboardmanager',
 		},
 		{
+			name: 'keyboard-toolbar',
+		},
+		{
 			name: 'local-notifications',
 		},
 		{

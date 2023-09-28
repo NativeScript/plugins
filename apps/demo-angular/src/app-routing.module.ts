@@ -31,6 +31,7 @@ const routes: Routes = [
 	{ path: 'imagepicker', loadChildren: () => import('./plugin-demos/imagepicker.module').then((m) => m.ImagepickerModule) },
 	{ path: 'ios-security', loadChildren: () => import('./plugin-demos/ios-security.module').then((m) => m.IosSecurityModule) },
 	{ path: 'iqkeyboardmanager', loadChildren: () => import('./plugin-demos/iqkeyboardmanager.module').then((m) => m.IqkeyboardmanagerModule) },
+	{ path: 'keyboard-toolbar', loadChildren: () => import('./plugin-demos/keyboard-toolbar.module').then((m) => m.KeyboardToolbarModule) },
 	{ path: 'local-notifications', loadChildren: () => import('./plugin-demos/local-notifications.module').then((m) => m.LocalNotificationsModule) },
 	{ path: 'localize', loadChildren: () => import('./plugin-demos/localize.module').then((m) => m.LocalizeModule) },
 	{ path: 'pdf', loadChildren: () => import('./plugin-demos/pdf.module').then((m) => m.PdfModule) },

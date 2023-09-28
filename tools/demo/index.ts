@@ -23,6 +23,7 @@ export * from './haptics';
 export * from './imagepicker';
 export * from './ios-security';
 export * from './iqkeyboardmanager';
+export * from './keyboard-toolbar';
 export * from './local-notifications';
 export * from './localize';
 export * from './pdf';
