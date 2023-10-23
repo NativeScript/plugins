@@ -4,7 +4,7 @@ import { Options, successCallbackType, errorCallbackType, permissionCallbackType
 import * as permissions from 'nativescript-permissions';
 export * from './common';
 
-declare var com: any;
+declare const com: any;
 const REQUEST_ENABLE_LOCATION = 4269; // random number
 let _onEnableLocationSuccess = null;
 let _onEnableLocationFail = null;
@@ -121,29 +121,33 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 		if (LocationManager.shouldSkipChecks()) {
 			resolve();
 		} else {
+			let permissionFlagName, successCallback;
 			if (always) {
-				ApplicationSettings.setBoolean('askedForAlwaysPermission', true);
-				permissions
-					.requestPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-					.then(resolve, reject)
-					.catch((e) => {
-						console.error('Failed to request Android background location permission due to: ' + e);
-					});
+				permissionFlagName = 'askedForAlwaysPermission';
+				successCallback = (value) => {
+					permissions
+						.requestPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+						.then(resolve)
+						.catch(reject);
+				};
 			} else {
-				ApplicationSettings.setBoolean('askedForWhileUsePermission', true);
-				permissions
-					.requestPermissions([(<any>android).Manifest.permission.ACCESS_FINE_LOCATION, (<any>android).Manifest.permission.ACCESS_COARSE_LOCATION])
-					.then((value) => {
-						resolve(value);
-					})
-					.catch((err) => {
-						if (!err['android.permission.ACCESS_COARSE_LOCATION'] && !err['android.permission.ACCESS_FINE_LOCATION']) {
-							reject(err);
-						} else if (!err['android.permission.ACCESS_FINE_LOCATION'] && err['android.permission.ACCESS_COARSE_LOCATION']) {
-							resolve();
-						}
-					});
+				permissionFlagName = 'askedForWhileUsePermission';
+				successCallback = resolve;
 			}
+
+			ApplicationSettings.setBoolean(permissionFlagName, true);
+
+			// App has to request for foreground location permissions first, and request for background permissions afterwards if needed
+			permissions
+				.requestPermissions([(<any>android).Manifest.permission.ACCESS_FINE_LOCATION, (<any>android).Manifest.permission.ACCESS_COARSE_LOCATION])
+				.then(successCallback)
+				.catch((err) => {
+					if (!err['android.permission.ACCESS_COARSE_LOCATION'] && !err['android.permission.ACCESS_FINE_LOCATION']) {
+						reject(err);
+					} else if (!err['android.permission.ACCESS_FINE_LOCATION'] && err['android.permission.ACCESS_COARSE_LOCATION']) {
+						resolve();
+					}
+				});
 		}
 	});
 }
