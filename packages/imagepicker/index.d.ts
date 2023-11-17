@@ -56,7 +56,7 @@ export interface ImagePickerSelection {
 	/**
 	 * The duration of the video. Only passed if type is 'video'
 	 */
-	duration?: string;
+	duration?: number;
 
 	/**
 	 * An image to use for the video thumbnail. Only passed if type is 'video'
