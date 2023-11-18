@@ -78,13 +78,6 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 	1. [Create a Firebase project](https://firebase.google.com/docs/ios/setup#create-firebase-project)
 	2. [Register your app with Firebase](https://firebase.google.com/docs/ios/setup#register-app)
 	3. [Add a Firebase configuration file](https://firebase.google.com/docs/ios/setup#add-config-file), `GoogleService-Info.plist.` to `App_Resources/iOS/`.
-
-3. Open Xcode 
-
-	1. Right-click on the `Runner` directory and select `Add Files to Runner`.
-	2. Select `GoogleService-Info.plist` from the file manager.
-	3. Select the `Runner` target from the dialog that appears.
-
   4. Add the `CFBundleURLTypes` and `GIDClientID` attributes below to the `App_Resources/iOS/Info.plist` file.
 
 ```xml
