@@ -36,19 +36,16 @@ declare module org {
 					public static isSignedIn(param0: globalAndroid.content.Context): boolean;
 					public static getSignedInAccountFromIntent(param0: globalAndroid.content.Intent, param1: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser>): void;
 					public static setExecutorsCount(param0: number): void;
-					public static configure(param0: string, param1: globalAndroid.app.Activity, param2: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
+					public static configure(param0: string, param1: globalAndroid.content.Context, param2: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
 					public static disconnect(param0: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
 				}
 				export module GoogleSignIn {
-					export class Callback<T>  extends java.lang.Object {
+					export class Callback<T> extends java.lang.Object {
 						public static class: java.lang.Class<org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<any>>;
 						/**
 						 * Constructs a new instance of the org.nativescript.plugins.googlesignin.GoogleSignIn$Callback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: {
-							onSuccess(param0: T): void;
-							onError(param0: any): void;
-						});
+						public constructor(implementation: { onSuccess(param0: T): void; onError(param0: any): void });
 						public constructor();
 						public onError(param0: any): void;
 						public onSuccess(param0: T): void;
@@ -58,7 +55,7 @@ declare module org {
 						public revokeAccess(param0: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
 						public setExecutorsCount(param0: number): void;
 						public signOut(param0: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
-						public configure(param0: string, param1: globalAndroid.app.Activity, param2: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
+						public configure(param0: string, param1: globalAndroid.content.Context, param2: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>): void;
 						public getSignedInAccountFromIntent(param0: globalAndroid.content.Intent, param1: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser>): void;
 						public getCurrentUser(param0: globalAndroid.content.Context): org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser;
 						public getTokens(param0: globalAndroid.content.Context, param1: org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<string>): void;
@@ -98,4 +95,3 @@ declare module org {
 
 //Generics information:
 //org.nativescript.plugins.googlesignin.GoogleSignIn.Callback:1
-

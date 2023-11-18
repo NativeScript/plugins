@@ -1,6 +1,6 @@
 export * from './common';
 
-import { Utils } from '@nativescript/core';
+import { Utils, Device } from '@nativescript/core';
 import { HapticImpactType, HapticNotificationType } from './common';
 
 export class Haptics {
@@ -52,7 +52,7 @@ function trigger(
 
 	if (!vibrator) return;
 
-	if (vibrator.hasVibrator()) {
+	if (parseFloat(Device.sdkVersion) >= 29 && vibrator.hasVibrator()) {
 		switch (type) {
 			case 'notification':
 				vibrator.vibrate(android.os.VibrationEffect.createPredefined(android.os.VibrationEffect.EFFECT_TICK));

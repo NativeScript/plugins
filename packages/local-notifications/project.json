@@ -33,7 +33,7 @@
 		"build.all": {
 			"outputs": ["{workspaceRoot}/dist/packages/local-notifications"],
 			"options": {
-				"commands": ["node tools/scripts/build-finish.ts local-notifications"],
+				"commands": ["node tools/scripts/build-finish.ts local-notifications", "mkdirp dist/packages/local-notifications/platforms/android", "cp -R packages/local-notifications/platforms/android/app-release.aar dist/packages/local-notifications/platforms/android/app-release.aar"],
 				"parallel": false
 			},
 			"executor": "nx:run-commands",

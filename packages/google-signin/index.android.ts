@@ -1,4 +1,4 @@
-import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
+import { Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 import lazy from '@nativescript/core/utils/lazy';
 
@@ -13,30 +13,28 @@ const COLOR_DARK = lazy(() => com.google.android.gms.common.SignInButton.COLOR_D
 const COLOR_LIGHT = lazy(() => com.google.android.gms.common.SignInButton.COLOR_LIGHT);
 const COLOR_AUTO = lazy(() => com.google.android.gms.common.SignInButton.COLOR_AUTO);
 
-
 export class GoogleError extends Error {
-	#native: java.lang.Exception;
+	_native: java.lang.Exception;
 	static fromNative(native: java.lang.Exception, message?: string) {
 		const error = new GoogleError(message || native?.getMessage?.());
-		error.#native = native;
+		error._native = native;
 		return error;
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 }
 
-
 export class User implements IUser {
-	#native: com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-	#grantedScopes: string[];
-	#accessToken: string;
+	_native: com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+	_grantedScopes: string[];
+	_accessToken: string;
 	static fromNative(account: com.google.android.gms.auth.api.signin.GoogleSignInAccount, accessToken: string = null) {
 		if (account instanceof com.google.android.gms.auth.api.signin.GoogleSignInAccount) {
 			const user = new User();
-			user.#native = account;
-			user.#accessToken = accessToken;
+			user._native = account;
+			user._accessToken = accessToken;
 			return user;
 		}
 		return null;
@@ -67,11 +65,11 @@ export class User implements IUser {
 	}
 
 	get accessToken() {
-		return this.#accessToken;
+		return this._accessToken;
 	}
 
 	get grantedScopes() {
-		if (!this.#grantedScopes) {
+		if (!this._grantedScopes) {
 			const grantedScopes = [];
 			const scopes = this.native.getGrantedScopes().toArray();
 			const length = scopes.length;
@@ -81,9 +79,9 @@ export class User implements IUser {
 					grantedScopes.push(scope);
 				}
 			}
-			this.#grantedScopes = grantedScopes;
+			this._grantedScopes = grantedScopes;
 		}
-		return this.#grantedScopes;
+		return this._grantedScopes;
 	}
 
 	get photoUrl() {
@@ -103,24 +101,24 @@ export class User implements IUser {
 						new org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser>({
 							onSuccess(param0) {
 								resolve(User.fromNative(param0.getUser(), param0.getAccessToken()));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 							onError(param0) {
 								reject(GoogleError.fromNative(param0));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 						})
 					);
 				}
 			};
-			Application.android.on(AndroidApplication.activityResultEvent, callback);
+			Application.android.on(Application.AndroidApplication.activityResultEvent, callback);
 
 			org.nativescript.plugins.googlesignin.GoogleSignIn.User.requestScopes(JSON.stringify(scopes), this.native, Application.android.foregroundActivity || Application.android.startActivity);
 		});
 	}
 
 	get native() {
-		return this.#native;
+		return this._native;
 	}
 
 	get android() {
@@ -132,7 +130,7 @@ export class GoogleSignin {
 		return new Promise((resolve, reject) => {
 			org.nativescript.plugins.googlesignin.GoogleSignIn.configure(
 				JSON.stringify({ ...(configuration || {}), retrieveAccessToken: true }),
-				Application.android.foregroundActivity || Application.android.startActivity,
+				Application.android.foregroundActivity || Application.android.startActivity || Utils.android.getApplicationContext(),
 				new org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>({
 					onSuccess(param0) {
 						resolve();
@@ -181,17 +179,17 @@ export class GoogleSignin {
 						new org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser>({
 							onSuccess(param0) {
 								resolve(User.fromNative(param0.getUser(), param0.getAccessToken()));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 							onError(param0) {
 								reject(GoogleError.fromNative(param0));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 						})
 					);
 				}
 			};
-			Application.android.on(AndroidApplication.activityResultEvent, callback);
+			Application.android.on(Application.AndroidApplication.activityResultEvent, callback);
 			org.nativescript.plugins.googlesignin.GoogleSignIn.signIn(Application.android.foregroundActivity || Application.android.startActivity);
 		});
 	}
@@ -248,13 +246,45 @@ export class GoogleSignin {
 	static playServicesAvailable() {
 		return new Promise((resolve, reject) => {
 			resolve(org.nativescript.plugins.googlesignin.GoogleSignIn.playServicesAvailable(false, Application.android.foregroundActivity || Application.android.startActivity));
-		})
+		});
+	}
+}
+
+@NativeClass
+@Interfaces([android.view.View.OnClickListener])
+class ClickListenerImpl extends java.lang.Object implements android.view.View.OnClickListener {
+	constructor(public owner: WeakRef<GoogleSignInButton>) {
+		super();
+
+		return global.__native(this);
+	}
+
+	public onClick(v: android.view.View): void {
+		const owner = this.owner?.get();
+		if (owner) {
+			owner._emit(GoogleSignInButton.tapEvent);
+		}
 	}
 }
 
 export class GoogleSignInButton extends GoogleSignInButtonBase {
+	clickListener: ClickListenerImpl;
+	// @ts-ignore
+	nativeView: com.google.android.gms.common.SignInButton;
+
 	createNativeView() {
 		return new com.google.android.gms.common.SignInButton(this._context);
+	}
+
+	initNativeView(): void {
+		super.initNativeView();
+		this.clickListener = new ClickListenerImpl(new WeakRef(this));
+		this.nativeView.setOnClickListener(this.clickListener);
+	}
+
+	public disposeNativeView() {
+		this.clickListener = null;
+		super.disposeNativeView();
 	}
 
 	[colorSchemeProperty.setNative](value: ColorSchemeType) {

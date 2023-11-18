@@ -1,3 +1,9 @@
+
+repositories {
+    
+    jcenter()
+}
+
 dependencies {
     implementation('com.twitter.sdk.android:twitter-core:3.3.0') {
         transitive = true

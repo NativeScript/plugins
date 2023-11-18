@@ -76,7 +76,7 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(color)));
 	}
 
-	if(typeof options?.opacity === 'number') {
+	if (typeof options?.opacity === 'number') {
 		opts.alpha(options.opacity);
 	}
 
@@ -153,14 +153,15 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	}
 
 	if (Array.isArray(options?.holes)) {
-		const holes = new java.util.ArrayList();
 		options.holes.forEach((hole) => {
-			holes.add(new com.google.android.gms.maps.model.LatLng(hole.lat, hole.lng));
+			if (Array.isArray(hole) && hole.length) {
+				const nativeHole = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
+				hole.forEach((coordinate) => {
+					nativeHole.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
+				});
+				opts.addHole(nativeHole);
+			}
 		});
-
-		if (options.holes.length) {
-			opts.addHole(holes);
-		}
 	}
 
 	if (typeof options?.tappable === 'boolean') {
@@ -275,10 +276,7 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	}
 
 	if (options?.bounds) {
-		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(
-			new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng),
-			new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)
-		));
+		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng), new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)));
 	}
 
 	if (typeof options?.transparency) {

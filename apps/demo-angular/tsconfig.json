@@ -35,7 +35,6 @@
 			"@nativescript/facebook": ["packages/facebook/index.d.ts"],
 			"@nativescript/google-signin": ["packages/google-signin/index.d.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/ionic-portals": ["packages/ionic-portals/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/biometrics": ["packages/biometrics/index.d.ts"],
 			"@nativescript/apple-sign-in": ["packages/apple-sign-in/index.d.ts"],

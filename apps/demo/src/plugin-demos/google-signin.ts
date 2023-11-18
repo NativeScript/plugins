@@ -1,6 +1,6 @@
 import { Observable, EventData, Page } from '@nativescript/core';
 import { DemoSharedGoogleSignin } from '@demo/shared';
-import { } from '@nativescript/google-signin';
+import {} from '@nativescript/google-signin';
 
 export function navigatingTo(args: EventData) {
 	const page = <Page>args.object;
@@ -8,5 +8,8 @@ export function navigatingTo(args: EventData) {
 }
 
 export class DemoModel extends DemoSharedGoogleSignin {
-	
+	signInTapped(args) {
+		console.log('signInTapped');
+		this.testIt();
+	}
 }

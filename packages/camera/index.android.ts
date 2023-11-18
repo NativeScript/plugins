@@ -2,15 +2,15 @@ import { Utils, Application, Device, Trace, ImageAsset } from '@nativescript/cor
 import * as permissions from 'nativescript-permissions';
 import { CameraOptions } from '.';
 
-let REQUEST_IMAGE_CAPTURE = 3453;
+const REQUEST_IMAGE_CAPTURE = 3453;
 declare let global: any;
 
-let useAndroidX = function () {
+const useAndroidX = function () {
 	return global.androidx && global.androidx.appcompat;
 };
 const FileProviderPackageName = useAndroidX() ? global.androidx.core.content : global.android.support.v4.content;
 
-export let takePicture = function (options?: CameraOptions): Promise<any> {
+export const takePicture = function (options?: CameraOptions): Promise<any> {
 	return new Promise((resolve, reject) => {
 		try {
 			if (!permissions.hasPermission(android.Manifest.permission.CAMERA)) {
@@ -24,7 +24,7 @@ export let takePicture = function (options?: CameraOptions): Promise<any> {
 			let reqHeight = 0;
 			let shouldKeepAspectRatio = true;
 
-			let density = Utils.layout.getDisplayDensity();
+			const density = Utils.layout.getDisplayDensity();
 			if (options) {
 				saveToGallery = Utils.isNullOrUndefined(options.saveToGallery) ? saveToGallery : options.saveToGallery;
 				reqWidth = options.width ? options.width * density : reqWidth;
@@ -36,8 +36,8 @@ export let takePicture = function (options?: CameraOptions): Promise<any> {
 				saveToGallery = false;
 			}
 
-			let takePictureIntent = new android.content.Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			let dateStamp = createDateTimeStamp();
+			const takePictureIntent = new android.content.Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			const dateStamp = createDateTimeStamp();
 
 			let picturePath: string;
 			let nativeFile;
@@ -105,7 +105,7 @@ export let takePicture = function (options?: CameraOptions): Promise<any> {
 
 						const uri = Utils.android.getApplicationContext().getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-						const fos: java.io.FileOutputStream = Utils.android.getApplicationContext().getContentResolver().openOutputStream(uri);
+						const fos = Utils.android.getApplicationContext().getContentResolver().openOutputStream(uri);
 						const fis = new java.io.FileInputStream(nativeFile);
 						try {
 							(org as any).nativescript.plugins.camera.Utils.copy(fis, fos);
@@ -119,8 +119,8 @@ export let takePicture = function (options?: CameraOptions): Promise<any> {
 						}
 					}
 
-					let exif = new android.media.ExifInterface(picturePath);
-					let orientation = exif.getAttributeInt(android.media.ExifInterface.TAG_ORIENTATION, android.media.ExifInterface.ORIENTATION_NORMAL);
+					const exif = new android.media.ExifInterface(picturePath);
+					const orientation = exif.getAttributeInt(android.media.ExifInterface.TAG_ORIENTATION, android.media.ExifInterface.ORIENTATION_NORMAL);
 
 					if (orientation === android.media.ExifInterface.ORIENTATION_ROTATE_90) {
 						rotateBitmap(picturePath, 90);
@@ -131,18 +131,18 @@ export let takePicture = function (options?: CameraOptions): Promise<any> {
 					}
 
 					if (shouldKeepAspectRatio) {
-						let pictureWidth = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_WIDTH, 0);
-						let pictureHeight = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_LENGTH, 0);
-						let isPictureLandscape = pictureWidth > pictureHeight;
-						let areOptionsLandscape = reqWidth > reqHeight;
+						const pictureWidth = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_WIDTH, 0);
+						const pictureHeight = exif.getAttributeInt(android.media.ExifInterface.TAG_IMAGE_LENGTH, 0);
+						const isPictureLandscape = pictureWidth > pictureHeight;
+						const areOptionsLandscape = reqWidth > reqHeight;
 						if (isPictureLandscape !== areOptionsLandscape) {
-							let oldReqWidth = reqWidth;
+							const oldReqWidth = reqWidth;
 							reqWidth = reqHeight;
 							reqHeight = oldReqWidth;
 						}
 					}
 
-					let asset = new ImageAsset(picturePath);
+					const asset = new ImageAsset(picturePath);
 					asset.options = {
 						width: reqWidth,
 						height: reqHeight,
@@ -164,7 +164,7 @@ export let takePicture = function (options?: CameraOptions): Promise<any> {
 	});
 };
 
-export let isAvailable = function () {
+export const isAvailable = function () {
 	return Utils.android.getApplicationContext().getPackageManager().hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA);
 };
 
@@ -172,7 +172,7 @@ function api33(): boolean {
 	return (<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33;
 }
 
-export let requestPermissions = function () {
+export const requestPermissions = function () {
 	if (api33()) {
 		return permissions.requestPermissions([android.Manifest.permission.CAMERA]);
 	} else {
@@ -180,30 +180,30 @@ export let requestPermissions = function () {
 	}
 };
 
-export let requestPhotosPermissions = function () {
+export const requestPhotosPermissions = function () {
 	return permissions.requestPermissions([android.Manifest.permission.WRITE_EXTERNAL_STORAGE]);
 };
 
-export let requestCameraPermissions = function () {
+export const requestCameraPermissions = function () {
 	return permissions.requestPermissions([android.Manifest.permission.CAMERA]);
 };
 
-let createDateTimeStamp = function () {
+const createDateTimeStamp = function () {
 	let result = '';
-	let date = new Date();
+	const date = new Date();
 	result = date.getFullYear().toString() + (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString()) + (date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString()) + '_' + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
 
 	return result;
 };
 
-let rotateBitmap = function (picturePath, angle) {
+const rotateBitmap = function (picturePath, angle) {
 	try {
-		let matrix = new android.graphics.Matrix();
+		const matrix = new android.graphics.Matrix();
 		matrix.postRotate(angle);
-		let bmOptions = new android.graphics.BitmapFactory.Options();
-		let oldBitmap = android.graphics.BitmapFactory.decodeFile(picturePath, bmOptions);
-		let finalBitmap = android.graphics.Bitmap.createBitmap(oldBitmap, 0, 0, oldBitmap.getWidth(), oldBitmap.getHeight(), matrix, true);
-		let out = new java.io.FileOutputStream(picturePath);
+		const bmOptions = new android.graphics.BitmapFactory.Options();
+		const oldBitmap = android.graphics.BitmapFactory.decodeFile(picturePath, bmOptions);
+		const finalBitmap = android.graphics.Bitmap.createBitmap(oldBitmap, 0, 0, oldBitmap.getWidth(), oldBitmap.getHeight(), matrix, true);
+		const out = new java.io.FileOutputStream(picturePath);
 		finalBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, out);
 		out.flush();
 		out.close();

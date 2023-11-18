@@ -15,7 +15,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	private _rimColor = new Color('#FF5722');
 	private _rimWidth;
 	private _spinBarColor = new Color('green');
-	private _startAngle: number = 0;
+	private _startAngle = 0;
 	private _text = '';
 	private _textColor = new Color('orange');
 	private _textSize = 8;

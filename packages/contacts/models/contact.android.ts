@@ -3,12 +3,12 @@ import { ContactHelper } from '../helper';
 import { ContactCommon } from './contact.common';
 
 /* missing constants from the {N} */
-var ACCOUNT_TYPE = 'account_type'; // android.provider.ContactsContract.RawContacts.ACCOUNT_TYPE
-var ACCOUNT_NAME = 'account_name'; // android.provider.ContactsContract.RawContacts.ACCOUNT_NAME
-var TYPE = 'data2'; // android.provider.ContactsContract.CommonDataKinds.Phone.TYPE / android.provider.ContactsContract.CommonDataKinds.Email.TYPE / android.provider.ContactsContract.CommonDataKinds.StructuredPostal.TYPE
-var LABEL = 'data3';
-var PHOTO_URI = 'photo_uri'; // android.provider.ContactsContract.CommonDataKinds.Phone.PHOTO_URI
-var IS_SUPER_PRIMARY = 'is_super_primary'; // android.provider.ContactsContract.Data.IS_SUPER_PRIMARY
+const ACCOUNT_TYPE = 'account_type'; // android.provider.ContactsContract.RawContacts.ACCOUNT_TYPE
+const ACCOUNT_NAME = 'account_name'; // android.provider.ContactsContract.RawContacts.ACCOUNT_NAME
+const TYPE = 'data2'; // android.provider.ContactsContract.CommonDataKinds.Phone.TYPE / android.provider.ContactsContract.CommonDataKinds.Email.TYPE / android.provider.ContactsContract.CommonDataKinds.StructuredPostal.TYPE
+const LABEL = 'data3';
+const PHOTO_URI = 'photo_uri'; // android.provider.ContactsContract.CommonDataKinds.Phone.PHOTO_URI
+const IS_SUPER_PRIMARY = 'is_super_primary'; // android.provider.ContactsContract.Data.IS_SUPER_PRIMARY
 
 export class Contact extends ContactCommon {
 	constructor() {
@@ -23,11 +23,11 @@ export class Contact extends ContactCommon {
 	initializeFromNative(cursor, contactFields) {
 		contactFields = contactFields || ['name', 'organization', 'nickname', 'notes', 'photo', 'urls', 'phoneNumbers', 'emailAddresses', 'postalAddresses'];
 
-		var mainCursorJson = ContactHelper.android.convertNativeCursorToJson(cursor);
+		const mainCursorJson = ContactHelper.android.convertNativeCursorToJson(cursor);
 		this.id = mainCursorJson['_id'];
 
 		if (contactFields.indexOf('photo') > -1 && mainCursorJson[PHOTO_URI]) {
-			var bitmap = android.provider.MediaStore.Images.Media.getBitmap(ContactHelper.android.getContext().getContentResolver(), android.net.Uri.parse(mainCursorJson[PHOTO_URI]));
+			const bitmap = android.provider.MediaStore.Images.Media.getBitmap(ContactHelper.android.getContext().getContentResolver(), android.net.Uri.parse(mainCursorJson[PHOTO_URI]));
 			// this.photo = imageSource.fromNativeSource(bitmap);
 			this.photo = 'data:image/png;base64,' + new ImageSource(bitmap).toBase64String('png');
 		} else {
@@ -36,13 +36,13 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('name') > -1) {
 			//Get Basic User Details
-			var userNameParameters = [
+			const userNameParameters = [
 				this.id.toString(),
 				'vnd.android.cursor.item/name', //ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE
 			];
-			var usernameCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, null, userNameParameters);
+			const usernameCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, null, userNameParameters);
 			if (usernameCursor && usernameCursor.getCount() > 0 && usernameCursor.moveToFirst()) {
-				var usernameCursorJson = ContactHelper.android.convertNativeCursorToJson(usernameCursor);
+				const usernameCursorJson = ContactHelper.android.convertNativeCursorToJson(usernameCursor);
 				this.name.given = usernameCursorJson['data2'];
 				this.name.middle = usernameCursorJson['data5'];
 				this.name.family = usernameCursorJson['data3'];
@@ -61,15 +61,15 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('nickname') > -1) {
 			//Get Nickname
-			var nickNameParameters = [
+			const nickNameParameters = [
 				this.id.toString(),
 				'vnd.android.cursor.item/nickname', //ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE
 			];
 
-			var nicknameCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, ['data1'], nickNameParameters);
+			const nicknameCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, ['data1'], nickNameParameters);
 			if (nicknameCursor && nicknameCursor.getCount() > 0) {
 				nicknameCursor.moveToFirst();
-				var nicknameCursorJson = ContactHelper.android.convertNativeCursorToJson(nicknameCursor);
+				const nicknameCursorJson = ContactHelper.android.convertNativeCursorToJson(nicknameCursor);
 				this.nickname = nicknameCursorJson['data1'];
 			}
 			if (nicknameCursor) {
@@ -81,11 +81,11 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('phoneNumbers') > -1) {
 			//Get phone
-			var hasPhone = mainCursorJson['has_phone_number'];
+			const hasPhone = mainCursorJson['has_phone_number'];
 			if (hasPhone === 1) {
-				var phoneCursor = ContactHelper.android.getBasicCursor(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, this.id);
+				const phoneCursor = ContactHelper.android.getBasicCursor(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, this.id);
 				while (phoneCursor.moveToNext()) {
-					var phoneCursorJson = ContactHelper.android.convertNativeCursorToJson(phoneCursor);
+					const phoneCursorJson = ContactHelper.android.convertNativeCursorToJson(phoneCursor);
 					this.phoneNumbers.push({
 						id: '',
 						label: ContactHelper.android.getPhoneType(phoneCursorJson['data2'], phoneCursorJson['data3']),
@@ -100,9 +100,9 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('emailAddresses') > -1) {
 			//Get email
-			var emailCursor = ContactHelper.android.getBasicCursor(android.provider.ContactsContract.CommonDataKinds.Email.CONTENT_URI, this.id);
+			const emailCursor = ContactHelper.android.getBasicCursor(android.provider.ContactsContract.CommonDataKinds.Email.CONTENT_URI, this.id);
 			while (emailCursor.moveToNext()) {
-				var emailCursorJson = ContactHelper.android.convertNativeCursorToJson(emailCursor);
+				const emailCursorJson = ContactHelper.android.convertNativeCursorToJson(emailCursor);
 				this.emailAddresses.push({
 					id: emailCursorJson['_id'],
 					label: ContactHelper.android.getEmailType(emailCursorJson['data2'], emailCursorJson['data3']),
@@ -116,9 +116,9 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('emailAddresses') > -1) {
 			//Get addresses
-			var postalCursor = ContactHelper.android.getBasicCursor(android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, this.id);
+			const postalCursor = ContactHelper.android.getBasicCursor(android.provider.ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, this.id);
 			while (postalCursor.moveToNext()) {
-				var postalCursorJson = ContactHelper.android.convertNativeCursorToJson(postalCursor);
+				const postalCursorJson = ContactHelper.android.convertNativeCursorToJson(postalCursor);
 
 				this.postalAddresses.push({
 					id: postalCursorJson['_id'],
@@ -141,14 +141,14 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('notes') > -1) {
 			//Get Notes
-			var notesParameters = [
+			const notesParameters = [
 				this.id.toString(),
 				'vnd.android.cursor.item/note', //ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE
 			];
-			var notesCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, ['data1'], notesParameters);
+			const notesCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, ['data1'], notesParameters);
 			if (notesCursor.getCount() > 0) {
 				notesCursor.moveToFirst();
-				var notesCursorJson = ContactHelper.android.convertNativeCursorToJson(notesCursor);
+				const notesCursorJson = ContactHelper.android.convertNativeCursorToJson(notesCursor);
 				this.notes = notesCursorJson['data1'];
 			}
 			notesCursor.close();
@@ -158,13 +158,13 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('urls') > -1) {
 			//Get Websites
-			var websitesParameters = [
+			const websitesParameters = [
 				this.id.toString(),
 				'vnd.android.cursor.item/website', //ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE
 			];
-			var websitesCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, null, websitesParameters);
+			const websitesCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, null, websitesParameters);
 			while (websitesCursor.moveToNext()) {
-				var websitesCursorJson = ContactHelper.android.convertNativeCursorToJson(websitesCursor);
+				const websitesCursorJson = ContactHelper.android.convertNativeCursorToJson(websitesCursor);
 
 				this.urls.push({
 					label: ContactHelper.android.getWebsiteType(websitesCursorJson['data2'], websitesCursorJson['data3']),
@@ -178,14 +178,14 @@ export class Contact extends ContactCommon {
 
 		if (contactFields.indexOf('organization') > -1) {
 			//Get Organization
-			var orgParameters = [
+			const orgParameters = [
 				this.id.toString(),
 				'vnd.android.cursor.item/organization', //ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE
 			];
-			var orgCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, null, orgParameters);
+			const orgCursor = ContactHelper.android.getComplexCursor(this.id, android.provider.ContactsContract.Data.CONTENT_URI, null, orgParameters);
 			if (orgCursor.getCount() > 0) {
 				orgCursor.moveToFirst();
-				var orgCursorJson = ContactHelper.android.convertNativeCursorToJson(orgCursor);
+				const orgCursorJson = ContactHelper.android.convertNativeCursorToJson(orgCursor);
 				this.organization.jobTitle = orgCursorJson['data4'];
 				this.organization.name = orgCursorJson['data1'];
 				this.organization.department = orgCursorJson['data5'];
@@ -203,22 +203,22 @@ export class Contact extends ContactCommon {
 	initializeFromObject(cObject, contactFields) {
 		contactFields = contactFields || ['name', 'organization', 'nickname', 'notes', 'photo', 'urls', 'phoneNumbers', 'emailAddresses', 'postalAddresses'];
 
-		var mainCursorJson = cObject;
+		const mainCursorJson = cObject;
 
-		for (var prop in cObject) {
+		for (const prop in cObject) {
 			this[prop] = cObject[prop];
 		}
 	}
 
 	save() {
-		var mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity());
-		var accounts = mgr.getAccounts();
-		var accountName = null;
-		var accountType = null;
-		var id = this.id;
-		var rawId = 0;
-		var contentResolver = (Application.android.foregroundActivity || Application.android.startActivity).getContentResolver();
-		var ops = new java.util.ArrayList();
+		const mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity());
+		const accounts = mgr.getAccounts();
+		let accountName = null;
+		let accountType = null;
+		const id = this.id;
+		let rawId = 0;
+		const contentResolver = (Application.android.foregroundActivity || Application.android.startActivity).getContentResolver();
+		const ops = new java.util.ArrayList();
 
 		if (accounts.length !== 0) {
 			accountName = accounts[0].name;
@@ -226,13 +226,14 @@ export class Contact extends ContactCommon {
 		}
 
 		if (id && id !== '') {
-			var rawIdCursor = contentResolver.query(android.provider.ContactsContract.RawContacts.CONTENT_URI, ['_id'], 'contact_id = ' + id, null, null);
+			const rawIdCursor = contentResolver.query(android.provider.ContactsContract.RawContacts.CONTENT_URI, ['_id'], 'contact_id = ' + id, null, null);
 			if (!rawIdCursor.moveToFirst()) {
 				throw new Error('Error optaining raw contact id');
 				return;
 			}
 
-			rawId = rawIdCursor.getString(rawIdCursor.getColumnIndex('_id'));
+			// should the rawId use getString or getInt
+			rawId = rawIdCursor.getString(rawIdCursor.getColumnIndex('_id')) as any;
 			rawIdCursor.close();
 
 			ops.add(android.content.ContentProviderOperation.newUpdate(android.provider.ContactsContract.RawContacts.CONTENT_URI).withValue(ACCOUNT_TYPE, accountType).withValue(ACCOUNT_NAME, accountName).build());
@@ -269,7 +270,7 @@ export class Contact extends ContactCommon {
 
 		// Add Phones
 		this.phoneNumbers.forEach(function (item) {
-			var nativePhoneType = ContactHelper.android.getNativePhoneType(item.label);
+			const nativePhoneType = ContactHelper.android.getNativePhoneType(item.label);
 
 			ops.add(
 				ContactHelper.android
@@ -283,7 +284,7 @@ export class Contact extends ContactCommon {
 
 		// Add Emails
 		this.emailAddresses.forEach(function (item) {
-			var nativeEmailType = ContactHelper.android.getNativeEmailType(item.label);
+			const nativeEmailType = ContactHelper.android.getNativeEmailType(item.label);
 
 			ops.add(
 				ContactHelper.android
@@ -297,7 +298,7 @@ export class Contact extends ContactCommon {
 
 		// Add Addresses
 		this.postalAddresses.forEach(function (item) {
-			var nativeAddressType = ContactHelper.android.getNativeAddressType(item.label);
+			const nativeAddressType = ContactHelper.android.getNativeAddressType(item.label);
 
 			ops.add(
 				ContactHelper.android
@@ -319,7 +320,7 @@ export class Contact extends ContactCommon {
 
 		// Add Websites
 		this.urls.forEach(function (item) {
-			var nativeWebsiteType = ContactHelper.android.getNativeWebsiteType(item.label);
+			const nativeWebsiteType = ContactHelper.android.getNativeWebsiteType(item.label);
 
 			ops.add(
 				ContactHelper.android
@@ -332,7 +333,7 @@ export class Contact extends ContactCommon {
 		});
 
 		// Add Organization
-		var nativeOrgType = ContactHelper.android.getNativeOrgType(this.organization.type);
+		const nativeOrgType = ContactHelper.android.getNativeOrgType(this.organization.type);
 		ops.add(
 			ContactHelper.android
 				.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
@@ -349,7 +350,7 @@ export class Contact extends ContactCommon {
 
 		// Add Photo
 		if (this.photo && this.photo.android) {
-			var stream = new java.io.ByteArrayOutputStream();
+			const stream = new java.io.ByteArrayOutputStream();
 			this.photo.android.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, stream);
 
 			ops.add(ContactHelper.android.getRawContactBuilder(rawId, android.provider.ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE).withValue(IS_SUPER_PRIMARY, new java.lang.Integer(1)).withValue(android.provider.ContactsContract.CommonDataKinds.Photo.PHOTO, stream.toByteArray()).build());
@@ -366,11 +367,11 @@ export class Contact extends ContactCommon {
 	}
 
 	delete() {
-		let mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity()),
+		const mgr = android.accounts.AccountManager.get(ContactHelper.android.getActivity()),
 			accounts = mgr.getAccounts(),
-			id = this.id,
-			rawId: any = 0,
-			contentResolver = ContactHelper.android.getActivity().getContentResolver(),
+			id = this.id;
+		let rawId: any = 0;
+		const contentResolver = ContactHelper.android.getActivity().getContentResolver(),
 			ops = new java.util.ArrayList();
 
 		if (accounts.length === 0) {

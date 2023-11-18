@@ -1,10 +1,16 @@
-import { Observable, ImageAsset, View, Utils, Application } from '@nativescript/core';
-import { Options, ImagePickerMediaType } from './common';
+import { ImageAsset, View, Utils, Application, path, knownFolders, ImageSource } from '@nativescript/core';
+import { AuthorizationResult, ImagePickerBase, ImagePickerSelection, Options } from './common';
+import { getFile } from '@nativescript/core/http';
+import * as permissions from '@nativescript-community/perms';
 export * from './common';
-
+type FileMap = {
+	[key: string]: ImagePickerSelection;
+};
 const defaultAssetCollectionSubtypes: NSArray<any> = NSArray.arrayWithArray(<any>[PHAssetCollectionSubtype.SmartAlbumRecentlyAdded, PHAssetCollectionSubtype.SmartAlbumUserLibrary, PHAssetCollectionSubtype.AlbumMyPhotoStream, PHAssetCollectionSubtype.SmartAlbumFavorites, PHAssetCollectionSubtype.SmartAlbumPanoramas, PHAssetCollectionSubtype.SmartAlbumBursts, PHAssetCollectionSubtype.AlbumCloudShared, PHAssetCollectionSubtype.SmartAlbumSelfPortraits, PHAssetCollectionSubtype.SmartAlbumScreenshots, PHAssetCollectionSubtype.SmartAlbumLivePhotos]);
-
-export class ImagePicker extends Observable {
+let copyToAppFolder;
+let renameFileTo;
+let fileMap: FileMap = {};
+export class ImagePicker extends ImagePickerBase {
 	_imagePickerController: QBImagePickerController;
 	_hostView: View;
 	_delegate: ImagePickerControllerDelegate;
@@ -24,10 +30,9 @@ export class ImagePicker extends Observable {
 
 	constructor(options: Options = {}, hostView: View) {
 		super();
-
 		this._hostView = hostView;
 
-		let imagePickerController = QBImagePickerController.alloc().init();
+		const imagePickerController = QBImagePickerController.alloc().init();
 
 		imagePickerController.assetCollectionSubtypes = defaultAssetCollectionSubtypes;
 		imagePickerController.mediaType = options.mediaType ? <QBImagePickerMediaType>options.mediaType.valueOf() : QBImagePickerMediaType.Any;
@@ -38,29 +43,20 @@ export class ImagePicker extends Observable {
 		imagePickerController.numberOfColumnsInPortrait = options.numberOfColumnsInPortrait || imagePickerController.numberOfColumnsInPortrait;
 		imagePickerController.numberOfColumnsInLandscape = options.numberOfColumnsInLandscape || imagePickerController.numberOfColumnsInLandscape;
 		imagePickerController.prompt = options.prompt || imagePickerController.prompt;
-
+		copyToAppFolder = options.copyToAppFolder || false;
+		renameFileTo = options.renameFileTo || false;
 		this._imagePickerController = imagePickerController;
 	}
 
-	authorize(): Promise<void> {
+	authorize(): Promise<AuthorizationResult> {
 		console.log('authorizing...');
-
-		return new Promise<void>((resolve, reject) => {
-			let runloop = CFRunLoopGetCurrent();
-			PHPhotoLibrary.requestAuthorization(function (result) {
-				if (result === PHAuthorizationStatus.Authorized) {
-					resolve();
-				} else {
-					reject(new Error('Authorization failed. Status: ' + result));
-				}
-			});
-		});
+		return permissions.request('photo').then((result) => this.mapResult(result));
 	}
 
-	present() {
-		return new Promise<void>((resolve, reject) => {
+	present(): Promise<ImagePickerSelection[]> {
+		fileMap = {};
+		return new Promise<ImagePickerSelection[]>((resolve, reject) => {
 			this._delegate = ImagePickerControllerDelegate.initWithOwner(this, resolve, reject);
-
 			this._imagePickerController.delegate = this._delegate;
 
 			this.hostController.presentViewControllerAnimatedCompletion(this._imagePickerController, true, null);
@@ -93,21 +89,88 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 	}
 
 	qb_imagePickerControllerDidFinishPickingAssets?(imagePickerController: QBImagePickerController, iosAssets: NSArray<any>): void {
-		let assets = [];
-
 		for (let i = 0; i < iosAssets.count; i++) {
-			let asset = new ImageAsset(iosAssets[i]);
-
+			const asset = new ImageAsset(iosAssets.objectAtIndex(i));
+			const phAssetImage: PHAsset = (<any>asset)._ios;
 			// this fixes the image aspect ratio in tns-core-modules version < 4.0
-			if (!asset.options) {
-				asset.options = { keepAspectRatio: true };
+			if (!asset.options) asset.options = { keepAspectRatio: true };
+			const existingFileName = phAssetImage.valueForKey('filename');
+			const pickerSelection: ImagePickerSelection = {
+				asset: asset,
+				type: phAssetImage.mediaType == 2 ? 'video' : 'image',
+				filename: existingFileName,
+				originalFilename: existingFileName,
+				filesize: 0,
+				path: '',
+			};
+			if (pickerSelection.type == 'video') pickerSelection.duration = parseInt(phAssetImage.duration.toFixed(0));
+			fileMap[existingFileName] = pickerSelection;
+			if (pickerSelection.type == 'video') {
+				const manager = new PHImageManager();
+				const options = new PHVideoRequestOptions();
+				options.networkAccessAllowed = true;
+				manager.requestAVAssetForVideoOptionsResultHandler(phAssetImage, options, (urlAsset: AVURLAsset, audioMix, info) => {
+					fileMap[existingFileName].path = urlAsset.URL.toString().replace('file://', '');
+				});
+			} else {
+				const imageOptions = new PHContentEditingInputRequestOptions();
+				imageOptions.networkAccessAllowed = true;
+				phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(imageOptions, (thing) => {
+					fileMap[existingFileName].path = thing.fullSizeImageURL.toString().replace('file://', '');
+				});
 			}
-
-			assets.push(asset);
 		}
 
 		if (this._resolve) {
-			this._resolve(assets);
+			setTimeout(() => {
+				const promises = [];
+				let count = 0;
+				for (const key in fileMap) {
+					const item = fileMap[key];
+					const folder = knownFolders.documents();
+					const extension = item.filename.split('.').pop();
+					let filename = renameFileTo ? renameFileTo + '.' + extension : item.filename;
+					if (iosAssets.count > 1) filename = renameFileTo ? renameFileTo + '-' + count + '.' + extension : item.filename;
+					fileMap[item.filename].filename = filename;
+					const fileManager = new NSFileManager();
+					if (copyToAppFolder) {
+						const filePath = path.join(folder.path + '/' + copyToAppFolder, filename);
+						promises.push(
+							getFile('file://' + item.path, filePath)
+								.then((result) => {
+									fileMap[item.originalFilename].path = filePath;
+									fileMap[item.originalFilename].filesize = fileManager.attributesOfItemAtPathError(filePath).fileSize();
+									if (item.type == 'video') {
+										return ImageSource.fromAsset(item.asset).then((source) => {
+											fileMap[item.originalFilename].thumbnail = source;
+										});
+									}
+								})
+								.catch((error) => {
+									console.log('Error copying file: ', error);
+								})
+						);
+					} else {
+						fileMap[item.originalFilename].filesize = fileManager.attributesOfItemAtPathError(fileMap[item.filename].path).fileSize();
+						if (item.type == 'video') {
+							promises.push(
+								ImageSource.fromAsset(item.asset).then((source) => {
+									fileMap[item.originalFilename].thumbnail = source;
+								})
+							);
+						}
+					}
+					count++;
+				}
+
+				Promise.all(promises).then(() => {
+					const results: ImagePickerSelection[] = [];
+					for (const key in fileMap) {
+						results.push(fileMap[key]);
+					}
+					this._resolve(results);
+				});
+			}, 300);
 		}
 
 		imagePickerController.dismissViewControllerAnimatedCompletion(true, () => {

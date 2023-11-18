@@ -56,7 +56,6 @@ function onProgressReceiverProgress(context: Context, uploadInfo: UploadInfo) {
 }
 
 function onProgressReceiverCompleted(context: Context, uploadInfo: UploadInfo, response: ServerResponse) {
-
 	const uploadId = uploadInfo.getUploadId();
 	const task = Task.fromId(uploadId);
 
@@ -89,10 +88,10 @@ function onProgressReceiverCompleted(context: Context, uploadInfo: UploadInfo, r
 }
 
 function onProgressReceiverCancelled(context: Context, uploadInfo: UploadInfo) {
-    const uploadId = uploadInfo.getUploadId();
-    const task = Task.fromId(uploadId);
-    task.setStatus("cancelled");
-    task.notify({ eventName: "cancelled", object: task });
+	const uploadId = uploadInfo.getUploadId();
+	const task = Task.fromId(uploadId);
+	task.setStatus('cancelled');
+	task.notify({ eventName: 'cancelled', object: task });
 }
 
 function onProgressReceiverError(context: Context, uploadInfo: UploadInfo, response: ServerResponse, error: java.lang.Exception) {
@@ -107,7 +106,6 @@ function onProgressReceiverError(context: Context, uploadInfo: UploadInfo, respo
 		response,
 	});
 }
-
 
 function initializeProgressReceiver() {
 	if (ProgressReceiver) {
@@ -129,12 +127,11 @@ function initializeProgressReceiver() {
 		},
 
 		onError(context: Context, uploadInfo: UploadInfo, error: java.lang.Exception) {
-			if(error instanceof net.gotev.uploadservice.exceptions.UserCancelledUploadException){
+			if (error instanceof net.gotev.uploadservice.exceptions.UserCancelledUploadException) {
 				zonedOnCancelled(context, uploadInfo);
-			}else {
-				zonedOnError(context, uploadInfo, error);
+			} else {
+				zonedOnError(context, uploadInfo, null, error);
 			}
-			
 		},
 
 		onCompleted(context: Context, uploadInfo: UploadInfo) {},
@@ -362,7 +359,7 @@ function setRequestOptions(request: net.gotev.uploadservice.HttpUploadRequest<an
 	}
 
 	(<any>org).nativescript.plugins.background_http.NotificationConfig.setConfig(request, config);
-		
+
 	const autoDeleteAfterUpload = typeof options.androidAutoDeleteAfterUpload === 'boolean' ? options.androidAutoDeleteAfterUpload : false;
 	if (autoDeleteAfterUpload) {
 		request.setAutoDeleteFilesAfterSuccessfulUpload(true);

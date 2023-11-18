@@ -1,9 +1,15 @@
 import { DemoSharedBase } from '../utils';
-import {  } from '@nativescript/google-signin';
+import { GoogleSignin } from '@nativescript/google-signin';
 
 export class DemoSharedGoogleSignin extends DemoSharedBase {
+	constructor() {
+		super();
+		GoogleSignin.configure();
+	}
 
-  testIt() {
-    console.log('test google-signin!');
-  }
+	async testIt() {
+		const user = await GoogleSignin.signIn();
+		console.log('displayName:', user.displayName);
+		console.log('idToken:', user.idToken);
+	}
 }

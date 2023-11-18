@@ -7,6 +7,7 @@
         <ScrollView class="h-full">
           <StackLayout>
             <Button text="Test email" tap="{{ testIt }}" class="btn btn-primary"/>
+            <Button text="Is available?" tap="{{ checkAvailability }}" class="btn btn-primary"/>
 
           </StackLayout>
         </ScrollView>

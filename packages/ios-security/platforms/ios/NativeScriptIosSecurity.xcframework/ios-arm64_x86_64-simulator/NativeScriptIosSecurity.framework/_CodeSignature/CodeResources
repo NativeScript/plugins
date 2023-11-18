@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/NativeScriptIOSSecurity-Swift.h</key>
 		<data>
-		31n0Hltxd4JW2VcRguTTPfgYZPo=
+		4tYIUIyExzvKbPhpQQwKSQvZ01c=
 		</data>
 		<key>Headers/NativeScriptIOSSecurity.h</key>
 		<data>
@@ -22,43 +22,59 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		R1rPyA7WHEfMAvNug1EiL/1alxE=
+		it7GyxIguSTeKFLER+Fwpssimsg=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		LNiQaroTUMgsNSTnppuJjH+EajY=
+		UnxRVsUdFsawZirRfWxjQt3Z/fQ=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		tWSkmHiHs3SyU8DItH1DTrGKq3c=
+		7vs3SzeiufESLOxTd/yIe4pIoPE=
+		</data>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
+		<data>
+		JAfWPlRX1fHVljbKuCLObY+vrKI=
+		</data>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
+		<data>
+		/yYe2MtSS+nec2WQfJo4eyoSRew=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		CUyfqKUSqvw3dSHrza5zUfquDCk=
+		NsX8wZeEhAjNfu1UqrAQD2Zu4yI=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		88MMhe198cI3r71My8n6FVsJ6No=
+		/yYe2MtSS+nec2WQfJo4eyoSRew=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		GVnJ/gvztohxQ3nkvPSNftZdxAE=
+		iP5ZfkWBYEEmG2i6YZkONpI1DX0=
+		</data>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
+		<data>
+		QHxjUJUbXEx7Da27CRCRtkY8vTM=
+		</data>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
+		<data>
+		4p3WN1TkiaQE2aRyTpJ48nu9CaM=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		fW1EmN65k+rOrQ0Fzs0SFCqjEUQ=
+		/mp53kn2TykdgIzllVC+mR+na2Q=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		l5Q4z/ovsflbjlpQ+y1Y/bu7KjM=
+		4p3WN1TkiaQE2aRyTpJ48nu9CaM=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		XIltSm4hmtoJ9tt53Y9/jvmGVYY=
+		VGERBSicB5DwzcNixrJRotG/15g=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		kgJiR55aSyWGKdSDi766CnXYXkk=
+		ueHmI5N/lBqC0Hxv5yjK1bPF3Ww=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -74,7 +90,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			sdY27+zMvVt+ul4Ix9FuW+AXyysTnC5epDzV5P5+uHY=
+			actIMpdJA+C3CCXq+hlwbZM55BBuVpVStwSXyYpKYf8=
 			</data>
 		</dict>
 		<key>Headers/NativeScriptIOSSecurity.h</key>
@@ -95,63 +111,91 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+sDoQYqdD1fu6ixAUUnT55r+5dcIOSOoh64i8Fk2E2k=
+			jdvT6AKnofOyzTk+tFDQbLe7bqLyBnQkb3m/Pdi1Ql4=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			b7vBwsVVJlPsIgUQiAhpIPicEXPJ2dP383OfpkWpvLg=
+			yTXbHwjKwxQg22PWafpcfAopRr+D1FtXyvpP3QLOsdA=
+			</data>
+		</dict>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			MCQNTBOT9BYig+l+vBKjFXjvPgNmx1W3nldXGwfs40k=
+			</data>
+		</dict>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ZHldtJPKRUzs2bcNclmoJNMS4sVSPy5hrZp7xMxnYdM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			t8l+Fnl0Tyo3O4PC3saIXeZPdW1l8HDkV04+cW7bEC8=
+			YgmhSt7ze1ZmREIqT4hX1gFawtqZAnjGupFSILM2hvA=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dOme4wh/bznzCKwnxWEIOBi/T/66OVwf4AsV9iOemG0=
+			ZHldtJPKRUzs2bcNclmoJNMS4sVSPy5hrZp7xMxnYdM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			hFSpRo+4uhG16H4NxpCC2nUQ1uXITI4W2+zxOhBGHJs=
+			iYEZ5bRTrNBDEMOffzHFVXLFVANbf04RWlbD201u/bs=
+			</data>
+		</dict>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			RRKvkDjpCBWwLdDqOs6jIgLpbL6fahKsULsLb5J74+0=
+			</data>
+		</dict>
+		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			FtBQOicaIpiIi6CtvYSGbINm5ss/2UniaCNMavBob/4=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jlaOCOdzvN+IJXHqgxZ5oV3KVcl6sgxkqCwoJpw/2q8=
+			l6YJAhO6rpNX9a2d1Z4YhSOZl/iB8Zf09P8GLZsXCOg=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			MYcWabJ8Nca+iOa8SAb+HxcDNqeA7/ia3RNBLiqJRRk=
+			FtBQOicaIpiIi6CtvYSGbINm5ss/2UniaCNMavBob/4=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			LPaXEdIQh7hQspMcyG9dBA5lODdJRCP97UUYLj3WM74=
+			GFB41hiGrYPBQWQYx3fnJ3jpGjEV5mcnTGC5Of79pwo=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			HV8yp9Xwp7WlyUrtbPMbUoRnNnIej7QoLlO54BoWlCs=
+			gML2ZMjJ/+BWs/jQVz6EDeEtTD9m5KV7NRq1atafEtY=
 			</data>
 		</dict>
 	</dict>

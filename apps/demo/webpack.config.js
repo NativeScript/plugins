@@ -8,6 +8,8 @@ module.exports = (env) => {
 	webpack.chainWebpack((config) => {
 		// shared demo code
 		config.resolve.alias.set('@demo/shared', resolve(__dirname, '..', '..', 'tools', 'demo'));
+		// when focusing on local-notifications you can uncomment this to help TS resolution of demo
+		// config.resolve.alias.set('@nativescript/shared-notification-delegate', resolve(__dirname, '..', '..', 'packages', 'shared-notification-delegate'));
 	});
 
 	// Example if you need to share images across demo apps:

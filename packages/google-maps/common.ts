@@ -2,79 +2,77 @@ import { ContentView, Property } from '@nativescript/core';
 import { Coordinate } from '.';
 
 export enum MapType {
-  None = 'none',
-  Normal = 'normal',
-  Satellite = 'satellite',
-  Terrain = 'terrain',
-  Hybrid = 'hybrid'
+	None = 'none',
+	Normal = 'normal',
+	Satellite = 'satellite',
+	Terrain = 'terrain',
+	Hybrid = 'hybrid',
 }
 
 export enum JointType {
-  Round = 'round',
-  Bevel = 'bevel',
-  Default = 'default'
+	Round = 'round',
+	Bevel = 'bevel',
+	Default = 'default',
 }
 
 export const latProperty = new Property<MapViewBase, number>({
-  name: "lat"
+	name: 'lat',
 });
 
 export const lngProperty = new Property<MapViewBase, number>({
-  name: "lng"
+	name: 'lng',
 });
 
 export const zoomProperty = new Property<MapViewBase, number>({
-  name: "zoom"
+	name: 'zoom',
 });
 
 export const bearingProperty = new Property<MapViewBase, number>({
-  name: 'bearing'
-})
+	name: 'bearing',
+});
 
 export const tiltProperty = new Property<MapViewBase, number>({
-  name: 'tilt'
-})
+	name: 'tilt',
+});
 
 export class MapViewBase extends ContentView {
-  static readyEvent = 'ready';
-  static mapTapEvent = 'mapTap';
-  static mapLongPressEvent = 'mapLongPress';
-  static markerTapEvent = 'markerTap';
-  static myLocationTapEvent = 'myLocationTap';
-  static myLocationButtonTapEvent = 'myLocationButtonTap';
-  static markerDragStartEvent = 'markerDragStart';
-  static markerDraggingEvent = 'markerDragging';
-  static markerDragEndEvent = 'markerDragEnd';
+	static readyEvent = 'ready';
+	static mapTapEvent = 'mapTap';
+	static mapLoadedEvent = 'mapLoaded';
+	static mapLongPressEvent = 'mapLongPress';
+	static markerTapEvent = 'markerTap';
+	static myLocationTapEvent = 'myLocationTap';
+	static myLocationButtonTapEvent = 'myLocationButtonTap';
+	static markerDragStartEvent = 'markerDragStart';
+	static markerDraggingEvent = 'markerDragging';
+	static markerDragEndEvent = 'markerDragEnd';
 
-  static tileRenderingStartEvent = 'tileRenderingStart';
-  static tileRenderingEndEvent = 'tileRenderingEnd';
+	static tileRenderingStartEvent = 'tileRenderingStart';
+	static tileRenderingEndEvent = 'tileRenderingEnd';
 
+	static cameraPositionEvent = 'cameraPosition';
 
-  static cameraPositionEvent = 'cameraPosition';
+	static circleTapEvent = 'circle';
+	static polygonTapEvent = 'polygon';
+	static polylineTapEvent = 'polyline';
+	static poiTapEvent = 'poi';
+	static groundOverlayTapEvent = 'groundOverlay';
 
-  static circleTapEvent = 'circle';
-  static polygonTapEvent = 'polygon';
-  static polylineTapEvent = 'polyline';
-  static poiTapEvent = 'poi';
-  static groundOverlayTapEvent = 'groundOverlay';
+	static infoWindowTapEvent = 'infoWindowTap';
+	static infoWindowLongPressEvent = 'infoWindowLongPress';
+	static infoWindowCloseEvent = 'infoWindowClose';
 
-  static infoWindowTapEvent = 'infoWindowTap';
-  static infoWindowLongPressEvent = 'infoWindowLongPress';
-  static infoWindowCloseEvent = 'infoWindowClose';
+	static markerInfoContentsEvent = 'markerInfoContents';
+	static markerInfoWindowEvent = 'markerInfoWindow';
 
-  static markerInfoContentsEvent = 'markerInfoContents';
-  static markerInfoWindowEvent = 'markerInfoWindow';
+	static activeBuildingEvent = 'activeBuilding';
+	static activeLevelEvent = 'activeLevel';
 
-
-  static activeBuildingEvent = 'activeBuilding';
-  static activeLevelEvent = 'activeLevel';
-
-  lat: number;
-  lng: number;
-  zoom: number;
-  bearing: number;
-  tilt: number;
-
+	lat: number;
+	lng: number;
+	zoom: number;
+	bearing: number;
+	tilt: number;
 }
 
 latProperty.register(MapViewBase);

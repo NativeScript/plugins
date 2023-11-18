@@ -64,7 +64,7 @@ class UNUserNotificationCenterDelegateImpl extends NSObject implements UNUserNot
 				handled = true;
 				completionHandler(p1);
 			};
-			owner._observers.some(({ observer }) => {
+			owner._observerCollection.some(({ observer }) => {
 				if (observer.userNotificationCenterWillPresentNotificationWithCompletionHandler) {
 					try {
 						observer.userNotificationCenterWillPresentNotificationWithCompletionHandler(center, notification, childHandler, next);
@@ -78,7 +78,7 @@ class UNUserNotificationCenterDelegateImpl extends NSObject implements UNUserNot
 				if (!owner.disableUnhandledWarning) {
 					console.log('WARNING[shared-notification-delegate]: Notification was received for presentation but was not handled by any observer');
 				}
-				childHandler(0);
+				childHandler(UNNotificationPresentationOptions.Alert);
 			}
 		}
 	}
@@ -87,7 +87,7 @@ class UNUserNotificationCenterDelegateImpl extends NSObject implements UNUserNot
 		let promise = Promise.resolve(false);
 		const owner = this._owner.get();
 		if (owner) {
-			owner._observers.forEach(({ observer }) => {
+			owner._observerCollection.forEach(({ observer }) => {
 				if (observer.userNotificationCenterOpenSettingsForNotification) {
 					promise = promise.then((skip: boolean) => {
 						if (skip) {
@@ -110,7 +110,7 @@ class UNUserNotificationCenterDelegateImpl extends NSObject implements UNUserNot
 		let promise = Promise.resolve(false);
 		const owner = this._owner.get();
 		if (owner) {
-			owner._observers.forEach(({ observer }) => {
+			owner._observerCollection.forEach(({ observer }) => {
 				if (observer.userNotificationCenterDidReceiveNotificationResponseWithCompletionHandler) {
 					promise = promise.then((skip: boolean) => {
 						if (skip) {
@@ -153,7 +153,7 @@ export interface DelegateObserver {
 	observerUniqueKey?: any;
 }
 export class SharedNotificationDelegateImpl extends SharedNotificationDelegateCommon {
-	_observers: Array<{ observer: DelegateObserver; priority: number }> = [];
+	_observerCollection: Array<{ observer: DelegateObserver; priority: number }> = [];
 	disableUnhandledWarning = false;
 	private delegate: UNUserNotificationCenterDelegateImpl;
 
@@ -178,12 +178,12 @@ export class SharedNotificationDelegateImpl extends SharedNotificationDelegateCo
 		if (observer.observerUniqueKey != null) {
 			this.removeObserverByUniqueKey(observer.observerUniqueKey);
 		}
-		this._observers.push({ observer, priority });
+		this._observerCollection.push({ observer, priority });
 		this.sortObservers();
 	}
 
 	removeObserver(observer: DelegateObserver) {
-		this._observers = this._observers.filter((v) => v.observer !== observer);
+		this._observerCollection = this._observerCollection.filter((v) => v.observer !== observer);
 	}
 
 	removeObserverByUniqueKey(key: string) {
@@ -191,15 +191,15 @@ export class SharedNotificationDelegateImpl extends SharedNotificationDelegateCo
 			console.log('SharedNotificationDelegate Warning: tried to remove null/undefined keys.');
 			return;
 		}
-		this._observers = this._observers.filter((v) => v.observer.observerUniqueKey !== key);
+		this._observerCollection = this._observerCollection.filter((v) => v.observer.observerUniqueKey !== key);
 	}
 
 	clearObservers() {
-		this._observers = [];
+		this._observerCollection = [];
 	}
 
 	private sortObservers() {
-		this._observers.sort((a, b) => (a.priority > b.priority ? 1 : a.priority < b.priority ? -1 : 0));
+		this._observerCollection.sort((a, b) => (a.priority > b.priority ? 1 : a.priority < b.priority ? -1 : 0));
 	}
 }
 

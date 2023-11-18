@@ -494,7 +494,7 @@ export class Circle implements ICircle {
 
 export interface IPolygon {
 	points: Coordinate[];
-	holes: Coordinate[];
+	holes: Coordinate[][];
 	tappable: boolean;
 	strokeWidth: number;
 	strokeColor: Color | string;
@@ -512,8 +512,10 @@ export interface PolygonOptions extends Partial<IPolygon> {}
 export class Polygon implements IPolygon {
 	fillColor: Color | string;
 	geodesic: boolean;
-	holes: Coordinate[];
+	holes: Coordinate[][];
 	points: Coordinate[];
+	addPoint(point: Coordinate);
+	addPoints(points: Coordinate[]);
 	strokeColor: Color | string;
 	strokeJointType: JointType;
 	strokePattern: Array<PatternItem & Partial<NativeObject>>;
@@ -553,6 +555,11 @@ export class Polyline extends NativeObject implements IPolyline {
 	 * not closed by default; to form a closed polyline, the start and end points must be the same.
 	 */
 	points: Coordinate[];
+
+	addPoint(point: Coordinate);
+
+	addPoints(points: Coordinate[]);
+
 	/**
 	 * If you want to handle events fired when the user clicks the polyline, set this property to
 	 * `true`. You can change this value at any time. The default is `false`.
@@ -742,6 +749,7 @@ export interface ITileOverlay {
 	visible: boolean;
 	tileProvider: TileProvider & Partial<NativeObject>;
 	zIndex: number;
+	clearTileCache(): void;
 }
 
 export class Tile {

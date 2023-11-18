@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/local-notifications",
-	"version": "6.0.0",
+	"version": "6.1.1",
 	"description": "The Local Notifications plugin allows your app to show notifications when the app is not running.",
 	"main": "index",
 	"typings": "index.d.ts",
@@ -33,6 +33,10 @@
 		{
 			"name": "NativeScript",
 			"email": "oss@nativescript.org"
+		},
+		{
+			"name": "Alberto González",
+			"url": "https://github.com/agonper"
 		}
 	],
 	"license": "MIT",
@@ -41,6 +45,7 @@
 	},
 	"homepage": "https://github.com/nativescript/plugins",
 	"dependencies": {
-		"@nativescript/shared-notification-delegate": "~1.0.0"
+		"@nativescript/shared-notification-delegate": "~1.0.0",
+		"@nativescript-community/perms": "^2.3.0"
 	}
 }
