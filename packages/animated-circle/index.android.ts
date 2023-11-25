@@ -1,10 +1,20 @@
-import { Color } from '@nativescript/core';
+import { Color, Property, booleanConverter } from '@nativescript/core';
 import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorProperty } from './common';
 
 declare const at;
 
+export const animatedProperty = new Property({
+    name: 'animated',
+    valueChanged: (target, old, newValue) => {
+        target.animated = newValue;
+    },
+    defaultValue: false,
+    valueConverter: booleanConverter
+});
+
 export class AnimatedCircle extends AnimatedCircleCommon {
 	private _android: any;
+	private _animated: boolean = false;
 	private _progress = 0;
 	private _animateFrom = 0;
 	private _animationDuration = 1000;
@@ -69,7 +79,12 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set progress(value: number) {
 		this._progress = value;
-		this.android?.setValueAnimated(this._progress);
+		if(this.animated) {
+			this.android?.setValueAnimated(this._progress);
+		}
+		else {
+			this.android?.setValue(this._progress);
+		}
 	}
 
 	get progress(): number {
@@ -318,3 +333,5 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		}
 	}
 }
+
+animatedProperty.register(AnimatedCircle);
