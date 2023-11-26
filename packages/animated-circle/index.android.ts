@@ -6,7 +6,7 @@ declare const at;
 export const animatedProperty = new Property({
     name: 'animated',
     valueChanged: (target, old, newValue) => {
-        target.animated = newValue;
+        target.updateAnimatedCircle();
     },
     defaultValue: false,
     valueConverter: booleanConverter
@@ -14,7 +14,6 @@ export const animatedProperty = new Property({
 
 export class AnimatedCircle extends AnimatedCircleCommon {
 	private _android: any;
-	private _animated: boolean = false;
 	private _progress = 0;
 	private _animateFrom = 0;
 	private _animationDuration = 1000;
@@ -107,15 +106,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	get animationDuration(): number {
 		return this._animationDuration;
-	}
-
-	set animated(value: boolean) {
-		this._animated = Boolean(value);
-		this.updateAnimatedCircle();
-	}
-
-	get animated(): boolean {
-		return this._animated;
 	}
 
 	set maxValue(value: number) {
