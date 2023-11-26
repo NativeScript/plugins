@@ -3,7 +3,7 @@ import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorP
 
 declare const at;
 
-export const animatedProperty = new Property({
+export const animatedProperty = new Property<AnimatedCircle, boolean>({
     name: 'animated',
     valueChanged: (target, old, newValue) => {
         target.updateAnimatedCircle();
