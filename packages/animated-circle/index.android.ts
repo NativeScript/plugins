@@ -4,20 +4,19 @@ import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorP
 declare const at;
 
 export const animatedProperty = new Property<AnimatedCircle, boolean>({
-    name: 'animated',
-    valueChanged: (target, old, newValue) => {
-        target.updateAnimatedCircle();
-    },
-    defaultValue: false,
-    valueConverter: booleanConverter
+	name: 'animated',
+	valueChanged: (target, old, newValue) => {
+		target.updateAnimatedCircle();
+	},
+	defaultValue: false,
+	valueConverter: booleanConverter,
 });
 
 export class AnimatedCircle extends AnimatedCircleCommon {
-	private _android: any;
+	animated: boolean;
 	private _progress = 0;
 	private _animateFrom = 0;
 	private _animationDuration = 1000;
-	private _animated: boolean;
 	private _maxValue = 100;
 	private _barColor: string | Color = new Color('#3D8FF4');
 	private _barWidth;
@@ -48,7 +47,11 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android.setOuterContourSize(0);
 		this.android.setInnerContourSize(0);
 		this.android.setText(this.text);
-		this.android.setValueAnimated(this.progress);
+		if (this.animated) {
+			this.android.setValueAnimated(this.progress);
+		} else {
+			this.android.setValue(this.progress);
+		}
 		this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		this.android.setRimWidth(this.rimWidth);
 		this.android.setBarWidth(this.barWidth);
@@ -78,10 +81,9 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	set progress(value: number) {
 		this._progress = value;
-		if(this.animated) {
+		if (this.animated) {
 			this.android?.setValueAnimated(this._progress);
-		}
-		else {
+		} else {
 			this.android?.setValue(this._progress);
 		}
 	}
@@ -276,7 +278,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		return this._spinBarColor;
 	}
 
-	private updateAnimatedCircle(): void {
+	updateAnimatedCircle(): void {
 		if (this.android) {
 			if (this.animated) {
 				if (this.animateFrom) {
