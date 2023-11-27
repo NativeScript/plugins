@@ -78,14 +78,8 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 	1. [Create a Firebase project](https://firebase.google.com/docs/ios/setup#create-firebase-project)
 	2. [Register your app with Firebase](https://firebase.google.com/docs/ios/setup#register-app)
 	3. [Add a Firebase configuration file](https://firebase.google.com/docs/ios/setup#add-config-file), `GoogleService-Info.plist.` to `App_Resources/iOS/`.
-
-3. Open Xcode 
-
-	1. Right-click on the `Runner` directory and select `Add Files to Runner`.
-	2. Select `GoogleService-Info.plist` from the file manager.
-	3. Select the `Runner` target from the dialog that appears.
-
-  4. Add the `CFBundleURLTypes` and `GIDClientID` attributes below to the `App_Resources/iOS/Info.plist` file.
+	4. Enter [Google Cloud](https://console.cloud.google.com/) and choose your project created from firebase. Access the Apis and Services -> Credentials section and add a new credential of type `OAuth Client ID`. In application type choose iOS. Return to the Credentials screen and enter your new key in the `OAuth 2.0 Client ID` section. Copy `Client ID` and `iOS URL Scheme` for next step.
+  	5. Add the `CFBundleURLTypes` and `GIDClientID` attributes below to the `App_Resources/iOS/Info.plist` file.
 
 ```xml
 <!-- Google Sign-in Section -->
@@ -97,14 +91,14 @@ Make sure you've filled out all the required fields in the console for [OAuth co
 		<key>CFBundleURLSchemes</key>
 		<array>
 			<!-- TODO Replace this value: -->
-			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+			<!-- Paste your iOS URL Scheme here -->
 			<string>com.googleusercontent.apps.292142294722-23nmrq9mn8rhpqipjc1bt4qecga3qgsf</string>
 		</array>
 	</dict>
 </array>
 <key>GIDClientID</key>
-<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
-<string><749673967192-c24phj29u2otpict36e71ocjo2g5i3hs.apps.googleusercontent.com/string>
+<!-- Paste your Client ID here -->
+<string>749673967192-c24phj29u2otpict36e71ocjo2g5i3hs.apps.googleusercontent.com</string>
 <!-- End of the Google Sign-in Section -->
 ```
 
