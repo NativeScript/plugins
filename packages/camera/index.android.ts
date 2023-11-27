@@ -32,7 +32,7 @@ export const takePicture = function (options?: CameraOptions): Promise<any> {
 				shouldKeepAspectRatio = Utils.isNullOrUndefined(options.keepAspectRatio) ? shouldKeepAspectRatio : options.keepAspectRatio;
 			}
 
-			if (!api33() && !permissions.hasPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+			if (!api30() && !permissions.hasPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 				saveToGallery = false;
 			}
 
@@ -168,12 +168,12 @@ export const isAvailable = function () {
 	return Utils.android.getApplicationContext().getPackageManager().hasSystemFeature(android.content.pm.PackageManager.FEATURE_CAMERA);
 };
 
-function api33(): boolean {
-	return (<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33;
+function api30(): boolean {
+	return (<any>android).os.Build.VERSION.SDK_INT >= 30 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 30;
 }
 
 export const requestPermissions = function () {
-	if (api33()) {
+	if (api30()) {
 		return permissions.requestPermissions([android.Manifest.permission.CAMERA]);
 	} else {
 		return permissions.requestPermissions([android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA]);
