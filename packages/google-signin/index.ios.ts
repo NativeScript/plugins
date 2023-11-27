@@ -138,6 +138,7 @@ export class GoogleSignin {
 
 			const config = GIDConfiguration.alloc().initWithClientIDServerClientIDHostedDomainOpenIDRealm(clientId, serverClientId, configuration.hostedDomain || null, configuration['openIDRealm'] || null);
 			this._nativeConfig = config;
+			GIDSignIn.sharedInstance.configuration = config;
 			resolve();
 		});
 	}
