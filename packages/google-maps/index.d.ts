@@ -54,7 +54,7 @@ export interface MarkerDragEvent extends EventData {
 
 export interface CameraPositionEvent extends EventData {
 	cameraPosition: CameraPosition;
-	state: 'idle' | 'start' | 'moving';
+	state: 'idle' | 'start' | 'move';
 }
 
 export interface CameraPositionStartEvent extends CameraPositionEvent {
