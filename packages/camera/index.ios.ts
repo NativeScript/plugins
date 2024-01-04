@@ -149,7 +149,7 @@ export let takePicture = function (options: CameraOptions): Promise<any> {
 
 		if (reqWidth && reqHeight) {
 			listener = UIImagePickerControllerDelegateImpl.new().initWithCallbackAndOptions(resolve, reject, { width: reqWidth, height: reqHeight, keepAspectRatio: keepAspectRatio, saveToGallery: saveToGallery, allowsEditing: allowsEditing });
-		} else if (saveToGallery) {
+		} else if (saveToGallery || keepAspectRatio) {
 			listener = UIImagePickerControllerDelegateImpl.new().initWithCallbackAndOptions(resolve, reject, { saveToGallery: saveToGallery, keepAspectRatio: keepAspectRatio, allowsEditing: allowsEditing });
 		} else {
 			listener = UIImagePickerControllerDelegateImpl.new().initWithCallback(resolve, reject);
