@@ -237,7 +237,7 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	mapViewDidChangeCameraPosition(mapView: GMSMapView, position: GMSCameraPosition): void {
 		this._owner?.get?.().notify?.(<CameraPositionEvent>{
 			eventName: MapView.cameraPositionEvent,
-			state: 'moving',
+			state: 'move',
 			object: this._owner?.get?.(),
 			cameraPosition: CameraPosition.fromNative(position),
 		});
