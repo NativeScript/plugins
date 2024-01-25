@@ -433,9 +433,9 @@ export function serialize(data: any): any {
 		case 'string':
 		case 'boolean': {
 			if (typeof data === 'string') {
-				return new java.lang.String(data);
+				return java.lang.String.valueOf(data);
 			}
-			return new java.lang.Boolean(data);
+			return java.lang.Boolean.valueOf(data);
 		}
 		case 'number': {
 			const hasDecimals = numberHasDecimals(data);
@@ -476,10 +476,10 @@ export function serialize(data: any): any {
 			}
 
 			const keys = Object.keys(data);
-			store = new java.util.HashMap();
+			store = new java.util.HashMap(keys.length);
 			for (const key of keys) {
 				const value = data[key];
-				store.put(key, value);
+				store.put(key, serialize(value));
 			}
 			return store;
 		}
