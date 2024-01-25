@@ -136,24 +136,24 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 
 	if (Array.isArray(options?.points)) {
 		path = GMSMutablePath.path();
-		options.points.forEach((point) => {
+		for (const point of options.points) {
 			path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
-		});
+		}
 	}
 
 	const opts = path ? GMSPolygon.polygonWithPath(path) : GMSPolygon.new();
 
 	if (Array.isArray(options?.holes)) {
 		const nativeHoles = NSMutableArray.new<GMSMutablePath>();
-		options.holes.forEach((hole) => {
+		for (const hole of options.holes) {
 			if (Array.isArray(hole) && hole.length) {
 				const path = GMSMutablePath.path();
-				hole.forEach((coordinate) => {
+				for (const coordinate of hole) {
 					path.addCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
-				});
+				}
 				nativeHoles.addObject(path);
 			}
-		});
+		}
 		opts.holes = nativeHoles;
 	}
 
@@ -242,11 +242,11 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 		opts.zIndex = options.zIndex;
 	}
 
-	if (typeof options?.startCap) {
+	if (typeof options?.startCap === 'number') {
 		// TODO
 	}
 
-	if (typeof options?.endCap) {
+	if (typeof options?.endCap === 'number') {
 		// TODO
 	}
 
@@ -268,7 +268,7 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 		// TODO
 	}
 
-	if (typeof options?.transparency) {
+	if (typeof options?.transparency === 'number') {
 		// TODO
 	}
 
@@ -325,7 +325,7 @@ export function deserialize(data: any): any {
 	}
 
 	if (data instanceof NSArray) {
-		let array = [];
+		const array = [];
 		for (let i = 0, n = data.count; i < n; i++) {
 			array[i] = deserialize(data.objectAtIndex(i));
 		}
@@ -333,9 +333,11 @@ export function deserialize(data: any): any {
 	}
 
 	if (data instanceof NSDictionary) {
-		let dict = {};
-		for (let i = 0, n = data.allKeys.count; i < n; i++) {
-			let key = data.allKeys.objectAtIndex(i);
+		const dict = {};
+		const allKeys = data.allKeys;
+		const count = allKeys.count;
+		for (let i = 0, n = count; i < n; i++) {
+			const key = allKeys.objectAtIndex(i);
 			dict[key] = deserialize(data.objectForKey(key));
 		}
 		return dict;
@@ -385,15 +387,23 @@ export function serialize(data: any): any {
 			}
 
 			if (Array.isArray(data)) {
-				return NSArray.arrayWithArray((<any>data).map(serialize));
+				const length = data.length;
+				const array = NSMutableArray.arrayWithCapacity(length);
+				for (let i = 0; i < length; i++) {
+					const item = serialize(data[i]);
+					array.insertObjectAtIndex(item, i);
+				}
+				return array;
 			}
 
-			let node = {} as any;
-			Object.keys(data).forEach(function (key) {
-				let value = data[key];
-				node[key] = serialize(value);
-			});
-			return NSDictionary.dictionaryWithDictionary(node);
+			const keys = Object.keys(data);
+			const node = NSMutableDictionary.dictionaryWithCapacity(keys.length);
+
+			for (const key of keys) {
+				const value = data[key];
+				node.setObjectForKey(serialize(value), key);
+			}
+			return node;
 		}
 
 		default:
