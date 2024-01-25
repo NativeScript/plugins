@@ -1,4 +1,4 @@
-import { Application, Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { Application, Color, Device, EventData, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
@@ -19,6 +19,7 @@ import {
 	IGroundOverlay,
 	IIndoorBuilding,
 	IIndoorLevel,
+	ILocation,
 	IMarker,
 	InfoWindowEvent,
 	IPatternItem,
@@ -30,6 +31,7 @@ import {
 	ITileProvider,
 	IUISettings,
 	IVisibleRegion,
+	LocationTapEvent,
 	MapTapEvent,
 	MarkerDragEvent,
 	MarkerInfoEvent,
@@ -62,6 +64,60 @@ function intoPatternImages(pattern: PatternItem[]) {
 		array.add(pattern[i].native);
 	}
 	return array;
+}
+
+let IS_OREO: boolean;
+export class Location implements ILocation {
+	private _native: android.location.Location;
+	static {
+		IS_OREO = parseInt(Device.sdkVersion) >= 26;
+	}
+	static fromNative(location: android.location.Location): Location {
+		if (location instanceof android.location.Location) {
+			const ret = new Location();
+			ret._native = location;
+			return ret;
+		}
+
+		return null;
+	}
+
+	get native() {
+		return this._native;
+	}
+
+	get android() {
+		return this._native;
+	}
+
+	get altitudeAccuracy(): number {
+		if (IS_OREO && this.native.hasVerticalAccuracy()) {
+			return this.native.getVerticalAccuracyMeters();
+		}
+		return 0;
+	}
+	get accuracy(): number {
+		return this.native.getAccuracy();
+	}
+
+	get coordinate(): Coordinate {
+		return {
+			lat: this.native.getLatitude(),
+			lng: this.native.getLongitude(),
+		};
+	}
+	get timestamp(): Date {
+		return new Date(this.native.getTime());
+	}
+	get altitude(): number {
+		return this.native.getAltitude();
+	}
+	get speed(): number {
+		return this.native.getSpeed();
+	}
+	get heading(): number {
+		return this.native.getBearing();
+	}
 }
 
 export class MapView extends MapViewBase {
@@ -161,9 +217,10 @@ export class MapView extends MapViewBase {
 						},
 						onMyLocationEvent(location?: android.location.Location) {
 							if (location) {
-								ref?.get?.().notify({
-									eventName: MapView.myLocationButtonTapEvent,
+								ref?.get?.().notify(<LocationTapEvent>{
+									eventName: MapView.myLocationTapEvent,
 									object: ref?.get?.(),
+									location: Location.fromNative(location),
 								});
 							} else {
 								ref?.get?.().notify(<EventData>{
@@ -268,6 +325,8 @@ export class MapView extends MapViewBase {
 											container.addView(info.view.nativeView);
 										}
 										return (<any>marker)?._view ?? null;
+									} else if (info.view instanceof android.view.View) {
+										return info.view;
 									}
 								}
 							}

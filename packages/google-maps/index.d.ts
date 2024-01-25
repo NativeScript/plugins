@@ -236,7 +236,7 @@ export class MapView extends MapViewBase {
 
 	on(event: 'myLocationTap', callback: (args: MapTapEvent) => void, thisArg?: any);
 
-	on(event: 'myLocationButtonTap', callback: (args: MarkerTapEvent) => void, thisArg?: any);
+	on(event: 'myLocationButtonTap', callback: (args: LocationTapEvent) => void, thisArg?: any);
 
 	on(event: 'markerDragStart', callback: (args: MarkerTapEvent) => void, thisArg?: any);
 

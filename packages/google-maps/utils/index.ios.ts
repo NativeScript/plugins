@@ -269,7 +269,13 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	}
 
 	if (typeof options?.transparency === 'number') {
-		// TODO
+		let transparency = options.transparency;
+		if (transparency > 1) {
+			transparency = 1;
+		} else if (transparency < 1) {
+			transparency = 0;
+		}
+		opts.opacity = 1 - transparency;
 	}
 
 	if (options?.bounds) {
