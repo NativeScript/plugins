@@ -1108,6 +1108,7 @@ export class GoogleMap implements IGoogleMap {
 				overlay.zIndex = options.zIndex;
 				overlay.fadeIn = options.fadeIn;
 				options.tileProvider.native.map = this.native;
+				overlay.transparency = options.transparency;
 				return overlay;
 			}
 		}
