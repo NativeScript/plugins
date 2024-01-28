@@ -1,8 +1,7 @@
 import { Color, ImageSource, Utils } from '@nativescript/core';
 import { GeoJSON } from 'geojson';
-import { Coordinate, GoogleMap, ITileProvider, MarkerOptions } from '@nativescript/google-maps';
+import { Coordinate, GoogleMap, ITileProvider, MarkerOptions, hueFromColor } from '@nativescript/google-maps';
 import { HeatmapOptions, IClusterManager, IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle, IGradient, IHeatmapTileProvider } from '.';
-import { hueFromColor } from '../google-maps/utils';
 import { applyMixins } from './utils/common';
 import { intoNativeClusterManager, intoNativeColor, intoNativeHeatmapGradient, intoNativeHeatmapProvider } from './utils';
 
@@ -131,6 +130,9 @@ export class ClusterItem extends com.google.maps.android.clustering.ClusterItem 
 			},
 			getTitle: (): string => {
 				return this.options?.title ?? '';
+			},
+			getZIndex: (): any => {
+				return java.lang.Float.valueOf(this.options?.zIndex ?? 0);
 			},
 		});
 	}

@@ -1,8 +1,7 @@
 import { Color, encoding } from '@nativescript/core';
 import { GeoJSON } from 'geojson';
-import { Coordinate, GoogleMap, ITileProvider, MarkerOptions } from '@nativescript/google-maps';
+import { Coordinate, GoogleMap, ITileProvider, MarkerOptions, intoNativeMarkerOptions } from '@nativescript/google-maps';
 import { HeatmapOptions, IClusterManager, IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle, IGradient, IHeatmapTileProvider, intoNativeClusterManager, intoNativeHeatmapGradient, intoNativeHeatmapProvider } from '.';
-import { intoNativeMarkerOptions } from '../google-maps/utils';
 import { applyMixins } from './utils/common';
 
 // export * from './experimental/datalayer';
