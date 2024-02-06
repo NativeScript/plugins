@@ -29,7 +29,7 @@ Install the plugin by running the following command in the root directory of you
 npm install @nativescript/imagepicker
 ```
 **Note: Version 3.1 contains breaking changes:**
-* New behavior on iOS when the user selects `Select Photos..` detailed in [iOS Limited permission](#ios-limited-permission).
+* New behavior on iOS when the user selects `Limit AccessLim..` detailed in [iOS Limited permission](#ios-limited-permission).
 
 **Note: Version 3.0 contains breaking changes:**
 * authorize() now returns a `Promise<AuthorizationResult>` for both android and ios.
@@ -72,7 +72,7 @@ Apple App Store might reject your app if you do not describe why you need this p
 
 ### iOS Limited permission
 
-Apple introduced the `PHAuthorizationStatusLimited` permission status with iOS 14, this is where the user specifies that the app can only access specified photos by choosing the `Select Photos..` option in the authorization dialog.
+Apple introduced the `PHAuthorizationStatusLimited` permission status with iOS 14, this is where the user specifies that the app can only access specified photos by choosing the `Limit Access..` option in the authorization dialog.
 
 In this case `authorise()` will return an `AuthorizationResult` where `authorized` will be `true` and the `details` will contain `'limited'`.
 
