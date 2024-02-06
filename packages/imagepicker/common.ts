@@ -145,7 +145,7 @@ export abstract class ImagePickerBase implements ImagePickerApi {
 		let authorized = true;
 		if (Array.isArray(result) && result.length == 2) {
 			// is of type Result
-			authorized = result[0] === 'authorized';
+			authorized = result[0] === 'authorized' || result[0] === 'limited';
 		} else {
 			const t = result as MultiResult;
 			requestingPermissions.forEach((permission) => {

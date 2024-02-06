@@ -96,5 +96,7 @@
     <string>NativeScriptPluginsDemo</string>
     <key>GIDClientID</key>
     <string>749673967192-c24phj29u2otpict36e71ocjo2g5i3hs.apps.googleusercontent.com</string>
+    <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+    <false/>
   </dict>
 </plist>
