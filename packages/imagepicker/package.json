@@ -33,6 +33,6 @@
 	"readmeFilename": "README.md",
 	"bootstrapper": "@nativescript/plugin-seed",
 	"dependencies": {
-		"@nativescript-community/perms": "^2.3.0"
+		"@nativescript-community/perms": "^2.3.1"
 	}
 }
