@@ -50,6 +50,8 @@ packages/shared-notification-delegate/common.js.map
 
 !packages/google-signin/platforms/android/googlesignin-release.aar
 !packages/twitter/platforms/android/twitter-release.aar
+!packages/pdf/platforms/android/android-pdf-viewer-release.aar
+!packages/pdf/platforms/android/PdfiumAndroid-1.0.1.aar
 
 # iOS:
 packages/**/native-src/ios/**/xcuserdata/
