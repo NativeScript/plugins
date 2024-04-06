@@ -3,9 +3,10 @@
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"sourceRoot": "packages/keyboard-toolbar",
+	"tags": [],
 	"targets": {
 		"build": {
-			"executor": "@nrwl/js:tsc",
+			"executor": "@nx/js:tsc",
 			"options": {
 				"outputPath": "dist/packages/keyboard-toolbar",
 				"tsConfig": "packages/keyboard-toolbar/tsconfig.json",
@@ -35,15 +36,14 @@
 				"commands": ["node tools/scripts/build-finish.ts keyboard-toolbar"],
 				"parallel": false
 			},
-			"outputs": ["dist/packages/keyboard-toolbar"],
+			"outputs": ["{workspaceRoot}/dist/packages/keyboard-toolbar"],
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				},
 				{
-					"target": "build",
-					"projects": "self"
+					"target": "build"
 				}
 			]
 		},
@@ -55,11 +55,7 @@
 			}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"options": {
-				"lintFilePatterns": ["packages/keyboard-toolbar/**/*.ts"]
-			}
+			"executor": "@nx/eslint:lint"
 		}
-	},
-	"tags": []
+	}
 }

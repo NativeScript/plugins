@@ -2,11 +2,11 @@
 	"name": "ios-security",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
-	"generators": {},
 	"sourceRoot": "packages/ios-security",
+	"generators": {},
 	"targets": {
 		"build": {
-			"executor": "@nrwl/js:tsc",
+			"executor": "@nx/js:tsc",
 			"options": {
 				"outputPath": "dist/packages/ios-security",
 				"tsConfig": "packages/ios-security/tsconfig.json",
@@ -26,7 +26,7 @@
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				}
 			]
 		},
@@ -40,15 +40,13 @@
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				},
 				{
-					"target": "build.native",
-					"projects": "self"
+					"target": "build.native"
 				},
 				{
-					"target": "build",
-					"projects": "self"
+					"target": "build"
 				}
 			]
 		},
@@ -68,10 +66,7 @@
 			}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"options": {
-				"lintFilePatterns": ["packages/ios-security/**/*.ts"]
-			}
+			"executor": "@nx/eslint:lint"
 		}
 	}
 }
