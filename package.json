@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
-		"setup": "npx rimraf node_modules package-lock.json dist tmp yarn.lock && yarn config set ignore-engines true && yarn",
+		"setup": "npx rimraf node_modules package-lock.json dist tmp yarn.lock && yarn",
 		"start": "nps",
 		"add": "nx g @nativescript/plugin-tools:add-package",
 		"add-angular": "nx g @nativescript/plugin-tools:add-angular",
@@ -29,7 +29,7 @@
 		"@nativescript-community/perms": "^2.3.1",
 		"@nativescript/angular": "^17.0.0",
 		"@nativescript/core": "~8.6.0",
-		"@nativescript/plugin-tools": "5.2.1",
+		"@nativescript/plugin-tools": "5.2.2",
 		"@nativescript/types": "~8.6.0",
 		"@nativescript/webpack": "~5.0.5",
 		"@ngtools/webpack": "^17.0.0",
