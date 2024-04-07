@@ -2,11 +2,11 @@
 	"name": "theme-switcher",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
-	"generators": {},
 	"sourceRoot": "packages/theme-switcher",
+	"generators": {},
 	"targets": {
 		"build": {
-			"executor": "@nrwl/js:tsc",
+			"executor": "@nx/js:tsc",
 			"options": {
 				"outputPath": "dist/packages/theme-switcher",
 				"tsConfig": "packages/theme-switcher/tsconfig.json",
@@ -29,7 +29,7 @@
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				}
 			]
 		},
@@ -43,11 +43,10 @@
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				},
 				{
-					"target": "build",
-					"projects": "self"
+					"target": "build"
 				}
 			]
 		},
@@ -59,10 +58,7 @@
 			}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"options": {
-				"lintFilePatterns": ["packages/theme-switcher/**/*.ts"]
-			}
+			"executor": "@nx/eslint:lint"
 		}
 	}
 }

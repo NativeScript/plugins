@@ -1,10 +1,12 @@
 {
+	"name": "secure-storage",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "library",
 	"sourceRoot": "packages/secure-storage",
+	"tags": [],
 	"targets": {
 		"build": {
-			"executor": "@nrwl/js:tsc",
+			"executor": "@nx/js:tsc",
 			"options": {
 				"outputPath": "dist/packages/secure-storage",
 				"tsConfig": "packages/secure-storage/tsconfig.json",
@@ -34,15 +36,14 @@
 				"commands": ["node tools/scripts/build-finish.ts secure-storage"],
 				"parallel": false
 			},
-			"outputs": ["dist/packages/secure-storage"],
+			"outputs": ["{workspaceRoot}/dist/packages/secure-storage"],
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				},
 				{
-					"target": "build",
-					"projects": "self"
+					"target": "build"
 				}
 			]
 		},
@@ -54,11 +55,7 @@
 			}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"options": {
-				"lintFilePatterns": ["packages/secure-storage/**/*.ts"]
-			}
+			"executor": "@nx/eslint:lint"
 		}
-	},
-	"tags": []
+	}
 }

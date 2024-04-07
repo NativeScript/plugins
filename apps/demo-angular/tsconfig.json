@@ -40,7 +40,8 @@
 			"@nativescript/apple-sign-in": ["packages/apple-sign-in/index.d.ts"],
 			"@nativescript/google-maps": ["packages/google-maps/index.d.ts"],
 			"@nativescript/google-maps/angular": ["packages/google-maps/angular/index.ts"],
-			"@nativescript/contacts": ["packages/contacts/index.d.ts"]
+			"@nativescript/contacts": ["packages/contacts/index.d.ts"],
+			"@nativescript/*": ["../../dist/packages/*"]
 		}
 	},
 	"files": ["./references.d.ts", "./src/main.ts", "./src/polyfills.ts"],

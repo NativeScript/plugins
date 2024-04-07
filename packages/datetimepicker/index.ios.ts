@@ -175,7 +175,7 @@ export class DateTimePicker extends DateTimePickerBase {
 			if (nativeDialog.popoverPresentationController) {
 				nativeDialog.popoverPresentationController.sourceView = viewController.view;
 				nativeDialog.popoverPresentationController.sourceRect = CGRectMake(viewController.view.bounds.size.width / 2.0, viewController.view.bounds.size.height / 2.0, 1.0, 1.0);
-				nativeDialog.popoverPresentationController.permittedArrowDirections = 0;
+				nativeDialog.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.Any;
 			}
 
 			viewController.presentViewControllerAnimatedCompletion(nativeDialog, true, () => {});
