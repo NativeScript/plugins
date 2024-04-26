@@ -313,7 +313,7 @@ The following properties are available for adjusting the camera view on initiali
 `zoom` | `number` | Zoom level (described [here](https://developers.google.com/maps/documentation/javascript/tutorial#zoom-levels))
 `bearing` | `number` | Bearing, in degrees
 `tilt` | `number` | Tilt, in degrees
-`disableMarkerTapHandler` | `boolean` | Disables the default marker event handling (panning/info windows) done by Google Maps
+`preventDefaultMarkerTapBehavior ` | `boolean` | Prevents the default marker event handling (panning/info windows) done by Google Maps
 
 #### Events
 

@@ -378,7 +378,7 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 				marker: Marker.fromNative(marker),
 			});
 
-			return owner.disableMarkerTapHandler;
+			return owner.preventDefaultMarkerTapBehavior;
 		}
 
 		return false;
