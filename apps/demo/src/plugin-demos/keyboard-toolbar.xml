@@ -1,0 +1,101 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page" xmlns:kt="@nativescript/keyboard-toolbar">
+    <Page.actionBar>
+        <ActionBar title="keyboard-toolbar" icon="" class="action-bar">
+        </ActionBar>
+    </Page.actionBar>
+    <!-- This GridLayout wrapper is required; it wraps your layout and the Toolbar layouts-->
+    <GridLayout>
+        <ScrollView>
+            <StackLayout class="p-x-20">
+                <TextField id="tf1" hint="Enter the price" keyboardType="number" borderColor="#eee" borderWidth="1" class="m-t-15"/>
+                <TextField id="tf2" text="{{ getSliderValue() }}" keyboardType="number" borderColor="#eee" borderWidth="1" class="m-t-15"/>
+                <TextField id="tf3" text="{{ email }}" hint="email@domain.com" keyboardType="email" borderColor="#eee" borderWidth="1" class="m-t-15"/>
+                <TextView id="tv1" text="" hint="Tell us about yourself.." borderColor="#eee" borderWidth="1" height="60" class="m-t-15" android:paddingLeft="6"/>
+                <TextView id="tv2" text="Say it with emoji!" borderColor="#eee" borderWidth="1" height="60" class="m-t-15" android:paddingLeft="6"/>
+                <TextView id="tv3" hint="Don't @ me! " keyboardType="email" borderColor="#eee" borderWidth="1" height="60" class="m-t-15 m-b-20" android:paddingLeft="6"/>
+
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+                <Label text="Added some text to make the page scroll.." class="scroll-text"/>
+            </StackLayout>
+        </ScrollView>
+
+        <kt:Toolbar forId="tf1" height="44" showWhenKeyboardHidden="false" showAtBottomWhenKeyboardHidden="false">
+            <ScrollView orientation="horizontal">
+                <StackLayout orientation="horizontal" class="toolbar">
+                    <Label text="Quick pick:" color="#444444" verticalAlignment="center" horizontalAlignment="center"/>
+                    <Label text="{{ iconPriceTag + ' ' + 5 }}" class="icon price-picker" value="5.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                    <Label text="{{ iconPriceTag + ' ' + 10 }}" class="icon price-picker" value="10.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                    <Label text="{{ iconPriceTag + ' ' + 50 }}" class="icon price-picker" value="50.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                    <Label text="{{ iconPriceTag + ' ' + 100 }}" class="icon price-picker" value="100.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                    <Label text="{{ iconPriceTag + ' ' + 250 }}" class="icon price-picker" value="250.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                    <Label text="{{ iconPriceTag + ' ' + 500 }}" class="icon price-picker" value="500.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                    <Label text="{{ iconPriceTag + ' ' + 1000 }}" class="icon price-picker" value="1000.00" verticalAlignment="center" horizontalAlignment="center" tap="{{ setAmountInTextField }}"/>
+                </StackLayout>
+            </ScrollView>
+        </kt:Toolbar>
+
+        <kt:Toolbar forId="tf2" height="60">
+            <GridLayout rows="auto, *" columns="auto, *, auto" class="toolbar">
+                <Label colSpan="3" text="{{ getSliderValue() }}" class="slider-label slider-label-{{ getSliderValue() < 0 || getSliderValue() > 100 ? 'in' : '' }}valid" verticalAlignment="bottom" horizontalAlignment="center"/>
+                <Label row="1" col="0" text="0" class="slider-min-max" verticalAlignment="bottom" horizontalAlignment="center"/>
+                <Slider row="1" col="1" value="{{ sliderValue }}" width="100%" minValue="0" maxValue="100" verticalAlignment="bottom" horizontalAlignment="center"/>
+                <Label row="1" col="2" text="100" class="slider-min-max" verticalAlignment="bottom" horizontalAlignment="center"/>
+            </GridLayout>
+        </kt:Toolbar>
+
+        <kt:Toolbar forId="tf3" height="44">
+            <GridLayout columns="auto, auto, *" class="toolbar">
+                <Label col="0" text="{{ iconValid }}" class="icon m-l-10 email-valid" verticalAlignment="center" horizontalAlignment="center" visibility="{{ emailOK() ? 'visible' : 'collapse' }}"/>
+                <Label col="0" text="{{ iconInvalid }}" class="icon m-l-10 email-invalid" verticalAlignment="center" horizontalAlignment="center" visibility="{{ !emailOK() ? 'visible' : 'collapse' }}"/>
+                <Label col="1" text="{{ emailOK() ? 'looks good! 🍻' : 'email not OK yet..' }}" verticalAlignment="center" horizontalAlignment="center"/>
+                <Button col="2" text="close" verticalAlignment="center" horizontalAlignment="right" class="m-r-10" tap="{{ hideKeyboardTf3 }}"/>
+            </GridLayout>
+        </kt:Toolbar>
+
+        <kt:Toolbar forId="tv1" height="44" showWhenKeyboardHidden="false" showAtBottomWhenKeyboardHidden="false">
+            <GridLayout columns="auto, auto, auto, auto, auto, auto, *, auto" class="toolbar">
+                <Label col="0" text="{{ iconDown }}" class="icon m-l-10" verticalAlignment="center" horizontalAlignment="center" tap="{{ goToTv2 }}"/>
+                <Label col="1" text="{{ iconPaperclip }}" class="icon" verticalAlignment="center" horizontalAlignment="center" tap="{{ onTapTv1Camera }}"/>
+                <Label col="2" text="{{ iconCamera }}" class="icon" verticalAlignment="center" horizontalAlignment="center" tap="{{ onTapTv1Camera }}"/>
+                <Label col="3" text="{{ iconExpand }}" class="icon" verticalAlignment="center" horizontalAlignment="center" tap="{{ onTapTv1Expand }}"/>
+                <Label col="4" text="{{ iconContract }}" class="icon" verticalAlignment="center" horizontalAlignment="center" tap="{{ onTapTv1Contract }}"/>
+                <Label col="5" text="{{ iconTrash }}" class="icon icon-trash" verticalAlignment="center" horizontalAlignment="center" tap="{{ onTapTv1Trash }}"/>
+                <!--<Button col="6" text="{{ iconMicrophone }}" class="icon" verticalAlignment="center" horizontalAlignment="right"/>-->
+                <Button col="6" text="close" verticalAlignment="center" horizontalAlignment="right" class="m-r-10" tap="{{ hideKeyboardTv1 }}"/>
+            </GridLayout>
+        </kt:Toolbar>
+
+        <kt:Toolbar forId="tv2" height="44" showWhenKeyboardHidden="false" showAtBottomWhenKeyboardHidden="false">
+            <GridLayout columns="*, *, *, *, *, *" class="toolbar">
+                <Label col="0" text="👍" tap="{{ appendToTextView2 }}"/>
+                <Label col="1" text="👎" tap="{{ appendToTextView2 }}"/>
+                <Label col="2" text="😄" tap="{{ appendToTextView2 }}"/>
+                <Label col="3" text="🎉" tap="{{ appendToTextView2 }}"/>
+                <Label col="4" text="😕" tap="{{ appendToTextView2 }}"/>
+                <Label col="5" text="❤️" tap="{{ appendToTextView2 }}"/>
+            </GridLayout>
+        </kt:Toolbar>
+
+        <kt:Toolbar forId="tv3" height="44">
+            <ScrollView orientation="horizontal" class="toolbar toolbar-twitter">
+                <StackLayout orientation="horizontal">
+                    <Label text="Type an @ to search for a Twitter handle" visibility="{{ showEddy || showRob || showTrumpsTies ? 'collapse' : 'visible' }}" verticalAlignment="center" horizontalAlignment="center"/>
+                    <Label text="@eddyverbruggen" visibility="{{ showEddy ? 'visible' : 'collapse' }}" verticalAlignment="center" horizontalAlignment="center" tap="{{ appendToTextView3 }}"/>
+                    <Label text="@roblauer" visibility="{{ showRob ? 'visible' : 'collapse' }}" verticalAlignment="center" horizontalAlignment="center" tap="{{ appendToTextView3 }}"/>
+                    <Label text="@trumpsties" visibility="{{ showTrumpsTies ? 'visible' : 'collapse' }}" verticalAlignment="center" horizontalAlignment="center" tap="{{ appendToTextView3 }}"/>
+                </StackLayout>
+            </ScrollView>
+        </kt:Toolbar>
+
+    </GridLayout>
+</Page>

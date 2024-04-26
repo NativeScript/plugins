@@ -43,6 +43,7 @@ export const disableMarkerTapHandlerProperty = new Property<MapViewBase, boolean
 export class MapViewBase extends ContentView {
 	static readyEvent = 'ready';
 	static mapTapEvent = 'mapTap';
+	static mapLoadedEvent = 'mapLoaded';
 	static mapLongPressEvent = 'mapLongPress';
 	static markerTapEvent = 'markerTap';
 	static myLocationTapEvent = 'myLocationTap';

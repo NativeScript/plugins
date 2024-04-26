@@ -27,21 +27,19 @@
         <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="haptics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        
         <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        
+        <Button text="keyboard-toolbar" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="localize" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="pdf" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="picker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
+        <Button text="secure-storage" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        
         <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
         <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-<Button text="secure-storage" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
       </StackLayout>
     </ScrollView>
   </StackLayout>

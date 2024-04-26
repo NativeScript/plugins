@@ -115,7 +115,7 @@ function _getDataForAttachmentPath(path) {
 
 function _dataFromBase64(base64String) {
 	base64String = base64String.substring(base64String.indexOf('://') + 3);
-	return NSData.alloc().initWithBase64EncodedStringOptions(base64String, 0);
+	return NSData.alloc().initWithBase64EncodedStringOptions(base64String, NSDataBase64DecodingOptions.IgnoreUnknownCharacters);
 }
 
 function _dataForAsset(path) {

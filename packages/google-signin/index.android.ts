@@ -1,4 +1,4 @@
-import { AndroidApplication, Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
+import { Application, AndroidActivityResultEventData, Utils } from '@nativescript/core';
 import { colorSchemeProperty, ColorSchemeType, colorStyleProperty, ColorStyleType, Configuration, GoogleSignInButtonBase, IUser } from './common';
 import lazy from '@nativescript/core/utils/lazy';
 
@@ -101,17 +101,17 @@ export class User implements IUser {
 						new org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser>({
 							onSuccess(param0) {
 								resolve(User.fromNative(param0.getUser(), param0.getAccessToken()));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 							onError(param0) {
 								reject(GoogleError.fromNative(param0));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 						})
 					);
 				}
 			};
-			Application.android.on(AndroidApplication.activityResultEvent, callback);
+			Application.android.on(Application.AndroidApplication.activityResultEvent, callback);
 
 			org.nativescript.plugins.googlesignin.GoogleSignIn.User.requestScopes(JSON.stringify(scopes), this.native, Application.android.foregroundActivity || Application.android.startActivity);
 		});
@@ -130,7 +130,7 @@ export class GoogleSignin {
 		return new Promise((resolve, reject) => {
 			org.nativescript.plugins.googlesignin.GoogleSignIn.configure(
 				JSON.stringify({ ...(configuration || {}), retrieveAccessToken: true }),
-				Application.android.foregroundActivity || Application.android.startActivity,
+				Application.android.foregroundActivity || Application.android.startActivity || Utils.android.getApplicationContext(),
 				new org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<java.lang.Void>({
 					onSuccess(param0) {
 						resolve();
@@ -179,17 +179,17 @@ export class GoogleSignin {
 						new org.nativescript.plugins.googlesignin.GoogleSignIn.Callback<org.nativescript.plugins.googlesignin.GoogleSignIn.GoogleUser>({
 							onSuccess(param0) {
 								resolve(User.fromNative(param0.getUser(), param0.getAccessToken()));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 							onError(param0) {
 								reject(GoogleError.fromNative(param0));
-								Application.android.off(AndroidApplication.activityResultEvent, callback);
+								Application.android.off(Application.AndroidApplication.activityResultEvent, callback);
 							},
 						})
 					);
 				}
 			};
-			Application.android.on(AndroidApplication.activityResultEvent, callback);
+			Application.android.on(Application.AndroidApplication.activityResultEvent, callback);
 			org.nativescript.plugins.googlesignin.GoogleSignIn.signIn(Application.android.foregroundActivity || Application.android.startActivity);
 		});
 	}

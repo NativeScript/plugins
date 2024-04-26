@@ -109,7 +109,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 				}
 				break;
 			case CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse:
-				if (this._resolve && !this.authorizeAlways) {
+				if (this._resolve) {
 					LocationMonitor.stopLocationMonitoring(this.id);
 					this._resolve();
 				}

@@ -54,7 +54,7 @@ export class PDFView extends PDFViewCommon {
 		// detect base64 stream
 		const base64prefix = 'data:application/pdf;base64,';
 		if (src.indexOf(base64prefix) === 0) {
-			const base64data = NSData.alloc().initWithBase64EncodedStringOptions(src.substr(base64prefix.length), 0);
+			const base64data = NSData.alloc().initWithBase64EncodedStringOptions(src.substring(base64prefix.length), NSDataBase64DecodingOptions.IgnoreUnknownCharacters);
 			this.createTempFile(base64data);
 			return;
 		}

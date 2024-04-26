@@ -22,6 +22,7 @@
 - [@nativescript/imagepicker](packages/imagepicker/README.md)
 - [@nativescript/ios-security](packages/ios-security/README.md)
 - [@nativescript/iqkeyboardmanager](packages/iqkeyboardmanager/README.md)
+- [@nativescript/keyboard-toolbar](packages/keyboard-toolbar/README.md)
 - [@nativescript/local-notifications](packages/local-notifications/README.md)
 - [@nativescript/localize](packages/localize/README.md)
 - [@nativescript/pdf](packages/pdf/README.md)

@@ -2,6 +2,7 @@
 	"main": "./src/main.ts",
 	"dependencies": {
 		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/camera": "file:../../dist/packages/camera",
 		"@nativescript/animated-circle": "file:../../dist/packages/animated-circle",
 		"@nativescript/appavailability": "file:../../dist/packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../dist/packages/apple-sign-in",
@@ -9,7 +10,6 @@
 		"@nativescript/background-http": "file:../../dist/packages/background-http",
 		"@nativescript/biometrics": "file:../../dist/packages/biometrics",
 		"@nativescript/brightness": "file:../../dist/packages/brightness",
-		"@nativescript/camera": "file:../../dist/packages/camera",
 		"@nativescript/contacts": "file:../../dist/packages/contacts",
 		"@nativescript/datetimepicker": "file:../../dist/packages/datetimepicker",
 		"@nativescript/debug-android": "file:../../dist/packages/debug-android",
@@ -26,19 +26,20 @@
 		"@nativescript/imagepicker": "file:../../dist/packages/imagepicker",
 		"@nativescript/ios-security": "file:../../dist/packages/ios-security",
 		"@nativescript/iqkeyboardmanager": "file:../../dist/packages/iqkeyboardmanager",
+		"@nativescript/keyboard-toolbar": "file:../../dist/packages/keyboard-toolbar",
 		"@nativescript/local-notifications": "file:../../dist/packages/local-notifications",
 		"@nativescript/localize": "file:../../dist/packages/localize",
 		"@nativescript/pdf": "file:../../dist/packages/pdf",
 		"@nativescript/picker": "file:../../dist/packages/picker",
+		"@nativescript/secure-storage": "file:../../dist/packages/secure-storage",
 		"@nativescript/shared-notification-delegate": "file:../../dist/packages/shared-notification-delegate",
 		"@nativescript/social-share": "file:../../dist/packages/social-share",
 		"@nativescript/theme-switcher": "file:../../dist/packages/theme-switcher",
 		"@nativescript/twitter": "file:../../dist/packages/twitter",
-		"@nativescript/zip": "file:../../dist/packages/zip",
-		"@nativescript/secure-storage": "file:../../dist/packages/secure-storage"
+		"@nativescript/zip": "file:../../dist/packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.5.0",
-		"@nativescript/ios": "~8.5.0"
+		"@nativescript/android": "~8.6.0",
+		"@nativescript/ios": "~8.6.0"
 	}
 }

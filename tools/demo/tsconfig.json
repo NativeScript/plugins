@@ -5,5 +5,5 @@
 		"paths": {
 			"@nativescript/*": ["../../packages/*"]
 		}
-  }
+	}
 }

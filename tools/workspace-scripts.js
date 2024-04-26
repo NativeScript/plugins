@@ -299,6 +299,13 @@ module.exports = {
 					description: '@nativescript/secure-storage: Build',
 				},
 			},
+			// @nativescript/keyboard-toolbar
+			'keyboard-toolbar': {
+				build: {
+					script: 'nx run keyboard-toolbar:build.all',
+					description: '@nativescript/keyboard-toolbar: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -444,6 +451,10 @@ module.exports = {
 			'secure-storage': {
 				script: 'nx run secure-storage:focus',
 				description: 'Focus on @nativescript/secure-storage',
+			},
+			'keyboard-toolbar': {
+				script: 'nx run keyboard-toolbar:focus',
+				description: 'Focus on @nativescript/keyboard-toolbar',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

@@ -1,4 +1,4 @@
 dependencies {
-    def uploadServiceVersion = { -> project.hasProperty("uploadServiceVersion") ? uploadServiceVersion : "4.7.0" }
+    def uploadServiceVersion = { -> project.hasProperty("uploadServiceVersion") ? uploadServiceVersion : "4.9.2" }
     implementation "net.gotev:uploadservice:$uploadServiceVersion"
 }
