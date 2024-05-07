@@ -10,6 +10,7 @@ const defaultAssetCollectionSubtypes: NSArray<any> = NSArray.arrayWithArray(<any
 let copyToAppFolder;
 let renameFileTo;
 let augmentedAssetsInfo;
+let resolveWhenDismissed;
 let fileMap: FileMap = {};
 export class ImagePicker extends ImagePickerBase {
 	_imagePickerController: QBImagePickerController;
@@ -47,6 +48,7 @@ export class ImagePicker extends ImagePickerBase {
 		copyToAppFolder = options.copyToAppFolder || false;
 		renameFileTo = options.renameFileTo || false;
 		augmentedAssetsInfo = options.augmentedAssetsInfo ?? true;
+		resolveWhenDismissed = options.resolveWhenDismissed ?? false;
 		this._imagePickerController = imagePickerController;
 	}
 
@@ -125,10 +127,28 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 				});
 			}
 		}
-
-		if (this._resolve) {
+		let wasDismissed = false;
+		const closePromise = new Promise(resolve => {
+			imagePickerController.dismissViewControllerAnimatedCompletion(true, () => {
+				wasDismissed = true;
+				resolve();
+				if (imagePicker) {
+					imagePicker._cleanup();
+				}
+				imagePicker = null;
+				// FIX: possible memory issue when picking images many times.
+				// Not the best solution, but the only one working for now
+				// https://github.com/NativeScript/nativescript-imagepicker/issues/222
+				setTimeout(Utils.GC, 200);
+			});
+		});
+		const resolvedFunction = this._resolve;
+		if (resolvedFunction) {
 			if (!copyToAppFolder && augmentedAssetsInfo === false) {
-				return this._resolve(Object.values(fileMap));
+				if (resolveWhenDismissed && !wasDismissed) {
+					await closePromise;
+				}
+				return resolvedFunction?.(Object.values(fileMap));
 			}
 			const promises = [];
 			let count = 0;
@@ -175,20 +195,12 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 				for (const key in fileMap) {
 					results.push(fileMap[key]);
 				}
-				this._resolve(results);
+				if (resolveWhenDismissed && !wasDismissed) {
+					await closePromise;
+				}
+				resolvedFunction?.(results);
 			});
 		}
-
-		imagePickerController.dismissViewControllerAnimatedCompletion(true, () => {
-			if (imagePicker) {
-				imagePicker._cleanup();
-			}
-			imagePicker = null;
-			// FIX: possible memory issue when picking images many times.
-			// Not the best solution, but the only one working for now
-			// https://github.com/NativeScript/nativescript-imagepicker/issues/222
-			setTimeout(Utils.GC, 200);
-		});
 	}
 
 	static ObjCProtocols = [QBImagePickerControllerDelegate];
