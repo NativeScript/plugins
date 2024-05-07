@@ -104,6 +104,11 @@ interface Options {
 	numberOfColumnsInLandscape?: number;
 
 	/**
+	 * Set to false on iOS to disable querying thumbnail/filesize for selected assets
+	 */
+	augmentedAssetsInfo: boolean
+
+	/**
 	 * Set the media type (image/video/any) to pick
 	 */
 	mediaType?: ImagePickerMediaType;
