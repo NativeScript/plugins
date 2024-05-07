@@ -9,6 +9,7 @@ type FileMap = {
 const defaultAssetCollectionSubtypes: NSArray<any> = NSArray.arrayWithArray(<any>[PHAssetCollectionSubtype.SmartAlbumRecentlyAdded, PHAssetCollectionSubtype.SmartAlbumUserLibrary, PHAssetCollectionSubtype.AlbumMyPhotoStream, PHAssetCollectionSubtype.SmartAlbumFavorites, PHAssetCollectionSubtype.SmartAlbumPanoramas, PHAssetCollectionSubtype.SmartAlbumBursts, PHAssetCollectionSubtype.AlbumCloudShared, PHAssetCollectionSubtype.SmartAlbumSelfPortraits, PHAssetCollectionSubtype.SmartAlbumScreenshots, PHAssetCollectionSubtype.SmartAlbumLivePhotos]);
 let copyToAppFolder;
 let renameFileTo;
+let augmentedAssetsInfo;
 let fileMap: FileMap = {};
 export class ImagePicker extends ImagePickerBase {
 	_imagePickerController: QBImagePickerController;
@@ -45,6 +46,7 @@ export class ImagePicker extends ImagePickerBase {
 		imagePickerController.prompt = options.prompt || imagePickerController.prompt;
 		copyToAppFolder = options.copyToAppFolder || false;
 		renameFileTo = options.renameFileTo || false;
+		augmentedAssetsInfo = options.augmentedAssetsInfo ?? true;
 		this._imagePickerController = imagePickerController;
 	}
 
@@ -88,7 +90,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 		});
 	}
 
-	qb_imagePickerControllerDidFinishPickingAssets?(imagePickerController: QBImagePickerController, iosAssets: NSArray<any>): void {
+	async qb_imagePickerControllerDidFinishPickingAssets?(imagePickerController: QBImagePickerController, iosAssets: NSArray<any>): void {
 		for (let i = 0; i < iosAssets.count; i++) {
 			const asset = new ImageAsset(iosAssets.objectAtIndex(i));
 			const phAssetImage: PHAsset = (<any>asset)._ios;
@@ -115,62 +117,66 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 			} else {
 				const imageOptions = new PHContentEditingInputRequestOptions();
 				imageOptions.networkAccessAllowed = true;
-				phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(imageOptions, (thing) => {
-					fileMap[existingFileName].path = thing.fullSizeImageURL.toString().replace('file://', '');
+				await new Promise(resolve => {
+					phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(imageOptions, (thing) => {
+						fileMap[existingFileName].path = thing.fullSizeImageURL.toString().replace('file://', '');
+						resolve();
+					});
 				});
 			}
 		}
 
 		if (this._resolve) {
-			setTimeout(() => {
-				const promises = [];
-				let count = 0;
-				for (const key in fileMap) {
-					const item = fileMap[key];
-					const folder = knownFolders.documents();
-					const extension = item.filename.split('.').pop();
-					let filename = renameFileTo ? renameFileTo + '.' + extension : item.filename;
-					if (iosAssets.count > 1) filename = renameFileTo ? renameFileTo + '-' + count + '.' + extension : item.filename;
-					fileMap[item.filename].filename = filename;
-					const fileManager = new NSFileManager();
-					if (copyToAppFolder) {
-						const filePath = path.join(folder.path + '/' + copyToAppFolder, filename);
+			if (!copyToAppFolder && augmentedAssetsInfo === false) {
+				return this._resolve(Object.values(fileMap));
+			}
+			const promises = [];
+			let count = 0;
+			for (const key in fileMap) {
+				const item = fileMap[key];
+				const folder = knownFolders.documents();
+				const extension = item.filename.split('.').pop();
+				let filename = renameFileTo ? renameFileTo + '.' + extension : item.filename;
+				if (iosAssets.count > 1) filename = renameFileTo ? renameFileTo + '-' + count + '.' + extension : item.filename;
+				fileMap[item.filename].filename = filename;
+				const fileManager = new NSFileManager();
+				if (copyToAppFolder) {
+					const filePath = path.join(folder.path + '/' + copyToAppFolder, filename);
+					promises.push(
+						getFile('file://' + item.path, filePath)
+							.then((result) => {
+								fileMap[item.originalFilename].path = filePath;
+								fileMap[item.originalFilename].filesize = fileManager.attributesOfItemAtPathError(filePath).fileSize();
+								if (item.type == 'video') {
+									return ImageSource.fromAsset(item.asset).then((source) => {
+										fileMap[item.originalFilename].thumbnail = source;
+									});
+								}
+							})
+							.catch((error) => {
+								console.log('Error copying file: ', error);
+							})
+					);
+				} else {
+					fileMap[item.originalFilename].filesize = fileManager.attributesOfItemAtPathError(fileMap[item.filename].path).fileSize();
+					if (item.type == 'video') {
 						promises.push(
-							getFile('file://' + item.path, filePath)
-								.then((result) => {
-									fileMap[item.originalFilename].path = filePath;
-									fileMap[item.originalFilename].filesize = fileManager.attributesOfItemAtPathError(filePath).fileSize();
-									if (item.type == 'video') {
-										return ImageSource.fromAsset(item.asset).then((source) => {
-											fileMap[item.originalFilename].thumbnail = source;
-										});
-									}
-								})
-								.catch((error) => {
-									console.log('Error copying file: ', error);
-								})
+							ImageSource.fromAsset(item.asset).then((source) => {
+								fileMap[item.originalFilename].thumbnail = source;
+							})
 						);
-					} else {
-						fileMap[item.originalFilename].filesize = fileManager.attributesOfItemAtPathError(fileMap[item.filename].path).fileSize();
-						if (item.type == 'video') {
-							promises.push(
-								ImageSource.fromAsset(item.asset).then((source) => {
-									fileMap[item.originalFilename].thumbnail = source;
-								})
-							);
-						}
 					}
-					count++;
 				}
+				count++;
+			}
 
-				Promise.all(promises).then(() => {
-					const results: ImagePickerSelection[] = [];
-					for (const key in fileMap) {
-						results.push(fileMap[key]);
-					}
-					this._resolve(results);
-				});
-			}, 300);
+			Promise.all(promises).then(() => {
+				const results: ImagePickerSelection[] = [];
+				for (const key in fileMap) {
+					results.push(fileMap[key]);
+				}
+				this._resolve(results);
+			});
 		}
 
 		imagePickerController.dismissViewControllerAnimatedCompletion(true, () => {
