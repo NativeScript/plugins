@@ -35,7 +35,7 @@
 		"build.all": {
 			"outputs": ["{workspaceRoot}/dist/packages/localize"],
 			"options": {
-				"commands": ["./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
+				"commands": ["npx tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
 				"parallel": false
 			},
 			"executor": "nx:run-commands",
