@@ -82,7 +82,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set progress(value: number) {
-		this._progress = value;
+		this._progress = this.getNumber(value);
 		if (this.animated) {
 			this.android?.setValueAnimated(this._progress);
 		} else {
@@ -227,8 +227,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android?.setTextColor(this._textColor.argb);
 	}
 
-	set textSize(value: number | string) {
-        this._textSize = Utils.layout.toDevicePixels(typeof value === 'string' ? parseInt(value) : value);
+	set textSize(value: number) {
+        this._textSize = Utils.layout.toDevicePixels(this.getNumber(value));
         this.android?.setTextSize(this._textSize);
 	}
 
@@ -325,6 +325,10 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		}
+	}
+
+	private getNumber(value: number | string){
+		return typeof value === 'string' ? parseInt(value) : value
 	}
 }
 
