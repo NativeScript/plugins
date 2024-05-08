@@ -48,7 +48,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android.setInnerContourSize(0);
 		this.android.setText(this.text);
 		this.android.setTextSize(this._textSize);
-        this.android.setTextColor(this._textColor.argb);
+		this.android.setTextColor(this._textColor.argb);
 		if (this.animated) {
 			this.android.setValueAnimated(this.progress);
 		} else {
@@ -228,8 +228,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set textSize(value: number) {
-        this._textSize = Utils.layout.toDevicePixels(this.getNumber(value));
-        this.android?.setTextSize(this._textSize);
+		this._textSize = Utils.layout.toDevicePixels(this.getNumber(value));
+		this.android?.setTextSize(this._textSize);
 	}
 
 	get textSize() {
