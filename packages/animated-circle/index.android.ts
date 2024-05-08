@@ -26,7 +26,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	private _startAngle = 0;
 	private _text = '';
 	private _textColor = new Color('orange');
-	private _textSize = Utils.layout.toDevicePixels(8);
+	private _textSize = 0;
 	private _fillColor = new Color('transparent');
 	private _clockwise = true;
 
@@ -47,8 +47,10 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android.setOuterContourSize(0);
 		this.android.setInnerContourSize(0);
 		this.android.setText(this.text);
-		this.android.setTextSize(this._textSize);
 		this.android.setTextColor(this._textColor.argb);
+		if(this._textSize !== 0){
+			this.android.setTextSize(this._textSize);
+		}
 		if (this.animated) {
 			this.android.setValueAnimated(this.progress);
 		} else {
