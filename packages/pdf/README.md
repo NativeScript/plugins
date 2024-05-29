@@ -25,6 +25,16 @@ A simple PDF viewer. It conveniently uses the iOS `WKWebView`, and for Android i
 npm install @nativescript/pdf
 ```
 
+### Android
+
+If there is an error building `':app:mergeDebugNativeLibs'`, message `2 files found with path 'lib/arm64-v8a/libc++_shared.so'`, add this in your `app.gradle` file in the android {} section.
+
+```
+  packagingOptions {
+    pickFirst 'lib/*/libc++_shared.so'
+  }
+```
+
 ## Usage
 
 ### Core
