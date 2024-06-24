@@ -2,6 +2,8 @@ import { Color } from '@nativescript/core';
 
 export type ScheduleInterval = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | number;
 
+export type ScheduleIntervalObject = Partial<Record<Extract<ScheduleInterval, string>, number>>;
+
 export interface NotificationAction {
 	id: string;
 	type: 'button' | 'input';
@@ -92,7 +94,12 @@ export interface ScheduleOptions {
 	/**
 	 * If the interval is a number, it will be calculated as DAYS.
 	 */
-	interval?: ScheduleInterval;
+	interval?: ScheduleInterval | ScheduleIntervalObject;
+
+	/**
+	 * Should the notification should be triggered immediately
+	 */
+	displayImmediately?: boolean;
 
 	/**
 	 * On Android you can set a custom icon in the system tray.
@@ -225,14 +232,14 @@ export interface LocalNotificationsApi {
 	/**
 	 * Use when you want to know the id's of all notifications which have been scheduled.
 	 */
-	getScheduledIds(): Promise<number[]>;
+	getScheduledIds(): Promise<Array<number>>;
 
 	/**
 	 * Cancels the 'id' passed in.
 	 * On iOS returns whether or not it was found (and cancelled).
 	 * On Android we always return true currently.
 	 */
-	cancel(id: number): Promise<boolean>;
+	cancel(id: number | string): Promise<boolean>;
 
 	/**
 	 * Use when you just want to cancel all previously scheduled notifications.
@@ -274,24 +281,19 @@ export abstract class LocalNotificationsCommon {
 		bigTextStyle: false,
 		channel: 'Channel',
 		forceShowWhenInForeground: false,
+		displayImmediately: false,
 	};
 
-	protected static merge(obj1: {}, obj2: {}): any {
-		let result = {};
-		for (let i in obj1) {
-			if (i in obj2 && typeof obj1[i] === 'object' && i !== null) {
-				result[i] = this.merge(obj1[i], obj2[i]);
-			} else {
-				result[i] = obj1[i];
-			}
-		}
-		for (let i in obj2) {
-			if (i in result) {
-				continue;
-			}
-			result[i] = obj2[i];
-		}
-		return result;
+	protected static merge = (target: any, source: any) => {
+		return void Object.keys(target).forEach(key => {
+			source[key] instanceof Object && target[key] instanceof Object
+				? source[key] instanceof Array && target[key] instanceof Array
+					? (source[key] = Array.from(new Set(source[key].concat(target[key]))))
+					: !(source[key] instanceof Array) && !(target[key] instanceof Array)
+						? LocalNotificationsCommon.merge(source[key], target[key])
+						: (source[key] = target[key])
+				: (source[key] = target[key]);
+		}) || source;
 	}
 
 	protected static generateUUID(): string {

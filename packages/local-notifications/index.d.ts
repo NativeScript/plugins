@@ -10,7 +10,7 @@ export declare class LocalNotificationsImpl extends LocalNotificationsCommon imp
 	addOnMessageClearedCallback(onReceived: (data: ReceivedNotification) => void): Promise<any>;
 	cancel(id: number): Promise<boolean>;
 	cancelAll(): Promise<void>;
-	getScheduledIds(): Promise<number[]>;
+	getScheduledIds(): Promise<Array<number>>;
 	schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>>;
 }
 export declare const LocalNotifications: LocalNotificationsImpl;
