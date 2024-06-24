@@ -97,7 +97,7 @@ export interface ScheduleOptions {
 	interval?: ScheduleInterval | ScheduleIntervalObject;
 
 	/**
-	 * Should the notification should be triggered immediately
+	 * Should the notification be triggered immediately
 	 */
 	displayImmediately?: boolean;
 
