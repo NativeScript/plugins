@@ -136,9 +136,9 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			// Notification trigger and repeat
 			const triggers: Array<[number, UNNotificationTrigger]> = [];
-			const [ interval, ticks ] = options.interval instanceof Object
+			const [ interval, ticks ] = (!!options.interval) && (options.interval.constructor === Object)
 				? Object.entries(options.interval || {}).shift() as [ScheduleInterval, number] || []
-				: [ options.interval ]
+				: [ options.interval ] as [ ScheduleInterval ]
 
 			if (options.at) {
 				const cal = LocalNotificationsImpl.calendarWithMondayAsFirstDay();
