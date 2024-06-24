@@ -54,7 +54,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		return (iconLocation && iconLocation.indexOf(Utils.RESOURCE_PREFIX) === 0 && resources.getIdentifier(iconLocation.substr(Utils.RESOURCE_PREFIX.length), 'drawable', packageName)) || (LocalNotificationsImpl.IS_GTE_LOLLIPOP && resources.getIdentifier('ic_stat_notify_silhouette', 'drawable', packageName)) || resources.getIdentifier('ic_stat_notify', 'drawable', packageName) || context.getApplicationInfo().icon;
 	}
 
-	private static cancelById(id: number | string): void {
+	private static cancelById(id: number): void {
 		const context = Utils.android.getApplicationContext();
 		const notificationIntent = new android.content.Intent(context, com.telerik.localnotifications.NotificationAlarmReceiver.class).setAction('' + id);
 		let flags = 0;
@@ -127,7 +127,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	cancel(id: number | string): Promise<boolean> {
+	cancel(id: number): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			try {
 				LocalNotificationsImpl.cancelById(id);

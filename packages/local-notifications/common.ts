@@ -239,7 +239,7 @@ export interface LocalNotificationsApi {
 	 * On iOS returns whether or not it was found (and cancelled).
 	 * On Android we always return true currently.
 	 */
-	cancel(id: number | string): Promise<boolean>;
+	cancel(id: number): Promise<boolean>;
 
 	/**
 	 * Use when you just want to cancel all previously scheduled notifications.
