@@ -21,6 +21,7 @@
 		],
 		"paths": {
 			"@demo/shared": ["tools/demo/index.ts"],
+			"@nativescript/*": ["packages/*"],
 			"@nativescript/animated-circle": ["packages/animated-circle/index.d.ts"],
 			"@nativescript/animated-circle/angular": ["packages/animated-circle/angular/index.ts"],
 			"@nativescript/appavailability": ["packages/appavailability/index.d.ts"],
@@ -61,8 +62,7 @@
 			"@nativescript/social-share": ["packages/social-share/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"],
-			"@nativescript/*": ["packages/*"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

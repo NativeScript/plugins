@@ -58,3 +58,4 @@ packages/**/native-src/ios/**/xcuserdata/
 packages/**/native-src/ios/**/project.xcworkspace/
 packages/**/native-src/ios/**/build
 .nx/cache
+.nx/workspace-data
