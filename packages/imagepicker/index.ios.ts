@@ -92,7 +92,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 		});
 	}
 
-	async qb_imagePickerControllerDidFinishPickingAssets?(imagePickerController: QBImagePickerController, iosAssets: NSArray<any>): void {
+	async qb_imagePickerControllerDidFinishPickingAssets?(imagePickerController: QBImagePickerController, iosAssets: NSArray<any>) {
 		for (let i = 0; i < iosAssets.count; i++) {
 			const asset = new ImageAsset(iosAssets.objectAtIndex(i));
 			const phAssetImage: PHAsset = (<any>asset)._ios;
@@ -119,7 +119,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 			} else {
 				const imageOptions = new PHContentEditingInputRequestOptions();
 				imageOptions.networkAccessAllowed = true;
-				await new Promise(resolve => {
+				await new Promise<void>((resolve) => {
 					phAssetImage.requestContentEditingInputWithOptionsCompletionHandler(imageOptions, (thing) => {
 						fileMap[existingFileName].path = thing.fullSizeImageURL.toString().replace('file://', '');
 						resolve();
@@ -128,7 +128,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 			}
 		}
 		let wasDismissed = false;
-		const closePromise = new Promise(resolve => {
+		const closePromise = new Promise<void>((resolve) => {
 			imagePickerController.dismissViewControllerAnimatedCompletion(true, () => {
 				wasDismissed = true;
 				resolve();
@@ -190,7 +190,7 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 				count++;
 			}
 
-			Promise.all(promises).then(() => {
+			Promise.all(promises).then(async () => {
 				const results: ImagePickerSelection[] = [];
 				for (const key in fileMap) {
 					results.push(fileMap[key]);

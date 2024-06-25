@@ -106,12 +106,12 @@ interface Options {
 	/**
 	 * Set to false on iOS to disable querying thumbnail/filesize for selected assets
 	 */
-	augmentedAssetsInfo: boolean;
+	augmentedAssetsInfo?: boolean;
 
 	/**
 	 * Set to true on iOS to wait for controller to be dismissed before resolving
 	 */
-	resolveWhenDismissed: boolean;
+	resolveWhenDismissed?: boolean;
 
 	/**
 	 * Set the media type (image/video/any) to pick
