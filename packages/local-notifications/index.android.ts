@@ -26,26 +26,27 @@ function useAndroidX() {
 export class LocalNotificationsImpl extends LocalNotificationsCommon implements LocalNotificationsApi {
 	private static IS_GTE_LOLLIPOP: boolean = android.os.Build.VERSION.SDK_INT >= 21;
 
-	private static getInterval(interval: ScheduleInterval | number): number {
-		if (interval === 'second') {
-			return 1000; // it's in ms
-		} else if (interval === 'minute') {
-			return android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15;
-		} else if (interval === 'hour') {
-			return android.app.AlarmManager.INTERVAL_HOUR;
-		} else if (interval === 'day') {
-			return android.app.AlarmManager.INTERVAL_DAY;
-		} else if (interval === 'week') {
-			return android.app.AlarmManager.INTERVAL_DAY * 7;
-		} else if (interval === 'month') {
-			return android.app.AlarmManager.INTERVAL_DAY * 31; // well that's almost accurate
-		} else if (interval === 'year') {
-			return android.app.AlarmManager.INTERVAL_DAY * 365; // same here
-		} else if (typeof interval === 'number') {
-			return android.app.AlarmManager.INTERVAL_DAY * interval;
-		} else {
-			return undefined;
+	private static getIntervalMilliseconds(interval: ScheduleInterval, ticks: number = 1): number {
+		if (!interval) {
+			return 0;
 		}
+
+		let multiplier: number = 1000;
+
+		switch (interval) {
+			default:
+			case 'second': multiplier = 1000; break;
+			case 'minute': multiplier = android.app.AlarmManager.INTERVAL_HOUR / 60; break;
+			case 'hour': multiplier = android.app.AlarmManager.INTERVAL_HOUR; break;
+			case 'day': multiplier = android.app.AlarmManager.INTERVAL_DAY; break;
+			case 'week': multiplier = android.app.AlarmManager.INTERVAL_DAY * 7; break;
+			// close enough
+			case 'month': multiplier = android.app.AlarmManager.INTERVAL_DAY * 31; break;
+			case 'quarter': multiplier = android.app.AlarmManager.INTERVAL_DAY * 31 * 3; break;
+			case 'year': multiplier = android.app.AlarmManager.INTERVAL_DAY * 365; break;
+		}
+
+		return Math.abs(ticks) * multiplier;
 	}
 
 	private static getIcon(context: any /* android.content.Context */, resources: any, iconLocation?: string): string {
@@ -165,12 +166,12 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	getScheduledIds(): Promise<number[]> {
+	getScheduledIds(): Promise<Array<number>> {
 		return new Promise((resolve, reject) => {
 			try {
 				const keys: Array<string> = com.telerik.localnotifications.Store.getKeys(Utils.android.getApplicationContext());
 
-				const ids: number[] = [];
+				const ids: Array<number> = [];
 				for (let i = 0; i < keys.length; i++) {
 					ids.push(parseInt(keys[i]));
 				}
@@ -195,14 +196,21 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			// the persisted options are exactly like the original ones.
 
 			for (let n in scheduleOptions) {
+				const triggers: Array<Record<string, any>> = [];
 				const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
+				const [ interval, ticks ] = (!!options.interval) && (options.interval.constructor === Object)
+				? Object.entries(options.interval || {}).shift() as [ScheduleInterval, number] || []
+				: [ options.interval ] as [ ScheduleInterval ]
+				
+				LocalNotificationsImpl.ensureID(options);
+
+				options.atTime = options.at ? options.at.getTime() : -1;
+				if (interval) {
+					options.atTime = Date.now() + options.repeatInterval;
+				}
 
 				options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
-
-				options.atTime = options.at ? options.at.getTime() : 0;
-
-				// Used when restoring the notification after a reboot:
-				options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
+				options.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
 
 				if (options.color) {
 					options.color = options.color.android;
@@ -212,17 +220,29 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 					options.notificationLed = options.notificationLed.android;
 				}
 
-				LocalNotificationsImpl.ensureID(options);
+				triggers.push(options);
 
-				com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
+				if (interval && options.displayImmediately) {
+					const optionsClone = JSON.parse(JSON.stringify(options));
+					delete optionsClone.id;
+					optionsClone.atTime = 0;
+					LocalNotificationsImpl.ensureID(options);
+					triggers.push(optionsClone);
+				}
 
-				scheduledIds.push(options.id);
+				triggers.forEach(trigger => registerNotification(trigger, context, scheduledIds));
 			}
 
 			return scheduledIds;
 		} catch (ex) {
 			console.log('Error in LocalNotifications.schedule: ' + ex);
 			throw ex;
+		}
+		
+		function registerNotification(options: Record<string, any>, context: globalAndroid.content.Context, register: Array<number>) {
+			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
+			register.push(options.id);
+			console.log(`Notification (id ${options.id}) scheduled successfully`);
 		}
 	}
 
