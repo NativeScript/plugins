@@ -204,10 +204,15 @@ export let requestPermissions = function () {
 
 export let requestPhotosPermissions = function () {
 	return new Promise<void>(function (resolve, reject) {
-		let authStatus = PHPhotoLibrary.authorizationStatus();
+		let authStatus: PHAuthorizationStatus;
+		if (Utils.SDK_VERSION >= 14) {
+			authStatus = PHPhotoLibrary.authorizationStatusForAccessLevel(PHAccessLevel.ReadWrite);
+		} else {
+			authStatus = PHPhotoLibrary.authorizationStatus();
+		}
 		switch (authStatus) {
 			case PHAuthorizationStatus.NotDetermined: {
-				PHPhotoLibrary.requestAuthorization((auth) => {
+				const handler = (auth) => {
 					if (auth === PHAuthorizationStatus.Authorized) {
 						if (Trace.isEnabled()) {
 							Trace.write('Application can access photo library assets.', Trace.categories.Debug);
@@ -216,7 +221,12 @@ export let requestPhotosPermissions = function () {
 					} else {
 						reject();
 					}
-				});
+				};
+				if (Utils.SDK_VERSION >= 14) {
+					PHPhotoLibrary.requestAuthorizationForAccessLevelHandler(PHAccessLevel.ReadWrite, handler);
+				} else {
+					PHPhotoLibrary.requestAuthorization(handler);
+				}
 				break;
 			}
 			case PHAuthorizationStatus.Authorized: {
