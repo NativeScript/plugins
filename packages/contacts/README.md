@@ -3,37 +3,37 @@
 A plugin that allows you to access Contacts directory on iOS and Android. You can pick a contact, update it, delete it, or add a new one.
 
 ## Contents
-* [Installation](#installation)
-* [Permissions requirements](#permissions-requirements)
-	* [iOS Permission Requirements](#ios-permission-requirements)
-	* [Android Permission Requirements](#android-permission-requirements)
-* [Use @nativescript/contacts](#use-nativescriptcontacts)
-	* [Get a contact](#get-a-contact)
-	* [Create a new contact](#create-a-new-contact)
-	* [Update a contact](#update-a-contact)
-	* [Delete a contact](#delete-a-contact)
-	* [Check if a contact is unified/linked](#check-if-a-contact-is-unifiedlinked-ios-specific)
-	* [Get contacts by name](#get-contacts-by-name)
-	* [Get all the contacts](#get-all-the-contacts)
-	* [Get a contact by id](#get-a-contact-by-id)
-	* [Get a group or groups of contacts](#get-a-group-or-groups-of-contacts)
-	* [Create a new contacts group](#create-a-new-contacts-group)
-	* [Delete a group of contacts](#delete-a-group-of-contacts)
-	* [Add a contact to a group](#add-a-contact-to-a-group)
-	* [Remove a contact from a group](#remove-a-contact-from-a-group)
-	* [Get all the contacts of a group](#get-all-the-contacts-of-a-group)
-
-* [API](#api)
-	* [Group object structure](#group-object-structure)
-	* [Contact class](#contact-class)
-	* [PhoneNumber/EmailAddress structure](#phonenumberemailaddress-structure)
-	* [Url structure](#url-structure)
-	* [PostalAddress structure](#postaladdress-structure)
-	* [Known Labels (for Urls, Addresses and Phones)](#known-labels-for-urls-addresses-and-phones)
-	* [GetFetchResult object structure](#getfetchresult-object-structure)
-	* [iOS contact object](#ios-contact-object)
-* [Credits](#credits)
-* [License](#license)
+- [@nativescript/contacts](#nativescriptcontacts)
+	- [Contents](#contents)
+	- [Installation](#installation)
+		- [Permissions requirements](#permissions-requirements)
+			- [iOS Permission Requirements](#ios-permission-requirements)
+			- [Android Permission Requirements](#android-permission-requirements)
+	- [Use @nativescript/contacts](#use-nativescriptcontacts)
+		- [Get a contact](#get-a-contact)
+		- [Create a new contact](#create-a-new-contact)
+		- [Update a contact](#update-a-contact)
+		- [Delete a contact](#delete-a-contact)
+		- [Check if a contact is unified/linked (iOS Specific)](#check-if-a-contact-is-unifiedlinked-ios-specific)
+		- [Get contacts by name](#get-contacts-by-name)
+		- [Get all the contacts](#get-all-the-contacts)
+		- [Get a contact by id](#get-a-contact-by-id)
+		- [Get a group or groups of contacts](#get-a-group-or-groups-of-contacts)
+		- [Create a new contacts group](#create-a-new-contacts-group)
+		- [Delete a group of contacts](#delete-a-group-of-contacts)
+		- [Add a contact to a group](#add-a-contact-to-a-group)
+		- [Remove a contact from a group](#remove-a-contact-from-a-group)
+		- [Get all the contacts of a group](#get-all-the-contacts-of-a-group)
+		- [Contact class](#contact-class)
+		- [PhoneNumber/EmailAddress structure](#phonenumberemailaddress-structure)
+		- [Url structure](#url-structure)
+		- [PostalAddress structure](#postaladdress-structure)
+		- [Known Labels (for Urls, Addresses and Phones)](#known-labels-for-urls-addresses-and-phones)
+		- [Group object structure](#group-object-structure)
+		- [GetFetchResult object structure](#getfetchresult-object-structure)
+		- [iOS contact object](#ios-contact-object)
+	- [Credits](#credits)
+	- [License](#license)
 
 ## Installation
 
@@ -81,18 +81,24 @@ For API level `23+`, inform Android about which permissions your app needs from 
 
 ## Use @nativescript/contacts
 
-Once you've indicated the permissions your app needs from a user, you can request the permissions from the user by calling the `requestPermissions()` method from the `nativescript-permissions` plugin. 
+Once you've indicated the permissions your app needs from a user, you can request the permissions from the user by calling the `request()` method from the `@nativescript-community/perms` plugin. 
 
 ```ts
 import { Contact } from '@nativescript/contacts';
-import { requestPermissions } from 'nativescript-permissions';
+import { request } from '@nativescript-community/perms';
 
 const contact = new Contact();
 // build a new contact...
 
-requestPermissions([android.Manifest.permission.GET_ACCOUNTS, android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.WRITE_CONTACTS, android.Manifest.permission.GLOBAL_SEARCH], "I need these permissions because I'm cool").then(() => {
-    contact.save();
-});
+requestPermissions({
+	"contacts": {},
+	"android.permission.GET_ACCOUNTS": {},
+	"android.permission.READ_CONTACTS": {},
+	"android.permission.WRITE_CONTACTS": {},
+	"android.permission.GLOBAL_SEARCH": {},
+}).then(() => {
+	contact.save();
+})
 ```
 
 ### Get a contact
