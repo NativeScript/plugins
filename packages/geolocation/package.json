@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/geolocation",
-	"version": "8.3.1",
+	"version": "9.0.0-rc.0",
 	"description": "Provides API for getting and monitoring location for NativeScript app.",
 	"main": "index",
 	"typings": "index.d.ts",
