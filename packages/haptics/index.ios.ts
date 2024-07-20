@@ -9,12 +9,12 @@ let generatorSelection: UISelectionFeedbackGenerator;
 
 export class Haptics {
 	static isSupported() {
-		return Utils.ios.MajorVersion >= 10.0 && deviceInfo().version > 8;
+		return Utils.SDK_VERSION >= 10.0 && deviceInfo().version > 8;
 	}
 
 	static is6SAnd6SPlusSupported() {
 		const details = deviceInfo();
-		return Utils.ios.MajorVersion >= 10.0 && (details.name?.indexOf('iPhone8,1') > -1 || details.name?.indexOf('iPhone8,2') > -1);
+		return Utils.SDK_VERSION >= 10.0 && (details.name?.indexOf('iPhone8,1') > -1 || details.name?.indexOf('iPhone8,2') > -1);
 	}
 
 	static notification(type?: HapticNotificationType) {
@@ -99,6 +99,7 @@ function deviceInfo() {
 	const _SYS_NAMELEN: number = 256;
 
 	const buffer: any = interop.alloc(5 * _SYS_NAMELEN);
+	// @ts-expect-error
 	uname(buffer);
 	let name: string = NSString.stringWithUTF8String(buffer.add(_SYS_NAMELEN * 4)).toString();
 
