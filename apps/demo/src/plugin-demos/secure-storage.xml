@@ -3,7 +3,7 @@
     <ActionBar title="secure-storage" icon="" class="action-bar">
     </ActionBar>
   </Page.actionBar>
-  <StackLayout class="p-20">
+  <StackLayout class="p-4">
     <ScrollView class="h-full">
       <StackLayout>
         <Image margin="0" src="~/res/securestorage.png" width="100%" />

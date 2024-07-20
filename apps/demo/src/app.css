@@ -1,44 +1,70 @@
-@import 'nativescript-theme-core/scss/light';
-@import 'nativescript-theme-core/scss/index';
-
-Button {
-	text-transform: none;
-	height: 54;
-	android-elevation: 0;
-	android-dynamic-elevation-offset: 0;
-	padding: 0;
-	margin: 0;
-
-	&.btn {
-		padding: 0;
-		margin: 2 0 2 0;
-
-		&.btn-primary {
-			background-color: rgb(95, 185, 249);
-		}
-	}
-}
-TextField {
-	border-bottom-width: 1;
-	border-bottom-color: transparent;
-	font-size: 17;
-	placeholder-color: rgb(201, 201, 201);
-	padding-top: 0;
-	padding-bottom: 0;
+/* Resets */
+* {
+	/* @apply font-normal; */
+	font-weight: normal;
+	/* horizontal-alignment: 'left'; */
+	margin-left: 0;
+	margin-right: 0;
 	margin-top: 0;
 	margin-bottom: 0;
-	height: 29;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
+Label {
+	/* @apply align-top; */
+	vertical-align: middle;
+}
+
+/**
+  *   1. set a default size for the ActivityIndicator to be similar on ios/android
+  */
+ActivityIndicator {
+	/* @apply h-6 w-6; /* 1 */
+	height: 24;
+	width: 24;
+}
+
+Button {
+	/* @apply rounded-none border-0 bg-transparent normal-case; */
+	border-radius: 0;
+	border-width: 0;
+	background: transparent;
+	text-transform: capitalize;
+	min-width: 0;
+	min-height: 0;
+	android-elevation: 0;
+	android-dynamic-elevation-offset: 0;
+}
+
+TextField,
 TextView {
-	font-size: 13;
-	padding: 6 0;
+	/* @apply bg-transparent text-base; */
+	background-color: transparent;
+	font-size: 16;
+	placeholder-color: rgb(142, 142, 142); /*theme('colors.gray.400');*/
+}
+/* END Resets */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.v-top {
+	vertical-align: top;
 }
 
-// TextField {
-//   font-size: 13;
-//   padding: 6;
-// }
+.h-center {
+	horizontal-align: center;
+}
+.h-right {
+	horizontal-align: right;
+}
+.h-left {
+	horizontal-align: left;
+}
 
 Label.scroll-text {
 	font-size: 13;

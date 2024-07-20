@@ -3,7 +3,7 @@
         <ActionBar title="@nativescript/contacts" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <GridLayout class="p-20" rows="*,*">
+    <GridLayout class="p-4" rows="*,*">
         <ScrollView row="0" class="h-full">
           <StackLayout>
             <Button text="Contacts.getContact" tap="{{ getContact }}" class="btn btn-primary"/>

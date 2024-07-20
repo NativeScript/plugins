@@ -2,45 +2,43 @@
   <Page.actionBar>
     <ActionBar title="Plugin Demos" icon="" class="action-bar"/>
   </Page.actionBar>
-  <StackLayout class="p-t-20 p-x-20">
-    <ScrollView class="h-full">
-      <StackLayout>
-        <Button text="animated-circle" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="appavailability" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="apple-sign-in" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="auto-fit-text" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="background-http" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="biometrics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="brightness" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="camera" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="contacts" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="datetimepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="debug-android" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="debug-ios" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="detox" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="directions" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="email" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="facebook" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="geolocation" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="google-maps" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="google-signin" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="haptics" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="imagepicker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="ios-security" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="keyboard-toolbar" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="local-notifications" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="localize" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="pdf" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="picker" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="secure-storage" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="social-share" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="theme-switcher" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="twitter" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-        <Button text="zip" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/>
-      </StackLayout>
-    </ScrollView>
-  </StackLayout>
+  <ScrollView class="h-full">
+    <StackLayout class="p-4">
+      <Button text="animated-circle" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="appavailability" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="apple-sign-in" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="auto-fit-text" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="background-http" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="biometrics" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="brightness" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="camera" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="contacts" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="datetimepicker" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="debug-android" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="debug-ios" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="detox" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="directions" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="email" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="facebook" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="geolocation" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="google-maps" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="google-signin" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="haptics" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="imagepicker" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="ios-security" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="iqkeyboardmanager" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="keyboard-toolbar" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="local-notifications" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="localize" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="pdf" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="picker" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="secure-storage" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="shared-notification-delegate" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="social-share" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="theme-switcher" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="twitter" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="zip" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+    </StackLayout>
+  </ScrollView>
 </Page>
