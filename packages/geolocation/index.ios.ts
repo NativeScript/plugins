@@ -234,7 +234,7 @@ export function getCurrentLocation(options?: Options): Promise<Location> {
 	});
 }
 
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number {
+export async function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): Promise<number> {
 	if (!attachedForErrorHandling) {
 		attachedForErrorHandling = true;
 		Application.on(Application.uncaughtErrorEvent, errorHandler.bind(this));

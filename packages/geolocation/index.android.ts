@@ -1,7 +1,7 @@
 import { Application, CoreTypes, UnhandledErrorEventData, AndroidApplication, Device, ApplicationSettings, Utils } from '@nativescript/core';
 import { LocationBase, defaultGetLocationTimeout, fastestTimeUpdate, minTimeUpdate } from './common';
 import { Options, successCallbackType, errorCallbackType, permissionCallbackType } from '.';
-import * as permissions from 'nativescript-permissions';
+import * as permissions from '@nativescript-community/perms';
 export * from './common';
 
 declare const com: any;
@@ -126,8 +126,12 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 				permissionFlagName = 'askedForAlwaysPermission';
 				successCallback = (value) => {
 					permissions
-						.requestPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-						.then(resolve)
+						.request('location', {
+							type: 'always',
+						})
+						.then(() => {
+							resolve();
+						})
 						.catch(reject);
 				};
 			} else {
@@ -139,7 +143,11 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 
 			// App has to request for foreground location permissions first, and request for background permissions afterwards if needed
 			permissions
-				.requestPermissions([(<any>android).Manifest.permission.ACCESS_FINE_LOCATION, (<any>android).Manifest.permission.ACCESS_COARSE_LOCATION])
+				.request('location', {
+					type: '',
+					coarse: true,
+					precise: true,
+				})
 				.then(successCallback)
 				.catch((err) => {
 					if (!err['android.permission.ACCESS_COARSE_LOCATION'] && !err['android.permission.ACCESS_FINE_LOCATION']) {
@@ -183,13 +191,16 @@ function _getTaskFailListener(done: (exception) => void) {
 	});
 }
 
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number {
+export async function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): Promise<number> {
 	// wrap in zoned callback in order to avoid UI glitches in Angular applications
 	// check https://github.com/NativeScript/NativeScript/issues/2229
 	const zonedSuccessCallback = zonedCallback(successCallback);
 	const zonedErrorCallback = zonedCallback(errorCallback);
 
-	if (((!permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION) && !permissions.hasPermission((<any>android).Manifest.permission.ACCESS_COARSE_LOCATION)) || !_isGooglePlayServicesAvailable()) && !LocationManager.shouldSkipChecks()) {
+	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
+	const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
+
+	if (((!accessFine[1] && !accessCourse[1]) || !_isGooglePlayServicesAvailable()) && !LocationManager.shouldSkipChecks()) {
 		throw new Error('Cannot watch location. Call "enableLocationRequest" first');
 	}
 
@@ -224,10 +235,11 @@ export function clearWatch(watchId: number): void {
 }
 
 export function enableLocationRequest(always?: boolean, openSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
-	return new Promise<void>(function (resolve, reject) {
+	return new Promise<void>(async function (resolve, reject) {
 		// on API level <29 there is no ACCESS_BACKGROUND_LOCATION permission
 		const _always = Device.sdkVersion >= '29' ? always : false;
-		if (!_systemDialogWillShow(_always) && !_permissionIsGiven(_always)) {
+		const given = await _permissionIsGiven(_always);
+		if (!_systemDialogWillShow(_always) && !given) {
 			if (openSettingsIfLocationHasBeenDenied) {
 				reject(new Error('User needs to enable permission from settings'));
 				_goToPhoneSettings();
@@ -341,13 +353,17 @@ function _systemDialogWillShow(always: boolean): boolean {
 	return !(askedForPermission && doNotAskAgain);
 }
 
-function _permissionIsGiven(always: boolean): boolean {
-	return always ? permissions.hasPermission((<any>android).Manifest.permission.ACCESS_BACKGROUND_LOCATION) : permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION);
+async function _permissionIsGiven(always: boolean): Promise<boolean> {
+	const accessBackground = await permissions.check('android.permission.ACCESS_BACKGROUND_LOCATION');
+	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
+	return always ? accessBackground[1] : accessFine[1];
 }
 
 export function isEnabled(options?: Options): Promise<boolean> {
-	return new Promise(function (resolve, reject) {
-		if (!_isGooglePlayServicesAvailable() || (!permissions.hasPermission((<any>android).Manifest.permission.ACCESS_FINE_LOCATION) && !permissions.hasPermission((<any>android).Manifest.permission.ACCESS_COARSE_LOCATION))) {
+	return new Promise(async function (resolve, reject) {
+		const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
+		const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
+		if (!_isGooglePlayServicesAvailable() || (!accessFine[1] && !accessCourse[1])) {
 			resolve(false);
 		} else {
 			_isLocationServiceEnabled(options).then(
