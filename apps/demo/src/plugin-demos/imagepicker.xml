@@ -14,19 +14,21 @@
                         <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Path: ' + $value.path }}" textWrap="true" />
                         <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + $value.duration }}" hidden="{{ !$value.duration }}" />
                     </StackLayout>
-                    
+
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
-        <StackLayout visibility="{{ isSingleMode && selection ? 'visible' : 'collapsed' }}">
-            <Image src="{{ selection.thumbnail || selection.asset }}" width="{{ previewSize }}" height="{{ previewSize }}" stretch="aspectFit" />
-            <Label class="m-x-10 m-b-10" style="font-weight: bold; font-size: 18;" text="{{ 'Media Type: ' + selection.type }}" />
-            <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Filename: ' + selection.filename }}" />
-            <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'File Size: ' + selection.filesize }}" />
-            <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Path: ' + selection.path }}" textWrap="true" />
-            <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + selection.duration }}" hidden="{{ !selection.duration }}" />
-        </StackLayout>
-        <Button row="1" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" />
-        <Button row="2" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" />
+        <GridLayout visibility="{{ isSingleMode ? 'visible' : 'collapsed' }}">
+            <StackLayout visibility="{{ selection ? 'visible' : 'collapsed' }}">
+                <Image src="{{ selection.thumbnail || selection.asset }}" width="{{ previewSize }}" height="{{ previewSize }}" stretch="aspectFit" />
+                <Label class="m-x-10 m-b-10" style="font-weight: bold; font-size: 18;" text="{{ 'Media Type: ' + selection.type }}" />
+                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Filename: ' + selection.filename }}" />
+                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'File Size: ' + selection.filesize }}" />
+                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Path: ' + selection.path }}" textWrap="true" />
+                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + selection.duration }}" hidden="{{ !selection.duration }}" />
+            </StackLayout>
+        </GridLayout>
+        <Button row="1" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" marginBottom="10" />
+        <Button row="2" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" marginBottom="10" />
     </GridLayout>
 </Page>

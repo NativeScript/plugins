@@ -1,20 +1,22 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="@nativescript/contacts" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <GridLayout class="p-20" rows="*,*">
-        <ScrollView row="0" class="h-full">
-          <StackLayout>
-            <Button text="Contacts.getContact" tap="{{ getContact }}" class="btn btn-primary"/>
-            <TextField hint="Paste contact id here to fetch below..." textChange="{{ contactIdChange }}" padding="5" />
-            <Button text="Contacts.getContactById" tap="{{ getContactById }}" class="btn btn-primary"/>
-            <TextField hint="Type contact name to find..." textChange="{{ contactNameChange }}" ios:padding="5" />
-            <Button text="Contacts.getContactsByName" tap="{{ getContactsByName }}" class="btn btn-primary"/>
-            <Button text="Contacts.getAllContacts" tap="{{ getAllContacts }}" class="btn btn-primary"/>
-          </StackLayout>
-        </ScrollView>
-        <TextView row="1" text="{{ result }}" editable="true" padding="10" borderWidth="1" borderRadius="4" borderColor="#ccc" fontSize="12" />
-        
-    </GridLayout>
+  <Page.actionBar>
+    <ActionBar title="@nativescript/contacts" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <GridLayout class="p-4" rows="*,*">
+    <ScrollView row="0" class="h-full">
+      <StackLayout>
+        <Button text="Contacts.getContact" tap="{{ getContact }}" class="btn btn-primary"/>
+        <ios>
+          <TextField hint="Paste contact id here to fetch below..." textChange="{{ contactIdChange }}" padding="5" />
+          <Button text="Contacts.getContactById" tap="{{ getContactById }}" class="btn btn-primary"/>
+          <TextField hint="Type contact name to find..." textChange="{{ contactNameChange }}" ios:padding="5" />
+          <Button text="Contacts.getContactsByName" tap="{{ getContactsByName }}" class="btn btn-primary"/>
+          <Button text="Contacts.getAllContacts" tap="{{ getAllContacts }}" class="btn btn-primary"/>
+        </ios>
+      </StackLayout>
+    </ScrollView>
+    <TextView row="1" text="{{ result }}" editable="true" padding="10" borderWidth="1" borderRadius="4" borderColor="#ccc" fontSize="12" />
+
+  </GridLayout>
 </Page>

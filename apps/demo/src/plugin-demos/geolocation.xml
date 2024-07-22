@@ -5,12 +5,12 @@
     </Page.actionBar>
     <GridLayout rows="auto, auto, *, auto">
         <GridLayout row="0" columns="*, *, *, *" >
-            <Button text="Enable Location" col="0" textWrap="true" tap="{{ enableLocationTap }}"/>
-            <Button text="Get Current Location" col="1" textWrap="true" tap="{{ buttonGetLocationTap }}"/>
-            <Button text="Start Monitoring" col="2" textWrap="true" tap="{{ buttonStartTap }}"/>
-            <Button text="Stop Monitoring" col="3" textWrap="true" tap="{{ buttonStopTap }}"/>
+            <Button text="Enable Location" col="0" textWrap="true" tap="{{ enableLocationTap }}" class="mb-2" />
+            <Button text="Get Current Location" col="1" textWrap="true" tap="{{ buttonGetLocationTap }}" class="mb-2" />
+            <Button text="Start Monitoring" col="2" textWrap="true" tap="{{ buttonStartTap }}" class="mb-2" />
+            <Button text="Stop Monitoring" col="3" textWrap="true" tap="{{ buttonStopTap }}" class="mb-2" />
         </GridLayout>
-        <GridLayout row="1" columns="*, *" >
+        <GridLayout row="1" columns="*, *" class="mt-2">
             <Button text="Start Background thread monitoring" col="0" ios:visibility="collapsed" textWrap="true" tap="{{ startBackgroundTap }}"/>
             <Button text="Stop Background thread monitoring" col="1" ios:visibility="collapsed" textWrap="true" tap="{{ stopBackgroundTap }}"/>
         </GridLayout>

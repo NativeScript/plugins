@@ -4,7 +4,7 @@
     <ActionBar title="auto-fit-text" icon="" class="action-bar">
     </ActionBar>
   </Page.actionBar>
-  <GridLayout rows="*, *, *, *" columns="*" class="p-20">
+  <GridLayout rows="*, *, *, *" columns="*" class="p-2">
     <Label row="0" fontSize="36" text="This is a standard NS Label with textWrap enabled." textWrap="true"></Label>
     <AFT:AutoFitText row="1" text="Lorem Ipsum this is a long string of text that will shrink to fit this line." textWrap="false"></AFT:AutoFitText>
     <AFT:AutoFitText row="2" fontSize="48" text="Lorem Ipsum this line of text with fontSize ignored because the text is so long." textWrap="false"></AFT:AutoFitText>

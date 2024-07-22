@@ -191,7 +191,7 @@ export class ImagePicker extends ImagePickerBase {
 
 	authorize(): Promise<AuthorizationResult> {
 		let requested: { [key: string]: permissions.PermissionOptions } = {};
-		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
+		if (Utils.SDK_VERSION >= 33 && Utils.android.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
 			const mediaPerms = {
 				photo: { reason: 'To pick images from your gallery' },
 				video: { reason: 'To pick videos from your gallery' },
@@ -218,7 +218,7 @@ export class ImagePicker extends ImagePickerBase {
 			// WARNING: If we want to support multiple pickers we will need to have a range of IDs here:
 			let RESULT_CODE_PICKER_IMAGES = 9192;
 
-			Application.android.on(AndroidApplication.activityResultEvent, onResult);
+			Application.android.on(Application.android.activityResultEvent, onResult);
 
 			function onResult(args) {
 				let requestCode = args.requestCode;
@@ -299,12 +299,12 @@ export class ImagePicker extends ImagePickerBase {
 							resolve(results);
 							return;
 						} catch (e) {
-							Application.android.off(AndroidApplication.activityResultEvent, onResult);
+							Application.android.off(Application.android.activityResultEvent, onResult);
 							reject(e);
 							return;
 						}
 					} else {
-						Application.android.off(AndroidApplication.activityResultEvent, onResult);
+						Application.android.off(Application.android.activityResultEvent, onResult);
 						reject(new Error('Image picker activity result code ' + resultCode));
 						return;
 					}
@@ -316,7 +316,7 @@ export class ImagePicker extends ImagePickerBase {
 			intent.setType(this.mediaType);
 
 			// not in platform-declaration typings
-			intent.putExtra((android.content.Intent as any).EXTRA_MIME_TYPES, this.mimeTypes);
+			intent.putExtra(android.content.Intent.EXTRA_MIME_TYPES, this.mimeTypes);
 
 			// TODO: Use (<any>android).content.Intent.EXTRA_ALLOW_MULTIPLE
 			if (this.mode === 'multiple') {
@@ -331,7 +331,7 @@ export class ImagePicker extends ImagePickerBase {
 			intent.setAction('android.intent.action.OPEN_DOCUMENT');
 			intent.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 			let chooser = Intent.createChooser(intent, 'Select Picture');
-			(Application.android.foregroundActivity || Application.android.startActivity).startActivityForResult(intent, RESULT_CODE_PICKER_IMAGES);
+			Utils.android.getCurrentActivity().startActivityForResult(intent, RESULT_CODE_PICKER_IMAGES);
 		});
 	}
 }

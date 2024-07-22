@@ -14,9 +14,9 @@ function _clearWatch() {
 
 function _startWatch() {
 	geolocation.enableLocationRequest().then(
-		function () {
+		async () => {
 			_clearWatch();
-			watchId = geolocation.watchLocation(
+			watchId = await geolocation.watchLocation(
 				function (loc) {
 					if (loc) {
 						// let toast = Toast.makeText('Background Location: \n' + loc.latitude + ', ' + loc.longitude);
@@ -138,7 +138,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 	startBackgroundTap() {
 		if (global.isAndroid) {
 			let context = Utils.android.getApplicationContext();
-			if (Device.sdkVersion >= '26') {
+			if (Utils.SDK_VERSION >= 26) {
 				const jobScheduler = context.getSystemService((<any>android.content.Context).JOB_SCHEDULER_SERVICE);
 				const component = new android.content.ComponentName(context, BackgroundServiceClass.class);
 				const builder = new (<any>android.app).job.JobInfo.Builder(jobId, component);
@@ -153,7 +153,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 
 	stopBackgroundTap() {
 		if (global.isAndroid) {
-			if (Device.sdkVersion >= '26') {
+			if (Utils.SDK_VERSION >= 26) {
 				_stopBackgroundJob();
 			} else {
 				let context = Utils.android.getApplicationContext();
@@ -165,7 +165,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 
 	enableLocationTap() {
 		geolocation.isEnabled().then(
-			function (isEnabled) {
+			(isEnabled) => {
 				if (!isEnabled) {
 					geolocation
 						.enableLocationRequest(true, true)
@@ -182,7 +182,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 						});
 				}
 			},
-			function (e) {
+			(e) => {
 				console.log('Error: ' + (e.message || e));
 			}
 		);
@@ -196,27 +196,27 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 				timeout: 10000,
 			})
 			.then(
-				function (loc) {
+				(loc) => {
 					if (loc) {
 						this.locations.push(loc);
 					}
 				},
-				function (e) {
+				(e) => {
 					console.log('Error: ' + (e.message || e));
 				}
 			);
 	}
 
-	buttonStartTap() {
+	async buttonStartTap() {
 		try {
 			this.watchIds.push(
-				geolocation.watchLocation(
-					function (loc) {
+				await geolocation.watchLocation(
+					(loc) => {
 						if (loc) {
 							this.locations.push(loc);
 						}
 					},
-					function (e) {
+					(e) => {
 						console.log('Error: ' + e.message);
 					},
 					{
@@ -233,14 +233,18 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 	}
 
 	buttonStopTap() {
-		const id = this.watchIds.pop();
-		while (id != null) {
-			geolocation.clearWatch(id);
-			watchId = this.watchIds.pop();
+		for (const id of this.watchIds) {
+			if (typeof id === 'number') {
+				geolocation.clearWatch(id);
+			}
 		}
+		this.watchIds = [];
 	}
 
 	buttonClearTap() {
-		this.locations.splice(0, this.locations.length);
+		if (this.locations) {
+			this.locations.splice(0, this.locations.length);
+			this.notifyPropertyChange('locations', this.locations);
+		}
 	}
 }

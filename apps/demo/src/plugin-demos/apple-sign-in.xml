@@ -3,7 +3,7 @@
         <ActionBar title="apple-sign-in" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <ui:SignInButton tap="{{ login }}" height="56"/>
     </StackLayout>
 </Page>

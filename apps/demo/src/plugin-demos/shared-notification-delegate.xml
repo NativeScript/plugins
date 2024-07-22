@@ -3,7 +3,7 @@
         <ActionBar title="shared-notification-delegate" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <ScrollView class="h-full">
           <StackLayout>
             <Label text="{{ message }}" class="t-20 text-center c-black" textWrap="true"/>
