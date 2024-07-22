@@ -14,9 +14,9 @@ function _clearWatch() {
 
 function _startWatch() {
 	geolocation.enableLocationRequest().then(
-		function () {
+		async () => {
 			_clearWatch();
-			watchId = geolocation.watchLocation(
+			watchId = await geolocation.watchLocation(
 				function (loc) {
 					if (loc) {
 						// let toast = Toast.makeText('Background Location: \n' + loc.latitude + ', ' + loc.longitude);
@@ -207,10 +207,10 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 			);
 	}
 
-	buttonStartTap() {
+	async buttonStartTap() {
 		try {
 			this.watchIds.push(
-				geolocation.watchLocation(
+				await geolocation.watchLocation(
 					(loc) => {
 						if (loc) {
 							this.locations.push(loc);
@@ -233,14 +233,18 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 	}
 
 	buttonStopTap() {
-		const id = this.watchIds.pop();
-		while (id != null) {
-			geolocation.clearWatch(id);
-			watchId = this.watchIds.pop();
+		for (const id of this.watchIds) {
+			if (typeof id === 'number') {
+				geolocation.clearWatch(id);
+			}
 		}
+		this.watchIds = [];
 	}
 
 	buttonClearTap() {
-		this.locations.splice(0, this.locations.length);
+		if (this.locations) {
+			this.locations.splice(0, this.locations.length);
+			this.notifyPropertyChange('locations', this.locations);
+		}
 	}
 }

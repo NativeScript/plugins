@@ -13,13 +13,14 @@ const locationListeners = {};
 let watchIdCounter = 0;
 let fusedLocationClient;
 let attachedForErrorHandling = false;
+const authorizedStatus = ['authorized', 'limited'];
 
 function _ensureLocationClient() {
 	// Wrapped in a function as we should not access java object there because of the snapshots.
 	fusedLocationClient = fusedLocationClient || com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(Utils.android.getApplicationContext());
 }
 
-Application.android.on(AndroidApplication.activityResultEvent, function (args: any) {
+Application.android.on(Application.android.activityResultEvent, function (args: any) {
 	if (args.requestCode === REQUEST_ENABLE_LOCATION) {
 		if (args.resultCode === 0) {
 			if (_onEnableLocationFail) {
@@ -37,7 +38,7 @@ function isAirplaneModeOn(): boolean {
 
 function isProviderEnabled(provider: string): boolean {
 	try {
-		const locationManager: android.location.LocationManager = (<android.content.Context>Utils.android.getApplicationContext()).getSystemService(android.content.Context.LOCATION_SERVICE);
+		const locationManager: android.location.LocationManager = Utils.android.getApplicationContext().getSystemService(android.content.Context.LOCATION_SERVICE);
 		return locationManager.isProviderEnabled(provider);
 	} catch (ex) {
 		return false;
@@ -197,10 +198,9 @@ export async function watchLocation(successCallback: successCallbackType, errorC
 	const zonedSuccessCallback = zonedCallback(successCallback);
 	const zonedErrorCallback = zonedCallback(errorCallback);
 
-	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
-	const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
+	const hasPerm = await hasFineAndCoursePermission();
 
-	if (((!accessFine[1] && !accessCourse[1]) || !_isGooglePlayServicesAvailable()) && !LocationManager.shouldSkipChecks()) {
+	if ((!hasPerm || !_isGooglePlayServicesAvailable()) && !LocationManager.shouldSkipChecks()) {
 		throw new Error('Cannot watch location. Call "enableLocationRequest" first');
 	}
 
@@ -356,16 +356,21 @@ function _systemDialogWillShow(always: boolean): boolean {
 async function _permissionIsGiven(always: boolean): Promise<boolean> {
 	const accessBackground = await permissions.check('android.permission.ACCESS_BACKGROUND_LOCATION');
 	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
-	return always ? accessBackground[1] : accessFine[1];
+	return always ? authorizedStatus.includes(accessBackground[0]) && accessBackground[1] : authorizedStatus.includes(accessFine[0]) && accessFine[1];
+}
+
+async function hasFineAndCoursePermission(): Promise<boolean> {
+	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
+	const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
+	const hasAccessFine = authorizedStatus.includes(accessFine[0]) && accessFine[1] === true;
+	const hasAccessCourse = authorizedStatus.includes(accessCourse[0]) && accessCourse[1] === true;
+	return hasAccessFine && hasAccessCourse;
 }
 
 export function isEnabled(options?: Options): Promise<boolean> {
 	return new Promise(async function (resolve, reject) {
-		const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
-		const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
-		const hasAccessFine = ['authorized', 'limited'].includes(accessFine[0]) && accessFine[1] === true;
-		const hasAccessCourse = ['authorized', 'limited'].includes(accessCourse[0]) && accessCourse[1] === true;
-		if (!_isGooglePlayServicesAvailable() || (!hasAccessFine && !hasAccessCourse)) {
+		const hasPerm = await hasFineAndCoursePermission();
+		if (!_isGooglePlayServicesAvailable() || !hasPerm) {
 			resolve(false);
 		} else {
 			_isLocationServiceEnabled(options).then(
