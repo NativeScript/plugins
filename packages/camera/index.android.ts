@@ -176,22 +176,22 @@ function api30(): boolean {
 
 export async function requestPermissions() {
 	if (api30()) {
-		const hasPerm = await permissions.check('android.permission.CAMERA');
+		const hasPerm = await permissions.request('android.permission.CAMERA');
 		return hasPerm[1];
 	} else {
-		const hasPerm1 = await permissions.check('android.permission.WRITE_EXTERNAL_STORAGE');
-		const hasPerm2 = await permissions.check('android.permission.CAMERA');
+		const hasPerm1 = await permissions.request('android.permission.WRITE_EXTERNAL_STORAGE');
+		const hasPerm2 = await permissions.request('android.permission.CAMERA');
 		return hasPerm1[1] && hasPerm2[1];
 	}
 }
 
 export async function requestPhotosPermissions() {
-	const hasPerm = await permissions.check('android.permission.WRITE_EXTERNAL_STORAGE');
+	const hasPerm = await permissions.request('android.permission.WRITE_EXTERNAL_STORAGE');
 	return hasPerm[1];
 }
 
 export async function requestCameraPermissions() {
-	const hasPerm = await permissions.check('android.permission.CAMERA');
+	const hasPerm = await permissions.request('android.permission.CAMERA');
 	return hasPerm[1];
 }
 

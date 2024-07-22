@@ -138,7 +138,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 	startBackgroundTap() {
 		if (global.isAndroid) {
 			let context = Utils.android.getApplicationContext();
-			if (Device.sdkVersion >= '26') {
+			if (Utils.SDK_VERSION >= 26) {
 				const jobScheduler = context.getSystemService((<any>android.content.Context).JOB_SCHEDULER_SERVICE);
 				const component = new android.content.ComponentName(context, BackgroundServiceClass.class);
 				const builder = new (<any>android.app).job.JobInfo.Builder(jobId, component);
@@ -153,7 +153,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 
 	stopBackgroundTap() {
 		if (global.isAndroid) {
-			if (Device.sdkVersion >= '26') {
+			if (Utils.SDK_VERSION >= 26) {
 				_stopBackgroundJob();
 			} else {
 				let context = Utils.android.getApplicationContext();
@@ -165,7 +165,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 
 	enableLocationTap() {
 		geolocation.isEnabled().then(
-			function (isEnabled) {
+			(isEnabled) => {
 				if (!isEnabled) {
 					geolocation
 						.enableLocationRequest(true, true)
@@ -182,7 +182,7 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 						});
 				}
 			},
-			function (e) {
+			(e) => {
 				console.log('Error: ' + (e.message || e));
 			}
 		);
@@ -196,12 +196,12 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 				timeout: 10000,
 			})
 			.then(
-				function (loc) {
+				(loc) => {
 					if (loc) {
 						this.locations.push(loc);
 					}
 				},
-				function (e) {
+				(e) => {
 					console.log('Error: ' + (e.message || e));
 				}
 			);
@@ -211,12 +211,12 @@ export class DemoSharedGeolocation extends DemoSharedBase {
 		try {
 			this.watchIds.push(
 				geolocation.watchLocation(
-					function (loc) {
+					(loc) => {
 						if (loc) {
 							this.locations.push(loc);
 						}
 					},
-					function (e) {
+					(e) => {
 						console.log('Error: ' + e.message);
 					},
 					{

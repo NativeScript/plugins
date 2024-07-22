@@ -237,7 +237,7 @@ export function clearWatch(watchId: number): void {
 export function enableLocationRequest(always?: boolean, openSettingsIfLocationHasBeenDenied?: boolean): Promise<void> {
 	return new Promise<void>(async function (resolve, reject) {
 		// on API level <29 there is no ACCESS_BACKGROUND_LOCATION permission
-		const _always = Device.sdkVersion >= '29' ? always : false;
+		const _always = Utils.SDK_VERSION >= 29 ? always : false;
 		const given = await _permissionIsGiven(_always);
 		if (!_systemDialogWillShow(_always) && !given) {
 			if (openSettingsIfLocationHasBeenDenied) {
@@ -363,7 +363,9 @@ export function isEnabled(options?: Options): Promise<boolean> {
 	return new Promise(async function (resolve, reject) {
 		const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
 		const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
-		if (!_isGooglePlayServicesAvailable() || (!accessFine[1] && !accessCourse[1])) {
+		const hasAccessFine = ['authorized', 'limited'].includes(accessFine[0]) && accessFine[1] === true;
+		const hasAccessCourse = ['authorized', 'limited'].includes(accessCourse[0]) && accessCourse[1] === true;
+		if (!_isGooglePlayServicesAvailable() || (!hasAccessFine && !hasAccessCourse)) {
 			resolve(false);
 		} else {
 			_isLocationServiceEnabled(options).then(
