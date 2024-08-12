@@ -35,15 +35,31 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 		switch (interval) {
 			default:
-			case 'second': multiplier = 1000; break;
-			case 'minute': multiplier = android.app.AlarmManager.INTERVAL_HOUR / 60; break;
-			case 'hour': multiplier = android.app.AlarmManager.INTERVAL_HOUR; break;
-			case 'day': multiplier = android.app.AlarmManager.INTERVAL_DAY; break;
-			case 'week': multiplier = android.app.AlarmManager.INTERVAL_DAY * 7; break;
+			case 'second':
+				multiplier = 1000;
+				break;
+			case 'minute':
+				multiplier = android.app.AlarmManager.INTERVAL_HOUR / 60;
+				break;
+			case 'hour':
+				multiplier = android.app.AlarmManager.INTERVAL_HOUR;
+				break;
+			case 'day':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY;
+				break;
+			case 'week':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 7;
+				break;
 			// close enough
-			case 'month': multiplier = android.app.AlarmManager.INTERVAL_DAY * 31; break;
-			case 'quarter': multiplier = android.app.AlarmManager.INTERVAL_DAY * 31 * 3; break;
-			case 'year': multiplier = android.app.AlarmManager.INTERVAL_DAY * 365; break;
+			case 'month':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 31;
+				break;
+			case 'quarter':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 31 * 3;
+				break;
+			case 'year':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 365;
+				break;
 		}
 
 		return Math.abs(ticks) * multiplier;
@@ -51,7 +67,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 	private static getIcon(context: any /* android.content.Context */, resources: any, iconLocation?: string): string {
 		const packageName: string = context.getApplicationInfo().packageName;
-		return (iconLocation && iconLocation.indexOf(Utils.RESOURCE_PREFIX) === 0 && resources.getIdentifier(iconLocation.substr(Utils.RESOURCE_PREFIX.length), 'drawable', packageName)) || (LocalNotificationsImpl.IS_GTE_LOLLIPOP && resources.getIdentifier('ic_stat_notify_silhouette', 'drawable', packageName)) || resources.getIdentifier('ic_stat_notify', 'drawable', packageName) || context.getApplicationInfo().icon;
+		return (iconLocation && typeof iconLocation === 'string' && iconLocation.indexOf(Utils.RESOURCE_PREFIX) === 0 && resources.getIdentifier(iconLocation.substr(Utils.RESOURCE_PREFIX.length), 'drawable', packageName)) || (LocalNotificationsImpl.IS_GTE_LOLLIPOP && resources.getIdentifier('ic_stat_notify_silhouette', 'drawable', packageName)) || resources.getIdentifier('ic_stat_notify', 'drawable', packageName) || context.getApplicationInfo().icon;
 	}
 
 	private static cancelById(id: number): void {
@@ -198,10 +214,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			for (let n in scheduleOptions) {
 				const triggers: Array<Record<string, any>> = [];
 				const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
-				const [ interval, ticks ] = (!!options.interval) && (options.interval.constructor === Object)
-				? Object.entries(options.interval || {}).shift() as [ScheduleInterval, number] || []
-				: [ options.interval ] as [ ScheduleInterval ]
-				
+				const [interval, ticks] = !!options.interval && options.interval.constructor === Object ? (Object.entries(options.interval || {}).shift() as [ScheduleInterval, number]) || [] : ([options.interval] as [ScheduleInterval]);
+
 				LocalNotificationsImpl.ensureID(options);
 
 				options.atTime = options.at ? options.at.getTime() : -1;
@@ -230,7 +244,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 					triggers.push(optionsClone);
 				}
 
-				triggers.forEach(trigger => registerNotification(trigger, context, scheduledIds));
+				triggers.forEach((trigger) => registerNotification(trigger, context, scheduledIds));
 			}
 
 			return scheduledIds;
@@ -238,7 +252,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			console.log('Error in LocalNotifications.schedule: ' + ex);
 			throw ex;
 		}
-		
+
 		function registerNotification(options: Record<string, any>, context: globalAndroid.content.Context, register: Array<number>) {
 			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
 			register.push(options.id);
