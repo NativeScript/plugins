@@ -113,8 +113,11 @@ class ImagePickerControllerDelegate extends NSObject implements QBImagePickerCon
 				const manager = new PHImageManager();
 				const options = new PHVideoRequestOptions();
 				options.networkAccessAllowed = true;
-				manager.requestAVAssetForVideoOptionsResultHandler(phAssetImage, options, (urlAsset: AVURLAsset, audioMix, info) => {
-					fileMap[existingFileName].path = urlAsset.URL.toString().replace('file://', '');
+				await new Promise<void>((resolve) => {
+					manager.requestAVAssetForVideoOptionsResultHandler(phAssetImage, options, (urlAsset: AVURLAsset, audioMix, info) => {
+						fileMap[existingFileName].path = urlAsset.URL.toString().replace('file://', '');
+						resolve();
+					});
 				});
 			} else {
 				const imageOptions = new PHContentEditingInputRequestOptions();
