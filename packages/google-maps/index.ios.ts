@@ -273,7 +273,7 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 			eventName: MapView.myLocationButtonTapEvent,
 			object: this._owner?.get?.(),
 		});
-		return true;
+		return false;
 	}
 
 	mapViewDidBeginDraggingMarker(mapView: GMSMapView, marker: GMSMarker): void {
