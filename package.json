@@ -10,7 +10,7 @@
 		"config": "nx g @nativescript/plugin-tools:config",
 		"publish-packages": "nx g @nativescript/plugin-tools:publish",
 		"sync-packages-with-demos": "nx g @nativescript/plugin-tools:sync-packages-with-demos",
-		"postinstall": "husky install && npx ts-patch install",
+		"postinstall": "husky && npx ts-patch install",
 		"remove-package": "nx g @nativescript/plugin-tools:remove-package",
 		"add-demo": "nx g @nativescript/plugin-tools:add-demo"
 	},
@@ -29,7 +29,7 @@
 		"@nativescript-community/perms": "^2.3.1",
 		"@nativescript/angular": "^18.0.0",
 		"@nativescript/core": "~8.8.0",
-		"@nativescript/plugin-tools": "5.3.0",
+		"@nativescript/plugin-tools": "5.4.1",
 		"@nativescript/tailwind": "^2.1.0",
 		"@nativescript/types": "~8.8.0",
 		"@nativescript/webpack": "~5.0.22",
