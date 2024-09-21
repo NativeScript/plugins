@@ -1,4 +1,4 @@
-import { Application, Color, Device, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { Application, Color, Device, EventData, GridLayout, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
@@ -310,21 +310,28 @@ export class MapView extends MapViewBase {
 								if (info) {
 									owner.notify(info);
 									if (info.view instanceof View) {
-										if (!info.view.parent && !info.view?.nativeView) {
-											owner._addView(info.view);
-										}
-										if (info.view.nativeView && !(<any>marker)._view) {
-											(<any>marker)._view = new android.widget.RelativeLayout(owner._context);
-										}
-										const parent = info.view.nativeView?.getParent?.();
-										if (info.view.nativeView && parent !== (<any>marker)._view) {
-											if (parent && parent.removeView) {
-												parent.removeView(info.view.nativeView);
+										let container = (<any>marker)._view as never as GridLayout;
+										if (!container) {
+											container = new GridLayout();
+											(<any>marker)._view = container;
+											const activity = Utils.android.getCurrentActivity();
+											container._setupAsRootView(activity);
+											container._setupUI(activity);
+											container.callLoaded();
+										} else {
+											if (info.view.parent !== container) {
+												container.removeChildren();
 											}
-											const container: android.widget.RelativeLayout = (<any>marker)._view;
-											container.addView(info.view.nativeView);
 										}
-										return (<any>marker)?._view ?? null;
+
+										if (!info.view.parent) {
+											container.addChild(info.view);
+										} else if (info.view.parent !== container) {
+											(<GridLayout>info?.view?.parent)?.removeChild?.(info.view);
+											container.addChild(info.view);
+										}
+
+										return info.view.nativeView;
 									} else if (info.view instanceof android.view.View) {
 										return info.view;
 									}

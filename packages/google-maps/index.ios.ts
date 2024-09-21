@@ -1,4 +1,4 @@
-import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { Color, EventData, GridLayout, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
@@ -478,21 +478,27 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 			owner.notify(event);
 
 			if (event.view instanceof View) {
-				if (!event.view.parent && !event.view?.nativeView) {
-					owner._addView(event.view);
-				}
-				if (event.view.nativeView && !(<any>marker)._view) {
-					(<any>marker)._view = UIView.new();
-				}
-				const parent = event.view.nativeView?.superview;
-				if (event.view.nativeView && parent !== (<any>marker)._view) {
-					if (parent) {
-						event.view.nativeView.removeFromSuperview();
+				let container = (<any>marker)._view as never as GridLayout;
+				if (!container) {
+					container = new GridLayout();
+					(<any>marker)._view = container;
+					container._setupAsRootView({});
+					container._setupUI({});
+					container.callLoaded();
+				} else {
+					if (event.view.parent !== container) {
+						container.removeChildren();
 					}
-					const container: UIView = (<any>marker)._view;
-					container.addSubview(event.view.nativeView);
 				}
-				return (<any>marker)?._view ?? null;
+
+				if (!event.view.parent) {
+					container.addChild(event.view);
+				} else if (event.view.parent !== container) {
+					(<GridLayout>event?.view?.parent)?.removeChild?.(event.view);
+					container.addChild(event.view);
+				}
+
+				return event.view.nativeView;
 			} else if (event.view instanceof UIView) {
 				return event.view;
 			}
