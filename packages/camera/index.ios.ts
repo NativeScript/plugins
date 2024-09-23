@@ -1,4 +1,4 @@
-import { Utils, ImageSource, ImageAsset, Trace, Frame } from '@nativescript/core';
+import { Frame, ImageAsset, ImageSource, Trace, Utils } from '@nativescript/core';
 import { CameraOptions } from '.';
 
 @NativeClass()
@@ -78,7 +78,7 @@ class UIImagePickerControllerDelegateImpl extends NSObject implements UIImagePic
 								} else {
 									Trace.write('An error ocurred while saving image to gallery: ' + err, Trace.categories.Error, Trace.messageType.error);
 								}
-							}
+							},
 						);
 					} else {
 						imageAsset = new ImageAsset(imageSourceResult.ios);
@@ -143,7 +143,7 @@ export let takePicture = function (options: CameraOptions): Promise<any> {
 		}
 
 		let authStatus = PHPhotoLibrary.authorizationStatus();
-		if (authStatus !== PHAuthorizationStatus.Authorized) {
+		if (authStatus !== PHAuthorizationStatus.Authorized && authStatus !== PHAuthorizationStatus.Limited) {
 			saveToGallery = false;
 		}
 
@@ -196,9 +196,9 @@ export let isAvailable = function () {
 
 export let requestPermissions = function () {
 	return new Promise(function (resolve, reject) {
-		requestPhotosPermissions().then(() => {
-			requestCameraPermissions().then(resolve, reject);
-		}, reject);
+		// Even if we don't have photo access we may want to get camera access.
+		const requestCamera = () => requestCameraPermissions().then(resolve, reject);
+		requestPhotosPermissions().then(requestCamera, requestCamera);
 	});
 };
 
@@ -229,6 +229,7 @@ export let requestPhotosPermissions = function () {
 				}
 				break;
 			}
+			case PHAuthorizationStatus.Limited:
 			case PHAuthorizationStatus.Authorized: {
 				if (Trace.isEnabled()) {
 					Trace.write('Application can access photo library assets.', Trace.categories.Debug);
@@ -244,6 +245,9 @@ export let requestPhotosPermissions = function () {
 				reject();
 				break;
 			}
+			default:
+				((_: never) => {})(authStatus);
+				break;
 		}
 	});
 };
@@ -274,6 +278,9 @@ export let requestCameraPermissions = function () {
 				reject();
 				break;
 			}
+			default:
+				((_: never) => {})(cameraStatus);
+				break;
 		}
 	});
 };
