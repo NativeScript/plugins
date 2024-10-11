@@ -1,10 +1,15 @@
-import { Application, Device, Utils } from '@nativescript/core';
+import { Application, Color, Device, Utils } from '@nativescript/core';
 import { check, request, Result } from '@nativescript-community/perms';
 import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
 
 declare const com, global: any;
 
 const NotificationManagerCompatPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
+
+interface AndroidScheduleOptions extends ScheduleOptions {
+	atTime?: number;
+	repeatInterval?: number;
+}
 
 function useAndroidX() {
 	return global.androidx && global.androidx.appcompat;
@@ -114,7 +119,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 						success: (notification) => {
 							onReceived(JSON.parse(notification));
 						},
-					})
+					}),
 				);
 				resolve();
 			} catch (ex) {
@@ -133,7 +138,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 						success: (notification) => {
 							onReceived(JSON.parse(notification));
 						},
-					})
+					}),
 				);
 				resolve();
 			} catch (ex) {
@@ -200,51 +205,43 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	async schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
+	async schedule(scheduleOptions: AndroidScheduleOptions[]): Promise<Array<number>> {
 		try {
 			await LocalNotificationsImpl.ensurePreconditions();
 
 			const context = Utils.android.getApplicationContext();
 			const resources = context.getResources();
-			const scheduledIds: Array<number> = [];
+			const scheduledIds: number[] = [];
 
 			// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
 			// the persisted options are exactly like the original ones.
 
-			for (let n in scheduleOptions) {
-				const triggers: Array<Record<string, any>> = [];
-				const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
-				const [interval, ticks] = !!options.interval && options.interval.constructor === Object ? (Object.entries(options.interval || {}).shift() as [ScheduleInterval, number]) || [] : ([options.interval] as [ScheduleInterval]);
+			for (const s of scheduleOptions) {
+				const entry = LocalNotificationsImpl.createScheduleEntry(s) as AndroidScheduleOptions;
 
-				LocalNotificationsImpl.ensureID(options);
+				const [interval, ticks] = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
 
-				options.atTime = options.at ? options.at.getTime() : -1;
-				if (interval) {
-					options.atTime = Date.now() + options.repeatInterval;
+				entry.atTime = entry.at ? entry.at.getTime() : 0;
+
+				entry.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && entry.silhouetteIcon) || entry.icon);
+				entry.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
+
+				if (entry.color instanceof Color) {
+					entry.color = entry.color.android;
 				}
 
-				options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
-				options.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
-
-				if (options.color) {
-					options.color = options.color.android;
+				if (entry.notificationLed !== true && entry.notificationLed instanceof Color) {
+					entry.notificationLed = entry.notificationLed.android;
 				}
 
-				if (options.notificationLed && options.notificationLed !== true) {
-					options.notificationLed = options.notificationLed.android;
+				registerNotification(entry, context, scheduledIds);
+
+				if (entry.displayImmediately) {
+					entry.id = LocalNotificationsImpl.generateNotificationID();
+					entry.atTime = 0;
+
+					registerNotification(entry, context, scheduledIds);
 				}
-
-				triggers.push(options);
-
-				if (interval && options.displayImmediately) {
-					const optionsClone = JSON.parse(JSON.stringify(options));
-					delete optionsClone.id;
-					optionsClone.atTime = 0;
-					LocalNotificationsImpl.ensureID(options);
-					triggers.push(optionsClone);
-				}
-
-				triggers.forEach((trigger) => registerNotification(trigger, context, scheduledIds));
 			}
 
 			return scheduledIds;
@@ -253,10 +250,11 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			throw ex;
 		}
 
-		function registerNotification(options: Record<string, any>, context: globalAndroid.content.Context, register: Array<number>) {
-			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
-			register.push(options.id);
-			console.log(`Notification (id ${options.id}) scheduled successfully`);
+		function registerNotification(entry: AndroidScheduleOptions, context: globalAndroid.content.Context, register: Array<number>) {
+			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(entry)), context);
+			register.push(entry.id);
+
+			console.log(`Notification (id ${entry.id}) scheduled successfully`);
 		}
 	}
 

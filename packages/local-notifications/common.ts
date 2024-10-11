@@ -1,4 +1,5 @@
 import { Color } from '@nativescript/core';
+import { isObject } from '@nativescript/core/utils';
 
 export type ScheduleInterval = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | number;
 
@@ -89,7 +90,7 @@ export interface ScheduleOptions {
 	 * Custom color for the notification icon and title that will be applied when the notification center is expanded.
 	 * Android >= Lollipop (21) only.
 	 */
-	color?: Color;
+	color?: Color | number | UIColor;
 
 	/**
 	 * If the interval is a number, it will be calculated as DAYS.
@@ -175,7 +176,7 @@ export interface ScheduleOptions {
 	 * Android only.
 	 * Default not set.
 	 */
-	notificationLed?: boolean | Color;
+	notificationLed?: boolean | Color | number | UIColor;
 
 	/**
 	 * When longpressing a notification on Android (API >= 26), this 'channel' name is revealed.
@@ -273,7 +274,7 @@ export interface LocalNotificationsApi {
 // TODO: This could be just an utils file!
 
 export abstract class LocalNotificationsCommon {
-	protected static defaults = {
+	protected static defaults: Readonly<ScheduleOptions> = {
 		badge: 0,
 		interval: undefined,
 		ongoing: false,
@@ -284,16 +285,25 @@ export abstract class LocalNotificationsCommon {
 		displayImmediately: false,
 	};
 
-	protected static merge = (target: any, source: any) => {
-		return void Object.keys(target).forEach(key => {
-			source[key] instanceof Object && target[key] instanceof Object
-				? source[key] instanceof Array && target[key] instanceof Array
-					? (source[key] = Array.from(new Set(source[key].concat(target[key]))))
-					: !(source[key] instanceof Array) && !(target[key] instanceof Array)
-						? LocalNotificationsCommon.merge(source[key], target[key])
-						: (source[key] = target[key])
-				: (source[key] = target[key]);
-		}) || source;
+	protected static createScheduleEntry(options: ScheduleOptions): ScheduleOptions {
+		const entry: ScheduleOptions = {};
+
+		if (!options) {
+			return entry;
+		}
+
+		Object.assign(entry, this.defaults, options);
+
+		if (typeof entry.id !== 'number') {
+			// We need unique IDs in all notifications to be able to persist them without overwriting one another
+			entry.id = this.generateNotificationID();
+		}
+
+		if (typeof entry.interval === 'string') {
+			entry.interval = { [entry.interval]: 1 };
+		}
+
+		return entry;
 	}
 
 	protected static generateUUID(): string {
@@ -307,16 +317,5 @@ export abstract class LocalNotificationsCommon {
 
 	protected static generateNotificationID(): number {
 		return Math.round((Date.now() + Math.round(100000 * Math.random())) / 1000);
-	}
-
-	protected static ensureID(opts: ScheduleOptions): number {
-		const id = opts.id;
-
-		if (typeof id === 'number') {
-			return id;
-		} else {
-			// We need unique IDs in all notifications to be able to persist them without overwriting one another:
-			return (opts.id = LocalNotificationsCommon.generateNotificationID());
-		}
 	}
 }
