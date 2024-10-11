@@ -219,7 +219,18 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			for (const s of scheduleOptions) {
 				const entry = LocalNotificationsImpl.createScheduleEntry(s) as AndroidScheduleOptions;
 
-				const [interval, ticks] = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
+				let interval: ScheduleInterval;
+				let ticks: number;
+
+				if (entry.interval) {
+					const intervalData = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
+
+					interval = intervalData[0];
+					ticks = intervalData[1];
+				} else {
+					interval = null;
+					ticks = 1;
+				}
 
 				entry.atTime = entry.at ? entry.at.getTime() : 0;
 

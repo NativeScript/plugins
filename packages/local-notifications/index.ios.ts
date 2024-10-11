@@ -138,7 +138,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			content.badge = entry.badge;
 
-			if (entry.sound === undefined || entry.sound === 'default') {
+			if (entry.sound == null || entry.sound === 'default') {
 				content.sound = UNNotificationSound.defaultSound;
 			} else {
 				content.sound = UNNotificationSound.soundNamed(entry.sound);
@@ -156,13 +156,24 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			// Notification trigger and repeat
 			let trigger: UNNotificationTrigger;
 
-			const [interval, ticks] = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
+			let interval: ScheduleInterval;
+			let ticks: number;
+
+			if (entry.interval) {
+				const intervalData = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
+
+				interval = intervalData[0];
+				ticks = intervalData[1];
+			} else {
+				interval = null;
+				ticks = 1;
+			}
 
 			if (entry.at) {
 				const cal = LocalNotificationsImpl.calendarWithMondayAsFirstDay();
 				const date = cal.componentsFromDate(LocalNotificationsImpl.getInterval(interval), entry.at);
 				date.timeZone = NSTimeZone.defaultTimeZone;
-				trigger = UNCalendarNotificationTrigger.triggerWithDateMatchingComponentsRepeats(date, interval !== undefined);
+				trigger = UNCalendarNotificationTrigger.triggerWithDateMatchingComponentsRepeats(date, interval != null);
 			} else if (interval) {
 				trigger = UNTimeIntervalNotificationTrigger.triggerWithTimeIntervalRepeats(this.getIntervalSeconds(interval, ticks), true);
 			} else {

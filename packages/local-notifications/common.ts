@@ -276,7 +276,7 @@ export interface LocalNotificationsApi {
 export abstract class LocalNotificationsCommon {
 	protected static defaults: Readonly<ScheduleOptions> = {
 		badge: 0,
-		interval: undefined,
+		interval: null,
 		ongoing: false,
 		groupSummary: null,
 		bigTextStyle: false,
