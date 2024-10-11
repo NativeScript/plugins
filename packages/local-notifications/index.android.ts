@@ -205,7 +205,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	async schedule(scheduleOptions: AndroidScheduleOptions[]): Promise<Array<number>> {
+	async schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
 		try {
 			await LocalNotificationsImpl.ensurePreconditions();
 
