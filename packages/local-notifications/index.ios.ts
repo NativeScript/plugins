@@ -239,7 +239,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			}
 		}
 
-		function registerNotification(id: number, content: UNMutableNotificationContent, trigger: UNNotificationTrigger, register: Array<number>, displayImmediately?: boolean) {
+		function registerNotification(id: number, content: UNMutableNotificationContent, trigger: UNNotificationTrigger, register: Array<number>) {
 			UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + id, content, trigger), (error: NSError) => {
 				if (error) {
 					console.log(`Error scheduling notification (id ${id}): ${error.localizedDescription}`);
