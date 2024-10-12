@@ -121,6 +121,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 		for (const s of scheduleOptions) {
 			const entry = LocalNotificationsImpl.createScheduleEntry(s);
+			const { interval, ticks } = LocalNotificationsImpl.getIntervalData(entry);
 
 			// Notification content
 			const content = UNMutableNotificationContent.new();
@@ -151,19 +152,6 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			// Notification trigger and repeat
 			let trigger: UNNotificationTrigger;
-
-			let interval: ScheduleInterval;
-			let ticks: number;
-
-			if (entry.interval) {
-				const intervalData = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
-
-				interval = intervalData[0];
-				ticks = intervalData[1];
-			} else {
-				interval = null;
-				ticks = 1;
-			}
 
 			if (entry.at) {
 				const cal = LocalNotificationsImpl.calendarWithMondayAsFirstDay();

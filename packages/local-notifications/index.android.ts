@@ -221,19 +221,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 				const entry = LocalNotificationsImpl.createScheduleEntry(s);
 				// Some properties should not be inherited by options
 				const nativeOptions: ScheduleNativeOptions = { ...entry, color: undefined, notificationLed: undefined };
-
-				let interval: ScheduleInterval;
-				let ticks: number;
-
-				if (entry.interval) {
-					const intervalData = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
-
-					interval = intervalData[0];
-					ticks = intervalData[1];
-				} else {
-					interval = null;
-					ticks = 1;
-				}
+				const { interval, ticks } = LocalNotificationsImpl.getIntervalData(entry);
 
 				nativeOptions.atTime = entry.at ? entry.at.getTime() : 0;
 				nativeOptions.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && entry.silhouetteIcon) || entry.icon);

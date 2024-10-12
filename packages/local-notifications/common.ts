@@ -309,6 +309,26 @@ export abstract class LocalNotificationsCommon {
 		return entry;
 	}
 
+	protected static getIntervalData(entry: ScheduleOptions): { interval: ScheduleInterval; ticks: number } {
+		let interval: ScheduleInterval;
+		let ticks: number;
+
+		if (entry.interval) {
+			const intervalData = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
+
+			interval = intervalData[0];
+			ticks = intervalData[1];
+		} else {
+			interval = null;
+			ticks = 1;
+		}
+
+		return {
+			interval,
+			ticks,
+		};
+	}
+
 	protected static generateUUID(): string {
 		// Not the best, but it will work. See https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 		const s4 = () =>
