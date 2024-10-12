@@ -238,7 +238,10 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 				nativeOptions.atTime = entry.at ? entry.at.getTime() : 0;
 				nativeOptions.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && entry.silhouetteIcon) || entry.icon);
 				nativeOptions.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
-				nativeOptions.color = entry.color.android;
+
+				if (entry.color instanceof Color) {
+					nativeOptions.color = entry.color.android;
+				}
 
 				if (entry.notificationLed !== true && entry.notificationLed instanceof Color) {
 					nativeOptions.notificationLed = entry.notificationLed.android;
