@@ -4,9 +4,7 @@ import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, 
 
 declare const com, global: any;
 
-type OmitScheduleOptions = Omit<ScheduleOptions, 'color' | 'notificationLed'>;
-
-interface ScheduleNativeOptions extends OmitScheduleOptions {
+interface ScheduleNativeOptions extends Omit<ScheduleOptions, 'color' | 'notificationLed'> {
 	atTime?: number;
 	color?: number;
 	repeatInterval?: number;
@@ -219,10 +217,9 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
 			// the persisted options are exactly like the original ones.
-
 			for (const s of scheduleOptions) {
 				const entry = LocalNotificationsImpl.createScheduleEntry(s);
-				const nativeOptions: ScheduleNativeOptions = { ...(entry as OmitScheduleOptions) };
+				const nativeOptions: ScheduleNativeOptions = { ...entry, color: undefined, notificationLed: undefined };
 
 				let interval: ScheduleInterval;
 				let ticks: number;
