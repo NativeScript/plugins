@@ -246,7 +246,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 				registerNotification(nativeOptions, context, scheduledIds);
 
-				if (entry.displayImmediately) {
+				if (interval && entry.displayImmediately) {
 					nativeOptions.id = LocalNotificationsImpl.generateNotificationID();
 					nativeOptions.atTime = 0;
 
