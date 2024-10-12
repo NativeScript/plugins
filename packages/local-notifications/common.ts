@@ -286,13 +286,16 @@ export abstract class LocalNotificationsCommon {
 	};
 
 	protected static createScheduleEntry(options: ScheduleOptions): ScheduleOptions {
-		const entry: ScheduleOptions = {};
+		const entry: ScheduleOptions = Object.assign({}, this.defaults);
 
+		// Return entry with defaults if not defined
 		if (!options) {
+			entry.id = this.generateNotificationID();
 			return entry;
 		}
 
-		Object.assign(entry, this.defaults, options);
+		// Override defaults by options
+		Object.assign(entry, options);
 
 		if (typeof entry.id !== 'number') {
 			// We need unique IDs in all notifications to be able to persist them without overwriting one another
