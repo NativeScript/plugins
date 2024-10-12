@@ -219,6 +219,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			// the persisted options are exactly like the original ones.
 			for (const s of scheduleOptions) {
 				const entry = LocalNotificationsImpl.createScheduleEntry(s);
+				// Some properties should not be inherited by options
 				const nativeOptions: ScheduleNativeOptions = { ...entry, color: undefined, notificationLed: undefined };
 
 				let interval: ScheduleInterval;
