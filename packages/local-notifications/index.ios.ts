@@ -134,7 +134,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			content.badge = entry.badge;
 
-			if (entry.sound == null || entry.sound === 'default') {
+			if (entry.sound === undefined || entry.sound === 'default') {
 				content.sound = UNNotificationSound.defaultSound;
 			} else {
 				content.sound = UNNotificationSound.soundNamed(entry.sound);
@@ -283,12 +283,18 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			}
 			notification.userInfo = userInfoDict;
 
-			if (entry.sound) {
-				if (entry.sound === 'default') {
+			switch (entry.sound as any) {
+				case null:
+				case false:
+				case '':
+					break;
+				case undefined:
+				case 'default':
 					notification.soundName = UILocalNotificationDefaultSoundName;
-				} else {
+					break;
+				default:
 					notification.soundName = entry.sound;
-				}
+					break;
 			}
 
 			// Used when restoring the notification after a reboot
