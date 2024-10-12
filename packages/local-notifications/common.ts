@@ -90,7 +90,7 @@ export interface ScheduleOptions {
 	 * Custom color for the notification icon and title that will be applied when the notification center is expanded.
 	 * Android >= Lollipop (21) only.
 	 */
-	color?: Color | number | UIColor;
+	color?: Color;
 
 	/**
 	 * If the interval is a number, it will be calculated as DAYS.
@@ -176,7 +176,7 @@ export interface ScheduleOptions {
 	 * Android only.
 	 * Default not set.
 	 */
-	notificationLed?: boolean | Color | number | UIColor;
+	notificationLed?: boolean | Color;
 
 	/**
 	 * When longpressing a notification on Android (API >= 26), this 'channel' name is revealed.

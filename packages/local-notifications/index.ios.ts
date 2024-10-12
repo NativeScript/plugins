@@ -4,10 +4,6 @@ import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, 
 
 declare const Notification: any;
 
-interface NSScheduleOptions extends ScheduleOptions {
-	repeatInterval?: number;
-}
-
 export class LocalNotificationsImpl extends LocalNotificationsCommon implements LocalNotificationsApi {
 	private static didRegisterUserNotificationSettingsObserver: any;
 	private notificationReceivedObserver: any;
@@ -124,7 +120,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		const scheduledIds: number[] = [];
 
 		for (const s of scheduleOptions) {
-			const entry = LocalNotificationsImpl.createScheduleEntry(s) as NSScheduleOptions;
+			const entry = LocalNotificationsImpl.createScheduleEntry(s);
 
 			// Notification content
 			const content = UNMutableNotificationContent.new();
@@ -264,7 +260,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		const scheduledIds: number[] = [];
 
 		for (const s of scheduleOptions) {
-			const entry = LocalNotificationsImpl.createScheduleEntry(s) as NSScheduleOptions;
+			const entry = LocalNotificationsImpl.createScheduleEntry(s);
 
 			scheduledIds.push(entry.id);
 
@@ -295,8 +291,9 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 				}
 			}
 
-			// Used when restoring the notification after a reboot:
-			entry.repeatInterval = LocalNotificationsImpl.getInterval(entry.interval);
+			// Used when restoring the notification after a reboot
+			// Note: This is no longer used
+			//entry.repeatInterval = LocalNotificationsImpl.getInterval(entry.interval);
 
 			// notification.soundName = custom..;
 			// notification.resumeApplicationInBackground = true;

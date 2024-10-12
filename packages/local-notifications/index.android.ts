@@ -4,12 +4,16 @@ import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, 
 
 declare const com, global: any;
 
-const NotificationManagerCompatPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
+type OmitScheduleOptions = Omit<ScheduleOptions, 'color' | 'notificationLed'>;
 
-interface AndroidScheduleOptions extends ScheduleOptions {
+interface ScheduleNativeOptions extends OmitScheduleOptions {
 	atTime?: number;
+	color?: number;
 	repeatInterval?: number;
+	notificationLed?: number;
 }
+
+const NotificationManagerCompatPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
 
 function useAndroidX() {
 	return global.androidx && global.androidx.appcompat;
@@ -217,7 +221,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			// the persisted options are exactly like the original ones.
 
 			for (const s of scheduleOptions) {
-				const entry = LocalNotificationsImpl.createScheduleEntry(s) as AndroidScheduleOptions;
+				const entry = LocalNotificationsImpl.createScheduleEntry(s);
+				const nativeOptions: ScheduleNativeOptions = { ...(entry as OmitScheduleOptions) };
 
 				let interval: ScheduleInterval;
 				let ticks: number;
@@ -232,26 +237,22 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 					ticks = 1;
 				}
 
-				entry.atTime = entry.at ? entry.at.getTime() : 0;
-
-				entry.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && entry.silhouetteIcon) || entry.icon);
-				entry.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
-
-				if (entry.color instanceof Color) {
-					entry.color = entry.color.android;
-				}
+				nativeOptions.atTime = entry.at ? entry.at.getTime() : 0;
+				nativeOptions.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && entry.silhouetteIcon) || entry.icon);
+				nativeOptions.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
+				nativeOptions.color = entry.color.android;
 
 				if (entry.notificationLed !== true && entry.notificationLed instanceof Color) {
-					entry.notificationLed = entry.notificationLed.android;
+					nativeOptions.notificationLed = entry.notificationLed.android;
 				}
 
-				registerNotification(entry, context, scheduledIds);
+				registerNotification(nativeOptions, context, scheduledIds);
 
 				if (entry.displayImmediately) {
-					entry.id = LocalNotificationsImpl.generateNotificationID();
-					entry.atTime = 0;
+					nativeOptions.id = LocalNotificationsImpl.generateNotificationID();
+					nativeOptions.atTime = 0;
 
-					registerNotification(entry, context, scheduledIds);
+					registerNotification(nativeOptions, context, scheduledIds);
 				}
 			}
 
@@ -261,11 +262,11 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			throw ex;
 		}
 
-		function registerNotification(entry: AndroidScheduleOptions, context: globalAndroid.content.Context, register: Array<number>) {
-			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(entry)), context);
-			register.push(entry.id);
+		function registerNotification(nativeOptions: ScheduleNativeOptions, context: globalAndroid.content.Context, register: Array<number>) {
+			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(nativeOptions)), context);
+			register.push(nativeOptions.id);
 
-			console.log(`Notification (id ${entry.id}) scheduled successfully`);
+			console.log(`Notification (id ${nativeOptions.id}) scheduled successfully`);
 		}
 	}
 
