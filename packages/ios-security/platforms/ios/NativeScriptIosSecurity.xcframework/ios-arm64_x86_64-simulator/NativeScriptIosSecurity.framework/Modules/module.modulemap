@@ -1,7 +1,7 @@
 framework module NativeScriptIOSSecurity {
   umbrella header "NativeScriptIOSSecurity.h"
-
   export *
+
   module * { export * }
 }
 

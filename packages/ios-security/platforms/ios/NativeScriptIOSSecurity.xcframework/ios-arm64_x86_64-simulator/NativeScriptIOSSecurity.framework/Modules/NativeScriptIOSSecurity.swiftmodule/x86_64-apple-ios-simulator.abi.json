@@ -1,8 +1,8 @@
 {
 	"ABIRoot": {
 		"kind": "Root",
-		"name": "TopLevel",
-		"printedName": "TopLevel",
+		"name": "NativeScriptIOSSecurity",
+		"printedName": "NativeScriptIOSSecurity",
 		"children": [
 			{
 				"kind": "Import",
@@ -257,7 +257,23 @@
 				"usr": "s:23NativeScriptIOSSecurity18FileIntegrityCheckO",
 				"mangledName": "$s23NativeScriptIOSSecurity18FileIntegrityCheckO",
 				"moduleName": "NativeScriptIOSSecurity",
-				"declAttributes": ["AccessControl"]
+				"declAttributes": ["AccessControl"],
+				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Copyable",
+						"printedName": "Copyable",
+						"usr": "s:s8CopyableP",
+						"mangledName": "$ss8CopyableP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Escapable",
+						"printedName": "Escapable",
+						"usr": "s:s9EscapableP",
+						"mangledName": "$ss9EscapableP"
+					}
+				]
 			},
 			{
 				"kind": "Import",
@@ -729,6 +745,7 @@
 						"moduleName": "NativeScriptIOSSecurity",
 						"static": true,
 						"implicit": true,
+						"declAttributes": ["Nonisolated"],
 						"accessors": [
 							{
 								"kind": "Accessor",
@@ -767,6 +784,20 @@
 				"moduleName": "NativeScriptIOSSecurity",
 				"declAttributes": ["AccessControl"],
 				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Copyable",
+						"printedName": "Copyable",
+						"usr": "s:s8CopyableP",
+						"mangledName": "$ss8CopyableP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Escapable",
+						"printedName": "Escapable",
+						"usr": "s:s9EscapableP",
+						"mangledName": "$ss9EscapableP"
+					},
 					{
 						"kind": "Conformance",
 						"name": "Equatable",
@@ -1025,6 +1056,20 @@
 				"conformances": [
 					{
 						"kind": "Conformance",
+						"name": "Copyable",
+						"printedName": "Copyable",
+						"usr": "s:s8CopyableP",
+						"mangledName": "$ss8CopyableP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Escapable",
+						"printedName": "Escapable",
+						"usr": "s:s9EscapableP",
+						"mangledName": "$ss9EscapableP"
+					},
+					{
+						"kind": "Conformance",
 						"name": "Equatable",
 						"printedName": "Equatable",
 						"usr": "s:SQ",
@@ -1267,7 +1312,7 @@
 							{
 								"kind": "TypeNominal",
 								"name": "ExistentialMetatype",
-								"printedName": "AnyObject.Type",
+								"printedName": "any AnyObject.Type",
 								"children": [
 									{
 										"kind": "TypeNominal",
@@ -1330,6 +1375,20 @@
 				"inheritsConvenienceInitializers": true,
 				"superclassNames": ["ObjectiveC.NSObject"],
 				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Copyable",
+						"printedName": "Copyable",
+						"usr": "s:s8CopyableP",
+						"mangledName": "$ss8CopyableP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Escapable",
+						"printedName": "Escapable",
+						"usr": "s:s9EscapableP",
+						"mangledName": "$ss9EscapableP"
+					},
 					{
 						"kind": "Conformance",
 						"name": "Equatable",
@@ -1678,7 +1737,7 @@
 							{
 								"kind": "TypeNominal",
 								"name": "ExistentialMetatype",
-								"printedName": "AnyObject.Type",
+								"printedName": "any AnyObject.Type",
 								"children": [
 									{
 										"kind": "TypeNominal",
@@ -1734,18 +1793,111 @@
 				"mangledName": "$s23NativeScriptIOSSecurity0C5SuiteC",
 				"moduleName": "NativeScriptIOSSecurity",
 				"declAttributes": ["AccessControl", "Available"],
-				"hasMissingDesignatedInitializers": true
+				"hasMissingDesignatedInitializers": true,
+				"conformances": [
+					{
+						"kind": "Conformance",
+						"name": "Copyable",
+						"printedName": "Copyable",
+						"usr": "s:s8CopyableP",
+						"mangledName": "$ss8CopyableP"
+					},
+					{
+						"kind": "Conformance",
+						"name": "Escapable",
+						"printedName": "Escapable",
+						"usr": "s:s9EscapableP",
+						"mangledName": "$ss9EscapableP"
+					}
+				]
 			}
 		],
 		"json_format_version": 8
 	},
 	"ConstValues": [
 		{
-			"filePath": "/Users/nandesoratjihero/Documents/github/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/SecurityFacade.swift",
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 906,
+			"length": 2,
+			"value": "-2"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
 			"kind": "StringLiteral",
-			"offset": 328,
-			"length": 24,
-			"value": "\"NativeScriptIOSSecurity.FileIntegrityCheckFacade\""
+			"offset": 957,
+			"length": 8,
+			"value": "\"ptrace\""
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 1178,
+			"length": 2,
+			"value": "31"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 1182,
+			"length": 1,
+			"value": "0"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 1185,
+			"length": 1,
+			"value": "0"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 1188,
+			"length": 1,
+			"value": "0"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 1216,
+			"length": 1,
+			"value": "0"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/DebuggerChecker.swift",
+			"kind": "StringLiteral",
+			"offset": 1238,
+			"length": 75,
+			"value": "\"Error occured when calling ptrace(). Denying debugger may not be reliable\""
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/JailbreakChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 8981,
+			"length": 2,
+			"value": "-2"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/JailbreakChecker.swift",
+			"kind": "StringLiteral",
+			"offset": 9028,
+			"length": 6,
+			"value": "\"fork\""
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/JailbreakChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 9211,
+			"length": 1,
+			"value": "0"
+		},
+		{
+			"filePath": "/Users/nstudio/Documents/github/NativeScript/plugins/packages/ios-security/native-src/ios/NativeScriptIOSSecurity/IOSSecuritySuite/JailbreakChecker.swift",
+			"kind": "IntegerLiteral",
+			"offset": 9243,
+			"length": 1,
+			"value": "0"
 		}
 	]
 }

@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/NativeScriptIOSSecurity-Swift.h</key>
 		<data>
-		4tYIUIyExzvKbPhpQQwKSQvZ01c=
+		LmZNhjGLI0eTCIS/MhwfrRqs5ks=
 		</data>
 		<key>Headers/NativeScriptIOSSecurity.h</key>
 		<data>
@@ -22,59 +22,59 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		it7GyxIguSTeKFLER+Fwpssimsg=
+		mebERyX6LrzhHDasrBO0xwSPb7I=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		UnxRVsUdFsawZirRfWxjQt3Z/fQ=
+		b9OjBHlDf+r5rYW92RbxY3EjP2Y=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		7vs3SzeiufESLOxTd/yIe4pIoPE=
+		3IxpLu8TvYDFpy4yKkpYuP6jwjQ=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		JAfWPlRX1fHVljbKuCLObY+vrKI=
+		reAKkMg29RryMvIw5QISG0zKNQ8=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		/yYe2MtSS+nec2WQfJo4eyoSRew=
+		vH43Py+an8pkTWGdyB4JK1RFAo4=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		NsX8wZeEhAjNfu1UqrAQD2Zu4yI=
+		weAisPx1EEuBYydXS2g/ye4SqRs=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		/yYe2MtSS+nec2WQfJo4eyoSRew=
+		vH43Py+an8pkTWGdyB4JK1RFAo4=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		iP5ZfkWBYEEmG2i6YZkONpI1DX0=
+		k0LDNDAAVllfMxK5d74eVvIznL4=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		QHxjUJUbXEx7Da27CRCRtkY8vTM=
+		x7Bdu7S9b/T8gLeFTa3SXgz4xTQ=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		4p3WN1TkiaQE2aRyTpJ48nu9CaM=
+		oc40IQGLaKWX2bqx3iQe6ZA8AuU=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		/mp53kn2TykdgIzllVC+mR+na2Q=
+		CPk9VjRvW7bw1IOcQPAGa21/sio=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		4p3WN1TkiaQE2aRyTpJ48nu9CaM=
+		oc40IQGLaKWX2bqx3iQe6ZA8AuU=
 		</data>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		VGERBSicB5DwzcNixrJRotG/15g=
+		Kh1CWazfheOPw1q716u6+7qHXNE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		ueHmI5N/lBqC0Hxv5yjK1bPF3Ww=
+		zhoBAhqo7cPfBjyWRuxv0lYEHoc=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -90,7 +90,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			actIMpdJA+C3CCXq+hlwbZM55BBuVpVStwSXyYpKYf8=
+			DO2xor2xt+pJeZd4d8lIpE9btqyRR/dgaYxdX8QPfug=
 			</data>
 		</dict>
 		<key>Headers/NativeScriptIOSSecurity.h</key>
@@ -111,91 +111,91 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jdvT6AKnofOyzTk+tFDQbLe7bqLyBnQkb3m/Pdi1Ql4=
+			iQ2Dcigfk4o+xPgxb50Xz8gBuScZvTGCdj8f/cq6T0I=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			yTXbHwjKwxQg22PWafpcfAopRr+D1FtXyvpP3QLOsdA=
+			o68O6MEU/Hi8cTiNxmrxOjy0Msnw7UvstcRi3IpZvCg=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			MCQNTBOT9BYig+l+vBKjFXjvPgNmx1W3nldXGwfs40k=
+			q8/QG+0ZwNg0GiKJLoecKD9yqujYWrt0nHN2eKWf/f0=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZHldtJPKRUzs2bcNclmoJNMS4sVSPy5hrZp7xMxnYdM=
+			HW/R6WggDEXMJuz7vKZSuRcicF9R3UTw0eFirpKbGbQ=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			YgmhSt7ze1ZmREIqT4hX1gFawtqZAnjGupFSILM2hvA=
+			z+DPcBJsgP4L2yieG9i0iw3XdQW4ZOlpFb8ywMbReyA=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZHldtJPKRUzs2bcNclmoJNMS4sVSPy5hrZp7xMxnYdM=
+			HW/R6WggDEXMJuz7vKZSuRcicF9R3UTw0eFirpKbGbQ=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			iYEZ5bRTrNBDEMOffzHFVXLFVANbf04RWlbD201u/bs=
+			BaQjMldHpeId4NDfgG4/KgTOITre5U6+bcmIK274Sfw=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RRKvkDjpCBWwLdDqOs6jIgLpbL6fahKsULsLb5J74+0=
+			4cxglgJPjXY3SKji6Ha7MU9CZ+o4hh/z2rQ03fprbi4=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FtBQOicaIpiIi6CtvYSGbINm5ss/2UniaCNMavBob/4=
+			TJ4Lwmesm738DS9t+8OXWoDT/Nt247My34nFHf/2JtM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			l6YJAhO6rpNX9a2d1Z4YhSOZl/iB8Zf09P8GLZsXCOg=
+			CPvtkhLslNNZtJW+hlq5qAcbonlWLgwIQdMTx25MTcM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FtBQOicaIpiIi6CtvYSGbINm5ss/2UniaCNMavBob/4=
+			TJ4Lwmesm738DS9t+8OXWoDT/Nt247My34nFHf/2JtM=
 			</data>
 		</dict>
 		<key>Modules/NativeScriptIOSSecurity.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			GFB41hiGrYPBQWQYx3fnJ3jpGjEV5mcnTGC5Of79pwo=
+			hCBPOQjL/kP8T+zd4ooaRReiNQLofGxKb+Ju6YxDLeo=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gML2ZMjJ/+BWs/jQVz6EDeEtTD9m5KV7NRq1atafEtY=
+			2ZD5lLJ8YPcsDGRQzkN05ocLXmLlVUm8uApxIcYEzrQ=
 			</data>
 		</dict>
 	</dict>

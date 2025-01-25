@@ -51,6 +51,7 @@ import { PickerValueAccessor } from './picker.accessors';
 	</DetachedContainer>`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [{ provide: TEMPLATED_ITEMS_COMPONENT, useExisting: forwardRef(() => PickerFieldComponent) }],
+	standalone: false,
 })
 export class PickerFieldComponent extends ListViewComponent implements AfterContentInit {
 	constructor(_elementRef: ElementRef, _iterableDiffers: IterableDiffers, _cdRef: ChangeDetectorRef) {
