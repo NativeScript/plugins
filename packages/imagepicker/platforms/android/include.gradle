@@ -1,0 +1,4 @@
+dependencies {
+   
+    implementation("androidx.activity:activity:1.9.+")
+}

@@ -125,6 +125,10 @@ export interface Options {
 		 * Provide a reason for permission request to access external storage on api levels above 23.
 		 */
 		read_external_storage?: string;
+		/**
+		 * Use the Photo Picker on android
+		 */
+		use_photo_picker?: boolean;
 	};
 }
 
