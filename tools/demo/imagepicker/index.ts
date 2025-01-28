@@ -68,6 +68,7 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			copyToAppFolder: 'media',
 			renameFileTo: 'foobarmultiple',
 			android: { use_photo_picker: true },
+			maximumNumberOfSelection: 2,
 		});
 		this.startSelection(context);
 	}

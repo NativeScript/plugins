@@ -79,7 +79,7 @@ interface Options {
 	minimumNumberOfSelection?: number;
 
 	/**
-	 * Set the maximum number of selected assets in iOS
+	 * Set the maximum number of selected assets in iOS, and android using the photo picker option.
 	 */
 	maximumNumberOfSelection?: number;
 

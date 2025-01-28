@@ -199,10 +199,7 @@ export class ImagePicker extends ImagePickerBase {
 		return this._options?.android?.use_photo_picker && Utils.SDK_VERSION >= 33;
 	}
 	authorize(): Promise<AuthorizationResult> {
-		console.log('***** using photoPicker****', this.usePhotoPicker);
 		if (this.usePhotoPicker) {
-			const available = androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(Utils.android.getApplicationContext());
-			console.log('Is available', available);
 			return Promise.resolve({ details: null, authorized: true });
 		} else {
 			let requested: { [key: string]: permissions.PermissionOptions } = {};
@@ -239,18 +236,13 @@ export class ImagePicker extends ImagePickerBase {
 				function onResult(args) {
 					let requestCode = args.requestCode;
 					if (requestCode === REQUEST_LAUNCH_LIBRARY) {
-						console.log('request code OK');
 						let resultCode = args.resultCode;
 						if (resultCode == android.app.Activity.RESULT_OK) {
 							try {
-								console.log('result code OK');
 								let data = args.intent;
-
-								console.log('&&&', args.requestCode, args.resultCode, args.intent, data.getData(), Array.isArray(data));
 								let uris = new Array<string>();
 								let clip = data.getClipData();
 								if (clip) {
-									console.log('has clip');
 									let count = clip.getItemCount();
 									for (let i = 0; i < count; i++) {
 										let clipItem = clip.getItemAt(i);
@@ -262,7 +254,6 @@ export class ImagePicker extends ImagePickerBase {
 										}
 									}
 								} else {
-									console.log('has NOT clip');
 									const uriData = data.getData();
 									const uri = uriData.toString();
 									uris = [uri];
@@ -312,7 +303,6 @@ export class ImagePicker extends ImagePickerBase {
 
 								let results = [];
 								for (let i = 0; i <= uris.length - 1; ++i) {
-									console.log('processing image', i);
 									const selectedAsset = new ImageAsset(uris[i].toString());
 									let item = handle(selectedAsset, i);
 									results.push(item);
@@ -320,7 +310,6 @@ export class ImagePicker extends ImagePickerBase {
 								Application.android.off(Application.android.activityResultEvent, onResult);
 								resolve(results);
 							} catch (e) {
-								console.log(e);
 								Application.android.off(Application.android.activityResultEvent, onResult);
 								reject(e);
 							}
