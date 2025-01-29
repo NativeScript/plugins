@@ -45,7 +45,7 @@ import {
 	Style,
 	TileOverlayOptions,
 } from '.';
-import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
+import { bearingProperty, preventDefaultMarkerTapBehaviorProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 
 import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, deserialize, serialize } from './utils';
 
@@ -181,13 +181,6 @@ export class MapView extends MapViewBase {
 								case 'end':
 									ref?.get?.().notify(<MarkerTapEvent>{
 										eventName: MapView.markerDragEndEvent,
-										object: ref?.get?.(),
-										marker: Marker.fromNative(marker),
-									});
-									break;
-								case 'click':
-									ref?.get?.().notify(<MarkerTapEvent>{
-										eventName: MapView.markerTapEvent,
 										object: ref?.get?.(),
 										marker: Marker.fromNative(marker),
 									});
@@ -369,6 +362,7 @@ export class MapView extends MapViewBase {
 						tilt: owner.tilt,
 						zoom: owner.zoom,
 					});
+					owner._setMapClickListener(map, owner.preventDefaultMarkerTapBehavior);
 				}
 
 				ref.get?.().notify?.({
@@ -504,6 +498,12 @@ export class MapView extends MapViewBase {
 		}
 	}
 
+	[preventDefaultMarkerTapBehaviorProperty.setNative](value) {
+		if (this._map) {
+			this._setMapClickListener(this._map, value);
+		}
+	}
+
 	_updateCamera(
 		map,
 		owner: {
@@ -554,6 +554,22 @@ export class MapView extends MapViewBase {
 				googleMap.cameraPosition = position;
 			}
 		}
+	}
+
+	_setMapClickListener(map, preventDefaultMarkerTapBehavior) {
+		map.setOnMarkerClickListener(
+			new com.google.android.gms.maps.GoogleMap.OnMarkerClickListener({
+				onMarkerClick: (marker) => {
+					this.notify(<MarkerTapEvent>{
+						eventName: MapView.markerTapEvent,
+						object: this,
+						marker: Marker.fromNative(marker),
+					});
+
+					return preventDefaultMarkerTapBehavior;
+				},
+			})
+		);
 	}
 }
 
