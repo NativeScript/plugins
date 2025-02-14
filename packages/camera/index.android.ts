@@ -1,6 +1,7 @@
 import { Utils, Application, Device, Trace, ImageAsset } from '@nativescript/core';
 import * as permissions from '@nativescript-community/perms';
 import { CameraOptions } from '.';
+import { combineCamerPhotoPermissions, mapCameraPermissionStatus, mapPhotoPermissionStatus, PermissionResult, PermissionsResult, Status } from './common';
 
 const REQUEST_IMAGE_CAPTURE = 3453;
 declare let global: any;
@@ -32,7 +33,6 @@ export const takePicture = function (options?: CameraOptions): Promise<any> {
 				reqHeight = options.height ? options.height * density : reqWidth;
 				shouldKeepAspectRatio = Utils.isNullOrUndefined(options.keepAspectRatio) ? shouldKeepAspectRatio : options.keepAspectRatio;
 			}
-
 			const hasStoragePerm = await permissions.check(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 			if (!api30() && !hasStoragePerm[1]) {
 				saveToGallery = false;
@@ -174,25 +174,25 @@ function api30(): boolean {
 	return (<any>android).os.Build.VERSION.SDK_INT >= 30 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 30;
 }
 
-export async function requestPermissions() {
+export async function requestPermissions(): Promise<PermissionsResult> {
+	return requestCameraPermissions().then((cameraPermissions) => requestPhotosPermissions().then((photoPermissions) => combineCamerPhotoPermissions(cameraPermissions, photoPermissions)));
+}
+
+export async function requestPhotosPermissions(): Promise<PermissionResult> {
 	if (api30()) {
-		const hasPerm = await permissions.request('android.permission.CAMERA');
-		return hasPerm[1];
+		return {
+			Success: true,
+			Details: Status.authorized,
+		};
 	} else {
-		const hasPerm1 = await permissions.request('android.permission.WRITE_EXTERNAL_STORAGE');
-		const hasPerm2 = await permissions.request('android.permission.CAMERA');
-		return hasPerm1[1] && hasPerm2[1];
+		const hasPerm = await permissions.request('android.permission.WRITE_EXTERNAL_STORAGE');
+		return mapPhotoPermissionStatus(hasPerm);
 	}
 }
 
-export async function requestPhotosPermissions() {
-	const hasPerm = await permissions.request('android.permission.WRITE_EXTERNAL_STORAGE');
-	return hasPerm[1];
-}
-
-export async function requestCameraPermissions() {
+export async function requestCameraPermissions(): Promise<PermissionResult> {
 	const hasPerm = await permissions.request('android.permission.CAMERA');
-	return hasPerm[1];
+	return mapCameraPermissionStatus(hasPerm);
 }
 
 const createDateTimeStamp = function () {
