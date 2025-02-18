@@ -116,7 +116,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		}
 	}
 
-	private static schedulePendingNotificationsNew(scheduleOptions: ScheduleOptions[]): Array<number> {
+	private static async schedulePendingNotificationsNew(scheduleOptions: ScheduleOptions[]): Array<number> {
 		const scheduledIds: number[] = [];
 
 		for (const s of scheduleOptions) {
@@ -215,22 +215,24 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 				});
 			}
 
-			registerNotification(entry.id, content, trigger, scheduledIds);
+			scheduledIds.push(await registerNotification(entry.id, content, trigger));
 
 			if (interval && entry.displayImmediately) {
 				const id = LocalNotificationsImpl.generateNotificationID();
-				registerNotification(id, content, UNTimeIntervalNotificationTrigger.triggerWithTimeIntervalRepeats(2, false), scheduledIds);
+				scheduledIds.push(await registerNotification(id, content, UNTimeIntervalNotificationTrigger.triggerWithTimeIntervalRepeats(2, false)));
 			}
 		}
 
-		function registerNotification(id: number, content: UNMutableNotificationContent, trigger: UNNotificationTrigger, register: Array<number>) {
-			UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + id, content, trigger), (error: NSError) => {
-				if (error) {
-					console.log(`Error scheduling notification (id ${id}): ${error.localizedDescription}`);
-				} else {
-					register.push(id);
-					console.log(`Notification (id ${id}) scheduled successfully`);
-				}
+		function registerNotification(id: number, content: UNMutableNotificationContent, trigger: UNNotificationTrigger) {
+			return new Promise((resolve) => {
+				UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + id, content, trigger), (error: NSError) => {
+					if (error) {
+						console.log(`Error scheduling notification (id ${id}): ${error.localizedDescription}`);
+					} else {
+						console.log(`Notification (id ${id}) scheduled successfully`);
+					}
+					resolve(id);
+				});
 			});
 		}
 
@@ -438,18 +440,18 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 	}
 
 	schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 			try {
 				if (!LocalNotificationsImpl.hasPermission()) {
-					this.requestPermission().then((granted) => {
+					this.requestPermission().then(async (granted) => {
 						if (granted) {
-							resolve(LocalNotificationsImpl.schedulePendingNotifications(scheduleOptions));
+							resolve(await LocalNotificationsImpl.schedulePendingNotifications(scheduleOptions));
 						} else {
 							reject('Permission not granted');
 						}
 					});
 				} else {
-					resolve(LocalNotificationsImpl.schedulePendingNotifications(scheduleOptions));
+					resolve(await LocalNotificationsImpl.schedulePendingNotifications(scheduleOptions));
 				}
 			} catch (ex) {
 				console.log('Error in LocalNotifications.schedule: ' + ex);
