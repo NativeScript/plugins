@@ -71,7 +71,7 @@ app
 }
 ```
 
-2. In the `main.ts` file, register the `localize` function with the `setResources` method of the [Appilcation](https://docs.nativescript.org/api-reference/modules#application) class, as follows.
+2. In the `main.ts` file, register the `localize` function with the `setResources` method of the [Application](https://docs.nativescript.org/api-reference/modules#application) class, as follows.
 
 ```js
 import { Application } from "@nativescript/core";
