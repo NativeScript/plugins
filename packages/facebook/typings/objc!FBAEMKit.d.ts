@@ -8,6 +8,10 @@ declare var FBAEMNetworking: {
 declare class FBAEMReporter extends NSObject implements FBSDKAEMReporter {
 	static alloc(): FBAEMReporter; // inherited from NSObject
 
+	static configureWithNetworkerAppIDReporter(networker: FBAEMNetworking, appID: string, reporter: FBSKAdNetworkReporting): void;
+
+	static configureWithNetworkerAppIDReporterAnalyticsAppIDStore(networker: FBAEMNetworking, appID: string, reporter: FBSKAdNetworkReporting, analyticsAppID: string, store: FBSDKDataPersisting): void;
+
 	static enable(): void;
 
 	static handle(url: NSURL): void;
