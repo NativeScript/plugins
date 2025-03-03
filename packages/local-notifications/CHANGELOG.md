@@ -1,3 +1,16 @@
+## 6.4.0 (2025-03-03)
+
+### 🩹 Fixes
+
+- **local-notifications:** return types ([4048863](https://github.com/NativeScript/plugins/commit/4048863))
+- **local-notifications:** schedule returning list of ids ([#612](https://github.com/NativeScript/plugins/pull/612))
+
+### ❤️ Thank You
+
+- insytes
+- Jason Cassidy @jcassidyav
+- Nathan Walker
+
 ## 6.3.1 (2025-01-25)
 
 ### 🚀 Features
