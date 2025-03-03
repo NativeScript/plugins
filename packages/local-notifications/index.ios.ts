@@ -108,15 +108,15 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		return Math.abs(ticks) * multiplier;
 	}
 
-	private static schedulePendingNotifications(scheduleOptions: ScheduleOptions[]): Array<number> {
+	private static async schedulePendingNotifications(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
 		if (LocalNotificationsImpl.isUNUserNotificationCenterAvailable()) {
-			return LocalNotificationsImpl.schedulePendingNotificationsNew(scheduleOptions);
+			return await LocalNotificationsImpl.schedulePendingNotificationsNew(scheduleOptions);
 		} else {
 			return LocalNotificationsImpl.schedulePendingNotificationsLegacy(scheduleOptions);
 		}
 	}
 
-	private static async schedulePendingNotificationsNew(scheduleOptions: ScheduleOptions[]): Array<number> {
+	private static async schedulePendingNotificationsNew(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
 		const scheduledIds: number[] = [];
 
 		for (const s of scheduleOptions) {
@@ -224,7 +224,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		}
 
 		function registerNotification(id: number, content: UNMutableNotificationContent, trigger: UNNotificationTrigger) {
-			return new Promise((resolve) => {
+			return new Promise<number>((resolve) => {
 				UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + id, content, trigger), (error: NSError) => {
 					if (error) {
 						console.log(`Error scheduling notification (id ${id}): ${error.localizedDescription}`);
