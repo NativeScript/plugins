@@ -1,7 +1,5 @@
 platform :ios, '14.0'
 
-pod 'IQKeyboardManager', '~> 6.5.10'
-
 post_install do |installer|
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
