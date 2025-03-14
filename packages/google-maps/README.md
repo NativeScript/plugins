@@ -462,7 +462,7 @@ The Google Maps API offers the following five types of maps:
 
 ### Markers
 
-#### Adding Markers
+## Adding Markers
 
 You can create markers using the [GoogleMap](#googlemap-object)'s object `addMarker` method by passing it a [MarkerOptions](#markeroptions) object.
 
@@ -473,7 +473,7 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 ```
 `addMarker` returns a [Marker](#marker-object)
 
- #### Marker Object
+ ### Marker Object
  It implements the [MarkerOptions] interface and has the following additional methods.
 
 | Method | Returns 
@@ -498,13 +498,14 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 | `anchorV` | `number` | Vertical icon offset from the marker position
 | `userData` | `any` | Additional information assigned to the marker
 | `zIndex` | `number` | Z-index of the marker
-### Coordinate
+
+#### Coordinate
 | Property | Type
 |:---------|:----
 | `lat` | `number`
 | `lng` | `number`
 
-#### Removing Markers
+### Removing Markers
 
 To remove a marker from the map, call the `removeMarker()` method on the [GoogleMap](#googlemap-object) instance and pass it the marker to be removed.
 
@@ -513,7 +514,7 @@ function removeMarker(map: GoogleMap, marker: Marker) {
 	map.removeMarker(marker);
 }
 ```
-### Circles
+## Circles
 
 ### Adding Circles
 
@@ -540,7 +541,7 @@ function addCircle(map: GoogleMap, circleOptions: CircleOptions): Circle {
 `zIndex` | `number` |
 `userData` | `{ [key: string]: any }` |
 
-#### Removing Circles
+### Removing Circles
 
 You can remove a circle using the [GoogleMap](#googlemap-object)'s `removeCircle()` method.
 
@@ -549,8 +550,8 @@ function removeCircle(map: GoogleMap, circle: Circle) {
 	map.removeCircle(circle);
 }
 ```
-### Polygons
-#### Adding Polygons
+## Polygons
+### Adding Polygons
 
 You can create polygons using the [GoogleMap](#googlemap-object)'s object `addPolygon()` method by passing in the specified [PolygonOptions](#polygonoptions).
 
@@ -559,7 +560,7 @@ function addPolygon(map: GoogleMap, polygonOptions: PolygonOptions): Polygon {
 	return map.addPolygon(polygonOptions);
 }
 ```
-### PolygonOptions
+#### PolygonOptions
 
 | Property | Type 
 |:---------|:-----
@@ -586,8 +587,8 @@ function removePolygon(map: GoogleMap, polygon: Polygon) {
 }
 ```
 
-### Polylines
-##### Adding Polylines
+## Polylines
+### Adding Polylines
 
 You can create Polylines using the [GoogleMap](#googlemap-object)'s object `addPolyline` function by passing it a [PolylineOptions](#polylineoptions) object.
 
@@ -613,7 +614,7 @@ function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline
 | `endCap` | Cap & Partial\<NativeObject\> | 
 | `userData` | `{ [key: string]: any }` | 
 
-#### Removing Polylines
+### Removing Polylines
 
 You can remove a Polyline using the [GoogleMap](#googlemap-object)'s `removePolyline` function, like so: 
 
@@ -623,8 +624,8 @@ function removePolyline(map: GoogleMap, polyline: Polyline) {
 }
 ```
 
-### Ground Overlays
-##### Adding Ground Overlays
+## Ground Overlays
+### Adding Ground Overlays
 
 You can create Ground Overlays using the [GoogleMap](#googlemap-object)'s object `addGroundOverlay` function by passing in the specified [GroundOverlay Options](#groundoverlayoptions).
 
@@ -651,7 +652,7 @@ function addGroundOverlay(map: GoogleMap, groundOverlayOptions: GroundOverlayOpt
 `anchorU` | `number` | 
 `anchorV` | `number` | 
 
-#### Removing Ground Overlays
+### Removing Ground Overlays
 
 You can remove a GroundOverlay using the [GoogleMap](#googlemap-object)'s `removeGroundOverlay` function, like so: 
 
@@ -662,9 +663,8 @@ function removeGroundOverlay(map: GoogleMap, groundOverlay: GroundOverlay) {
 ```
 
 
-
 ## Tile Overlays
-#### Adding Tile Overlays
+### Adding Tile Overlays
 
 You can create Tile Overlays using the [GoogleMap](#googlemap-object)'s object `addTileOverlay` function by passing in the specified [TileOverlay Options](#tileoverlayoptions).
 
@@ -686,7 +686,7 @@ function addTileOverlay(map: GoogleMap, tileOverlayOptions: TileOverlayOptions):
 
 Setting tile overlay options after the tile overlay has been added to the map can have no effect on the tile overlay. To update the tile overlay, you may need to call `clearTileCache()`.
 
-#### Removing Tile Overlays
+### Removing Tile Overlays
 
 You can remove a TileOverlay using the [GoogleMap](#googlemap-object)'s `removeTileOverlay` function, like so: 
 
@@ -696,7 +696,7 @@ function removeTileOverlay(map: GoogleMap, tileOverlay: TileOverlay) {
 }
 ```
 
-#### Tile Providers
+## Tile Providers
 
 Tile providers are objects that provide tiles to be used in a Tile Overlay.
 
