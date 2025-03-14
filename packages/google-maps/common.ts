@@ -35,6 +35,11 @@ export const tiltProperty = new Property<MapViewBase, number>({
 	name: 'tilt',
 });
 
+export const preventDefaultMarkerTapBehaviorProperty = new Property<MapViewBase, boolean>({
+	name: 'preventDefaultMarkerTapBehavior',
+	defaultValue: false,
+});
+
 export class MapViewBase extends ContentView {
 	static readyEvent = 'ready';
 	static mapTapEvent = 'mapTap';
@@ -73,6 +78,7 @@ export class MapViewBase extends ContentView {
 	zoom: number;
 	bearing: number;
 	tilt: number;
+	preventDefaultMarkerTapBehavior: boolean;
 }
 
 latProperty.register(MapViewBase);
@@ -80,3 +86,4 @@ lngProperty.register(MapViewBase);
 zoomProperty.register(MapViewBase);
 bearingProperty.register(MapViewBase);
 tiltProperty.register(MapViewBase);
+preventDefaultMarkerTapBehaviorProperty.register(MapViewBase);

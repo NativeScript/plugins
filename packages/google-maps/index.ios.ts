@@ -375,11 +375,17 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	}
 
 	mapViewDidTapMarker(mapView: GMSMapView, marker: GMSMarker): boolean {
-		this._owner?.get?.().notify(<EventData & MarkerTapEvent>{
-			eventName: MapView.markerTapEvent,
-			object: this._owner?.get?.(),
-			marker: Marker.fromNative(marker),
-		});
+		const owner = this._owner?.get?.();
+		if (owner) {
+			owner.notify(<EventData & MarkerTapEvent>{
+				eventName: MapView.markerTapEvent,
+				object: owner,
+				marker: Marker.fromNative(marker),
+			});
+
+			return owner.preventDefaultMarkerTapBehavior;
+		}
+
 		return false;
 	}
 
