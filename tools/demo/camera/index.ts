@@ -5,15 +5,15 @@ import { DemoSharedBase } from '../utils';
 export class DemoSharedCamera extends DemoSharedBase {
 	picturePath: string;
 	cameraImage: any;
-	saveToGallery: false;
-	allowsEditing: false;
-	keepAspectRatio: true;
-	width: 320;
-	height: 240;
+	saveToGallery = false;
+	allowsEditing = false;
+	keepAspectRatio = true;
+	width = 320;
+	height = 240;
 
 	onTakePictureTap(args: EventData) {
-		requestPermissions().then(
-			() => {
+		requestPermissions().then((perms) => {
+			if (perms.Success) {
 				takePicture({ width: this.width, height: this.height, keepAspectRatio: this.keepAspectRatio, saveToGallery: this.saveToGallery, allowsEditing: this.allowsEditing }).then(
 					(imageAsset: ImageAsset) => {
 						this.set('cameraImage', imageAsset);
@@ -41,8 +41,9 @@ export class DemoSharedCamera extends DemoSharedBase {
 						console.log('Error -> ' + err.message);
 					}
 				);
-			},
-			() => Dialogs.alert('permissions rejected')
-		);
+			} else {
+				Dialogs.alert(`permissions rejected: camera ${perms.Details.Camera?.Success}, photo ${perms.Details.Photo?.Success}`);
+			}
+		});
 	}
 }

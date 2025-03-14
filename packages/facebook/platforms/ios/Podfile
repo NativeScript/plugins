@@ -1,2 +1,2 @@
-pod 'FBSDKCoreKit', '~> 16.0.0'
-pod 'FBSDKLoginKit', '~> 16.0.0'
+pod 'FBSDKCoreKit', '~> 18.0.0'
+pod 'FBSDKLoginKit', '~> 18.0.0'

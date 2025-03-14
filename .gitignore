@@ -36,6 +36,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.history
 
 # System Files
 .DS_Store
@@ -58,3 +59,4 @@ packages/**/native-src/ios/**/xcuserdata/
 packages/**/native-src/ios/**/project.xcworkspace/
 packages/**/native-src/ios/**/build
 .nx/cache
+.nx/workspace-data

@@ -3,7 +3,7 @@
         <ActionBar title="theme-switcher" icon="" class="theme-action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <ScrollView class="h-full">
           <StackLayout>
             <Button text="Change Theme" tap="{{ testIt }}" class="theme-btn"/>

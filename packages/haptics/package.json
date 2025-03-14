@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/haptics",
-	"version": "3.0.2",
+	"version": "3.1.0",
 	"description": "Haptics for NativeScript",
 	"main": "index",
 	"typings": "index.d.ts",

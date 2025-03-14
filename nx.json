@@ -38,5 +38,21 @@
 	"useDaemonProcess": false,
 	"parallel": 1,
 	"useInferencePlugins": false,
-	"defaultBase": "master"
+	"defaultBase": "master",
+	"release": {
+		"releaseTagPattern": "{version}-{projectName}",
+		"projects": ["packages/*"],
+		"projectsRelationship": "independent",
+		"changelog": {
+			"workspaceChangelog": false,
+			"projectChangelogs": {
+				"renderOptions": {
+					"authors": true,
+					"commitReferences": true,
+					"versionTitleDate": true
+				}
+			}
+		}
+	},
+	"useLegacyCache": true
 }

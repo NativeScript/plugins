@@ -1,6 +1,6 @@
 import { File, ImageSource, knownFolders, path as fsPath } from '@nativescript/core';
 import { DelegateObserver, SharedNotificationDelegate } from '@nativescript/shared-notification-delegate';
-import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
+import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleIntervalObject, ScheduleOptions } from './common';
 
 declare const Notification: any;
 
@@ -24,7 +24,6 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 				const notificationDetails = JSON.parse(result.userInfo.objectForKey('message'));
 				this.addOrProcessNotification(notificationDetails);
 			});
-
 			this.notificationHandler = Notification.new();
 			this.notificationManager = NotificationManager.new();
 		}
@@ -54,7 +53,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		return NSNotificationCenter.defaultCenter.addObserverForNameObjectQueueUsingBlock(eventName, null, NSOperationQueue.mainQueue, callback);
 	}
 
-	private static getInterval(interval: ScheduleInterval | number): NSCalendarUnit {
+	private static getInterval(interval: ScheduleInterval | ScheduleIntervalObject): NSCalendarUnit {
 		if (interval === 'minute') {
 			return NSCalendarUnit.CalendarUnitSecond;
 		} else if (interval === 'hour') {
@@ -74,90 +73,103 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		}
 	}
 
-	private static getIntervalSeconds(interval: ScheduleInterval, ticks: number): number {
-		if (!interval) {
-			return ticks;
-		} else if (interval === 'second') {
-			return ticks;
-		} else if (interval === 'minute') {
-			return ticks * 60;
-		} else if (interval === 'hour') {
-			return ticks * 60 * 60;
-		} else if (interval === 'day') {
-			return ticks * 60 * 60 * 24;
-		} else if (interval === 'week') {
-			return ticks * 60 * 60 * 24 * 7;
-		} else if (interval === 'month') {
-			return ticks * 60 * 60 * 24 * 30.438;
-		} else if (interval === 'quarter') {
-			return ticks * 60 * 60 * 24 * 91.313;
-		} else if (interval === 'year') {
-			return ticks * 60 * 60 * 24 * 365;
-		} else {
-			return ticks;
+	private static getIntervalSeconds(interval: ScheduleInterval, ticks: number = 1): number {
+		let multiplier: number = 1;
+
+		switch (interval) {
+			default:
+			case 'second':
+				multiplier = 1;
+				break;
+			case 'minute':
+				multiplier = 60;
+				break;
+			case 'hour':
+				multiplier = 60 * 60;
+				break;
+			case 'day':
+				multiplier = 60 * 60 * 24;
+				break;
+			case 'week':
+				multiplier = 60 * 60 * 24 * 7;
+				break;
+			// close enough
+			case 'month':
+				60 * 60 * 24 * 30.438;
+				break;
+			case 'quarter':
+				60 * 60 * 24 * 91.313;
+				break;
+			case 'year':
+				multiplier = 60 * 60 * 24 * 365;
+				break;
 		}
+
+		return Math.abs(ticks) * multiplier;
 	}
 
-	private static schedulePendingNotifications(pending: ScheduleOptions[]): Array<number> {
+	private static async schedulePendingNotifications(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
 		if (LocalNotificationsImpl.isUNUserNotificationCenterAvailable()) {
-			return LocalNotificationsImpl.schedulePendingNotificationsNew(pending);
+			return await LocalNotificationsImpl.schedulePendingNotificationsNew(scheduleOptions);
 		} else {
-			return LocalNotificationsImpl.schedulePendingNotificationsLegacy(pending);
+			return LocalNotificationsImpl.schedulePendingNotificationsLegacy(scheduleOptions);
 		}
 	}
 
-	private static schedulePendingNotificationsNew(pending: ScheduleOptions[]): Array<number> {
-		const scheduledIds: Array<number> = [];
-		for (const n in pending) {
-			const options: ScheduleOptions = LocalNotificationsImpl.merge(pending[n], LocalNotificationsImpl.defaults);
+	private static async schedulePendingNotificationsNew(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
+		const scheduledIds: number[] = [];
 
-			LocalNotificationsImpl.ensureID(options);
-			scheduledIds.push(options.id);
+		for (const s of scheduleOptions) {
+			const entry = LocalNotificationsImpl.createScheduleEntry(s);
+			const { interval, ticks } = LocalNotificationsImpl.getIntervalData(entry);
 
 			// Notification content
 			const content = UNMutableNotificationContent.new();
 
-			const { title, subtitle, body } = options;
+			const { title, subtitle, body } = entry;
 			content.title = body || subtitle ? title : undefined;
 			content.subtitle = body ? subtitle : undefined;
 			// On iOS, a notification with no body won't show up, so the subtitle or title will be used in this case as body
 			// instead. If none of them is set, we set it to ' ' and will show up as an empty line in the notification:
 			content.body = body || subtitle || title || ' ';
 
-			content.badge = options.badge;
+			content.badge = entry.badge;
 
-			if (options.sound === undefined || options.sound === 'default') {
+			if (entry.sound === undefined || entry.sound === 'default') {
 				content.sound = UNNotificationSound.defaultSound;
 			} else {
-				content.sound = UNNotificationSound.soundNamed(options.sound);
+				content.sound = UNNotificationSound.soundNamed(entry.sound);
 			}
 
 			const userInfoDict = new NSMutableDictionary({ capacity: 3 });
 			userInfoDict.setObjectForKey('nativescript-local-notifications', '__NotificationType');
-			userInfoDict.setObjectForKey(options.forceShowWhenInForeground, 'forceShowWhenInForeground');
-			userInfoDict.setObjectForKey(options.priority || 0, 'priority');
-			if ('payload' in options) {
-				userInfoDict.setObjectForKey(JSON.stringify(options.payload), 'payload');
+			userInfoDict.setObjectForKey(entry.forceShowWhenInForeground, 'forceShowWhenInForeground');
+			userInfoDict.setObjectForKey(entry.priority || 0, 'priority');
+			if ('payload' in entry) {
+				userInfoDict.setObjectForKey(JSON.stringify(entry.payload), 'payload');
 			}
 			content.userInfo = userInfoDict;
 
 			// Notification trigger and repeat
 			let trigger: UNNotificationTrigger;
-			if (options.at) {
+
+			if (entry.at) {
 				const cal = LocalNotificationsImpl.calendarWithMondayAsFirstDay();
-				const date = cal.componentsFromDate(LocalNotificationsImpl.getInterval(options.interval), options.at);
+				const date = cal.componentsFromDate(LocalNotificationsImpl.getInterval(interval), entry.at);
 				date.timeZone = NSTimeZone.defaultTimeZone;
-				trigger = UNCalendarNotificationTrigger.triggerWithDateMatchingComponentsRepeats(date, options.interval !== undefined);
+				trigger = UNCalendarNotificationTrigger.triggerWithDateMatchingComponentsRepeats(date, interval != null);
+			} else if (interval) {
+				trigger = UNTimeIntervalNotificationTrigger.triggerWithTimeIntervalRepeats(this.getIntervalSeconds(interval, ticks), true);
 			} else {
 				trigger = UNTimeIntervalNotificationTrigger.triggerWithTimeIntervalRepeats(2, false);
 			}
 
 			// actions
-			if (options.actions) {
+			if (entry.actions) {
 				let categoryIdentifier = 'CATEGORY';
 				const actions: Array<UNNotificationAction> = [];
 
-				options.actions.forEach((action) => {
+				entry.actions.forEach((action) => {
 					categoryIdentifier += '_' + action.id;
 
 					let notificationActionOptions: UNNotificationActionOptions = UNNotificationActionOptionNone;
@@ -187,11 +199,9 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 				});
 			}
 
-			if (!options.image) {
-				UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + options.id, content, trigger), (error: NSError) => (error ? console.log(`Error scheduling notification (id ${options.id}): ${error.localizedDescription}`) : null));
-			} else {
-				ImageSource.fromUrl(options.image).then((image) => {
-					const [imageName, imageNameWithExtension] = LocalNotificationsImpl.getImageName(options.image, 'png');
+			if (entry.image) {
+				ImageSource.fromUrl(entry.image).then((image) => {
+					const [imageName, imageNameWithExtension] = LocalNotificationsImpl.getImageName(entry.image, 'png');
 					const path: string = fsPath.join(knownFolders.temp().path, imageNameWithExtension);
 					const saved = image.saveToFile(path, 'png');
 					if (saved || File.exists(path)) {
@@ -202,10 +212,30 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 							// Just fall back to a normal notification...
 						}
 					}
-					UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + options.id, content, trigger), (error: NSError) => (error ? console.log(`Error scheduling notification (id ${options.id}): ${error.localizedDescription}`) : null));
 				});
 			}
+
+			scheduledIds.push(await registerNotification(entry.id, content, trigger));
+
+			if (interval && entry.displayImmediately) {
+				const id = LocalNotificationsImpl.generateNotificationID();
+				scheduledIds.push(await registerNotification(id, content, UNTimeIntervalNotificationTrigger.triggerWithTimeIntervalRepeats(2, false)));
+			}
 		}
+
+		function registerNotification(id: number, content: UNMutableNotificationContent, trigger: UNNotificationTrigger) {
+			return new Promise<number>((resolve) => {
+				UNUserNotificationCenter.currentNotificationCenter().addNotificationRequestWithCompletionHandler(UNNotificationRequest.requestWithIdentifierContentTrigger('' + id, content, trigger), (error: NSError) => {
+					if (error) {
+						console.log(`Error scheduling notification (id ${id}): ${error.localizedDescription}`);
+					} else {
+						console.log(`Notification (id ${id}) scheduled successfully`);
+					}
+					resolve(id);
+				});
+			});
+		}
+
 		return scheduledIds;
 	}
 
@@ -216,48 +246,50 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		return cal;
 	}
 
-	private static schedulePendingNotificationsLegacy(pending: ScheduleOptions[]): Array<number> {
-		const scheduledIds: Array<number> = [];
-		for (const n in pending) {
-			const options = LocalNotificationsImpl.merge(pending[n], LocalNotificationsImpl.defaults);
+	private static schedulePendingNotificationsLegacy(scheduleOptions: ScheduleOptions[]): Array<number> {
+		const scheduledIds: number[] = [];
 
-			LocalNotificationsImpl.ensureID(options);
-			scheduledIds.push(options.id);
+		for (const s of scheduleOptions) {
+			const entry = LocalNotificationsImpl.createScheduleEntry(s);
+
+			scheduledIds.push(entry.id);
 
 			const notification = UILocalNotification.new();
-			notification.fireDate = options.at ? options.at : new Date();
-			notification.alertTitle = options.title;
-			notification.alertBody = options.body;
+			notification.fireDate = entry.at ? entry.at : new Date();
+			notification.alertTitle = entry.title;
+			notification.alertBody = entry.body;
 
 			notification.timeZone = NSTimeZone.defaultTimeZone;
-			notification.applicationIconBadgeNumber = options.badge;
+			notification.applicationIconBadgeNumber = entry.badge;
 
 			// these are sent back to the plugin when a notification is received
 			const userInfoDict = NSMutableDictionary.alloc().initWithCapacity(4);
-			userInfoDict.setObjectForKey(options.id, 'id');
-			userInfoDict.setObjectForKey(options.title, 'title');
-			userInfoDict.setObjectForKey(options.body, 'body');
-			userInfoDict.setObjectForKey(options.interval, 'interval');
-			if ('payload' in options) {
-				userInfoDict.setObjectForKey(JSON.stringify(options.payload), 'payload');
+			userInfoDict.setObjectForKey(entry.id, 'id');
+			userInfoDict.setObjectForKey(entry.title, 'title');
+			userInfoDict.setObjectForKey(entry.body, 'body');
+			userInfoDict.setObjectForKey(entry.interval, 'interval');
+			if ('payload' in entry) {
+				userInfoDict.setObjectForKey(JSON.stringify(entry.payload), 'payload');
 			}
 			notification.userInfo = userInfoDict;
 
-			switch (options.sound) {
+			switch (entry.sound as any) {
 				case null:
 				case false:
+				case '':
 					break;
 				case undefined:
 				case 'default':
 					notification.soundName = UILocalNotificationDefaultSoundName;
 					break;
 				default:
-					notification.soundName = options.sound;
+					notification.soundName = entry.sound;
 					break;
 			}
 
-			// Used when restoring the notification after a reboot:
-			options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
+			// Used when restoring the notification after a reboot
+			// Note: This is no longer used
+			//entry.repeatInterval = LocalNotificationsImpl.getInterval(entry.interval);
 
 			// notification.soundName = custom..;
 			// notification.resumeApplicationInBackground = true;
@@ -340,6 +372,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			try {
 				if (LocalNotificationsImpl.isUNUserNotificationCenterAvailable()) {
 					UNUserNotificationCenter.currentNotificationCenter().removePendingNotificationRequestsWithIdentifiers(<any>['' + id]);
+					UNUserNotificationCenter.currentNotificationCenter().removeDeliveredNotificationsWithIdentifiers(<any>['' + id]);
 					resolve(true);
 				} else {
 					const scheduled = UIApplication.sharedApplication.scheduledLocalNotifications;
@@ -365,6 +398,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 			try {
 				if (LocalNotificationsImpl.isUNUserNotificationCenterAvailable()) {
 					UNUserNotificationCenter.currentNotificationCenter().removeAllPendingNotificationRequests();
+					UNUserNotificationCenter.currentNotificationCenter().removeAllDeliveredNotifications();
 				} else {
 					UIApplication.sharedApplication.cancelAllLocalNotifications();
 				}
@@ -405,19 +439,19 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	schedule(options: ScheduleOptions[]): Promise<Array<number>> {
-		return new Promise((resolve, reject) => {
+	schedule(scheduleOptions: ScheduleOptions[]): Promise<Array<number>> {
+		return new Promise(async (resolve, reject) => {
 			try {
 				if (!LocalNotificationsImpl.hasPermission()) {
-					this.requestPermission().then((granted) => {
+					this.requestPermission().then(async (granted) => {
 						if (granted) {
-							resolve(LocalNotificationsImpl.schedulePendingNotifications(options));
+							resolve(await LocalNotificationsImpl.schedulePendingNotifications(scheduleOptions));
 						} else {
 							reject('Permission not granted');
 						}
 					});
 				} else {
-					resolve(LocalNotificationsImpl.schedulePendingNotifications(options));
+					resolve(await LocalNotificationsImpl.schedulePendingNotifications(scheduleOptions));
 				}
 			} catch (ex) {
 				console.log('Error in LocalNotifications.schedule: ' + ex);

@@ -79,7 +79,7 @@ interface Options {
 	minimumNumberOfSelection?: number;
 
 	/**
-	 * Set the maximum number of selected assets in iOS
+	 * Set the maximum number of selected assets in iOS, and android using the photo picker option.
 	 */
 	maximumNumberOfSelection?: number;
 
@@ -102,6 +102,16 @@ interface Options {
 	 * Set the number of columns in Landscape in iOS
 	 */
 	numberOfColumnsInLandscape?: number;
+
+	/**
+	 * Set to false on iOS to disable querying thumbnail/filesize for selected assets
+	 */
+	augmentedAssetsInfo?: boolean;
+
+	/**
+	 * Set to true on iOS to wait for controller to be dismissed before resolving
+	 */
+	resolveWhenDismissed?: boolean;
 
 	/**
 	 * Set the media type (image/video/any) to pick
@@ -130,6 +140,10 @@ interface Options {
 		 * Provide a reason for permission request to access external storage on api levels above 23.
 		 */
 		read_external_storage?: string;
+		/**
+		 * Use the Photo Picker on android
+		 */
+		use_photo_picker?: boolean;
 	};
 }
 

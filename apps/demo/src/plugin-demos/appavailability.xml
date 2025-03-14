@@ -3,7 +3,7 @@
         <ActionBar title="appavailability" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <ScrollView class="h-full">
           <StackLayout>
             <Button text="Test Plugin" tap="{{ testIt }}" class="btn btn-primary"/>

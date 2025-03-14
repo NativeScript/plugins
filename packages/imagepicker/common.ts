@@ -89,6 +89,16 @@ export interface Options {
 	numberOfColumnsInLandscape?: number;
 
 	/**
+	 * Set to false on iOS to disable querying thumbnail/filesize for selected assets
+	 */
+	augmentedAssetsInfo?: boolean;
+
+	/**
+	 * Set to true on iOS to wait for controller to be dismissed before resolving
+	 */
+	resolveWhenDismissed?: boolean;
+
+	/**
 	 * Set the media type (image/video/any) to pick
 	 */
 	mediaType?: ImagePickerMediaType;
@@ -115,6 +125,10 @@ export interface Options {
 		 * Provide a reason for permission request to access external storage on api levels above 23.
 		 */
 		read_external_storage?: string;
+		/**
+		 * Use the Photo Picker on android
+		 */
+		use_photo_picker?: boolean;
 	};
 }
 

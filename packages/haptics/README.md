@@ -14,7 +14,6 @@ Thanks to [Eddy Verbruggen](EddyVerbruggen) for providing [nativescript-taptic-e
   * [Use @nativescript/haptics](#use-nativescripthaptics)
   * [API](#api)
     * [isSupported()](#issupported)
-    * [is6SAnd6SPlusSupported()](#is6sand6splussupported)
     * [selection()](#selection)
     * [notifcation()](#notification)
     * [impact()](#impact)
@@ -43,14 +42,6 @@ The plugin provides the API below.
 isHapticsSupported: boolean = Haptics.isSupported()
 ```
 Checks if haptics is supported on the device.
-
----
-### is6SAnd6SPlusSupported()
-```ts
-isHapticsSupported: boolean = Haptics.is6SAnd6SPlusSupported()
-```
-
-Checks if Haptics is supported on iOS.
 
 ---
 ### selection()
@@ -97,7 +88,7 @@ There are 3 impact types:
 To use the haptics fallbacks, check if there is support:
 
 ```ts
-if (!Haptics.isSupported() && Haptics.is6SAnd6SPlusSupported()) {
+if (!Haptics.isSupported()) {
   // use HapticsFallback
 }
 ```

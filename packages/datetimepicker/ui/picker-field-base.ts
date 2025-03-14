@@ -55,9 +55,9 @@ export abstract class PickerFieldBase extends TextField {
 				((args: TouchGestureEventData) => {
 					this._onPickerFieldBaseTap(args);
 				});
-			this.on(GestureTypes.tap, this._pickerFieldBaseTapHandler);
+			this.on('tap', this._pickerFieldBaseTapHandler);
 		} else {
-			this.off(GestureTypes.tap, this._pickerFieldBaseTapHandler);
+			this.off('tap', this._pickerFieldBaseTapHandler);
 		}
 	}
 

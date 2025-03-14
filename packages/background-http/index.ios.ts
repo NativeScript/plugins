@@ -177,6 +177,10 @@ class Session implements Session {
             request.HTTPMethod = options.method;
         }
 
+				if (options.timeout) {
+						request.timeoutInterval = options.timeout;
+				}
+
         let fileURL: NSURL;
         if (fileUri.substr(0, 7) === "file://") {
             // File URI in string format

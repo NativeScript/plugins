@@ -11,25 +11,25 @@
           <Label row="0" colSpan="2" text="Flip these default settings and try the effect with the textfields below" textWrap="true" class="title"/>
 
           <Label row="1" text="Enable IQKeyboard" class="{{ iqKeyboardEnabled ? '' : 'disabled' }}"/>
-          <Switch row="1" checked="{{ iqKeyboardEnabled }}" tap="{{ toggleIQKeyboard }}"/>
+          <Switch row="1" col="1" checked="{{ iqKeyboardEnabled }}" tap="{{ toggleIQKeyboard }}"/>
 
           <Label row="2" text="Enable IQKeyboard toolbar" class="{{ iqKeyboardToolbarEnabled ? '' : 'disabled' }}"/>
-          <Switch row="2" checked="{{ iqKeyboardToolbarEnabled }}" tap="{{ toggleIQKeyboardToolbar }}"/>
+          <Switch row="2" col="1" checked="{{ iqKeyboardToolbarEnabled }}" tap="{{ toggleIQKeyboardToolbar }}"/>
 
           <Label row="3" text="Tap outside keeps keyboard open" class="{{ keepKeyboardOpenOnTouchOutside ? '' : 'disabled' }}"/>
-          <Switch row="3" checked="{{ keepKeyboardOpenOnTouchOutside }}" tap="{{ toggleKeepKeyboardOpen }}"/>
+          <Switch row="3" col="1" checked="{{ keepKeyboardOpenOnTouchOutside }}" tap="{{ toggleKeepKeyboardOpen }}"/>
 
           <Label row="4" text="Show 'hint' in toolbar" class="{{ showHintInToolbar ? '' : 'disabled' }}"/>
-          <Switch row="4" checked="{{ showHintInToolbar }}" tap="{{ toggleShowHintInToolbar }}"/>
+          <Switch row="4" col="1" checked="{{ showHintInToolbar }}" tap="{{ toggleShowHintInToolbar }}"/>
 
           <Label row="5" text="Change toolbar 'Done' button" class="{{ toggleDoneButtonTextChanged ? '' : 'disabled' }}"/>
-          <Switch row="5" checked="{{ toggleDoneButtonTextChanged }}" tap="{{ toggleDoneButtonText }}"/>
+          <Switch row="5" col="1" checked="{{ toggleDoneButtonTextChanged }}" tap="{{ toggleDoneButtonText }}"/>
 
           <Label row="6" text="Dark keyboard appearance" class="{{ keyboardAppearanceDark ? '' : 'disabled' }}"/>
-          <Switch row="6" checked="{{ keyboardAppearanceDark }}" tap="{{ toggleKeyboardAppearance }}"/>
+          <Switch row="6" col="1" checked="{{ keyboardAppearanceDark }}" tap="{{ toggleKeyboardAppearance }}"/>
 
           <Label row="7" text="Increased keyboard distance" class="{{ increaseKeyboardDistanceFromTextField ? '' : 'disabled' }}"/>
-          <Switch row="7" checked="{{ increaseKeyboardDistanceFromTextField }}" tap="{{ toggleIncreaseKeyboardDistanceFromTextField }}"/>
+          <Switch row="7" col="1" checked="{{ increaseKeyboardDistanceFromTextField }}" tap="{{ toggleIncreaseKeyboardDistanceFromTextField }}"/>
         </GridLayout>
       </iOS>
 

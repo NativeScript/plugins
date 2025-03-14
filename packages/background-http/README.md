@@ -157,7 +157,7 @@ Initializes an HTTP background service.
 import { session } from '@nativescript/background-http';
 session: Session = session(id: string)
 ```
-Gets or creates a background download/upload session by id.
+Gets or creates a background http session by id.
 
 ---
 #### Session Object
@@ -262,7 +262,7 @@ import { session } from '@nativescript/background-http';
 
 session: Session = session(id)
 ```
-Gets or creates a background download/upload session by id.
+Gets or creates a background http session by id.
 
 ---
 ### uploadFile()
@@ -296,6 +296,7 @@ The request object parameter has the following properties:
 | `method`                                | `string`  | The request method (e.g. `POST`).                                                                                                                                                               |
 | `headers`                               | `object`  | Used to specify additional headers.                                                                                                                                                             |
 | `description`                           | `string`  | Used to help identify the upload task locally - not sent to the remote server.                                                                                                                  |
+| `timeout` | `number` | (`iOS only`) Sets the request timeout in seconds (s). |
 | `utf8`                                  | `boolean` | (`Android-only`, `multipartUpload()-only`) If true, sets the charset for the multipart request to UTF-8. Default is `false`.                                                                                   |
 | `androidNotificationOnProgressTitle`    | `string`  | Use this to set the on progress title shown in the Android notifications center.                                                                                                                |
 | `androidNotificationOnProgressMessage`  | `string`  | Use this to set the on progress message shown in the Android notifications center.                                                                                                              |

@@ -1,4 +1,4 @@
-import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { Color, EventData, GridLayout, ImageSource, Screen, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
@@ -47,6 +47,11 @@ import {
 } from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
+import { layout } from '@nativescript/core/utils';
+
+const native_ = Symbol('[[native]]');
+
+declare const NSCCustomInfoView;
 
 export class CameraUpdate implements ICameraUpdate {
 	_native: GMSCameraUpdate;
@@ -273,7 +278,7 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 			eventName: MapView.myLocationButtonTapEvent,
 			object: this._owner?.get?.(),
 		});
-		return true;
+		return false;
 	}
 
 	mapViewDidBeginDraggingMarker(mapView: GMSMapView, marker: GMSMarker): void {
@@ -449,21 +454,39 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 			owner.notify(event);
 
 			if (event.view instanceof View) {
-				if (!event.view.parent && !event.view?.nativeView) {
-					owner._addView(event.view);
-				}
-				if (event.view.nativeView && !(<any>marker)._view) {
-					(<any>marker)._view = UIView.new();
-				}
-				const parent = event.view.nativeView?.superview;
-				if (event.view.nativeView && parent !== (<any>marker)._view) {
-					if (parent) {
-						event.view.nativeView.removeFromSuperview();
+				let parent = marker[native_];
+				let container = (<any>marker)._view as never as GridLayout;
+				if (!parent) {
+					parent = NSCCustomInfoView.new();
+					container = new GridLayout();
+					parent.backgroundColor = UIColor.clearColor;
+					(<any>marker)._view = container;
+					marker[native_] = parent;
+					container._setupAsRootView({});
+					container._setupUI({});
+					container.callLoaded();
+					parent.addSubview(container.nativeView);
+				} else {
+					if (event.view.parent !== container) {
+						container.removeChildren();
 					}
-					const container: UIView = (<any>marker)._view;
-					container.addSubview(event.view.nativeView);
 				}
-				return (<any>marker)?._view ?? null;
+
+				if (!event.view.parent) {
+					container.addChild(event.view);
+				} else if (event.view.parent !== container) {
+					(<GridLayout>event?.view?.parent)?.removeChild?.(event.view);
+					container.addChild(event.view);
+				}
+
+				const w = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const h = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const size = View.measureChild(container, event.view, w, h);
+
+				View.layoutChild(container, event.view, 0, 0, size.measuredWidth, size.measuredHeight);
+				parent.frame = CGRectMake(0, 0, size.measuredWidth / Screen.mainScreen.scale, size.measuredHeight / Screen.mainScreen.scale);
+
+				return parent;
 			} else if (event.view instanceof UIView) {
 				return event.view;
 			}
@@ -484,21 +507,39 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 			owner.notify(event);
 
 			if (event.view instanceof View) {
-				if (!event.view.parent && !event.view?.nativeView) {
-					owner._addView(event.view);
-				}
-				if (event.view.nativeView && !(<any>marker)._view) {
-					(<any>marker)._view = UIView.new();
-				}
-				const parent = event.view.nativeView?.superview;
-				if (event.view.nativeView && parent !== (<any>marker)._view) {
-					if (parent) {
-						event.view.nativeView.removeFromSuperview();
+				let parent = marker[native_];
+				let container = (<any>marker)._view as never as GridLayout;
+				if (!parent) {
+					parent = NSCCustomInfoView.new();
+					container = new GridLayout();
+					parent.backgroundColor = UIColor.clearColor;
+					(<any>marker)._view = container;
+					marker[native_] = parent;
+					container._setupAsRootView({});
+					container._setupUI({});
+					container.callLoaded();
+					parent.addSubview(container.nativeView);
+				} else {
+					if (event.view.parent !== container) {
+						container.removeChildren();
 					}
-					const container: UIView = (<any>marker)._view;
-					container.addSubview(event.view.nativeView);
 				}
-				return (<any>marker)?._view ?? null;
+
+				if (!event.view.parent) {
+					container.addChild(event.view);
+				} else if (event.view.parent !== container) {
+					(<GridLayout>event?.view?.parent)?.removeChild?.(event.view);
+					container.addChild(event.view);
+				}
+
+				const w = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const h = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const size = View.measureChild(container, event.view, w, h);
+
+				View.layoutChild(container, event.view, 0, 0, size.measuredWidth, size.measuredHeight);
+				parent.frame = CGRectMake(0, 0, size.measuredWidth / Screen.mainScreen.scale, size.measuredHeight / Screen.mainScreen.scale);
+
+				return parent;
 			} else if (event.view instanceof UIView) {
 				return event.view;
 			}

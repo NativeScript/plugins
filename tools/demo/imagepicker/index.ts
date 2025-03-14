@@ -67,6 +67,8 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			mediaType: imagepicker.ImagePickerMediaType.Any,
 			copyToAppFolder: 'media',
 			renameFileTo: 'foobarmultiple',
+			android: { use_photo_picker: true },
+			maximumNumberOfSelection: 2,
 		});
 		this.startSelection(context);
 	}
@@ -78,6 +80,7 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			mediaType: imagepicker.ImagePickerMediaType.Any,
 			copyToAppFolder: 'media',
 			renameFileTo: 'foobar',
+			android: { use_photo_picker: true },
 		});
 		this.startSelection(context);
 	}

@@ -1,16 +1,19 @@
-import { Directive } from "@angular/core";
+import { Directive } from '@angular/core';
 
 @Directive({
-    selector: "DatePickerField"
+	selector: 'DatePickerField',
+	standalone: false,
 })
-export class DatePickerFieldDirective { }
+export class DatePickerFieldDirective {}
 
 @Directive({
-    selector: "TimePickerField"
+	selector: 'TimePickerField',
+	standalone: false,
 })
-export class TimePickerFieldDirective { }
+export class TimePickerFieldDirective {}
 
 @Directive({
-    selector: "DateTimePickerFields"
+	selector: 'DateTimePickerFields',
+	standalone: false,
 })
-export class DateTimePickerFieldsDirective { }
+export class DateTimePickerFieldsDirective {}

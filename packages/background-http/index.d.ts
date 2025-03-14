@@ -169,6 +169,11 @@ export interface Request {
      */
     description: string;
 
+		/**
+		 * iOS only. Sets NSMutableURLRequest.timeoutInterval value in seconds (s)
+		 */
+		timeout?: number
+
     /**
      * Use utf8 encode in requests
      */

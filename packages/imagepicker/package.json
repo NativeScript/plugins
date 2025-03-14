@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/imagepicker",
-	"version": "3.1.1",
+	"version": "5.0.0",
 	"description": "A plugin for the NativeScript framework implementing multiple image picker",
 	"main": "index",
 	"typings": "index.d.ts",

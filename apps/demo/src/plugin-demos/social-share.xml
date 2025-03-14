@@ -3,7 +3,7 @@
         <ActionBar title="social-share" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <ScrollView class="h-full">
           <StackLayout>
             <Button class="btn-outline btn-primary m-20 p-10" text="Share an image" tap="{{ doShareImage }}"></Button>

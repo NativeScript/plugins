@@ -89,6 +89,9 @@ declare class FBSDKDeviceLoginManager extends NSObject implements NSNetServiceDe
 
 	isMemberOfClass(aClass: typeof NSObject): boolean;
 
+	/**
+	 * @since 7.0
+	 */
 	netServiceDidAcceptConnectionWithInputStreamOutputStream(sender: NSNetService, inputStream: NSInputStream, outputStream: NSOutputStream): void;
 
 	netServiceDidNotPublish(sender: NSNetService, errorDict: NSDictionary<string, number>): void;
@@ -154,26 +157,55 @@ declare class FBSDKLoginButton extends FBSDKButton {
 
 	static appearance(): FBSDKLoginButton; // inherited from UIAppearance
 
+	/**
+	 * @since 8.0
+	 */
 	static appearanceForTraitCollection(trait: UITraitCollection): FBSDKLoginButton; // inherited from UIAppearance
 
+	/**
+	 * @since 8.0
+	 * @deprecated 9.0
+	 */
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKLoginButton; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginButton; // inherited from UIAppearance
+	/**
+	 * @since 9.0
+	 */
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginButton; // inherited from UIAppearance
 
+	/**
+	 * @since 5.0
+	 * @deprecated 9.0
+	 */
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKLoginButton; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginButton; // inherited from UIAppearance
+	/**
+	 * @since 9.0
+	 */
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginButton; // inherited from UIAppearance
 
+	/**
+	 * @since 15.0
+	 */
 	static buttonWithConfigurationPrimaryAction(configuration: UIButtonConfiguration, primaryAction: UIAction): FBSDKLoginButton; // inherited from UIButton
 
 	static buttonWithType(buttonType: UIButtonType): FBSDKLoginButton; // inherited from UIButton
 
+	/**
+	 * @since 14.0
+	 */
 	static buttonWithTypePrimaryAction(buttonType: UIButtonType, primaryAction: UIAction): FBSDKLoginButton; // inherited from UIButton
 
 	static new(): FBSDKLoginButton; // inherited from NSObject
 
+	/**
+	 * @since 13.0
+	 */
 	static systemButtonWithImageTargetAction(image: UIImage, target: any, action: string): FBSDKLoginButton; // inherited from UIButton
 
+	/**
+	 * @since 14.0
+	 */
 	static systemButtonWithPrimaryAction(primaryAction: UIAction): FBSDKLoginButton; // inherited from UIButton
 
 	authType: string;
@@ -252,6 +284,8 @@ declare class FBSDKLoginCompletionParameters extends NSObject {
 	profile: FBSDKProfile;
 
 	userID: string;
+
+	userTokenNonce: string;
 }
 
 declare class FBSDKLoginConfiguration extends NSObject {
@@ -421,15 +455,32 @@ declare class FBSDKLoginTooltipView extends FBSDKTooltipView {
 
 	static appearance(): FBSDKLoginTooltipView; // inherited from UIAppearance
 
+	/**
+	 * @since 8.0
+	 */
 	static appearanceForTraitCollection(trait: UITraitCollection): FBSDKLoginTooltipView; // inherited from UIAppearance
 
+	/**
+	 * @since 8.0
+	 * @deprecated 9.0
+	 */
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKLoginTooltipView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginTooltipView; // inherited from UIAppearance
+	/**
+	 * @since 9.0
+	 */
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginTooltipView; // inherited from UIAppearance
 
+	/**
+	 * @since 5.0
+	 * @deprecated 9.0
+	 */
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKLoginTooltipView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKLoginTooltipView; // inherited from UIAppearance
+	/**
+	 * @since 9.0
+	 */
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKLoginTooltipView; // inherited from UIAppearance
 
 	static new(): FBSDKLoginTooltipView; // inherited from NSObject
 
@@ -482,15 +533,32 @@ declare class FBSDKTooltipView extends UIView {
 
 	static appearance(): FBSDKTooltipView; // inherited from UIAppearance
 
+	/**
+	 * @since 8.0
+	 */
 	static appearanceForTraitCollection(trait: UITraitCollection): FBSDKTooltipView; // inherited from UIAppearance
 
+	/**
+	 * @since 8.0
+	 * @deprecated 9.0
+	 */
 	static appearanceForTraitCollectionWhenContainedIn(trait: UITraitCollection, ContainerClass: typeof NSObject): FBSDKTooltipView; // inherited from UIAppearance
 
-	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKTooltipView; // inherited from UIAppearance
+	/**
+	 * @since 9.0
+	 */
+	static appearanceForTraitCollectionWhenContainedInInstancesOfClasses(trait: UITraitCollection, containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKTooltipView; // inherited from UIAppearance
 
+	/**
+	 * @since 5.0
+	 * @deprecated 9.0
+	 */
 	static appearanceWhenContainedIn(ContainerClass: typeof NSObject): FBSDKTooltipView; // inherited from UIAppearance
 
-	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | typeof NSObject[]): FBSDKTooltipView; // inherited from UIAppearance
+	/**
+	 * @since 9.0
+	 */
+	static appearanceWhenContainedInInstancesOfClasses(containerTypes: NSArray<typeof NSObject> | (typeof NSObject)[]): FBSDKTooltipView; // inherited from UIAppearance
 
 	static new(): FBSDKTooltipView; // inherited from NSObject
 

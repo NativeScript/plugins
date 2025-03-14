@@ -1,4 +1,4 @@
-import { Color, Property, booleanConverter } from '@nativescript/core';
+import { Color, Property, booleanConverter, Utils } from '@nativescript/core';
 import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorProperty } from './common';
 
 declare const at;
@@ -26,7 +26,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	private _startAngle = 0;
 	private _text = '';
 	private _textColor = new Color('orange');
-	private _textSize = 8;
+	private _textSize = 0;
 	private _fillColor = new Color('transparent');
 	private _clockwise = true;
 
@@ -47,6 +47,10 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android.setOuterContourSize(0);
 		this.android.setInnerContourSize(0);
 		this.android.setText(this.text);
+		this.android.setTextColor(this._textColor.argb);
+		if(this._textSize !== 0){
+			this.android.setTextSize(this._textSize);
+		}
 		if (this.animated) {
 			this.android.setValueAnimated(this.progress);
 		} else {
@@ -80,7 +84,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set progress(value: number) {
-		this._progress = value;
+		this._progress = this.getNumber(value);
 		if (this.animated) {
 			this.android?.setValueAnimated(this._progress);
 		} else {
@@ -226,8 +230,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set textSize(value: number) {
-		this._textSize = value;
-		this.android?.setTextSize(value);
+		this._textSize = Utils.layout.toDevicePixels(this.getNumber(value));
+		this.android?.setTextSize(this._textSize);
 	}
 
 	get textSize() {
@@ -323,6 +327,10 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		}
+	}
+
+	private getNumber(value: number | string){
+		return typeof value === 'string' ? parseInt(value) : value
 	}
 }
 

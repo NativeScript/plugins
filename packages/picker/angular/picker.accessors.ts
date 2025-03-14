@@ -26,6 +26,7 @@ const PICKER_VALUE_ACCESSOR = {
 		'(pickerOpened)': 'handlePickerOpened($event)',
 		'(pickerClosed)': 'handlePickerClosed($event)',
 	},
+	standalone: false,
 })
 export class PickerValueAccessor extends BaseValueAccessor<PickerField> {
 	private _hasBeenOpened = false;
