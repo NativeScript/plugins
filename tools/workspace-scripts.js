@@ -306,6 +306,13 @@ module.exports = {
 					description: '@nativescript/keyboard-toolbar: Build',
 				},
 			},
+			// @nativescript/google-mobile-ads
+			'google-mobile-ads': {
+				build: {
+					script: 'nx run google-mobile-ads:build.all',
+					description: '@nativescript/google-mobile-ads: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -455,6 +462,10 @@ module.exports = {
 			'keyboard-toolbar': {
 				script: 'nx run keyboard-toolbar:focus',
 				description: 'Focus on @nativescript/keyboard-toolbar',
+			},
+			'google-mobile-ads': {
+				script: 'nx run google-mobile-ads:focus',
+				description: 'Focus on @nativescript/google-mobile-ads',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

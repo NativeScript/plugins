@@ -39,7 +39,8 @@
 		"@nativescript/social-share": "file:../../packages/social-share",
 		"@nativescript/theme-switcher": "file:../../packages/theme-switcher",
 		"@nativescript/twitter": "file:../../packages/twitter",
-		"@nativescript/zip": "file:../../packages/zip"
+		"@nativescript/zip": "file:../../packages/zip",
+		"@nativescript/google-mobile-ads": "file:../../packages/google-mobile-ads"
 	},
 	"devDependencies": {
 		"@nativescript/android": "~8.8.0",

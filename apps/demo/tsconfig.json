@@ -43,7 +43,9 @@
 			"@nativescript/google-maps": ["../../packages/google-maps/index.d.ts"],
 			"@nativescript/google-maps/angular": ["../../packages/google-maps/angular/index.ts"],
 			"@nativescript/contacts": ["../../packages/contacts/index.d.ts"],
-			"@nativescript/*": ["../../packages/*"]
+			"@nativescript/*": ["../../packages/*"],
+			"@nativescript/google-mobile-ads": ["../../packages/google-mobile-ads/index.d.ts"],
+			"@nativescript/google-mobile-ads/angular": ["../../packages/google-mobile-ads/angular/index.ts"]
 		}
 	}
 }

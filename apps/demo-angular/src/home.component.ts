@@ -64,6 +64,9 @@ export class HomeComponent {
 			name: 'google-maps',
 		},
 		{
+			name: 'google-mobile-ads',
+		},
+		{
 			name: 'google-signin',
 		},
 		{
