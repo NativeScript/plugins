@@ -1,4 +1,5 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+
+<Button text="google-mobile-ads" tap="{{ viewDemo }}" class="btn btn-primary view-demo"/><Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
   <Page.actionBar>
     <ActionBar title="Plugin Demos" icon="" class="action-bar"/>
   </Page.actionBar>

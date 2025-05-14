@@ -1,0 +1,16 @@
+android {  
+  defaultConfig {  
+    minSdkVersion 23
+  } 
+}
+
+repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-ads:24.2.0'
+    implementation 'com.google.android.ump:user-messaging-platform:2.0.0'
+}
