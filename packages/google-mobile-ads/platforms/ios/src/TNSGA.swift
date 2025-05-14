@@ -47,11 +47,11 @@ public class TNSGA:NSObject {
         
         public init?(rawValue: String) {
             switch rawValue {
-            case GADAdLoaderAdType.customNative.rawValue:
+						case AdLoaderAdType.CustomNative.rawValue:
                 self = .CustomNative
-            case GADAdLoaderAdType.gamBanner.rawValue:
+						case AdLoaderAdType.GAMBanner.rawValue:
                 self = .GAMBanner
-            case GADAdLoaderAdType.native.rawValue:
+						case AdLoaderAdType.Native.rawValue:
                 self = .Native
             default:
                 return nil
@@ -61,11 +61,11 @@ public class TNSGA:NSObject {
         public var rawValue: RawValue {
             switch self {
             case .CustomNative:
-                return GADAdLoaderAdType.customNative.rawValue
+								return AdLoaderAdType.CustomNative.rawValue
             case .GAMBanner:
-                return GADAdLoaderAdType.gamBanner.rawValue
+                return AdLoaderAdType.GAMBanner.rawValue
             case .Native:
-                return GADAdLoaderAdType.native.rawValue
+                return AdLoaderAdType.Native.rawValue
             }
         }
     }
@@ -74,28 +74,28 @@ public class TNSGA:NSObject {
         return type.rawValue
     }
     
-    public static func createAnchoredAdaptiveBanner(_ width: CGFloat,_ orientation: Orientation) -> GADAdSize {
+	public static func createAnchoredAdaptiveBanner(_ width: CGFloat,_ orientation: Orientation) -> AdSize {
         switch orientation {
         case .Landscape:
-            return GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(width)
+					return landscapeAnchoredAdaptiveBanner(width: width)
         case .Portrait:
-            return GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth(width)
+					return portraitAnchoredAdaptiveBanner(width: width)
         default:
-            return GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width)
+					return currentOrientationAnchoredAdaptiveBanner(width: width)
         }
     }    
     
-    public static func createInlineAdaptiveBanner(_ width: CGFloat, _ maxHeight: CGFloat,_ orientation: Orientation) -> GADAdSize {
+	public static func createInlineAdaptiveBanner(_ width: CGFloat, _ maxHeight: CGFloat,_ orientation: Orientation) -> AdSize {
         if(maxHeight > 0){
-            return GADInlineAdaptiveBannerAdSizeWithWidthAndMaxHeight(width, maxHeight)
+					return inlineAdaptiveBanner(width: width, maxHeight: maxHeight)
         }
         switch orientation {
         case .Landscape:
-            return GADLandscapeInlineAdaptiveBannerAdSizeWithWidth(width)
+					return landscapeInlineAdaptiveBanner(width: width)
         case .Portrait:
-            return GADPortraitInlineAdaptiveBannerAdSizeWithWidth(width)
+					return portraitInlineAdaptiveBanner(width: width)
         default:
-            return GADCurrentOrientationInlineAdaptiveBannerAdSizeWithWidth(width)
+					return currentOrientationInlineAdaptiveBanner(width: width)
         }
     }
     
@@ -112,24 +112,24 @@ public class TNSGA:NSObject {
         case Invalid
     }
 
-    public static func createBanner(_ size: NSCGABannersSize) -> GADAdSize {
+	public static func createBanner(_ size: NSCGABannersSize) -> AdSize {
         switch size {
         case .Banner:
-            return GADAdSizeBanner
+					return AdSizeBanner
         case .FullBanner:
-            return GADAdSizeFullBanner
+					return AdSizeFullBanner
         case .LargeBanner:
-            return GADAdSizeLargeBanner
+					return AdSizeLargeBanner
         case .LeaderBoard:
-            return GADAdSizeLeaderboard
+					return AdSizeLeaderboard
         case .MediumRectangle:
-            return GADAdSizeMediumRectangle
+					return AdSizeMediumRectangle
         case .Fluid:
-            return GADAdSizeFluid
+					return AdSizeFluid
         case .WideSkyScraper:
-            return GADAdSizeSkyscraper
+					return AdSizeSkyscraper
         case .Invalid:
-            return GADAdSizeInvalid
+					return AdSizeInvalid
         }
     }
 }
