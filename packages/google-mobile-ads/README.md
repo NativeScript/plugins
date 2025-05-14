@@ -12,42 +12,43 @@ The `@nativescript/google-mobile-ads` plugin currently supports loading and disp
 
 ## Contents
 
-- [Installation](#installation)
-- [Setup Admob for iOS](#setup-admob-for-ios)
-- [Setup Admob for Android](#setup-admob-for-android)
-- [Use @nativescript/google-mobile-ads](#use-nativescriptgoogle-mobile-ads)
-  - [Initialize the Mobile Ads SDK](#1-initialize-the-mobile-ads-sdk)
-  - [Add your preferred ad format to the app](#2-add-your-preferred-ad-format-to-the-app)
-  - [Banner ads](#banner-ads)
-    - [Testing Banner ads in development mode](#testing-banner-ads-in-development-mode)
-    - [Instantiate a Banner ad](#instantiate-a-banner-ad)
-    - [Add Banner ad in NativeScript Core](#add-banner-ad-in-nativescript-core)
-    - [Add Banner ad in NativeScript Angular](#add-banner-ad-in-nativescript-angular)
-    - [Add Banner ad in NativeScript Vue](#add-banner-ad-in-nativescript-vue)
-    - [Customize the banner ad size](#customize-the-banner-ad-size)
-    - [Listen to a banner ad lifecycle events](#listen-to-a-banner-ad-lifecycle-events)
-    - [Display a banner ad to the user](#display-a-banner-ad-to-the-user)
-  - [Add an Interstitial ad](#add-an-interstitial-ad)
-    - [Testing Interstitial ads in development](#testing-an-interstitial-ads-in-development)
-    - [Display an Interstitial ad to the user](#display-an-interstitial-ad-to-the-user)
-    - [Next steps](#next-steps)
-  - [Native ads](#native-ads)
-    - [Add a Native ad to your app](#add-a-native-ad-to-your-app)
-    - [Adding a Native ad in NativeScript Core](#adding-a-native-ad-in-nativescript-core)
-    - [Testing Native ads in development mode](#testing-native-ads-in-development-mode)
-    - [NativeAdOptions interface](#nativeadoptions-interface)
-    - [Next steps](#next-steps-1)
-  - [Rewarded Ads](#rewarded-ads)
-    - [Testing Rewarded ads in development mode](#testing-rewarded-ads-in-development-mode)
-    - [Display a Rewarded ad](#display-a-rewarded-ad)
-    - [Rewarded ad Events](#rewarded-ad-events)
-  - [Targeting](#targeting)
-  - [Child-directed setting](#child-directed-setting)
-  - [For users under the age of consent](#for-users-under-the-age-of-consent)
-  - [Ad content filtering](#ad-content-filtering)
-    <!-- Note: This plugin also supports Google Ad Manager.
-    If you are interested in creating and loading an ad with Ad Manager, follow the same prerequisites, platform setup, mobile ads SDK initialization steps outlined in this documentation. , and then see creating and loading an ad with Ad Manager for further instructions. -->
-    <!-- WHERE are the instructions for Ad Manager? -->
+- [@nativescript/google-mobile-ads](#nativescriptgoogle-mobile-ads)
+	- [Contents](#contents)
+	- [Installation](#installation)
+	- [Setup Admob for iOS](#setup-admob-for-ios)
+	- [Setup Admob for Android](#setup-admob-for-android)
+	- [Use @nativescript/google-mobile-ads](#use-nativescriptgoogle-mobile-ads)
+		- [1. Initialize the Mobile Ads SDK](#1-initialize-the-mobile-ads-sdk)
+		- [2. Add your preferred ad format to the app](#2-add-your-preferred-ad-format-to-the-app)
+		- [Banner ads](#banner-ads)
+			- [Testing Banner ads in development mode](#testing-banner-ads-in-development-mode)
+			- [Add Banner ad in NativeScript Core](#add-banner-ad-in-nativescript-core)
+			- [Add Banner ad in NativeScript Angular](#add-banner-ad-in-nativescript-angular)
+			- [Add Banner ad in NativeScript Vue](#add-banner-ad-in-nativescript-vue)
+			- [Customize the banner ad size](#customize-the-banner-ad-size)
+			- [Listen to a banner ad lifecycle events](#listen-to-a-banner-ad-lifecycle-events)
+		- [Display a banner ad to the user](#display-a-banner-ad-to-the-user)
+		- [Add an Interstitial ad](#add-an-interstitial-ad)
+			- [Testing Interstitial ads in development](#testing-interstitial-ads-in-development)
+		- [Display an Interstitial ad to the user](#display-an-interstitial-ad-to-the-user)
+			- [Next steps](#next-steps)
+	- [Native Ads](#native-ads)
+		- [Adding a Native ad in NativeScript Core](#adding-a-native-ad-in-nativescript-core)
+		- [Testing Native ads in development mode](#testing-native-ads-in-development-mode)
+		- [NativeAdOptions interface](#nativeadoptions-interface)
+			- [AdChoicesPlacement](#adchoicesplacement)
+			- [videoOptions](#videooptions)
+			- [MediaAspectRatio](#mediaaspectratio)
+		- [Next steps](#next-steps-1)
+	- [Rewarded Ads](#rewarded-ads)
+		- [Testing Rewarded ads in development mode](#testing-rewarded-ads-in-development-mode)
+		- [Display a Rewarded ad](#display-a-rewarded-ad)
+			- [Rewarded ad Events](#rewarded-ad-events)
+		- [Targeting](#targeting)
+		- [Child-directed ads setting](#child-directed-ads-setting)
+		- [Handle ads requests for users under the age of consent](#handle-ads-requests-for-users-under-the-age-of-consent)
+		- [Ad content filtering](#ad-content-filtering)
+	- [License](#license)
 
 ## Installation
 
@@ -64,6 +65,13 @@ Update your `Info.plist` file at `App_Resources/iOS` with a `GADApplicationIdent
 ```xml
 <key>GADApplicationIdentifier</key>
 <string>ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy</string>
+```
+
+Also add the `NSUserTrackingUsageDescription` key.
+
+```xml
+<key>NSUserTrackingUsageDescription</key>
+<string>This identifier will be used to deliver personalized ads to you.</string>
 ```
 
 For more information about configuring the `Info.plist` and setting up your App ID, see [Update your Info.plist](https://developers.google.com/admob/ios/quick-start#update%5C_your%5C_infoplist).
