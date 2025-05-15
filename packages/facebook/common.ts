@@ -26,6 +26,14 @@ export interface IAccessToken {
 	readonly userID: string;
 }
 
+export interface IAuthenticationToken {
+	readonly graphDomain: string;
+
+	readonly nonce: string;
+
+	readonly tokenString: string;
+}
+
 export interface ILoginResult {
 	readonly declinedPermissions: string[];
 
@@ -34,4 +42,6 @@ export interface ILoginResult {
 	readonly isCancelled: boolean;
 
 	readonly token: IAccessToken;
+
+	readonly authenticationToken: IAuthenticationToken;
 }
