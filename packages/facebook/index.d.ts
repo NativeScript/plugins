@@ -1,4 +1,4 @@
-import { IAccessToken, ILoginResult } from './common';
+import { IAccessToken, IAuthenticationToken, ILoginResult } from './common';
 export declare class FacebookError extends Error {
 	readonly native: any;
 }
@@ -39,6 +39,22 @@ export declare class AccessToken implements IAccessToken {
 	readonly ios;
 }
 
+export declare class AuthenticationToken implements IAuthenticationToken {
+	readonly graphDomain: string;
+
+	readonly tokenString: string;
+
+	readonly nonce: string;
+
+	static currentAuthenticationToken(): AuthenticationToken;
+
+	readonly native;
+
+	readonly android;
+
+	readonly ios;
+}
+
 export declare class LoginResult implements ILoginResult {
 	readonly declinedPermissions: string[];
 
@@ -47,6 +63,8 @@ export declare class LoginResult implements ILoginResult {
 	readonly isCancelled: boolean;
 
 	readonly token: AccessToken;
+
+	readonly authenticationToken: AuthenticationToken;
 
 	readonly native;
 
