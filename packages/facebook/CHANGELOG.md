@@ -1,3 +1,15 @@
+## 3.1.0 (2025-05-16)
+
+### 🚀 Features
+
+- **facebook:** add authenticationToken to LoginResult ([#624](https://github.com/NativeScript/plugins/pull/624))
+
+### ❤️ Thank You
+
+- felixkrautschuk
+- Nathan Walker
+- Osei Fortune @triniwiz
+
 # 3.0.0 (2025-03-03)
 
 ### 🚀 Features
