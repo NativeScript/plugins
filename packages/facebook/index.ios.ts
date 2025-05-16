@@ -141,7 +141,7 @@ export class AuthenticationToken {
 	}
 
 	get graphDomain(): string {
-		return FBSDKAuthenticationToken.tokenCache.authenticationToken.graphDomain;
+		return FBSDKAuthenticationToken.tokenCache?.authenticationToken?.graphDomain;
 	}
 
 	get nonce(): string {
