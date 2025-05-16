@@ -1,4 +1,4 @@
-import { IAdmob, IInterstitialAd, IRewardedAd, BannerAdBase, IRewardedInterstitialAd, RewardedAdEventType, MaxAdContentRating, ServerSideVerificationOptions } from './common';
+import { IInterstitialAd, IRewardedAd, BannerAdBase, BannerAdSizeBase, IRewardedInterstitialAd, RewardedAdEventType, MaxAdContentRating, ServerSideVerificationOptions } from './common';
 
 export { MaxAdContentRating, RewardedAdEventType };
 
@@ -173,11 +173,11 @@ export declare class BannerAd extends BannerAdBase {
 
 	isLoading(): boolean;
 
-	on(event: 'adClicked', callback: (args: any) => void, thisArg?: any);
-	on(event: 'adLoaded', callback: (args: any) => void, thisArg?: any);
-	on(event: 'adClosed', callback: (args: any) => void, thisArg?: any);
-	on(event: 'adImpression', callback: (args: any) => void, thisArg?: any);
-	on(event: 'adFailedToLoad', callback: (args: any) => void, thisArg?: any);
+	on(event: 'adClicked', callback: (args: any) => void, thisArg?: any): any;
+	on(event: 'adLoaded', callback: (args: any) => void, thisArg?: any): any;
+	on(event: 'adClosed', callback: (args: any) => void, thisArg?: any): any;
+	on(event: 'adImpression', callback: (args: any) => void, thisArg?: any): any;
+	on(event: 'adFailedToLoad', callback: (args: any) => void, thisArg?: any): any;
 }
 
 export declare class BannerAdSize extends BannerAdSizeBase {
@@ -201,21 +201,21 @@ export declare class BannerAdSize extends BannerAdSizeBase {
 
 	static readonly SEARCH: BannerAdSize;
 
-	static createAnchoredAdaptiveBanner(width: number, orientation: 'portrait' | 'landscape' | 'device' = 'device'): BannerAdSize;
+	static createAnchoredAdaptiveBanner(width: number, orientation: 'portrait' | 'landscape' | 'device'): BannerAdSize;
 
-	static createInLineAdaptiveBanner(width: number, maxHeight: number = 0, orientation: 'portrait' | 'landscape' | 'device' = 'device'): BannerAdSize;
+	static createInLineAdaptiveBanner(width: number, maxHeight: number, orientation: 'portrait' | 'landscape' | 'device'): BannerAdSize;
 
 	readonly native: any;
 	readonly android: any;
 	readonly ios: any;
 }
 
-export declare class Admob implements IAdmob {
+export declare class MobileAds implements IMobileAds {
 	readonly app: any;
 
 	static init(): Promise<{ [key: string]: AdapterStatus }>;
 
-	static getInstance(): Admob;
+	static getInstance(): MobileAds;
 
 	requestConfiguration: RequestConfiguration;
 

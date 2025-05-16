@@ -15,8 +15,8 @@ The `@nativescript/google-mobile-ads` plugin currently supports loading and disp
 - [@nativescript/google-mobile-ads](#nativescriptgoogle-mobile-ads)
 	- [Contents](#contents)
 	- [Installation](#installation)
-	- [Setup Admob for iOS](#setup-admob-for-ios)
-	- [Setup Admob for Android](#setup-admob-for-android)
+	- [Setup Mobile Ads for iOS](#setup-mobile-ads-for-ios)
+	- [Setup Mobile Ads for Android](#setup-mobile-ads-for-android)
 	- [Use @nativescript/google-mobile-ads](#use-nativescriptgoogle-mobile-ads)
 		- [1. Initialize the Mobile Ads SDK](#1-initialize-the-mobile-ads-sdk)
 		- [2. Add your preferred ad format to the app](#2-add-your-preferred-ad-format-to-the-app)
@@ -58,7 +58,7 @@ To install `@nativescript/google-mobile-ads`, run the following command in the r
 npm install @nativescript/google-mobile-ads
 ```
 
-## Setup Admob for iOS
+## Setup Mobile Ads for iOS
 
 Update your `Info.plist` file at `App_Resources/iOS` with a `GADApplicationIdentifier` key with a string value of your AdMob app ID ([identified in the AdMob UI](https://support.google.com/admob/answer/7356431)).
 
@@ -76,7 +76,7 @@ Also add the `NSUserTrackingUsageDescription` key.
 
 For more information about configuring the `Info.plist` and setting up your App ID, see [Update your Info.plist](https://developers.google.com/admob/ios/quick-start#update%5C_your%5C_infoplist).
 
-## Setup Admob for Android
+## Setup Mobile Ads for Android
 
 Add AdMob App ID ([identified in the AdMob UI](https://support.google.com/admob/answer/7356431)) to the app's `AndroidManifest.xml` file, found at `App_Resources/Android/src/main`. Failure to do so will result in a crash on app launch. Add the ID by adding a `<meta-data>` tag with name `com.google.android.gms.ads.APPLICATION_ID`, as shown below. For `android:value` insert your own AdMob App ID in quotes.
 
@@ -169,14 +169,14 @@ export function loadBanner(args) {
 
 #### Add Banner ad in NativeScript Angular
 
-Register the `BannerAd` view by adding its `AdmobModule` to the `imports` array of the `@NgModule` decorator of the component where you want to use the view.
+Register the `BannerAd` view by adding its `MobileAdsModule` to the `imports` array of the `@NgModule` decorator of the component where you want to use the view.
 
 ```ts
-import { AdmobModule } from '@nativescript/google-mobile-ads/angular';
+import { MobileAdsModule } from '@nativescript/google-mobile-ads/angular';
 
 @NgModule({
     imports: [
-    AdmobModule
+    	MobileAdsModule
     ],
     declarations: [
         AppComponent
@@ -201,11 +201,11 @@ Register the `BannerAd` view in the `app.ts` file as follows:
 
 ```ts
 import { createApp } from 'nativescript-vue';
-import Admob from '@nativescript/google-mobile-ads/vue';
+import MobileAds from '@nativescript/google-mobile-ads/vue';
 import Home from './components/Home.vue';
 
 const app = createApp(Home);
-app.use(Admob);
+app.use(MobileAds);
 ```
 
 And then add it to markup as follows. The `BannerAd` requires the following attributes to be set:
@@ -424,7 +424,7 @@ To add a Native ad to your {N} Core app, follow these steps:
 
 ```xml
 <Page xmlns:ui="@nativescript/google-mobile-ads">
-  <ActionBar title="Admob" />
+  <ActionBar title="Mobile Ads" />
   <StackLayout>
     <ui:NativeAdView height="400" loaded="{{nativeAdLoaded}}" />
   </StackLayout>
@@ -709,7 +709,7 @@ If the tags to enable the Child-directed setting and `tagForUnderAgeOfConsent`ar
 
 This setting can be set via `RequestConfiguration.maxAdContentRating`:
 
-AdMob ads returned for these requests have a content rating at or below that level. The possible values for this network extra are based on [digital content label classifications](https://support.google.com/admob/answer/7562142), and should be one of the following MaxAdContentRating objects:
+Mobile ads returned for these requests have a content rating at or below that level. The possible values for this network extra are based on [digital content label classifications](https://support.google.com/admob/answer/7562142), and should be one of the following MaxAdContentRating objects:
 
 - MaxAdContentRating.G
 - MaxAdContentRating.PG

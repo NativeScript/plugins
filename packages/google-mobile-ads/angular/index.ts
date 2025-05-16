@@ -13,9 +13,8 @@ export * from './media-view-directive';
 	declarations: [BannerAdDirective, NativeAdViewDirective, MediaViewDirective],
 	exports: [BannerAdDirective, NativeAdViewDirective, MediaViewDirective],
 })
-// @ts-ignore
-export class AdmobModule {}
+export class MobileAdsModule {}
 
-registerElement('NativeAdView', () => require('@nativescript/firebase-admob').NativeAdView);
-registerElement('BannerAd', () => require('@nativescript/firebase-admob').BannerAd);
-registerElement('MediaView', () => require('@nativescript/firebase-admob').MediaView);
+registerElement('NativeAdView', () => require('@nativescript/google-mobile-ads').NativeAdView);
+registerElement('BannerAd', () => require('@nativescript/google-mobile-ads').BannerAd);
+registerElement('MediaView', () => require('@nativescript/google-mobile-ads').MediaView);
