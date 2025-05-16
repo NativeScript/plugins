@@ -1,3 +1,13 @@
+## 5.0.2 (2025-05-16)
+
+### 🩹 Fixes
+
+- **google-mobile-ads:** index types ([535648a](https://github.com/NativeScript/plugins/commit/535648a))
+
+### ❤️ Thank You
+
+- Nathan Walker
+
 ## 5.0.1 (2025-05-14)
 
 ### 🩹 Fixes
