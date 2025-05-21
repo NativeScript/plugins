@@ -38,8 +38,8 @@ public class TNSGA:NSObject {
     }
     
 
-    @objc(AdLoaderAdType)
-    public enum AdLoaderAdType: Int, RawRepresentable {
+    @objc(NSCAdLoaderAdType)
+    public enum NSCAdLoaderAdType: Int, RawRepresentable {
         case CustomNative
         case GAMBanner
         case Native
@@ -47,11 +47,12 @@ public class TNSGA:NSObject {
         
         public init?(rawValue: String) {
             switch rawValue {
-						case AdLoaderAdType.CustomNative.rawValue:
+						
+						case AdLoaderAdType.customNative.rawValue:
                 self = .CustomNative
-						case AdLoaderAdType.GAMBanner.rawValue:
+						case AdLoaderAdType.adManagerBanner.rawValue:
                 self = .GAMBanner
-						case AdLoaderAdType.Native.rawValue:
+						case AdLoaderAdType.native.rawValue:
                 self = .Native
             default:
                 return nil
@@ -61,16 +62,16 @@ public class TNSGA:NSObject {
         public var rawValue: RawValue {
             switch self {
             case .CustomNative:
-								return AdLoaderAdType.CustomNative.rawValue
+								return AdLoaderAdType.customNative.rawValue
             case .GAMBanner:
-                return AdLoaderAdType.GAMBanner.rawValue
+                return AdLoaderAdType.adManagerBanner.rawValue
             case .Native:
-                return AdLoaderAdType.Native.rawValue
+                return AdLoaderAdType.native.rawValue
             }
         }
     }
     
-    public static func AdLoaderAdTypeToString(_ type: AdLoaderAdType) -> String {
+    public static func AdLoaderAdTypeToString(_ type: NSCAdLoaderAdType) -> String {
         return type.rawValue
     }
     
