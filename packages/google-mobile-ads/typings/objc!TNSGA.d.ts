@@ -16,7 +16,7 @@ declare const enum NSCGABannersSize {
 	Invalid = 7,
 }
 
-declare const enum AdLoaderAdType {
+declare const enum NSCAdLoaderAdType {
 	CustomNative = 0,
 
 	GAMBanner = 1,
@@ -39,7 +39,7 @@ declare class TNSGA extends NSObject {
 
 	static createInlineAdaptiveBanner(width: number, maxHeight: number, orientation: Orientation): GADAdSize;
 
-	static AdLoaderAdTypeToString(type: AdLoaderAdType): string;
+	static AdLoaderAdTypeToString(type: NSCAdLoaderAdType): string;
 
 	static new(): TNSGA; // inherited from NSObject
 

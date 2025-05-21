@@ -6,8 +6,6 @@ import { ManagerRequestOptions, RequestOptions, AdEventListener } from '..';
 import { NativeAdEventListener, NativeAdViewBase, MediaViewBase, mediaContentProperty, stretchProperty, MediaAspectRatio, AdChoicesPlacement, VideoStatus, NativeAdEventType } from './common';
 import { IMediaContent, IMuteThisAdReason, INativeAd, INativeAdImage, IVideoController, NativeAdOptions, UnconfirmedClickListener, INativeAdLoader } from '.';
 
-declare const AdLoaderAdType;
-
 export { AdChoicesPlacement, AdEventType, VideoStatus, MediaAspectRatio, NativeAdEventType };
 
 export class NativeAdView extends NativeAdViewBase implements AddChildFromBuilder {
@@ -262,7 +260,7 @@ export class NativeAdLoader implements INativeAdLoader {
 			options.push(numberOfAds);
 		}
 
-		this._native = GADAdLoader.alloc().initWithAdUnitIDRootViewControllerAdTypesOptions(this._adUnitId, topViewController(), [TNSGA.AdLoaderAdTypeToString(AdLoaderAdType.Native)], options);
+		this._native = GADAdLoader.alloc().initWithAdUnitIDRootViewControllerAdTypesOptions(this._adUnitId, topViewController(), [TNSGA.AdLoaderAdTypeToString(NSCAdLoaderAdType.Native)], options);
 		this._native.delegate = this._delegate;
 
 		if (arg) {
