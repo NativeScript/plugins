@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/google-mobile-ads",
-	"version": "5.0.2",
+	"version": "5.0.3",
 	"description": "NativeScript Google mobile Ads",
 	"main": "index",
 	"types": "index.d.ts",

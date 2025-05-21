@@ -1,3 +1,13 @@
+## 5.0.3 (2025-05-21)
+
+### 🩹 Fixes
+
+- **google-mobile-ads:** adLoader ([#626](https://github.com/NativeScript/plugins/pull/626))
+
+### ❤️ Thank You
+
+- Osei Fortune @triniwiz
+
 ## 5.0.2 (2025-05-16)
 
 ### 🩹 Fixes
