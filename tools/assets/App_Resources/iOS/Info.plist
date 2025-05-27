@@ -100,5 +100,9 @@
     <string>749673967192-c24phj29u2otpict36e71ocjo2g5i3hs.apps.googleusercontent.com</string>
     <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
     <false/>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-3940256099942544~3347511713</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to deliver personalized ads to you.</string>
   </dict>
 </plist>

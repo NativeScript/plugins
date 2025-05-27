@@ -35,24 +35,6 @@ module.exports = {
 					description: '⚆  Run Android  🤖',
 				},
 			},
-			'...Angular...': {
-				script: `npx cowsay "Test all the Angles!"`,
-				description: ` 🔻 Angular`,
-			},
-			'demo-angular': {
-				clean: {
-					script: 'nx clean demo-angular',
-					description: '⚆  Clean  🧹',
-				},
-				ios: {
-					script: 'nx debug demo-angular ios',
-					description: '⚆  Run iOS  ',
-				},
-				android: {
-					script: 'nx debug demo-angular android',
-					description: '⚆  Run Android  🤖',
-				},
-			},
 		},
 		'⚙️': {
 			script: `npx cowsay "@nativescript/* packages will keep your ⚙️ cranking"`,

@@ -1,4 +1,3 @@
-/// <reference path="../../../packages/iqkeyboardmanager/index.d.ts" />
 import { Dialogs, Page, TextView, isIOS } from '@nativescript/core';
 import { DemoSharedBase } from '../utils';
 import { validate } from 'email-validator';

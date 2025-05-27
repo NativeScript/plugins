@@ -1,4 +1,0 @@
-hooks
-platforms
-!webpack.config.js
-!tailwind.config.js
