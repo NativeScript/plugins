@@ -45,6 +45,8 @@
 			"@nativescript/geolocation": ["packages/geolocation/index.d.ts"],
 			"@nativescript/google-maps": ["packages/google-maps/index.d.ts"],
 			"@nativescript/google-maps/angular": ["packages/google-maps/angular/index.ts"],
+			"@nativescript/google-mobile-ads": ["packages/google-mobile-ads/index.d.ts"],
+			"@nativescript/google-mobile-ads/angular": ["packages/google-mobile-ads/angular/index.ts"],
 			"@nativescript/google-signin": ["packages/google-signin/index.d.ts"],
 			"@nativescript/haptics": ["packages/haptics/index.d.ts"],
 			"@nativescript/imagepicker": ["packages/imagepicker/index.d.ts"],
@@ -62,9 +64,7 @@
 			"@nativescript/social-share": ["packages/social-share/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"],
-			"@nativescript/google-mobile-ads": ["packages/google-mobile-ads/index.d.ts"],
-			"@nativescript/google-mobile-ads/angular": ["packages/google-mobile-ads/angular/index.ts"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

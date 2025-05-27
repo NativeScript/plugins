@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
-		"setup": "npx rimraf node_modules package-lock.json dist tmp yarn.lock && yarn",
+		"setup": "npx rimraf node_modules package-lock.json dist tmp yarn.lock && npm install",
 		"start": "nps",
 		"add": "nx g @nativescript/plugin-tools:add-package",
 		"add-angular": "nx g @nativescript/plugin-tools:add-angular",
@@ -28,10 +28,10 @@
 		"@angular/router": "^19.0.0",
 		"@nativescript-community/perms": "^2.3.1",
 		"@nativescript/angular": "^19.0.0",
-		"@nativescript/core": "~8.8.0",
-		"@nativescript/plugin-tools": "5.5.1",
+		"@nativescript/core": "~8.9.0",
+		"@nativescript/plugin-tools": "5.5.3",
 		"@nativescript/tailwind": "^2.1.0",
-		"@nativescript/types": "~8.8.0",
+		"@nativescript/types": "~8.9.0",
 		"@nativescript/webpack": "~5.0.22",
 		"@ngtools/webpack": "^19.0.0",
 		"@types/mkdirp": "^1.0.1",
@@ -58,6 +58,5 @@
 			"npx prettier --write"
 		]
 	},
-	"dependencies": {},
-	"packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+	"dependencies": {}
 }

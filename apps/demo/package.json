@@ -4,7 +4,7 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
-		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/core": "*",
 		"@nativescript/camera": "file:../../packages/camera",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
@@ -42,8 +42,8 @@
 		"@nativescript/google-mobile-ads": "file:../../packages/google-mobile-ads"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.8.0",
-		"@nativescript/ios": "~8.8.0",
+		"@nativescript/android": "~8.9.0",
+		"@nativescript/ios": "~8.9.0",
 		"@nativescript/tailwind": "~2.1.0",
 		"tailwindcss": "~3.4.0"
 	}
