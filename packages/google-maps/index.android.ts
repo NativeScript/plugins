@@ -1,5 +1,4 @@
 import { Application, Color, Device, EventData, GridLayout, ImageSource, Utils, View } from '@nativescript/core';
-import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
 	ActiveLevelEvent,
@@ -48,6 +47,8 @@ import {
 import { bearingProperty, preventDefaultMarkerTapBehaviorProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 
 import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, deserialize, serialize } from './utils';
+
+export { hueFromColor, intoNativeMarkerOptions } from './utils';
 
 function fromPatternImages(pattern: java.util.List<com.google.android.gms.maps.model.PatternItem>) {
 	const images: PatternItem[] = [];
@@ -350,7 +351,7 @@ export class MapView extends MapViewBase {
 								});
 							}
 						},
-					})
+					}),
 				);
 
 				if (owner) {
@@ -512,14 +513,14 @@ export class MapView extends MapViewBase {
 			zoom?;
 			tilt?;
 			bearing?;
-		}
+		},
 	) {
 		const googleMap = GoogleMap.fromNative(map);
 		if (googleMap) {
 			const position = CameraPosition.fromNative(map.getCameraPosition());
 
 			let changed = false;
-			if (!isNullOrUndefined(owner.lat)) {
+			if (!Utils.isNullOrUndefined(owner.lat)) {
 				position.target = {
 					lat: typeof owner.lat === 'string' ? parseFloat(owner.lat) : owner.lat,
 					lng: position.target.lng,
@@ -527,7 +528,7 @@ export class MapView extends MapViewBase {
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.lng)) {
+			if (!Utils.isNullOrUndefined(owner.lng)) {
 				position.target = {
 					lat: position.target.lat,
 					lng: typeof owner.lng === 'string' ? parseFloat(owner.lng) : owner.lng,
@@ -535,17 +536,17 @@ export class MapView extends MapViewBase {
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.zoom)) {
+			if (!Utils.isNullOrUndefined(owner.zoom)) {
 				position.zoom = typeof owner.zoom === 'string' ? parseFloat(owner.zoom) : owner.zoom;
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.tilt)) {
+			if (!Utils.isNullOrUndefined(owner.tilt)) {
 				position.tilt = typeof owner.tilt === 'string' ? parseFloat(owner.tilt) : owner.tilt;
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.bearing)) {
+			if (!Utils.isNullOrUndefined(owner.bearing)) {
 				position.bearing = typeof owner.bearing === 'string' ? parseFloat(owner.bearing) : owner.bearing;
 				changed = true;
 			}
@@ -568,7 +569,7 @@ export class MapView extends MapViewBase {
 
 					return preventDefaultMarkerTapBehavior;
 				},
-			})
+			}),
 		);
 	}
 }
@@ -951,7 +952,7 @@ export class GoogleMap implements IGoogleMap {
 					onSnapshotReady(ss: android.graphics.Bitmap): void {
 						resolve(new ImageSource(ss));
 					},
-				})
+				}),
 			);
 		});
 	}
