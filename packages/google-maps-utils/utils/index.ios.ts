@@ -2,6 +2,8 @@ import { GoogleMap } from '@nativescript/google-maps';
 import { ClusterRenderer, HeatmapOptions, IGradient } from '..';
 import { intoNativeHeatmapGradient } from './common';
 
+export * from './common';
+
 export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 	if (!options.coordinates) {
 		return;
