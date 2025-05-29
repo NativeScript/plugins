@@ -37,7 +37,9 @@
 		"**/packages/social-share": false,
 		"**/packages/theme-switcher": false,
 		"**/packages/twitter": false,
-		"**/packages/zip": false
+		"**/packages/zip": false,
+		"**/packages/google-maps-utils": false,
+		"**/packages/google-mobile-ads": false
 	},
 	"search.exclude": {
 		"**/apps/demo": false,
@@ -77,6 +79,8 @@
 		"**/packages/social-share": false,
 		"**/packages/theme-switcher": false,
 		"**/packages/twitter": false,
-		"**/packages/zip": false
+		"**/packages/zip": false,
+		"**/packages/google-maps-utils": false,
+		"**/packages/google-mobile-ads": false
 	}
 }
