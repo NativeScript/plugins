@@ -4,6 +4,9 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
+		"@nativescript/google-maps": "file:../../packages/google-maps",
+		"@nativescript/google-maps-utils": "file:../../packages/google-maps-utils",
+		"@nativescript/jetpack-compose": "file:../../packages/jetpack-compose",
 		"@nativescript/core": "*",
 		"@nativescript/camera": "file:../../packages/camera",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
@@ -23,7 +26,6 @@
 		"@nativescript/facebook": "file:../../packages/facebook",
 		"@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
 		"@nativescript/geolocation": "file:../../packages/geolocation",
-		"@nativescript/google-maps": "file:../../packages/google-maps",
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/haptics": "file:../../packages/haptics",
 		"@nativescript/imagepicker": "file:../../packages/imagepicker",

@@ -48,7 +48,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android.setInnerContourSize(0);
 		this.android.setText(this.text);
 		this.android.setTextColor(this._textColor.argb);
-		if(this._textSize !== 0){
+		if (this._textSize !== 0) {
 			this.android.setTextSize(this._textSize);
 		}
 		if (this.animated) {
@@ -329,8 +329,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		}
 	}
 
-	private getNumber(value: number | string){
-		return typeof value === 'string' ? parseInt(value) : value
+	private getNumber(value: number | string) {
+		return typeof value === 'string' ? parseInt(value) : value;
 	}
 }
 

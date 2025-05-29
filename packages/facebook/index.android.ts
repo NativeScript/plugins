@@ -301,7 +301,7 @@ export class LoginManager implements ILoginManager {
 					onError(param0: com.facebook.FacebookException) {
 						reject(FacebookError.fromNative(param0 as any));
 					},
-				}),
+				})
 			);
 			this.#native.logIn(<android.app.Activity>context || Application.android.foregroundActivity || Application.android.startActivity, java.util.Arrays.asList(permissions));
 		});

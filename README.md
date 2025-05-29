@@ -17,6 +17,7 @@
 - [@nativescript/fingerprint-auth](packages/fingerprint-auth/README.md)
 - [@nativescript/geolocation](packages/geolocation/README.md)
 - [@nativescript/google-maps](packages/google-maps/README.md)
+- [@nativescript/google-maps-utils](packages/google-maps-utils/README.md)
 - [@nativescript/google-mobile-ads](packages/google-mobile-ads/README.md)
 - [@nativescript/google-signin](packages/google-signin/README.md)
 - [@nativescript/haptics](packages/haptics/README.md)

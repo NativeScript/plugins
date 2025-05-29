@@ -121,7 +121,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 						success: (notification) => {
 							onReceived(JSON.parse(notification));
 						},
-					}),
+					})
 				);
 				resolve();
 			} catch (ex) {
@@ -140,7 +140,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 						success: (notification) => {
 							onReceived(JSON.parse(notification));
 						},
-					}),
+					})
 				);
 				resolve();
 			} catch (ex) {

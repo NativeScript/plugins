@@ -24,6 +24,7 @@
       <Button text="fingerprint-auth" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
       <Button text="geolocation" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
       <Button text="google-maps" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
+      <Button text="google-maps-utils" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
       <Button text="google-signin" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
       <Button text="haptics" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>
       <Button text="imagepicker" tap="{{ viewDemo }}" class="bg-blue-500 rounded-full text-white p-4 mb-4"/>

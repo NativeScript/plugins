@@ -260,6 +260,20 @@ module.exports = {
 					description: '@nativescript/contacts: Build',
 				},
 			},
+			// @nativescript/ionic-portals
+			'ionic-portals': {
+				build: {
+					script: 'nx run ionic-portals:build.all',
+					description: '@nativescript/ionic-portals: Build',
+				},
+			},
+			// @nativescript/google-maps-utils
+			'google-maps-utils': {
+				build: {
+					script: 'nx run google-maps-utils:build.all',
+					description: '@nativescript/google-maps-utils: Build',
+				},
+			},
 			// @nativescript/haptics
 			haptics: {
 				build: {
@@ -428,6 +442,14 @@ module.exports = {
 			contacts: {
 				script: 'nx run contacts:focus',
 				description: 'Focus on @nativescript/contacts',
+			},
+			'ionic-portals': {
+				script: 'nx run ionic-portals:focus',
+				description: 'Focus on @nativescript/ionic-portals',
+			},
+			'google-maps-utils': {
+				script: 'nx run google-maps-utils:focus',
+				description: 'Focus on @nativescript/google-maps-utils',
 			},
 			haptics: {
 				script: 'nx run haptics:focus',

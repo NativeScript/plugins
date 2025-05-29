@@ -18,6 +18,7 @@ export * from './facebook';
 export * from './fingerprint-auth';
 export * from './geolocation';
 export * from './google-maps';
+export * from './google-maps-utils';
 export * from './google-mobile-ads';
 export * from './google-signin';
 export * from './haptics';
