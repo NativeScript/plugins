@@ -1,7 +1,7 @@
 {
 	"name": "@nativescript/google-maps-utils",
 	"version": "1.0.0",
-	"description": "Add a plugin description",
+	"description": "Google Maps Utilities for NativeScript",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
@@ -21,13 +21,18 @@
 		"iOS",
 		"Android"
 	],
-	"devDependencies": {
-		"@types/geojson": "^7946.0.7"
+	"dependencies": {
+		"geojson": "^0.5.0"
 	},
 	"author": {
-		"name": "NativeScript",
-		"email": "oss@nativescript.org"
+		"name": "Dylan Llewellyn"
 	},
+	"contributors": [
+		{
+			"name": "NativeScript",
+			"email": "oss@nativescript.org"
+		}
+	],
 	"bugs": {
 		"url": "https://github.com/NativeScript/plugins/issues"
 	},

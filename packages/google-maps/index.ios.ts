@@ -1,5 +1,4 @@
 import { Color, EventData, GridLayout, ImageSource, Screen, Utils, View } from '@nativescript/core';
-import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
 	ActiveLevelEvent,
@@ -47,7 +46,8 @@ import {
 } from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
-import { layout } from '@nativescript/core/utils';
+
+export { hueFromColor, intoNativeMarkerOptions } from './utils';
 
 const native_ = Symbol('[[native]]');
 
@@ -479,8 +479,8 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 					container.addChild(event.view);
 				}
 
-				const w = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
-				const h = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const w = Utils.layout.makeMeasureSpec(500 * Screen.mainScreen.scale, Utils.layout.AT_MOST);
+				const h = Utils.layout.makeMeasureSpec(500 * Screen.mainScreen.scale, Utils.layout.AT_MOST);
 				const size = View.measureChild(container, event.view, w, h);
 
 				View.layoutChild(container, event.view, 0, 0, size.measuredWidth, size.measuredHeight);
@@ -532,8 +532,8 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 					container.addChild(event.view);
 				}
 
-				const w = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
-				const h = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const w = Utils.layout.makeMeasureSpec(500 * Screen.mainScreen.scale, Utils.layout.AT_MOST);
+				const h = Utils.layout.makeMeasureSpec(500 * Screen.mainScreen.scale, Utils.layout.AT_MOST);
 				const size = View.measureChild(container, event.view, w, h);
 
 				View.layoutChild(container, event.view, 0, 0, size.measuredWidth, size.measuredHeight);
@@ -733,14 +733,14 @@ export class MapView extends MapViewBase {
 			zoom?;
 			tilt?;
 			bearing?;
-		}
+		},
 	) {
 		const googleMap = GoogleMap.fromNative(map);
 		if (googleMap) {
 			const position = CameraPosition.fromNative(map.camera);
 
 			let changed = false;
-			if (!isNullOrUndefined(owner.lat)) {
+			if (!Utils.isNullOrUndefined(owner.lat)) {
 				position.target = {
 					lat: typeof owner.lat === 'string' ? parseFloat(owner.lat) : owner.lat,
 					lng: position.target.lng,
@@ -748,7 +748,7 @@ export class MapView extends MapViewBase {
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.lng)) {
+			if (!Utils.isNullOrUndefined(owner.lng)) {
 				position.target = {
 					lat: position.target.lat,
 					lng: typeof owner.lng === 'string' ? parseFloat(owner.lng) : owner.lng,
@@ -756,17 +756,17 @@ export class MapView extends MapViewBase {
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.zoom)) {
+			if (!Utils.isNullOrUndefined(owner.zoom)) {
 				position.zoom = typeof owner.zoom === 'string' ? parseFloat(owner.zoom) : owner.zoom;
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.tilt)) {
+			if (!Utils.isNullOrUndefined(owner.tilt)) {
 				position.tilt = typeof owner.tilt === 'string' ? parseFloat(owner.tilt) : owner.tilt;
 				changed = true;
 			}
 
-			if (!isNullOrUndefined(owner.bearing)) {
+			if (!Utils.isNullOrUndefined(owner.bearing)) {
 				position.bearing = typeof owner.bearing === 'string' ? parseFloat(owner.bearing) : owner.bearing;
 				changed = true;
 			}

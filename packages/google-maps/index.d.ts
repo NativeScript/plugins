@@ -1,6 +1,8 @@
 import { Color, ImageSource, EventData, View } from '@nativescript/core';
 import { JointType, MapType, MapViewBase } from './common';
 
+export { hueFromColor, intoNativeMarkerOptions } from './utils';
+
 export type FeatureTypeAdministrative = 'administrative' | 'administrative.country' | 'administrative.land_parcel' | 'administrative.locality' | 'administrative.neighborhood' | 'administrative.province';
 
 export type FeatureTypeLandscape = 'landscape' | 'landscape.man_made' | 'landscape.natural' | 'landscape.natural.landcover' | 'landscape.natural.terrain';
