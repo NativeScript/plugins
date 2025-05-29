@@ -1,3 +1,13 @@
+## 1.0.2 (2025-05-29)
+
+### 🚀 Features
+
+- **google-map-utils:** update ios sdk ([#629](https://github.com/NativeScript/plugins/pull/629))
+
+### ❤️ Thank You
+
+- Dylan Llewellyn @herefishyfish
+
 ## 1.0.1 (2025-05-29)
 
 ### 🩹 Fixes
