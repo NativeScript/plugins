@@ -1,5 +1,5 @@
 import { DemoSharedBase } from '../utils';
-import { GeoJsonLayer, HeatmapTileProvider, GoogleMapUtils } from '@nativescript/google-maps-utils';
+import { GeoJsonLayer, HeatmapTileProvider, GoogleMapUtils, ClusterItem } from '@nativescript/google-maps-utils';
 import { Color } from '@nativescript/core';
 import { CameraUpdate, GoogleMap, MapReadyEvent, MarkerOptions } from '@nativescript/google-maps';
 import { installMixins } from '@nativescript/google-maps-utils';
@@ -79,7 +79,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 		this.heatmapProvider.setGradient([
 			{ color: 'red', stop: 0.2 },
 			{ color: 'yellow', stop: 0.5 },
-			{ color: 'black', stop: 0.9 },
+			{ color: 'green', stop: 0.9 },
 		]);
 		// Need to clear cache to show adjustments
 		this.heatmapOverlay.clearTileCache();
@@ -101,6 +101,14 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			clusterSet.push(clusterItem);
 		}
 
-		this.map.clusterManager(clusterSet);
+		const clusterManager = this.map.clusterManager(clusterSet);
+		setTimeout(() => {
+			const clusterItem = new ClusterItem({
+				position: { lat: -32.093407, lng: 116.240609 },
+				title: 'Cluster Marker',
+				snippet: 'This is a cluster marker',
+			});
+			clusterManager.addItem(clusterItem);
+		}, 1000);
 	}
 }
