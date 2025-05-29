@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/facebook",
-	"version": "2.2.0",
+	"version": "3.1.0",
 	"description": "Facebook for your NativeScript applications",
 	"main": "index",
 	"typings": "index.d.ts",

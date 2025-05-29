@@ -21,6 +21,7 @@
 		],
 		"paths": {
 			"@demo/shared": ["tools/demo/index.ts"],
+			"@nativescript/*": ["packages/*"],
 			"@nativescript/animated-circle": ["packages/animated-circle/index.d.ts"],
 			"@nativescript/animated-circle/angular": ["packages/animated-circle/angular/index.ts"],
 			"@nativescript/appavailability": ["packages/appavailability/index.d.ts"],
@@ -45,23 +46,26 @@
 			"@nativescript/google-maps": ["packages/google-maps/index.d.ts"],
 			"@nativescript/google-maps-utils": ["packages/google-maps-utils/index.d.ts"],
 			"@nativescript/google-maps/angular": ["packages/google-maps/angular/index.ts"],
+			"@nativescript/google-mobile-ads": ["packages/google-mobile-ads/index.d.ts"],
+			"@nativescript/google-mobile-ads/angular": ["packages/google-mobile-ads/angular/index.ts"],
 			"@nativescript/google-signin": ["packages/google-signin/index.d.ts"],
 			"@nativescript/haptics": ["packages/haptics/index.d.ts"],
 			"@nativescript/imagepicker": ["packages/imagepicker/index.d.ts"],
 			"@nativescript/ios-security": ["packages/ios-security/index.d.ts"],
 			"@nativescript/iqkeyboardmanager": ["packages/iqkeyboardmanager/index.d.ts"],
+			"@nativescript/keyboard-toolbar": ["packages/keyboard-toolbar/index.d.ts"],
 			"@nativescript/local-notifications": ["packages/local-notifications/index.d.ts"],
 			"@nativescript/localize": ["packages/localize/index.d.ts"],
 			"@nativescript/localize/angular": ["packages/localize/angular/index.ts"],
 			"@nativescript/pdf": ["packages/pdf/index.d.ts"],
 			"@nativescript/picker": ["packages/picker/index.d.ts"],
 			"@nativescript/picker/angular": ["packages/picker/angular/index.ts"],
+			"@nativescript/secure-storage": ["packages/secure-storage/index.d.ts"],
 			"@nativescript/shared-notification-delegate": ["packages/shared-notification-delegate/index.d.ts"],
 			"@nativescript/social-share": ["packages/social-share/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"],
-			"@nativescript/secure-storage": ["packages/secure-storage/index.d.ts"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

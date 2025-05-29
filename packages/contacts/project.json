@@ -5,7 +5,7 @@
 	"sourceRoot": "packages/contacts",
 	"targets": {
 		"build": {
-			"executor": "@nrwl/js:tsc",
+			"executor": "@nx/js:tsc",
 			"options": {
 				"outputPath": "dist/packages/contacts",
 				"tsConfig": "packages/contacts/tsconfig.json",
@@ -37,7 +37,7 @@
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				}
 			]
 		},
@@ -51,11 +51,10 @@
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				},
 				{
-					"target": "build",
-					"projects": "self"
+					"target": "build"
 				}
 			]
 		},
@@ -67,10 +66,7 @@
 			}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"options": {
-				"lintFilePatterns": ["packages/contacts/**/*.ts"]
-			}
+			"executor": "@nx/eslint:lint"
 		}
 	}
 }

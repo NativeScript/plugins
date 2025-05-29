@@ -1,24 +1,32 @@
-import { Color } from '@nativescript/core';
+import { Color, Property, booleanConverter, Utils } from '@nativescript/core';
 import { AnimatedCircleCommon, barColorProperty, rimColorProperty, spinBarColorProperty } from './common';
 
 declare const at;
 
+export const animatedProperty = new Property<AnimatedCircle, boolean>({
+	name: 'animated',
+	valueChanged: (target, old, newValue) => {
+		target.updateAnimatedCircle();
+	},
+	defaultValue: false,
+	valueConverter: booleanConverter,
+});
+
 export class AnimatedCircle extends AnimatedCircleCommon {
-	private _android: any;
+	animated: boolean;
 	private _progress = 0;
 	private _animateFrom = 0;
 	private _animationDuration = 1000;
-	private _animated: boolean;
 	private _maxValue = 100;
 	private _barColor: string | Color = new Color('#3D8FF4');
 	private _barWidth;
 	private _rimColor = new Color('#FF5722');
 	private _rimWidth;
 	private _spinBarColor = new Color('green');
-	private _startAngle: number = 0;
+	private _startAngle = 0;
 	private _text = '';
 	private _textColor = new Color('orange');
-	private _textSize = 8;
+	private _textSize = 0;
 	private _fillColor = new Color('transparent');
 	private _clockwise = true;
 
@@ -39,7 +47,15 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		this.android.setOuterContourSize(0);
 		this.android.setInnerContourSize(0);
 		this.android.setText(this.text);
-		this.android.setValueAnimated(this.progress);
+		this.android.setTextColor(this._textColor.argb);
+		if (this._textSize !== 0) {
+			this.android.setTextSize(this._textSize);
+		}
+		if (this.animated) {
+			this.android.setValueAnimated(this.progress);
+		} else {
+			this.android.setValue(this.progress);
+		}
 		this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		this.android.setRimWidth(this.rimWidth);
 		this.android.setBarWidth(this.barWidth);
@@ -68,8 +84,12 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set progress(value: number) {
-		this._progress = value;
-		this.android?.setValueAnimated(this._progress);
+		this._progress = this.getNumber(value);
+		if (this.animated) {
+			this.android?.setValueAnimated(this._progress);
+		} else {
+			this.android?.setValue(this._progress);
+		}
 	}
 
 	get progress(): number {
@@ -92,15 +112,6 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 
 	get animationDuration(): number {
 		return this._animationDuration;
-	}
-
-	set animated(value: boolean) {
-		this._animated = Boolean(value);
-		this.updateAnimatedCircle();
-	}
-
-	get animated(): boolean {
-		return this._animated;
 	}
 
 	set maxValue(value: number) {
@@ -219,8 +230,8 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 	}
 
 	set textSize(value: number) {
-		this._textSize = value;
-		this.android?.setTextSize(value);
+		this._textSize = Utils.layout.toDevicePixels(this.getNumber(value));
+		this.android?.setTextSize(this._textSize);
 	}
 
 	get textSize() {
@@ -271,7 +282,7 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 		return this._spinBarColor;
 	}
 
-	private updateAnimatedCircle(): void {
+	updateAnimatedCircle(): void {
 		if (this.android) {
 			if (this.animated) {
 				if (this.animateFrom) {
@@ -317,4 +328,10 @@ export class AnimatedCircle extends AnimatedCircleCommon {
 			this.android.setDirection(this.clockwise ? at.grabner.circleprogress.Direction.CW : at.grabner.circleprogress.Direction.CCW);
 		}
 	}
+
+	private getNumber(value: number | string) {
+		return typeof value === 'string' ? parseInt(value) : value;
+	}
 }
+
+animatedProperty.register(AnimatedCircle);

@@ -12,51 +12,31 @@
 				"production": true,
 				"uglify": true,
 				"release": true,
-				"forDevice": true
+				"forDevice": true,
+				"tsConfig": "apps/demo/tsconfig.json"
 			},
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
-				}
-			]
-		},
-		"ios": {
-			"executor": "@nativescript/nx:build",
-			"options": {
-				"platform": "ios",
-				"noHmr": true
-			},
-			"dependsOn": [
-				{
-					"target": "build.all",
-					"projects": "dependencies"
-				}
-			]
-		},
-		"android": {
-			"executor": "@nativescript/nx:build",
-			"options": {
-				"platform": "android",
-				"noHmr": true
-			},
-			"dependsOn": [
-				{
-					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				}
 			]
 		},
 		"clean": {
-			"executor": "@nativescript/nx:build",
-			"options": {
-				"clean": true
-			}
+			"executor": "@nativescript/nx:clean",
+			"options": {}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
+			"executor": "@nx/eslint:lint"
+		},
+		"debug": {
+			"executor": "@nativescript/nx:debug",
 			"options": {
-				"lintFilePatterns": ["apps/demo/**/*.ts"]
+				"noHmr": true,
+				"uglify": false,
+				"release": false,
+				"forDevice": false,
+				"prepare": false
 			}
 		}
 	}

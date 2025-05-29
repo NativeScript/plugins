@@ -119,6 +119,8 @@ declare var FBSDKCrashObserving: {
 };
 
 interface FBSDKDataPersisting {
+	fb_boolForKey(key: string): boolean;
+
 	fb_dataForKey(key: string): NSData;
 
 	fb_integerForKey(key: string): number;
@@ -126,6 +128,8 @@ interface FBSDKDataPersisting {
 	fb_objectForKey(key: string): any;
 
 	fb_removeObjectForKey(key: string): void;
+
+	fb_setBoolForKey(value: boolean, key: string): void;
 
 	fb_setIntegerForKey(integer: number, key: string): void;
 

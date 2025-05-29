@@ -3,7 +3,7 @@
         <ActionBar title="zip" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <Button text="Create Zip file" tap="{{ create }}"/>
         <Button text="Extract Zip File" tap="{{ extract }}"/>
     </StackLayout>

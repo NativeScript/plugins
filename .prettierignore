@@ -3,3 +3,6 @@
 /dist
 /coverage
 native-src
+
+/.nx/cache
+/.nx/workspace-data

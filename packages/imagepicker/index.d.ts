@@ -1,13 +1,13 @@
-import { Observable, ImageSource, ImageAsset, View } from '@nativescript/core';
-
-export class ImagePicker {
+import { ImageSource, ImageAsset, View } from '@nativescript/core';
+import { AuthorizationResult, ImagePickerApi } from './common';
+export class ImagePicker implements ImagePickerApi {
 	constructor(options?: Options);
 
 	/**
 	 * Call this before 'present' to request any additional permissions that may be necessary.
 	 * In case of failed authorization consider notifying the user for degraded functionality.
 	 */
-	authorize(): Promise<void>;
+	authorize(): Promise<AuthorizationResult>;
 
 	/**
 	 * Present the image picker UI.
@@ -56,7 +56,7 @@ export interface ImagePickerSelection {
 	/**
 	 * The duration of the video. Only passed if type is 'video'
 	 */
-	duration?: string;
+	duration?: number;
 
 	/**
 	 * An image to use for the video thumbnail. Only passed if type is 'video'
@@ -79,7 +79,7 @@ interface Options {
 	minimumNumberOfSelection?: number;
 
 	/**
-	 * Set the maximum number of selected assets in iOS
+	 * Set the maximum number of selected assets in iOS, and android using the photo picker option.
 	 */
 	maximumNumberOfSelection?: number;
 
@@ -102,6 +102,16 @@ interface Options {
 	 * Set the number of columns in Landscape in iOS
 	 */
 	numberOfColumnsInLandscape?: number;
+
+	/**
+	 * Set to false on iOS to disable querying thumbnail/filesize for selected assets
+	 */
+	augmentedAssetsInfo?: boolean;
+
+	/**
+	 * Set to true on iOS to wait for controller to be dismissed before resolving
+	 */
+	resolveWhenDismissed?: boolean;
 
 	/**
 	 * Set the media type (image/video/any) to pick
@@ -130,6 +140,10 @@ interface Options {
 		 * Provide a reason for permission request to access external storage on api levels above 23.
 		 */
 		read_external_storage?: string;
+		/**
+		 * Use the Photo Picker on android
+		 */
+		use_photo_picker?: boolean;
 	};
 }
 

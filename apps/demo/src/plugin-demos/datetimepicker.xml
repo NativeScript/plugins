@@ -8,7 +8,7 @@
     </ActionBar>
 
     <ScrollView loaded="{{ scrollViewLoaded }}">
-        <StackLayout class="p-20">
+        <StackLayout class="p-4">
             <Label text="DatePickerField" id="date" class="header" tap="{{ onHeaderTap }}" opacity="{{ dateOpacity }}"/>
             <StackLayout visibility="{{ dateVisibility }}">
                 <Label text="basic usage" class="content"/>

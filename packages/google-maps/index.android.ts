@@ -1,4 +1,4 @@
-import { Application, Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { Application, Color, Device, EventData, GridLayout, ImageSource, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
@@ -19,6 +19,7 @@ import {
 	IGroundOverlay,
 	IIndoorBuilding,
 	IIndoorLevel,
+	ILocation,
 	IMarker,
 	InfoWindowEvent,
 	IPatternItem,
@@ -30,6 +31,7 @@ import {
 	ITileProvider,
 	IUISettings,
 	IVisibleRegion,
+	LocationTapEvent,
 	MapTapEvent,
 	MarkerDragEvent,
 	MarkerInfoEvent,
@@ -43,7 +45,7 @@ import {
 	Style,
 	TileOverlayOptions,
 } from '.';
-import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
+import { bearingProperty, preventDefaultMarkerTapBehaviorProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 
 import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, deserialize, serialize } from './utils';
 
@@ -64,6 +66,60 @@ function intoPatternImages(pattern: PatternItem[]) {
 	return array;
 }
 
+let IS_OREO: boolean;
+export class Location implements ILocation {
+	private _native: android.location.Location;
+	static {
+		IS_OREO = parseInt(Device.sdkVersion) >= 26;
+	}
+	static fromNative(location: android.location.Location): Location {
+		if (location instanceof android.location.Location) {
+			const ret = new Location();
+			ret._native = location;
+			return ret;
+		}
+
+		return null;
+	}
+
+	get native() {
+		return this._native;
+	}
+
+	get android() {
+		return this._native;
+	}
+
+	get altitudeAccuracy(): number {
+		if (IS_OREO && this.native.hasVerticalAccuracy()) {
+			return this.native.getVerticalAccuracyMeters();
+		}
+		return 0;
+	}
+	get accuracy(): number {
+		return this.native.getAccuracy();
+	}
+
+	get coordinate(): Coordinate {
+		return {
+			lat: this.native.getLatitude(),
+			lng: this.native.getLongitude(),
+		};
+	}
+	get timestamp(): Date {
+		return new Date(this.native.getTime());
+	}
+	get altitude(): number {
+		return this.native.getAltitude();
+	}
+	get speed(): number {
+		return this.native.getSpeed();
+	}
+	get heading(): number {
+		return this.native.getBearing();
+	}
+}
+
 export class MapView extends MapViewBase {
 	mapView: com.google.android.gms.maps.MapView;
 	lifeCycleHooks;
@@ -82,6 +138,12 @@ export class MapView extends MapViewBase {
 				(<any>org).nativescript.plugins.google_maps.GoogleMaps.registerMapListeners(
 					map,
 					new (<any>org).nativescript.plugins.google_maps.GoogleMaps.Callback({
+						onMapLoaded() {
+							ref?.get?.().notify({
+								eventName: MapView.mapLoadedEvent,
+								object: ref?.get?.(),
+							});
+						},
 						onCameraEvent(position: com.google.android.gms.maps.model.CameraPosition, event: string, isGesture: boolean) {
 							if (event === 'start') {
 								ref?.get?.().notify(<CameraPositionStartEvent>{
@@ -123,13 +185,6 @@ export class MapView extends MapViewBase {
 										marker: Marker.fromNative(marker),
 									});
 									break;
-								case 'click':
-									ref?.get?.().notify(<MarkerTapEvent>{
-										eventName: MapView.markerTapEvent,
-										object: ref?.get?.(),
-										marker: Marker.fromNative(marker),
-									});
-									break;
 							}
 						},
 						onMapClickEvent(latLng: com.google.android.gms.maps.model.LatLng, isLongClick: boolean) {
@@ -155,9 +210,10 @@ export class MapView extends MapViewBase {
 						},
 						onMyLocationEvent(location?: android.location.Location) {
 							if (location) {
-								ref?.get?.().notify({
-									eventName: MapView.myLocationButtonTapEvent,
+								ref?.get?.().notify(<LocationTapEvent>{
+									eventName: MapView.myLocationTapEvent,
 									object: ref?.get?.(),
+									location: Location.fromNative(location),
 								});
 							} else {
 								ref?.get?.().notify(<EventData>{
@@ -247,21 +303,30 @@ export class MapView extends MapViewBase {
 								if (info) {
 									owner.notify(info);
 									if (info.view instanceof View) {
-										if (!info.view.parent && !info.view?.nativeView) {
-											owner._addView(info.view);
-										}
-										if (info.view.nativeView && !(<any>marker)._view) {
-											(<any>marker)._view = new android.widget.RelativeLayout(owner._context);
-										}
-										const parent = info.view.nativeView?.getParent?.();
-										if (info.view.nativeView && parent !== (<any>marker)._view) {
-											if (parent && parent.removeView) {
-												parent.removeView(info.view.nativeView);
+										let container = (<any>marker)._view as never as GridLayout;
+										if (!container) {
+											container = new GridLayout();
+											(<any>marker)._view = container;
+											const activity = Utils.android.getCurrentActivity();
+											container._setupAsRootView(activity);
+											container._setupUI(activity);
+											container.callLoaded();
+										} else {
+											if (info.view.parent !== container) {
+												container.removeChildren();
 											}
-											const container: android.widget.RelativeLayout = (<any>marker)._view;
-											container.addView(info.view.nativeView);
 										}
-										return (<any>marker)?._view ?? null;
+
+										if (!info.view.parent) {
+											container.addChild(info.view);
+										} else if (info.view.parent !== container) {
+											(<GridLayout>info?.view?.parent)?.removeChild?.(info.view);
+											container.addChild(info.view);
+										}
+
+										return info.view.nativeView;
+									} else if (info.view instanceof android.view.View) {
+										return info.view;
 									}
 								}
 							}
@@ -297,6 +362,7 @@ export class MapView extends MapViewBase {
 						tilt: owner.tilt,
 						zoom: owner.zoom,
 					});
+					owner._setMapClickListener(map, owner.preventDefaultMarkerTapBehavior);
 				}
 
 				ref.get?.().notify?.({
@@ -432,6 +498,12 @@ export class MapView extends MapViewBase {
 		}
 	}
 
+	[preventDefaultMarkerTapBehaviorProperty.setNative](value) {
+		if (this._map) {
+			this._setMapClickListener(this._map, value);
+		}
+	}
+
 	_updateCamera(
 		map,
 		owner: {
@@ -482,6 +554,22 @@ export class MapView extends MapViewBase {
 				googleMap.cameraPosition = position;
 			}
 		}
+	}
+
+	_setMapClickListener(map, preventDefaultMarkerTapBehavior) {
+		map.setOnMarkerClickListener(
+			new com.google.android.gms.maps.GoogleMap.OnMarkerClickListener({
+				onMarkerClick: (marker) => {
+					this.notify(<MarkerTapEvent>{
+						eventName: MapView.markerTapEvent,
+						object: this,
+						marker: Marker.fromNative(marker),
+					});
+
+					return preventDefaultMarkerTapBehavior;
+				},
+			})
+		);
 	}
 }
 
@@ -1356,26 +1444,50 @@ export class Polygon extends OverLayBase implements IPolygon {
 		}
 	}
 
-	get holes(): Coordinate[] {
-		const array: androidNative.Array<com.google.android.gms.maps.model.LatLng> = this.native.getHoles().toArray();
-		const holes: Coordinate[] = [];
+	addPoint(point: Coordinate) {
+		const points = this.native.getPoints();
+		points.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		this.native.setPoints(points);
+	}
+
+	addPoints(points: Coordinate[]) {
+		const nativePoints = this.native.getPoints();
+		points.forEach((point) => {
+			nativePoints.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		});
+		this.native.setPoints(nativePoints);
+	}
+
+	get holes(): Coordinate[][] {
+		const array: androidNative.Array<java.util.List<com.google.android.gms.maps.model.LatLng>> = this.native.getHoles().toArray();
+		const holes: Coordinate[][] = [];
 		for (let i = 0; i < array.length; i++) {
-			const hole = array[i];
-			holes.push({
-				lat: hole.latitude,
-				lng: hole.longitude,
-			});
+			const nativeHole = array[i].toArray();
+			const hole: Coordinate[] = [];
+			for (let j = 0; j < nativeHole.length; j++) {
+				hole.push({
+					lat: nativeHole[j].latitude,
+					lng: nativeHole[j].longitude,
+				});
+			}
+			holes.push(hole);
 		}
 		return holes;
 	}
 
-	set holes(value) {
+	set holes(value: Coordinate[][]) {
 		if (Array.isArray(value)) {
-			const nativeArray = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
+			const nativeHoles = new java.util.ArrayList<java.util.ArrayList<com.google.android.gms.maps.model.LatLng>>();
 			value.forEach((hole) => {
-				nativeArray.add(new com.google.android.gms.maps.model.LatLng(hole.lat, hole.lng));
+				if (Array.isArray(hole) && hole.length) {
+					const nativeHole = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
+					hole.forEach((coordinate) => {
+						nativeHole.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
+					});
+					nativeHoles.add(nativeHole);
+				}
 			});
-			this.native.setHoles(nativeArray);
+			this.native.setHoles(nativeHoles);
 		}
 	}
 
@@ -1516,6 +1628,20 @@ export class Polyline extends OverLayBase implements IPolyline {
 			});
 			this.native.setPoints(nativeArray);
 		}
+	}
+
+	addPoint(point: Coordinate) {
+		const points = this.native.getPoints();
+		points.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		this.native.setPoints(points);
+	}
+
+	addPoints(points: Coordinate[]) {
+		const nativePoints = this.native.getPoints();
+		points.forEach((point) => {
+			nativePoints.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
+		});
+		this.native.setPoints(nativePoints);
 	}
 
 	get tappable(): boolean {
@@ -1874,7 +2000,7 @@ export class UrlTileProvider extends TileProvider {
 	// @ts-ignore
 	_callback: (x: number, y: number, zoom: number) => string;
 
-	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
+	constructor(callback: (x: number, y: number, zoom: number) => string, size = 256) {
 		super(null);
 		this._callback = callback;
 		const ref = new WeakRef(this);

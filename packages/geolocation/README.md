@@ -124,6 +124,10 @@ The following are the properties of the options object that you pass to the geol
 | `iosAllowsBackgroundLocationUpdates`    | `boolean`         |_Optional_: Indicates whether to allow the application to receive location updates in the background (ignored on Android). Defaults to `false`. If enabled, the `UIBackgroundModes` key in `Info.plist` is required. A. Read more in [Apple document](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620568-allowsbackgroundlocationupdates?language=objc)                                                     |
 | `iosPausesLocationUpdatesAutomatically` | `boolean`          | Indicates whether to allow the deactivation of the automatic pause of location updates (ignored on Android). Read more in [Apple document](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620553-pauseslocationupdatesautomatical?language=objc)                                                                                                                                          |
 
+## Breaking changes
+
+- 9.0+:
+  - `watchLocation` is now `async` in order to check for permissions before attempting to watch
 ## Known issues
 
 ### openSettingsIfLocationHasBeenDenied on Android API level 30

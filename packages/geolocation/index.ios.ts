@@ -109,7 +109,7 @@ class LocationListenerImpl extends NSObject implements CLLocationManagerDelegate
 				}
 				break;
 			case CLAuthorizationStatus.kCLAuthorizationStatusAuthorizedWhenInUse:
-				if (this._resolve && !this.authorizeAlways) {
+				if (this._resolve) {
 					LocationMonitor.stopLocationMonitoring(this.id);
 					this._resolve();
 				}
@@ -234,7 +234,7 @@ export function getCurrentLocation(options?: Options): Promise<Location> {
 	});
 }
 
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number {
+export async function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): Promise<number> {
 	if (!attachedForErrorHandling) {
 		attachedForErrorHandling = true;
 		Application.on(Application.uncaughtErrorEvent, errorHandler.bind(this));

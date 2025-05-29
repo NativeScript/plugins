@@ -10,9 +10,8 @@
 		android:normalScreens="true"
 		android:largeScreens="true"
 		android:xlargeScreens="true"/>
-
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:replace="android:maxSdkVersion"/>  
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:replace="android:maxSdkVersion"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -20,8 +19,6 @@
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
 	<uses-permission android:name="android.permission.WRITE_CONTACTS" />
 	<uses-permission android:name="android.permission.GLOBAL_SEARCH" />
-	<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-	<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
 	<application
 		android:name="com.tns.NativeScriptApplication"
@@ -34,6 +31,17 @@
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
 			android:value="KEY"/>
+
+		  <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
+
+		    <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
 
     <provider android:authorities="com.facebook.app.FacebookContentProvider680941809251035"
           android:name="com.facebook.FacebookContentProvider"

@@ -18,6 +18,10 @@
 
 A plugin that allows you to take a picture and optionally save it on the device storage.
 
+**Note: Version 7 contains breaking changes:**
+* New behavior on requesting permissions, detailed in [Request for user permissions](#request-for-user-permissions).
+
+
 ## Installation
 
 To install the plugin, run the following command in the root directory of your project:
@@ -54,17 +58,38 @@ To prompt the user to grant or deny your app access to their camera and photo ga
 ```TypeScript
 import { requestPermissions } from '@nativescript/camera';
 
-requestPermissions().then(
-    function success() {
-        // permission request accepted or already granted
-        // ... call camera.takePicture here ...
-    },
-    function failure() {
-        // permission request rejected
-        // ... tell the user ...
-    }
-);
+const perms = await camera.requestPermissions();
+
+if (perms.Success) {
+     // permission request accepted or already granted
+     // ... call camera.takePicture here ...
+} else {
+     // permission request rejected
+     // ... tell the user ...
+     const cameraPermissionSuccess = perms.Details.Camera.Success;
+     const photoPermissionSuccess = perms.Details.Photo.Success
+}
+
 ```
+
+If specifying the `saveToGallery = false` option, you can call the `requestCameraPermissions` method.
+
+```TypeScript
+import { requestPermissions } from '@nativescript/camera';
+
+const perms = await camera.requestCameraPermissions();
+
+if (perms.Success) {
+     // permission request accepted or already granted
+     // ... call camera.takePicture here ...
+} else {
+     // permission request rejected
+     // ... tell the user ...
+     
+}
+
+```
+
 > **Note:** (**for Android**) Older versions of Android that don't use a request permissions popup won't be affected by the usage of the `requestPermissions()` method.
 
 > **Note**: (**for iOS**) If the user rejects permissions from the iOS popup, the app is not allowed to ask again. You can instruct the user to go to app settings and enable the camera permission manually from there. 
@@ -172,25 +197,25 @@ This could be used to create thumbnails for quick display within your applicatio
 
 ### Functions
 
-| Function                               | Returns | Description                                                                                                             |
-| ------------------------------------ |------------| ----------------------------------------------------------------------------------------------------------------------- |
-| `takePicture(options?: CameraOptions) `| `Promise<ImageAsset>`| Takes a photo using the camera with an optional parameter for setting different camera options.                          |
-| `requestPermissions()`                 | `Promise<any>`| Requests permission from the user to access their saved photos as well as access their camera.|
-| `requestCameraPermissions() `          | `Promise<any>` |Requests permission from the user for access to their camera.                                  |
-| `requestPhotosPermissions()`           | `Promise<any>`|Requests permission from the user for access to their saved photos. Returns a Promise.                                   |
-| `isAvailable()`                        |  `boolean`|Check if the device camera available to use.                                                                                  |
+| Function                                | Returns               | Description                                                                                     |
+| --------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
+| `takePicture(options?: CameraOptions) ` | `Promise<ImageAsset>` | Takes a photo using the camera with an optional parameter for setting different camera options. |
+| `requestPermissions()`                  | `Promise<any>`        | Requests permission from the user to access their saved photos as well as access their camera.  |
+| `requestCameraPermissions() `           | `Promise<any>`        | Requests permission from the user for access to their camera.                                   |
+| `requestPhotosPermissions()`            | `Promise<any>`        | Requests permission from the user for access to their saved photos. Returns a Promise.          |
+| `isAvailable()`                         | `boolean`             | Check if the device camera available to use.                                                    |
 
 ### CameraOptions interface
 
-| Property | Default |  Description
-|:---------|:--------|:-----------
-| `width`           | `0`       | _Optional_: The desired width of the picture (in device independent pixels). The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).  |
-| `height`          | `0`       | _Optional_: The desired height of the picture (in device independent pixels). The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions). |
-| `keepAspectRatio` | `true`    | _Optional_: Defines if camera picture aspect ratio should be kept during picture resizing. The camera will return an image with the correct aspect ratio but generally only one (width or height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image.|
-| `saveToGallery`   | `true`    | _Optional_: A boolean parameter that indicates if the original taken photo will be saved in `Photos` for Android and in `Camera Roll` in iOS.                                                                                                                                                                                                                                                             |
-| `allowsEditing`   | `false`   | _Optional_: (`iOS-only`)Defines if camera "Retake" or "Use Photo". Screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                                                                                                                    |
-| `cameraFacing`    | `'rear'`    | _Optional_: The initial camera facing. Use `'front'` for selfies.                                                           | `modalPresentationStyle`    | `0`    | _Optional_: (`iOS-only`)Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen). |
-
+| Property                 | Default  | Description                                                                                                                                                                                                                                                                                                                |
+| :----------------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `width`                  | `0`      | _Optional_: The desired width of the picture (in device independent pixels). The actual image width will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).                                                                                                         |
+| `height`                 | `0`      | _Optional_: The desired height of the picture (in device independent pixels). The actual image height will be greater than requested if the display density of the device is higher (than 1) (full HD+ resolutions).                                                                                                       |
+| `keepAspectRatio`        | `true`   | _Optional_: Defines if camera picture aspect ratio should be kept during picture resizing. The camera will return an image with the correct aspect ratio but generally only one (width or height) will be the same as requested; the other value will be calculated in order to preserve the aspect of the original image. |
+| `saveToGallery`          | `true`   | _Optional_: A boolean parameter that indicates if the original taken photo will be saved in `Photos` for Android and in `Camera Roll` in iOS.                                                                                                                                                                              |
+| `allowsEditing`          | `false`  | _Optional_: (`iOS-only`) Defines if camera "Retake" or "Use Photo". Screen forces the user to crop camera picture to a square and optionally lets them zoom in.                                                                                                                                                            |
+| `cameraFacing`           | `'rear'` | _Optional_: The initial camera facing. Use `'front'` for selfies.                                                                                                                                                                                                                                                          |
+| `modalPresentationStyle` | `0`      | _Optional_: (`iOS-only`) Set a custom UIModalPresentationStyle (Defaults to UIModalPresentationStyle.FullScreen).                                                                                                                                                                                                          |
 
 > **Note**: The `saveToGallery` option might have unexpected behavior on Android! Some vendor camera apps (e.g. LG) will save all captured images to the gallery regardless of what the value of `saveToGallery` is. This behavior cannot be controlled by the camera plugin and if you need to exclude the captured image from the photo gallery, you will need to get a local storage read/write permission and write custom code to find the gallery location and delete the new image from there.
 

@@ -23,33 +23,15 @@ module.exports = {
 			},
 			demo: {
 				clean: {
-					script: 'nx run demo:clean',
+					script: 'nx clean demo',
 					description: '⚆  Clean  🧹',
 				},
 				ios: {
-					script: 'nx run demo:ios',
+					script: 'nx debug demo ios',
 					description: '⚆  Run iOS  ',
 				},
 				android: {
-					script: 'nx run demo:android',
-					description: '⚆  Run Android  🤖',
-				},
-			},
-			'...Angular...': {
-				script: `npx cowsay "Test all the Angles!"`,
-				description: ` 🔻 Angular`,
-			},
-			'demo-angular': {
-				clean: {
-					script: 'nx run demo-angular:clean',
-					description: '⚆  Clean  🧹',
-				},
-				ios: {
-					script: 'nx run demo-angular:ios',
-					description: '⚆  Run iOS  ',
-				},
-				android: {
-					script: 'nx run demo-angular:android',
+					script: 'nx debug demo android',
 					description: '⚆  Run Android  🤖',
 				},
 			},
@@ -313,6 +295,20 @@ module.exports = {
 					description: '@nativescript/secure-storage: Build',
 				},
 			},
+			// @nativescript/keyboard-toolbar
+			'keyboard-toolbar': {
+				build: {
+					script: 'nx run keyboard-toolbar:build.all',
+					description: '@nativescript/keyboard-toolbar: Build',
+				},
+			},
+			// @nativescript/google-mobile-ads
+			'google-mobile-ads': {
+				build: {
+					script: 'nx run google-mobile-ads:build.all',
+					description: '@nativescript/google-mobile-ads: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -466,6 +462,14 @@ module.exports = {
 			'secure-storage': {
 				script: 'nx run secure-storage:focus',
 				description: 'Focus on @nativescript/secure-storage',
+			},
+			'keyboard-toolbar': {
+				script: 'nx run keyboard-toolbar:focus',
+				description: 'Focus on @nativescript/keyboard-toolbar',
+			},
+			'google-mobile-ads': {
+				script: 'nx run google-mobile-ads:focus',
+				description: 'Focus on @nativescript/google-mobile-ads',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

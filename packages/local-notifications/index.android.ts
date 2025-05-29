@@ -1,8 +1,15 @@
-import { Application, Device, Utils } from '@nativescript/core';
+import { Application, Color, Device, Utils } from '@nativescript/core';
 import { check, request, Result } from '@nativescript-community/perms';
 import { LocalNotificationsApi, LocalNotificationsCommon, ReceivedNotification, ScheduleInterval, ScheduleOptions } from './common';
 
 declare const com, global: any;
+
+interface ScheduleNativeOptions extends Omit<ScheduleOptions, 'color' | 'notificationLed'> {
+	atTime?: number;
+	color?: number;
+	repeatInterval?: number;
+	notificationLed?: number;
+}
 
 const NotificationManagerCompatPackageName = useAndroidX() ? global.androidx.core.app : android.support.v4.app;
 
@@ -26,31 +33,48 @@ function useAndroidX() {
 export class LocalNotificationsImpl extends LocalNotificationsCommon implements LocalNotificationsApi {
 	private static IS_GTE_LOLLIPOP: boolean = android.os.Build.VERSION.SDK_INT >= 21;
 
-	private static getInterval(interval: ScheduleInterval | number): number {
-		if (interval === 'second') {
-			return 1000; // it's in ms
-		} else if (interval === 'minute') {
-			return android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15;
-		} else if (interval === 'hour') {
-			return android.app.AlarmManager.INTERVAL_HOUR;
-		} else if (interval === 'day') {
-			return android.app.AlarmManager.INTERVAL_DAY;
-		} else if (interval === 'week') {
-			return android.app.AlarmManager.INTERVAL_DAY * 7;
-		} else if (interval === 'month') {
-			return android.app.AlarmManager.INTERVAL_DAY * 31; // well that's almost accurate
-		} else if (interval === 'year') {
-			return android.app.AlarmManager.INTERVAL_DAY * 365; // same here
-		} else if (typeof interval === 'number') {
-			return android.app.AlarmManager.INTERVAL_DAY * interval;
-		} else {
-			return undefined;
+	private static getIntervalMilliseconds(interval: ScheduleInterval, ticks: number = 1): number {
+		if (!interval) {
+			return 0;
 		}
+
+		let multiplier: number = 1000;
+
+		switch (interval) {
+			default:
+			case 'second':
+				multiplier = 1000;
+				break;
+			case 'minute':
+				multiplier = android.app.AlarmManager.INTERVAL_HOUR / 60;
+				break;
+			case 'hour':
+				multiplier = android.app.AlarmManager.INTERVAL_HOUR;
+				break;
+			case 'day':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY;
+				break;
+			case 'week':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 7;
+				break;
+			// close enough
+			case 'month':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 31;
+				break;
+			case 'quarter':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 31 * 3;
+				break;
+			case 'year':
+				multiplier = android.app.AlarmManager.INTERVAL_DAY * 365;
+				break;
+		}
+
+		return Math.abs(ticks) * multiplier;
 	}
 
 	private static getIcon(context: any /* android.content.Context */, resources: any, iconLocation?: string): string {
 		const packageName: string = context.getApplicationInfo().packageName;
-		return (iconLocation && iconLocation.indexOf(Utils.RESOURCE_PREFIX) === 0 && resources.getIdentifier(iconLocation.substr(Utils.RESOURCE_PREFIX.length), 'drawable', packageName)) || (LocalNotificationsImpl.IS_GTE_LOLLIPOP && resources.getIdentifier('ic_stat_notify_silhouette', 'drawable', packageName)) || resources.getIdentifier('ic_stat_notify', 'drawable', packageName) || context.getApplicationInfo().icon;
+		return (iconLocation && typeof iconLocation === 'string' && iconLocation.indexOf(Utils.RESOURCE_PREFIX) === 0 && resources.getIdentifier(iconLocation.substr(Utils.RESOURCE_PREFIX.length), 'drawable', packageName)) || (LocalNotificationsImpl.IS_GTE_LOLLIPOP && resources.getIdentifier('ic_stat_notify_silhouette', 'drawable', packageName)) || resources.getIdentifier('ic_stat_notify', 'drawable', packageName) || context.getApplicationInfo().icon;
 	}
 
 	private static cancelById(id: number): void {
@@ -165,12 +189,12 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		});
 	}
 
-	getScheduledIds(): Promise<number[]> {
+	getScheduledIds(): Promise<Array<number>> {
 		return new Promise((resolve, reject) => {
 			try {
 				const keys: Array<string> = com.telerik.localnotifications.Store.getKeys(Utils.android.getApplicationContext());
 
-				const ids: number[] = [];
+				const ids: Array<number> = [];
 				for (let i = 0; i < keys.length; i++) {
 					ids.push(parseInt(keys[i]));
 				}
@@ -189,40 +213,49 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 
 			const context = Utils.android.getApplicationContext();
 			const resources = context.getResources();
-			const scheduledIds: Array<number> = [];
+			const scheduledIds: number[] = [];
 
 			// TODO: All these changes in the options (other than setting the ID) should rather be done in Java so that
 			// the persisted options are exactly like the original ones.
+			for (const s of scheduleOptions) {
+				const entry = LocalNotificationsImpl.createScheduleEntry(s);
+				// Some properties should not be inherited by options
+				const nativeOptions: ScheduleNativeOptions = { ...entry, color: undefined, notificationLed: undefined };
+				const { interval, ticks } = LocalNotificationsImpl.getIntervalData(entry);
 
-			for (let n in scheduleOptions) {
-				const options = LocalNotificationsImpl.merge(scheduleOptions[n], LocalNotificationsImpl.defaults);
+				nativeOptions.atTime = entry.at ? entry.at.getTime() : 0;
+				nativeOptions.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && entry.silhouetteIcon) || entry.icon);
+				nativeOptions.repeatInterval = LocalNotificationsImpl.getIntervalMilliseconds(interval, ticks);
 
-				options.icon = LocalNotificationsImpl.getIcon(context, resources, (LocalNotificationsImpl.IS_GTE_LOLLIPOP && options.silhouetteIcon) || options.icon);
-
-				options.atTime = options.at ? options.at.getTime() : 0;
-
-				// Used when restoring the notification after a reboot:
-				options.repeatInterval = LocalNotificationsImpl.getInterval(options.interval);
-
-				if (options.color) {
-					options.color = options.color.android;
+				if (entry.color instanceof Color) {
+					nativeOptions.color = entry.color.android;
 				}
 
-				if (options.notificationLed && options.notificationLed !== true) {
-					options.notificationLed = options.notificationLed.android;
+				if (entry.notificationLed !== true && entry.notificationLed instanceof Color) {
+					nativeOptions.notificationLed = entry.notificationLed.android;
 				}
 
-				LocalNotificationsImpl.ensureID(options);
+				registerNotification(nativeOptions, context, scheduledIds);
 
-				com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(options)), context);
+				if (interval && entry.displayImmediately) {
+					nativeOptions.id = LocalNotificationsImpl.generateNotificationID();
+					nativeOptions.atTime = 0;
 
-				scheduledIds.push(options.id);
+					registerNotification(nativeOptions, context, scheduledIds);
+				}
 			}
 
 			return scheduledIds;
 		} catch (ex) {
 			console.log('Error in LocalNotifications.schedule: ' + ex);
 			throw ex;
+		}
+
+		function registerNotification(nativeOptions: ScheduleNativeOptions, context: globalAndroid.content.Context, register: Array<number>) {
+			com.telerik.localnotifications.LocalNotificationsPlugin.scheduleNotification(new org.json.JSONObject(JSON.stringify(nativeOptions)), context);
+			register.push(nativeOptions.id);
+
+			console.log(`Notification (id ${nativeOptions.id}) scheduled successfully`);
 		}
 	}
 

@@ -145,16 +145,57 @@ export class AccessToken {
 	}
 }
 
+export class AuthenticationToken {
+	#native: com.facebook.AuthenticationToken;
+
+	static fromNative(authenticationToken: com.facebook.AuthenticationToken) {
+		if (authenticationToken instanceof com.facebook.AuthenticationToken) {
+			const token = new AuthenticationToken();
+			token.#native = authenticationToken;
+			return token;
+		}
+		return null;
+	}
+
+	get nonce(): string {
+		return this.native.getExpectedNonce();
+	}
+
+	get tokenString(): string {
+		return this.native.getToken();
+	}
+
+	static currentAuthenticationToken(): AuthenticationToken {
+		return AuthenticationToken.fromNative(com.facebook.AuthenticationToken.getCurrentAuthenticationToken());
+	}
+
+	toJSON() {
+		return {
+			nonce: this.nonce,
+			tokenString: this.tokenString,
+		};
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	get android() {
+		return this.native;
+	}
+}
+
 export class LoginResult {
 	#native: com.facebook.login.LoginResult;
 	#token: AccessToken;
+	#authenticationToken: AuthenticationToken;
 	#declinedPermissions: string[];
 	#grantedPermissions: string[];
 	#isCancelled = false;
-	static fromNative(logingResult: com.facebook.login.LoginResult) {
-		if (logingResult instanceof com.facebook.login.LoginResult) {
+	static fromNative(loginResult: com.facebook.login.LoginResult) {
+		if (loginResult instanceof com.facebook.login.LoginResult) {
 			const result = new LoginResult();
-			result.#native = logingResult;
+			result.#native = loginResult;
 			return result;
 		}
 		return null;
@@ -200,12 +241,20 @@ export class LoginResult {
 		return this.#token;
 	}
 
+	get authenticationToken(): AuthenticationToken {
+		if (!this.#authenticationToken) {
+			this.#authenticationToken = AuthenticationToken.fromNative(this.native.getAuthenticationToken());
+		}
+		return this.#authenticationToken;
+	}
+
 	toJSON() {
 		return {
 			declinedPermissions: this.declinedPermissions,
 			grantedPermissions: this.grantedPermissions,
 			isCancelled: this.isCancelled,
 			token: this.token,
+			authenticationToken: this.authenticationToken,
 		};
 	}
 

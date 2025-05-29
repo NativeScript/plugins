@@ -54,7 +54,7 @@ export interface MarkerDragEvent extends EventData {
 
 export interface CameraPositionEvent extends EventData {
 	cameraPosition: CameraPosition;
-	state: 'idle' | 'start' | 'moving';
+	state: 'idle' | 'start' | 'move';
 }
 
 export interface CameraPositionStartEvent extends CameraPositionEvent {
@@ -236,7 +236,7 @@ export class MapView extends MapViewBase {
 
 	on(event: 'myLocationTap', callback: (args: MapTapEvent) => void, thisArg?: any);
 
-	on(event: 'myLocationButtonTap', callback: (args: MarkerTapEvent) => void, thisArg?: any);
+	on(event: 'myLocationButtonTap', callback: (args: LocationTapEvent) => void, thisArg?: any);
 
 	on(event: 'markerDragStart', callback: (args: MarkerTapEvent) => void, thisArg?: any);
 
@@ -494,7 +494,7 @@ export class Circle implements ICircle {
 
 export interface IPolygon {
 	points: Coordinate[];
-	holes: Coordinate[];
+	holes: Coordinate[][];
 	tappable: boolean;
 	strokeWidth: number;
 	strokeColor: Color | string;
@@ -512,8 +512,10 @@ export interface PolygonOptions extends Partial<IPolygon> {}
 export class Polygon implements IPolygon {
 	fillColor: Color | string;
 	geodesic: boolean;
-	holes: Coordinate[];
+	holes: Coordinate[][];
 	points: Coordinate[];
+	addPoint(point: Coordinate);
+	addPoints(points: Coordinate[]);
 	strokeColor: Color | string;
 	strokeJointType: JointType;
 	strokePattern: Array<PatternItem & Partial<NativeObject>>;
@@ -553,6 +555,11 @@ export class Polyline extends NativeObject implements IPolyline {
 	 * not closed by default; to form a closed polyline, the start and end points must be the same.
 	 */
 	points: Coordinate[];
+
+	addPoint(point: Coordinate);
+
+	addPoints(points: Coordinate[]);
+
 	/**
 	 * If you want to handle events fired when the user clicks the polyline, set this property to
 	 * `true`. You can change this value at any time. The default is `false`.

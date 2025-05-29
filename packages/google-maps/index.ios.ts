@@ -1,4 +1,4 @@
-import { Color, EventData, ImageSource, Utils, View } from '@nativescript/core';
+import { Color, EventData, GridLayout, ImageSource, Screen, Utils, View } from '@nativescript/core';
 import { isNullOrUndefined } from '@nativescript/core/utils/types';
 import {
 	ActiveBuildingEvent,
@@ -42,9 +42,16 @@ import {
 	PolylineOptions,
 	Style,
 	TileOverlayOptions,
+	ILocation,
+	LocationTapEvent,
 } from '.';
 import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
+import { layout } from '@nativescript/core/utils';
+
+const native_ = Symbol('[[native]]');
+
+declare const NSCCustomInfoView;
 
 export class CameraUpdate implements ICameraUpdate {
 	_native: GMSCameraUpdate;
@@ -203,6 +210,54 @@ export class CameraPosition implements ICameraPosition {
 	}
 }
 
+export class Location implements ILocation {
+	private _native: CLLocation;
+	static fromNative(location: CLLocation): Location {
+		if (location instanceof CLLocation) {
+			const ret = new Location();
+			ret._native = location;
+			return ret;
+		}
+
+		return null;
+	}
+
+	get native() {
+		return this._native;
+	}
+
+	get ios() {
+		return this._native;
+	}
+
+	get altitudeAccuracy(): number {
+		return this.native.verticalAccuracy;
+	}
+
+	get accuracy(): number {
+		return this.native.horizontalAccuracy;
+	}
+
+	get coordinate(): Coordinate {
+		return {
+			lat: this.native.coordinate.latitude,
+			lng: this.native.coordinate.longitude,
+		};
+	}
+	get timestamp(): Date {
+		return this.native.timestamp;
+	}
+	get altitude(): number {
+		return this.native.altitude;
+	}
+	get speed(): number {
+		return this.native.speed;
+	}
+	get heading(): number {
+		return this.native.course;
+	}
+}
+
 @ObjCClass(GMSMapViewDelegate)
 @NativeClass
 class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
@@ -223,7 +278,7 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 			eventName: MapView.myLocationButtonTapEvent,
 			object: this._owner?.get?.(),
 		});
-		return true;
+		return false;
 	}
 
 	mapViewDidBeginDraggingMarker(mapView: GMSMapView, marker: GMSMarker): void {
@@ -237,7 +292,7 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	mapViewDidChangeCameraPosition(mapView: GMSMapView, position: GMSCameraPosition): void {
 		this._owner?.get?.().notify?.(<CameraPositionEvent>{
 			eventName: MapView.cameraPositionEvent,
-			state: 'moving',
+			state: 'move',
 			object: this._owner?.get?.(),
 			cameraPosition: CameraPosition.fromNative(position),
 		});
@@ -320,22 +375,25 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	}
 
 	mapViewDidTapMarker(mapView: GMSMapView, marker: GMSMarker): boolean {
-		this._owner?.get?.().notify(<EventData & MarkerTapEvent>{
-			eventName: MapView.markerTapEvent,
-			object: this._owner?.get?.(),
-			marker: Marker.fromNative(marker),
-		});
+		const owner = this._owner?.get?.();
+		if (owner) {
+			owner.notify(<EventData & MarkerTapEvent>{
+				eventName: MapView.markerTapEvent,
+				object: owner,
+				marker: Marker.fromNative(marker),
+			});
+
+			return owner.preventDefaultMarkerTapBehavior;
+		}
+
 		return false;
 	}
 
 	mapViewDidTapMyLocation(mapView: GMSMapView, location: CLLocationCoordinate2D): void {
-		this._owner?.get?.().notify(<MapTapEvent>{
-			eventName: MapView.markerTapEvent,
+		this._owner?.get?.().notify(<LocationTapEvent>{
+			eventName: MapView.myLocationTapEvent,
 			object: this._owner?.get?.(),
-			coordinate: {
-				lat: location.latitude,
-				lng: location.longitude,
-			},
+			location: Location.fromNative(mapView.myLocation),
 		});
 	}
 
@@ -385,31 +443,106 @@ class GMSMapViewDelegateImpl extends NSObject implements GMSMapViewDelegate {
 	}
 
 	mapViewMarkerInfoContents(mapView: GMSMapView, marker: GMSMarker): UIView {
-		const event = <MarkerInfoEvent>{
-			eventName: MapView.markerInfoContentsEvent,
-			object: this._owner?.get?.(),
-			marker: Marker.fromNative(marker),
-			view: null,
-		};
-		this._owner?.get?.().notify?.(event);
+		const owner = this._owner?.get?.();
+		if (owner) {
+			const event = <MarkerInfoEvent>{
+				eventName: MapView.markerInfoContentsEvent,
+				object: owner,
+				marker: Marker.fromNative(marker),
+				view: null,
+			};
+			owner.notify(event);
 
-		if (event.view instanceof View) {
-			return event.view.ios;
+			if (event.view instanceof View) {
+				let parent = marker[native_];
+				let container = (<any>marker)._view as never as GridLayout;
+				if (!parent) {
+					parent = NSCCustomInfoView.new();
+					container = new GridLayout();
+					parent.backgroundColor = UIColor.clearColor;
+					(<any>marker)._view = container;
+					marker[native_] = parent;
+					container._setupAsRootView({});
+					container._setupUI({});
+					container.callLoaded();
+					parent.addSubview(container.nativeView);
+				} else {
+					if (event.view.parent !== container) {
+						container.removeChildren();
+					}
+				}
+
+				if (!event.view.parent) {
+					container.addChild(event.view);
+				} else if (event.view.parent !== container) {
+					(<GridLayout>event?.view?.parent)?.removeChild?.(event.view);
+					container.addChild(event.view);
+				}
+
+				const w = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const h = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const size = View.measureChild(container, event.view, w, h);
+
+				View.layoutChild(container, event.view, 0, 0, size.measuredWidth, size.measuredHeight);
+				parent.frame = CGRectMake(0, 0, size.measuredWidth / Screen.mainScreen.scale, size.measuredHeight / Screen.mainScreen.scale);
+
+				return parent;
+			} else if (event.view instanceof UIView) {
+				return event.view;
+			}
 		}
 		return null;
 	}
 
 	mapViewMarkerInfoWindow(mapView: GMSMapView, marker: GMSMarker): UIView {
-		const event = <MarkerInfoEvent>{
-			eventName: MapView.markerInfoWindowEvent,
-			object: this._owner?.get?.(),
-			marker: Marker.fromNative(marker),
-			view: null,
-		};
-		this._owner?.get?.().notify?.(event);
+		const owner = this._owner?.get?.();
+		if (owner) {
+			const event = <MarkerInfoEvent>{
+				eventName: MapView.markerInfoWindowEvent,
+				object: owner,
+				marker: Marker.fromNative(marker),
+				view: null,
+			};
 
-		if (event.view instanceof View) {
-			return event.view.ios;
+			owner.notify(event);
+
+			if (event.view instanceof View) {
+				let parent = marker[native_];
+				let container = (<any>marker)._view as never as GridLayout;
+				if (!parent) {
+					parent = NSCCustomInfoView.new();
+					container = new GridLayout();
+					parent.backgroundColor = UIColor.clearColor;
+					(<any>marker)._view = container;
+					marker[native_] = parent;
+					container._setupAsRootView({});
+					container._setupUI({});
+					container.callLoaded();
+					parent.addSubview(container.nativeView);
+				} else {
+					if (event.view.parent !== container) {
+						container.removeChildren();
+					}
+				}
+
+				if (!event.view.parent) {
+					container.addChild(event.view);
+				} else if (event.view.parent !== container) {
+					(<GridLayout>event?.view?.parent)?.removeChild?.(event.view);
+					container.addChild(event.view);
+				}
+
+				const w = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const h = layout.makeMeasureSpec(500 * Screen.mainScreen.scale, layout.AT_MOST);
+				const size = View.measureChild(container, event.view, w, h);
+
+				View.layoutChild(container, event.view, 0, 0, size.measuredWidth, size.measuredHeight);
+				parent.frame = CGRectMake(0, 0, size.measuredWidth / Screen.mainScreen.scale, size.measuredHeight / Screen.mainScreen.scale);
+
+				return parent;
+			} else if (event.view instanceof UIView) {
+				return event.view;
+			}
 		}
 		return null;
 	}
@@ -1022,6 +1155,7 @@ export class GoogleMap implements IGoogleMap {
 				overlay.zIndex = options.zIndex;
 				overlay.fadeIn = options.fadeIn;
 				options.tileProvider.native.map = this.native;
+				overlay.transparency = options.transparency;
 				return overlay;
 			}
 		}
@@ -1336,31 +1470,53 @@ export class Polygon extends OverLayBase implements IPolygon {
 		this.native.path = points;
 	}
 
-	get holes(): Coordinate[] {
+	addPoint(point: Coordinate) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		this.native.path = path;
+	}
+
+	addPoints(points: Coordinate[]) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		points.forEach((point) => {
+			path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		});
+		this.native.path = path;
+	}
+
+	get holes(): Coordinate[][] {
 		const nativeHoles = this.native?.holes;
 		const count = nativeHoles?.count || 0;
-		const holes: Coordinate[] = [];
+		const holes: Coordinate[][] = [];
 		for (let i = 0; i < count; i++) {
-			const hole = nativeHoles.objectAtIndex(i);
-			const coord = hole.coordinateAtIndex(0);
-			holes.push({
-				lat: coord.latitude,
-				lng: coord.longitude,
-			});
+			const nativeHole = nativeHoles.objectAtIndex(i);
+			const hole: Coordinate[] = [];
+			for (let j = 0; j < nativeHole.count(); j++) {
+				const coord = nativeHole.coordinateAtIndex(j);
+				hole.push({
+					lat: coord.latitude,
+					lng: coord.longitude,
+				});
+			}
+			holes.push(hole);
 		}
 		return holes;
 	}
 
-	set holes(value) {
-		const holes = [];
+	set holes(value: Coordinate[][]) {
+		const nativeHoles = [];
 		if (Array.isArray(value)) {
 			value.forEach((hole) => {
-				const path = GMSMutablePath.path();
-				path.addCoordinate(CLLocationCoordinate2DMake(hole.lat, hole.lng));
-				holes.push(path);
+				if (Array.isArray(hole) && hole.length) {
+					const path = GMSMutablePath.path();
+					hole.forEach((coordinate) => {
+						path.addCoordinate(CLLocationCoordinate2DMake(coordinate.lat, coordinate.lng));
+					});
+					nativeHoles.push(path);
+				}
 			});
 		}
-		this.native.holes = holes as any;
+		this.native.holes = nativeHoles as any;
 	}
 
 	get tappable(): boolean {
@@ -1477,6 +1633,20 @@ export class Polyline extends OverLayBase implements IPolyline {
 		}
 
 		this.native.path = points;
+	}
+
+	addPoint(point: Coordinate) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		this.native.path = path;
+	}
+
+	addPoints(points: Coordinate[]) {
+		const path = GMSMutablePath.alloc().initWithPath(this.native.path);
+		points.forEach((point) => {
+			path.addCoordinate(CLLocationCoordinate2DMake(point.lat, point.lng));
+		});
+		this.native.path = path;
 	}
 
 	get tappable(): boolean {
@@ -1713,6 +1883,21 @@ export class TileOverlay implements Partial<ITileOverlay> {
 		this.native.zIndex = value;
 	}
 
+	set transparency(value) {
+		// simulate transparency similar to android
+		let transparency = value;
+		if (value > 1) {
+			transparency = 1;
+		} else if (value < 1) {
+			transparency = 0;
+		}
+		this.native.opacity = 1 - transparency;
+	}
+
+	get transparency() {
+		return this.native.opacity;
+	}
+
 	clearTileCache() {
 		this.native.clearTileCache();
 	}
@@ -1781,7 +1966,7 @@ export class TileProvider implements ITileProvider {
 export class UrlTileProvider extends TileProvider {
 	_native: GMSURLTileLayer;
 
-	constructor(callback: (x: number, y: number, zoom: number) => string, size: number = 256) {
+	constructor(callback: (x: number, y: number, zoom: number) => string, size = 256) {
 		super(null);
 		const ref = new WeakRef(this);
 		this._native = GMSURLTileLayer.tileLayerWithURLConstructor((x, y, zoom) => {

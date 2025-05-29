@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/contacts",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "Easy access to iOS and Android contact directory. Pick a contact, update date, or add a new one!",
 	"main": "index",
 	"typings": "index.d.ts",
@@ -42,6 +42,6 @@
 	"readmeFilename": "README.md",
 	"bootstrapper": "@nativescript/plugin-seed",
 	"dependencies": {
-		"nativescript-permissions": "1.3.11"
+		"@nativescript-community/perms": "^2.3.1"
 	}
 }

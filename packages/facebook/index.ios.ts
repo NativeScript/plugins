@@ -128,16 +128,62 @@ export class AccessToken {
 	}
 }
 
+export class AuthenticationToken {
+	#native: FBSDKAuthenticationToken;
+
+	static fromNative(authenticationToken: FBSDKAuthenticationToken) {
+		if (authenticationToken instanceof FBSDKAuthenticationToken) {
+			const token = new AuthenticationToken();
+			token.#native = authenticationToken;
+			return token;
+		}
+		return null;
+	}
+
+	get graphDomain(): string {
+		return FBSDKAuthenticationToken.tokenCache?.authenticationToken?.graphDomain;
+	}
+
+	get nonce(): string {
+		return this.native.nonce;
+	}
+
+	get tokenString(): string {
+		return this.native.tokenString;
+	}
+
+	static currentAuthenticationToken(): AuthenticationToken {
+		return AuthenticationToken.fromNative(FBSDKAuthenticationToken.currentAuthenticationToken);
+	}
+
+	toJSON() {
+		return {
+			graphDomain: this.graphDomain,
+			nonce: this.nonce,
+			tokenString: this.tokenString,
+		};
+	}
+
+	get native() {
+		return this.#native;
+	}
+
+	get ios() {
+		return this.native;
+	}
+}
+
 export class LoginResult {
 	#native: FBSDKLoginManagerLoginResult;
 	#token: AccessToken;
+	#authenticationToken: AuthenticationToken;
 	#declinedPermissions: string[];
 	#grantedPermissions: string[];
 
-	static fromNative(logingResult: FBSDKLoginManagerLoginResult) {
-		if (logingResult instanceof FBSDKLoginManagerLoginResult) {
+	static fromNative(loginResult: FBSDKLoginManagerLoginResult) {
+		if (loginResult instanceof FBSDKLoginManagerLoginResult) {
 			const result = new LoginResult();
-			result.#native = logingResult;
+			result.#native = loginResult;
 			return result;
 		}
 		return null;
@@ -168,12 +214,20 @@ export class LoginResult {
 		return this.#token;
 	}
 
+	get authenticationToken(): AuthenticationToken {
+		if (!this.#authenticationToken) {
+			this.#authenticationToken = AuthenticationToken.fromNative(this.native.authenticationToken);
+		}
+		return this.#authenticationToken;
+	}
+
 	toJSON() {
 		return {
 			declinedPermissions: this.declinedPermissions,
 			grantedPermissions: this.grantedPermissions,
 			isCancelled: this.isCancelled,
 			token: this.token,
+			authenticationToken: this.authenticationToken,
 		};
 	}
 

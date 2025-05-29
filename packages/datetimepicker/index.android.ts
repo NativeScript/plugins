@@ -1,4 +1,4 @@
-import { Color } from '@nativescript/core';
+import { Color, Device } from '@nativescript/core';
 import { DatePickerOptions, DateTimePickerBase, DateTimePickerStyleBase, PickerOptions, TimePickerOptions } from './common';
 import { getDateNow, getDateToday, LocalizationUtils } from './utils';
 export * from './ui';
@@ -274,6 +274,11 @@ export class DateTimePicker extends DateTimePickerBase {
 	}
 
 	private static _applyNumberPickerColor(numberPicker: android.widget.NumberPicker, color: Color) {
+		const sdkVersionInt = parseInt(Device.sdkVersion, 10);
+		if (sdkVersionInt >= 29) {
+			numberPicker.setTextColor(color.android);
+			return;
+		}
 		const wheelPaint = DateTimePicker._findFieldByName(numberPicker, 'mSelectorWheelPaint');
 		const selectionDividerDrawable = DateTimePicker._findFieldByName(numberPicker, 'mSelectionDivider');
 		if (!wheelPaint || !selectionDividerDrawable || !(wheelPaint instanceof android.graphics.Paint) || !(selectionDividerDrawable instanceof android.graphics.drawable.Drawable)) {

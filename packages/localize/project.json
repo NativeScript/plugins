@@ -24,29 +24,28 @@
 					}
 				]
 			},
-			"executor": "@nrwl/js:tsc",
+			"executor": "@nx/js:tsc",
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				}
 			]
 		},
 		"build.all": {
 			"outputs": ["{workspaceRoot}/dist/packages/localize"],
 			"options": {
-				"commands": ["./node_modules/.bin/tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
+				"commands": ["npx tsc -p packages/localize/hooks/tsconfig.json", "node tools/scripts/build-finish.ts localize"],
 				"parallel": false
 			},
 			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
-					"projects": "dependencies"
+					"dependencies": true
 				},
 				{
-					"target": "build",
-					"projects": "self"
+					"target": "build"
 				}
 			]
 		},
@@ -58,10 +57,7 @@
 			"executor": "nx:run-commands"
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"options": {
-				"lintFilePatterns": ["packages/localize/**/*.ts"]
-			}
+			"executor": "@nx/eslint:lint"
 		}
 	}
 }

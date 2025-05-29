@@ -63,7 +63,7 @@ export class BiometricAuth implements BiometricApi {
 				const FingerprintDatabaseStateKey = 'FingerprintDatabaseStateKey';
 				const state = laContext.evaluatedPolicyDomainState;
 				if (state !== null) {
-					const stateStr = state.base64EncodedStringWithOptions(0);
+					const stateStr = state.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength);
 					const storedState = NSUserDefaults.standardUserDefaults.stringForKey(FingerprintDatabaseStateKey);
 
 					// Store enrollment

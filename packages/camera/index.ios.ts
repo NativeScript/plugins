@@ -1,5 +1,8 @@
-import { Utils, ImageSource, ImageAsset, Trace, Frame } from '@nativescript/core';
+import { Device, Frame, ImageAsset, ImageSource, Trace, Utils } from '@nativescript/core';
 import { CameraOptions } from '.';
+
+import * as permissions from '@nativescript-community/perms';
+import { combineCamerPhotoPermissions, mapCameraPermissionStatus, mapError, mapPhotoPermissionStatus, PermissionResult, PermissionsResult } from './common';
 
 @NativeClass()
 class UIImagePickerControllerDelegateImpl extends NSObject implements UIImagePickerControllerDelegate {
@@ -141,15 +144,20 @@ export let takePicture = function (options: CameraOptions): Promise<any> {
 				modalPresentationStyle = options.modalPresentationStyle;
 			}
 		}
+		let authStatus: PHAuthorizationStatus;
+		if (parseFloat(Device.osVersion) >= 14) {
+			authStatus = PHPhotoLibrary.authorizationStatusForAccessLevel(PHAccessLevel.ReadWrite);
+		} else {
+			authStatus = PHPhotoLibrary.authorizationStatus();
+		}
 
-		let authStatus = PHPhotoLibrary.authorizationStatus();
-		if (authStatus !== PHAuthorizationStatus.Authorized) {
+		if (authStatus !== PHAuthorizationStatus.Authorized && authStatus !== PHAuthorizationStatus.Limited) {
 			saveToGallery = false;
 		}
 
 		if (reqWidth && reqHeight) {
 			listener = UIImagePickerControllerDelegateImpl.new().initWithCallbackAndOptions(resolve, reject, { width: reqWidth, height: reqHeight, keepAspectRatio: keepAspectRatio, saveToGallery: saveToGallery, allowsEditing: allowsEditing });
-		} else if (saveToGallery) {
+		} else if (saveToGallery || keepAspectRatio) {
 			listener = UIImagePickerControllerDelegateImpl.new().initWithCallbackAndOptions(resolve, reject, { saveToGallery: saveToGallery, keepAspectRatio: keepAspectRatio, allowsEditing: allowsEditing });
 		} else {
 			listener = UIImagePickerControllerDelegateImpl.new().initWithCallback(resolve, reject);
@@ -194,76 +202,20 @@ export let isAvailable = function () {
 	return UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera);
 };
 
-export let requestPermissions = function () {
-	return new Promise(function (resolve, reject) {
-		requestPhotosPermissions().then(() => {
-			requestCameraPermissions().then(resolve, reject);
-		}, reject);
-	});
+export let requestPermissions = function (): Promise<PermissionsResult> {
+	return requestCameraPermissions().then((cameraPermissions) => requestPhotosPermissions().then((photoPermissions) => combineCamerPhotoPermissions(cameraPermissions, photoPermissions)));
 };
 
-export let requestPhotosPermissions = function () {
-	return new Promise<void>(function (resolve, reject) {
-		let authStatus = PHPhotoLibrary.authorizationStatus();
-		switch (authStatus) {
-			case PHAuthorizationStatus.NotDetermined: {
-				PHPhotoLibrary.requestAuthorization((auth) => {
-					if (auth === PHAuthorizationStatus.Authorized) {
-						if (Trace.isEnabled()) {
-							Trace.write('Application can access photo library assets.', Trace.categories.Debug);
-						}
-						resolve();
-					} else {
-						reject();
-					}
-				});
-				break;
-			}
-			case PHAuthorizationStatus.Authorized: {
-				if (Trace.isEnabled()) {
-					Trace.write('Application can access photo library assets.', Trace.categories.Debug);
-				}
-				resolve();
-				break;
-			}
-			case PHAuthorizationStatus.Restricted:
-			case PHAuthorizationStatus.Denied: {
-				if (Trace.isEnabled()) {
-					Trace.write('Application can not access photo library assets.', Trace.categories.Debug);
-				}
-				reject();
-				break;
-			}
-		}
-	});
+export let requestPhotosPermissions = function (): Promise<PermissionResult> {
+	return permissions
+		.request('photo')
+		.then((photoPermissions) => mapPhotoPermissionStatus(photoPermissions))
+		.catch((e) => mapError(e));
 };
 
-export let requestCameraPermissions = function () {
-	return new Promise<void>(function (resolve, reject) {
-		let cameraStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
-		switch (cameraStatus) {
-			case AVAuthorizationStatus.NotDetermined: {
-				AVCaptureDevice.requestAccessForMediaTypeCompletionHandler(AVMediaTypeVideo, (granted) => {
-					if (granted) {
-						resolve();
-					} else {
-						reject();
-					}
-				});
-				break;
-			}
-			case AVAuthorizationStatus.Authorized: {
-				resolve();
-				break;
-			}
-			case AVAuthorizationStatus.Restricted:
-			case AVAuthorizationStatus.Denied: {
-				if (Trace.isEnabled()) {
-					Trace.write('Application can not access Camera assets.', Trace.categories.Debug);
-				}
-				reject();
-				break;
-			}
-		}
-	});
+export let requestCameraPermissions = function (): Promise<PermissionResult> {
+	return permissions
+		.request('camera')
+		.then((photoPermissions) => mapCameraPermissionStatus(photoPermissions))
+		.catch((e) => mapError(e));
 };

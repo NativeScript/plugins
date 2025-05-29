@@ -129,8 +129,7 @@ export function getCurrentLocation(options?: Options): Promise<Location>;
  * Monitor for location change.
  * @returns {number} The watch id
  */
-export function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): number;
-
+export async function watchLocation(successCallback: successCallbackType, errorCallback: errorCallbackType, options?: Options): Promise<number>;
 
 /**
  * Monitor for location permission change. Only on iOS!
@@ -138,7 +137,7 @@ export function watchLocation(successCallback: successCallbackType, errorCallbac
  * @param errorCallback gets called on error
  * @returns {number} the watch id
  */
- export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType): number;
+export function watchPermissionStatus(permissionCallback: permissionCallbackType, errorCallback: errorCallbackType): number;
 
 /**
  * Stop monitoring for location change. Parameter expected is the watchId returned from `watchLocation`.

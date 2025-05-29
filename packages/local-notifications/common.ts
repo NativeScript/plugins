@@ -1,6 +1,9 @@
 import { Color } from '@nativescript/core';
+import { isObject } from '@nativescript/core/utils';
 
 export type ScheduleInterval = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | number;
+
+export type ScheduleIntervalObject = Partial<Record<Extract<ScheduleInterval, string>, number>>;
 
 export interface NotificationAction {
 	id: string;
@@ -92,7 +95,12 @@ export interface ScheduleOptions {
 	/**
 	 * If the interval is a number, it will be calculated as DAYS.
 	 */
-	interval?: ScheduleInterval;
+	interval?: ScheduleInterval | ScheduleIntervalObject;
+
+	/**
+	 * Should the notification be triggered immediately
+	 */
+	displayImmediately?: boolean;
 
 	/**
 	 * On Android you can set a custom icon in the system tray.
@@ -225,7 +233,7 @@ export interface LocalNotificationsApi {
 	/**
 	 * Use when you want to know the id's of all notifications which have been scheduled.
 	 */
-	getScheduledIds(): Promise<number[]>;
+	getScheduledIds(): Promise<Array<number>>;
 
 	/**
 	 * Cancels the 'id' passed in.
@@ -266,32 +274,59 @@ export interface LocalNotificationsApi {
 // TODO: This could be just an utils file!
 
 export abstract class LocalNotificationsCommon {
-	protected static defaults = {
+	protected static defaults: Readonly<ScheduleOptions> = {
 		badge: 0,
-		interval: undefined,
+		interval: null,
 		ongoing: false,
 		groupSummary: null,
 		bigTextStyle: false,
 		channel: 'Channel',
 		forceShowWhenInForeground: false,
+		displayImmediately: false,
 	};
 
-	protected static merge(obj1: {}, obj2: {}): any {
-		let result = {};
-		for (let i in obj1) {
-			if (i in obj2 && typeof obj1[i] === 'object' && i !== null) {
-				result[i] = this.merge(obj1[i], obj2[i]);
-			} else {
-				result[i] = obj1[i];
-			}
+	protected static createScheduleEntry(options: ScheduleOptions): ScheduleOptions {
+		const entry: ScheduleOptions = Object.assign({}, this.defaults);
+
+		// Return entry with defaults if not defined
+		if (!options) {
+			entry.id = this.generateNotificationID();
+			return entry;
 		}
-		for (let i in obj2) {
-			if (i in result) {
-				continue;
-			}
-			result[i] = obj2[i];
+
+		// Override defaults by options
+		Object.assign(entry, options);
+
+		if (typeof entry.id !== 'number') {
+			// We need unique IDs in all notifications to be able to persist them without overwriting one another
+			entry.id = this.generateNotificationID();
 		}
-		return result;
+
+		if (typeof entry.interval === 'string') {
+			entry.interval = { [entry.interval]: 1 };
+		}
+
+		return entry;
+	}
+
+	protected static getIntervalData(entry: ScheduleOptions): { interval: ScheduleInterval; ticks: number } {
+		let interval: ScheduleInterval;
+		let ticks: number;
+
+		if (entry.interval) {
+			const intervalData = Object.entries(entry.interval)[0] as [ScheduleInterval, number];
+
+			interval = intervalData[0];
+			ticks = intervalData[1];
+		} else {
+			interval = null;
+			ticks = 1;
+		}
+
+		return {
+			interval,
+			ticks,
+		};
 	}
 
 	protected static generateUUID(): string {
@@ -305,16 +340,5 @@ export abstract class LocalNotificationsCommon {
 
 	protected static generateNotificationID(): number {
 		return Math.round((Date.now() + Math.round(100000 * Math.random())) / 1000);
-	}
-
-	protected static ensureID(opts: ScheduleOptions): number {
-		const id = opts.id;
-
-		if (typeof id === 'number') {
-			return id;
-		} else {
-			// We need unique IDs in all notifications to be able to persist them without overwriting one another:
-			return (opts.id = LocalNotificationsCommon.generateNotificationID());
-		}
 	}
 }

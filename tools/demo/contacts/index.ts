@@ -1,6 +1,6 @@
 import { DemoSharedBase } from '../utils';
 import { Contacts } from '@nativescript/contacts';
-import { requestPermissions } from 'nativescript-permissions';
+import { request as requestPermissions } from '@nativescript-community/perms';
 import { isIOS } from '@nativescript/core';
 
 export class DemoSharedContacts extends DemoSharedBase {
@@ -11,10 +11,13 @@ export class DemoSharedContacts extends DemoSharedBase {
 	constructor() {
 		super();
 		if (global.isAndroid) {
-			requestPermissions([android.Manifest.permission.GET_ACCOUNTS, android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.WRITE_CONTACTS, android.Manifest.permission.GLOBAL_SEARCH], "I need these permissions because I'm cool").then(
-				() => {},
-				() => {}
-			);
+			requestPermissions({
+				contacts: {},
+				'android.permission.GET_ACCOUNTS': {},
+				'android.permission.READ_CONTACTS': {},
+				'android.permission.WRITE_CONTACTS': {},
+				'android.permission.GLOBAL_SEARCH': {},
+			}).then(() => {});
 		}
 	}
 	testIt() {}

@@ -9,12 +9,7 @@ let generatorSelection: UISelectionFeedbackGenerator;
 
 export class Haptics {
 	static isSupported() {
-		return Utils.ios.MajorVersion >= 10.0 && deviceInfo().version > 8;
-	}
-
-	static is6SAnd6SPlusSupported() {
-		const details = deviceInfo();
-		return Utils.ios.MajorVersion >= 10.0 && (details.name?.indexOf('iPhone8,1') > -1 || details.name?.indexOf('iPhone8,2') > -1);
+		return Utils.SDK_VERSION >= 10.0;
 	}
 
 	static notification(type?: HapticNotificationType) {
@@ -93,27 +88,4 @@ export class HapticsFallback {
 	static burst() {
 		AudioServicesPlaySystemSound(1521);
 	}
-}
-
-function deviceInfo() {
-	const _SYS_NAMELEN: number = 256;
-
-	const buffer: any = interop.alloc(5 * _SYS_NAMELEN);
-	uname(buffer);
-	let name: string = NSString.stringWithUTF8String(buffer.add(_SYS_NAMELEN * 4)).toString();
-
-	// Get machine name for Simulator
-	if (name === 'x86_64' || name === 'i386' || name === 'arm64') {
-		name = NSProcessInfo.processInfo.environment.objectForKey('SIMULATOR_MODEL_IDENTIFIER');
-	}
-
-	const parts = name.toLowerCase().split('iphone');
-	let version: number;
-	if (parts && parts.length > 1) {
-		version = parseInt(parts[1]);
-	}
-	return {
-		name,
-		version: isNaN(version) ? 0 : version,
-	};
 }

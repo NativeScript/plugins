@@ -1,12 +1,12 @@
-import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders } from '@nativescript/core';
+import { ImageAsset, Application, AndroidApplication, Utils, File, knownFolders, ImageSource } from '@nativescript/core';
 import * as permissions from '@nativescript-community/perms';
 
-import { ImagePickerMediaType, Options } from './common';
+import { ImagePickerMediaType, Options, AuthorizationResult, ImagePickerBase, ImagePickerSelection } from './common';
 export * from './common';
 let copyToAppFolder;
 let renameFileTo;
-let fileMap = {};
-let videoFiles = {
+
+const videoFiles = {
 	mp4: true,
 	mov: true,
 	avi: true,
@@ -22,8 +22,8 @@ let videoFiles = {
 };
 class UriHelper {
 	public static _calculateFileUri(uri: android.net.Uri) {
-		let DocumentsContract = (<any>android.provider).DocumentsContract;
-		let isKitKat = android.os.Build.VERSION.SDK_INT >= 19; // android.os.Build.VERSION_CODES.KITKAT
+		const DocumentsContract = (<any>android.provider).DocumentsContract;
+		const isKitKat = android.os.Build.VERSION.SDK_INT >= 19; // android.os.Build.VERSION_CODES.KITKAT
 
 		if (isKitKat && DocumentsContract.isDocumentUri(Utils.android.getApplicationContext(), uri)) {
 			let docId, id, type;
@@ -56,7 +56,7 @@ class UriHelper {
 			// MediaProvider
 			else if (UriHelper.isMediaDocument(uri)) {
 				docId = DocumentsContract.getDocumentId(uri);
-				let split = docId.split(':');
+				const split = docId.split(':');
 				type = split[0];
 				id = split[1];
 
@@ -68,8 +68,8 @@ class UriHelper {
 					contentUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 				}
 
-				let selection = '_id=?';
-				let selectionArgs = [id];
+				const selection = '_id=?';
+				const selectionArgs = [id];
 
 				return UriHelper.getDataColumn(contentUri, selection, selectionArgs, false);
 			}
@@ -89,13 +89,13 @@ class UriHelper {
 
 	private static getDataColumn(uri: android.net.Uri, selection, selectionArgs, isDownload: boolean) {
 		let cursor = null;
-		let filePath;
+		let filePath: string;
 		if (isDownload) {
-			let columns = ['_display_name'];
+			const columns = ['_display_name'];
 			try {
 				cursor = this.getContentResolver().query(uri, columns, selection, selectionArgs, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					let column_index = cursor.getColumnIndexOrThrow(columns[0]);
+					const column_index = cursor.getColumnIndexOrThrow(columns[0]);
 					filePath = cursor.getString(column_index);
 					if (filePath) {
 						const dl = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
@@ -111,13 +111,13 @@ class UriHelper {
 				}
 			}
 		} else {
-			let columns = [android.provider.MediaStore.MediaColumns.DATA];
+			const columns = [android.provider.MediaStore.MediaColumns.DATA];
 			let filePath;
 
 			try {
 				cursor = this.getContentResolver().query(uri, columns, selection, selectionArgs, null);
 				if (cursor != null && cursor.moveToFirst()) {
-					let column_index = cursor.getColumnIndexOrThrow(columns[0]);
+					const column_index = cursor.getColumnIndexOrThrow(columns[0]);
 					filePath = cursor.getString(column_index);
 					if (filePath) {
 						return filePath;
@@ -151,10 +151,11 @@ class UriHelper {
 	}
 }
 
-export class ImagePicker {
+export class ImagePicker extends ImagePickerBase {
 	private _options: Options;
 
 	constructor(options: Options) {
+		super();
 		this._options = options;
 		copyToAppFolder = options.copyToAppFolder;
 		renameFileTo = options.renameFileTo;
@@ -176,8 +177,8 @@ export class ImagePicker {
 	}
 
 	get mimeTypes() {
-		let length = this.mediaType === '*/*' ? 2 : 1;
-		let mimeTypes = Array.create(java.lang.String, length);
+		const length = this.mediaType === '*/*' ? 2 : 1;
+		const mimeTypes = Array.create(java.lang.String, length);
 
 		if (this.mediaType === '*/*') {
 			mimeTypes[0] = 'image/*';
@@ -187,149 +188,281 @@ export class ImagePicker {
 		}
 		return mimeTypes;
 	}
+	get maximumNumberOfSelection() {
+		if (this._options.maximumNumberOfSelection && this._options.maximumNumberOfSelection > 0) {
+			return this._options.maximumNumberOfSelection;
+		}
 
-	authorize(): Promise<permissions.MultiResult | permissions.Result> {
-		if ((<any>android).os.Build.VERSION.SDK_INT >= 33 && Utils.ad.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
-			let requested: { [key: string]: permissions.PermissionOptions } = {};
-			const mediaPerms = {
-				photo: { reason: 'To pick images from your gallery' },
-				video: { reason: 'To pick videos from your gallery' },
-			};
-			if (this.mediaType === 'image/*') {
-				requested['photo'] = mediaPerms['photo'];
-			} else if (this.mediaType === 'video/*') {
-				requested['video'] = mediaPerms['video'];
-			} else {
-				requested = mediaPerms;
-			}
-
-			return permissions.request(requested);
-		} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
-			return permissions.request('storage', { read: true });
+		return 0;
+	}
+	private get usePhotoPicker(): boolean {
+		return this._options?.android?.use_photo_picker && Utils.SDK_VERSION >= 33;
+	}
+	authorize(): Promise<AuthorizationResult> {
+		if (this.usePhotoPicker) {
+			return Promise.resolve({ details: null, authorized: true });
 		} else {
-			return Promise.resolve({ storage: 'authorized' });
+			let requested: { [key: string]: permissions.PermissionOptions } = {};
+			if (Utils.SDK_VERSION >= 33 && Utils.android.getApplicationContext().getApplicationInfo().targetSdkVersion >= 33) {
+				const mediaPerms = {
+					photo: { reason: 'To pick images from your gallery' },
+					video: { reason: 'To pick videos from your gallery' },
+				};
+				if (this.mediaType === 'image/*') {
+					requested['photo'] = mediaPerms['photo'];
+				} else if (this.mediaType === 'video/*') {
+					requested['video'] = mediaPerms['video'];
+				} else {
+					requested = mediaPerms;
+				}
+
+				return permissions.request(requested).then((result) => this.mapResult(result));
+			} else if ((<any>android).os.Build.VERSION.SDK_INT >= 23) {
+				requested['storage'] = { read: true, write: false };
+				return permissions.request(requested).then((result) => this.mapResult(result));
+			} else {
+				return Promise.resolve({ details: null, authorized: true });
+			}
 		}
 	}
 
-	present(): Promise<ImageAsset[]> {
+	present(): Promise<ImagePickerSelection[]> {
 		return new Promise((resolve, reject) => {
-			// WARNING: If we want to support multiple pickers we will need to have a range of IDs here:
-			let RESULT_CODE_PICKER_IMAGES = 9192;
+			if (this.usePhotoPicker) {
+				const REQUEST_LAUNCH_LIBRARY = 13003;
 
-			Application.android.on(AndroidApplication.activityResultEvent, onResult);
+				Application.android.on(Application.android.activityResultEvent, onResult);
 
-			function onResult(args) {
-				let requestCode = args.requestCode;
-				let resultCode = args.resultCode;
-				let data = args.intent;
-
-				const handle = (selectedAsset, i?) => {
-					const file = File.fromPath(selectedAsset.android);
-					let copiedFile: any = false;
-
-					let item: any = {
-						asset: selectedAsset,
-						filename: file.name,
-						originalFilename: file.name,
-						type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
-						path: file.path,
-						filesize: file.size,
-					};
-					if (copyToAppFolder) {
-						let extension = file.name.split('.').pop();
-						let filename = file.name;
-						if (renameFileTo) {
-							if (i || i === 0) {
-								filename = renameFileTo + '-' + i + '.' + extension;
-							} else {
-								filename = renameFileTo + '.' + extension;
-							}
-							item.filename = filename;
-						}
-						let newPath = knownFolders.documents().path + '/' + copyToAppFolder + '/' + filename;
-						copiedFile = File.fromPath(newPath);
-						item.path = newPath;
-						item.asset.android = item.path;
-						copiedFile.writeSync(file.readSync());
-						item.filesize = new java.io.File(item.path).length();
-					}
-					if (item.type == 'video') {
-						let thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
-						let retriever = new android.media.MediaMetadataRetriever();
-						retriever.setDataSource(item.path);
-						item.thumbnail = thumb;
-						let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
-						let duration = parseInt(time) / 1000;
-						item.duration = duration;
-					}
-					return item;
-				};
-
-				if (requestCode === RESULT_CODE_PICKER_IMAGES) {
-					if (resultCode === android.app.Activity.RESULT_OK) {
-						try {
-							let results = [];
-							let clip = data.getClipData();
-							const useHelper = (<any>android).os.Build.VERSION.SDK_INT <= 28;
-							if (clip) {
-								let count = clip.getItemCount();
-								for (let i = 0; i < count; i++) {
-									let clipItem = clip.getItemAt(i);
-									if (clipItem) {
-										let uri = clipItem.getUri();
-										if (uri) {
-											const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
-											const selectedAsset = new ImageAsset(val);
-											let item = handle(selectedAsset, i);
-											results.push(item);
+				function onResult(args) {
+					let requestCode = args.requestCode;
+					if (requestCode === REQUEST_LAUNCH_LIBRARY) {
+						let resultCode = args.resultCode;
+						if (resultCode == android.app.Activity.RESULT_OK) {
+							try {
+								let data = args.intent;
+								let uris = new Array<string>();
+								let clip = data.getClipData();
+								if (clip) {
+									let count = clip.getItemCount();
+									for (let i = 0; i < count; i++) {
+										let clipItem = clip.getItemAt(i);
+										if (clipItem) {
+											let uri = clipItem.getUri();
+											if (uri) {
+												uris.push(uri.toString());
+											}
 										}
 									}
+								} else {
+									const uriData = data.getData();
+									const uri = uriData.toString();
+									uris = [uri];
 								}
-							} else {
-								const uri = data.getData();
-								const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
-								const selectedAsset = new ImageAsset(val);
-								let item = handle(selectedAsset);
-								results.push(item);
-							}
 
-							Application.android.off(AndroidApplication.activityResultEvent, onResult);
-							resolve(results);
-							return;
-						} catch (e) {
-							Application.android.off(AndroidApplication.activityResultEvent, onResult);
-							reject(e);
+								const handle = (selectedAsset, i?) => {
+									const file = File.fromPath(selectedAsset.android);
+									let copiedFile: any = false;
+
+									const item: ImagePickerSelection = {
+										asset: selectedAsset,
+										filename: file.name,
+										originalFilename: file.name,
+										type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
+										path: file.path,
+										filesize: file.size,
+									};
+									if (copyToAppFolder) {
+										let extension = file.name.split('.').pop();
+										let filename = file.name;
+										if (renameFileTo) {
+											if (i || i === 0) {
+												filename = renameFileTo + '-' + i + '.' + extension;
+											} else {
+												filename = renameFileTo + '.' + extension;
+											}
+											item.filename = filename;
+										}
+										let newPath = knownFolders.documents().path + '/' + copyToAppFolder + '/' + filename;
+										copiedFile = File.fromPath(newPath);
+										item.path = newPath;
+										item.asset.android = item.path;
+										copiedFile.writeSync(file.readSync());
+										item.filesize = new java.io.File(item.path).length();
+									}
+									if (item.type == 'video') {
+										const thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
+										let retriever = new android.media.MediaMetadataRetriever();
+										retriever.setDataSource(item.path);
+										item.thumbnail = new ImageSource(thumb);
+										let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
+										let duration = parseInt(time) / 1000;
+										item.duration = duration;
+									}
+									return item;
+								};
+
+								let results = [];
+								for (let i = 0; i <= uris.length - 1; ++i) {
+									const selectedAsset = new ImageAsset(uris[i].toString());
+									let item = handle(selectedAsset, i);
+									results.push(item);
+								}
+								Application.android.off(Application.android.activityResultEvent, onResult);
+								resolve(results);
+							} catch (e) {
+								Application.android.off(Application.android.activityResultEvent, onResult);
+								reject(e);
+							}
+						} else {
+							Application.android.off(Application.android.activityResultEvent, onResult);
+							reject(new Error('Image picker activity result code ' + resultCode));
 							return;
 						}
-					} else {
-						Application.android.off(AndroidApplication.activityResultEvent, onResult);
-						reject(new Error('Image picker activity result code ' + resultCode));
-						return;
 					}
 				}
+				let mediaType: androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.VisualMediaType;
+
+				if (this.mediaType === 'image/*') {
+					mediaType = androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE;
+				} else if (this.mediaType === 'video/*') {
+					mediaType = androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.VideoOnly.INSTANCE;
+				} else {
+					mediaType = androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE;
+				}
+
+				const mediaRequest = new androidx.activity.result.PickVisualMediaRequest.Builder().setMediaType(mediaType).build();
+				let libraryIntent: android.content.Intent;
+				const maximumNumberOfSelection = this.maximumNumberOfSelection;
+				if (this.mode === 'multiple' && maximumNumberOfSelection !== 1) {
+					if (this.maximumNumberOfSelection > 0) {
+						libraryIntent = new androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia(this.maximumNumberOfSelection).createIntent(Utils.android.getApplicationContext(), mediaRequest);
+					} else {
+						libraryIntent = new androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia().createIntent(Utils.android.getApplicationContext(), mediaRequest);
+					}
+				} else {
+					libraryIntent = new androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia().createIntent(Utils.android.getApplicationContext(), mediaRequest);
+				}
+
+				Utils.android.getCurrentActivity().startActivityForResult(libraryIntent, REQUEST_LAUNCH_LIBRARY);
+			} else {
+				// WARNING: If we want to support multiple pickers we will need to have a range of IDs here:
+				let RESULT_CODE_PICKER_IMAGES = 9192;
+
+				Application.android.on(Application.android.activityResultEvent, onResult);
+
+				function onResult(args) {
+					let requestCode = args.requestCode;
+					let resultCode = args.resultCode;
+					let data = args.intent;
+
+					const handle = (selectedAsset, i?) => {
+						const file = File.fromPath(selectedAsset.android);
+						let copiedFile: any = false;
+
+						const item: ImagePickerSelection = {
+							asset: selectedAsset,
+							filename: file.name,
+							originalFilename: file.name,
+							type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
+							path: file.path,
+							filesize: file.size,
+						};
+						if (copyToAppFolder) {
+							let extension = file.name.split('.').pop();
+							let filename = file.name;
+							if (renameFileTo) {
+								if (i || i === 0) {
+									filename = renameFileTo + '-' + i + '.' + extension;
+								} else {
+									filename = renameFileTo + '.' + extension;
+								}
+								item.filename = filename;
+							}
+							let newPath = knownFolders.documents().path + '/' + copyToAppFolder + '/' + filename;
+							copiedFile = File.fromPath(newPath);
+							item.path = newPath;
+							item.asset.android = item.path;
+							copiedFile.writeSync(file.readSync());
+							item.filesize = new java.io.File(item.path).length();
+						}
+						if (item.type == 'video') {
+							const thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
+							let retriever = new android.media.MediaMetadataRetriever();
+							retriever.setDataSource(item.path);
+							item.thumbnail = new ImageSource(thumb);
+							let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
+							let duration = parseInt(time) / 1000;
+							item.duration = duration;
+						}
+						return item;
+					};
+
+					if (requestCode === RESULT_CODE_PICKER_IMAGES) {
+						if (resultCode === android.app.Activity.RESULT_OK) {
+							try {
+								let results = [];
+								let clip = data.getClipData();
+								const useHelper = (<any>android).os.Build.VERSION.SDK_INT <= 28;
+								if (clip) {
+									let count = clip.getItemCount();
+									for (let i = 0; i < count; i++) {
+										let clipItem = clip.getItemAt(i);
+										if (clipItem) {
+											let uri = clipItem.getUri();
+											if (uri) {
+												const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
+												const selectedAsset = new ImageAsset(val);
+												let item = handle(selectedAsset, i);
+												results.push(item);
+											}
+										}
+									}
+								} else {
+									const uri = data.getData();
+									const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
+									const selectedAsset = new ImageAsset(val);
+									let item = handle(selectedAsset);
+									results.push(item);
+								}
+
+								Application.android.off(AndroidApplication.activityResultEvent, onResult);
+								resolve(results);
+								return;
+							} catch (e) {
+								Application.android.off(Application.android.activityResultEvent, onResult);
+								reject(e);
+								return;
+							}
+						} else {
+							Application.android.off(Application.android.activityResultEvent, onResult);
+							reject(new Error('Image picker activity result code ' + resultCode));
+							return;
+						}
+					}
+				}
+
+				let Intent = android.content.Intent;
+				let intent = new Intent();
+				intent.setType(this.mediaType);
+
+				// not in platform-declaration typings
+				intent.putExtra(android.content.Intent.EXTRA_MIME_TYPES, this.mimeTypes);
+
+				// TODO: Use (<any>android).content.Intent.EXTRA_ALLOW_MULTIPLE
+				if (this.mode === 'multiple') {
+					intent.putExtra('android.intent.extra.ALLOW_MULTIPLE', true);
+				}
+
+				if (this._options.showAdvanced) {
+					intent.putExtra('android.content.extra.SHOW_ADVANCED', true);
+				}
+
+				intent.putExtra(android.content.Intent.EXTRA_LOCAL_ONLY, true);
+				intent.setAction('android.intent.action.OPEN_DOCUMENT');
+				intent.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+				let chooser = Intent.createChooser(intent, 'Select Picture');
+				Utils.android.getCurrentActivity().startActivityForResult(intent, RESULT_CODE_PICKER_IMAGES);
 			}
-
-			let Intent = android.content.Intent;
-			let intent = new Intent();
-			intent.setType(this.mediaType);
-
-			// not in platform-declaration typings
-			intent.putExtra((android.content.Intent as any).EXTRA_MIME_TYPES, this.mimeTypes);
-
-			// TODO: Use (<any>android).content.Intent.EXTRA_ALLOW_MULTIPLE
-			if (this.mode === 'multiple') {
-				intent.putExtra('android.intent.extra.ALLOW_MULTIPLE', true);
-			}
-
-			if (this._options.showAdvanced) {
-				intent.putExtra('android.content.extra.SHOW_ADVANCED', true);
-			}
-
-			intent.putExtra(android.content.Intent.EXTRA_LOCAL_ONLY, true);
-			intent.setAction('android.intent.action.OPEN_DOCUMENT');
-			intent.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-			let chooser = Intent.createChooser(intent, 'Select Picture');
-			(Application.android.foregroundActivity || Application.android.startActivity).startActivityForResult(intent, RESULT_CODE_PICKER_IMAGES);
 		});
 	}
 }

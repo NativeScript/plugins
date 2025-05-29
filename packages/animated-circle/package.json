@@ -1,36 +1,36 @@
 {
-  "name": "@nativescript/animated-circle",
-  "version": "1.1.7",
-  "description": "Animated circle progress in your NativeScript applications.",
-  "main": "index",
-  "typings": "index.d.ts",
-  "nativescript": {
-    "platforms": {
-      "ios": "6.0.0",
-      "android": "6.0.0"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NativeScript/plugins.git"
-  },
-  "keywords": [
-    "NativeScript",
-    "JavaScript",
-    "TypeScript",
-    "iOS",
-    "Android",
-    "animated circle"
-  ],
-  "author": {
-    "name": "NativeScript",
-    "email": "oss@nativescript.org"
-  },
-  "bugs": {
-    "url": "https://github.com/NativeScript/plugins/issues"
-  },
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/NativeScript/plugins",
-  "readmeFilename": "README.md",
-  "bootstrapper": "@nativescript/plugin-seed"
+	"name": "@nativescript/animated-circle",
+	"version": "1.3.0",
+	"description": "Animated circle progress in your NativeScript applications.",
+	"main": "index",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "6.0.0",
+			"android": "6.0.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"iOS",
+		"Android",
+		"animated circle"
+	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed"
 }

@@ -1,0 +1,143 @@
+/* Resets */
+* {
+	/* @apply font-normal; */
+	font-weight: normal;
+	/* horizontal-alignment: 'left'; */
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+Label {
+	/* @apply align-top; */
+	vertical-align: middle;
+}
+
+/**
+  *   1. set a default size for the ActivityIndicator to be similar on ios/android
+  */
+ActivityIndicator {
+	/* @apply h-6 w-6; /* 1 */
+	height: 24;
+	width: 24;
+}
+
+Button {
+	/* @apply rounded-none border-0 bg-transparent normal-case; */
+	border-radius: 0;
+	border-width: 0;
+	background: transparent;
+	text-transform: capitalize;
+	min-width: 0;
+	min-height: 0;
+	android-elevation: 0;
+	android-dynamic-elevation-offset: 0;
+}
+
+TextField,
+TextView {
+	/* @apply bg-transparent text-base; */
+	background-color: transparent;
+	font-size: 16;
+	placeholder-color: rgb(142, 142, 142); /*theme('colors.gray.400');*/
+}
+/* END Resets */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.v-top {
+	vertical-align: top;
+}
+
+.h-center {
+	horizontal-align: center;
+}
+.h-right {
+	horizontal-align: right;
+}
+.h-left {
+	horizontal-align: left;
+}
+
+Label.scroll-text {
+	font-size: 13;
+	color: #777;
+	margin: 12 0;
+}
+
+.toolbar {
+	background-color: #f6f6f6;
+	border-color: #c6c6c6;
+	border-top-width: 1px;
+}
+
+.toolbar.toolbar-twitter {
+	background-color: #eaf4fa;
+	border-color: #cbe3f5;
+}
+
+.toolbar Label {
+	color: #777;
+	padding: 5 13;
+	text-align: center;
+	vertical-align: center;
+}
+
+.toolbar.toolbar-twitter Label {
+	color: #4594da;
+}
+
+.toolbar Button {
+	border-radius: 1;
+}
+
+.toolbar Label.email-valid {
+	color: green;
+}
+
+.toolbar Label.email-invalid {
+	color: red;
+}
+
+.toolbar Label.price-picker {
+	color: #327bf6;
+	font-size: 13;
+	border-radius: 50%;
+	border-width: 1;
+	border-color: #c9c9c9;
+	padding: 4 6;
+	margin: 0 6;
+}
+
+.toolbar Slider {
+	margin-bottom: 10;
+}
+
+.toolbar Label.slider-label {
+	font-size: 11;
+	font-weight: bold;
+	color: #327bf6;
+}
+
+.toolbar Label.slider-min-max {
+	font-size: 13;
+	padding-bottom: 10;
+}
+
+.icon {
+	font-family: 'Linearicons-Free';
+	font-size: 24;
+	padding: 0 10;
+}
+
+Label.icon-trash {
+	font-size: 20;
+	color: red;
+}

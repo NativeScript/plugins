@@ -1,0 +1,13 @@
+{
+	"extends": "../../../node_modules/ng-packagr/lib/ts/conf/tsconfig.ngc.json",
+	"compilerOptions": {
+		"types": ["node"],
+		"baseUrl": ".",
+		"paths": {
+			"@nativescript/google-mobile-ads": ["../../../dist/packages/google-mobile-ads"]
+		},
+		"outDir": "../../../dist/out-tsc",
+		"declarationDir": "../../../dist/out-tsc"
+	},
+	"files": ["index.ts"]
+}

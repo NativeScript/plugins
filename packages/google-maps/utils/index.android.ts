@@ -76,7 +76,7 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 		opts.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hueFromColor(color)));
 	}
 
-	if(typeof options?.opacity === 'number') {
+	if (typeof options?.opacity === 'number') {
 		opts.alpha(options.opacity);
 	}
 
@@ -130,10 +130,10 @@ export function intoNativeCircleOptions(options: CircleOptions) {
 	}
 
 	if (Array.isArray(options.strokePattern)) {
-		const list = new java.util.ArrayList();
-		options.strokePattern.forEach((item) => {
+		const list = new java.util.ArrayList(options.strokePattern.length);
+		for (const item of options.strokePattern) {
 			list.add(item.native);
-		});
+		}
 		opts.strokePattern(list);
 	}
 
@@ -147,19 +147,20 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	const opts = new com.google.android.gms.maps.model.PolygonOptions();
 
 	if (Array.isArray(options?.points)) {
-		options.points.forEach((point) => {
+		for (const point of options.points) {
 			opts.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
-		});
+		}
 	}
 
 	if (Array.isArray(options?.holes)) {
-		const holes = new java.util.ArrayList();
-		options.holes.forEach((hole) => {
-			holes.add(new com.google.android.gms.maps.model.LatLng(hole.lat, hole.lng));
-		});
-
-		if (options.holes.length) {
-			opts.addHole(holes);
+		for (const hole of options.holes) {
+			if (Array.isArray(hole) && hole.length) {
+				const nativeHole = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>(hole.length);
+				for (const coordinate of hole) {
+					nativeHole.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
+				}
+				opts.addHole(nativeHole);
+			}
 		}
 	}
 
@@ -192,10 +193,10 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	}
 
 	if (Array.isArray(options.strokePattern)) {
-		const list = new java.util.ArrayList();
-		options.strokePattern.forEach((item) => {
+		const list = new java.util.ArrayList(options.strokePattern.length);
+		for (const item of options.strokePattern) {
 			list.add(item.native);
-		});
+		}
 		opts.strokePattern(list);
 	}
 
@@ -213,9 +214,9 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 	}
 
 	if (Array.isArray(options?.points)) {
-		options.points.forEach((point) => {
+		for (const point of options.points) {
 			opts.add(new com.google.android.gms.maps.model.LatLng(point.lat, point.lng));
-		});
+		}
 	}
 
 	if (typeof options?.tappable === 'boolean') {
@@ -237,10 +238,10 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 	}
 
 	if (Array.isArray(options.pattern)) {
-		const list = new java.util.ArrayList();
-		options.pattern.forEach((item) => {
+		const list = new java.util.ArrayList(options.pattern.length);
+		for (const item of options.pattern) {
 			list.add(item.native);
-		});
+		}
 		opts.pattern(list);
 	}
 
@@ -275,13 +276,10 @@ export function intoNativeGroundOverlayOptions(options: GroundOverlayOptions) {
 	}
 
 	if (options?.bounds) {
-		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(
-			new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng),
-			new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)
-		));
+		opts.positionFromBounds(new com.google.android.gms.maps.model.LatLngBounds(new com.google.android.gms.maps.model.LatLng(options.bounds.southwest.lat, options.bounds.southwest.lng), new com.google.android.gms.maps.model.LatLng(options.bounds.northeast.lat, options.bounds.northeast.lng)));
 	}
 
-	if (typeof options?.transparency) {
+	if (typeof options?.transparency === 'number') {
 		opts.transparency(options.transparency);
 	}
 
@@ -372,9 +370,9 @@ export function deserialize(data) {
 		}
 		case 'org.json.JSONObject': {
 			store = {};
-			let i = data.keys();
+			const i = data.keys();
 			while (i.hasNext()) {
-				let key = i.next();
+				const key = i.next();
 				store[key] = deserialize(data.get(key));
 			}
 			break;
@@ -435,9 +433,9 @@ export function serialize(data: any): any {
 		case 'string':
 		case 'boolean': {
 			if (typeof data === 'string') {
-				return new java.lang.String(data);
+				return java.lang.String.valueOf(data);
 			}
-			return new java.lang.Boolean(data);
+			return java.lang.Boolean.valueOf(data);
 		}
 		case 'number': {
 			const hasDecimals = numberHasDecimals(data);
@@ -466,8 +464,10 @@ export function serialize(data: any): any {
 			}
 
 			if (Array.isArray(data)) {
-				store = new java.util.ArrayList();
-				data.forEach((item) => store.add(serialize(item)));
+				store = new java.util.ArrayList(data.length);
+				for (const item of data) {
+					store.add(serialize(item));
+				}
 				return store;
 			}
 
@@ -475,8 +475,12 @@ export function serialize(data: any): any {
 				return data.native;
 			}
 
-			store = new java.util.HashMap();
-			Object.keys(data).forEach((key) => store.put(key, serialize(data[key])));
+			const keys = Object.keys(data);
+			store = new java.util.HashMap(keys.length);
+			for (const key of keys) {
+				const value = data[key];
+				store.put(key, serialize(value));
+			}
 			return store;
 		}
 

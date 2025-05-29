@@ -3,7 +3,7 @@
         <ActionBar title="picker" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-4">
         <ScrollView class="h-full">
           <StackLayout>
             <Button text="{{ enableFilterText }}" tap="{{toggleFilter}}" />

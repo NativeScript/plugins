@@ -1,5 +1,5 @@
 import { DemoSharedBase } from '../utils';
-import {} from '@nativescript/localize';
+// import {} from '@nativescript/localize';
 
 export class DemoSharedLocalize extends DemoSharedBase {
 	testIt() {
