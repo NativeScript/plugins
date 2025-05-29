@@ -4,6 +4,8 @@ import { GoogleMap } from '@nativescript/google-maps';
 import { HeatmapOptions } from '..';
 import { intoNativeHeatmapGradient } from './common';
 
+export * from './common';
+
 export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 	if (options.coordinates) {
 		const builder = new com.google.maps.android.heatmaps.HeatmapTileProvider.Builder();

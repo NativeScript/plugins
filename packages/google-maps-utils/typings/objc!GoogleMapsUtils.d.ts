@@ -1,6 +1,4 @@
-
 interface GMUCluster extends NSObjectProtocol {
-
 	count: number;
 
 	items: NSArray<GMUClusterItem>;
@@ -8,12 +6,10 @@ interface GMUCluster extends NSObjectProtocol {
 	position: CLLocationCoordinate2D;
 }
 declare var GMUCluster: {
-
 	prototype: GMUCluster;
 };
 
 interface GMUClusterAlgorithm extends NSObjectProtocol {
-
 	addItems(items: NSArray<GMUClusterItem> | GMUClusterItem[]): void;
 
 	clearItems(): void;
@@ -23,21 +19,17 @@ interface GMUClusterAlgorithm extends NSObjectProtocol {
 	removeItem(item: GMUClusterItem): void;
 }
 declare var GMUClusterAlgorithm: {
-
 	prototype: GMUClusterAlgorithm;
 };
 
 interface GMUClusterIconGenerator extends NSObjectProtocol {
-
 	iconForSize(size: number): UIImage;
 }
 declare var GMUClusterIconGenerator: {
-
 	prototype: GMUClusterIconGenerator;
 };
 
 interface GMUClusterItem extends NSObjectProtocol {
-
 	position: CLLocationCoordinate2D;
 
 	snippet?: string;
@@ -45,12 +37,10 @@ interface GMUClusterItem extends NSObjectProtocol {
 	title?: string;
 }
 declare var GMUClusterItem: {
-
 	prototype: GMUClusterItem;
 };
 
 declare class GMUClusterManager extends NSObject implements GMSMapViewDelegate {
-
 	static alloc(): GMUClusterManager; // inherited from NSObject
 
 	static new(): GMUClusterManager; // inherited from NSObject
@@ -71,9 +61,9 @@ declare class GMUClusterManager extends NSObject implements GMSMapViewDelegate {
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { map: GMSMapView; algorithm: GMUClusterAlgorithm; renderer: GMUClusterRenderer; });
+	constructor(o: { map: GMSMapView; algorithm: GMUClusterAlgorithm; renderer: GMUClusterRenderer });
 
 	addItem(item: GMUClusterItem): void;
 
@@ -103,6 +93,8 @@ declare class GMUClusterManager extends NSObject implements GMSMapViewDelegate {
 
 	mapViewDidChangeCameraPosition(mapView: GMSMapView, position: GMSCameraPosition): void;
 
+	mapViewDidChangeMapCapabilities(mapView: GMSMapView, mapCapabilities: GMSMapCapabilityFlags): void;
+
 	mapViewDidCloseInfoWindowOfMarker(mapView: GMSMapView, marker: GMSMarker): void;
 
 	mapViewDidDragMarker(mapView: GMSMapView, marker: GMSMarker): void;
@@ -118,6 +110,8 @@ declare class GMUClusterManager extends NSObject implements GMSMapViewDelegate {
 	mapViewDidStartTileRendering(mapView: GMSMapView): void;
 
 	mapViewDidTapAtCoordinate(mapView: GMSMapView, coordinate: CLLocationCoordinate2D): void;
+
+	mapViewDidTapFeaturesInFeatureLayerAtLocation(mapView: GMSMapView, features: NSArray<GMSFeature> | GMSFeature[], featureLayer: GMSFeatureLayer<any>, location: CLLocationCoordinate2D): void;
 
 	mapViewDidTapInfoWindowOfMarker(mapView: GMSMapView, marker: GMSMarker): void;
 
@@ -159,29 +153,24 @@ declare class GMUClusterManager extends NSObject implements GMSMapViewDelegate {
 }
 
 interface GMUClusterManagerDelegate extends NSObjectProtocol {
-
 	clusterManagerDidTapCluster?(clusterManager: GMUClusterManager, cluster: GMUCluster): boolean;
 
 	clusterManagerDidTapClusterItem?(clusterManager: GMUClusterManager, clusterItem: GMUClusterItem): boolean;
 }
 declare var GMUClusterManagerDelegate: {
-
 	prototype: GMUClusterManagerDelegate;
 };
 
 interface GMUClusterRenderer extends NSObjectProtocol {
-
 	renderClusters(clusters: NSArray<GMUCluster> | GMUCluster[]): void;
 
 	update(): void;
 }
 declare var GMUClusterRenderer: {
-
 	prototype: GMUClusterRenderer;
 };
 
 interface GMUClusterRendererDelegate extends NSObjectProtocol {
-
 	rendererDidRenderMarker?(renderer: GMUClusterRenderer, marker: GMSMarker): void;
 
 	rendererMarkerForObject?(renderer: GMUClusterRenderer, object: any): GMSMarker;
@@ -189,12 +178,10 @@ interface GMUClusterRendererDelegate extends NSObjectProtocol {
 	rendererWillRenderMarker?(renderer: GMUClusterRenderer, marker: GMSMarker): void;
 }
 declare var GMUClusterRendererDelegate: {
-
 	prototype: GMUClusterRendererDelegate;
 };
 
 declare class GMUDefaultClusterIconGenerator extends NSObject implements GMUClusterIconGenerator {
-
 	static alloc(): GMUDefaultClusterIconGenerator; // inherited from NSObject
 
 	static new(): GMUDefaultClusterIconGenerator; // inherited from NSObject
@@ -209,13 +196,13 @@ declare class GMUDefaultClusterIconGenerator extends NSObject implements GMUClus
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { buckets: NSArray<number> | number[]; });
+	constructor(o: { buckets: NSArray<number> | number[] });
 
-	constructor(o: { buckets: NSArray<number> | number[]; backgroundColors: NSArray<UIColor> | UIColor[]; });
+	constructor(o: { buckets: NSArray<number> | number[]; backgroundColors: NSArray<UIColor> | UIColor[] });
 
-	constructor(o: { buckets: NSArray<number> | number[]; backgroundImages: NSArray<UIImage> | UIImage[]; });
+	constructor(o: { buckets: NSArray<number> | number[]; backgroundImages: NSArray<UIImage> | UIImage[] });
 
 	class(): typeof NSObject;
 
@@ -253,7 +240,6 @@ declare class GMUDefaultClusterIconGenerator extends NSObject implements GMUClus
 }
 
 declare class GMUDefaultClusterRenderer extends NSObject implements GMUClusterRenderer {
-
 	static alloc(): GMUDefaultClusterRenderer; // inherited from NSObject
 
 	static new(): GMUDefaultClusterRenderer; // inherited from NSObject
@@ -282,9 +268,9 @@ declare class GMUDefaultClusterRenderer extends NSObject implements GMUClusterRe
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { mapView: GMSMapView; clusterIconGenerator: GMUClusterIconGenerator; });
+	constructor(o: { mapView: GMSMapView; clusterIconGenerator: GMUClusterIconGenerator });
 
 	class(): typeof NSObject;
 
@@ -322,7 +308,6 @@ declare class GMUDefaultClusterRenderer extends NSObject implements GMUClusterRe
 }
 
 declare class GMUFeature extends NSObject implements GMUGeometryContainer {
-
 	static alloc(): GMUFeature; // inherited from NSObject
 
 	static new(): GMUFeature; // inherited from NSObject
@@ -347,9 +332,9 @@ declare class GMUFeature extends NSObject implements GMUGeometryContainer {
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { geometry: GMUGeometry; identifier: string; properties: NSDictionary<string, NSObject>; boundingBox: GMSCoordinateBounds; });
+	constructor(o: { geometry: GMUGeometry; identifier: string; properties: NSDictionary<string, NSObject>; boundingBox: GMSCoordinateBounds });
 
 	class(): typeof NSObject;
 
@@ -377,18 +362,17 @@ declare class GMUFeature extends NSObject implements GMUGeometryContainer {
 }
 
 declare class GMUGeoJSONParser extends NSObject {
-
 	static alloc(): GMUGeoJSONParser; // inherited from NSObject
 
 	static new(): GMUGeoJSONParser; // inherited from NSObject
 
 	readonly features: NSArray<GMUGeometryContainer>;
 
-	constructor(o: { data: NSData; });
+	constructor(o: { data: NSData });
 
-	constructor(o: { stream: NSInputStream; });
+	constructor(o: { stream: NSInputStream });
 
-	constructor(o: { URL: NSURL; });
+	constructor(o: { URL: NSURL });
 
 	initWithData(data: NSData): this;
 
@@ -400,16 +384,13 @@ declare class GMUGeoJSONParser extends NSObject {
 }
 
 interface GMUGeometry extends NSObjectProtocol {
-
 	type: string;
 }
 declare var GMUGeometry: {
-
 	prototype: GMUGeometry;
 };
 
 declare class GMUGeometryCollection extends NSObject implements GMUGeometry {
-
 	static alloc(): GMUGeometryCollection; // inherited from NSObject
 
 	static new(): GMUGeometryCollection; // inherited from NSObject
@@ -428,9 +409,9 @@ declare class GMUGeometryCollection extends NSObject implements GMUGeometry {
 
 	readonly type: string; // inherited from GMUGeometry
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { geometries: NSArray<GMUGeometry> | GMUGeometry[]; });
+	constructor(o: { geometries: NSArray<GMUGeometry> | GMUGeometry[] });
 
 	class(): typeof NSObject;
 
@@ -458,29 +439,26 @@ declare class GMUGeometryCollection extends NSObject implements GMUGeometry {
 }
 
 interface GMUGeometryContainer extends NSObjectProtocol {
-
 	geometry: GMUGeometry;
 
 	style: GMUStyle;
 }
 declare var GMUGeometryContainer: {
-
 	prototype: GMUGeometryContainer;
 };
 
 declare class GMUGeometryRenderer extends NSObject {
-
 	static alloc(): GMUGeometryRenderer; // inherited from NSObject
 
 	static imageFromPath(path: string): UIImage;
 
 	static new(): GMUGeometryRenderer; // inherited from NSObject
 
-	constructor(o: { map: GMSMapView; geometries: NSArray<GMUGeometryContainer> | GMUGeometryContainer[]; });
+	constructor(o: { map: GMSMapView; geometries: NSArray<GMUGeometryContainer> | GMUGeometryContainer[] });
 
-	constructor(o: { map: GMSMapView; geometries: NSArray<GMUGeometryContainer> | GMUGeometryContainer[]; styles: NSArray<GMUStyle> | GMUStyle[]; });
+	constructor(o: { map: GMSMapView; geometries: NSArray<GMUGeometryContainer> | GMUGeometryContainer[]; styles: NSArray<GMUStyle> | GMUStyle[] });
 
-	constructor(o: { map: GMSMapView; geometries: NSArray<GMUGeometryContainer> | GMUGeometryContainer[]; styles: NSArray<GMUStyle> | GMUStyle[]; styleMaps: NSArray<GMUStyleMap> | GMUStyleMap[]; });
+	constructor(o: { map: GMSMapView; geometries: NSArray<GMUGeometryContainer> | GMUGeometryContainer[]; styles: NSArray<GMUStyle> | GMUStyle[]; styleMaps: NSArray<GMUStyleMap> | GMUStyleMap[] });
 
 	clear(): void;
 
@@ -498,7 +476,6 @@ declare class GMUGeometryRenderer extends NSObject {
 }
 
 declare class GMUGradient extends NSObject {
-
 	static alloc(): GMUGradient; // inherited from NSObject
 
 	static new(): GMUGradient; // inherited from NSObject
@@ -509,7 +486,7 @@ declare class GMUGradient extends NSObject {
 
 	readonly startPoints: NSArray<number>;
 
-	constructor(o: { colors: NSArray<UIColor> | UIColor[]; startPoints: NSArray<number> | number[]; colorMapSize: number; });
+	constructor(o: { colors: NSArray<UIColor> | UIColor[]; startPoints: NSArray<number> | number[]; colorMapSize: number });
 
 	generateColorMap(): NSArray<UIColor>;
 
@@ -517,7 +494,6 @@ declare class GMUGradient extends NSObject {
 }
 
 declare class GMUGridBasedClusterAlgorithm extends NSObject implements GMUClusterAlgorithm {
-
 	static alloc(): GMUGridBasedClusterAlgorithm; // inherited from NSObject
 
 	static new(): GMUGridBasedClusterAlgorithm; // inherited from NSObject
@@ -532,7 +508,7 @@ declare class GMUGridBasedClusterAlgorithm extends NSObject implements GMUCluste
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
 	addItems(items: NSArray<GMUClusterItem> | GMUClusterItem[]): void;
 
@@ -566,7 +542,6 @@ declare class GMUGridBasedClusterAlgorithm extends NSObject implements GMUCluste
 }
 
 declare class GMUGroundOverlay extends NSObject implements GMUGeometry {
-
 	static alloc(): GMUGroundOverlay; // inherited from NSObject
 
 	static new(): GMUGroundOverlay; // inherited from NSObject
@@ -593,9 +568,9 @@ declare class GMUGroundOverlay extends NSObject implements GMUGeometry {
 
 	readonly type: string; // inherited from GMUGeometry
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { coordinate: CLLocationCoordinate2D; southWest: CLLocationCoordinate2D; zIndex: number; rotation: number; href: string; });
+	constructor(o: { coordinate: CLLocationCoordinate2D; southWest: CLLocationCoordinate2D; zIndex: number; rotation: number; href: string });
 
 	class(): typeof NSObject;
 
@@ -623,7 +598,6 @@ declare class GMUGroundOverlay extends NSObject implements GMUGeometry {
 }
 
 declare class GMUHeatmapTileLayer extends GMSSyncTileLayer {
-
 	static alloc(): GMUHeatmapTileLayer; // inherited from NSObject
 
 	static new(): GMUHeatmapTileLayer; // inherited from NSObject
@@ -640,7 +614,6 @@ declare class GMUHeatmapTileLayer extends GMSSyncTileLayer {
 }
 
 declare class GMUKMLParser extends NSObject {
-
 	static alloc(): GMUKMLParser; // inherited from NSObject
 
 	static new(): GMUKMLParser; // inherited from NSObject
@@ -651,11 +624,11 @@ declare class GMUKMLParser extends NSObject {
 
 	readonly styles: NSArray<GMUStyle>;
 
-	constructor(o: { data: NSData; });
+	constructor(o: { data: NSData });
 
-	constructor(o: { stream: NSInputStream; });
+	constructor(o: { stream: NSInputStream });
 
-	constructor(o: { URL: NSURL; });
+	constructor(o: { URL: NSURL });
 
 	initWithData(data: NSData): this;
 
@@ -667,7 +640,6 @@ declare class GMUKMLParser extends NSObject {
 }
 
 declare class GMULineString extends NSObject implements GMUGeometry {
-
 	static alloc(): GMULineString; // inherited from NSObject
 
 	static new(): GMULineString; // inherited from NSObject
@@ -686,9 +658,9 @@ declare class GMULineString extends NSObject implements GMUGeometry {
 
 	readonly type: string; // inherited from GMUGeometry
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { path: GMSPath; });
+	constructor(o: { path: GMSPath });
 
 	class(): typeof NSObject;
 
@@ -716,7 +688,6 @@ declare class GMULineString extends NSObject implements GMUGeometry {
 }
 
 declare class GMUNonHierarchicalDistanceBasedAlgorithm extends NSObject implements GMUClusterAlgorithm {
-
 	static alloc(): GMUNonHierarchicalDistanceBasedAlgorithm; // inherited from NSObject
 
 	static new(): GMUNonHierarchicalDistanceBasedAlgorithm; // inherited from NSObject
@@ -731,9 +702,9 @@ declare class GMUNonHierarchicalDistanceBasedAlgorithm extends NSObject implemen
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { clusterDistancePoints: number; });
+	constructor(o: { clusterDistancePoints: number });
 
 	addItems(items: NSArray<GMUClusterItem> | GMUClusterItem[]): void;
 
@@ -769,7 +740,6 @@ declare class GMUNonHierarchicalDistanceBasedAlgorithm extends NSObject implemen
 }
 
 declare class GMUPair extends NSObject {
-
 	static alloc(): GMUPair; // inherited from NSObject
 
 	static new(): GMUPair; // inherited from NSObject
@@ -778,13 +748,12 @@ declare class GMUPair extends NSObject {
 
 	readonly styleUrl: string;
 
-	constructor(o: { key: string; styleUrl: string; });
+	constructor(o: { key: string; styleUrl: string });
 
 	initWithKeyStyleUrl(styleID: string, strokeColor: string): this;
 }
 
 declare class GMUPlacemark extends NSObject implements GMUGeometryContainer {
-
 	static alloc(): GMUPlacemark; // inherited from NSObject
 
 	static new(): GMUPlacemark; // inherited from NSObject
@@ -809,9 +778,9 @@ declare class GMUPlacemark extends NSObject implements GMUGeometryContainer {
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { geometry: GMUGeometry; title: string; snippet: string; style: GMUStyle; styleUrl: string; });
+	constructor(o: { geometry: GMUGeometry; title: string; snippet: string; style: GMUStyle; styleUrl: string });
 
 	class(): typeof NSObject;
 
@@ -839,7 +808,6 @@ declare class GMUPlacemark extends NSObject implements GMUGeometryContainer {
 }
 
 declare class GMUPoint extends NSObject implements GMUGeometry {
-
 	static alloc(): GMUPoint; // inherited from NSObject
 
 	static new(): GMUPoint; // inherited from NSObject
@@ -858,9 +826,9 @@ declare class GMUPoint extends NSObject implements GMUGeometry {
 
 	readonly type: string; // inherited from GMUGeometry
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { coordinate: CLLocationCoordinate2D; });
+	constructor(o: { coordinate: CLLocationCoordinate2D });
 
 	class(): typeof NSObject;
 
@@ -888,7 +856,6 @@ declare class GMUPoint extends NSObject implements GMUGeometry {
 }
 
 declare class GMUPolygon extends NSObject implements GMUGeometry {
-
 	static alloc(): GMUPolygon; // inherited from NSObject
 
 	static new(): GMUPolygon; // inherited from NSObject
@@ -907,9 +874,9 @@ declare class GMUPolygon extends NSObject implements GMUGeometry {
 
 	readonly type: string; // inherited from GMUGeometry
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { paths: NSArray<GMSPath> | GMSPath[]; });
+	constructor(o: { paths: NSArray<GMSPath> | GMSPath[] });
 
 	class(): typeof NSObject;
 
@@ -937,7 +904,6 @@ declare class GMUPolygon extends NSObject implements GMUGeometry {
 }
 
 declare class GMUSimpleClusterAlgorithm extends NSObject implements GMUClusterAlgorithm {
-
 	static alloc(): GMUSimpleClusterAlgorithm; // inherited from NSObject
 
 	static new(): GMUSimpleClusterAlgorithm; // inherited from NSObject
@@ -952,7 +918,7 @@ declare class GMUSimpleClusterAlgorithm extends NSObject implements GMUClusterAl
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
 	addItems(items: NSArray<GMUClusterItem> | GMUClusterItem[]): void;
 
@@ -986,7 +952,6 @@ declare class GMUSimpleClusterAlgorithm extends NSObject implements GMUClusterAl
 }
 
 declare class GMUStaticCluster extends NSObject implements GMUCluster {
-
 	static alloc(): GMUStaticCluster; // inherited from NSObject
 
 	static new(): GMUStaticCluster; // inherited from NSObject
@@ -1007,9 +972,9 @@ declare class GMUStaticCluster extends NSObject implements GMUCluster {
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { position: CLLocationCoordinate2D; });
+	constructor(o: { position: CLLocationCoordinate2D });
 
 	addItem(item: GMUClusterItem): void;
 
@@ -1041,7 +1006,6 @@ declare class GMUStaticCluster extends NSObject implements GMUCluster {
 }
 
 declare class GMUStyle extends NSObject {
-
 	static alloc(): GMUStyle; // inherited from NSObject
 
 	static new(): GMUStyle; // inherited from NSObject
@@ -1068,13 +1032,12 @@ declare class GMUStyle extends NSObject {
 
 	readonly width: number;
 
-	constructor(o: { styleID: string; strokeColor: UIColor; fillColor: UIColor; width: number; scale: number; heading: number; anchor: CGPoint; iconUrl: string; title: string; hasFill: boolean; hasStroke: boolean; });
+	constructor(o: { styleID: string; strokeColor: UIColor; fillColor: UIColor; width: number; scale: number; heading: number; anchor: CGPoint; iconUrl: string; title: string; hasFill: boolean; hasStroke: boolean });
 
 	initWithStyleIDStrokeColorFillColorWidthScaleHeadingAnchorIconUrlTitleHasFillHasStroke(styleID: string, strokeColor: UIColor, fillColor: UIColor, width: number, scale: number, heading: number, anchor: CGPoint, iconUrl: string, title: string, hasFill: boolean, hasStroke: boolean): this;
 }
 
 declare class GMUStyleMap extends NSObject {
-
 	static alloc(): GMUStyleMap; // inherited from NSObject
 
 	static new(): GMUStyleMap; // inherited from NSObject
@@ -1083,13 +1046,12 @@ declare class GMUStyleMap extends NSObject {
 
 	readonly styleMapId: string;
 
-	constructor(o: { id: string; pairs: NSArray<GMUPair> | GMUPair[]; });
+	constructor(o: { id: string; pairs: NSArray<GMUPair> | GMUPair[] });
 
 	initWithIdPairs(styleMapId: string, pairs: NSArray<GMUPair> | GMUPair[]): this;
 }
 
 declare class GMUWeightedLatLng extends NSObject implements GQTPointQuadTreeItem {
-
 	static alloc(): GMUWeightedLatLng; // inherited from NSObject
 
 	static new(): GMUWeightedLatLng; // inherited from NSObject
@@ -1106,9 +1068,9 @@ declare class GMUWeightedLatLng extends NSObject implements GQTPointQuadTreeItem
 
 	readonly superclass: typeof NSObject; // inherited from NSObjectProtocol
 
-	readonly  // inherited from NSObjectProtocol
+	readonly; // inherited from NSObjectProtocol
 
-	constructor(o: { coordinate: CLLocationCoordinate2D; intensity: number; });
+	constructor(o: { coordinate: CLLocationCoordinate2D; intensity: number });
 
 	class(): typeof NSObject;
 
@@ -1138,12 +1100,11 @@ declare class GMUWeightedLatLng extends NSObject implements GQTPointQuadTreeItem
 }
 
 declare class GMUWrappingDictionaryKey extends NSObject implements NSCopying {
-
 	static alloc(): GMUWrappingDictionaryKey; // inherited from NSObject
 
 	static new(): GMUWrappingDictionaryKey; // inherited from NSObject
 
-	constructor(o: { object: any; });
+	constructor(o: { object: any });
 
 	copyWithZone(zone: interop.Pointer | interop.Reference<any>): any;
 
@@ -1165,12 +1126,11 @@ interface GQTPoint {
 declare var GQTPoint: interop.StructType<GQTPoint>;
 
 declare class GQTPointQuadTree extends NSObject {
-
 	static alloc(): GQTPointQuadTree; // inherited from NSObject
 
 	static new(): GQTPointQuadTree; // inherited from NSObject
 
-	constructor(o: { bounds: GQTBounds; });
+	constructor(o: { bounds: GQTBounds });
 
 	add(item: GQTPointQuadTreeItem): boolean;
 
@@ -1186,7 +1146,6 @@ declare class GQTPointQuadTree extends NSObject {
 }
 
 declare class GQTPointQuadTreeChild extends NSObject {
-
 	static alloc(): GQTPointQuadTreeChild; // inherited from NSObject
 
 	static new(): GQTPointQuadTreeChild; // inherited from NSObject
@@ -1201,21 +1160,22 @@ declare class GQTPointQuadTreeChild extends NSObject {
 }
 
 interface GQTPointQuadTreeItem extends NSObjectProtocol {
-
 	point(): GQTPoint;
 }
 declare var GQTPointQuadTreeItem: {
-
 	prototype: GQTPointQuadTreeItem;
 };
 
 declare var GoogleMapsUtilsVersionNumber: number;
 
+declare var GoogleMapsUtilsVersionNumberVar: number;
+
 declare var GoogleMapsUtilsVersionString: interop.Reference<number>;
 
-declare class HeatMapInterpolationPoints extends NSObject {
+declare var GoogleMapsUtilsVersionStringVar: interop.Reference<number>;
 
-	static alloc(): HeatMapInterpolationPoints; // inherited from NSObject
+declare class HeatmapInterpolationPoints extends NSObject {
+	static alloc(): HeatmapInterpolationPoints; // inherited from NSObject
 
-	static new(): HeatMapInterpolationPoints; // inherited from NSObject
+	static new(): HeatmapInterpolationPoints; // inherited from NSObject
 }

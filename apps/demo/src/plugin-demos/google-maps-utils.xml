@@ -3,7 +3,7 @@
         <ActionBar title="google-maps-utils" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
-    <StackLayout class="p-20">
+    <StackLayout class="p-1">
 			<StackLayout>
 				<Button text="Test google-maps-utils" tap="{{ testIt }}" class="btn btn-primary"/>
 				<map:MapView

@@ -37,10 +37,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			strokeColor: new Color('red'),
 			width: 4,
 		});
-
-		const features = this.geoJson.features;
-		features[0].style.fillColor = new Color('green');
-		features[1].style.strokeColor = new Color('yellow');
 	}
 
 	async onMapReady(args: MapReadyEvent) {

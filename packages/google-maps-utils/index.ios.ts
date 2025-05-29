@@ -1,6 +1,7 @@
 import { Color, encoding } from '@nativescript/core';
 import { GeoJSON } from 'geojson';
-import { Coordinate, GoogleMap, ITileProvider, MarkerOptions, intoNativeMarkerOptions } from '@nativescript/google-maps';
+import { Coordinate, GoogleMap, ITileProvider, MarkerOptions } from '@nativescript/google-maps';
+import { intoNativeMarkerOptions } from '@nativescript/google-maps/utils';
 import { HeatmapOptions, IClusterManager, IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle, IGradient, IHeatmapTileProvider, intoNativeClusterManager, intoNativeHeatmapGradient, intoNativeHeatmapProvider } from '.';
 import { applyMixins } from './utils/common';
 
@@ -118,6 +119,7 @@ export class ClusterItem {
 	#native: GMSMarker;
 
 	constructor(options: MarkerOptions) {
+		console.log('ClusterItem constructor', options);
 		this.#native = intoNativeMarkerOptions(options);
 	}
 
