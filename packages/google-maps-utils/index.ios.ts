@@ -119,7 +119,6 @@ export class ClusterItem {
 	#native: GMSMarker;
 
 	constructor(options: MarkerOptions) {
-		console.log('ClusterItem constructor', options);
 		this.#native = intoNativeMarkerOptions(options);
 	}
 
