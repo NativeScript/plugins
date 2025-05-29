@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/google-maps-utils",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Google Maps Utilities for NativeScript",
 	"main": "index",
 	"typings": "index.d.ts",

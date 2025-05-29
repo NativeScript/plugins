@@ -1,3 +1,13 @@
+## 1.0.1 (2025-05-29)
+
+### 🩹 Fixes
+
+- **google-maps-utils:** cluster rendering ([#628](https://github.com/NativeScript/plugins/pull/628))
+
+### ❤️ Thank You
+
+- Dylan Llewellyn @herefishyfish
+
 # 1.0.0 (2025-05-29)
 
 ### 🚀 Features
