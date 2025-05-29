@@ -1,9 +1,10 @@
 import { Color, ImageSource, Utils } from '@nativescript/core';
+import { Coordinate, GoogleMap, ITileProvider, MarkerOptions } from '@nativescript/google-maps';
+import { hueFromColor } from '@nativescript/google-maps/utils';
 import { GeoJSON } from 'geojson';
-import { Coordinate, GoogleMap, ITileProvider, MarkerOptions, hueFromColor } from '@nativescript/google-maps';
 import { HeatmapOptions, IClusterManager, IFeature, IGeoJsonLayer, IGeometry, IGeometryStyle, IGradient, IHeatmapTileProvider } from '.';
-import { applyMixins } from './utils/common';
 import { intoNativeClusterManager, intoNativeColor, intoNativeHeatmapGradient, intoNativeHeatmapProvider } from './utils';
+import { applyMixins } from './utils/common';
 
 // export * from './experimental/datalayer';
 // export * from './experimental/iconfactory';
@@ -123,7 +124,7 @@ export class ClusterItem extends com.google.maps.android.clustering.ClusterItem 
 	constructor(public options: MarkerOptions) {
 		super({
 			getPosition: (): com.google.android.gms.maps.model.LatLng => {
-				return new com.google.android.gms.maps.model.LatLng(options?.position?.lat ?? 0, options?.position?.lng ?? 0);
+				return new com.google.android.gms.maps.model.LatLng(this.options?.position?.lat ?? 0, this.options?.position?.lng ?? 0);
 			},
 			getSnippet: (): string => {
 				return this.options?.snippet ?? '';
@@ -138,9 +139,10 @@ export class ClusterItem extends com.google.maps.android.clustering.ClusterItem 
 	}
 }
 
+@NativeClass
 export class ClusterRenderer extends com.google.maps.android.clustering.view.DefaultClusterRenderer<any> {
 	constructor(map: GoogleMap, clusterManager: ClusterManager) {
-		super(Utils.ad.getApplicationContext(), map.native, clusterManager.native);
+		super(Utils.android.getApplicationContext(), map.native, clusterManager.native);
 	}
 
 	override onBeforeClusterItemRendered(item: ClusterItem, opts: com.google.android.gms.maps.model.MarkerOptions): void {
