@@ -2,8 +2,8 @@ import Foundation
 import GoogleMobileAds
 
 @objcMembers
-@objc(TNSGA)
-public class TNSGA:NSObject {
+@objc(NSCGA)
+public class NSCGA:NSObject {
     
     @objc(Orientation)
     public enum Orientation:Int, RawRepresentable {

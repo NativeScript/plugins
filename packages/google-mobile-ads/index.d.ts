@@ -199,8 +199,6 @@ export declare class BannerAdSize extends BannerAdSizeBase {
 
 	static readonly INVALID: BannerAdSize;
 
-	static readonly SEARCH: BannerAdSize;
-
 	static createAnchoredAdaptiveBanner(width: number, orientation: 'portrait' | 'landscape' | 'device'): BannerAdSize;
 
 	static createInLineAdaptiveBanner(width: number, maxHeight: number, orientation: 'portrait' | 'landscape' | 'device'): BannerAdSize;

@@ -1,4 +1,4 @@
-package org.nativescript.firebase.admob
+package org.nativescript.plugins.google_mobile_ads
 
 import android.app.Activity
 import android.content.Context
@@ -104,7 +104,7 @@ private const val AD_IMPRESSION_EVENT = "adImpression"
 private const val AD_FAILED_TO_SHOW_FULL_SCREEN_CONTENT = " adFailedToShowFullScreenContent"
 
 
-class FirebaseAdmob {
+class GoogleMobileAds {
   interface Callback<T> {
     fun onSuccess(result: T?)
     fun onError(error: Any?)
@@ -279,8 +279,7 @@ class FirebaseAdmob {
       MEDIUM_RECTANGLE("MEDIUM_RECTANGLE"),
       SMART_BANNER("SMART_BANNER"),
       WIDE_SKYSCRAPER("WIDE_SKYSCRAPER"),
-      INVALID("INVALID"),
-      SEARCH("SEARCH");
+      INVALID("INVALID");
 
       override fun toString(): String {
         return value
@@ -296,7 +295,6 @@ class FirebaseAdmob {
           MEDIUM_RECTANGLE -> AdSize.MEDIUM_RECTANGLE
           SMART_BANNER -> AdSize.SMART_BANNER
           WIDE_SKYSCRAPER -> AdSize.WIDE_SKYSCRAPER
-          SEARCH -> AdSize.SEARCH
           else -> AdSize.INVALID
         }
       }
@@ -312,7 +310,6 @@ class FirebaseAdmob {
             "MEDIUM_RECTANGLE" -> MEDIUM_RECTANGLE
             "SMART_BANNER" -> SMART_BANNER
             "WIDE_SKYSCRAPER" -> WIDE_SKYSCRAPER
-            "SEARCH" -> SEARCH
             else -> INVALID
           }
         }

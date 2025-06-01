@@ -164,11 +164,11 @@ export class NativeAdLoader implements INativeAdLoader {
 	load(): void;
 	load(arg?: any): void {
 		const ref = new WeakRef(this);
-		this._native = org.nativescript.firebase.admob.FirebaseAdmob.NativeAd.createLoader(
+		this._native = org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.NativeAd.createLoader(
 			Application.android.foregroundActivity || Application.android.startActivity,
 			this._adUnitId,
 			JSON.stringify(this._nativeAdOptions || {}),
-			new org.nativescript.firebase.admob.FirebaseAdmob.AdLoaderCallback({
+			new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdLoaderCallback({
 				onEvent(event: string, param1: any): void {
 					const owner = ref.get();
 					let nativeAd: NativeAd;
@@ -206,14 +206,14 @@ export class NativeAdLoader implements INativeAdLoader {
 		);
 		if (arg) {
 			if (typeof arg === 'number') {
-				org.nativescript.firebase.admob.FirebaseAdmob.NativeAd.load(this._native, JSON.stringify(this._requestOptions), arg);
+				org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.NativeAd.load(this._native, JSON.stringify(this._requestOptions), arg);
 			}
 
 			if (typeof arg === 'object') {
-				org.nativescript.firebase.admob.FirebaseAdmob.NativeAd.load(this._native, JSON.stringify(arg), true);
+				org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.NativeAd.load(this._native, JSON.stringify(arg), true);
 			}
 		} else {
-			org.nativescript.firebase.admob.FirebaseAdmob.NativeAd.load(this._native, JSON.stringify(this._requestOptions), false);
+			org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.NativeAd.load(this._native, JSON.stringify(this._requestOptions), false);
 		}
 	}
 
@@ -565,7 +565,7 @@ export class NativeAdImage implements INativeAdImage {
 	}
 
 	get image() {
-		return new ImageSource(org.nativescript.firebase.admob.FirebaseAdmob.getBitmap(this.native?.getDrawable?.() || null));
+		return new ImageSource(org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.getBitmap(this.native?.getDrawable?.() || null));
 	}
 
 	get url(): string {

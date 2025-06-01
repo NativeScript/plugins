@@ -32,8 +32,8 @@ declare const enum Orientation {
 	Device = 2,
 }
 
-declare class TNSGA extends NSObject {
-	static alloc(): TNSGA; // inherited from NSObject
+declare class NSCGA extends NSObject {
+	static alloc(): NSCGA; // inherited from NSObject
 
 	static createAnchoredAdaptiveBanner(width: number, orientation: Orientation): GADAdSize;
 
@@ -41,7 +41,7 @@ declare class TNSGA extends NSObject {
 
 	static AdLoaderAdTypeToString(type: NSCAdLoaderAdType): string;
 
-	static new(): TNSGA; // inherited from NSObject
+	static new(): NSCGA; // inherited from NSObject
 
 	static createBanner(size: NSCGABannersSize): GADAdSize;
 }

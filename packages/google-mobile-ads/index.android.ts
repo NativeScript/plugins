@@ -175,11 +175,11 @@ export class InterstitialAd implements IInterstitialAd {
 
 	load(): void {
 		const ref = new WeakRef(this);
-		this._nativeRequest = org.nativescript.firebase.admob.FirebaseAdmob.InterstitialAd.load(
+		this._nativeRequest = org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.InterstitialAd.load(
 			Application.android.foregroundActivity || Application.android.startActivity,
 			this._adUnitId,
 			JSON.stringify(this._requestOptions || {}),
-			new org.nativescript.firebase.admob.FirebaseAdmob.AdCallback({
+			new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdCallback({
 				onEvent(event: string, dataOrError: any) {
 					const owner = ref.get?.();
 					switch (event) {
@@ -270,11 +270,11 @@ export class RewardedInterstitialAd implements IRewardedInterstitialAd {
 
 	load(): void {
 		const ref = new WeakRef(this);
-		this._nativeRequest = org.nativescript.firebase.admob.FirebaseAdmob.RewardedInterstitialAd.load(
+		this._nativeRequest = org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.RewardedInterstitialAd.load(
 			Application.android.foregroundActivity || Application.android.startActivity,
 			this._adUnitId,
 			JSON.stringify(this._requestOptions || {}),
-			new org.nativescript.firebase.admob.FirebaseAdmob.AdCallback({
+			new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdCallback({
 				onEvent(event: string, dataOrError: any) {
 					const owner = ref.get?.();
 					switch (event) {
@@ -320,10 +320,10 @@ export class RewardedInterstitialAd implements IRewardedInterstitialAd {
 			this.native.setImmersiveMode(showOptions?.immersiveModeEnabled);
 		}
 		const ref = new WeakRef(this);
-		org.nativescript.firebase.admob.FirebaseAdmob.RewardedInterstitialAd.show(
+		org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.RewardedInterstitialAd.show(
 			Application.android.foregroundActivity || Application.android.startActivity,
 			this.native,
-			new org.nativescript.firebase.admob.FirebaseAdmob.Callback<com.google.android.gms.ads.rewarded.RewardItem>({
+			new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.Callback<com.google.android.gms.ads.rewarded.RewardItem>({
 				onSuccess(reward): void {
 					ref.get()?._onAdEvent?.(RewardedAdEventType.EARNED_REWARD, null, RewardedItem.fromNative(reward));
 				},
@@ -392,11 +392,11 @@ export class RewardedAd implements IRewardedAd {
 
 	load(): void {
 		const ref = new WeakRef(this);
-		this._nativeRequest = org.nativescript.firebase.admob.FirebaseAdmob.RewardedAd.load(
+		this._nativeRequest = org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.RewardedAd.load(
 			Application.android.foregroundActivity || Application.android.startActivity,
 			this.adUnitId,
 			JSON.stringify(this._requestOptions || {}),
-			new org.nativescript.firebase.admob.FirebaseAdmob.AdCallback({
+			new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdCallback({
 				onEvent(event: string, dataOrError: any) {
 					const owner = ref.get?.();
 					if (!owner) {
@@ -445,10 +445,10 @@ export class RewardedAd implements IRewardedAd {
 			this.native.setImmersiveMode(showOptions?.immersiveModeEnabled);
 		}
 		const ref = new WeakRef(this);
-		org.nativescript.firebase.admob.FirebaseAdmob.RewardedAd.show(
+		org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.RewardedAd.show(
 			Application.android.foregroundActivity || Application.android.startActivity,
 			this.native,
-			new org.nativescript.firebase.admob.FirebaseAdmob.Callback<com.google.android.gms.ads.rewarded.RewardItem>({
+			new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.Callback<com.google.android.gms.ads.rewarded.RewardItem>({
 				onSuccess(reward): void {
 					ref.get()?._onAdEvent?.(RewardedAdEventType.EARNED_REWARD, null, RewardedItem.fromNative(reward));
 				},
@@ -522,7 +522,6 @@ const MEDIUM_RECTANGLE = lazy(() => com.google.android.gms.ads.AdSize.MEDIUM_REC
 
 const FLUID = lazy(() => com.google.android.gms.ads.AdSize.FLUID);
 const WIDE_SKYSCRAPER = lazy(() => com.google.android.gms.ads.AdSize.WIDE_SKYSCRAPER);
-const SEARCH = lazy(() => com.google.android.gms.ads.AdSize.SEARCH);
 const INVALID = lazy(() => com.google.android.gms.ads.AdSize.INVALID);
 const FULL_WIDTH = lazy(() => com.google.android.gms.ads.AdSize.FULL_WIDTH);
 const AUTO_HEIGHT = lazy(() => com.google.android.gms.ads.AdSize.AUTO_HEIGHT);
@@ -604,10 +603,6 @@ export class BannerAdSize extends BannerAdSizeBase {
 		return BannerAdSize.fromNative(INVALID());
 	}
 
-	static get SEARCH(): BannerAdSize {
-		return BannerAdSize.fromNative(SEARCH());
-	}
-
 	get native() {
 		return this._native;
 	}
@@ -646,7 +641,7 @@ export class BannerAd extends BannerAdBase {
 
 	load(options?: RequestOptions) {
 		if (this._native) {
-			this._nativeRequest = org.nativescript.firebase.admob.FirebaseAdmob.BannerAd.load(JSON.stringify(options || {}), this._native);
+			this._nativeRequest = org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.BannerAd.load(JSON.stringify(options || {}), this._native);
 		}
 	}
 
@@ -670,7 +665,7 @@ export class MobileAds implements IMobileAds {
 					onInitializationComplete(status: com.google.android.gms.ads.initialization.InitializationStatus) {
 						let data = {};
 						try {
-							data = JSON.parse(org.nativescript.firebase.admob.FirebaseAdmob.toJSONStatusMap(status.getAdapterStatusMap()));
+							data = JSON.parse(org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.toJSONStatusMap(status.getAdapterStatusMap()));
 						} catch (e) {
 							// noop
 						}
@@ -699,7 +694,7 @@ export class MobileAds implements IMobileAds {
 			} else {
 				parsedConfiguration.tagForUnderAgeOfConsent = 'unspecified';
 			}
-			org.nativescript.firebase.admob.FirebaseAdmob.setRequestConfiguration(JSON.stringify(requestConfiguration));
+			org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.setRequestConfiguration(JSON.stringify(requestConfiguration));
 		} catch (e) {
 			// noop
 		}

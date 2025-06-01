@@ -260,7 +260,7 @@ export class NativeAdLoader implements INativeAdLoader {
 			options.push(numberOfAds);
 		}
 
-		this._native = GADAdLoader.alloc().initWithAdUnitIDRootViewControllerAdTypesOptions(this._adUnitId, topViewController(), [TNSGA.AdLoaderAdTypeToString(NSCAdLoaderAdType.Native)], options);
+		this._native = GADAdLoader.alloc().initWithAdUnitIDRootViewControllerAdTypesOptions(this._adUnitId, topViewController(), [NSCGA.AdLoaderAdTypeToString(NSCAdLoaderAdType.Native)], options);
 		this._native.delegate = this._delegate;
 
 		if (arg) {

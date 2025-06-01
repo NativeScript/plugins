@@ -11,13 +11,13 @@ export class AdsConsent extends AdsConsentBase {
 	static _consentForm: com.google.android.ump.ConsentForm;
 	static _consentInfo: com.google.android.ump.ConsentInformation;
 	static reset() {
-		org.nativescript.firebase.admob.FirebaseAdmob.AdConsent.reset(Utils.android.getApplicationContext());
+		org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdConsent.reset(Utils.android.getApplicationContext());
 	}
 	static addTestDevices(deviceIds: string[]) {
 		this._deviceIds = deviceIds;
 	}
 	static getStatus(): AdsConsentStatus {
-		return org.nativescript.firebase.admob.FirebaseAdmob.AdConsent.getStatus(Utils.android.getApplicationContext()) as any;
+		return org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdConsent.getStatus(Utils.android.getApplicationContext()) as any;
 	}
 	static requestInfoUpdate(): Promise<void> {
 		return new Promise((resolve, reject) => {
@@ -34,10 +34,10 @@ export class AdsConsent extends AdsConsentBase {
 				info['tagForUnderAgeOfConsent'] = this._tagForUnderAgeOfConsent;
 			}
 
-			org.nativescript.firebase.admob.FirebaseAdmob.AdConsent.requestInfoUpdate(
+			org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdConsent.requestInfoUpdate(
 				Application.android.foregroundActivity || Application.android.startActivity,
 				JSON.stringify(info),
-				new org.nativescript.firebase.admob.FirebaseAdmob.Callback<java.lang.Void>({
+				new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.Callback<java.lang.Void>({
 					onSuccess(value) {
 						resolve();
 					},
@@ -64,10 +64,10 @@ export class AdsConsent extends AdsConsentBase {
 
 	static showForm(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			org.nativescript.firebase.admob.FirebaseAdmob.AdConsent.show(
+			org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdConsent.show(
 				Application.android.foregroundActivity || Application.android.startActivity,
 				this._consentForm,
-				new org.nativescript.firebase.admob.FirebaseAdmob.Callback<java.lang.Void>({
+				new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.Callback<java.lang.Void>({
 					onSuccess(val) {
 						resolve();
 					},
@@ -81,9 +81,9 @@ export class AdsConsent extends AdsConsentBase {
 
 	static loadForm() {
 		return new Promise<void>((resolve, reject) => {
-			org.nativescript.firebase.admob.FirebaseAdmob.AdConsent.load(
+			org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.AdConsent.load(
 				Utils.android.getApplicationContext(),
-				new org.nativescript.firebase.admob.FirebaseAdmob.Callback<com.google.android.ump.ConsentForm>({
+				new org.nativescript.plugins.google_mobile_ads.GoogleMobileAds.Callback<com.google.android.ump.ConsentForm>({
 					onSuccess(form) {
 						AdsConsent._consentForm = form;
 						resolve();

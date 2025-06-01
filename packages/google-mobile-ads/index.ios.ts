@@ -350,23 +350,23 @@ export class BannerAdSize extends BannerAdSizeBase {
 	}
 
 	static get BANNER(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.Banner));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.Banner));
 	}
 
 	static get FULL_BANNER(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.FullBanner));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.FullBanner));
 	}
 
 	static get LARGE_BANNER(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.LargeBanner));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.LargeBanner));
 	}
 
 	static get LEADERBOARD(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.LeaderBoard));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.LeaderBoard));
 	}
 
 	static get MEDIUM_RECTANGLE(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.MediumRectangle));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.MediumRectangle));
 	}
 
 	static createAnchoredAdaptiveBanner(width: number, orientation: 'portrait' | 'landscape' | 'device' = 'device'): BannerAdSize {
@@ -377,7 +377,7 @@ export class BannerAdSize extends BannerAdSizeBase {
 			nativeOrientation = Orientation.Landscape;
 		}
 
-		return BannerAdSize.fromNative(TNSGA.createAnchoredAdaptiveBanner(width, nativeOrientation));
+		return BannerAdSize.fromNative(NSCGA.createAnchoredAdaptiveBanner(width, nativeOrientation));
 	}
 
 	static createInLineAdaptiveBanner(width: number, maxHeight: number = 0, orientation: 'portrait' | 'landscape' | 'device' = 'device'): BannerAdSize {
@@ -388,24 +388,19 @@ export class BannerAdSize extends BannerAdSizeBase {
 			nativeOrientation = Orientation.Landscape;
 		}
 
-		return BannerAdSize.fromNative(TNSGA.createInlineAdaptiveBanner(width, maxHeight, nativeOrientation));
+		return BannerAdSize.fromNative(NSCGA.createInlineAdaptiveBanner(width, maxHeight, nativeOrientation));
 	}
 
 	static get FLUID(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.Fluid));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.Fluid));
 	}
 
 	static get WIDE_SKYSCRAPER(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.WideSkyScraper));
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.WideSkyScraper));
 	}
 
 	static get INVALID(): BannerAdSize {
-		return BannerAdSize.fromNative(TNSGA.createBanner(NSCGABannersSize.Invalid));
-	}
-
-	static get SEARCH(): BannerAdSize {
-		console.error('BannerAdSize', 'SEARCH', 'not supported on iOS');
-		return BannerAdSize.INVALID;
+		return BannerAdSize.fromNative(NSCGA.createBanner(NSCGABannersSize.Invalid));
 	}
 
 	get native() {
