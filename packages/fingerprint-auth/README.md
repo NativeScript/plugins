@@ -1,6 +1,6 @@
 ## Replacement notice
 
-This plugin is replaced by [@nativescript/biometrics](../biometrics)
+This plugin is replaced by [@nativescript/biometrics](../plugins/biometrics)
 
 # @nativescript/fingerprint-auth
 
