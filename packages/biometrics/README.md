@@ -21,7 +21,7 @@
 A plugin that allows you to authenticate users with biometrics, such as fingerprints, facial recognition, etc. 
 
 > **Note**
-This plugin replaces [@nativescript/fingerprint-auth](../fingerprint-auth).
+This plugin replaces [@nativescript/fingerprint-auth](../plugins/fingerprint-auth).
 
 ### Prerequisites:
 Before you can verify a user’s biometrics, the device must already have biometric data (such as fingerprints or a face scan) enrolled at the system level. This enrollment is handled by the device’s operating system settings—your app or this plugin does not capture or store biometric data directly. Users must set up biometrics through their device’s security settings (e.g., `Settings` > `Security` > `Biometrics` on Android, or `Settings` > `Face ID` & `Passcode` on iOS).
