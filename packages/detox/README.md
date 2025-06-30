@@ -180,7 +180,36 @@ module.exports = {
 > **Note:** A default NativeScript Android project uses 17 as the minimum SDK, but Detox requires >=21. Remove or modify the `minSdkVersion` in your `App_Resources/Android/app.gradle`.
 
 
-### Allow Local Networking (**iOS Only**)
+### Allow Local Networking
+
+#### Android (Compulsory)
+
+We have added a network security config file at `./res/xml/network_security_config.xml`, add it to the applications `AndroidManifest.xml` as below
+
+```xml
+<!-- ./res/xml/network_security_config.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
+</network-security-config>
+```
+
+```xml
+<!-- ./res/xml/network_security_config.xml -->
+...existing code...
+
+  <application
+		...existing attributes...
+    android:networkSecurityConfig="@xml/network_security_config">
+...existing code...
+```
+
+If you have an existing network security config, incorporate the configuration specified above into it.
+
+#### iOS (Optional)
 
 Dependending on your setup iOS may not be able to communicate with Detox off the bat. In that case, you need to add the following to your `Info.plist` file to allow for local networking requests.
 
