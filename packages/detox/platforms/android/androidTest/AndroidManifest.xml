@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:usesCleartextTraffic="true">
+
+    <!-- Required to target the app under test -->
+    <instrumentation
+        android:name="androidx.test.runner.AndroidJUnitRunner"
+        android:targetPackage="__PACKAGE__"
+        android:label="Detox Tests" />
+
+    <application>
+        <!-- No actual UI, but required to declare something in the test APK -->
+        <uses-library android:name="android.test.runner" />
+    </application>
+</manifest>

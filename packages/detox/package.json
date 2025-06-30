@@ -1,56 +1,54 @@
 {
-  "name": "@nativescript/detox",
-  "version": "1.0.1",
-  "description": "Simplifies usage of wix/Detox e2e tests in NativeScript apps!",
-  "main": "index",
-  "typings": "index.d.ts",
-  "bin": {
-    "enable-animations": "scripts/enable-animations.js"
-  },
-  "scripts": {
-    "postinstall": "node postinstall.js",
-    "preuninstall": "node preuninstall.js"
-  },
-  "nativescript": {
-    "platforms": {
-      "ios": "6.0.0",
-      "android": "6.0.0"
-    },
-    "hooks": [
-      {
-        "type": "before-build-task-args",
-        "script": "scripts/detox-build.js",
-        "inject": true
-      }
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NativeScript/plugins.git"
-  },
-  "keywords": [
-    "NativeScript",
-    "JavaScript",
-    "TypeScript",
-    "iOS",
-    "Android",
-    "e2e",
-    "testing",
-    "tests",
-    "detox"
-  ],
-  "author": {
-    "name": "NativeScript",
-    "email": "oss@nativescript.org"
-  },
-  "bugs": {
-    "url": "https://github.com/NativeScript/plugins/issues"
-  },
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/NativeScript/plugins",
-  "readmeFilename": "README.md",
-  "bootstrapper": "@nativescript/plugin-seed",
-  "dependencies": {
-    "@nativescript/hook": "^2.0.0"
-  }
+	"name": "@nativescript/detox",
+	"version": "1.0.2",
+	"description": "Simplifies usage of wix/Detox e2e tests in NativeScript apps!",
+	"main": "index",
+	"typings": "index.d.ts",
+	"bin": {
+		"enable-animations": "scripts/enable-animations.js"
+	},
+	"scripts": {
+		"postinstall": "node postinstall.js",
+		"preuninstall": "node preuninstall.js"
+	},
+	"nativescript": {
+		"platforms": {
+			"android": "8.0.0"
+		},
+		"hooks": [
+			{
+				"type": "before-build-task-args",
+				"script": "scripts/detox-build.js",
+				"inject": true
+			}
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"Android",
+		"e2e",
+		"testing",
+		"tests",
+		"detox"
+	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed",
+	"dependencies": {
+		"@nativescript/hook": "^2.0.0"
+	}
 }
