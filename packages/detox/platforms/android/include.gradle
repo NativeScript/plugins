@@ -1,5 +1,5 @@
 repositories {
-  maven { url "$rootDir/../../node_modules/detox/Detox-android"}
+  maven { url = project.file('../../../node_modules/detox/Detox-android') }
 }
 
 dependencies {
@@ -8,15 +8,24 @@ dependencies {
 }
 
 android {
+  def testBase = project.file('../../../node_modules/@nativescript/detox/platforms/android/androidTest')
+
   defaultConfig {
-    minSdkVersion 18
-    sourceSets {
-        androidTest.setRoot("${project.rootDir}/../../node_modules/@nativescript/detox/platforms/android/androidTest")
-        androidTest {
-            java.srcDirs = ["${project.rootDir}/../../node_modules/@nativescript/detox/platforms/android/androidTest/java"]
-        }
-    }
     testBuildType System.getProperty('testBuildType', 'debug')
-    testInstrumentationRunner 'com.tns.DetoxTestRunner'
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+  }
+
+  sourceSets {
+    androidTest {
+      java.srcDirs += ["${testBase}/java"]
+      manifest.srcFile "${testBase}/AndroidManifest.xml"
+    }
+  }
+
+  buildTypes {
+    debug {
+      minifyEnabled false
+      shrinkResources false
+    }
   }
 }
