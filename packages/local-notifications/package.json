@@ -46,6 +46,6 @@
 	"homepage": "https://github.com/nativescript/plugins",
 	"dependencies": {
 		"@nativescript/shared-notification-delegate": "~1.0.0",
-		"@nativescript-community/perms": "^2.3.0"
+		"@nativescript-community/perms": "^3.0.4"
 	}
 }
