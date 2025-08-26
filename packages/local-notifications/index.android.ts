@@ -121,7 +121,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 						success: (notification) => {
 							onReceived(JSON.parse(notification));
 						},
-					})
+					}),
 				);
 				resolve();
 			} catch (ex) {
@@ -140,7 +140,7 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 						success: (notification) => {
 							onReceived(JSON.parse(notification));
 						},
-					})
+					}),
 				);
 				resolve();
 			} catch (ex) {
@@ -295,9 +295,8 @@ export class LocalNotificationsImpl extends LocalNotificationsCommon implements 
 		}
 	}
 
-	private static isAuthorized(result: Result): boolean {
-		const [status, _] = result;
-		return status === 'authorized';
+	private static isAuthorized(result: Result<'notification'>): boolean {
+		return result === 'authorized';
 	}
 }
 
