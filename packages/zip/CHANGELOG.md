@@ -1,3 +1,14 @@
+## 7.0.1 (2025-08-27)
+
+### 🩹 Fixes
+
+- **zip:** use public headers with swift package ([6baf0f5](https://github.com/NativeScript/plugins/commit/6baf0f5))
+- **zip:** remove thread queues as not needed ([7752667](https://github.com/NativeScript/plugins/commit/7752667))
+
+### ❤️ Thank You
+
+- Nathan Walker
+
 # 7.0.0 (2025-08-26)
 
 ### 🚀 Features
