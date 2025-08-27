@@ -6,8 +6,8 @@ export default {
 			{
 				name: 'ZipArchive',
 				libs: ['ZipArchive'],
-				repositoryURL: 'https://github.com/ZipArchive/ZipArchive',
-				version: '2.6.0',
+				repositoryURL: 'https://github.com/NathanWalker/ZipArchive',
+				version: '3.0.0',
 			},
 		],
 	},
