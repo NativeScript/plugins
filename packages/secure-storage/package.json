@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/secure-storage",
-	"version": "3.0.3",
+	"version": "4.0.0",
 	"description": "Secure Storage NativeScript plugin",
 	"main": "index",
 	"typings": "index.d.ts",
