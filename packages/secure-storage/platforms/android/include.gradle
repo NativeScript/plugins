@@ -4,5 +4,5 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.triniwiz:hawk:712a481082'
+    implementation 'com.github.triniwiz:hawk:919b077103'
 }
