@@ -1,3 +1,13 @@
+## 4.0.1 (2025-09-17)
+
+### 🩹 Fixes
+
+- **secure-storage:** use conceal v1 ([#650](https://github.com/NativeScript/plugins/pull/650))
+
+### ❤️ Thank You
+
+- Osei Fortune @triniwiz
+
 # 4.0.0 (2025-09-16)
 
 ### 🚀 Features
