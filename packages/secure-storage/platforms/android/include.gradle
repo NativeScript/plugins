@@ -1,7 +1,8 @@
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation 'com.orhanobut:hawk:2.0.1'
+    implementation 'com.github.triniwiz:hawk:919b077103'
 }
