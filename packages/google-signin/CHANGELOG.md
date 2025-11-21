@@ -1,3 +1,9 @@
+## 2.1.2 (2025-11-21)
+
+### 🩹 Fixes
+ - **google-signin:** iOS getTokens return string token instead `GIDToken` object
+
+
 ## 2.1.1 (2025-03-03)
 
 ### 🚀 Features
