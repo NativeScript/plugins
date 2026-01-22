@@ -222,14 +222,14 @@ function ensureClass() {
             const identityTokenData = credential.valueForKey('identityToken');
 
             if (identityTokenData) {
-                identityToken = NSString.alloc().initWithDataEncoding(identityTokenData, NSUTF8StringEncoding);
+                identityToken = NSString.alloc().initWithDataEncoding(identityTokenData, NSUTF8StringEncoding).toString();
             }
 
             let authorizationCode = null;
             const authorizationCodeData = credential.valueForKey('authorizationCode');
 
             if (authorizationCodeData) {
-                authorizationCode = NSString.alloc().initWithDataEncoding(authorizationCodeData, NSUTF8StringEncoding);
+                authorizationCode = NSString.alloc().initWithDataEncoding(authorizationCodeData, NSUTF8StringEncoding).toString();
             }
 
             let fullName: UserFullName = null;
