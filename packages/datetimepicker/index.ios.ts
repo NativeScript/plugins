@@ -93,8 +93,6 @@ export class DateTimePicker extends DateTimePickerBase {
 	static _createNativeDialog(nativePicker: UIDatePicker, options: PickerOptions, style: DateTimePickerStyle, callback: Function) {
 		const alertTitle = options.title ? options.title : '';
 		const alertController = UIAlertController.alertControllerWithTitleMessagePreferredStyle(alertTitle, DateTimePicker.PICKER_DEFAULT_MESSAGE, UIAlertControllerStyle.ActionSheet);
-		const alertSize = nativePicker.preferredDatePickerStyle === 3 ? 280 : Math.min(alertController.view.frame.size.width, alertController.view.frame.size.height);
-		const pickerViewWidth = UIDevice.currentDevice.userInterfaceIdiom === UIUserInterfaceIdiom.Pad ? DateTimePicker.PICKER_WIDTH_PAD : alertSize - DateTimePicker.PICKER_WIDTH_INSETS;
 
 		let pickerContainerFrameTop = options.title ? DateTimePicker.PICKER_DEFAULT_TITLE_OFFSET : DateTimePicker.PICKER_DEFAULT_OFFSET;
 		if (options.title) {
@@ -102,6 +100,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 		const pickerViewHeight = DateTimePicker.PICKER_DEFAULT_MESSAGE_HEIGHT;
 		const pickerContainer = UIView.alloc().init();
+		pickerContainer.clipsToBounds = false;
 		let spinnersBackgroundColor = new Color('transparent');
 		let spinnersTextColor = null;
 		if (style) {
@@ -111,18 +110,14 @@ export class DateTimePicker extends DateTimePickerBase {
 		DateTimePicker._applyDialogSpinnersColors(nativePicker, pickerContainer, spinnersTextColor, spinnersBackgroundColor);
 
 		const pickerView = nativePicker;
-		const left = this._isTablet ? 0 : (alertController.view.frame.size.width - pickerViewWidth) / 2 - DateTimePicker.PICKER_WIDTH_INSETS;
-		pickerView.frame = CGRectMake(left, 0, pickerViewWidth, pickerViewHeight);
+		pickerView.clipsToBounds = false;
 		pickerContainer.addSubview(pickerView);
 		DateTimePicker._clearVibrancyEffects(alertController.view);
 
 		const messageLabel = DateTimePicker._findLabelWithText(alertController.view, DateTimePicker.PICKER_DEFAULT_MESSAGE);
 		const messageLabelContainer = DateTimePicker._getLabelContainer(messageLabel);
-		if (this._isTablet) {
-			messageLabelContainer.clipsToBounds = false;
-		} else {
-			messageLabelContainer.clipsToBounds = true;
-		}
+		// Disable clipping on all ancestor views to prevent wheel picker from being cut off
+		DateTimePicker._disableClipsToBoundsOnAncestors(messageLabelContainer);
 		messageLabelContainer.addSubview(pickerContainer);
 
 		pickerContainer.translatesAutoresizingMaskIntoConstraints = false;
@@ -131,13 +126,13 @@ export class DateTimePicker extends DateTimePickerBase {
 		pickerContainer.rightAnchor.constraintEqualToAnchor(alertController.view.rightAnchor).active = true;
 		pickerContainer.bottomAnchor.constraintEqualToAnchor(alertController.view.bottomAnchor).active = true;
 
-		if (nativePicker.preferredDatePickerStyle === 3) {
-			pickerView.centerXAnchor.constraintEqualToAnchor(pickerContainer.centerXAnchor).active = true;
-			// pickerView.leftAnchor.constraintEqualToAnchorConstant(pickerContainer.leftAnchor, left).active = true;
-		} else {
-			pickerView.leftAnchor.constraintLessThanOrEqualToAnchorConstant(pickerContainer.leftAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
-			pickerView.rightAnchor.constraintLessThanOrEqualToAnchorConstant(pickerContainer.rightAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
-		}
+		// Use auto layout for the picker - constrain to container edges to prevent clipping
+		pickerView.translatesAutoresizingMaskIntoConstraints = false;
+		pickerView.topAnchor.constraintEqualToAnchor(pickerContainer.topAnchor).active = true;
+		pickerView.heightAnchor.constraintEqualToConstant(pickerViewHeight).active = true;
+		// Constrain left and right edges with insets to keep picker within bounds
+		pickerView.leftAnchor.constraintEqualToAnchorConstant(pickerContainer.leftAnchor, DateTimePicker.PICKER_WIDTH_INSETS).active = true;
+		pickerView.rightAnchor.constraintEqualToAnchorConstant(pickerContainer.rightAnchor, -DateTimePicker.PICKER_WIDTH_INSETS).active = true;
 
 		const cancelButtonText = options.cancelButtonText ? options.cancelButtonText : 'Cancel';
 		const okButtonText = options.okButtonText ? options.okButtonText : 'OK';
@@ -251,6 +246,14 @@ export class DateTimePicker extends DateTimePickerBase {
 			return uiView.superview;
 		}
 		return DateTimePicker._getLabelContainer(uiView.superview);
+	}
+
+	private static _disableClipsToBoundsOnAncestors(uiView: UIView) {
+		let current = uiView;
+		while (current) {
+			current.clipsToBounds = false;
+			current = current.superview;
+		}
 	}
 
 	private static _findLabelWithText(uiView: UIView, text: string) {
