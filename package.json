@@ -32,7 +32,7 @@
 		"@nativescript/plugin-tools": "5.5.3",
 		"@nativescript/tailwind": "^2.1.0",
 		"@nativescript/types": "~8.9.0",
-		"@nativescript/webpack": "~5.0.22",
+		"@nativescript/webpack": "5.0.24",
 		"@ngtools/webpack": "^19.0.0",
 		"@types/geojson": "^7946.0.7",
 		"@types/mkdirp": "^1.0.1",
