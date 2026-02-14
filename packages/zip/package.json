@@ -7,6 +7,7 @@
 	"nativescript": {
 		"platforms": {
 			"ios": "6.0.0",
+			"macos": "6.0.0",
 			"android": "6.0.0"
 		}
 	},
@@ -19,6 +20,7 @@
 		"JavaScript",
 		"TypeScript",
 		"iOS",
+		"macOS",
 		"Android"
 	],
 	"author": {
