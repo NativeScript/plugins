@@ -1,0 +1,37 @@
+{
+	"name": "@nativescript/input-accessory",
+	"version": "1.0.0",
+	"description": "iOS/Android keyboard input accessory for NativeScript chat UIs — docked input bar, interactive dismiss, auto-scroll",
+	"main": "index",
+	"types": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"ios": "9.0.0",
+			"android": "9.0.0"
+		}
+	},
+	"keywords": [
+		"NativeScript",
+		"keyboard",
+		"input-accessory",
+		"chat",
+		"iOS",
+		"Android",
+		"inputAccessoryView"
+	],
+	"author": {
+		"name": "NativeScript",
+		"email": "oss@nativescript.org"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NativeScript/plugins.git"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/plugins/issues"
+	},
+	"homepage": "https://github.com/NativeScript/plugins",
+	"readmeFilename": "README.md",
+	"bootstrapper": "@nativescript/plugin-seed",
+	"license": "Apache-2.0"
+}

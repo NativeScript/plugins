@@ -1,0 +1,65 @@
+{
+	"name": "input-accessory",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/input-accessory",
+	"targets": {
+		"build": {
+			"executor": "@nx/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/input-accessory",
+				"tsConfig": "packages/input-accessory/tsconfig.json",
+				"packageJson": "packages/input-accessory/package.json",
+				"main": "packages/input-accessory/index.d.ts",
+				"assets": [
+					"packages/input-accessory/*.md",
+					"packages/input-accessory/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/input-accessory/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts input-accessory"],
+				"parallel": false
+			},
+			"outputs": ["{workspaceRoot}/dist/packages/input-accessory"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages input-accessory"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/input-accessory/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}

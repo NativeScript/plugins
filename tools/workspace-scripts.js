@@ -309,6 +309,13 @@ module.exports = {
 					description: '@nativescript/google-mobile-ads: Build',
 				},
 			},
+			// @nativescript/input-accessory
+			'input-accessory': {
+				build: {
+					script: 'nx run input-accessory:build.all',
+					description: '@nativescript/input-accessory: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -470,6 +477,10 @@ module.exports = {
 			'google-mobile-ads': {
 				script: 'nx run google-mobile-ads:focus',
 				description: 'Focus on @nativescript/google-mobile-ads',
+			},
+			'input-accessory': {
+				script: 'nx run input-accessory:focus',
+				description: 'Focus on @nativescript/input-accessory',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',

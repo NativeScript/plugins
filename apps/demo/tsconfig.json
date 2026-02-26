@@ -50,7 +50,8 @@
 			"@nativescript/google-mobile-ads": ["../../packages/google-mobile-ads/index.d.ts"],
 			"@nativescript/google-mobile-ads/angular": ["../../packages/google-mobile-ads/angular/index.ts"],
 			"@nativescript/google-maps-utils": ["../../packages/google-maps-utils/index.d.ts"],
-			"@nativescript/keyboard-toolbar": ["../../packages/keyboard-toolbar/index.d.ts"]
+			"@nativescript/keyboard-toolbar": ["../../packages/keyboard-toolbar/index.d.ts"],
+			"@nativescript/input-accessory": ["../../packages/input-accessory/index.d.ts"]
 		}
 	}
 }

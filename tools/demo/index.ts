@@ -23,6 +23,7 @@ export * from './google-mobile-ads';
 export * from './google-signin';
 export * from './haptics';
 export * from './imagepicker';
+export * from './input-accessory';
 export * from './ios-security';
 export * from './iqkeyboardmanager';
 export * from './keyboard-toolbar';

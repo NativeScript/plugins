@@ -1,0 +1,30 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
+  <Page.actionBar>
+    <ActionBar title="input-accessory" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <GridLayout rows="auto,*, auto">
+    <StackLayout class="p-4" tap="{{ dismissKeyboard }}">
+      <Label text="Keyboard attached input bar demo" class="h2 mb-2" textWrap="true" />
+      <Label text="Try dragging the list while the keyboard is visible for interactive dismiss." class="mb-4 leading-[3]" textWrap="true" />
+    </StackLayout>
+    <GridLayout row="1" class="mx-4" iosOverflowSafeArea="false">
+      <ScrollView id="messagesScrollView">
+        <StackLayout tap="{{ dismissKeyboard }}" class="p-2 mb-14 bg-gray-200 rounded-b-lg">
+
+          <Repeater items="{{ messages }}">
+            <Repeater.itemTemplate>
+              <Label text="{{ $value }}" class="p-2 mb-2 text-sm leading-[3]" textWrap="true" />
+            </Repeater.itemTemplate>
+          </Repeater>
+        </StackLayout>
+      </ScrollView>
+
+    </GridLayout>
+
+    <GridLayout id="inputContainer" row="2" columns="*, auto" class="px-5 pb-2">
+      <TextView id="messageInput" col="0" text="{{ inputText }}" hint="Type a message..." textChange="{{ onMessageTextChange }}" loaded="{{ onMessageInputLoaded }}" returnKeyType="send" class="pl-4 py-4 rounded-full bg-white/30 leading-[2]" />
+      <Button col="1" text="Send" tap="{{ sendMessage }}" class="text-blue-500 ml-2" />
+    </GridLayout>
+  </GridLayout>
+</Page>

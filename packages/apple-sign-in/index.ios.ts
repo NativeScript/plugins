@@ -5,6 +5,96 @@ import { CredentialState, UNSUPPORTED, UserDetectionStatus } from './common';
 // SHA256 digest length constant
 const CC_SHA256_DIGEST_LENGTH = 32;
 
+@NativeClass()
+class ASAuthorizationControllerDelegateImpl extends NSObject implements ASAuthorizationControllerDelegate {
+	static ObjCProtocols = [ASAuthorizationControllerDelegate];
+	_resolve;
+	_reject;
+	_options: SignInOptions;
+
+	static initWithCallback(resolve, reject) {
+		const delegate = ASAuthorizationControllerDelegateImpl.new() as ASAuthorizationControllerDelegateImpl;
+		delegate._resolve = resolve;
+		delegate._reject = reject;
+		return delegate;
+	}
+
+	authorizationControllerDidCompleteWithAuthorization(controller: ASAuthorizationController, authorization: ASAuthorization): void {
+		const credential = authorization.credential as ASAuthorizationAppleIDCredential;
+		let identityToken = null;
+		const identityTokenData = credential.valueForKey('identityToken');
+
+		if (identityTokenData) {
+			identityToken = NSString.alloc().initWithDataEncoding(identityTokenData, NSUTF8StringEncoding);
+		}
+
+		let authorizationCode = null;
+		const authorizationCodeData = credential.valueForKey('authorizationCode');
+
+		if (authorizationCodeData) {
+			authorizationCode = NSString.alloc().initWithDataEncoding(authorizationCodeData, NSUTF8StringEncoding);
+		}
+
+		let fullName: UserFullName = null;
+
+		const fullNameData = credential.fullName;
+		if (fullNameData) {
+			fullName = {};
+			fullName.namePrefix = fullNameData.namePrefix;
+			fullName.givenName = fullNameData.givenName;
+			fullName.middleName = fullNameData.middleName;
+			fullName.familyName = fullNameData.familyName;
+			fullName.nameSuffix = fullNameData.nameSuffix;
+			fullName.nickname = fullNameData.nickname;
+		}
+
+		this._resolve({
+			nonce: this._options?.nonce || null,
+			user: credential.user,
+			fullName,
+			realUserStatus: getRealUserStatus(credential.realUserStatus),
+			authorizedScopes: credential.authorizedScopes,
+			identityToken,
+			email: credential.email || null,
+			state: credential.state,
+			authorizationCode,
+		});
+	}
+
+	authorizationControllerDidCompleteWithError(controller: ASAuthorizationController, error: NSError): void {
+		this._reject?.(SignInError.fromNative(error));
+	}
+}
+
+// Presentation context provider - required by Apple for presenting the authorization UI
+@NativeClass()
+class ASAuthorizationControllerPresentationContextProvidingImpl extends NSObject implements ASAuthorizationControllerPresentationContextProviding {
+	static ObjCProtocols = [ASAuthorizationControllerPresentationContextProviding];
+	presentationAnchorForAuthorizationController(controller: ASAuthorizationController): UIWindow {
+		// Return the key window for presenting the authorization UI
+		if (typeof UIApplication !== 'undefined') {
+			// iOS 13+ approach
+			const scenes = UIApplication.sharedApplication.connectedScenes;
+			const sceneEnumerator = scenes.objectEnumerator();
+			let scene: UIScene;
+			while ((scene = sceneEnumerator.nextObject())) {
+				if (scene.activationState === UISceneActivationState.ForegroundActive && scene instanceof UIWindowScene) {
+					const windows = (scene as UIWindowScene).windows;
+					for (let i = 0; i < windows.count; i++) {
+						const window = windows.objectAtIndex(i);
+						if (window.isKeyWindow) {
+							return window;
+						}
+					}
+				}
+			}
+			// Fallback for older code paths
+			return UIApplication.sharedApplication.keyWindow || UIApplication.sharedApplication.windows.firstObject;
+		}
+		return null;
+	}
+}
+
 export class SignInError extends Error {
 	#native: NSError;
 	static fromNative(native: NSError, message?: string) {
@@ -80,14 +170,13 @@ function sha256Hash(input: string): string {
 export class SignIn {
 	static #controller: ASAuthorizationController;
 	static #delegate: ASAuthorizationControllerDelegate;
-	static #presentationContextProvider: ASAuthorizationControllerPresentationContextProviding;
+	static #presentationContextProvider: ASAuthorizationControllerPresentationContextProvidingImpl;
 
 	public static signIn(options?: SignInOptions) {
 		return new Promise<User>((resolve, reject) => {
 			if (!SignIn.isSupported()) {
 				reject(UNSUPPORTED);
 			}
-			ensureClass();
 
 			this.#delegate = ASAuthorizationControllerDelegateImpl.initWithCallback(resolve, reject);
 			(this.#delegate as any)._options = options;
@@ -126,7 +215,7 @@ export class SignIn {
 			this.#controller = ASAuthorizationController.alloc().initWithAuthorizationRequests([request]);
 
 			// Set up presentation context provider (required by Apple)
-			this.#presentationContextProvider = ASAuthorizationControllerPresentationContextProvidingImpl.new();
+			this.#presentationContextProvider = ASAuthorizationControllerPresentationContextProvidingImpl.new() as ASAuthorizationControllerPresentationContextProvidingImpl;
 			this.#controller.presentationContextProvider = this.#presentationContextProvider;
 
 			this.#controller.delegate = this.#delegate;
@@ -229,111 +318,4 @@ function getRealUserStatus(status: ASUserDetectionStatus): UserDetectionStatus {
 		default:
 			return UserDetectionStatus.Unknown;
 	}
-}
-
-let ASAuthorizationControllerDelegateImpl;
-let ASAuthorizationControllerPresentationContextProvidingImpl;
-
-function ensureClass() {
-	if (!SignIn.isSupported()) {
-		return;
-	}
-
-	if (ASAuthorizationControllerDelegateImpl && ASAuthorizationControllerPresentationContextProvidingImpl) {
-		return;
-	}
-
-	// Presentation context provider - required by Apple for presenting the authorization UI
-	@NativeClass()
-	class ASAuthorizationControllerPresentationContextProvidingExt extends NSObject implements ASAuthorizationControllerPresentationContextProviding {
-		static ObjCProtocols = [ASAuthorizationControllerPresentationContextProviding];
-		presentationAnchorForAuthorizationController(controller: ASAuthorizationController): UIWindow {
-			// Return the key window for presenting the authorization UI
-			if (typeof UIApplication !== 'undefined') {
-				// iOS 13+ approach
-				const scenes = UIApplication.sharedApplication.connectedScenes;
-				const sceneEnumerator = scenes.objectEnumerator();
-				let scene: UIScene;
-				while ((scene = sceneEnumerator.nextObject())) {
-					if (scene.activationState === UISceneActivationState.ForegroundActive && scene instanceof UIWindowScene) {
-						const windows = (scene as UIWindowScene).windows;
-						for (let i = 0; i < windows.count; i++) {
-							const window = windows.objectAtIndex(i);
-							if (window.isKeyWindow) {
-								return window;
-							}
-						}
-					}
-				}
-				// Fallback for older code paths
-				return UIApplication.sharedApplication.keyWindow || UIApplication.sharedApplication.windows.firstObject;
-			}
-			return null;
-		}
-	}
-
-	ASAuthorizationControllerPresentationContextProvidingImpl = ASAuthorizationControllerPresentationContextProvidingExt;
-
-	@NativeClass()
-	class ASAuthorizationControllerDelegateExt extends NSObject implements ASAuthorizationControllerDelegate {
-		static ObjCProtocols = [ASAuthorizationControllerDelegate];
-		_resolve;
-		_reject;
-		_options: SignInOptions;
-
-		static initWithCallback(resolve, reject) {
-			const delegate = <ASAuthorizationControllerDelegateExt>ASAuthorizationControllerDelegateExt.new();
-			delegate._resolve = resolve;
-			delegate._reject = reject;
-			return delegate;
-		}
-
-		authorizationControllerDidCompleteWithAuthorization(controller: ASAuthorizationController, authorization: ASAuthorization): void {
-			const credential = authorization.credential as ASAuthorizationAppleIDCredential;
-			let identityToken = null;
-			const identityTokenData = credential.valueForKey('identityToken');
-
-			if (identityTokenData) {
-				identityToken = NSString.alloc().initWithDataEncoding(identityTokenData, NSUTF8StringEncoding);
-			}
-
-			let authorizationCode = null;
-			const authorizationCodeData = credential.valueForKey('authorizationCode');
-
-			if (authorizationCodeData) {
-				authorizationCode = NSString.alloc().initWithDataEncoding(authorizationCodeData, NSUTF8StringEncoding);
-			}
-
-			let fullName: UserFullName = null;
-
-			const fullNameData = credential.fullName;
-			if (fullNameData) {
-				fullName = {};
-				fullName.namePrefix = fullNameData.namePrefix;
-				fullName.givenName = fullNameData.givenName;
-				fullName.middleName = fullNameData.middleName;
-				fullName.familyName = fullNameData.familyName;
-				fullName.nameSuffix = fullNameData.nameSuffix;
-				fullName.nickname = fullNameData.nickname;
-			}
-
-			this._resolve({
-				nonce: this._options?.nonce || null,
-				user: credential.user,
-				fullName,
-				realUserStatus: getRealUserStatus(credential.realUserStatus),
-				authorizedScopes: credential.authorizedScopes,
-				identityToken,
-				email: credential.email || null,
-				state: credential.state,
-				authorizationCode,
-			});
-		}
-
-		authorizationControllerDidCompleteWithError(controller: ASAuthorizationController, error: NSError): void {
-			this._reject?.(SignInError.fromNative(error));
-		}
-	}
-
-	ASAuthorizationControllerDelegateImpl = ASAuthorizationControllerDelegateExt;
 }
