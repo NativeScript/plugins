@@ -4,9 +4,8 @@
 	"license": "SEE LICENSE IN <your-license-filename>",
 	"repository": "<fill-your-repository-here>",
 	"dependencies": {
-		"@nativescript/google-maps": "file:../../packages/google-maps",
-		"@nativescript/core": "*",
-		"@nativescript/google-maps-utils": "file:../../packages/google-maps-utils",
+		"@nativescript/core": "file:../../node_modules/@nativescript/core",
+		"@nativescript/input-accessory": "file:../../packages/input-accessory",
 		"@nativescript/animated-circle": "file:../../packages/animated-circle",
 		"@nativescript/appavailability": "file:../../packages/appavailability",
 		"@nativescript/apple-sign-in": "file:../../packages/apple-sign-in",
@@ -25,6 +24,8 @@
 		"@nativescript/facebook": "file:../../packages/facebook",
 		"@nativescript/fingerprint-auth": "file:../../packages/fingerprint-auth",
 		"@nativescript/geolocation": "file:../../packages/geolocation",
+		"@nativescript/google-maps": "file:../../packages/google-maps",
+		"@nativescript/google-maps-utils": "file:../../packages/google-maps-utils",
 		"@nativescript/google-mobile-ads": "file:../../packages/google-mobile-ads",
 		"@nativescript/google-signin": "file:../../packages/google-signin",
 		"@nativescript/haptics": "file:../../packages/haptics",
@@ -44,8 +45,8 @@
 		"@nativescript/zip": "file:../../packages/zip"
 	},
 	"devDependencies": {
-		"@nativescript/android": "~8.9.0",
-		"@nativescript/ios": "~8.9.0",
+		"@nativescript/android": "~9.0.0",
+		"@nativescript/ios": "~9.0.0",
 		"@nativescript/tailwind": "~2.1.0",
 		"tailwindcss": "~3.4.0"
 	}
