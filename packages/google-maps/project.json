@@ -15,6 +15,7 @@
 					"packages/google-maps/*.md",
 					"packages/google-maps/index.d.ts",
 					"packages/google-maps/utils/index.d.ts",
+					"packages/google-maps/nativescript.config.ts",
 					"LICENSE",
 					{
 						"glob": "**/*",
