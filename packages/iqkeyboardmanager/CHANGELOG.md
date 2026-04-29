@@ -1,3 +1,13 @@
+## 2.2.0 (2026-04-29)
+
+### 🚀 Features
+
+- **iqkeyboardmanager:** 6.5.11 swift package ([#662](https://github.com/NativeScript/plugins/pull/662))
+
+### ❤️ Thank You
+
+- Nathan Walker
+
 ## 2.1.2 (2025-03-05)
 
 ### 🚀 Features
