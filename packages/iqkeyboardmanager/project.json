@@ -14,6 +14,7 @@
 				"assets": [
 					"packages/iqkeyboardmanager/*.md",
 					"packages/iqkeyboardmanager/index.d.ts",
+					"packages/iqkeyboardmanager/nativescript.config.ts",
 					"LICENSE",
 					{
 						"glob": "**/*",
