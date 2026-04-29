@@ -1,3 +1,13 @@
+## 2.2.1 (2026-04-29)
+
+### 🩹 Fixes
+
+- iqkeyboardmanager repositoryURL ([c87db6c](https://github.com/NativeScript/plugins/commit/c87db6c))
+
+### ❤️ Thank You
+
+- Nathan Walker
+
 ## 2.2.0 (2026-04-29)
 
 ### 🚀 Features
