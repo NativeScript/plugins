@@ -1,9 +1,10 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript/iqkeyboardmanager" navigatingTo="navigatingTo" class="page">
-    <Page.actionBar>
-        <ActionBar title="iqkeyboardmanager" icon="" class="action-bar">
-        </ActionBar>
-    </Page.actionBar>
-    <ScrollView>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:IQKeyboardManager="@nativescript/iqkeyboardmanager" navigatingTo="navigatingTo" class="page">
+  <Page.actionBar>
+    <ActionBar title="iqkeyboardmanager" icon="" class="action-bar">
+    </ActionBar>
+  </Page.actionBar>
+  <ScrollView>
     <StackLayout>
 
       <iOS>
@@ -33,36 +34,24 @@
         </GridLayout>
       </iOS>
 
-      <IQKeyboardManager:PreviousNextView>
+
+      <StackLayout>
+        <TextField hint="Email"/>
+        <TextField hint="Password"/>
         <StackLayout>
-            <TextField hint="Email"/>
-            <TextField hint="Password"/>
-          <StackLayout>
-            <IQKeyboardManager:TextViewWithHint text="{{ textViewWithHintText }}" hint="Working TextView hint 🤪"/>
-          </StackLayout>
-          <StackLayout>
-            <TextView text="{{ textViewText }}" hint="Not working TextView hint"/>
-          </StackLayout>
-          <StackLayout>
-            <TextField hint="5"/>
-          </StackLayout>
-          <StackLayout>
-            <TextField hint="6"/>
-          </StackLayout>
-          <StackLayout>
-            <TextView hint="7"/>
-          </StackLayout>
-          <StackLayout>
-            <TextView hint="8"/>
-          </StackLayout>
-          <StackLayout>
-            <TextView hint="9"/>
-          </StackLayout>
-          <StackLayout>
-            <TextField hint="10"/>
-          </StackLayout>
+          <IQKeyboardManager:TextViewWithHint text="{{ textViewWithHintText }}" hint="Working TextView hint 🤪"/>
         </StackLayout>
-      </IQKeyboardManager:PreviousNextView>
+        <StackLayout>
+          <TextView text="{{ textViewText }}" hint="Not working TextView hint"/>
+        </StackLayout>
+        <TextField hint="5"/>
+        <TextField hint="6"/>
+        <TextView hint="7"/>
+        <TextView hint="8"/>
+        <TextView hint="9"/>
+        <TextField hint="10"/>
+      </StackLayout>
+
     </StackLayout>
   </ScrollView>
 </Page>

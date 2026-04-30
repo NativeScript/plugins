@@ -1,16 +1,21 @@
-import { ContentView, TextView } from "@nativescript/core";
+import { ContentView, TextView } from '@nativescript/core';
 
+/**
+ * No longer needed.
+ * @deprecated This class is not needed anymore. Instead use:
+ * IQKeyboardToolbarManager.shared.isEnabled = true;
+ */
 export class PreviousNextView extends ContentView {
-  createNativeView() {
-    return IQPreviousNextView.new();
-  }
+	createNativeView() {
+		return UIView.new();
+	}
 }
 
 export class TextViewWithHint extends TextView {
-  createNativeView() {
-    const view = IQTextView.new();
-    this.nativeView = view;
-    view.placeholder = this.hint;
-    return view;
-  }
+	createNativeView() {
+		const view = IQTextView.new();
+		this.nativeView = view;
+		view.placeholder = this.hint;
+		return view;
+	}
 }

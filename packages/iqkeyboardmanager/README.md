@@ -1,25 +1,22 @@
 # @nativescript/iqkeyboardmanager
 
 ## Contents
-* [Intro](#intro)
-* [Installation](#installation)
-* [Use @nativescript/iqkeyboardmanager](#use-nativescriptiqkeyboardmanager)
-	* [Core](#core)
-	* [Angular](#angular)
-	* [Vue](#vue)
-	* [Svelte](#svelte)
-	* [React](#react)
-	* [Adding a hint text to the TextView accessory bar](#adding-a-hint-text-to-the-textview-accessory-bar)
-		* [Core](#core-1)
-		* [Angular](#angular-1)
-		* [Vue](#vue-1)
-		* [Svelte](#svelte-1)
-	* [Demo app](#demo-apps)
-	* [Tweaking the appearance and behavior](#tweaking-the-appearance-and-behavior)
-	* [Multi-factor one-time code auto-fill](#multi-factor-one-time-code-auto-fill)
-* [Native documentation](#native-documentation)
-* [Maintainers](#maintainers)
-* [License](#license)
+- [@nativescript/iqkeyboardmanager](#nativescriptiqkeyboardmanager)
+	- [Contents](#contents)
+	- [Intro](#intro)
+	- [Installation](#installation)
+	- [Use @nativescript/iqkeyboardmanager](#use-nativescriptiqkeyboardmanager)
+		- [Adding a hint text to the TextView accessory bar](#adding-a-hint-text-to-the-textview-accessory-bar)
+			- [Core](#core)
+			- [Angular](#angular)
+			- [Vue](#vue)
+			- [Svelte](#svelte)
+		- [React](#react)
+		- [Tweaking the appearance and behavior](#tweaking-the-appearance-and-behavior)
+			- [Multi-factor one-time code auto-fill](#multi-factor-one-time-code-auto-fill)
+	- [Native documentation](#native-documentation)
+	- [Maintainers](#maintainers)
+	- [License](#license)
 
 ## Intro
 
@@ -43,107 +40,20 @@ The following sections describe how to use the `@nativescript/iqkeyboardmanager`
 > **Note** Make related text fields siblings for the IQKeyboardManager to automatically
 add the `previous`(`<`) and `next`(`>`) buttons to the accessory bar. The user can then use those buttons to jump back and forth.
 
-### Core
-1. Register the plugin namespace with Page's `xmlns` attribute under a prefix( `IQKeyboardManager` for example) that you can use to access the `PreviousNextView`.
-
-```xml
-<Page xmlns:IQKeyboardManager="@nativescript-iqkeyboardmanager">
 ```
-2. Access the `PreviousNextView` using the prefix.
-
-```xml
-<IQKeyboardManager:PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
-      <StackLayout>
-          <TextField hint="Email"/>
-          <TextField hint="Password"/>
-      </StackLayout>
-    </IQKeyboardManager:PreviousNextView>
+IQKeyboardToolbarManager.shared.isEnabled = true
 ```
-The 2 preceding steps result in the code below:
-
-```xml
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:IQKeyboardManager="@nativescript-iqkeyboardmanager">
-  <ScrollView>
-    <IQKeyboardManager.PreviousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
-      <StackLayout>
-          <TextField hint="Email"/>
-          <TextField hint="Password"/>
-      </StackLayout>
-    </IQKeyboardManager:PreviousNextView>
-  </ScrollView>
-</Page>
-```
-
-### Angular
-
-1. Register the `PreviousNextView` element in the `.modules.ts` file where you want to use this feature (or the `app.module.ts` for global access).
-
-```ts
-import { registerElement } from '@nativescript/angular';
-import { PreviousNextView } from '@nativescript/iqkeyboardmanager';
-registerElement('PreviousNextView', () => PreviousNextView);
-```
-
-2. Add `PreviousNextView` to the markup as follows:
-
-```html
-<ScrollView>
-	<PreviousNextView
-		><!-- add this 'wrapper' to enable those previous / next buttons -->
-		<StackLayout>
-				<TextField hint="Email"></TextField>
-				<TextField hint="Password"></TextField>
-		</StackLayout>
-	</PreviousNextView>
-</ScrollView>
-```
-
-### Vue
-
-1. Register `PreviousNextView` by adding the following code to the `app.ts` file.
-
-```ts
-registerElement('PreviousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
-```
-2. Use `PreviousNextView` in markup.
-
-```xml
-<ScrollView>
-	<PreviousNextView
-		><!-- add this 'wrapper' to enable those previous / next buttons -->
-		<StackLayout>
-				<TextField hint="Email"></TextField>
-				<TextField hint="Password"></TextField>
-		</StackLayout>
-	</PreviousNextView>
-</ScrollView>
-```
-
-### Svelte
-
-1. Register `PreviousNextView` by adding the following code to the `app.ts` file.
-
-```ts
-registerNativeViewElement('previousNextView', () => require('@nativescript/iqkeyboardmanager').PreviousNextView);
-```
-2. Add `previousNextView` to markup.
-
-```xml
-<previousNextView><!-- add this 'wrapper' to enable those previous / next buttons -->
-<stackLayout>
-	<textField hint="Email"/>
-	<textField hint="Password"/>
-</stackLayout>
-</previousNextView>
-```
-For a demo app, visit [NativeScript Svelte:  IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte).
 
 ### Adding a hint text to the TextView accessory bar
 
 By default, when a `TextField` is focused, the keyboard manager shows the field's hint label in the accessory bar above the keyboard.
 
 For a `TextView`, however, use the `TextViewWithHint` component,
-provided by this plugin, to add the hint label to the accessory bar. 
+provided by this plugin, to add the hint label to the accessory bar. Be sure to enable the toolbar:
+
+```ts
+IQKeyboardToolbarManager.shared.enableAutoToolbar = true;
+```
 
 #### Core
 
@@ -233,40 +143,34 @@ registerElement("textViewWithHint", ()=> require("@nativescript/iqkeyboardmanage
 	</stackLayout>
 </previousNextView>
 ```
-### Demo apps
-
-The following are links to the plugin demo apps in the different JS flavors.
-
-* [NativeScript TS: IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-sia8th?file=app/main-page.xml).
-* [NativeScript Svelte: IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-rygnsk?file=app/components/Home.svelte)
-* [NativeScript React: IQ Keyboard Manager](https://stackblitz.com/edit/nativescript-stackblitz-templates-5uygfj?file=src/components/ScreenOne.tsx)
 
 
 ### Tweaking the appearance and behavior
 
-To tweak the appearance and behavior of `PreviousNextView`, follow the steps below:
-
 1. Add the following path to your app’s `references.d.ts` file. 
 
 ```xml
-/// <reference path="./node_modules/@nativescript/iqkeyboardmanager/index.d.ts" />
+/// <reference path="./node_modules/@nativescript/iqkeyboardmanager/typings/index.d.ts" />
 ```
 
 2. Initialize an instance of `IQKeyboardManager` as follows.
 
 ```typescript
-const iqKeyboard = IQKeyboardManager.sharedManager();
+const iqKeyboard = IQKeyboardManager.shared;
 ```
 
 You now have the full IQKeyboardManager APIs available for you to use. For example, to switch to a dark keyboard you could use the following code.
 
 ```typescript
-const iqKeyboard = IQKeyboardManager.sharedManager();
-iqKeyboard.overrideKeyboardAppearance = true;
-iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
-```
+const iqKeyboard = IQKeyboardManager.shared;
+const config = IQKeyboardAppearanceConfiguration.new();
+config.appearance = UIKeyboardAppearance.Dark;
+config.overrideAppearance = true;
+iqKeyboard.keyboardConfiguration = config;
 
-<img src="https://github.com/tjvantoll/nativescript-IQKeyboardManager/raw/master/demo.gif" width="320px"/>
+// Toolbar
+iqKeyboard.enableAutoToolbar = true;
+```
 
 #### Multi-factor one-time code auto-fill
 

@@ -7,7 +7,7 @@ export default {
 				name: 'IQKeyboardManagerSwift',
 				libs: ['IQKeyboardManagerSwift'],
 				repositoryURL: 'https://github.com/hackiftekhar/IQKeyboardManager.git',
-				version: '6.5.11',
+				version: '8.0.2',
 			},
 		],
 	},
