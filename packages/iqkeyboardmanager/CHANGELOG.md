@@ -1,3 +1,46 @@
+# 3.0.0 (2026-04-30)
+
+### 🚀 Features
+
+- **iqkeyboardmanager:** swift package 8.0.2 ([d58bf0d](https://github.com/NativeScript/plugins/commit/d58bf0d))
+
+### Breaking Changes
+
+Ensure it's enabled:
+
+```ts
+const iqKeyboard = IQKeyboardManager.shared;
+iqKeyboard.isEnabled = true;
+iqKeyboard.enableAutoToolbar = true;
+```
+
+#### Differences 
+
+Previous:
+```
+const iqKeyboard = IQKeyboardManager.shared;
+iqKeyboard.overrideKeyboardAppearance = true;
+iqKeyboard.keyboardAppearance = UIKeyboardAppearance.Dark;
+```
+Current:
+```
+const iqKeyboard = IQKeyboardManager.shared;
+const config = IQKeyboardAppearanceConfiguration.new();
+config.appearance = UIKeyboardAppearance.Dark;
+config.overrideAppearance = true;
+iqKeyboard.keyboardConfiguration = config;
+```
+
+- `PreviousNextView` is no longer needed, just ensure the toolbar is enabled:
+
+```ts
+IQKeyboardToolbarManager.shared.isEnabled = true
+```
+
+### ❤️ Thank You
+
+- Nathan Walker
+
 ## 2.2.1 (2026-04-29)
 
 ### 🩹 Fixes
