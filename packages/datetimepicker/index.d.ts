@@ -103,6 +103,12 @@ export interface PickerOptions {
 	 * Text for the cancel button of the picker (default is Cancel on iOS, localized version of Cancel on android (based on the devices locale settings)).
 	 */
 	cancelButtonText?: string;
+
+	/**
+	 * iOS only: permitted arrow directions
+	 * Defaults to `UIPopoverArrowDirection.Any` when not provided.
+	 */
+	iosPermittedArrowDirections?: number;
 }
 
 /**

@@ -37,6 +37,7 @@ export interface PickerOptions {
 	title?: string;
 	okButtonText?: string;
 	cancelButtonText?: string;
+	iosPermittedArrowDirections?: number;
 }
 
 export class DateTimePickerStyleBase implements DateTimePickerStyleDefinition {
