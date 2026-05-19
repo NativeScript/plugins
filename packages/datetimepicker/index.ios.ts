@@ -28,7 +28,7 @@ export class DateTimePicker extends DateTimePickerBase {
 			DateTimePicker._nativeDialog = DateTimePicker._createNativeDialog(nativeDatePicker, options, style, (result) => {
 				resolve(result);
 			});
-			DateTimePicker._showNativeDialog(DateTimePicker._nativeDialog, nativeDatePicker, style);
+			DateTimePicker._showNativeDialog(DateTimePicker._nativeDialog, nativeDatePicker, options, style);
 		});
 		return pickDate;
 	}
@@ -39,7 +39,7 @@ export class DateTimePicker extends DateTimePickerBase {
 			DateTimePicker._nativeDialog = DateTimePicker._createNativeDialog(nativeTimePicker, options, style, (result) => {
 				resolve(result);
 			});
-			DateTimePicker._showNativeDialog(DateTimePicker._nativeDialog, nativeTimePicker, style);
+			DateTimePicker._showNativeDialog(DateTimePicker._nativeDialog, nativeTimePicker, options, style);
 		});
 		return pickTime;
 	}
@@ -158,7 +158,7 @@ export class DateTimePicker extends DateTimePickerBase {
 		return alertController;
 	}
 
-	static _showNativeDialog(nativeDialog: UIAlertController, nativePicker: UIDatePicker, style: DateTimePickerStyle) {
+	static _showNativeDialog(nativeDialog: UIAlertController, nativePicker: UIDatePicker, options: PickerOptions, style: DateTimePickerStyle) {
 		const app = UIApplication.sharedApplication;
 		const win = app.keyWindow || (app.windows && app.windows.count > 0 && app.windows.objectAtIndex(0));
 		let viewController = win.rootViewController;
@@ -170,7 +170,7 @@ export class DateTimePicker extends DateTimePickerBase {
 			if (nativeDialog.popoverPresentationController) {
 				nativeDialog.popoverPresentationController.sourceView = viewController.view;
 				nativeDialog.popoverPresentationController.sourceRect = CGRectMake(viewController.view.bounds.size.width / 2.0, viewController.view.bounds.size.height / 2.0, 1.0, 1.0);
-				nativeDialog.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.Any;
+				nativeDialog.popoverPresentationController.permittedArrowDirections = options && options.iosPermittedArrowDirections !== undefined ? options.iosPermittedArrowDirections : UIPopoverArrowDirection.Any;
 			}
 
 			viewController.presentViewControllerAnimatedCompletion(nativeDialog, true, () => {});
