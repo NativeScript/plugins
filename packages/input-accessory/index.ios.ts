@@ -51,6 +51,14 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 				bottom: 10,
 				right: 10,
 			});
+			nativeTextView.autocorrectionType = UITextAutocorrectionType.No;
+			nativeTextView.spellCheckingType = UITextSpellCheckingType.No;
+			nativeTextView.smartQuotesType = UITextSmartQuotesType.No;
+			nativeTextView.smartDashesType = UITextSmartDashesType.No;
+			nativeTextView.smartInsertDeleteType = UITextSmartInsertDeleteType.No;
+			nativeTextView.inputAssistantItem.leadingBarButtonGroups = [];
+			nativeTextView.inputAssistantItem.trailingBarButtonGroups = [];
+			this.keyboardTrackingView.setTextInputView(nativeTextView);
 		}
 
 		// Run initial layout of children within the accessory dimensions
@@ -84,9 +92,10 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 	 */
 	dismissKeyboard(): void {
 		if (this.keyboardTrackingView) {
-			this.keyboardTrackingView.setDismissingKeyboard();
-			this.keyboardTrackingView.becomeFirstResponder();
+			this.keyboardTrackingView.dismissKeyboard();
+			return;
 		}
+		Utils.dismissKeyboard();
 	}
 
 	cleanup(): void {
