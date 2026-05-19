@@ -25,14 +25,24 @@ public class KeyboardTrackingView: UIView {
     // Maximum height for the input area (prevents infinite growth)
     private let maxAccessoryHeight: CGFloat = 200
 
-    // Safe area bottom inset for home indicator
+    // Home-indicator padding used when the accessory is visible without the keyboard.
     private var safeAreaBottomInset: CGFloat = 0
+
+    // Active bottom padding inside the accessory. This is removed while the
+    // software keyboard is visible so the bar sits flush above the keyboard.
+    private var currentAccessoryBottomInset: CGFloat = 0
 
     // Track previous keyboard position to detect show/hide direction
     private var previousKeyboardY: CGFloat = 0
 
     // Flag to suppress animation during programmatic keyboard dismiss (tap close).
     private var isDismissingKeyboard: Bool = false
+
+    // Text input hosted inside the accessory. When it resigns first responder,
+    // the tracking view must take first responder back or iOS removes the
+    // inputAccessoryView from the screen.
+    private weak var textInputView: UIView?
+    private var isCleaningUp: Bool = false
 
     // Callback for triggering ScrollView content relayout from TypeScript
     private var scrollViewRelayoutCallback: (() -> Void)?
@@ -62,6 +72,7 @@ public class KeyboardTrackingView: UIView {
      * @param height The height of the input container
      */
     public func setup(inputContainer: UIView, scrollView: UIScrollView, height: CGFloat) {
+        self.isCleaningUp = false
         self.accessoryHeight = height
         self.trackedScrollView = scrollView
         self.contentView = inputContainer
@@ -81,13 +92,15 @@ public class KeyboardTrackingView: UIView {
             }
         }
         
+        self.currentAccessoryBottomInset = self.safeAreaBottomInset
+
         // Total height includes content height + safe area for home indicator
-        let totalHeight = height + self.safeAreaBottomInset
+        let totalHeight = height + self.currentAccessoryBottomInset
         
         // Create the accessory view container
         let screenWidth = UIScreen.main.bounds.width
         let accessoryContainer = InputAccessoryContainerView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: totalHeight))
-        accessoryContainer.safeAreaBottomInset = self.safeAreaBottomInset
+        accessoryContainer.safeAreaBottomInset = self.currentAccessoryBottomInset
         accessoryContainer.contentHeight = height
         
         // Store original superview and subview index before removal
@@ -173,6 +186,78 @@ public class KeyboardTrackingView: UIView {
     }
 
     /**
+     * Register the editable view hosted inside the accessory. This lets the
+     * plugin recover when callers use UIApplication/endEditing based dismissal
+     * instead of InputAccessoryManager.dismissKeyboard().
+     */
+    public func setTextInputView(_ textInputView: UIView) {
+        self.textInputView = textInputView
+        suppressTextInputAssistant(for: textInputView)
+
+        if textInputView is UITextView {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(textInputDidBeginEditing(_:)),
+                name: UITextView.textDidBeginEditingNotification,
+                object: textInputView
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(textInputDidEndEditing(_:)),
+                name: UITextView.textDidEndEditingNotification,
+                object: textInputView
+            )
+        }
+
+        if textInputView is UITextField {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(textInputDidBeginEditing(_:)),
+                name: UITextField.textDidBeginEditingNotification,
+                object: textInputView
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(textInputDidEndEditing(_:)),
+                name: UITextField.textDidEndEditingNotification,
+                object: textInputView
+            )
+        }
+    }
+
+    private func suppressTextInputAssistant(for textInputView: UIView) {
+        textInputView.inputAssistantItem.leadingBarButtonGroups = []
+        textInputView.inputAssistantItem.trailingBarButtonGroups = []
+
+        if let textView = textInputView as? UITextView {
+            textView.autocorrectionType = .no
+            textView.spellCheckingType = .no
+            textView.smartQuotesType = .no
+            textView.smartDashesType = .no
+            textView.smartInsertDeleteType = .no
+            textView.textContentType = nil
+            if #available(iOS 17.0, *) {
+                textView.inlinePredictionType = .no
+            }
+            textView.reloadInputViews()
+            return
+        }
+
+        if let textField = textInputView as? UITextField {
+            textField.autocorrectionType = .no
+            textField.spellCheckingType = .no
+            textField.smartQuotesType = .no
+            textField.smartDashesType = .no
+            textField.smartInsertDeleteType = .no
+            textField.textContentType = nil
+            if #available(iOS 17.0, *) {
+                textField.inlinePredictionType = .no
+            }
+            textField.reloadInputViews()
+        }
+    }
+
+    /**
      * Trigger NativeScript content remeasurement for ScrollView after frame resize
      */
     private func relayoutScrollViewContent() {
@@ -240,15 +325,19 @@ public class KeyboardTrackingView: UIView {
               let window = accessoryView.window,
               let scrollView = trackedScrollView else { return }
 
-        let frameInWindow = accessoryView.convert(accessoryView.bounds, to: window)
-        let accessoryTop = frameInWindow.origin.y
-
         let screenHeight = UIScreen.main.bounds.height
+        var frameInWindow = accessoryView.convert(accessoryView.bounds, to: window)
+        var accessoryTop = frameInWindow.origin.y
+        updateAccessoryBottomInsetForAccessoryPosition(accessoryTop, screenHeight: screenHeight)
+        frameInWindow = accessoryView.convert(accessoryView.bounds, to: window)
+        accessoryTop = frameInWindow.origin.y
+
         let scrollViewTopInWindow = scrollView.superview?.convert(
             scrollView.frame.origin, to: nil).y ?? scrollView.frame.origin.y
 
         let targetFrameHeight = max(100, screenHeight - scrollViewTopInWindow)
-        let keyboardOverlap = max(0, screenHeight - accessoryTop)
+        let accessoryTotalHeight = self.accessoryHeight + self.currentAccessoryBottomInset
+        let keyboardOverlap = max(accessoryTotalHeight, screenHeight - accessoryTop)
 
         let frameChanged = abs(targetFrameHeight - scrollView.frame.size.height) > 1
         let insetChanged = abs(keyboardOverlap - scrollView.contentInset.bottom) > 1
@@ -287,7 +376,8 @@ public class KeyboardTrackingView: UIView {
         let targetFrameHeight = max(100, screenHeight - scrollViewTopInWindow)
 
         // contentInset tracks the moving keyboard+accessory area
-        let keyboardOverlap = max(0, screenHeight - accessoryTop)
+        let accessoryTotalHeight = self.accessoryHeight + self.currentAccessoryBottomInset
+        let keyboardOverlap = max(accessoryTotalHeight, screenHeight - accessoryTop)
 
         let frameChanged = abs(targetFrameHeight - scrollView.frame.size.height) > 0.5
         let insetChanged = abs(keyboardOverlap - scrollView.contentInset.bottom) > 0.5
@@ -334,11 +424,13 @@ public class KeyboardTrackingView: UIView {
 
         self.accessoryHeight = clampedHeight
 
-        // Total height includes safe area
-        let totalHeight = clampedHeight + self.safeAreaBottomInset
+        // Total height includes the currently active bottom inset. This is
+        // zero while the keyboard is open and safe-area padding when closed.
+        let totalHeight = clampedHeight + self.currentAccessoryBottomInset
 
         // Update the container's heights
         accessoryView.contentHeight = clampedHeight
+        accessoryView.safeAreaBottomInset = self.currentAccessoryBottomInset
 
         // Update via the internal height constraint - the reliable way to resize inputAccessoryViews
         accessoryView.updateHeightConstraint(totalHeight)
@@ -375,6 +467,32 @@ public class KeyboardTrackingView: UIView {
         }
         return nil
     }
+
+    private func updateAccessoryBottomInset(_ bottomInset: CGFloat) {
+        guard abs(self.currentAccessoryBottomInset - bottomInset) > 0.5 else {
+            return
+        }
+
+        self.currentAccessoryBottomInset = bottomInset
+
+        guard let accessoryView = _keyboardAccessoryView else {
+            return
+        }
+
+        accessoryView.safeAreaBottomInset = bottomInset
+        accessoryView.updateHeightConstraint(self.accessoryHeight + bottomInset)
+
+        if let contentView = self.contentView {
+            contentView.frame = CGRect(x: 0, y: 0, width: accessoryView.bounds.width, height: self.accessoryHeight)
+        }
+    }
+
+    private func updateAccessoryBottomInsetForAccessoryPosition(_ accessoryTop: CGFloat, screenHeight: CGFloat) {
+        let accessoryOnlyThreshold = self.accessoryHeight + self.safeAreaBottomInset + 10
+        let keyboardOverlap = max(0, screenHeight - accessoryTop)
+        let isKeyboardShowing = keyboardOverlap > accessoryOnlyThreshold
+        updateAccessoryBottomInset(isKeyboardShowing ? 0 : self.safeAreaBottomInset)
+    }
     
     /**
      * Show the keyboard (make text field first responder)
@@ -399,6 +517,78 @@ public class KeyboardTrackingView: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.isDismissingKeyboard = false
         }
+    }
+
+    /**
+     * Dismiss the software keyboard while keeping the inputAccessoryView alive.
+     * This transfers first responder from the hosted TextView/TextField back to
+     * KeyboardTrackingView, producing an accessory-only state instead of fully
+     * removing the input bar.
+     */
+    public func dismissKeyboard() {
+        stopInteractiveTracking()
+        setDismissingKeyboard()
+
+        if !self.isFirstResponder {
+            self.becomeFirstResponder()
+        } else {
+            self.reloadInputViews()
+        }
+
+        // The frame notification usually handles this, but finalize on the next
+        // turn as a guard against UIKit sending notification(s) before the
+        // responder transfer settles.
+        DispatchQueue.main.async { [weak self] in
+            self?.finalizeScrollViewHeight()
+        }
+    }
+
+    @objc private func textInputDidBeginEditing(_ notification: Notification) {
+        if let textInputView = notification.object as? UIView {
+            suppressTextInputAssistant(for: textInputView)
+        }
+    }
+
+    @objc private func textInputDidEndEditing(_ notification: Notification) {
+        guard !isCleaningUp,
+              let accessoryView = _keyboardAccessoryView,
+              accessoryView.window != nil else { return }
+
+        restoreAccessoryFirstResponderIfNeeded()
+    }
+
+    private func restoreAccessoryFirstResponderIfNeeded() {
+        guard !isCleaningUp,
+              let accessoryView = _keyboardAccessoryView,
+              let window = accessoryView.window else { return }
+
+        if let activeResponder = findFirstResponder(in: window),
+           activeResponder !== self,
+           !isView(activeResponder, descendantOf: accessoryView) {
+            return
+        }
+
+        guard !self.isFirstResponder else { return }
+
+        setDismissingKeyboard()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, !self.isCleaningUp else { return }
+            if !self.isFirstResponder {
+                self.becomeFirstResponder()
+            }
+            self.finalizeScrollViewHeight()
+        }
+    }
+
+    private func isView(_ view: UIView, descendantOf ancestor: UIView) -> Bool {
+        var currentView: UIView? = view
+        while let candidate = currentView {
+            if candidate === ancestor {
+                return true
+            }
+            currentView = candidate.superview
+        }
+        return false
     }
 
     // MARK: - Keyboard Handling
@@ -437,14 +627,6 @@ public class KeyboardTrackingView: UIView {
         // the translucent accessory AND the keyboard (for blur-through visibility).
         let targetFrameHeight = max(100, screenHeight - scrollViewTopInWindow)
 
-        // contentInset covers the full keyboard+accessory area from the screen bottom.
-        // Clamp to at least the accessory height — the accessory is always visible
-        // (KeyboardTrackingView is always first responder), so the overlap never drops
-        // below it. This prevents a transient inset=0 state during first-responder
-        // transfers (e.g., UITextView → KeyboardTrackingView) that would cause a scroll jump.
-        let accessoryTotalHeight = self.accessoryHeight + self.safeAreaBottomInset
-        let keyboardOverlap = max(accessoryTotalHeight, screenHeight - endFrame.origin.y)
-
         // Detect keyboard showing/hiding for scroll behavior.
         // iOS includes the inputAccessoryView in the reported keyboard frame,
         // so when only the accessory is visible (keyboard hidden), endFrame.origin.y
@@ -454,6 +636,16 @@ public class KeyboardTrackingView: UIView {
         let isKeyboardShowing = endFrame.origin.y < screenHeight - accessoryOnlyThreshold
         let wasKeyboardHidden = previousKeyboardY >= screenHeight - accessoryOnlyThreshold
         let keyboardJustAppeared = isKeyboardShowing && wasKeyboardHidden
+        let desiredBottomInset: CGFloat = isKeyboardShowing ? 0 : self.safeAreaBottomInset
+        updateAccessoryBottomInset(desiredBottomInset)
+
+        // contentInset covers the full keyboard+accessory area from the screen bottom.
+        // Clamp to at least the accessory height — the accessory is always visible
+        // (KeyboardTrackingView is always first responder), so the overlap never drops
+        // below it. This prevents a transient inset=0 state during first-responder
+        // transfers (e.g., UITextView → KeyboardTrackingView) that would cause a scroll jump.
+        let accessoryTotalHeight = self.accessoryHeight + self.currentAccessoryBottomInset
+        let keyboardOverlap = max(accessoryTotalHeight, screenHeight - endFrame.origin.y)
 
         // Store current position for next comparison
         previousKeyboardY = endFrame.origin.y
@@ -488,12 +680,18 @@ public class KeyboardTrackingView: UIView {
             scrollView.contentInset.bottom = keyboardOverlap
             scrollView.verticalScrollIndicatorInsets.bottom = keyboardOverlap
 
-            // Clamp scroll position to valid range without animation
+            // Preserve visual position for short content. Clamping to zero while
+            // the keyboard is handing off causes a visible up/down jump, and the
+            // chat view will issue its own scroll after adding the sent message.
             let contentHeight = scrollView.contentSize.height
             let visibleHeight = targetFrameHeight - keyboardOverlap
             let maxOffset = max(0, contentHeight - visibleHeight)
-            let clampedOffset = max(0, min(currentOffset, maxOffset))
-            scrollView.contentOffset = CGPoint(x: 0, y: clampedOffset)
+            if contentHeight > visibleHeight {
+                let clampedOffset = max(0, min(currentOffset, maxOffset))
+                if abs(clampedOffset - currentOffset) > 0.5 {
+                    scrollView.contentOffset = CGPoint(x: 0, y: clampedOffset)
+                }
+            }
 
             self.relayoutScrollViewContent()
             return
@@ -537,11 +735,13 @@ public class KeyboardTrackingView: UIView {
     // MARK: - Cleanup
     
     public func cleanup() {
+        isCleaningUp = true
         stopInteractiveTracking()
         trackedScrollView?.panGestureRecognizer.removeTarget(self, action: #selector(handleScrollViewPan(_:)))
         NotificationCenter.default.removeObserver(self)
         self._keyboardAccessoryView = nil
         self.contentView = nil
+        self.textInputView = nil
         self.trackedScrollView = nil
         self.scrollViewRelayoutCallback = nil
         self.resignFirstResponder()
