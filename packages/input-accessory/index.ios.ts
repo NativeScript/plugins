@@ -51,13 +51,13 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 				bottom: 10,
 				right: 10,
 			});
-			nativeTextView.autocorrectionType = UITextAutocorrectionType.No;
+			nativeTextView.autocorrectionType = UITextAutocorrectionType.Yes;
 			nativeTextView.spellCheckingType = UITextSpellCheckingType.No;
 			nativeTextView.smartQuotesType = UITextSmartQuotesType.No;
 			nativeTextView.smartDashesType = UITextSmartDashesType.No;
 			nativeTextView.smartInsertDeleteType = UITextSmartInsertDeleteType.No;
-			nativeTextView.inputAssistantItem.leadingBarButtonGroups = [];
-			nativeTextView.inputAssistantItem.trailingBarButtonGroups = [];
+			nativeTextView.inputAssistantItem.leadingBarButtonGroups = Utils.ios.collections.jsArrayToNSArray([]);
+			nativeTextView.inputAssistantItem.trailingBarButtonGroups = Utils.ios.collections.jsArrayToNSArray([]);
 			this.keyboardTrackingView.setTextInputView(nativeTextView);
 		}
 

@@ -1,6 +1,6 @@
 {
 	"name": "@nativescript/input-accessory",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"description": "iOS/Android keyboard input accessory for NativeScript chat UIs — docked input bar, interactive dismiss, auto-scroll",
 	"main": "index",
 	"types": "index.d.ts",
