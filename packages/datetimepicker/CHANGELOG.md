@@ -1,3 +1,13 @@
+## 3.0.3 (2026-05-20)
+
+### 🚀 Features
+
+- **datetimepicker:** ios permitted arrow directions ([#663](https://github.com/NativeScript/plugins/pull/663))
+
+### ❤️ Thank You
+
+- Felix @Log3n
+
 ## 3.0.2 (2026-01-23)
 
 ### 🩹 Fixes
