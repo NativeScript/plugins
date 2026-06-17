@@ -141,14 +141,7 @@ public class KeyboardTrackingView: UIView {
 
         self._keyboardAccessoryView = accessoryContainer
         
-        // On iOS 26+, add scroll edge blending so the bottom of the ScrollView
-        // fades into the glass accessory (like Apple Notes / iMessage).
-        if #available(iOS 26.0, *) {
-            let edgeInteraction = UIScrollEdgeElementContainerInteraction()
-            edgeInteraction.scrollView = scrollView
-            edgeInteraction.edge = .bottom
-            accessoryContainer.addInteraction(edgeInteraction)
-        }
+        addScrollEdgeElementContainerInteractionIfAvailable(to: accessoryContainer, scrollView: scrollView)
 
         // Set up scroll view for interactive dismiss
         scrollView.keyboardDismissMode = .interactive
@@ -175,6 +168,26 @@ public class KeyboardTrackingView: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             self?.becomeFirstResponder()
         }
+    }
+
+    private func addScrollEdgeElementContainerInteractionIfAvailable(to containerView: UIView, scrollView: UIScrollView) {
+        guard #available(iOS 26.0, *) else { return }
+
+        // UIScrollEdgeElementContainerInteraction is an iOS 26 SDK symbol. Resolve
+        // it dynamically so the plugin still compiles with Xcode 16.x / iOS 18.x SDKs.
+        let interactionClass = (
+            NSClassFromString("UIScrollEdgeElementContainerInteraction")
+                ?? NSClassFromString("UIKit.UIScrollEdgeElementContainerInteraction")
+        ) as? NSObject.Type
+
+        guard let interactionClass = interactionClass else { return }
+
+        let interaction = interactionClass.init()
+        interaction.setValue(scrollView, forKey: "scrollView")
+        interaction.setValue(NSNumber(value: UIRectEdge.bottom.rawValue), forKey: "edge")
+
+        guard let edgeInteraction = interaction as? UIInteraction else { return }
+        containerView.addInteraction(edgeInteraction)
     }
     
     /**
