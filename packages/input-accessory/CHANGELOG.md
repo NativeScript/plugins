@@ -1,3 +1,13 @@
+## 1.0.3 (2026-06-17)
+
+### 🩹 Fixes
+
+- **input-accessory:** ensure scroll edge is used on ios 26+ ([#666](https://github.com/NativeScript/plugins/pull/666))
+
+### ❤️ Thank You
+
+- Nathan Walker
+
 ## 1.0.2 (2026-05-20)
 
 ### 🩹 Fixes
