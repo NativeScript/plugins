@@ -1,0 +1,65 @@
+{
+	"name": "widgets",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "packages/widgets",
+	"targets": {
+		"build": {
+			"executor": "@nx/js:tsc",
+			"options": {
+				"outputPath": "dist/packages/widgets",
+				"tsConfig": "packages/widgets/tsconfig.json",
+				"packageJson": "packages/widgets/package.json",
+				"main": "packages/widgets/index.d.ts",
+				"assets": [
+					"packages/widgets/*.md",
+					"packages/widgets/index.d.ts",
+					"LICENSE",
+					{
+						"glob": "**/*",
+						"input": "packages/widgets/platforms/",
+						"output": "./platforms/"
+					}
+				],
+				"dependsOn": [
+					{
+						"target": "build.all",
+						"projects": "dependencies"
+					}
+				]
+			}
+		},
+		"build.all": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["node tools/scripts/build-finish.ts widgets"],
+				"parallel": false
+			},
+			"outputs": ["{workspaceRoot}/dist/packages/widgets"],
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"projects": "dependencies"
+				},
+				{
+					"target": "build",
+					"projects": "self"
+				}
+			]
+		},
+		"focus": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": ["nx g @nativescript/plugin-tools:focus-packages widgets"],
+				"parallel": false
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:eslint",
+			"options": {
+				"lintFilePatterns": ["packages/widgets/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}
