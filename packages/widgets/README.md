@@ -130,8 +130,8 @@ registerWidgetListener(PROVIDER, {
     const root = new LinearLayout();
 
     const title = new TextView();
-    title.native.setText('Hello from NativeScript');
-    title.native.setTextColor(new Color('#ffffff').android);
+    title.setText('Hello from NativeScript');
+    title.setTextColor(new Color('#ffffff').android);
     root.addView(title);
 
     const rv = root.toAndroidRemoteViews(); // -> AndroidRemoteViews
@@ -182,11 +182,11 @@ The JS classes are **thin wrappers** over `org.nativescript.widgets.RemoteViews.
 
 ```ts
 const tv = new TextView();
-tv.native.setText('Total: 42');          // fluent native API
-tv.native.setTextColor(0xffffffff);       // ARGB int
+tv.setText('Total: 42');          // fluent wrapper API
+tv.setTextColor(0xffffffff);      // ARGB int
 ```
 
-> **TypeScript note:** the wrapper's `.native` getter is typed as the base `org.nativescript.widgets.RemoteViews`, which does not surface the leaf setters (`setText`, `setImageUrl`, …). At runtime the instance is the correct subclass, so the calls work — add a cast (`(tv.native as any).setText(...)`) if the compiler complains, or reach for the fully‑typed `org.nativescript.widgets.RemoteViews.*` classes directly.
+Most common operations are exposed directly on the JS wrapper (`setText`, `setImageUrl`, `setVisibility`, `setSize`, and more). The `.native` handle is still available for platform-level interop when needed.
 
 Every node takes an optional stable `id` string in its constructor (`new TextView('total')`). Omit it and one is generated.
 
@@ -216,8 +216,8 @@ All of them extend the base `RemoteViews` wrapper, which exposes `.native` and `
 
 ```ts
 const label = new TextView('label');
-label.native.setText('Weather');
-label.native.setTextColor(new Color('#222222').android);
+label.setText('Weather');
+label.setTextColor(new Color('#222222').android);
 ```
 
 ### Images
@@ -226,9 +226,9 @@ label.native.setTextColor(new Color('#222222').android);
 import { ImageSource } from '@nativescript/core';
 
 const icon = new ImageView('icon');
-icon.native.setImageResource(android.R.drawable.ic_dialog_info); // drawable resource id
+icon.setImageResource(android.R.drawable.ic_dialog_info); // drawable resource id
 // or a bitmap you already have:
-// icon.native.setImageBitmap(ImageSource.fromFileSync(path).android);
+// icon.setImageBitmap(ImageSource.fromFileSync(path).android);
 ```
 
 ### Remote images (from a URL)
@@ -242,10 +242,10 @@ registerWidgetListener(PROVIDER, {
   onUpdateAsync({ appWidgetIds, widgetManager }) {
     const root = new LinearLayout();
     const img = new ImageView();
-    img.native.setImageUrl('https://example.com/chart.png');
+    img.setImageUrl('https://example.com/chart.png');
     root.addView(img);
 
-    root.native.resolveRemoteResources(); // fetch remote images (blocking, safe on worker thread)
+    root.resolveRemoteResources(); // fetch remote images (blocking, safe on worker thread)
 
     const rv = root.toAndroidRemoteViews();
     appWidgetIds.forEach((id) => widgetManager.native.updateAppWidget(id, rv.native));
@@ -263,10 +263,10 @@ Container nodes build a tree with `addView` / `removeView`. Children are linked 
 const root = new LinearLayout('root');
 
 const title = new TextView('title');
-title.native.setText('Today');
+title.setText('Today');
 
 const value = new TextView('value');
-value.native.setText('72°');
+value.setText('72°');
 
 root.addView(title);
 root.addView(value);
@@ -291,32 +291,32 @@ const flags =
 const pi = android.app.PendingIntent.getActivity(ctx, 0, launch, flags);
 
 const button = new Button('open');
-button.native.setText('Open app');
-button.native.setOnClickPendingIntent(pi);
+button.setText('Open app');
+button.setOnClickPendingIntent(pi);
 ```
 
 ### Sizing & visibility
 
 ```ts
 // Visibility uses android.view.View constants: VISIBLE(0) / INVISIBLE(4) / GONE(8)
-node.native.setVisibility(android.view.View.GONE);
+node.setVisibility(android.view.View.GONE);
 
 // setBackgroundColor takes an ARGB int
-node.native.setBackgroundColor(new Color('#1e88e5').android);
+node.setBackgroundColor(new Color('#1e88e5').android);
 
 // Explicit layout sizing (Android 12 / API 31+ only — no-op on older devices)
 const DIP = android.util.TypedValue.COMPLEX_UNIT_DIP;
-node.native.setSize(120, DIP, 60, DIP);
+node.setSize(120, DIP, 60, DIP);
 // or individually:
-node.native.setWidth(120, DIP);
-node.native.setHeight(60, DIP);
+node.setWidth(120, DIP);
+node.setHeight(60, DIP);
 ```
 
 Lower‑level passthroughs (`setInt`, `setBoolean`, `setString`, `setFloat`, `setLong`, `setShort`, `setByte`) map straight onto the corresponding `RemoteViews.set*` methods, letting you call any remotable setter by method name:
 
 ```ts
-node.native.setBoolean('setEnabled', true);
-node.native.setInt('setMaxLines', 2);
+node.setBoolean('setEnabled', true);
+node.setInt('setMaxLines', 2);
 ```
 
 ---
