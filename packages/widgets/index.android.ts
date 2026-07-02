@@ -62,6 +62,81 @@ export class RemoteViews {
 		return this._remoteViews;
 	}
 
+	setOnClickPendingIntent(intent: android.app.PendingIntent) {
+		this.native.setOnClickPendingIntent(intent);
+		return this;
+	}
+
+	setBackgroundColor(value: number) {
+		this.native.setBackgroundColor(value);
+		return this;
+	}
+
+	setBoolean(method: string, value: boolean) {
+		this.native.setBoolean(method, value);
+		return this;
+	}
+
+	setByte(method: string, value: number) {
+		this.native.setByte(method, value);
+		return this;
+	}
+
+	setShort(method: string, value: number) {
+		this.native.setShort(method, value);
+		return this;
+	}
+
+	setInt(method: string, value: number) {
+		this.native.setInt(method, value);
+		return this;
+	}
+
+	setLong(method: string, value: number) {
+		this.native.setLong(method, value);
+		return this;
+	}
+
+	setFloat(method: string, value: number) {
+		this.native.setFloat(method, value);
+		return this;
+	}
+
+	setString(method: string, value: string) {
+		this.native.setString(method, value);
+		return this;
+	}
+
+	setSize(width: number, widthUnit: number, height: number, heightUnit: number) {
+		this.native.setSize(width, widthUnit, height, heightUnit);
+		return this;
+	}
+
+	setWidth(value: number, unit: number) {
+		this.native.setWidth(value, unit);
+		return this;
+	}
+
+	setHeight(value: number, unit: number) {
+		this.native.setHeight(value, unit);
+		return this;
+	}
+
+	setVisibility(visibility: number) {
+		this.native.setVisibility(visibility);
+		return this;
+	}
+
+	findViewById(id: string) {
+		const view = this.native.findViewById(id);
+		return view ? new RemoteViews(view) : null;
+	}
+
+	resolveRemoteResources() {
+		this.native.resolveRemoteResources();
+		return this;
+	}
+
 	toAndroidRemoteViews(packageName?: string): AndroidRemoteViews {
 		return new AndroidRemoteViews(this._remoteViews.build(packageName ?? Utils.android.getApplicationContext().getPackageName()));
 	}
@@ -71,17 +146,39 @@ export class AdapterViewFlipper extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.AdapterViewFlipper(id ?? null));
 	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.AdapterViewFlipper;
+	}
 }
 
 export class Button extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.Button(id ?? null));
 	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.Button;
+	}
+
+	setText(value: string) {
+		this.native.setText(value);
+		return this;
+	}
+
+	setTextColor(value: number) {
+		this.native.setTextColor(value);
+		return this;
+	}
 }
 
 export class Chronometer extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.Chronometer(id ?? null));
+	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.Chronometer;
 	}
 }
 
@@ -143,11 +240,59 @@ export class ImageButton extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.ImageButton(id ?? null));
 	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.ImageButton;
+	}
+
+	setImageUrl(url: string) {
+		this.native.setImageUrl(url);
+		return this;
+	}
+
+	setImageResource(value: number) {
+		this.native.setImageResource(value);
+		return this;
+	}
+
+	setImageURI(value: android.net.Uri) {
+		this.native.setImageURI(value);
+		return this;
+	}
+
+	setImageBitmap(value: android.graphics.Bitmap) {
+		this.native.setImageBitmap(value);
+		return this;
+	}
 }
 
 export class ImageView extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.ImageView(id ?? null));
+	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.ImageView;
+	}
+
+	setImageUrl(url: string) {
+		this.native.setImageUrl(url);
+		return this;
+	}
+
+	setImageResource(value: number) {
+		this.native.setImageResource(value);
+		return this;
+	}
+
+	setImageURI(value: android.net.Uri) {
+		this.native.setImageURI(value);
+		return this;
+	}
+
+	setImageBitmap(value: android.graphics.Bitmap) {
+		this.native.setImageBitmap(value);
+		return this;
 	}
 }
 
@@ -173,11 +318,19 @@ export class ListView extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.ListView(id ?? null));
 	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.ListView;
+	}
 }
 
 export class ProgressBar extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.ProgressBar(id ?? null));
+	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.ProgressBar;
 	}
 }
 
@@ -221,11 +374,39 @@ export class TextView extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.TextView(id ?? null));
 	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.TextView;
+	}
+
+	setText(value: string) {
+		this.native.setText(value);
+		return this;
+	}
+
+	setTextColor(value: number) {
+		this.native.setTextColor(value);
+		return this;
+	}
 }
 
 export class TextClock extends RemoteViews {
 	constructor(id?: string) {
 		super(new org.nativescript.widgets.RemoteViews.TextClock(id ?? null));
+	}
+
+	get native() {
+		return this._remoteViews as org.nativescript.widgets.RemoteViews.TextClock;
+	}
+
+	setText(value: string) {
+		this.native.setText(value);
+		return this;
+	}
+
+	setTextColor(value: number) {
+		this.native.setTextColor(value);
+		return this;
 	}
 }
 
