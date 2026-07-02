@@ -316,6 +316,13 @@ module.exports = {
 					description: '@nativescript/input-accessory: Build',
 				},
 			},
+			// @nativescript/widgets
+			widgets: {
+				build: {
+					script: 'nx run widgets:build.all',
+					description: '@nativescript/widgets: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run-many --target=build.all --all',
 				description: 'Build all packages',
@@ -481,6 +488,10 @@ module.exports = {
 			'input-accessory': {
 				script: 'nx run input-accessory:focus',
 				description: 'Focus on @nativescript/input-accessory',
+			},
+			widgets: {
+				script: 'nx run widgets:focus',
+				description: 'Focus on @nativescript/widgets',
 			},
 			reset: {
 				script: 'nx g @nativescript/plugin-tools:focus-packages',
