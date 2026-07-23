@@ -1,7 +1,7 @@
-import { CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, MarkerOptions, PolygonOptions, PolylineOptions, TileOverlayOptions } from '../';
+import { CircleOptions, Coordinate, CoordinateBounds, Glyph, GroundOverlayOptions, MarkerOptions, PinConfig, PolygonOptions, PolylineOptions, StyleSpan, TileOverlayOptions } from '../';
 import { Color, ImageSource, Utils } from '@nativescript/core';
 import { intoNativeColor } from './common';
-import { JointType } from '../common';
+import { CollisionBehavior, JointType } from '../common';
 
 export function hueFromColor(color: Color | number) {
 	const colors = Array.create('float', 3);
@@ -36,8 +36,67 @@ export function intoNativeJointType(type: JointType): number {
 	}
 }
 
+function intoBitmapDescriptor(icon: any): com.google.android.gms.maps.model.BitmapDescriptor {
+	if (icon instanceof android.graphics.Bitmap) {
+		return com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(icon);
+	} else if (icon instanceof ImageSource) {
+		return com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(icon.android);
+	}
+	return null;
+}
+
+export function intoNativeCollisionBehavior(behavior: CollisionBehavior): number {
+	const CollisionBehaviors = com.google.android.gms.maps.model.AdvancedMarkerOptions.CollisionBehavior;
+	switch (behavior) {
+		case CollisionBehavior.OptionalAndHidesLowerPriority:
+			return CollisionBehaviors.OPTIONAL_AND_HIDES_LOWER_PRIORITY;
+		case CollisionBehavior.RequiredAndHidesOptional:
+			return CollisionBehaviors.REQUIRED_AND_HIDES_OPTIONAL;
+		default:
+			return CollisionBehaviors.REQUIRED;
+	}
+}
+
+export function intoNativeGlyph(glyph: Glyph): com.google.android.gms.maps.model.PinConfig.Glyph {
+	const Glyph = com.google.android.gms.maps.model.PinConfig.Glyph;
+	if (glyph?.icon) {
+		const descriptor = intoBitmapDescriptor(glyph.icon);
+		if (descriptor) {
+			return new Glyph(descriptor);
+		}
+	}
+	if (typeof glyph?.text === 'string') {
+		if (glyph.textColor != null) {
+			return new Glyph(glyph.text, intoNativeColor(glyph.textColor) as number);
+		}
+		return new Glyph(glyph.text);
+	}
+	if (glyph?.glyphColor != null) {
+		return new Glyph(intoNativeColor(glyph.glyphColor) as number);
+	}
+	return null;
+}
+
+export function intoNativePinConfig(config: PinConfig): com.google.android.gms.maps.model.PinConfig {
+	const builder = com.google.android.gms.maps.model.PinConfig.builder();
+	if (config?.backgroundColor != null) {
+		builder.setBackgroundColor(intoNativeColor(config.backgroundColor) as number);
+	}
+	if (config?.borderColor != null) {
+		builder.setBorderColor(intoNativeColor(config.borderColor) as number);
+	}
+	if (config?.glyph) {
+		const glyph = intoNativeGlyph(config.glyph);
+		if (glyph) {
+			builder.setGlyph(glyph);
+		}
+	}
+	return builder.build();
+}
+
 export function intoNativeMarkerOptions(options: MarkerOptions) {
-	const opts = new com.google.android.gms.maps.model.MarkerOptions();
+	const isAdvanced = !!(options?.pinConfig || options?.collisionBehavior);
+	const opts = isAdvanced ? new com.google.android.gms.maps.model.AdvancedMarkerOptions() : new com.google.android.gms.maps.model.MarkerOptions();
 	if (typeof options?.draggable === 'boolean') {
 		opts.draggable(options.draggable);
 	}
@@ -94,6 +153,17 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 
 	if (typeof options?.zIndex === 'number') {
 		opts.zIndex(options.zIndex);
+	}
+
+	if (isAdvanced) {
+		const advancedOpts = opts as com.google.android.gms.maps.model.AdvancedMarkerOptions;
+		if (options.collisionBehavior) {
+			advancedOpts.collisionBehavior(intoNativeCollisionBehavior(options.collisionBehavior));
+		}
+		// The styled pin becomes the marker icon; applied last so it wins over `color`/`icon`.
+		if (options.pinConfig) {
+			advancedOpts.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromPinConfig(intoNativePinConfig(options.pinConfig)));
+		}
 	}
 	return opts;
 }
@@ -206,6 +276,30 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	return opts;
 }
 
+export function intoNativeStyleSpan(span: StyleSpan): com.google.android.gms.maps.model.StyleSpan {
+	const StyleSpan = com.google.android.gms.maps.model.StyleSpan;
+	if (span?.gradient) {
+		const stroke = com.google.android.gms.maps.model.StrokeStyle.gradientBuilder(intoNativeColor(span.gradient.from) as number, intoNativeColor(span.gradient.to) as number).build();
+		return typeof span.segments === 'number' ? new StyleSpan(stroke, span.segments) : new StyleSpan(stroke);
+	}
+	const color = intoNativeColor(span?.color);
+	if (color === null) {
+		return null;
+	}
+	return typeof span?.segments === 'number' ? new StyleSpan(color as number, span.segments) : new StyleSpan(color as number);
+}
+
+export function intoNativeStyleSpans(spans: StyleSpan[]): java.util.List<com.google.android.gms.maps.model.StyleSpan> {
+	const list = new java.util.ArrayList<com.google.android.gms.maps.model.StyleSpan>();
+	spans.forEach((span) => {
+		const nativeSpan = intoNativeStyleSpan(span);
+		if (nativeSpan) {
+			list.add(nativeSpan);
+		}
+	});
+	return list;
+}
+
 export function intoNativePolylineOptions(options: PolylineOptions) {
 	const opts = new com.google.android.gms.maps.model.PolylineOptions();
 
@@ -255,6 +349,10 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 
 	if (options?.endCap?.native) {
 		opts.endCap(options.endCap.native);
+	}
+
+	if (Array.isArray(options?.spans)) {
+		opts.addAllSpans(intoNativeStyleSpans(options.spans));
 	}
 	return opts;
 }
