@@ -1,7 +1,7 @@
 import { Color, encoding } from '@nativescript/core';
 import { Coordinate, GoogleMap } from '@nativescript/google-maps';
 import { intoColor } from '../utils/common';
-import { DataLayerBase, FeatureBase, GeometryBase, GeometryCoordinates, IGeometryStyle, normalizeGeometryStyle } from './common';
+import { DataLayerBase, FeatureBase, FeatureTapEventData, GeometryBase, GeometryCoordinates, IGeometryStyle, normalizeGeometryStyle } from './common';
 
 export * from './common';
 
@@ -37,6 +37,73 @@ function nsDictionaryToObject(dictionary: NSDictionary<string, NSObject>): Recor
 		}
 	}
 	return object;
+}
+
+function gmsPathsEqual(a: GMSPath, b: GMSPath): boolean {
+	if (!a || !b) {
+		return false;
+	}
+	const count = a.count();
+	if (count !== b.count()) {
+		return false;
+	}
+	for (let i = 0; i < count; i++) {
+		const coordinateA = a.coordinateAtIndex(i);
+		const coordinateB = b.coordinateAtIndex(i);
+		if (coordinateA.latitude !== coordinateB.latitude || coordinateA.longitude !== coordinateB.longitude) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+ * Whether a parsed GMU geometry contains the given coordinate as a point.
+ * Geometry collections (Multi geometries, GeometryCollection) are searched
+ * recursively. The renderer copies the same coordinate values into the markers
+ * it creates, so exact equality is safe here.
+ */
+function geometryMatchesCoordinate(geometry: GMUGeometry, coordinate: CLLocationCoordinate2D): boolean {
+	if (!geometry) {
+		return false;
+	}
+	if (geometry instanceof GMUPoint) {
+		return geometry.coordinate.latitude === coordinate.latitude && geometry.coordinate.longitude === coordinate.longitude;
+	}
+	if (geometry instanceof GMUGeometryCollection) {
+		const geometries = geometry.geometries;
+		for (let i = 0; i < geometries.count; i++) {
+			if (geometryMatchesCoordinate(geometries.objectAtIndex(i), coordinate)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * Whether a parsed GMU geometry contains the given path as a line string or as
+ * the outer ring of a polygon. Geometry collections are searched recursively.
+ */
+function geometryMatchesPath(geometry: GMUGeometry, path: GMSPath): boolean {
+	if (!geometry || !path) {
+		return false;
+	}
+	if (geometry instanceof GMULineString) {
+		return gmsPathsEqual(geometry.path, path);
+	}
+	if (geometry instanceof GMUPolygon) {
+		return geometry.paths.count > 0 && gmsPathsEqual(geometry.paths.objectAtIndex(0), path);
+	}
+	if (geometry instanceof GMUGeometryCollection) {
+		const geometries = geometry.geometries;
+		for (let i = 0; i < geometries.count; i++) {
+			if (geometryMatchesPath(geometries.objectAtIndex(i), path)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 export class GeometryStyle implements IGeometryStyle {
@@ -117,13 +184,117 @@ export class GeometryStyle implements IGeometryStyle {
 	}
 }
 
-export class GeoJsonLayer extends DataLayerBase<GMUGeometryRenderer> {
+/**
+ * Chains in front of the map's existing `GMSMapViewDelegate` while a data layer
+ * is on the map. Feature taps are matched against the layer's parsed features;
+ * unmatched taps and every other delegate message are forwarded to the previous
+ * delegate, so the map events from `@nativescript/google-maps` keep working.
+ */
+@ObjCClass(GMSMapViewDelegate)
+@NativeClass
+class GMUFeatureTapDelegate extends NSObject implements GMSMapViewDelegate {
+	private _owner: WeakRef<FeatureTapLayer>;
+	private _next: GMSMapViewDelegate;
+
+	static initWithOwnerNext(owner: WeakRef<FeatureTapLayer>, next: GMSMapViewDelegate): GMUFeatureTapDelegate {
+		const delegate = <GMUFeatureTapDelegate>GMUFeatureTapDelegate.new();
+		delegate._owner = owner;
+		delegate._next = next;
+		return delegate;
+	}
+
+	get next(): GMSMapViewDelegate {
+		return this._next;
+	}
+
+	respondsToSelector(selector: string): boolean {
+		if (super.respondsToSelector(selector)) {
+			return true;
+		}
+		return this._next?.respondsToSelector?.(selector) ?? false;
+	}
+
+	forwardingTargetForSelector(selector: string): any {
+		if (this._next?.respondsToSelector?.(selector)) {
+			return this._next;
+		}
+		return super.forwardingTargetForSelector(selector);
+	}
+
+	mapViewDidTapMarker(mapView: GMSMapView, marker: GMSMarker): boolean {
+		if (this._owner?.get?.()._handleMarkerTap(marker)) {
+			return true;
+		}
+		if (this._next?.respondsToSelector?.('mapView:didTapMarker:')) {
+			return this._next.mapViewDidTapMarker?.(mapView, marker) ?? false;
+		}
+		return false;
+	}
+
+	mapViewDidTapOverlay(mapView: GMSMapView, overlay: GMSOverlay): void {
+		if (this._owner?.get?.()._handleOverlayTap(overlay)) {
+			return;
+		}
+		if (this._next?.respondsToSelector?.('mapView:didTapOverlay:')) {
+			this._next.mapViewDidTapOverlay?.(mapView, overlay);
+		}
+	}
+}
+
+/**
+ * Shared plumbing for the `featureTap` event on iOS. GMU has no tap concept of
+ * its own, so while a layer is on the map a {@link GMUFeatureTapDelegate} is
+ * chained in front of the map's delegate and taps are matched back to the
+ * parsed features by geometry.
+ */
+abstract class FeatureTapLayer extends DataLayerBase<GMUGeometryRenderer> {
+	#map: GMSMapView;
+	#tapDelegate: GMUFeatureTapDelegate;
+	#tapActive = false;
+
+	abstract _handleMarkerTap(marker: GMSMarker): boolean;
+
+	abstract _handleOverlayTap(overlay: GMSOverlay): boolean;
+
+	_setMap(map: GoogleMap) {
+		this.#map = map?.native ?? null;
+	}
+
+	get _tapActive(): boolean {
+		return this.#tapActive;
+	}
+
+	_installTapHandler() {
+		if (!this.#map || this.#tapDelegate) {
+			return;
+		}
+		this.#tapDelegate = GMUFeatureTapDelegate.initWithOwnerNext(new WeakRef(this), this.#map.delegate);
+		this.#map.delegate = this.#tapDelegate;
+		this.#tapActive = true;
+	}
+
+	_uninstallTapHandler() {
+		this.#tapActive = false;
+		if (this.#tapDelegate) {
+			// Only unlink when we are still the current delegate; if another layer
+			// (or the app) chained on top of us, this node stays as a forwarder
+			// until the ones above it are removed.
+			if (this.#map && this.#map.delegate === this.#tapDelegate) {
+				this.#map.delegate = this.#tapDelegate.next;
+			}
+			this.#tapDelegate = null;
+		}
+	}
+}
+
+export class GeoJsonLayer extends FeatureTapLayer {
 	#native: GMUGeometryRenderer;
 	#parser: GMUGeoJSONParser;
 	style: GeometryStyle;
 
 	constructor(map: GoogleMap, geoJson: object | string, styles?: Partial<IGeometryStyle>) {
 		super();
+		this._setMap(map);
 		if (map && geoJson) {
 			this.style = new GeometryStyle(styles);
 
@@ -171,19 +342,73 @@ export class GeoJsonLayer extends DataLayerBase<GMUGeometryRenderer> {
 
 	addLayerToMap() {
 		this.native.render();
+		this._installTapHandler();
 	}
 
 	removeLayerFromMap() {
 		this.native.clear();
+		this._uninstallTapHandler();
+	}
+
+	_handleMarkerTap(marker: GMSMarker): boolean {
+		if (!this._tapActive || !this.#parser) {
+			return false;
+		}
+		const containers = this.#parser.features;
+		for (let i = 0; i < containers.count; i++) {
+			const container = containers.objectAtIndex(i);
+			if (geometryMatchesCoordinate(container.geometry, marker.position)) {
+				const feature = GeoJsonFeature.fromNative(container);
+				if (feature) {
+					this.notify(<FeatureTapEventData>{
+						eventName: DataLayerBase.featureTapEvent,
+						object: this,
+						feature,
+					});
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	_handleOverlayTap(overlay: GMSOverlay): boolean {
+		if (!this._tapActive || !this.#parser) {
+			return false;
+		}
+		let path: GMSPath = null;
+		if (overlay instanceof GMSPolyline || overlay instanceof GMSPolygon) {
+			path = overlay.path;
+		}
+		if (!path) {
+			return false;
+		}
+		const containers = this.#parser.features;
+		for (let i = 0; i < containers.count; i++) {
+			const container = containers.objectAtIndex(i);
+			if (geometryMatchesPath(container.geometry, path)) {
+				const feature = GeoJsonFeature.fromNative(container);
+				if (feature) {
+					this.notify(<FeatureTapEventData>{
+						eventName: DataLayerBase.featureTapEvent,
+						object: this,
+						feature,
+					});
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
 
-export class KmlLayer extends DataLayerBase<GMUGeometryRenderer> {
+export class KmlLayer extends FeatureTapLayer {
 	#native: GMUGeometryRenderer;
 	#parser: GMUKMLParser;
 
 	constructor(map: GoogleMap, kml: string) {
 		super();
+		this._setMap(map);
 		if (map && kml) {
 			this.#parser = new GMUKMLParser({ data: intoJsonData(kml) });
 			this.#parser.parse();
@@ -230,10 +455,63 @@ export class KmlLayer extends DataLayerBase<GMUGeometryRenderer> {
 
 	addLayerToMap() {
 		this.native.render();
+		this._installTapHandler();
 	}
 
 	removeLayerFromMap() {
 		this.native.clear();
+		this._uninstallTapHandler();
+	}
+
+	_handleMarkerTap(marker: GMSMarker): boolean {
+		if (!this._tapActive || !this.#parser) {
+			return false;
+		}
+		const placemarks = this.#parser.placemarks;
+		for (let i = 0; i < placemarks.count; i++) {
+			const placemark = placemarks.objectAtIndex(i);
+			if (geometryMatchesCoordinate(placemark.geometry, marker.position)) {
+				const feature = KmlFeature.fromNative(placemark);
+				if (feature) {
+					this.notify(<FeatureTapEventData>{
+						eventName: DataLayerBase.featureTapEvent,
+						object: this,
+						feature,
+					});
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	_handleOverlayTap(overlay: GMSOverlay): boolean {
+		if (!this._tapActive || !this.#parser) {
+			return false;
+		}
+		let path: GMSPath = null;
+		if (overlay instanceof GMSPolyline || overlay instanceof GMSPolygon) {
+			path = overlay.path;
+		}
+		if (!path) {
+			return false;
+		}
+		const placemarks = this.#parser.placemarks;
+		for (let i = 0; i < placemarks.count; i++) {
+			const placemark = placemarks.objectAtIndex(i);
+			if (geometryMatchesPath(placemark.geometry, path)) {
+				const feature = KmlFeature.fromNative(placemark);
+				if (feature) {
+					this.notify(<FeatureTapEventData>{
+						eventName: DataLayerBase.featureTapEvent,
+						object: this,
+						feature,
+					});
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
 

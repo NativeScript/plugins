@@ -1,7 +1,7 @@
 import { Color, Utils } from '@nativescript/core';
 import { Coordinate, GoogleMap } from '@nativescript/google-maps';
 import { intoColor } from '../utils/common';
-import { DataLayerBase, FeatureBase, GeometryBase, GeometryCoordinates, GeometryType, IGeometryStyle, normalizeGeometryStyle } from './common';
+import { DataLayerBase, FeatureBase, FeatureTapEventData, GeometryBase, GeometryCoordinates, GeometryType, IGeometryStyle, normalizeGeometryStyle } from './common';
 
 export * from './common';
 
@@ -144,6 +144,8 @@ export class GeoJsonLayer extends DataLayerBase<com.google.maps.android.data.geo
 					}
 				}
 			}
+
+			this.#registerFeatureClickListener();
 		}
 	}
 
@@ -151,9 +153,27 @@ export class GeoJsonLayer extends DataLayerBase<com.google.maps.android.data.geo
 		if (nativeGeoJsonLayer instanceof com.google.maps.android.data.geojson.GeoJsonLayer) {
 			const geoJsonLayer = new GeoJsonLayer(null, null);
 			geoJsonLayer.#native = nativeGeoJsonLayer;
+			geoJsonLayer.#registerFeatureClickListener();
 			return geoJsonLayer;
 		}
 		return null;
+	}
+
+	#registerFeatureClickListener() {
+		this.#native?.setOnFeatureClickListener(
+			new com.google.maps.android.data.Layer.OnFeatureClickListener({
+				onFeatureClick: (feature: com.google.maps.android.data.Feature) => {
+					const geoJsonFeature = GeoJsonFeature.fromNative(feature as com.google.maps.android.data.geojson.GeoJsonFeature);
+					if (geoJsonFeature) {
+						this.notify(<FeatureTapEventData>{
+							eventName: DataLayerBase.featureTapEvent,
+							object: this,
+							feature: geoJsonFeature,
+						});
+					}
+				},
+			}),
+		);
 	}
 
 	get native() {
@@ -192,6 +212,7 @@ export class KmlLayer extends DataLayerBase<com.google.maps.android.data.kml.Kml
 		if (map && kml) {
 			const stream = new java.io.ByteArrayInputStream(new java.lang.String(kml).getBytes());
 			this.#native = new com.google.maps.android.data.kml.KmlLayer(map.native, stream, Utils.android.getApplicationContext());
+			this.#registerFeatureClickListener();
 		}
 	}
 
@@ -199,9 +220,27 @@ export class KmlLayer extends DataLayerBase<com.google.maps.android.data.kml.Kml
 		if (nativeKmlLayer instanceof com.google.maps.android.data.kml.KmlLayer) {
 			const kmlLayer = new KmlLayer(null, null);
 			kmlLayer.#native = nativeKmlLayer;
+			kmlLayer.#registerFeatureClickListener();
 			return kmlLayer;
 		}
 		return null;
+	}
+
+	#registerFeatureClickListener() {
+		this.#native?.setOnFeatureClickListener(
+			new com.google.maps.android.data.Layer.OnFeatureClickListener({
+				onFeatureClick: (feature: com.google.maps.android.data.Feature) => {
+					const kmlFeature = KmlFeature.fromNative(feature as com.google.maps.android.data.kml.KmlPlacemark);
+					if (kmlFeature) {
+						this.notify(<FeatureTapEventData>{
+							eventName: DataLayerBase.featureTapEvent,
+							object: this,
+							feature: kmlFeature,
+						});
+					}
+				},
+			}),
+		);
 	}
 
 	get native() {

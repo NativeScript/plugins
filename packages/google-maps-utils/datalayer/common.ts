@@ -1,4 +1,4 @@
-import { Color } from '@nativescript/core';
+import { Color, EventData, Observable } from '@nativescript/core';
 import { Coordinate } from '@nativescript/google-maps';
 
 /**
@@ -96,6 +96,18 @@ export function normalizeGeometryStyle(style?: Partial<IGeometryStyle>): Partial
 }
 
 /**
+ * Event data for the {@link DataLayerBase.featureTapEvent} event, fired when a
+ * feature rendered by a data layer is tapped on the map.
+ */
+export interface FeatureTapEventData<T extends FeatureBase = FeatureBase> extends EventData {
+	/**
+	 * The tapped feature. A `GeoJsonFeature` for `GeoJsonLayer`, a `KmlFeature`
+	 * for `KmlLayer`.
+	 */
+	feature: T;
+}
+
+/**
  * Shared base class for data layers (GeoJSON, KML) on both platforms.
  *
  * `native` always holds the underlying native object
@@ -104,7 +116,16 @@ export function normalizeGeometryStyle(style?: Partial<IGeometryStyle>): Partial
  * object when running on that platform, so platform-specific code can delve into
  * the native wrappers when the shared API is not enough.
  */
-export abstract class DataLayerBase<T = any> {
+export abstract class DataLayerBase<T = any> extends Observable {
+	/**
+	 * Fired when a feature rendered by this layer is tapped on the map.
+	 * Register with `layer.on(GeoJsonLayer.featureTapEvent, ...)` (or `KmlLayer`).
+	 *
+	 * Note: taps are only detected for layers created via the constructor (or
+	 * the `addGeoJson` / `addKml` mixins), not for `fromNative` wrappers.
+	 */
+	static featureTapEvent = 'featureTap';
+
 	abstract readonly native: T;
 
 	abstract readonly features: FeatureBase[];

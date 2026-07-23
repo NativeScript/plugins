@@ -1,4 +1,4 @@
-import { Color } from '@nativescript/core';
+import { Color, EventData, Observable } from '@nativescript/core';
 import { Coordinate, GoogleMap } from '@nativescript/google-maps';
 
 /**
@@ -84,6 +84,18 @@ export type GeometryCoordinates = Coordinate | Coordinate[] | Coordinate[][] | C
 export function normalizeGeometryStyle(style?: Partial<IGeometryStyle>): Partial<IGeometryStyle> | null;
 
 /**
+ * Event data for the {@link DataLayerBase.featureTapEvent} event, fired when a
+ * feature rendered by a data layer is tapped on the map.
+ */
+export interface FeatureTapEventData<T extends FeatureBase = FeatureBase> extends EventData {
+	/**
+	 * The tapped feature. A `GeoJsonFeature` for `GeoJsonLayer`, a `KmlFeature`
+	 * for `KmlLayer`.
+	 */
+	feature: T;
+}
+
+/**
  * Shared base class for data layers (GeoJSON, KML) on both platforms.
  *
  * `native` always holds the underlying native object. `android` / `ios` are
@@ -91,7 +103,16 @@ export function normalizeGeometryStyle(style?: Partial<IGeometryStyle>): Partial
  * platform, so platform-specific code can delve into the native wrappers when
  * the shared API is not enough.
  */
-export abstract class DataLayerBase<T = any> {
+export abstract class DataLayerBase<T = any> extends Observable {
+	/**
+	 * Fired when a feature rendered by this layer is tapped on the map.
+	 * Register with `layer.on(GeoJsonLayer.featureTapEvent, ...)` (or `KmlLayer`).
+	 *
+	 * Note: taps are only detected for layers created via the constructor (or
+	 * the `addGeoJson` / `addKml` mixins), not for `fromNative` wrappers.
+	 */
+	static featureTapEvent: string;
+
 	abstract readonly native: T;
 
 	abstract readonly features: FeatureBase[];
@@ -103,6 +124,8 @@ export abstract class DataLayerBase<T = any> {
 	readonly android: T | null;
 
 	readonly ios: T | null;
+
+	on(event: 'featureTap', callback: (args: FeatureTapEventData) => void, thisArg?: any);
 }
 
 /**
@@ -211,6 +234,8 @@ export class GeoJsonLayer extends DataLayerBase implements IGeoJsonLayer {
 	addLayerToMap(): void;
 
 	removeLayerFromMap(): void;
+
+	on(event: 'featureTap', callback: (args: FeatureTapEventData<GeoJsonFeature>) => void, thisArg?: any);
 }
 
 export class KmlLayer extends DataLayerBase {
@@ -236,6 +261,8 @@ export class KmlLayer extends DataLayerBase {
 	addLayerToMap(): void;
 
 	removeLayerFromMap(): void;
+
+	on(event: 'featureTap', callback: (args: FeatureTapEventData<KmlFeature>) => void, thisArg?: any);
 }
 
 export class GeoJsonFeature extends FeatureBase implements IFeature {
