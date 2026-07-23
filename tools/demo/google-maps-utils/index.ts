@@ -1,9 +1,10 @@
 import { DemoSharedBase } from '../utils';
-import { GeoJsonLayer, HeatmapTileProvider, GoogleMapUtils, ClusterItem } from '@nativescript/google-maps-utils';
 import { Color } from '@nativescript/core';
-import { CameraUpdate, GoogleMap, MapReadyEvent, MarkerOptions } from '@nativescript/google-maps';
-import { installMixins } from '@nativescript/google-maps-utils';
+import { CameraUpdate, GoogleMap, MapReadyEvent, Marker, MarkerOptions, Polyline } from '@nativescript/google-maps';
+import { ClusterItem, FeatureTapEventData, GeoJsonFeature, GeoJsonLayer, GoogleMapUtils, HeatmapTileProvider, IconFactory, ICON_STYLE, KmlFeature, KmlLayer, computeArea, computeDistanceBetween, computeHeading, computeLength, computeOffset, containsLocation, decodePolyline, encodePolyline, installMixins, interpolate, isLocationOnPath } from '@nativescript/google-maps-utils';
 import { australia } from './geojson.example';
+import { placemarks } from './kml.example';
+
 installMixins();
 
 function generateRandomPosition(position, distance) {
@@ -24,19 +25,162 @@ function generateRandomPosition(position, distance) {
 	return { lat: x + dx, lng: y + xy };
 }
 
+const SYDNEY = { lat: -33.8688, lng: 151.2093 };
+const MELBOURNE = { lat: -37.8136, lng: 144.9631 };
+const PERTH = { lat: -31.9505, lng: 115.8605 };
+const BRISBANE = { lat: -27.4698, lng: 153.0251 };
+
 export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	map: GoogleMap;
 	googleMapsUtils: GoogleMapUtils;
 	geoJson: GeoJsonLayer;
+	kml: KmlLayer;
 	heatmapProvider: HeatmapTileProvider;
 	heatmapOverlay;
+	iconMarkers: Marker[] = [];
+	geometryPolyline: Polyline;
 
+	/**
+	 * GeoJSON data layer: add/remove + inspect the parsed features.
+	 */
 	testIt() {
+		if (this.geoJson) {
+			this.map.removeGeoJson(this.geoJson);
+			this.geoJson = null;
+			return;
+		}
+
 		this.geoJson = this.map.addGeoJson(australia, {
 			fillColor: new Color('blue'),
 			strokeColor: new Color('red'),
 			width: 4,
 		});
+
+		this.geoJson.on(GeoJsonLayer.featureTapEvent, (args: FeatureTapEventData<GeoJsonFeature>) => {
+			const feature = args.feature;
+			console.log(`GeoJSON feature tapped: id=${feature.id}, geometry type: ${feature.geometry?.type}`);
+			console.log(`tapped feature properties: ${JSON.stringify(feature.properties)?.substring(0, 120)}`);
+		});
+
+		// same inspection API on both platforms
+		const features = this.geoJson.features;
+		console.log(`GeoJsonLayer: ${features.length} features`);
+		const first = features[0];
+		if (first) {
+			console.log(`feature id: ${first.id}, geometry type: ${first.geometry?.type}`);
+			console.log(`feature properties: ${JSON.stringify(first.properties)?.substring(0, 120)}`);
+		}
+	}
+
+	/**
+	 * KML data layer: add/remove + inspect the parsed placemarks.
+	 */
+	testKml() {
+		if (this.kml) {
+			this.map.removeKml(this.kml);
+			this.kml = null;
+			return;
+		}
+
+		this.kml = this.map.addKml(placemarks);
+
+		this.kml.on(KmlLayer.featureTapEvent, (args: FeatureTapEventData<KmlFeature>) => {
+			const feature = args.feature;
+			console.log(`KML placemark tapped: geometry type: ${feature.geometry?.type}, properties: ${JSON.stringify(feature.properties)}`);
+		});
+
+		const features = this.kml.features;
+		console.log(`KmlLayer: ${features.length} placemarks`);
+		for (const feature of features) {
+			console.log(`placemark geometry type: ${feature.geometry?.type}, properties: ${JSON.stringify(feature.properties)}`);
+		}
+	}
+
+	/**
+	 * Spherical geometry + polyline encoding utilities.
+	 */
+	testGeometry() {
+		const distance = computeDistanceBetween(SYDNEY, MELBOURNE);
+		const heading = computeHeading(SYDNEY, MELBOURNE);
+		console.log(`Sydney -> Melbourne: ${(distance / 1000).toFixed(1)} km, heading ${heading.toFixed(1)} degrees`);
+
+		const polygon = [
+			{ lat: -25.0, lng: 130.0 },
+			{ lat: -25.0, lng: 135.0 },
+			{ lat: -30.0, lng: 132.5 },
+			{ lat: -25.0, lng: 130.0 },
+		];
+		console.log(`polygon area: ${(computeArea(polygon) / 1e6).toFixed(1)} km2, perimeter: ${(computeLength(polygon) / 1000).toFixed(1)} km`);
+		console.log(`polygon contains Sydney? ${containsLocation(SYDNEY, polygon)}`);
+
+		const halfway = interpolate(SYDNEY, PERTH, 0.5);
+		const east100km = computeOffset(SYDNEY, 100000, 90);
+		console.log(`halfway Sydney -> Perth: ${JSON.stringify(halfway)}`);
+		console.log(`100km east of Sydney: ${JSON.stringify(east100km)}`);
+
+		// polyline encode/decode round trip, drawn on the map
+		const encoded = encodePolyline([SYDNEY, MELBOURNE, PERTH]);
+		const decoded = decodePolyline(encoded);
+		console.log(`encoded polyline: ${encoded}`);
+		console.log(`decoded ${decoded.length} points, Melbourne on path (100m tolerance)? ${isLocationOnPath(MELBOURNE, decoded, 100)}`);
+
+		if (this.geometryPolyline) {
+			this.map.removePolyline(this.geometryPolyline);
+		}
+		this.geometryPolyline = this.map.addPolyline({
+			points: decoded,
+			color: new Color('#e91e63'),
+			width: 6,
+			geodesic: true,
+		});
+	}
+
+	/**
+	 * Text marker icons via the IconFactory.
+	 */
+	testIconFactory() {
+		this.iconMarkers.forEach((marker) => this.map.removeMarker(marker));
+		this.iconMarkers = [];
+
+		const factory = new IconFactory();
+
+		factory.setStyle(ICON_STYLE.STYLE_BLUE);
+		this.iconMarkers.push(
+			this.map.addMarker({
+				position: SYDNEY,
+				title: 'Sydney',
+				icon: factory.makeIcon('S'),
+			}),
+		);
+
+		factory.setStyle(ICON_STYLE.STYLE_GREEN);
+		this.iconMarkers.push(
+			this.map.addMarker({
+				position: MELBOURNE,
+				title: 'Melbourne',
+				icon: factory.makeIcon('M'),
+			}),
+		);
+
+		factory.setStyle(ICON_STYLE.STYLE_ORANGE);
+		this.iconMarkers.push(
+			this.map.addMarker({
+				position: PERTH,
+				title: 'Perth',
+				icon: factory.makeIcon('P'),
+			}),
+		);
+
+		// custom color + rotation
+		factory.color = new Color('#7b1fa2');
+		factory.rotation = 45;
+		this.iconMarkers.push(
+			this.map.addMarker({
+				position: BRISBANE,
+				title: 'Brisbane',
+				icon: factory.makeIcon('B'),
+			}),
+		);
 	}
 
 	async onMapReady(args: MapReadyEvent) {
@@ -48,8 +192,8 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 					lat: -27.74278,
 					lng: 130.497139,
 				},
-				4
-			)
+				4,
+			),
 		);
 
 		const positionSet = [];
