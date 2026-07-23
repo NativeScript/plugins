@@ -7,8 +7,20 @@ export interface IGradient {
 	stop: number;
 }
 
+/**
+ * A coordinate with an associated intensity/weight, used for weighted heatmaps.
+ * `intensity` defaults to `1`.
+ */
+export interface WeightedLatLng {
+	coordinate: Coordinate;
+	intensity?: number;
+}
+
 export interface HeatmapOptions {
-	coordinates: Coordinate[];
+	/** Uniform-weight points. Each is treated as a {@link WeightedLatLng} with intensity `1`. */
+	coordinates?: Coordinate[];
+	/** Weighted points, combined with `coordinates` if both are provided. */
+	weightedData?: WeightedLatLng[];
 	opacity?: number;
 	radius?: number;
 	maxIntensity?: number;
@@ -17,6 +29,7 @@ export interface HeatmapOptions {
 
 export interface IHeatmapTileProvider {
 	setData: (coordinates: Coordinate[]) => void;
+	setWeightedData: (data: WeightedLatLng[]) => void;
 	setGradient: (gradient: IGradient[]) => void;
 	opacity: number;
 	radius: number;

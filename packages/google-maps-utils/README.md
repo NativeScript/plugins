@@ -44,13 +44,25 @@ const heatmapProvider = map.heatmapProvider(heatmapOptions);
 
 ### HeatmapOptions
 
-| Property | Type 
-|:---------|:-----
-|	`coordinates` | `Coordinate[]`;
-|	`opacity` | `number`;
-|	`radius` | `number`;
-|	`maxIntensity` | `number`;
-|	`gradient` | ` IGradient[]`;
+| Property | Type | Description
+|:---------|:-----|:-----------
+| `coordinates` | `Coordinate[]` | Uniform-weight points (each treated as intensity `1`)
+| `weightedData` | `WeightedLatLng[]` | Weighted points; combined with `coordinates` if both are set
+| `opacity` | `number` |
+| `radius` | `number` |
+| `maxIntensity` | `number` |
+| `gradient` | `IGradient[]` |
+
+A `WeightedLatLng` is `{ coordinate: Coordinate; intensity?: number }` (intensity defaults to `1`). Weighted data can also be set later with `provider.setWeightedData(data)`.
+
+```javascript
+const provider = new HeatmapTileProvider({
+	weightedData: [
+		{ coordinate: { lat: -33.87, lng: 151.2 }, intensity: 5 },
+		{ coordinate: { lat: -33.88, lng: 151.21 }, intensity: 1 },
+	],
+});
+```
 
 ---
 
@@ -62,6 +74,34 @@ import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
 addClusteredMarkers(map: GoogleMap, markers: MarkerOptions[]) {
 	const clusterManager: ClusterManager = map.clusterManager(markers);
 }
+```
+
+`clusterManager()` takes an optional `ClusterManagerOptions`:
+
+| Option | Type | Description
+|:-------|:-----|:----------
+| `algorithm` | `'distance'` \| `'grid'` | Clustering algorithm (default `'distance'`)
+| `minClusterSize` | `number` | Minimum items before they render as a cluster
+| `animate` | `boolean` | Whether clusters animate on zoom
+| `animationDuration` | `number` | Animation duration in milliseconds
+
+```javascript
+map.clusterManager(markers, { algorithm: 'grid', minClusterSize: 3, animationDuration: 200 });
+```
+
+`ClusterManager` is an `Observable` and emits two events:
+
+| Event | Data | Fires when
+|:------|:-----|:----------
+| `clusterTap` | `ClusterTapEventData` (`position`, `size`, `items`) | A cluster (group of items) is tapped
+| `clusterItemTap` | `ClusterItemTapEventData` (`item`) | A single, unclustered item is tapped
+
+```javascript
+import { ClusterManagerBase, ClusterTapEventData } from '@nativescript/google-maps-utils';
+
+clusterManager.on(ClusterManagerBase.clusterTapEvent, (args: ClusterTapEventData) => {
+	console.log(`${args.size} items at ${args.position.lat}, ${args.position.lng}`);
+});
 ```
 
 ---
@@ -162,6 +202,12 @@ layer.removeLayerFromMap();
 ### Styling
 `IGeometryStyle` options: `strokeColor`, `fillColor`, `width`, `heading`, `anchor`, `title` work on both platforms; `scale` and `iconUrl` are iOS-only.
 
+### Inspecting layers
+
+- `geoJsonLayer.boundingBox` / `feature.boundingBox` — a `{ southwest, northeast }` box, on both platforms.
+- `geoJsonLayer.addFeature(feature)` / `removeFeature(feature)` — **Android only** (a no-op warning on iOS).
+- `kmlLayer.containers` (`KmlContainer[]`), `kmlLayer.groundOverlays` (`KmlGroundOverlay[]`), `kmlLayer.hasGroundOverlays()` — **Android only** (empty / `false` on iOS, which the GMU library does not expose).
+
 ### Feature tap events
 Both layers emit a `featureTap` event when a rendered feature is tapped:
 ```javascript
@@ -172,12 +218,18 @@ layer.on(GeoJsonLayer.featureTapEvent, (args: FeatureTapEventData) => {
 	console.log(args.feature.id, args.feature.geometry?.type, args.feature.properties);
 });
 ```
-The same works for `KmlLayer` (`KmlLayer.featureTapEvent`). On Android this wraps the native `Layer.OnFeatureClickListener`; on iOS the layer chains onto the map's delegate and matches taps back to the parsed features (all other map events keep working).
+The same works for `KmlLayer` (`KmlLayer.featureTapEvent`). On both platforms the tapped overlay is matched back to the parsed feature by geometry, and **all the underlying `@nativescript/google-maps` map events keep firing** (see the note below).
 
 ---
 
+## Listener fan-out (map events keep working)
+
+The native map exposes single-slot listeners (one camera-idle listener, one marker-click listener, etc.), and the underlying maps-utils libraries replace them when a data layer or cluster manager is added. To stop add-ons from clobbering each other — or the base plugin — `@nativescript/google-maps` owns those slots through a shared **listener hub** and fans each event out to every registered listener.
+
+The upshot: you can add a `ClusterManager` **and** a GeoJSON/KML layer, and the map's own `cameraPosition`, `markerTap`, `polygon` and `polyline` events still fire, alongside each add-on's `featureTap` / `clusterTap` events. (The demo app's google-maps-utils page wires all of these to the console so the behavior can be verified on-device.)
+
 ## Platform notes
-- **Android single-slot listeners:** the native maps-utils library installs its own map listeners, which replace the ones `@nativescript/google-maps` registers. Adding a `ClusterManager` replaces the camera-idle listener (the map's `cameraPosition` event stops firing while clustering is active), and adding a GeoJSON/KML data layer replaces the marker/polygon/polyline click listeners (the map's `markerTap`/`polygon`/`polyline` events stop firing while a data layer is on the map). iOS is unaffected — the wrappers there chain onto the existing delegate.
+- **iOS `fromNative` wrappers:** `GeoJsonLayer.fromNative` / `KmlLayer.fromNative` cannot expose `features` or `featureTap` (the GMU renderer does not expose its source features). On Android, `fromNative` layers likewise skip `featureTap` wiring (no map reference is available).
 - **iOS `fromNative` wrappers:** `GeoJsonLayer.fromNative` / `KmlLayer.fromNative` cannot expose `features` or `featureTap` (the GMU renderer does not expose its source features). Android has no such limitation.
 - **`ClusterManager.setRenderer`** is a no-op on iOS — `GMUClusterManager` takes its renderer when it is created.
 - **KML on iOS:** `KmlFeature.id` is always `null` and `properties` is synthesized as `{ name, description }` from the placemark title/snippet (GMU exposes neither a property bag nor an identifier).

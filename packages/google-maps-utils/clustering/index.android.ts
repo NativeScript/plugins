@@ -1,19 +1,21 @@
 import { ImageSource, Utils } from '@nativescript/core';
 import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
-import { hueFromColor } from '@nativescript/google-maps/utils';
+import { addOnCameraIdleListener, addOnMarkerClickListener, hueFromColor } from '@nativescript/google-maps/utils';
 import { intoNativeColor } from '../utils/common';
-import { IClusterManager } from './common';
+import { ClusterItemTapEventData, ClusterManagerBase, ClusterManagerOptions, ClusterTapEventData, IClusterManager } from './common';
 
 export * from './common';
 
-export function intoNativeClusterManager(map: GoogleMap) {
-	const manager = new com.google.maps.android.clustering.ClusterManager(Utils.ad.getApplicationContext(), map.native);
+export function intoNativeClusterManager(map: GoogleMap, options?: ClusterManagerOptions) {
+	// Listener wiring is done in ClusterManager.fromNative via the shared listener hub, so the
+	// manager no longer clobbers the camera-idle/marker-click listeners google-maps installs.
+	const manager = new com.google.maps.android.clustering.ClusterManager<com.google.maps.android.clustering.ClusterItem>(Utils.ad.getApplicationContext(), map.native);
 
-	if (map?.native?.setOnCameraIdleListener) {
-		// NOTE: ClusterManager must be the map's OnCameraIdleListener to re-cluster
-		// on camera changes. This is a single-slot native API, so it replaces the
-		// listener @nativescript/google-maps registers for its cameraPosition event.
-		map.native.setOnCameraIdleListener(manager);
+	if (options?.algorithm === 'grid') {
+		manager.setAlgorithm(new com.google.maps.android.clustering.algo.GridBasedAlgorithm<com.google.maps.android.clustering.ClusterItem>());
+	}
+	if (typeof options?.animate === 'boolean') {
+		manager.setAnimation(options.animate);
 	}
 
 	return manager;
@@ -123,16 +125,65 @@ export class ClusterRenderer extends com.google.maps.android.clustering.view.Def
 	}
 }
 
-export class ClusterManager implements IClusterManager<ClusterItem> {
+export class ClusterManager extends ClusterManagerBase implements IClusterManager<ClusterItem> {
 	#native: com.google.maps.android.clustering.ClusterManager<com.google.maps.android.clustering.ClusterItem>;
 
-	static fromNative(nativeClusterManager: com.google.maps.android.clustering.ClusterManager<any>) {
+	static fromNative(nativeClusterManager: com.google.maps.android.clustering.ClusterManager<any>, map?: GoogleMap) {
 		if (nativeClusterManager instanceof com.google.maps.android.clustering.ClusterManager) {
 			const clusterManager = new ClusterManager();
 			clusterManager.#native = nativeClusterManager;
+			if (map?.native) {
+				// The native ClusterManager is itself the map's OnCameraIdleListener and
+				// OnMarkerClickListener; register it as a hub secondary so it re-clusters and consumes
+				// cluster-marker taps without clobbering google-maps' own listeners.
+				addOnCameraIdleListener(map.native, nativeClusterManager as any);
+				addOnMarkerClickListener(map.native, nativeClusterManager as any);
+
+				nativeClusterManager.setOnClusterClickListener(
+					new com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<com.google.maps.android.clustering.ClusterItem>({
+						onClusterClick: (cluster) => {
+							clusterManager.#notifyCluster(cluster);
+							return false;
+						},
+					}),
+				);
+				nativeClusterManager.setOnClusterItemClickListener(
+					new com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener<com.google.maps.android.clustering.ClusterItem>({
+						onClusterItemClick: (item) => {
+							clusterManager.#notifyItem(item);
+							return false;
+						},
+					}),
+				);
+			}
 			return clusterManager;
 		}
 		return null;
+	}
+
+	#notifyCluster(cluster: com.google.maps.android.clustering.Cluster<com.google.maps.android.clustering.ClusterItem>) {
+		const items: ClusterItem[] = [];
+		const iter = cluster.getItems().iterator();
+		while (iter.hasNext()) {
+			// items were added as JS ClusterItem instances and come back as the same objects.
+			items.push(iter.next() as unknown as ClusterItem);
+		}
+		const position = cluster.getPosition();
+		this.notify(<ClusterTapEventData<ClusterItem>>{
+			eventName: ClusterManagerBase.clusterTapEvent,
+			object: this,
+			position: { lat: position.latitude, lng: position.longitude },
+			size: cluster.getSize(),
+			items,
+		});
+	}
+
+	#notifyItem(item: com.google.maps.android.clustering.ClusterItem) {
+		this.notify(<ClusterItemTapEventData<ClusterItem>>{
+			eventName: ClusterManagerBase.clusterItemTapEvent,
+			object: this,
+			item: item as unknown as ClusterItem,
+		});
 	}
 
 	get native() {

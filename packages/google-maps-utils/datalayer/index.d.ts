@@ -1,5 +1,5 @@
 import { Color, EventData, Observable } from '@nativescript/core';
-import { Coordinate, GoogleMap } from '@nativescript/google-maps';
+import { Coordinate, CoordinateBounds, GoogleMap } from '@nativescript/google-maps';
 
 /**
  * GeoJSON geometry type names. Both the Android (`com.google.maps.android.data`)
@@ -236,6 +236,15 @@ export class GeoJsonLayer extends DataLayerBase implements IGeoJsonLayer {
 
 	readonly features: GeoJsonFeature[];
 
+	/** Bounding box that contains every feature in the layer, or `null` if empty. */
+	readonly boundingBox: CoordinateBounds | null;
+
+	/** Adds a feature to the layer. **Android only** — a no-op warning on iOS. */
+	addFeature(feature: GeoJsonFeature): void;
+
+	/** Removes a feature from the layer. **Android only** — a no-op warning on iOS. */
+	removeFeature(feature: GeoJsonFeature): void;
+
 	addLayerToMap(): void;
 
 	removeLayerFromMap(): void;
@@ -267,11 +276,52 @@ export class KmlLayer extends DataLayerBase {
 	 */
 	hasContainers(): boolean;
 
+	/**
+	 * Top-level KML containers (`<Folder>` / `<Document>`). **Android only** — always empty on iOS.
+	 */
+	readonly containers: KmlContainer[];
+
+	/**
+	 * KML `<GroundOverlay>` elements. **Android only** — always empty on iOS.
+	 */
+	readonly groundOverlays: KmlGroundOverlay[];
+
+	/** Always `false` on iOS. */
+	hasGroundOverlays(): boolean;
+
 	addLayerToMap(): void;
 
 	removeLayerFromMap(): void;
 
 	on(event: 'featureTap', callback: (args: FeatureTapEventData<KmlFeature>) => void, thisArg?: any);
+}
+
+/**
+ * A KML container (`<Folder>` / `<Document>`). **Android only** — on iOS the GMU library does not
+ * expose containers, so instances are never produced there.
+ */
+export class KmlContainer {
+	readonly native: any;
+	readonly android: any;
+	readonly ios: any;
+	readonly properties: Record<string, any>;
+	readonly containers: KmlContainer[];
+	readonly placemarks: KmlFeature[];
+	hasContainers(): boolean;
+	hasPlacemarks(): boolean;
+}
+
+/**
+ * A KML `<GroundOverlay>`. **Android only** — on iOS the GMU library does not expose ground
+ * overlays, so instances are never produced there.
+ */
+export class KmlGroundOverlay {
+	readonly native: any;
+	readonly android: any;
+	readonly ios: any;
+	readonly imageUrl: string;
+	readonly bounds: CoordinateBounds;
+	readonly properties: Record<string, any>;
 }
 
 export class GeoJsonFeature extends FeatureBase implements IFeature {
@@ -284,6 +334,9 @@ export class GeoJsonFeature extends FeatureBase implements IFeature {
 	readonly native: any;
 
 	readonly id: string | null;
+
+	/** Bounding box of this feature, or `null` if it has none. */
+	readonly boundingBox: CoordinateBounds | null;
 
 	properties: Record<string, any>;
 

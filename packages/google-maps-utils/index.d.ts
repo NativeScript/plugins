@@ -1,6 +1,6 @@
 import { MarkerOptions } from '@nativescript/google-maps';
 import { GeoJSON } from 'geojson';
-import { ClusterManager } from './clustering';
+import { ClusterManager, ClusterManagerOptions } from './clustering';
 import { GeoJsonLayer, IGeometryStyle, KmlLayer } from './datalayer';
 import { HeatmapOptions, HeatmapTileProvider } from './heatmap';
 
@@ -23,7 +23,7 @@ export function overrideGoogleMap();
 declare module '@nativescript/google-maps' {
 	interface GoogleMap {
 		heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
-		clusterManager(markers: MarkerOptions[]): ClusterManager;
+		clusterManager(markers: MarkerOptions[], options?: ClusterManagerOptions): ClusterManager;
 
 		addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer | null;
 		removeGeoJson(geoJsonLayer: GeoJsonLayer): void;

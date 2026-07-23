@@ -1,7 +1,7 @@
 import { DemoSharedBase } from '../utils';
 import { Color } from '@nativescript/core';
-import { CameraUpdate, GoogleMap, MapReadyEvent, Marker, MarkerOptions, Polyline } from '@nativescript/google-maps';
-import { ClusterItem, FeatureTapEventData, GeoJsonFeature, GeoJsonLayer, GoogleMapUtils, HeatmapTileProvider, IconFactory, ICON_STYLE, KmlFeature, KmlLayer, computeArea, computeDistanceBetween, computeHeading, computeLength, computeOffset, containsLocation, decodePolyline, encodePolyline, installMixins, interpolate, isLocationOnPath } from '@nativescript/google-maps-utils';
+import { CameraPositionEvent, CameraUpdate, GoogleMap, MapReadyEvent, Marker, MarkerOptions, MarkerTapEvent, PolygonTapEvent, Polyline, PolylineTapEvent } from '@nativescript/google-maps';
+import { ClusterItem, ClusterItemTapEventData, ClusterManager, ClusterManagerBase, ClusterTapEventData, FeatureTapEventData, GeoJsonFeature, GeoJsonLayer, GoogleMapUtils, HeatmapTileProvider, IconFactory, ICON_STYLE, KmlFeature, KmlLayer, computeArea, computeDistanceBetween, computeHeading, computeLength, computeOffset, containsLocation, decodePolyline, encodePolyline, installMixins, interpolate, isLocationOnPath } from '@nativescript/google-maps-utils';
 import { australia } from './geojson.example';
 import { placemarks } from './kml.example';
 
@@ -39,6 +39,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 	heatmapOverlay;
 	iconMarkers: Marker[] = [];
 	geometryPolyline: Polyline;
+	clusterManager: ClusterManager;
 
 	/**
 	 * GeoJSON data layer: add/remove + inspect the parsed features.
@@ -83,17 +84,6 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 		}
 
 		this.kml = this.map.addKml(placemarks);
-
-		this.kml.on(KmlLayer.featureTapEvent, (args: FeatureTapEventData<KmlFeature>) => {
-			const feature = args.feature;
-			console.log(`KML placemark tapped: geometry type: ${feature.geometry?.type}, properties: ${JSON.stringify(feature.properties)}`);
-		});
-
-		const features = this.kml.features;
-		console.log(`KmlLayer: ${features.length} placemarks`);
-		for (const feature of features) {
-			console.log(`placemark geometry type: ${feature.geometry?.type}, properties: ${JSON.stringify(feature.properties)}`);
-		}
 	}
 
 	/**
@@ -149,7 +139,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			this.map.addMarker({
 				position: SYDNEY,
 				title: 'Sydney',
-				icon: factory.makeIcon('S'),
+				icon: factory.makeIcon('Sydney'),
 			}),
 		);
 
@@ -158,7 +148,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			this.map.addMarker({
 				position: MELBOURNE,
 				title: 'Melbourne',
-				icon: factory.makeIcon('M'),
+				icon: factory.makeIcon('Melbourne'),
 			}),
 		);
 
@@ -167,7 +157,7 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			this.map.addMarker({
 				position: PERTH,
 				title: 'Perth',
-				icon: factory.makeIcon('P'),
+				icon: factory.makeIcon('Perth'),
 			}),
 		);
 
@@ -178,13 +168,19 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			this.map.addMarker({
 				position: BRISBANE,
 				title: 'Brisbane',
-				icon: factory.makeIcon('B'),
+				icon: factory.makeIcon('Brisbane'),
 			}),
 		);
 	}
 
 	async onMapReady(args: MapReadyEvent) {
 		this.map = args.map;
+
+		// polygon/polyline event names don't match the `<name>Event` static the XML builder looks for,
+		// so they're subscribed in code (markerTap/cameraPosition do match and stay in the markup).
+		const mapView = args.object as any;
+		mapView.on('polygon', (a: PolygonTapEvent) => this.onPolygonTap(a));
+		mapView.on('polyline', (a: PolylineTapEvent) => this.onPolylineTap(a));
 
 		this.map.animateCamera(
 			CameraUpdate.fromCoordinate(
@@ -242,6 +238,15 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 		}
 
 		const clusterManager = this.map.clusterManager(clusterSet);
+		this.clusterManager = clusterManager;
+
+		clusterManager.on(ClusterManagerBase.clusterTapEvent, (args: ClusterTapEventData<ClusterItem>) => {
+			console.log(`clusterTap: ${args.size} items at ${args.position.lat.toFixed(3)}, ${args.position.lng.toFixed(3)}`);
+		});
+		clusterManager.on(ClusterManagerBase.clusterItemTapEvent, (args: ClusterItemTapEventData<ClusterItem>) => {
+			console.log(`clusterItemTap: ${args.item?.options?.title}`);
+		});
+
 		setTimeout(() => {
 			const clusterItem = new ClusterItem({
 				position: { lat: -32.093407, lng: 116.240609 },
@@ -250,5 +255,25 @@ export class DemoSharedGoogleMapsUtils extends DemoSharedBase {
 			});
 			clusterManager.addItem(clusterItem);
 		}, 1000);
+	}
+
+	// Map-level event handlers, bound in the XML. The point of the listener-hub fan-out is that these
+	// keep firing even while a GeoJSON/KML layer or a cluster manager is active on the map.
+	onMarkerTap(args: MarkerTapEvent) {
+		console.log(`[map] markerTap: ${args.marker?.title}`);
+	}
+
+	onPolygonTap(args: PolygonTapEvent) {
+		console.log('[map] polygonTap');
+	}
+
+	onPolylineTap(args: PolylineTapEvent) {
+		console.log('[map] polylineTap');
+	}
+
+	onCameraPosition(args: CameraPositionEvent) {
+		if (args.state === 'idle') {
+			console.log('[map] cameraPosition idle');
+		}
 	}
 }

@@ -1,10 +1,22 @@
 import { Coordinate, ITileProvider } from '@nativescript/google-maps';
-import { HeatmapOptions, IGradient, IHeatmapTileProvider, intoNativeHeatmapGradient } from './common';
+import { HeatmapOptions, IGradient, IHeatmapTileProvider, WeightedLatLng, intoNativeHeatmapGradient } from './common';
 
 export * from './common';
 
+/** Builds a `GMUWeightedLatLng[]` from plain coordinates and/or weighted points. */
+function intoNativeWeightedData(coordinates?: Coordinate[], weightedData?: WeightedLatLng[]): GMUWeightedLatLng[] {
+	const data: GMUWeightedLatLng[] = [];
+	coordinates?.forEach((coordinate) => {
+		data.push(GMUWeightedLatLng.alloc().initWithCoordinateIntensity({ latitude: coordinate.lat, longitude: coordinate.lng }, 1.0));
+	});
+	weightedData?.forEach((point) => {
+		data.push(GMUWeightedLatLng.alloc().initWithCoordinateIntensity({ latitude: point.coordinate.lat, longitude: point.coordinate.lng }, point.intensity ?? 1.0));
+	});
+	return data;
+}
+
 export function intoNativeHeatmapProvider(options: HeatmapOptions) {
-	if (!options?.coordinates) {
+	if (!options?.coordinates && !options?.weightedData) {
 		return;
 	}
 	const heatmap = GMUHeatmapTileLayer.alloc().init();
@@ -21,9 +33,7 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 	if (typeof options?.maxIntensity === 'number') {
 		heatmap.maximumZoomIntensity = options.maxIntensity;
 	}
-	heatmap.weightedData = options?.coordinates.map((coordinate) => {
-		return GMUWeightedLatLng.alloc().initWithCoordinateIntensity({ latitude: coordinate.lat, longitude: coordinate.lng }, 1.0);
-	}) as any;
+	heatmap.weightedData = intoNativeWeightedData(options.coordinates, options.weightedData) as any;
 
 	return heatmap;
 }
@@ -91,9 +101,11 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 	}
 
 	setData(coordinates: Coordinate[]): void {
-		this.native.weightedData = coordinates.map((coordinate) => {
-			return GMUWeightedLatLng.alloc().initWithCoordinateIntensity({ latitude: coordinate.lat, longitude: coordinate.lng }, 1.0);
-		}) as any;
+		this.native.weightedData = intoNativeWeightedData(coordinates) as any;
+	}
+
+	setWeightedData(data: WeightedLatLng[]): void {
+		this.native.weightedData = intoNativeWeightedData(undefined, data) as any;
 	}
 
 	getTile(x: number, y: number, z: number): UIImage {

@@ -1,16 +1,23 @@
 import { Coordinate, ITileProvider } from '@nativescript/google-maps';
-import { HeatmapOptions, IGradient, IHeatmapTileProvider, intoNativeHeatmapGradient } from './common';
+import { HeatmapOptions, IGradient, IHeatmapTileProvider, WeightedLatLng, intoNativeHeatmapGradient } from './common';
 
 export * from './common';
 
-export function intoNativeHeatmapProvider(options: HeatmapOptions) {
-	if (options?.coordinates) {
-		const builder = new com.google.maps.android.heatmaps.HeatmapTileProvider.Builder();
-		const data = new java.util.ArrayList();
+/** Builds a native `java.util.List<WeightedLatLng>` from plain coordinates and/or weighted points. */
+function intoNativeWeightedData(coordinates?: Coordinate[], weightedData?: WeightedLatLng[]): java.util.ArrayList<com.google.maps.android.heatmaps.WeightedLatLng> {
+	const data = new java.util.ArrayList<com.google.maps.android.heatmaps.WeightedLatLng>();
+	coordinates?.forEach((coordinate) => {
+		data.add(new com.google.maps.android.heatmaps.WeightedLatLng(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng), 1));
+	});
+	weightedData?.forEach((point) => {
+		data.add(new com.google.maps.android.heatmaps.WeightedLatLng(new com.google.android.gms.maps.model.LatLng(point.coordinate.lat, point.coordinate.lng), point.intensity ?? 1));
+	});
+	return data;
+}
 
-		options.coordinates.forEach((coordinate) => {
-			data.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
-		});
+export function intoNativeHeatmapProvider(options: HeatmapOptions) {
+	if (options?.coordinates || options?.weightedData) {
+		const builder = new com.google.maps.android.heatmaps.HeatmapTileProvider.Builder();
 
 		if (typeof options?.maxIntensity === 'number') {
 			builder.maxIntensity(options.maxIntensity);
@@ -25,7 +32,7 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 			builder.gradient(intoNativeHeatmapGradient(options.gradient));
 		}
 
-		builder.data(data);
+		builder.weightedData(intoNativeWeightedData(options.coordinates, options.weightedData));
 		return builder.build();
 	}
 }
@@ -96,13 +103,17 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 	}
 
 	setData(coordinates: Coordinate[]): void {
-		const data = new java.util.ArrayList();
+		const data = new java.util.ArrayList<com.google.android.gms.maps.model.LatLng>();
 
 		coordinates.forEach((coordinate) => {
 			data.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
 		});
 
 		this.native.setData(data);
+	}
+
+	setWeightedData(data: WeightedLatLng[]): void {
+		this.native.setWeightedData(intoNativeWeightedData(undefined, data));
 	}
 
 	getTile(x: number, y: number, z: number): com.google.android.gms.maps.model.Tile {

@@ -586,3 +586,123 @@ export function serialize(data: any): any {
 			return null;
 	}
 }
+
+export interface NativeMapListenerPrimaries {
+	onCameraIdle?: () => void;
+	onMarkerClick?: (marker: com.google.android.gms.maps.model.Marker) => boolean;
+	onPolygonClick?: (polygon: com.google.android.gms.maps.model.Polygon) => void;
+	onPolylineClick?: (polyline: com.google.android.gms.maps.model.Polyline) => void;
+}
+
+class NativeMapListenerHub {
+	primary: NativeMapListenerPrimaries = {};
+	cameraIdleListeners = new Set<com.google.android.gms.maps.GoogleMap.OnCameraIdleListener>();
+	markerClickListeners = new Set<com.google.android.gms.maps.GoogleMap.OnMarkerClickListener>();
+	polygonClickListeners = new Set<com.google.android.gms.maps.GoogleMap.OnPolygonClickListener>();
+	polylineClickListeners = new Set<com.google.android.gms.maps.GoogleMap.OnPolylineClickListener>();
+
+	readonly cameraIdleDispatcher = new com.google.android.gms.maps.GoogleMap.OnCameraIdleListener({
+		onCameraIdle: () => {
+			this.primary.onCameraIdle?.();
+			this.cameraIdleListeners.forEach((listener) => listener.onCameraIdle());
+		},
+	});
+
+	readonly markerClickDispatcher = new com.google.android.gms.maps.GoogleMap.OnMarkerClickListener({
+		onMarkerClick: (marker) => {
+			let handled = false;
+			this.markerClickListeners.forEach((listener) => {
+				if (!handled && listener.onMarkerClick(marker)) {
+					handled = true;
+				}
+			});
+			if (handled) {
+				return true;
+			}
+			return this.primary.onMarkerClick?.(marker) ?? false;
+		},
+	});
+
+	readonly polygonClickDispatcher = new com.google.android.gms.maps.GoogleMap.OnPolygonClickListener({
+		onPolygonClick: (polygon) => {
+			this.polygonClickListeners.forEach((listener) => listener.onPolygonClick(polygon));
+			this.primary.onPolygonClick?.(polygon);
+		},
+	});
+
+	readonly polylineClickDispatcher = new com.google.android.gms.maps.GoogleMap.OnPolylineClickListener({
+		onPolylineClick: (polyline) => {
+			this.polylineClickListeners.forEach((listener) => listener.onPolylineClick(polyline));
+			this.primary.onPolylineClick?.(polyline);
+		},
+	});
+}
+
+const nativeMapListenerHubs: Map<com.google.android.gms.maps.GoogleMap, NativeMapListenerHub> = (globalThis as any).__nsGoogleMapsNativeListenerHubs || ((globalThis as any).__nsGoogleMapsNativeListenerHubs = new Map());
+
+function attachHub(map: com.google.android.gms.maps.GoogleMap, hub: NativeMapListenerHub) {
+	map.setOnCameraIdleListener(hub.cameraIdleDispatcher);
+	map.setOnMarkerClickListener(hub.markerClickDispatcher);
+	map.setOnPolygonClickListener(hub.polygonClickDispatcher);
+	map.setOnPolylineClickListener(hub.polylineClickDispatcher);
+}
+
+export function registerNativeMapListeners(map: com.google.android.gms.maps.GoogleMap, primary: NativeMapListenerPrimaries): void {
+	if (!map) {
+		return;
+	}
+	let hub = nativeMapListenerHubs.get(map);
+	if (!hub) {
+		hub = new NativeMapListenerHub();
+		nativeMapListenerHubs.set(map, hub);
+	}
+	Object.assign(hub.primary, primary);
+	attachHub(map, hub);
+}
+
+export function hasNativeMapListeners(map: com.google.android.gms.maps.GoogleMap): boolean {
+	return nativeMapListenerHubs.has(map);
+}
+
+export function attachNativeMapListeners(map: com.google.android.gms.maps.GoogleMap): void {
+	const hub = nativeMapListenerHubs.get(map);
+	if (hub) {
+		attachHub(map, hub);
+	}
+}
+
+export function unregisterNativeMapListeners(map: com.google.android.gms.maps.GoogleMap): void {
+	nativeMapListenerHubs.delete(map);
+}
+
+export function addOnCameraIdleListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnCameraIdleListener): void {
+	nativeMapListenerHubs.get(map)?.cameraIdleListeners.add(listener);
+}
+
+export function removeOnCameraIdleListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnCameraIdleListener): void {
+	nativeMapListenerHubs.get(map)?.cameraIdleListeners.delete(listener);
+}
+
+export function addOnMarkerClickListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnMarkerClickListener): void {
+	nativeMapListenerHubs.get(map)?.markerClickListeners.add(listener);
+}
+
+export function removeOnMarkerClickListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnMarkerClickListener): void {
+	nativeMapListenerHubs.get(map)?.markerClickListeners.delete(listener);
+}
+
+export function addOnPolygonClickListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnPolygonClickListener): void {
+	nativeMapListenerHubs.get(map)?.polygonClickListeners.add(listener);
+}
+
+export function removeOnPolygonClickListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnPolygonClickListener): void {
+	nativeMapListenerHubs.get(map)?.polygonClickListeners.delete(listener);
+}
+
+export function addOnPolylineClickListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnPolylineClickListener): void {
+	nativeMapListenerHubs.get(map)?.polylineClickListeners.add(listener);
+}
+
+export function removeOnPolylineClickListener(map: com.google.android.gms.maps.GoogleMap, listener: com.google.android.gms.maps.GoogleMap.OnPolylineClickListener): void {
+	nativeMapListenerHubs.get(map)?.polylineClickListeners.delete(listener);
+}

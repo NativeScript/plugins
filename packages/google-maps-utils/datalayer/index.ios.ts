@@ -1,5 +1,5 @@
 import { Color, encoding } from '@nativescript/core';
-import { Coordinate, GoogleMap } from '@nativescript/google-maps';
+import { Coordinate, CoordinateBounds, GoogleMap } from '@nativescript/google-maps';
 import { intoColor } from '../utils/common';
 import { DataLayerBase, FeatureBase, FeatureTapEventData, GeometryBase, GeometryCoordinates, GeometryType, IGeometryStyle, normalizeGeometryStyle } from './common';
 
@@ -37,6 +37,16 @@ function nsDictionaryToObject(dictionary: NSDictionary<string, NSObject>): Recor
 		}
 	}
 	return object;
+}
+
+function gmsCoordinateBoundsToCoordinateBounds(bounds: GMSCoordinateBounds): CoordinateBounds {
+	if (!bounds || !bounds.valid) {
+		return null;
+	}
+	return {
+		southwest: { lat: bounds.southWest.latitude, lng: bounds.southWest.longitude },
+		northeast: { lat: bounds.northEast.latitude, lng: bounds.northEast.longitude },
+	};
 }
 
 function gmsPathsEqual(a: GMSPath, b: GMSPath): boolean {
@@ -344,6 +354,32 @@ export class GeoJsonLayer extends FeatureTapLayer {
 		return features;
 	}
 
+	/** Bounding box that contains every feature in the layer, or `null` if empty. */
+	get boundingBox(): CoordinateBounds {
+		if (!this.#parser) {
+			return null;
+		}
+		let union: GMSCoordinateBounds = null;
+		const features = this.#parser.features;
+		for (let i = 0; i < features.count; i++) {
+			const box = features.objectAtIndex(i).boundingBox;
+			if (box && box.valid) {
+				union = union ? union.includingBounds(box) : box;
+			}
+		}
+		return gmsCoordinateBoundsToCoordinateBounds(union);
+	}
+
+	/** Not supported on iOS — the GMU renderer is built from a fixed set of parsed features. */
+	addFeature(_feature: GeoJsonFeature) {
+		console.warn('[google-maps-utils] GeoJsonLayer.addFeature is not supported on iOS.');
+	}
+
+	/** Not supported on iOS — the GMU renderer is built from a fixed set of parsed features. */
+	removeFeature(_feature: GeoJsonFeature) {
+		console.warn('[google-maps-utils] GeoJsonLayer.removeFeature is not supported on iOS.');
+	}
+
 	addLayerToMap() {
 		this.native.render();
 		this._installTapHandler();
@@ -457,6 +493,20 @@ export class KmlLayer extends FeatureTapLayer {
 		return false;
 	}
 
+	/** Always empty on iOS — KML containers are not exposed by the GMU library. */
+	get containers(): KmlContainer[] {
+		return [];
+	}
+
+	/** Always empty on iOS — KML ground overlays are not exposed by the GMU library. */
+	get groundOverlays(): KmlGroundOverlay[] {
+		return [];
+	}
+
+	hasGroundOverlays(): boolean {
+		return false;
+	}
+
 	addLayerToMap() {
 		this.native.render();
 		this._installTapHandler();
@@ -539,6 +589,11 @@ export class GeoJsonFeature extends FeatureBase<GMUFeature> {
 		return this.native.identifier ?? null;
 	}
 
+	/** Bounding box of this feature, or `null` if it has none. */
+	get boundingBox(): CoordinateBounds {
+		return gmsCoordinateBoundsToCoordinateBounds(this.native.boundingBox);
+	}
+
 	get properties(): Record<string, any> {
 		return nsDictionaryToObject(this.native.properties);
 	}
@@ -606,6 +661,62 @@ export class KmlFeature extends FeatureBase<GMUPlacemark> {
 
 	get style(): GeometryStyle {
 		return GeometryStyle.fromNative(this.native.style);
+	}
+}
+
+/**
+ * KML containers are not exposed by the iOS GMU library, so this type only exists to keep the
+ * cross-platform API consistent — `KmlLayer.containers` is always empty on iOS.
+ */
+export class KmlContainer {
+	get native() {
+		return null;
+	}
+	get android() {
+		return null;
+	}
+	get ios() {
+		return null;
+	}
+	get properties(): Record<string, any> {
+		return {};
+	}
+	get containers(): KmlContainer[] {
+		return [];
+	}
+	get placemarks(): KmlFeature[] {
+		return [];
+	}
+	hasContainers(): boolean {
+		return false;
+	}
+	hasPlacemarks(): boolean {
+		return false;
+	}
+}
+
+/**
+ * KML ground overlays are not exposed by the iOS GMU library, so this type only exists to keep the
+ * cross-platform API consistent — `KmlLayer.groundOverlays` is always empty on iOS.
+ */
+export class KmlGroundOverlay {
+	get native() {
+		return null;
+	}
+	get android() {
+		return null;
+	}
+	get ios() {
+		return null;
+	}
+	get imageUrl(): string {
+		return null;
+	}
+	get bounds(): CoordinateBounds {
+		return null;
+	}
+	get properties(): Record<string, any> {
+		return {};
 	}
 }
 

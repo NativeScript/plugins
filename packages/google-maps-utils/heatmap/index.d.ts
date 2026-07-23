@@ -9,6 +9,7 @@ export class HeatmapTileProvider implements IHeatmapTileProvider {
 	constructor(options?: HeatmapOptions);
 	static fromNative: (nativeHeatmap: any) => HeatmapTileProvider | null;
 	setData: (coordinates: Coordinate[]) => void;
+	setWeightedData: (data: import('./common').WeightedLatLng[]) => void;
 	setGradient: (gradient: IGradient[]) => void;
 	opacity: number;
 	radius: number;

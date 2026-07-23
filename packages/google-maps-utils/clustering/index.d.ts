@@ -1,9 +1,9 @@
 import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
-import { IClusterManager } from './common';
+import { ClusterManagerBase, ClusterManagerOptions, IClusterManager } from './common';
 
 export * from './common';
 
-export function intoNativeClusterManager(map: GoogleMap);
+export function intoNativeClusterManager(map: GoogleMap, options?: ClusterManagerOptions);
 
 export class ClusterItem {
 	constructor(options: MarkerOptions);
@@ -24,8 +24,8 @@ export class ClusterRenderer {
 	native?: any;
 }
 
-export class ClusterManager implements IClusterManager<ClusterItem> {
-	static fromNative: (nativeClusterManager: any) => ClusterManager | null;
+export class ClusterManager extends ClusterManagerBase implements IClusterManager<ClusterItem> {
+	static fromNative: (nativeClusterManager: any, map?: GoogleMap) => ClusterManager | null;
 	addItems: (clusterItems: ClusterItem[]) => void;
 	addItem: (clusterItem: ClusterItem) => void;
 	removeItems: (clusterItems: ClusterItem[]) => void;

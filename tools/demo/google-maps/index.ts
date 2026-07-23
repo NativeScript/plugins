@@ -417,6 +417,13 @@ export class DemoSharedGoogleMaps extends DemoSharedBase {
 	onMapReady(args: MapReadyEvent) {
 		this.map = args.map;
 		this.map.animateCamera(CameraUpdate.fromCoordinate(SAN_FRANCISCO, 13));
+
+		const mapView = args.object as any;
+		mapView.on('circle', (a: CircleTapEvent) => this.onCircleTap(a));
+		mapView.on('polygon', (a: PolygonTapEvent) => this.onPolygonTap(a));
+		mapView.on('polyline', (a: PolylineTapEvent) => this.onPolylineTap(a));
+		mapView.on('poi', (a: PoiTapEvent) => this.onPoiTap(a));
+		mapView.on('groundOverlay', (a: GroundOverlayTapEvent) => this.onGroundOverlayTap(a));
 	}
 
 	onMapTap(args: MapTapEvent) {

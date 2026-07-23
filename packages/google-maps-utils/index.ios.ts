@@ -1,6 +1,6 @@
 import { GoogleMap, MarkerOptions } from '@nativescript/google-maps';
 import { GeoJSON } from 'geojson';
-import { ClusterItem, ClusterManager, intoNativeClusterManager } from './clustering';
+import { ClusterItem, ClusterManager, ClusterManagerOptions, intoNativeClusterManager } from './clustering';
 import { GeoJsonLayer, IGeometryStyle, KmlLayer } from './datalayer';
 import { HeatmapOptions, HeatmapTileProvider } from './heatmap';
 import { applyMixins } from './utils/common';
@@ -31,8 +31,9 @@ export class GoogleMapUtils {
 		return new HeatmapTileProvider(options);
 	}
 
-	clusterManager(markers: MarkerOptions[]) {
-		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(this as unknown as GoogleMap));
+	clusterManager(markers: MarkerOptions[], options?: ClusterManagerOptions) {
+		const GMap = this as unknown as GoogleMap;
+		const clusterManager = ClusterManager.fromNative(intoNativeClusterManager(GMap, options), GMap);
 
 		const clusters = markers.map((marker) => new ClusterItem(marker));
 		clusterManager.addItems(clusters);

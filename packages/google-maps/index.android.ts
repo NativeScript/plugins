@@ -47,7 +47,7 @@ import {
 } from '.';
 import { bearingProperty, preventDefaultMarkerTapBehaviorProperty, CollisionBehavior, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 
-import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, intoNativeStyleSpans, deserialize, serialize } from './utils';
+import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, intoNativeStyleSpans, registerNativeMapListeners, unregisterNativeMapListeners, deserialize, serialize } from './utils';
 
 export { hueFromColor, intoNativeMarkerOptions } from './utils';
 
@@ -457,6 +457,9 @@ export class MapView extends MapViewBase {
 	disposeNativeView() {
 		Utils.android.getApplication().unregisterActivityLifecycleCallbacks(this.lifeCycleHooks);
 		this.lifeCycleHooks = null;
+		if (this._map) {
+			unregisterNativeMapListeners(this._map);
+		}
 		this._map = null;
 		super.disposeNativeView();
 		this._destroyed = true;
@@ -560,20 +563,44 @@ export class MapView extends MapViewBase {
 		}
 	}
 
-	_setMapClickListener(map, preventDefaultMarkerTapBehavior) {
-		map.setOnMarkerClickListener(
-			new com.google.android.gms.maps.GoogleMap.OnMarkerClickListener({
-				onMarkerClick: (marker) => {
-					this.notify(<MarkerTapEvent>{
-						eventName: MapView.markerTapEvent,
-						object: this,
-						marker: Marker.fromNative(marker),
-					});
-
-					return preventDefaultMarkerTapBehavior;
-				},
-			}),
-		);
+	_setMapClickListener(map, preventDefaultMarkerTapBehavior?) {
+		const ref = new WeakRef(this);
+		registerNativeMapListeners(map, {
+			onCameraIdle: () => {
+				const owner = ref.get?.();
+				owner?.notify(<CameraPositionEvent>{
+					eventName: MapView.cameraPositionEvent,
+					object: owner,
+					cameraPosition: CameraPosition.fromNative(map.getCameraPosition()),
+					state: 'idle',
+				});
+			},
+			onMarkerClick: (marker) => {
+				const owner = ref.get?.();
+				owner?.notify(<MarkerTapEvent>{
+					eventName: MapView.markerTapEvent,
+					object: owner,
+					marker: Marker.fromNative(marker),
+				});
+				return owner?.preventDefaultMarkerTapBehavior ?? false;
+			},
+			onPolygonClick: (polygon) => {
+				const owner = ref.get?.();
+				owner?.notify(<PolygonTapEvent>{
+					eventName: MapView.polygonTapEvent,
+					object: owner,
+					polygon: Polygon.fromNative(polygon),
+				});
+			},
+			onPolylineClick: (polyline) => {
+				const owner = ref.get?.();
+				owner?.notify(<PolylineTapEvent>{
+					eventName: MapView.polylineTapEvent,
+					object: owner,
+					polyline: Polyline.fromNative(polyline),
+				});
+			},
+		});
 	}
 }
 
