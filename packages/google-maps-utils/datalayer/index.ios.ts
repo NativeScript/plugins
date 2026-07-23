@@ -63,7 +63,7 @@ function gmsPathsEqual(a: GMSPath, b: GMSPath): boolean {
  * recursively. The renderer copies the same coordinate values into the markers
  * it creates, so exact equality is safe here.
  */
-function geometryMatchesCoordinate(geometry: GMUGeometry, coordinate: CLLocationCoordinate2D): boolean {
+function geometryMatchesCoordinate(geometry: GMUGeometry, coordinate: { latitude: number; longitude: number }): boolean {
 	if (!geometry) {
 		return false;
 	}

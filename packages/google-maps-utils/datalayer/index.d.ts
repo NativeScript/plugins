@@ -111,7 +111,7 @@ export abstract class DataLayerBase<T = any> extends Observable {
 	 * Note: taps are only detected for layers created via the constructor (or
 	 * the `addGeoJson` / `addKml` mixins), not for `fromNative` wrappers.
 	 */
-	static featureTapEvent: string;
+	static featureTapEvent: 'featureTap';
 
 	abstract readonly native: T;
 
