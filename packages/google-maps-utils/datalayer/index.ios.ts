@@ -1,7 +1,7 @@
 import { Color, encoding } from '@nativescript/core';
 import { Coordinate, GoogleMap } from '@nativescript/google-maps';
 import { intoColor } from '../utils/common';
-import { DataLayerBase, FeatureBase, FeatureTapEventData, GeometryBase, GeometryCoordinates, IGeometryStyle, normalizeGeometryStyle } from './common';
+import { DataLayerBase, FeatureBase, FeatureTapEventData, GeometryBase, GeometryCoordinates, GeometryType, IGeometryStyle, normalizeGeometryStyle } from './common';
 
 export * from './common';
 
@@ -181,6 +181,10 @@ export class GeometryStyle implements IGeometryStyle {
 
 	get ios() {
 		return this.native;
+	}
+
+	get android() {
+		return null;
 	}
 }
 
@@ -413,7 +417,7 @@ export class KmlLayer extends FeatureTapLayer {
 			this.#parser = new GMUKMLParser({ data: intoJsonData(kml) });
 			this.#parser.parse();
 
-			this.#native = new GMUGeometryRenderer({ map: map.native, geometries: this.#parser.placemarks as any });
+			this.#native = new GMUGeometryRenderer({ map: map.native, geometries: this.#parser.placemarks as any, styles: this.#parser.styles as any, styleMaps: this.#parser.styleMaps as any });
 		}
 	}
 
@@ -603,9 +607,6 @@ export class KmlFeature extends FeatureBase<GMUPlacemark> {
 	get style(): GeometryStyle {
 		return GeometryStyle.fromNative(this.native.style);
 	}
-	set style(style: GeometryStyle) {
-		this.native.style = style?.native ?? null;
-	}
 }
 
 export class Geometry extends GeometryBase<GMUGeometry> {
@@ -652,6 +653,15 @@ export class Geometry extends GeometryBase<GMUGeometry> {
 				rings.push(gmsPathToCoordinates(paths.objectAtIndex(i)));
 			}
 			return rings;
+		}
+
+		if (native instanceof GMUGeometryCollection) {
+			if (this.type === GeometryType.GeometryCollection) {
+				return null;
+			}
+			// GMU parses Multi* geometries as a collection of their parts, so the
+			// nested coordinates are the children's coordinates (mirrors Android).
+			return (this.geometries?.map((geometry) => geometry.coordinates) ?? null) as GeometryCoordinates;
 		}
 
 		return null;

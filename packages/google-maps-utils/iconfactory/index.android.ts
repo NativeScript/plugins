@@ -24,6 +24,10 @@ export class IconFactory implements IIconFactory {
 		return this.native;
 	}
 
+	get ios() {
+		return null;
+	}
+
 	set backgroundAsset(value: globalAndroid.graphics.drawable.Drawable | ImageSource) {
 		const drawable = value instanceof ImageSource ? new android.graphics.drawable.BitmapDrawable(value.android) : value;
 		this.native.setBackground(drawable);
@@ -50,6 +54,6 @@ export class IconFactory implements IIconFactory {
 	}
 
 	makeIcon(text: string): ImageSource {
-		return new ImageSource(this.#native.makeIcon(text));
+		return new ImageSource(this.#native.makeIcon(text ?? ''));
 	}
 }

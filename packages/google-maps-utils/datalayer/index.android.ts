@@ -74,6 +74,10 @@ export class GeometryStyle implements IGeometryStyle {
 		return this.native;
 	}
 
+	get ios() {
+		return null;
+	}
+
 	get strokeColor(): Color {
 		return new Color(this.#polygonStyle.getStrokeColor());
 	}

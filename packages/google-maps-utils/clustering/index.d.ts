@@ -25,13 +25,16 @@ export class ClusterRenderer {
 }
 
 export class ClusterManager implements IClusterManager<ClusterItem> {
-	static fromNative: (nativeClusterManager) => ClusterManager;
+	static fromNative: (nativeClusterManager: any) => ClusterManager | null;
 	addItems: (clusterItems: ClusterItem[]) => void;
 	addItem: (clusterItem: ClusterItem) => void;
 	removeItems: (clusterItems: ClusterItem[]) => void;
 	removeItem: (clusterItem: ClusterItem) => void;
 	clearItems: () => void;
 	cluster: () => void;
+	/**
+	 * No-op on iOS — `GMUClusterManager` takes its renderer when it is created.
+	 */
 	setRenderer: (clusterRenderer: ClusterRenderer) => void;
 	/**
 	 * `com.google.maps.android.clustering.ClusterManager` on Android,

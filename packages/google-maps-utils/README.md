@@ -37,6 +37,11 @@ addHeatmapOverlay(map: GoogleMap, heatmapOptions: HeatmapOptions) {
 }
 ```
 
+Or via the mixin (after `installMixins()`):
+```javascript
+const heatmapProvider = map.heatmapProvider(heatmapOptions);
+```
+
 ### HeatmapOptions
 
 | Property | Type 
@@ -77,6 +82,7 @@ const path = decodePolyline(encodedPolylineString);
 |	`computeDistanceBetween(from, to)` | distance in meters
 |	`computeHeading(from, to)` | heading in degrees
 |	`computeArea(path)` | area in square meters
+|	`computeSignedArea(path)` | signed area in square meters (sign reflects winding order)
 |	`computeLength(path)` | length in meters
 |	`computeOffset(from, distance, heading)` | `Coordinate`
 |	`interpolate(from, to, fraction)` | `Coordinate`
@@ -155,6 +161,26 @@ layer.removeLayerFromMap();
 
 ### Styling
 `IGeometryStyle` options: `strokeColor`, `fillColor`, `width`, `heading`, `anchor`, `title` work on both platforms; `scale` and `iconUrl` are iOS-only.
+
+### Feature tap events
+Both layers emit a `featureTap` event when a rendered feature is tapped:
+```javascript
+import { GeoJsonLayer, FeatureTapEventData } from '@nativescript/google-maps-utils';
+
+const layer = map.addGeoJson(geoJson, style);
+layer.on(GeoJsonLayer.featureTapEvent, (args: FeatureTapEventData) => {
+	console.log(args.feature.id, args.feature.geometry?.type, args.feature.properties);
+});
+```
+The same works for `KmlLayer` (`KmlLayer.featureTapEvent`). On Android this wraps the native `Layer.OnFeatureClickListener`; on iOS the layer chains onto the map's delegate and matches taps back to the parsed features (all other map events keep working).
+
+---
+
+## Platform notes
+- **Android single-slot listeners:** the native maps-utils library installs its own map listeners, which replace the ones `@nativescript/google-maps` registers. Adding a `ClusterManager` replaces the camera-idle listener (the map's `cameraPosition` event stops firing while clustering is active), and adding a GeoJSON/KML data layer replaces the marker/polygon/polyline click listeners (the map's `markerTap`/`polygon`/`polyline` events stop firing while a data layer is on the map). iOS is unaffected — the wrappers there chain onto the existing delegate.
+- **iOS `fromNative` wrappers:** `GeoJsonLayer.fromNative` / `KmlLayer.fromNative` cannot expose `features` or `featureTap` (the GMU renderer does not expose its source features). Android has no such limitation.
+- **`ClusterManager.setRenderer`** is a no-op on iOS — `GMUClusterManager` takes its renderer when it is created.
+- **KML on iOS:** `KmlFeature.id` is always `null` and `properties` is synthesized as `{ name, description }` from the placemark title/snippet (GMU exposes neither a property bag nor an identifier).
 
 ## License
 

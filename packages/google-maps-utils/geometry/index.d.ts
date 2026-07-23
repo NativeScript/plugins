@@ -16,6 +16,12 @@ export function computeHeading(from: Coordinate, to: Coordinate): number;
 export function computeArea(path: Coordinate[]): number;
 
 /**
+ * The signed area of a closed path (polygon), in square meters. The sign
+ * reflects the winding order of the path (positive for counterclockwise).
+ */
+export function computeSignedArea(path: Coordinate[]): number;
+
+/**
  * The length of a path, in meters.
  */
 export function computeLength(path: Coordinate[]): number;
@@ -50,6 +56,7 @@ export function isLocationOnPath(point: Coordinate, path: Coordinate[], toleranc
 export function encodePolyline(path: Coordinate[]): string;
 
 /**
- * Decodes a polyline encoded string into a path.
+ * Decodes a polyline encoded string into a path. Returns an empty array for
+ * malformed input.
  */
 export function decodePolyline(encoded: string): Coordinate[];

@@ -4,19 +4,23 @@ import { HeatmapOptions, IGradient, IHeatmapTileProvider, intoNativeHeatmapGradi
 export * from './common';
 
 export function intoNativeHeatmapProvider(options: HeatmapOptions) {
-	if (!options.coordinates) {
+	if (!options?.coordinates) {
 		return;
 	}
 	const heatmap = GMUHeatmapTileLayer.alloc().init();
 
+	// mirrors the Android native defaults (green -> red, radius 20, opacity 0.7)
 	const defaultGradient: IGradient[] = [
-		{ color: 'green', stop: 0.1 },
-		{ color: 'red', stop: 0.15 },
+		{ color: 'green', stop: 0.2 },
+		{ color: 'red', stop: 1.0 },
 	];
 
 	heatmap.gradient = intoNativeHeatmapGradient(options?.gradient ?? defaultGradient);
 	heatmap.opacity = options?.opacity ?? 0.7;
-	heatmap.radius = options?.radius ?? 80;
+	heatmap.radius = options?.radius ?? 20;
+	if (typeof options?.maxIntensity === 'number') {
+		heatmap.maximumZoomIntensity = options.maxIntensity;
+	}
 	heatmap.weightedData = options?.coordinates.map((coordinate) => {
 		return GMUWeightedLatLng.alloc().initWithCoordinateIntensity({ latitude: coordinate.lat, longitude: coordinate.lng }, 1.0);
 	}) as any;
@@ -26,9 +30,15 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 
 export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider {
 	#native: GMUHeatmapTileLayer;
+	#opacity: number;
+	#radius: number;
+	#maxIntensity: number;
 
 	constructor(options?: HeatmapOptions) {
 		this.#native = intoNativeHeatmapProvider(options);
+		this.#opacity = options?.opacity ?? 0.7;
+		this.#radius = options?.radius ?? 20;
+		this.#maxIntensity = options?.maxIntensity;
 	}
 
 	static fromNative(nativeHeatmap: GMUHeatmapTileLayer) {
@@ -44,7 +54,19 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 		return this.#native;
 	}
 
+	get android() {
+		return null;
+	}
+
+	get ios() {
+		return this.native;
+	}
+
+	get opacity(): number {
+		return this.#opacity;
+	}
 	set opacity(opacity: number) {
+		this.#opacity = opacity;
 		this.native.opacity = opacity;
 	}
 
@@ -52,11 +74,19 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 		this.native.gradient = intoNativeHeatmapGradient(gradients);
 	}
 
+	get radius(): number {
+		return this.#radius;
+	}
 	set radius(radius: number) {
+		this.#radius = radius;
 		this.native.radius = radius;
 	}
 
+	get maxIntensity(): number {
+		return this.#maxIntensity;
+	}
 	set maxIntensity(maxIntensity: number) {
+		this.#maxIntensity = maxIntensity;
 		this.native.maximumZoomIntensity = maxIntensity;
 	}
 

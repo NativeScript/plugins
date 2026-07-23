@@ -4,7 +4,7 @@ import { HeatmapOptions, IGradient, IHeatmapTileProvider, intoNativeHeatmapGradi
 export * from './common';
 
 export function intoNativeHeatmapProvider(options: HeatmapOptions) {
-	if (options.coordinates) {
+	if (options?.coordinates) {
 		const builder = new com.google.maps.android.heatmaps.HeatmapTileProvider.Builder();
 		const data = new java.util.ArrayList();
 
@@ -12,19 +12,17 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 			data.add(new com.google.android.gms.maps.model.LatLng(coordinate.lat, coordinate.lng));
 		});
 
-		if (options) {
-			if (typeof options?.maxIntensity === 'number') {
-				builder.maxIntensity(options.maxIntensity);
-			}
-			if (typeof options?.opacity === 'number') {
-				builder.opacity(options.opacity);
-			}
-			if (typeof options?.radius === 'number') {
-				builder.maxIntensity(options.radius);
-			}
-			if (options.gradient && Array.isArray(options.gradient) && options.gradient.length > 0) {
-				builder.gradient(intoNativeHeatmapGradient(options.gradient));
-			}
+		if (typeof options?.maxIntensity === 'number') {
+			builder.maxIntensity(options.maxIntensity);
+		}
+		if (typeof options?.opacity === 'number') {
+			builder.opacity(options.opacity);
+		}
+		if (typeof options?.radius === 'number') {
+			builder.radius(options.radius);
+		}
+		if (options.gradient && Array.isArray(options.gradient) && options.gradient.length > 0) {
+			builder.gradient(intoNativeHeatmapGradient(options.gradient));
 		}
 
 		builder.data(data);
@@ -34,10 +32,17 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions) {
 
 export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider {
 	#native: com.google.maps.android.heatmaps.HeatmapTileProvider;
+	#opacity: number;
+	#radius: number;
+	#maxIntensity: number;
 
 	constructor(options?: HeatmapOptions) {
 		if (options) {
 			this.#native = intoNativeHeatmapProvider(options);
+			// mirrors the native defaults so reads match what is rendered
+			this.#opacity = options.opacity ?? 0.7;
+			this.#radius = options.radius ?? 20;
+			this.#maxIntensity = options.maxIntensity;
 		}
 	}
 
@@ -54,7 +59,19 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 		return this.#native;
 	}
 
+	get android() {
+		return this.native;
+	}
+
+	get ios() {
+		return null;
+	}
+
+	get opacity(): number {
+		return this.#opacity;
+	}
 	set opacity(opacity: number) {
+		this.#opacity = opacity;
 		this.native.setOpacity(opacity);
 	}
 
@@ -62,11 +79,19 @@ export class HeatmapTileProvider implements ITileProvider, IHeatmapTileProvider 
 		this.native.setGradient(intoNativeHeatmapGradient(gradients));
 	}
 
+	get radius(): number {
+		return this.#radius;
+	}
 	set radius(radius: number) {
+		this.#radius = radius;
 		this.native.setRadius(radius);
 	}
 
+	get maxIntensity(): number {
+		return this.#maxIntensity;
+	}
 	set maxIntensity(maxIntensity: number) {
+		this.#maxIntensity = maxIntensity;
 		this.native.setMaxIntensity(maxIntensity);
 	}
 

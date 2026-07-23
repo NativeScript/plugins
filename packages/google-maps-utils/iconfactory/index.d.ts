@@ -40,6 +40,12 @@ export class IconFactory implements IIconFactory {
 	setStyle(style: ICON_STYLE): void;
 
 	/**
+	 * Applies a text appearance resource to the icon text. Android only — delve
+	 * into `native` (`com.google.maps.android.ui.IconGenerator`) for more.
+	 */
+	setTextAppearance(appearance: number): void;
+
+	/**
 	 * Renders an icon with the given text. The returned `ImageSource` can be
 	 * used directly as a marker icon (`MarkerOptions.icon`).
 	 */

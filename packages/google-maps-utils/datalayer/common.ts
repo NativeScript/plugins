@@ -121,8 +121,9 @@ export abstract class DataLayerBase<T = any> extends Observable {
 	 * Fired when a feature rendered by this layer is tapped on the map.
 	 * Register with `layer.on(GeoJsonLayer.featureTapEvent, ...)` (or `KmlLayer`).
 	 *
-	 * Note: taps are only detected for layers created via the constructor (or
-	 * the `addGeoJson` / `addKml` mixins), not for `fromNative` wrappers.
+	 * Note: on iOS, taps are only detected for layers created via the constructor
+	 * (or the `addGeoJson` / `addKml` mixins) — the GMU renderer does not expose
+	 * the features behind a `fromNative` wrapper.
 	 */
 	static featureTapEvent = 'featureTap';
 

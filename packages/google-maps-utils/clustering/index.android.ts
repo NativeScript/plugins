@@ -10,6 +10,9 @@ export function intoNativeClusterManager(map: GoogleMap) {
 	const manager = new com.google.maps.android.clustering.ClusterManager(Utils.ad.getApplicationContext(), map.native);
 
 	if (map?.native?.setOnCameraIdleListener) {
+		// NOTE: ClusterManager must be the map's OnCameraIdleListener to re-cluster
+		// on camera changes. This is a single-slot native API, so it replaces the
+		// listener @nativescript/google-maps registers for its cameraPosition event.
 		map.native.setOnCameraIdleListener(manager);
 	}
 
@@ -33,12 +36,36 @@ export class ClusterItem extends com.google.maps.android.clustering.ClusterItem 
 			},
 		});
 	}
+
+	get native() {
+		return this;
+	}
+
+	get android() {
+		return this;
+	}
+
+	get ios() {
+		return null;
+	}
 }
 
 @NativeClass
 export class ClusterRenderer extends com.google.maps.android.clustering.view.DefaultClusterRenderer<any> {
 	constructor(map: GoogleMap, clusterManager: ClusterManager) {
 		super(Utils.android.getApplicationContext(), map.native, clusterManager.native);
+	}
+
+	get native() {
+		return this;
+	}
+
+	get android() {
+		return this;
+	}
+
+	get ios() {
+		return null;
 	}
 
 	override onBeforeClusterItemRendered(item: ClusterItem, opts: com.google.android.gms.maps.model.MarkerOptions): void {
@@ -108,22 +135,16 @@ export class ClusterManager implements IClusterManager<ClusterItem> {
 		return null;
 	}
 
-	private setListeners() {
-		this.#native.setOnClusterClickListener(
-			new com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<com.google.maps.android.clustering.ClusterItem>({
-				onClusterClick: (cluster: com.google.maps.android.clustering.Cluster<com.google.maps.android.clustering.ClusterItem>): boolean => {
-					return false;
-				},
-			}),
-		);
-	}
-
 	get native() {
 		return this.#native;
 	}
 
 	get android() {
 		return this.native;
+	}
+
+	get ios() {
+		return null;
 	}
 
 	setRenderer(renderer: ClusterRenderer) {
@@ -147,7 +168,11 @@ export class ClusterManager implements IClusterManager<ClusterItem> {
 	}
 
 	removeItems(clusterItems: ClusterItem[]) {
-		this.native.removeItems(clusterItems as any);
+		const clusterItemArray = new java.util.ArrayList();
+		for (const clusterItem of clusterItems) {
+			clusterItemArray.add(clusterItem);
+		}
+		this.native.removeItems(clusterItemArray);
 	}
 
 	clearItems() {

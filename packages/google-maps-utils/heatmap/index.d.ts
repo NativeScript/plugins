@@ -7,12 +7,17 @@ export function intoNativeHeatmapProvider(options: HeatmapOptions);
 
 export class HeatmapTileProvider implements IHeatmapTileProvider {
 	constructor(options?: HeatmapOptions);
-	static fromNative: (nativeHeatmap: any) => HeatmapTileProvider;
+	static fromNative: (nativeHeatmap: any) => HeatmapTileProvider | null;
 	setData: (coordinates: Coordinate[]) => void;
 	setGradient: (gradient: IGradient[]) => void;
 	opacity: number;
 	radius: number;
 	maxIntensity: number;
+	/**
+	 * The rendered tile image for the given tile coordinates.
+	 * `com.google.android.gms.maps.model.Tile` on Android, `UIImage` on iOS.
+	 */
+	getTile: (x: number, y: number, z: number) => any;
 	/**
 	 * `com.google.maps.android.heatmaps.HeatmapTileProvider` on Android,
 	 * `GMUHeatmapTileLayer` on iOS.

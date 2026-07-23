@@ -13,15 +13,22 @@ export * from './utils';
 
 export function installMixins();
 
+/**
+ * Applies the `GoogleMapUtils` mixins onto the `GoogleMap` class again (already
+ * done once by `installMixins`). Useful when the google-maps module was
+ * re-required after mixins were installed.
+ */
+export function overrideGoogleMap();
+
 declare module '@nativescript/google-maps' {
 	interface GoogleMap {
 		heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
 		clusterManager(markers: MarkerOptions[]): ClusterManager;
 
-		addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer;
+		addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer | null;
 		removeGeoJson(geoJsonLayer: GeoJsonLayer): void;
 
-		addKml(kml: string): KmlLayer;
+		addKml(kml: string): KmlLayer | null;
 		removeKml(kmlLayer: KmlLayer): void;
 	}
 }
@@ -30,9 +37,9 @@ export class GoogleMapUtils {
 	heatmapProvider(options: HeatmapOptions): HeatmapTileProvider;
 	clusterManager(markers: MarkerOptions[]): ClusterManager;
 
-	addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer;
+	addGeoJson(geoJson: GeoJSON, styleOptions: IGeometryStyle): GeoJsonLayer | null;
 	removeGeoJson(geoJsonLayer: GeoJsonLayer): void;
 
-	addKml(kml: string): KmlLayer;
+	addKml(kml: string): KmlLayer | null;
 	removeKml(kmlLayer: KmlLayer): void;
 }

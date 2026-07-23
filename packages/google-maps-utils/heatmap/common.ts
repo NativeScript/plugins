@@ -21,6 +21,7 @@ export interface IHeatmapTileProvider {
 	opacity: number;
 	radius: number;
 	maxIntensity: number;
+	getTile: (x: number, y: number, z: number) => any;
 }
 
 export function intoNativeHeatmapGradient(gradients: IGradient[]): any {

@@ -37,6 +37,10 @@ export class IconFactory implements IIconFactory {
 		return null;
 	}
 
+	get android() {
+		return null;
+	}
+
 	set color(color: Color | string) {
 		this.#color = intoColor(color);
 	}

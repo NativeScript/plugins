@@ -30,6 +30,14 @@ export function computeArea(path: Coordinate[]): number {
 }
 
 /**
+ * The signed area of a closed path (polygon), in square meters. The sign
+ * reflects the winding order of the path (positive for counterclockwise).
+ */
+export function computeSignedArea(path: Coordinate[]): number {
+	return GMSGeometrySignedArea(intoNativePath(path));
+}
+
+/**
  * The length of a path, in meters.
  */
 export function computeLength(path: Coordinate[]): number {

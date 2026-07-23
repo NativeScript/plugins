@@ -41,6 +41,14 @@ export function computeArea(path: Coordinate[]): number {
 }
 
 /**
+ * The signed area of a closed path (polygon), in square meters. The sign
+ * reflects the winding order of the path (positive for counterclockwise).
+ */
+export function computeSignedArea(path: Coordinate[]): number {
+	return com.google.maps.android.SphericalUtil.computeSignedArea(intoNativePath(path));
+}
+
+/**
  * The length of a path, in meters.
  */
 export function computeLength(path: Coordinate[]): number {
@@ -87,13 +95,18 @@ export function encodePolyline(path: Coordinate[]): string {
 }
 
 /**
- * Decodes a polyline encoded string into a path.
+ * Decodes a polyline encoded string into a path. Returns an empty array for
+ * malformed input (matching iOS, where the native decoder returns nil).
  */
 export function decodePolyline(encoded: string): Coordinate[] {
 	const coordinates: Coordinate[] = [];
-	const nativePath = com.google.maps.android.PolyUtil.decode(encoded);
-	for (let i = 0; i < nativePath.size(); i++) {
-		coordinates.push(fromNativeLatLng(nativePath.get(i)));
+	try {
+		const nativePath = com.google.maps.android.PolyUtil.decode(encoded);
+		for (let i = 0; i < nativePath.size(); i++) {
+			coordinates.push(fromNativeLatLng(nativePath.get(i)));
+		}
+	} catch (e) {
+		// PolyUtil.decode throws IllegalArgumentException on malformed input
 	}
 	return coordinates;
 }
