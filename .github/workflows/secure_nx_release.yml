@@ -34,6 +34,11 @@ on:
         required: false
         type: string
         default: ""
+      first-release:
+        description: "Enable for packages never released via nx release (no '{version}-{projectName}' git tag yet); changelog falls back to the project's first commit instead of erroring"
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   # Avoid overlapping publishes on the same ref/branch
@@ -78,6 +83,7 @@ jobs:
             preid="${{ inputs['preid'] }}"
             scope="${{ inputs['release-group'] }}"
             dry_run="${{ inputs['dry-run'] }}"
+            first_release="${{ inputs['first-release'] }}"
             mode="dispatch"
 
             # npm dist-tag follows release type: prerelease -> preid, stable -> latest
@@ -92,6 +98,7 @@ jobs:
             dist_tag=""
             scope=""
             dry_run="false"
+            first_release="false"
             mode="tag"
           else
             release_type="prerelease"
@@ -99,6 +106,7 @@ jobs:
             dist_tag="next"
             scope=""
             dry_run="false"
+            first_release="false"
             mode="main"
           fi
 
@@ -114,6 +122,7 @@ jobs:
           echo "dist_tag=${dist_tag}" >> "$GITHUB_OUTPUT"
           echo "scope=${scope}" >> "$GITHUB_OUTPUT"
           echo "dry_run=${dry_run}" >> "$GITHUB_OUTPUT"
+          echo "first_release=${first_release}" >> "$GITHUB_OUTPUT"
           echo "proceed=${proceed}" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node.js
@@ -253,9 +262,15 @@ jobs:
             preid_arg=(--preid "${{ steps.ctx.outputs.preid }}")
           fi
 
+          first_release_arg=()
+          if [[ "${{ steps.ctx.outputs.first_release }}" == "true" ]]; then
+            first_release_arg=(--first-release)
+          fi
+
           npx nx release "$release_type" \
             "${preid_arg[@]}" \
             "${projects_arg[@]}" \
+            "${first_release_arg[@]}" \
             --skip-publish \
             --verbose
 
@@ -281,9 +296,15 @@ jobs:
             preid_arg=(--preid "${{ steps.ctx.outputs.preid }}")
           fi
 
+          first_release_arg=()
+          if [[ "${{ steps.ctx.outputs.first_release }}" == "true" ]]; then
+            first_release_arg=(--first-release)
+          fi
+
           npx nx release "$release_type" \
             "${preid_arg[@]}" \
             "${projects_arg[@]}" \
+            "${first_release_arg[@]}" \
             --skip-publish \
             --verbose \
             --dry-run
@@ -465,6 +486,7 @@ jobs:
           echo "- preid: '${{ steps.ctx.outputs.preid }}'"
           echo "- dist-tag: ${{ steps.ctx.outputs.mode == 'tag' && steps.taginfo.outputs.dist_tag || steps.ctx.outputs.dist_tag }}"
           echo "- scope: '${{ steps.ctx.outputs.scope }}'"
+          echo "- first-release: ${{ steps.ctx.outputs.first_release }}"
           echo "- next-prerelease-allowlist: '${NEXT_PRERELEASE_PROJECT_ALLOWLIST}'"
           if [[ "$mode" == "main" ]]; then
             echo "- projects: ${{ steps.affected.outputs.projects }}"
