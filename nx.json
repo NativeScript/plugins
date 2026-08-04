@@ -33,6 +33,12 @@
 		},
 		"e2e": {
 			"cache": true
+		},
+		"nx-release-publish": {
+			"dependsOn": ["build.all"],
+			"options": {
+				"packageRoot": "{workspaceRoot}/dist/packages/{projectName}"
+			}
 		}
 	},
 	"useDaemonProcess": false,
