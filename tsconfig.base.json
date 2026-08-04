@@ -51,6 +51,7 @@
 			"@nativescript/google-signin": ["packages/google-signin/index.d.ts"],
 			"@nativescript/haptics": ["packages/haptics/index.d.ts"],
 			"@nativescript/imagepicker": ["packages/imagepicker/index.d.ts"],
+			"@nativescript/input-accessory": ["packages/input-accessory/index.d.ts"],
 			"@nativescript/ios-security": ["packages/ios-security/index.d.ts"],
 			"@nativescript/iqkeyboardmanager": ["packages/iqkeyboardmanager/index.d.ts"],
 			"@nativescript/keyboard-toolbar": ["packages/keyboard-toolbar/index.d.ts"],
@@ -65,8 +66,7 @@
 			"@nativescript/social-share": ["packages/social-share/index.d.ts"],
 			"@nativescript/theme-switcher": ["packages/theme-switcher/index.ts"],
 			"@nativescript/twitter": ["packages/twitter/index.d.ts"],
-			"@nativescript/zip": ["packages/zip/index.d.ts"],
-			"@nativescript/input-accessory": ["packages/input-accessory/index.d.ts"]
+			"@nativescript/zip": ["packages/zip/index.d.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
