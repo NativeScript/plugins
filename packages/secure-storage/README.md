@@ -113,9 +113,15 @@ const secureStorage = new SecureStorage(kSecAttrAccessibleWhenUnlockedThisDevice
 
 ## iOS Simulator
 
-Currently this plugin defaults to using `NSUserDefaults` on **iOS Simulators**. You can change this behaviour by providing `disableFallbackToUserDefaults` to the constructor of `SecureStorage`. This then uses the keychain instead of `NSUserDefaults` on simulators.
+The plugin uses the keychain on **iOS Simulators** just like it does on device, so no configuration is needed.
 
-If you're running into issues similar to [issue_10](https://github.com/EddyVerbruggen/nativescript-secure-storage/issues/10), consider using the default behaviour again.
+An opt-in fallback to `NSUserDefaults` on the simulator is still available for toolchains old enough that `SecItemAdd` fails there with `-34018` (`errSecMissingEntitlement`), see [issue_10](https://github.com/EddyVerbruggen/nativescript-secure-storage/issues/10). Enable it by passing `disableFallbackToUserDefaults: false` as the second constructor argument:
+
+```ts
+const secureStorage = new SecureStorage(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, false);
+```
+
+Note that the fallback stores values **unencrypted**, under the raw key, in the same `NSUserDefaults` domain that `ApplicationSettings` writes to, so those keys can collide with plain application settings. Only turn it on if the simulator keychain is genuinely unavailable to you.
 
 ## iOS Keychain Access/App Groups
 
@@ -152,7 +158,7 @@ To setup:
   ```
 
 ## Credits
-* On __iOS__ we're leveraging the KeyChain using the [SAMKeychain](https://github.com/soffes/SAMKeychain) library (on the Simulator `NSUserDefaults`),
+* On __iOS__ we're leveraging the KeyChain using the [SAMKeychain](https://github.com/soffes/SAMKeychain) library,
 * On __Android__ we're using [Hawk](https://github.com/orhanobut/hawk) library which internally uses [Facebook conceal](https://github.com/facebook/conceal).
 * Thanks, [Prabu Devarrajan](https://github.com/prabudevarrajan) for [adding the `deleteAll` function](https://github.com/EddyVerbruggen/nativescript-secure-storage/pull/11)!
 * Thank you [Eddy Verbruggen](https://github.com/EddyVerbruggen) for all the years of service and great work!
