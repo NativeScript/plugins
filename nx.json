@@ -49,6 +49,11 @@
 		"releaseTagPattern": "{version}-{projectName}",
 		"projects": ["packages/*"],
 		"projectsRelationship": "independent",
+		"version": {
+			"generatorOptions": {
+				"updateDependents": "never"
+			}
+		},
 		"changelog": {
 			"workspaceChangelog": false,
 			"projectChangelogs": {
