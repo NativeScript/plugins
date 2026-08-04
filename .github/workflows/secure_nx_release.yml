@@ -131,7 +131,6 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
 
       - name: Update npm (required for OIDC trusted publishing)
         if: ${{ steps.ctx.outputs.proceed == 'true' }}
@@ -141,7 +140,7 @@ jobs:
 
       - name: Install dependencies
         if: ${{ steps.ctx.outputs.proceed == 'true' }}
-        run: npm ci
+        run: npm install
 
       - name: Determine affected release projects (main)
         id: affected
