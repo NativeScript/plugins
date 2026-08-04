@@ -11,23 +11,15 @@ export class SecureStorage extends SecureStorageCommon {
 	// This is a copy of 'kSSKeychainAccountKey_copy' which is not exposed from SSKeychain.h by {N}
 	private static kSSKeychainAccountKey_copy: string = 'acct';
 
-	constructor(accessibilityType: string = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, disableFallbackToUserDefaults = false) {
+	constructor(accessibilityType: string = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, disableFallbackToUserDefaults = true) {
 		super();
 
 		if (disableFallbackToUserDefaults) {
 			this.isSimulator = false;
 		} else {
-			const isMinIOS9 = NSProcessInfo.processInfo.isOperatingSystemAtLeastVersion({
-				majorVersion: 9,
-				minorVersion: 0,
-				patchVersion: 0,
-			});
-			if (isMinIOS9) {
-				const simDeviceName = NSProcessInfo.processInfo.environment.objectForKey('SIMULATOR_DEVICE_NAME');
-				this.isSimulator = simDeviceName !== null;
-			} else {
-				this.isSimulator = UIDevice.currentDevice.name.toLowerCase().indexOf('simulator') > -1;
-			}
+			// Only the simulator runtime sets this; anything derived from the device name can be spoofed by renaming a real device.
+			const simDeviceName = NSProcessInfo.processInfo.environment.objectForKey('SIMULATOR_DEVICE_NAME');
+			this.isSimulator = simDeviceName !== null;
 		}
 
 		this.accessibilityType = accessibilityType;
