@@ -207,8 +207,8 @@ export class GoogleSignin {
 					reject(GoogleError.fromNative(error));
 				} else {
 					resolve({
-						idToken: auth?.idToken,
-						accessToken: auth?.accessToken,
+						idToken: auth?.idToken.tokenString,
+						accessToken: auth?.accessToken.tokenString,
 					});
 				}
 			});
