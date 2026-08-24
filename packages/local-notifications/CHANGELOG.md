@@ -1,3 +1,17 @@
+## 7.0.0 (2026-08-24)
+
+### ⚠️ Breaking Changes
+
+- **local-notifications:** now depends on `@nativescript-community/perms` v3, whose `check()`/`request()` resolve to a `Status` string instead of a `[Status, boolean]` tuple. Apps pinning perms v2 must upgrade.
+
+### 🚀 Features
+
+- **local-notifications:** use updated perms dependency + simplify authorization check ([#639](https://github.com/NativeScript/plugins/pull/639))
+
+### ❤️ Thank You
+
+- 江程训 @cnclboss
+
 ## 6.4.0 (2025-03-03)
 
 ### 🩹 Fixes
