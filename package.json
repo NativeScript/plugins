@@ -26,7 +26,7 @@
 		"@angular/platform-browser": "^19.0.0",
 		"@angular/platform-browser-dynamic": "^19.0.0",
 		"@angular/router": "^19.0.0",
-		"@nativescript-community/perms": "^2.3.1",
+		"@nativescript-community/perms": "^3.0.4",
 		"@nativescript/angular": "^19.0.0",
 		"@nativescript/core": "~8.9.0",
 		"@nativescript/plugin-tools": "5.5.3",
