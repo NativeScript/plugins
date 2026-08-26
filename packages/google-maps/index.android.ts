@@ -42,11 +42,12 @@ import {
 	PolylineOptions,
 	PolylineTapEvent,
 	Style,
+	StyleSpan,
 	TileOverlayOptions,
 } from '.';
-import { bearingProperty, preventDefaultMarkerTapBehaviorProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
+import { bearingProperty, preventDefaultMarkerTapBehaviorProperty, CollisionBehavior, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
 
-import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, deserialize, serialize } from './utils';
+import { intoNativeMarkerOptions, intoNativeCircleOptions, intoNativePolygonOptions, intoNativeGroundOverlayOptions, intoNativePolylineOptions, hueFromColor, intoNativeJointType, toJointType, intoNativeTileOverlayOptions, intoNativeStyleSpans, registerNativeMapListeners, unregisterNativeMapListeners, deserialize, serialize } from './utils';
 
 export { hueFromColor, intoNativeMarkerOptions } from './utils';
 
@@ -374,7 +375,9 @@ export class MapView extends MapViewBase {
 			},
 		});
 		const container = new android.widget.LinearLayout(this._context);
-		const nativeView = new com.google.android.gms.maps.MapView(this._context);
+		// A cloud mapId (set via the `mapId` attribute) is required for advanced markers, so it must be
+		// supplied through GoogleMapOptions at construction time — it cannot be changed afterwards.
+		const nativeView = this.mapId ? new com.google.android.gms.maps.MapView(this._context, new com.google.android.gms.maps.GoogleMapOptions().mapId(this.mapId)) : new com.google.android.gms.maps.MapView(this._context);
 		nativeView.onCreate(this.createdBundle);
 		nativeView.onResume();
 		nativeView.getMapAsync(this._listener);
@@ -454,6 +457,9 @@ export class MapView extends MapViewBase {
 	disposeNativeView() {
 		Utils.android.getApplication().unregisterActivityLifecycleCallbacks(this.lifeCycleHooks);
 		this.lifeCycleHooks = null;
+		if (this._map) {
+			unregisterNativeMapListeners(this._map);
+		}
 		this._map = null;
 		super.disposeNativeView();
 		this._destroyed = true;
@@ -557,20 +563,44 @@ export class MapView extends MapViewBase {
 		}
 	}
 
-	_setMapClickListener(map, preventDefaultMarkerTapBehavior) {
-		map.setOnMarkerClickListener(
-			new com.google.android.gms.maps.GoogleMap.OnMarkerClickListener({
-				onMarkerClick: (marker) => {
-					this.notify(<MarkerTapEvent>{
-						eventName: MapView.markerTapEvent,
-						object: this,
-						marker: Marker.fromNative(marker),
-					});
-
-					return preventDefaultMarkerTapBehavior;
-				},
-			}),
-		);
+	_setMapClickListener(map, preventDefaultMarkerTapBehavior?) {
+		const ref = new WeakRef(this);
+		registerNativeMapListeners(map, {
+			onCameraIdle: () => {
+				const owner = ref.get?.();
+				owner?.notify(<CameraPositionEvent>{
+					eventName: MapView.cameraPositionEvent,
+					object: owner,
+					cameraPosition: CameraPosition.fromNative(map.getCameraPosition()),
+					state: 'idle',
+				});
+			},
+			onMarkerClick: (marker) => {
+				const owner = ref.get?.();
+				owner?.notify(<MarkerTapEvent>{
+					eventName: MapView.markerTapEvent,
+					object: owner,
+					marker: Marker.fromNative(marker),
+				});
+				return owner?.preventDefaultMarkerTapBehavior ?? false;
+			},
+			onPolygonClick: (polygon) => {
+				const owner = ref.get?.();
+				owner?.notify(<PolygonTapEvent>{
+					eventName: MapView.polygonTapEvent,
+					object: owner,
+					polygon: Polygon.fromNative(polygon),
+				});
+			},
+			onPolylineClick: (polyline) => {
+				const owner = ref.get?.();
+				owner?.notify(<PolylineTapEvent>{
+					eventName: MapView.polylineTapEvent,
+					object: owner,
+					polyline: Polyline.fromNative(polyline),
+				});
+			},
+		});
 	}
 }
 
@@ -890,6 +920,9 @@ export class GoogleMap implements IGoogleMap {
 		if (options?.userData) {
 			marker.userData = options.userData;
 		}
+		if (options?.collisionBehavior) {
+			marker._collisionBehavior = options.collisionBehavior;
+		}
 		return marker;
 	}
 
@@ -1149,11 +1182,21 @@ export class Marker extends OverLayBase implements IMarker {
 	_native: com.google.android.gms.maps.model.Marker;
 	_color: Color;
 	_icon: ImageSource;
+	_collisionBehavior: CollisionBehavior = CollisionBehavior.Required;
 
 	constructor() {
 		super();
 		this._icon = new ImageSource();
 		this._color = new Color('red');
+	}
+
+	get collisionBehavior(): CollisionBehavior {
+		return this._collisionBehavior;
+	}
+
+	set collisionBehavior(_value: CollisionBehavior) {
+		// Android fixes collision behavior at creation time via AdvancedMarkerOptions; it cannot be changed afterwards.
+		console.warn('google-maps: collisionBehavior cannot be changed after a marker is created on Android; set it in the marker options instead.');
 	}
 
 	static fromNative(nativeMarker: com.google.android.gms.maps.model.Marker) {
@@ -1719,6 +1762,17 @@ export class Polyline extends OverLayBase implements IPolyline {
 
 	set endCap(cap: Cap) {
 		this.native.setEndCap(cap.native);
+	}
+
+	_spans: StyleSpan[] = [];
+
+	get spans(): StyleSpan[] {
+		return this._spans;
+	}
+
+	set spans(value: StyleSpan[]) {
+		this._spans = Array.isArray(value) ? value : [];
+		this.native.setSpans(intoNativeStyleSpans(this._spans));
 	}
 }
 
@@ -2322,4 +2376,4 @@ export class Dot extends PatternItem {
 	}
 }
 
-export { MapType, JointType };
+export { MapType, JointType, CollisionBehavior };

@@ -1,5 +1,4 @@
 import { Color } from '@nativescript/core';
-import { IGradient } from '..';
 
 export function applyMixins(
 	derivedCtor: any,
@@ -8,7 +7,7 @@ export function applyMixins(
 		after?: boolean;
 		override?: boolean;
 		omit?: (string | symbol)[];
-	}
+	},
 ) {
 	const omits = options && options.omit ? options.omit : [];
 	baseCtors.forEach((baseCtor) => {
@@ -84,32 +83,9 @@ export function intoNativeColor(color: Color | string) {
 	return null;
 }
 
-export function intoNativeHeatmapGradient(gradients: IGradient[]): any {
-	const { colors, stops } = gradients.reduce<{
-		colors: any[];
-		stops: number[];
-	}>(
-		(acc, gradient) => {
-			acc.colors.push(intoNativeColor(gradient.color));
-			acc.stops.push(gradient.stop);
-
-			return acc;
-		},
-		{ colors: [], stops: [] }
-	);
-
-	if (global.isAndroid) {
-		const _colors = Array.create('int', colors.length);
-		for (let i = 0; i < colors.length; i++) {
-			_colors[i] = colors[i];
-		}
-		const _stops = Array.create('float', stops.length);
-		for (let i = 0; i < stops.length; i++) {
-			_stops[i] = stops[i];
-		}
-
-		return new com.google.maps.android.heatmaps.Gradient(_colors, _stops);
-	} else {
-		return GMUGradient.alloc().initWithColorsStartPointsColorMapSize(colors, stops, 256);
-	}
+/**
+ * Normalizes a `Color | string` input to a `Color` instance.
+ */
+export function intoColor(color: Color | string): Color {
+	return color instanceof Color ? color : new Color(color);
 }

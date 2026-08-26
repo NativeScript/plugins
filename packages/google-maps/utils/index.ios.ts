@@ -1,6 +1,7 @@
-import { CircleOptions, Coordinate, CoordinateBounds, GroundOverlayOptions, MarkerOptions, PolygonOptions, PolylineOptions, TileOverlayOptions } from '../';
+import { CircleOptions, Coordinate, CoordinateBounds, Glyph, GroundOverlayOptions, MarkerOptions, PinConfig, PolygonOptions, PolylineOptions, StyleSpan, TileOverlayOptions } from '../';
 import { Color, ImageSource } from '@nativescript/core';
 import { intoNativeColor } from './common';
+import { CollisionBehavior } from '../common';
 
 export function hueFromColor(color: Color | UIColor) {
 	let nativeColor: UIColor;
@@ -22,8 +23,72 @@ export function hueFromColor(color: Color | UIColor) {
 	return null;
 }
 
+export function intoNativeCollisionBehavior(behavior: CollisionBehavior): GMSCollisionBehavior {
+	switch (behavior) {
+		case CollisionBehavior.OptionalAndHidesLowerPriority:
+			return GMSCollisionBehavior.OptionalAndHidesLowerPriority;
+		case CollisionBehavior.RequiredAndHidesOptional:
+			return GMSCollisionBehavior.RequiredAndHidesOptional;
+		default:
+			return GMSCollisionBehavior.Required;
+	}
+}
+
+export function fromNativeCollisionBehavior(behavior: GMSCollisionBehavior): CollisionBehavior {
+	switch (behavior) {
+		case GMSCollisionBehavior.OptionalAndHidesLowerPriority:
+			return CollisionBehavior.OptionalAndHidesLowerPriority;
+		case GMSCollisionBehavior.RequiredAndHidesOptional:
+			return CollisionBehavior.RequiredAndHidesOptional;
+		default:
+			return CollisionBehavior.Required;
+	}
+}
+
+export function intoNativeGlyph(glyph: Glyph): GMSPinImageGlyph {
+	if (glyph?.icon) {
+		let image: UIImage;
+		if (glyph.icon instanceof UIImage) {
+			image = glyph.icon;
+		} else if (glyph.icon instanceof ImageSource) {
+			image = glyph.icon.ios;
+		}
+		if (image) {
+			return GMSPinImageGlyph.alloc().initWithImage(image);
+		}
+	}
+	if (typeof glyph?.text === 'string') {
+		const textColor = (intoNativeColor(glyph.textColor) as UIColor) ?? UIColor.whiteColor;
+		return GMSPinImageGlyph.alloc().initWithTextTextColor(glyph.text, textColor);
+	}
+	if (glyph?.glyphColor != null) {
+		return GMSPinImageGlyph.alloc().initWithGlyphColor(intoNativeColor(glyph.glyphColor) as UIColor);
+	}
+	return null;
+}
+
+export function intoNativePinImage(config: PinConfig): GMSPinImage {
+	const options = GMSPinImageOptions.new();
+	const backgroundColor = intoNativeColor(config?.backgroundColor) as UIColor;
+	if (backgroundColor) {
+		options.backgroundColor = backgroundColor;
+	}
+	const borderColor = intoNativeColor(config?.borderColor) as UIColor;
+	if (borderColor) {
+		options.borderColor = borderColor;
+	}
+	if (config?.glyph) {
+		const glyph = intoNativeGlyph(config.glyph);
+		if (glyph) {
+			options.glyph = glyph;
+		}
+	}
+	return GMSPinImage.pinImageWithOptions(options);
+}
+
 export function intoNativeMarkerOptions(options: MarkerOptions) {
-	const opts = GMSMarker.new();
+	const isAdvanced = !!(options?.pinConfig || options?.collisionBehavior);
+	const opts = isAdvanced ? GMSAdvancedMarker.new() : GMSMarker.new();
 
 	const color = intoNativeColor(options?.color);
 	if (color) {
@@ -82,6 +147,16 @@ export function intoNativeMarkerOptions(options: MarkerOptions) {
 
 	if (options?.userData) {
 		opts.userData = serialize(options.userData);
+	}
+
+	if (isAdvanced) {
+		if (options.collisionBehavior) {
+			(opts as GMSAdvancedMarker).collisionBehavior = intoNativeCollisionBehavior(options.collisionBehavior);
+		}
+		// The styled pin becomes the marker icon; applied last so it wins over `color`/`icon`.
+		if (options.pinConfig) {
+			opts.icon = intoNativePinImage(options.pinConfig);
+		}
 	}
 
 	return opts;
@@ -200,6 +275,29 @@ export function intoNativePolygonOptions(options: PolygonOptions) {
 	return opts;
 }
 
+export function intoNativeStyleSpan(span: StyleSpan): GMSStyleSpan {
+	if (span?.gradient) {
+		const stroke = GMSStrokeStyle.gradientFromColorToColor(intoNativeColor(span.gradient.from) as UIColor, intoNativeColor(span.gradient.to) as UIColor);
+		return typeof span.segments === 'number' ? GMSStyleSpan.spanWithStyleSegments(stroke, span.segments) : GMSStyleSpan.spanWithStyle(stroke);
+	}
+	const color = intoNativeColor(span?.color) as UIColor;
+	if (!color) {
+		return null;
+	}
+	return typeof span?.segments === 'number' ? GMSStyleSpan.spanWithColorSegments(color, span.segments) : GMSStyleSpan.spanWithColor(color);
+}
+
+export function intoNativeStyleSpans(spans: StyleSpan[]): NSArray<GMSStyleSpan> {
+	const array = NSMutableArray.alloc<GMSStyleSpan>().init();
+	spans.forEach((span) => {
+		const nativeSpan = intoNativeStyleSpan(span);
+		if (nativeSpan) {
+			array.addObject(nativeSpan);
+		}
+	});
+	return array;
+}
+
 export function intoNativePolylineOptions(options: PolylineOptions) {
 	let path;
 
@@ -248,6 +346,10 @@ export function intoNativePolylineOptions(options: PolylineOptions) {
 
 	if (typeof options?.endCap === 'number') {
 		// TODO
+	}
+
+	if (Array.isArray(options?.spans)) {
+		opts.spans = intoNativeStyleSpans(options.spans);
 	}
 
 	if (options?.userData) {
@@ -416,3 +518,36 @@ export function serialize(data: any): any {
 			return NSNull.new();
 	}
 }
+
+export interface NativeMapListenerPrimaries {
+	onCameraIdle?: () => void;
+	onMarkerClick?: (marker: any) => boolean;
+	onPolygonClick?: (polygon: any) => void;
+	onPolylineClick?: (polyline: any) => void;
+}
+
+export function registerNativeMapListeners(map: any, primary: NativeMapListenerPrimaries): void {}
+
+export function hasNativeMapListeners(map: any): boolean {
+	return false;
+}
+
+export function attachNativeMapListeners(map: any): void {}
+
+export function unregisterNativeMapListeners(map: any): void {}
+
+export function addOnCameraIdleListener(map: any, listener: any): void {}
+
+export function removeOnCameraIdleListener(map: any, listener: any): void {}
+
+export function addOnMarkerClickListener(map: any, listener: any): void {}
+
+export function removeOnMarkerClickListener(map: any, listener: any): void {}
+
+export function addOnPolygonClickListener(map: any, listener: any): void {}
+
+export function removeOnPolygonClickListener(map: any, listener: any): void {}
+
+export function addOnPolylineClickListener(map: any, listener: any): void {}
+
+export function removeOnPolylineClickListener(map: any, listener: any): void {}
