@@ -2,8 +2,8 @@
     <Page.actionBar>
         <ActionBar title="Image Picker" />
     </Page.actionBar>
-    <GridLayout rows="*, auto, auto, auto">
-        <ListView visibility="{{ isSingleMode ? 'collapsed' : 'visible' }}" items="{{ imageAssets }}">
+    <GridLayout rows="auto, *, auto, auto">
+        <ListView row="1" visibility="{{ isSingleMode ? 'collapsed' : 'visible' }}" items="{{ imageAssets }}">
             <ListView.itemTemplate>
                 <GridLayout columns="auto, *" class="m-y-10">
                     <Image width="80" height="80" src="{{ $value.thumbnail ? $value.thumbnail : $value.asset }}" stretch="aspectFill" />
@@ -18,7 +18,7 @@
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
-        <GridLayout visibility="{{ isSingleMode ? 'visible' : 'collapsed' }}">
+        <GridLayout row="1" visibility="{{ isSingleMode ? 'visible' : 'collapsed' }}">
             <StackLayout visibility="{{ selection ? 'visible' : 'collapsed' }}">
                 <Image src="{{ selection.thumbnail || selection.asset }}" width="{{ previewSize }}" height="{{ previewSize }}" stretch="aspectFit" />
                 <Label class="m-x-10 m-b-10" style="font-weight: bold; font-size: 18;" text="{{ 'Media Type: ' + selection.type }}" />
@@ -28,9 +28,11 @@
                 <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + selection.duration }}" hidden="{{ !selection.duration }}" />
             </StackLayout>
         </GridLayout>
-        <StackLayout row="1" class="m-x-20 m-b-10" visibility="{{ progressText ? 'visible' : 'collapsed' }}">
-            <Label class="c-gray t-12 m-b-5" text="{{ progressText }}" />
-            <Progress value="{{ progressValue }}" maxValue="100" />
+        <StackLayout row="0" class="m-x-20 m-y-10 p-10" backgroundColor="#eef3ff" borderRadius="8" visibility="{{ progressLog ? 'visible' : 'collapsed' }}">
+            <Label class="t-16 m-b-5" style="font-weight: bold;" text="{{ progressText || 'Done' }}" />
+            <Progress value="{{ progressValue }}" maxValue="100" height="12" class="m-b-10" />
+            <Label class="c-gray t-12 m-b-2" text="onProgress ticks received:" />
+            <Label class="t-14" text="{{ progressLog }}" textWrap="true" />
         </StackLayout>
         <Button row="2" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" marginBottom="10" />
         <Button row="3" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" marginBottom="10" />

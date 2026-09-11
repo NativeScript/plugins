@@ -9,6 +9,8 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 	private _isSingleMode: boolean;
 	private _progressText: string;
 	private _progressValue: number;
+	private _progressLog: string;
+	private progressTicks: string[][] = [];
 
 	get thumbSize(): any {
 		return 80;
@@ -76,11 +78,50 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		}
 	}
 
+	// Every tick received so far, one line per item, so the streaming is still
+	// visible after the selection has resolved (local items finish in a blink).
+	get progressLog(): string {
+		return this._progressLog;
+	}
+
+	set progressLog(value: string) {
+		if (this._progressLog !== value) {
+			this._progressLog = value;
+			this.notifyPropertyChange('progressLog', value);
+		}
+	}
+
+	// Ticks are queued and shown for a short moment each so the bar visibly
+	// steps through what the plugin reported. Local items resolve in a blink,
+	// which would otherwise jump the bar straight to 100%. The values shown are
+	// exactly what onProgress delivered, only the display is paced.
+	private tickQueue: imagepicker.ImagePickerProgress[] = [];
+	private draining: Promise<void> = Promise.resolve();
+	private lastTickShownAt = 0;
+
 	private onProgress(progress: imagepicker.ImagePickerProgress) {
 		const percent = Math.round(progress.fraction * 100);
+		console.log(`Loading item ${progress.index + 1} of ${progress.total}: ${percent}%`);
+		this.tickQueue.push(progress);
+		this.draining = this.draining.then(() => this.showNextTick());
+	}
+
+	private showNextTick(): Promise<void> {
+		const progress = this.tickQueue.shift();
+		if (!progress) {
+			return Promise.resolve();
+		}
+		const percent = Math.round(progress.fraction * 100);
+		const ticks = this.progressTicks[progress.index] || (this.progressTicks[progress.index] = []);
+		ticks.push(`${percent}%`);
 		this.progressValue = percent;
 		this.progressText = `Loading item ${progress.index + 1} of ${progress.total}: ${percent}%`;
-		console.log(this.progressText);
+		this.progressLog = this.progressTicks.map((ticks, i) => `Item ${i + 1}/${progress.total}: ${ticks.join(' → ')}`).join('\n');
+		// Hold each tick for at least 600ms. Ticks that arrive slower than that
+		// (a real iCloud download on a device) are shown as soon as they come in.
+		const wait = Math.max(0, 600 - (Date.now() - this.lastTickShownAt));
+		this.lastTickShownAt = Date.now() + wait;
+		return new Promise((resolve) => setTimeout(resolve, wait));
 	}
 
 	get isSingleMode(): any {
@@ -132,24 +173,33 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 					this.selection = null;
 					this.progressText = null;
 					this.progressValue = 0;
-					return context.present().then((selection: imagepicker.ImagePickerSelection[]) => {
-						console.log('Selection done: ', selection);
-						this.progressText = null;
-						this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
-						if (selection[0].thumbnail) {
-							this.imageSrc = selection[0].thumbnail;
-						}
-						this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
+					this.progressTicks = [];
+					this.progressLog = null;
+					this.tickQueue = [];
+					return context
+						.present()
+						.then((selection: imagepicker.ImagePickerSelection[]) => {
+							console.log('Selection done: ', selection);
+							// Let the paced progress display finish before showing the results.
+							return this.draining.then(() => selection);
+						})
+						.then((selection: imagepicker.ImagePickerSelection[]) => {
+							this.progressText = null;
+							this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
+							if (selection[0].thumbnail) {
+								this.imageSrc = selection[0].thumbnail;
+							}
+							this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
 
-						// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
-						selection.forEach((element) => {
-							let asset = element.asset;
-							asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
-							asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
+							// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
+							selection.forEach((element) => {
+								let asset = element.asset;
+								asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
+								asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
+							});
+
+							this.imageAssets = selection;
 						});
-
-						this.imageAssets = selection;
-					});
 				} else {
 					console.log('UnAuthorized');
 				}
