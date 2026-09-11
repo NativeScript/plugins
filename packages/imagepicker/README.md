@@ -178,6 +178,8 @@ if (isIOS) {
 ```
 
 ### Demo
+A short recording of the demo app on an iPhone 15 Pro Max with photo access set to None. The PHPicker still opens, the picks come back as file copies, and the progress callback fires for each item: [imagepicker-ios-phpicker.mov](images/imagepicker-ios-phpicker.mov)
+
 You can play with the plugin on StackBlitz at any of the following links:
 
  - [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
