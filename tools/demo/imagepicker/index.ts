@@ -1,6 +1,6 @@
 import { DemoSharedBase } from '../utils';
 import * as imagepicker from '@nativescript/imagepicker';
-import { ImageAsset, ImageSource, ItemEventData, Label } from '@nativescript/core';
+import { Dialogs, ImageAsset, ImageSource } from '@nativescript/core';
 
 export class DemoSharedImagepicker extends DemoSharedBase {
 	private _selection: any;
@@ -143,7 +143,6 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			copyToAppFolder: 'media',
 			renameFileTo: 'foobarmultiple',
 			android: { use_photo_picker: true },
-			maximumNumberOfSelection: 2,
 			onProgress: (progress) => this.onProgress(progress),
 		});
 		this.startSelection(context);
@@ -162,20 +161,33 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		this.startSelection(context);
 	}
 
+	get hasResults(): boolean {
+		return !!this._progressLog || !!this._selection || (this._imageAssets && this._imageAssets.length > 0);
+	}
+
+	public onClearTap() {
+		this.clear();
+	}
+
+	private clear() {
+		this.imageAssets = [];
+		this.imageSrc = null;
+		this.selection = null;
+		this.progressText = null;
+		this.progressValue = 0;
+		this.progressTicks = [];
+		this.progressLog = null;
+		this.tickQueue = [];
+		this.notifyPropertyChange('hasResults', this.hasResults);
+	}
+
 	private startSelection(context: imagepicker.ImagePicker) {
 		context
 			.authorize()
 			.then((authResult) => {
 				console.log(authResult);
 				if (authResult.authorized) {
-					this.imageAssets = [];
-					this.imageSrc = null;
-					this.selection = null;
-					this.progressText = null;
-					this.progressValue = 0;
-					this.progressTicks = [];
-					this.progressLog = null;
-					this.tickQueue = [];
+					this.clear();
 					return context
 						.present()
 						.then((selection: imagepicker.ImagePickerSelection[]) => {
@@ -201,9 +213,16 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 							});
 
 							this.imageAssets = selection;
+							this.notifyPropertyChange('hasResults', this.hasResults);
 						});
 				} else {
 					console.log('UnAuthorized');
+					// iOS never re-prompts once access has been denied.
+					Dialogs.alert({
+						title: 'Photo access denied',
+						message: 'Allow photo access for this app in Settings and try again.',
+						okButtonText: 'OK',
+					});
 				}
 			})
 			.catch(function (e) {

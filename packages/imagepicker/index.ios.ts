@@ -66,14 +66,19 @@ export class ImagePicker extends ImagePickerBase {
 	}
 
 	authorize(): Promise<AuthorizationResult> {
-		return permissions.request('photo').then((result) => this.mapResult(result));
+		// The first request resolves from Photos' own callback, which arrives on
+		// a background thread; hand the result back on the main thread.
+		return permissions.request('photo').then((result) => new Promise<AuthorizationResult>((resolve) => Utils.dispatchToMainThread(() => resolve(this.mapResult(result)))));
 	}
 
 	present(): Promise<ImagePickerSelection[]> {
 		return new Promise<ImagePickerSelection[]>((resolve, reject) => {
 			this._delegate = ImagePickerControllerDelegate.initWithOwner(this, resolve, reject);
 			this._imagePickerController.delegate = this._delegate;
-			this.hostController.presentViewControllerAnimatedCompletion(this._imagePickerController, true, null);
+			// The picker runs out of process and is silently dropped when the app
+			// is not active, which is the case right after the photo-permission
+			// alert closes (a common moment to call present()).
+			Utils.dispatchToMainThread(() => whenActive(() => this.hostController.presentViewControllerAnimatedCompletion(this._imagePickerController, true, null)));
 		});
 	}
 
@@ -81,6 +86,19 @@ export class ImagePicker extends ImagePickerBase {
 		this._imagePickerController = null;
 		this._delegate = null;
 	}
+}
+
+function whenActive(run: () => void): void {
+	if (UIApplication.sharedApplication.applicationState === UIApplicationState.Active) {
+		run();
+		return;
+	}
+	const center = NSNotificationCenter.defaultCenter;
+	let token: any = center.addObserverForNameObjectQueueUsingBlock(UIApplicationDidBecomeActiveNotification, null, NSOperationQueue.mainQueue, () => {
+		center.removeObserver(token);
+		token = null;
+		run();
+	});
 }
 
 function createPickerController(options: Options): PHPickerViewController {
@@ -145,20 +163,15 @@ class ImagePickerControllerDelegate extends NSObject implements PHPickerViewCont
 		const selections: ImagePickerSelection[] = [];
 		const reporters = results.map((_, index) => progressReporter(options, index, results.length));
 
+		// Start dismissing as soon as the picks are known; resolving the files
+		// (which can mean an iCloud download), copying and thumbnailing all
+		// continue behind the dismiss animation.
+		const dismissed = dismiss(picker, owner);
+
 		try {
 			for (let index = 0; index < results.length; index++) {
 				selections.push(await toSelection(results[index], reporters[index]));
 			}
-		} catch (error) {
-			await dismiss(picker, owner);
-			throw error;
-		}
-
-		// Start dismissing as soon as the picks are known; copying and
-		// thumbnailing continue behind the dismiss animation.
-		const dismissed = dismiss(picker, owner);
-
-		try {
 			const augment = options.copyToAppFolder || options.augmentedAssetsInfo !== false;
 			if (augment) {
 				await Promise.all(selections.map((selection, index) => augmentSelection(selection, index, selections.length, options)));
