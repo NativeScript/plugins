@@ -59,7 +59,8 @@ export interface Options {
 	mode?: string;
 
 	/**
-	 * Set the minumum number of selected assets in iOS
+	 * Set the minumum number of selected assets in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	minimumNumberOfSelection?: number;
 
@@ -69,22 +70,26 @@ export interface Options {
 	maximumNumberOfSelection?: number;
 
 	/**
-	 * Display the number of selected assets in iOS
+	 * Display the number of selected assets in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	showsNumberOfSelectedAssets?: boolean;
 
 	/**
-	 * Display prompt text when selecting assets in iOS
+	 * Display prompt text when selecting assets in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	prompt?: string;
 
 	/**
-	 * Set the number of columns in Portrait in iOS
+	 * Set the number of columns in Portrait in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	numberOfColumnsInPortrait?: number;
 
 	/**
-	 * Set the number of columns in Landscape in iOS
+	 * Set the number of columns in Landscape in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	numberOfColumnsInLandscape?: number;
 
