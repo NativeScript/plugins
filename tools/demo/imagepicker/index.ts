@@ -91,10 +91,14 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		}
 	}
 
-	// Ticks are queued and shown for a short moment each so the bar visibly
-	// steps through what the plugin reported. Local items resolve in a blink,
-	// which would otherwise jump the bar straight to 100%. The values shown are
-	// exactly what onProgress delivered, only the display is paced.
+	// DEMO-ONLY PACING. The plugin's onProgress is a real stream: on iOS the
+	// picker's item provider (or PhotoKit, with library access) reports the
+	// iCloud download of each item as it happens, and an app can bind a
+	// progress bar to it directly. This demo slows the *display* down because
+	// items already on the device resolve in a few milliseconds, which would
+	// jump the bar straight to 100% with nothing to see. Every tick is queued
+	// and held on screen for ~600ms before the next one is shown. The values
+	// are exactly what onProgress delivered; only the timing is stretched.
 	private tickQueue: imagepicker.ImagePickerProgress[] = [];
 	private draining: Promise<void> = Promise.resolve();
 	private lastTickShownAt = 0;
