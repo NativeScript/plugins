@@ -1,6 +1,6 @@
 import { DemoSharedBase } from '../utils';
 import * as imagepicker from '@nativescript/imagepicker';
-import { Dialogs, ImageAsset, ImageSource } from '@nativescript/core';
+import { ImageAsset, ImageSource } from '@nativescript/core';
 
 export class DemoSharedImagepicker extends DemoSharedBase {
 	private _selection: any;
@@ -182,48 +182,40 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 	}
 
 	private startSelection(context: imagepicker.ImagePicker) {
+		// The system picker runs out of process and works without photo-library
+		// access, so present it either way. With access the picks resolve to
+		// their PHAsset; without it the picker hands over a copy of each file.
 		context
 			.authorize()
 			.then((authResult) => {
 				console.log(authResult);
-				if (authResult.authorized) {
-					this.clear();
-					return context
-						.present()
-						.then((selection: imagepicker.ImagePickerSelection[]) => {
-							console.log('Selection done: ', selection);
-							// Let the paced progress display finish before showing the results.
-							return this.draining.then(() => selection);
-						})
-						.then((selection: imagepicker.ImagePickerSelection[]) => {
-							this.progressText = null;
-							this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
-							if (selection[0].thumbnail) {
-								this.imageSrc = selection[0].thumbnail;
-							}
-							this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
-
-							// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
-							selection.forEach((element) => {
-								// Full paths are long (especially on the simulator); show the tail.
-								(element as any).shortPath = '…/' + (element.path || '').split('/').slice(-3).join('/');
-								let asset = element.asset;
-								asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
-								asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
-							});
-
-							this.imageAssets = selection;
-							this.notifyPropertyChange('hasResults', this.hasResults);
-						});
-				} else {
-					console.log('UnAuthorized');
-					// iOS never re-prompts once access has been denied.
-					Dialogs.alert({
-						title: 'Photo access denied',
-						message: 'Allow photo access for this app in Settings and try again.',
-						okButtonText: 'OK',
-					});
+				this.clear();
+				return context.present();
+			})
+			.then((selection: imagepicker.ImagePickerSelection[]) => {
+				console.log('Selection done: ', selection);
+				// Let the paced progress display finish before showing the results.
+				return this.draining.then(() => selection);
+			})
+			.then((selection: imagepicker.ImagePickerSelection[]) => {
+				this.progressText = null;
+				this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
+				if (selection[0].thumbnail) {
+					this.imageSrc = selection[0].thumbnail;
 				}
+				this.selection = this.isSingleMode && selection.length > 0 ? selection[0] : null;
+
+				// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
+				selection.forEach((element) => {
+					// Full paths are long (especially on the simulator); show the tail.
+					(element as any).shortPath = '…/' + (element.path || '').split('/').slice(-3).join('/');
+					let asset = element.asset;
+					asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
+					asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;
+				});
+
+				this.imageAssets = selection;
+				this.notifyPropertyChange('hasResults', this.hasResults);
 			})
 			.catch(function (e) {
 				console.log('selection error', e);
