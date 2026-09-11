@@ -1,4 +1,4 @@
-import { ImageAsset, View, Utils, Application, path, knownFolders, ImageSource, Folder, File } from '@nativescript/core';
+import { ImageAsset, View, Utils, Application, path, knownFolders, ImageSource } from '@nativescript/core';
 import * as permissions from '@nativescript-community/perms';
 import { AuthorizationResult, ImagePickerBase, ImagePickerMediaType, ImagePickerSelection, Options } from './common';
 export * from './common';
@@ -285,6 +285,8 @@ function selectionFromItemProvider(provider: NSItemProvider): Promise<ImagePicke
 }
 
 // Each pick gets its own folder so two files with the same name never collide.
+// This runs inside the item provider's completion handler, which the system
+// already calls on a background thread, so the copy never blocks the UI.
 function copyToTempFolder(sourcePath: string): string {
 	const folder = knownFolders.temp().getFolder('imagepicker').getFolder(NSUUID.UUID().UUIDString);
 	const destination = path.join(folder.path, NSString.stringWithString(sourcePath).lastPathComponent || 'file');
@@ -331,7 +333,8 @@ function firstVideoFrame(avAsset: AVAsset): any {
 }
 
 // Optional post-processing: rename, copy into the app folder, and fill in
-// filesize plus a video thumbnail. A failed copy keeps the original path, as
+// filesize plus a video thumbnail. The copy runs on a background queue so a
+// large video never stalls the UI. A failed copy keeps the original path, as
 // before, rather than failing the whole selection.
 async function augmentSelection(selection: ImagePickerSelection, index: number, total: number, options: Options): Promise<void> {
 	selection.filename = targetFilename(selection.originalFilename, index, total, options.renameFileTo);
@@ -340,7 +343,7 @@ async function augmentSelection(selection: ImagePickerSelection, index: number, 
 		const folder = knownFolders.documents().getFolder(options.copyToAppFolder);
 		const destination = path.join(folder.path, selection.filename);
 		try {
-			copyFile(selection.path, destination);
+			await copyFileInBackground(selection.path, destination);
 			selection.path = destination;
 		} catch (error) {
 			console.log('Error copying file: ', selection.path, error);
@@ -369,15 +372,34 @@ function fileSize(filePath: string): number {
 	return attributes ? attributes.fileSize() : 0;
 }
 
-// Replaces any file already at the destination. NativeScript throws the
-// NSError of a failed copy, so callers decide how to handle it.
+// Replaces any file already at the destination and throws a descriptive
+// error when the copy fails, so callers decide how to handle it.
 function copyFile(source: string, destination: string): void {
-	if (File.exists(destination)) {
-		File.fromPath(destination).removeSync();
+	const fileManager = NSFileManager.defaultManager;
+	if (fileManager.fileExistsAtPath(destination)) {
+		fileManager.removeItemAtPathError(destination, null);
 	}
-	if (!NSFileManager.defaultManager.copyItemAtPathToPathError(source, destination)) {
-		throw new Error(`Could not copy ${source} to ${destination}`);
+	const error = new interop.Reference<NSError>();
+	if (!fileManager.copyItemAtPathToPathError(source, destination, error)) {
+		const reason = error.value ? error.value.localizedDescription : 'unknown error';
+		throw new Error(`Could not copy ${source} to ${destination}: ${reason}`);
 	}
+}
+
+// Same as copyFile, but off the main thread: the copy itself runs on a global
+// dispatch queue and only the result is handed back to the main thread.
+function copyFileInBackground(source: string, destination: string): Promise<void> {
+	return new Promise<void>((resolve, reject) => {
+		dispatch_async(dispatch_get_global_queue(21 /* qos_class_t.QOS_CLASS_DEFAULT */, 0), () => {
+			let failure: Error | null = null;
+			try {
+				copyFile(source, destination);
+			} catch (error) {
+				failure = error;
+			}
+			Utils.dispatchToMainThread(() => (failure ? reject(failure) : resolve()));
+		});
+	});
 }
 
 function filePath(url: NSURL | null): string {
