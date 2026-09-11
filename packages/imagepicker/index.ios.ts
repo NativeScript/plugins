@@ -13,6 +13,33 @@ export * from './common';
 const IMAGE_UTI = 'public.image';
 const MOVIE_UTI = 'public.movie';
 
+// Reports the progress of one item to Options.onProgress. Updates are
+// delivered on the main thread and never go backwards; PhotoKit and
+// NSProgress call back from arbitrary threads.
+type ProgressReporter = (fraction: number) => void;
+
+function progressReporter(options: Options, index: number, total: number): ProgressReporter {
+	const onProgress = options.onProgress;
+	if (!onProgress) {
+		return () => {};
+	}
+	let last = -1;
+	const deliver = (fraction: number) => {
+		if (fraction > last) {
+			last = fraction;
+			onProgress({ index, total, fraction });
+		}
+	};
+	return (fraction: number) => {
+		const clamped = Math.min(1, Math.max(0, fraction));
+		if (NSThread.isMainThread) {
+			deliver(clamped);
+		} else {
+			Utils.dispatchToMainThread(() => deliver(clamped));
+		}
+	};
+}
+
 export class ImagePicker extends ImagePickerBase {
 	_imagePickerController: PHPickerViewController;
 	_hostView: View;
@@ -116,10 +143,11 @@ class ImagePickerControllerDelegate extends NSObject implements PHPickerViewCont
 	private async finishPicking(picker: PHPickerViewController, owner: ImagePicker | undefined, results: PHPickerResult[]): Promise<void> {
 		const options = owner?._options ?? {};
 		const selections: ImagePickerSelection[] = [];
+		const reporters = results.map((_, index) => progressReporter(options, index, results.length));
 
 		try {
-			for (const result of results) {
-				selections.push(await toSelection(result));
+			for (let index = 0; index < results.length; index++) {
+				selections.push(await toSelection(results[index], reporters[index]));
 			}
 		} catch (error) {
 			await dismiss(picker, owner);
@@ -139,6 +167,9 @@ class ImagePickerControllerDelegate extends NSObject implements PHPickerViewCont
 			await dismissed;
 			throw error;
 		}
+
+		// Every item is complete by now, whether or not its source reported progress.
+		reporters.forEach((report) => report(1));
 
 		if (options.resolveWhenDismissed) {
 			await dismissed;
@@ -173,15 +204,15 @@ function toArray(results: NSArray<PHPickerResult>): PHPickerResult[] {
 // A picked item resolves to its PHAsset when the app has photo-library access
 // and Photos can hand out a file for it; otherwise the picker still vends the
 // file itself and a copy of that is used instead.
-async function toSelection(result: PHPickerResult): Promise<ImagePickerSelection> {
+async function toSelection(result: PHPickerResult, report: ProgressReporter): Promise<ImagePickerSelection> {
 	const phAsset = fetchAsset(result.assetIdentifier);
 	if (phAsset) {
-		const selection = await selectionFromAsset(phAsset);
+		const selection = await selectionFromAsset(phAsset, report);
 		if (selection.path) {
 			return selection;
 		}
 	}
-	return selectionFromItemProvider(result.itemProvider);
+	return selectionFromItemProvider(result.itemProvider, report);
 }
 
 function hasLibraryAccess(): boolean {
@@ -199,7 +230,7 @@ function fetchAsset(identifier: string | null): PHAsset | null {
 	return fetched.count > 0 ? fetched.firstObject : null;
 }
 
-async function selectionFromAsset(phAsset: PHAsset): Promise<ImagePickerSelection> {
+async function selectionFromAsset(phAsset: PHAsset, report: ProgressReporter): Promise<ImagePickerSelection> {
 	const asset = new ImageAsset(phAsset);
 	if (!asset.options) {
 		asset.options = { keepAspectRatio: true };
@@ -213,7 +244,7 @@ async function selectionFromAsset(phAsset: PHAsset): Promise<ImagePickerSelectio
 		filename,
 		originalFilename: filename,
 		filesize: 0,
-		path: isVideo ? await videoPath(phAsset) : await imagePath(phAsset),
+		path: isVideo ? await videoPath(phAsset, report) : await imagePath(phAsset, report),
 	};
 	if (isVideo) {
 		selection.duration = Math.round(phAsset.duration);
@@ -221,20 +252,23 @@ async function selectionFromAsset(phAsset: PHAsset): Promise<ImagePickerSelectio
 	return selection;
 }
 
-function imagePath(phAsset: PHAsset): Promise<string> {
+// The progress handlers only fire while Photos downloads the item from iCloud.
+function imagePath(phAsset: PHAsset, report: ProgressReporter): Promise<string> {
 	return new Promise<string>((resolve) => {
 		const options = new PHContentEditingInputRequestOptions();
 		options.networkAccessAllowed = true;
+		options.progressHandler = (progress) => report(progress);
 		phAsset.requestContentEditingInputWithOptionsCompletionHandler(options, (input) => {
 			Utils.dispatchToMainThread(() => resolve(filePath(input?.fullSizeImageURL)));
 		});
 	});
 }
 
-function videoPath(phAsset: PHAsset): Promise<string> {
+function videoPath(phAsset: PHAsset, report: ProgressReporter): Promise<string> {
 	return new Promise<string>((resolve) => {
 		const options = new PHVideoRequestOptions();
 		options.networkAccessAllowed = true;
+		options.progressHandler = (progress) => report(progress);
 		PHImageManager.defaultManager().requestAVAssetForVideoOptionsResultHandler(phAsset, options, (avAsset) => {
 			const url = avAsset instanceof AVURLAsset ? avAsset.URL : null;
 			Utils.dispatchToMainThread(() => resolve(filePath(url)));
@@ -245,7 +279,7 @@ function videoPath(phAsset: PHAsset): Promise<string> {
 // Without photo-library access the picker copies the item to a temporary URL
 // that is only valid inside the completion handler, so it is copied out again
 // into the app's temp folder before anything else touches it.
-function selectionFromItemProvider(provider: NSItemProvider): Promise<ImagePickerSelection> {
+function selectionFromItemProvider(provider: NSItemProvider, report: ProgressReporter): Promise<ImagePickerSelection> {
 	const isVideo = provider.hasItemConformingToTypeIdentifier(MOVIE_UTI);
 	const uti = isVideo ? MOVIE_UTI : IMAGE_UTI;
 
@@ -260,7 +294,9 @@ function selectionFromItemProvider(provider: NSItemProvider): Promise<ImagePicke
 			});
 		};
 
-		provider.loadFileRepresentationForTypeIdentifierCompletionHandler(uti, (url, error) => {
+		let observer: ProgressObserver | null = null;
+		const progress = provider.loadFileRepresentationForTypeIdentifierCompletionHandler(uti, (url, error) => {
+			observer?.stop();
 			if (error || !url) {
 				settle(() => {
 					throw new Error(error?.localizedDescription ?? 'Could not load the selected item.');
@@ -281,7 +317,42 @@ function selectionFromItemProvider(provider: NSItemProvider): Promise<ImagePicke
 
 			settle(() => (isVideo ? videoSelectionFromFile(copiedPath) : imageSelectionFromFile(copiedPath)));
 		});
+		observer = ProgressObserver.observe(progress, report);
 	});
+}
+
+// Watches an NSProgress (the item provider's iCloud download) through KVO and
+// forwards its fractionCompleted to the reporter.
+@NativeClass()
+class ProgressObserver extends NSObject {
+	private progress: NSProgress;
+	private report: ProgressReporter;
+	private observing = false;
+
+	static observe(progress: NSProgress | null, report: ProgressReporter): ProgressObserver | null {
+		if (!progress) {
+			return null;
+		}
+		const observer = <ProgressObserver>ProgressObserver.new();
+		observer.progress = progress;
+		observer.report = report;
+		observer.observing = true;
+		progress.addObserverForKeyPathOptionsContext(observer, 'fractionCompleted', NSKeyValueObservingOptions.New, null);
+		return observer;
+	}
+
+	stop(): void {
+		if (this.observing) {
+			this.observing = false;
+			this.progress.removeObserverForKeyPath(this, 'fractionCompleted');
+		}
+	}
+
+	observeValueForKeyPathOfObjectChangeContext(keyPath: string, object: any, change: NSDictionary<string, any>, context: interop.Pointer): void {
+		if (keyPath === 'fractionCompleted') {
+			this.report(this.progress.fractionCompleted);
+		}
+	}
 }
 
 // Each pick gets its own folder so two files with the same name never collide.

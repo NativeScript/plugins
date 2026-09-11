@@ -2,7 +2,7 @@
     <Page.actionBar>
         <ActionBar title="Image Picker" />
     </Page.actionBar>
-    <GridLayout rows="*, auto, auto">
+    <GridLayout rows="*, auto, auto, auto">
         <ListView visibility="{{ isSingleMode ? 'collapsed' : 'visible' }}" items="{{ imageAssets }}">
             <ListView.itemTemplate>
                 <GridLayout columns="auto, *" class="m-y-10">
@@ -28,7 +28,11 @@
                 <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + selection.duration }}" hidden="{{ !selection.duration }}" />
             </StackLayout>
         </GridLayout>
-        <Button row="1" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" marginBottom="10" />
-        <Button row="2" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" marginBottom="10" />
+        <StackLayout row="1" class="m-x-20 m-b-10" visibility="{{ progressText ? 'visible' : 'collapsed' }}">
+            <Label class="c-gray t-12 m-b-5" text="{{ progressText }}" />
+            <Progress value="{{ progressValue }}" maxValue="100" />
+        </StackLayout>
+        <Button row="2" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" marginBottom="10" />
+        <Button row="3" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" marginBottom="10" />
     </GridLayout>
 </Page>

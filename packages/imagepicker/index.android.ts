@@ -5,6 +5,7 @@ import { ImagePickerMediaType, Options, AuthorizationResult, ImagePickerBase, Im
 export * from './common';
 let copyToAppFolder;
 let renameFileTo;
+let onProgress: Options['onProgress'];
 
 const videoFiles = {
 	mp4: true,
@@ -155,7 +156,7 @@ class UriHelper {
 // folder runs on a background thread via File.copy(); only the video thumbnail
 // and duration are still read on the main thread, because Android offers no
 // asynchronous API for them and JavaScript cannot run on a Java worker thread.
-async function toSelection(selectedAsset: ImageAsset, index?: number): Promise<ImagePickerSelection> {
+async function toSelection(selectedAsset: ImageAsset, total: number, index?: number): Promise<ImagePickerSelection> {
 	const file = File.fromPath(selectedAsset.android);
 
 	const item: ImagePickerSelection = {
@@ -186,6 +187,9 @@ async function toSelection(selectedAsset: ImageAsset, index?: number): Promise<I
 		const time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
 		item.duration = parseInt(time) / 1000;
 	}
+	// Android has no download progress to report, so the only
+	// notification per item is that it has finished.
+	onProgress?.({ index: index ?? 0, total, fraction: 1 });
 	return item;
 }
 
@@ -205,6 +209,7 @@ export class ImagePicker extends ImagePickerBase {
 		this._options = options;
 		copyToAppFolder = options.copyToAppFolder;
 		renameFileTo = options.renameFileTo;
+		onProgress = options.onProgress;
 	}
 
 	get mode(): string {
@@ -306,7 +311,7 @@ export class ImagePicker extends ImagePickerBase {
 								}
 
 								Application.android.off(Application.android.activityResultEvent, onResult);
-								Promise.all(uris.map((uri, i) => toSelection(new ImageAsset(uri), i))).then(resolve, reject);
+								Promise.all(uris.map((uri, i) => toSelection(new ImageAsset(uri), uris.length, i))).then(resolve, reject);
 							} catch (e) {
 								Application.android.off(Application.android.activityResultEvent, onResult);
 								reject(e);
@@ -376,7 +381,7 @@ export class ImagePicker extends ImagePickerBase {
 								}
 
 								Application.android.off(AndroidApplication.activityResultEvent, onResult);
-								const pending = clip ? paths.map((path, i) => toSelection(new ImageAsset(path), i)) : paths.map((path) => toSelection(new ImageAsset(path)));
+								const pending = clip ? paths.map((path, i) => toSelection(new ImageAsset(path), paths.length, i)) : paths.map((path) => toSelection(new ImageAsset(path), 1));
 								Promise.all(pending).then(resolve, reject);
 								return;
 							} catch (e) {

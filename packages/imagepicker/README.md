@@ -214,9 +214,28 @@ An object passed to the `create` method to specify the characteristics of a medi
 | `mediaType`                   | [ImagePickerMediaType](#imagepickermediatype)     | `Any`       |_Optional_: The type of media asset to pick whether to pick Image/Video/Any type of assets. |
 | `copyToAppFolder`             | `string`      | `undefined` | _Optional_:  If passed, a new folder will be created in your applications folder and the asset will be copied there.                                                           |
 | `renameFileTo`                | `string`      | `undefined` | _Optional_:  If passed, the copied file will be named what you choose. If you select multiple, -index will be appended.                                                           |
+| `onProgress`                  | `(progress: ImagePickerProgress) => void` | `undefined` | _Optional_: Called while the selected items are resolved. See [Progress](#progress). |
 | `showAdvanced `               | `boolean`  | `false`     | _Optional_:(`Android-only`) Show internal and removable storage options on Android (**WARNING**: [not supported officially](https://issuetracker.google.com/issues/72053350)). |
 | `android` | `{read_external_storage: string;}`| _Optional_: (`Android-only`) Provides a reason for permission request to access external storage on API level above 23.
 
+
+### Progress
+
+Pass `onProgress` to be told how far along each selected item is while `present()` resolves. Each call carries the item's zero-based `index`, the `total` number of items and a `fraction` from 0 to 1 that never goes backwards. Every item ends with a `fraction` of 1.
+
+<!-- tabs: TS -->
+```ts
+let imagePickerObj: ImagePicker = imagePickerPlugin.create({
+    mode: "multiple",
+    onProgress: ({ index, total, fraction }) => {
+        progressBar.value = Math.round(fraction * 100);
+        label.text = `Loading ${index + 1} of ${total}`;
+    },
+});
+```
+
+- **iOS** streams the download progress of items that live in iCloud (through `PHPickerViewController`'s item provider, or PhotoKit when the app has library access). Items already on the device usually go straight to 1.
+- **Android** has no download progress to report, so it emits a single `fraction: 1` per item once that item is ready. This still lets you show an "n of total" counter.
 
 ### ImagePickerMediaType
 

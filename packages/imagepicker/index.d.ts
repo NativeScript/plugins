@@ -65,6 +65,27 @@ export interface ImagePickerSelection {
 }
 
 /**
+ * Progress of loading one picked item, reported through Options.onProgress.
+ */
+export interface ImagePickerProgress {
+	/**
+	 * Zero-based position of the item in the selection.
+	 */
+	index: number;
+
+	/**
+	 * Number of items in the selection.
+	 */
+	total: number;
+
+	/**
+	 * Completion of this item from 0 to 1. On iOS this follows the iCloud
+	 * download of the item; on Android only the final 1 is reported.
+	 */
+	fraction: number;
+}
+
+/**
  * Provide options for the image picker.
  */
 interface Options {
@@ -133,6 +154,14 @@ interface Options {
 	 * If you want to rename the file when copying it to your app folder, you can pass a string here.
 	 */
 	renameFileTo?: string;
+
+	/**
+	 * Called while the selected items are being resolved, once or more per item.
+	 * iOS reports download progress for items that live in iCloud; every item
+	 * ends with a fraction of 1. Android has no download progress to report and
+	 * only emits the final 1 per item.
+	 */
+	onProgress?: (progress: ImagePickerProgress) => void;
 
 	/**
 	 * Show internal and removable storage options on Android.

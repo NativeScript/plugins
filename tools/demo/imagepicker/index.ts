@@ -7,6 +7,8 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 	private _imageSrc: ImageSource | ImageAsset;
 	private _imageAssets: Array<any>;
 	private _isSingleMode: boolean;
+	private _progressText: string;
+	private _progressValue: number;
 
 	get thumbSize(): any {
 		return 80;
@@ -49,6 +51,38 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 		}
 	}
 
+	// Text and 0-100 value for the progress row while the picked items load.
+	// iOS streams download progress for items in iCloud; Android only reports
+	// each item once it has finished.
+	get progressText(): string {
+		return this._progressText;
+	}
+
+	set progressText(value: string) {
+		if (this._progressText !== value) {
+			this._progressText = value;
+			this.notifyPropertyChange('progressText', value);
+		}
+	}
+
+	get progressValue(): number {
+		return this._progressValue;
+	}
+
+	set progressValue(value: number) {
+		if (this._progressValue !== value) {
+			this._progressValue = value;
+			this.notifyPropertyChange('progressValue', value);
+		}
+	}
+
+	private onProgress(progress: imagepicker.ImagePickerProgress) {
+		const percent = Math.round(progress.fraction * 100);
+		this.progressValue = percent;
+		this.progressText = `Loading item ${progress.index + 1} of ${progress.total}: ${percent}%`;
+		console.log(this.progressText);
+	}
+
 	get isSingleMode(): any {
 		return this._isSingleMode;
 	}
@@ -69,6 +103,7 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			renameFileTo: 'foobarmultiple',
 			android: { use_photo_picker: true },
 			maximumNumberOfSelection: 2,
+			onProgress: (progress) => this.onProgress(progress),
 		});
 		this.startSelection(context);
 	}
@@ -81,6 +116,7 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 			copyToAppFolder: 'media',
 			renameFileTo: 'foobar',
 			android: { use_photo_picker: true },
+			onProgress: (progress) => this.onProgress(progress),
 		});
 		this.startSelection(context);
 	}
@@ -94,8 +130,11 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 					this.imageAssets = [];
 					this.imageSrc = null;
 					this.selection = null;
+					this.progressText = null;
+					this.progressValue = 0;
 					return context.present().then((selection: imagepicker.ImagePickerSelection[]) => {
 						console.log('Selection done: ', selection);
+						this.progressText = null;
 						this.imageSrc = this.isSingleMode && selection.length > 0 ? selection[0].asset : null;
 						if (selection[0].thumbnail) {
 							this.imageSrc = selection[0].thumbnail;
