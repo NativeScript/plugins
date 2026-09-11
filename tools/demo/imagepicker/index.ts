@@ -193,6 +193,8 @@ export class DemoSharedImagepicker extends DemoSharedBase {
 
 							// set the images to be loaded from the assets with optimal sizes (optimize memory usage)
 							selection.forEach((element) => {
+								// Full paths are long (especially on the simulator); show the tail.
+								(element as any).shortPath = '…/' + (element.path || '').split('/').slice(-3).join('/');
 								let asset = element.asset;
 								asset.options.width = this.isSingleMode ? this.previewSize : this.thumbSize;
 								asset.options.height = this.isSingleMode ? this.previewSize : this.thumbSize;

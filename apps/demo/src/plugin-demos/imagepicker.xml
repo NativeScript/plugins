@@ -1,40 +1,48 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+<Page xmlns="http://www.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
     <Page.actionBar>
-        <ActionBar title="Image Picker" />
+        <ActionBar title="Image Picker" class="action-bar" />
     </Page.actionBar>
-    <GridLayout rows="auto, *, auto, auto">
-        <ListView row="1" visibility="{{ isSingleMode ? 'collapsed' : 'visible' }}" items="{{ imageAssets }}">
-            <ListView.itemTemplate>
-                <GridLayout columns="auto, *" class="m-y-10">
-                    <Image width="80" height="80" src="{{ $value.thumbnail ? $value.thumbnail : $value.asset }}" stretch="aspectFill" />
-                    <StackLayout col="1">
-                        <Label class="m-x-10 m-b-10" style="font-weight: bold; font-size: 18;" text="{{ 'Media Type: ' + $value.type }}" />
-                        <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Filename: ' + $value.filename }}" />
-                        <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'File Size: ' + $value.filesize }}" />
-                        <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Path: ' + $value.path }}" textWrap="true" />
-                        <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + $value.duration }}" hidden="{{ !$value.duration }}" />
-                    </StackLayout>
+    <GridLayout rows="auto, *, auto" class="bg-gray-100">
 
-                </GridLayout>
+        <!-- Progress: text, bar and every tick received so far -->
+        <StackLayout row="0" class="m-4 p-4 rounded-2xl bg-white" visibility="{{ progressLog ? 'visible' : 'collapsed' }}">
+            <Label class="text-base font-semibold text-gray-800 mb-2" text="{{ progressText || 'Done' }}" />
+            <Progress value="{{ progressValue }}" maxValue="100" height="8" class="mb-3" color="#3b82f6" backgroundColor="#e5e7eb" />
+            <Label class="text-xs uppercase text-gray-400 mb-1" text="onProgress ticks" />
+            <Label class="text-sm text-gray-600" text="{{ progressLog }}" textWrap="true" />
+        </StackLayout>
+
+        <!-- Multiple selection -->
+        <ListView row="1" class="bg-transparent" separatorColor="transparent" visibility="{{ isSingleMode ? 'collapsed' : 'visible' }}" items="{{ imageAssets }}">
+            <ListView.itemTemplate>
+                <StackLayout class="px-4 pb-3">
+                    <GridLayout columns="auto, *" class="p-3 rounded-2xl bg-white">
+                        <StackLayout width="72" height="72" class="rounded-xl bg-gray-200" clipToBounds="true">
+                            <Image width="72" height="72" src="{{ $value.thumbnail ? $value.thumbnail : $value.asset }}" stretch="aspectFill" />
+                        </StackLayout>
+                        <StackLayout col="1" class="ml-3" verticalAlignment="center">
+                            <Label class="text-base font-semibold text-gray-800" text="{{ $value.filename }}" />
+                            <Label class="text-xs text-gray-500 mt-1" text="{{ $value.type + '  ·  ' + $value.filesize + ' bytes' + ($value.duration ? '  ·  ' + $value.duration + 's' : '') }}" />
+                            <Label class="text-xs text-gray-400 mt-1" text="{{ $value.shortPath }}" textWrap="true" />
+                        </StackLayout>
+                    </GridLayout>
+                </StackLayout>
             </ListView.itemTemplate>
         </ListView>
-        <GridLayout row="1" visibility="{{ isSingleMode ? 'visible' : 'collapsed' }}">
-            <StackLayout visibility="{{ selection ? 'visible' : 'collapsed' }}">
-                <Image src="{{ selection.thumbnail || selection.asset }}" width="{{ previewSize }}" height="{{ previewSize }}" stretch="aspectFit" />
-                <Label class="m-x-10 m-b-10" style="font-weight: bold; font-size: 18;" text="{{ 'Media Type: ' + selection.type }}" />
-                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Filename: ' + selection.filename }}" />
-                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'File Size: ' + selection.filesize }}" />
-                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Path: ' + selection.path }}" textWrap="true" />
-                <Label class="m-x-10 m-b-5 c-gray t-12" text="{{ 'Duration: ' + selection.duration }}" hidden="{{ !selection.duration }}" />
+
+        <!-- Single selection -->
+        <ScrollView row="1" visibility="{{ isSingleMode ? 'visible' : 'collapsed' }}">
+            <StackLayout class="mx-4 mb-3 p-3 rounded-2xl bg-white" visibility="{{ selection ? 'visible' : 'collapsed' }}">
+                <Image src="{{ selection.thumbnail || selection.asset }}" height="{{ previewSize }}" class="rounded-xl" stretch="aspectFill" />
+                <Label class="text-base font-semibold text-gray-800 mt-3" text="{{ selection.filename }}" />
+                <Label class="text-xs text-gray-500 mt-1" text="{{ selection.type + '  ·  ' + selection.filesize + ' bytes' + (selection.duration ? '  ·  ' + selection.duration + 's' : '') }}" />
+                <Label class="text-xs text-gray-400 mt-1" text="{{ selection.shortPath }}" textWrap="true" />
             </StackLayout>
-        </GridLayout>
-        <StackLayout row="0" class="m-x-20 m-y-10 p-10" backgroundColor="#eef3ff" borderRadius="8" visibility="{{ progressLog ? 'visible' : 'collapsed' }}">
-            <Label class="t-16 m-b-5" style="font-weight: bold;" text="{{ progressText || 'Done' }}" />
-            <Progress value="{{ progressValue }}" maxValue="100" height="12" class="m-b-10" />
-            <Label class="c-gray t-12 m-b-2" text="onProgress ticks received:" />
-            <Label class="t-14" text="{{ progressLog }}" textWrap="true" />
+        </ScrollView>
+
+        <StackLayout row="2" class="p-4">
+            <Button text="Pick Single" tap="{{ onSelectSingleTap }}" class="bg-blue-500 rounded-full text-white p-4 mb-3" />
+            <Button text="Pick Multiple" tap="{{ onSelectMultipleTap }}" class="bg-blue-500 rounded-full text-white p-4" />
         </StackLayout>
-        <Button row="2" text="Pick Single" tap="{{ onSelectSingleTap }}" horizontalAlignment="center" marginBottom="10" />
-        <Button row="3" text="Pick Multiple" tap="{{ onSelectMultipleTap }}" horizontalAlignment="center" marginBottom="10" />
     </GridLayout>
 </Page>
