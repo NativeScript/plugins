@@ -94,11 +94,9 @@ export class DateTimePicker extends DateTimePickerBase {
 		const alertTitle = options.title ? options.title : '';
 		const alertController = UIAlertController.alertControllerWithTitleMessagePreferredStyle(alertTitle, DateTimePicker.PICKER_DEFAULT_MESSAGE, UIAlertControllerStyle.ActionSheet);
 
-		let pickerContainerFrameTop = options.title ? DateTimePicker.PICKER_DEFAULT_TITLE_OFFSET : DateTimePicker.PICKER_DEFAULT_OFFSET;
-		if (options.title) {
-			pickerContainerFrameTop += DateTimePicker.PICKER_DEFAULT_TITLE_HEIGHT;
-		}
-		const pickerViewHeight = DateTimePicker.PICKER_DEFAULT_MESSAGE_HEIGHT;
+		const intrinsicPickerHeight = nativePicker.intrinsicContentSize.height;
+		const pickerViewHeight = intrinsicPickerHeight > 0 ? intrinsicPickerHeight : DateTimePicker.PICKER_DEFAULT_MESSAGE_HEIGHT;
+
 		const pickerContainer = UIView.alloc().init();
 		pickerContainer.clipsToBounds = false;
 		let spinnersBackgroundColor = new Color('transparent');
@@ -116,15 +114,16 @@ export class DateTimePicker extends DateTimePickerBase {
 
 		const messageLabel = DateTimePicker._findLabelWithText(alertController.view, DateTimePicker.PICKER_DEFAULT_MESSAGE);
 		const messageLabelContainer = DateTimePicker._getLabelContainer(messageLabel);
+		messageLabel.heightAnchor.constraintEqualToConstant(pickerViewHeight).active = true;
 		// Disable clipping on all ancestor views to prevent wheel picker from being cut off
 		DateTimePicker._disableClipsToBoundsOnAncestors(messageLabelContainer);
 		messageLabelContainer.addSubview(pickerContainer);
 
 		pickerContainer.translatesAutoresizingMaskIntoConstraints = false;
-		pickerContainer.topAnchor.constraintEqualToAnchorConstant(alertController.view.topAnchor, pickerContainerFrameTop).active = true;
+		pickerContainer.topAnchor.constraintEqualToAnchor(options.title ? messageLabel.topAnchor : messageLabelContainer.topAnchor).active = true;
 		pickerContainer.leftAnchor.constraintEqualToAnchor(alertController.view.leftAnchor).active = true;
 		pickerContainer.rightAnchor.constraintEqualToAnchor(alertController.view.rightAnchor).active = true;
-		pickerContainer.bottomAnchor.constraintEqualToAnchor(alertController.view.bottomAnchor).active = true;
+		pickerContainer.heightAnchor.constraintEqualToConstant(pickerViewHeight).active = true;
 
 		// Use auto layout for the picker - constrain to container edges to prevent clipping
 		pickerView.translatesAutoresizingMaskIntoConstraints = false;
@@ -167,10 +166,29 @@ export class DateTimePicker extends DateTimePickerBase {
 		}
 
 		if (viewController) {
+			const iosVersion = parseFloat(Device.osVersion);
+			const usesDefaultPhonePlacement = iosVersion >= 26 && !DateTimePicker._isTablet && (!options || options.iosPermittedArrowDirections === undefined);
+			const needsTitleOffset = usesDefaultPhonePlacement && iosVersion < 27 && !!options.title;
+			const positionAboveBottom = (height: number) => {
+				const view = viewController.view;
+				const bottom = view.bounds.origin.y + view.bounds.size.height - view.safeAreaInsets.bottom - DateTimePicker.PICKER_DEFAULT_OFFSET;
+				const top = view.bounds.origin.y + view.safeAreaInsets.top;
+				nativeDialog.popoverPresentationController.sourceRect = CGRectMake(view.bounds.origin.x + view.bounds.size.width / 2.0, Math.max(top, bottom - height - 1), 1.0, 1.0);
+			};
 			if (nativeDialog.popoverPresentationController) {
+				const defaultArrowDirections = usesDefaultPhonePlacement ? UIPopoverArrowDirection.Up : UIPopoverArrowDirection.Any;
+				const sourceRectY = viewController.view.bounds.size.height / 2.0;
 				nativeDialog.popoverPresentationController.sourceView = viewController.view;
-				nativeDialog.popoverPresentationController.sourceRect = CGRectMake(viewController.view.bounds.size.width / 2.0, viewController.view.bounds.size.height / 2.0, 1.0, 1.0);
-				nativeDialog.popoverPresentationController.permittedArrowDirections = options && options.iosPermittedArrowDirections !== undefined ? options.iosPermittedArrowDirections : UIPopoverArrowDirection.Any;
+				nativeDialog.popoverPresentationController.sourceRect = CGRectMake(viewController.view.bounds.size.width / 2.0, sourceRectY, 1.0, 1.0);
+				nativeDialog.popoverPresentationController.permittedArrowDirections = options && options.iosPermittedArrowDirections !== undefined ? options.iosPermittedArrowDirections : defaultArrowDirections;
+				nativeDialog.popoverPresentationController.canOverlapSourceViewRect = true;
+				if (usesDefaultPhonePlacement) {
+					// UIKit positions the popover from this estimate before presentation.
+					const size = nativeDialog.view.systemLayoutSizeFittingSize(CGSizeMake(viewController.view.bounds.size.width, 0));
+					const titleLabel = needsTitleOffset ? DateTimePicker._findLabelWithText(nativeDialog.view, options.title) : null;
+					const titleHeight = titleLabel && titleLabel.intrinsicContentSize.height > 0 ? titleLabel.intrinsicContentSize.height : 0;
+					positionAboveBottom(Math.max(0, size.height - titleHeight));
+				}
 			}
 
 			viewController.presentViewControllerAnimatedCompletion(nativeDialog, true, () => {});
