@@ -280,6 +280,7 @@ export default {
 | `baseHeight` | `number` | No | `48` | Minimum height of the input bar (DIPs) |
 | `maxHeight` | `number` | No | `200` | Maximum height the input bar can grow to (DIPs) |
 | `containerPadding` | `number` | No | `16` | Padding added to text height when calculating container height (DIPs) |
+| `collapsedHorizontalInset` | `number` | No | `0` | iOS only. Horizontal inset (DIPs) of the docked bar while the keyboard is hidden; the bar animates to full width with the keyboard |
 
 ### `InputAccessoryManager`
 
@@ -288,6 +289,8 @@ export default {
 | `setup(config)` | Initialize keyboard accessory behavior. Call after all views are loaded. |
 | `updateAccessoryHeight()` | Recalculate height based on current text content. Call on every text change. |
 | `dismissKeyboard()` | Dismiss the keyboard programmatically. |
+| `suspend()` | iOS: hide the docked bar while a sheet, popover or dialog is presented over the page (the bar's window sits above sheets). No-op on Android. |
+| `restore()` | iOS: bring the bar back after a modal or sheet that covered the page is dismissed; also lifts `suspend()`. Safe to call as soon as the modal starts closing. No-op on Android. |
 | `relayoutScrollViewContent()` | Remeasure ScrollView content after external changes (e.g., new messages added). |
 | `cleanup()` | Remove all listeners and restore original state. Call in `ngOnDestroy`. |
 
@@ -295,7 +298,11 @@ export default {
 
 ### iOS
 
-The plugin creates an invisible `KeyboardTrackingView` that acts as a first responder with a `inputAccessoryView`. Your input bar view is moved into this accessory container, which docks to the keyboard with the system blur effect (`.keyboard` style [UIInputView](https://developer.apple.com/documentation/uikit/uiinputview)). On iOS 26+, [UIScrollEdgeElementContainerInteraction](https://developer.apple.com/documentation/uikit/uiscrolledgeelementcontainerinteraction) provides glass-morphism blending between the ScrollView and the accessory.
+The plugin creates an invisible `KeyboardTrackingView` that acts as a first responder with a `inputAccessoryView`. Your input bar view is moved into this accessory container ([UIInputView](https://developer.apple.com/documentation/uikit/uiinputview)), which docks to the keyboard. Before iOS 26 the container uses the `.keyboard` style, so it carries the system keyboard's blur. On iOS 26+ the container is clear and the ScrollView's scroll edge effect is the bar's background: the plugin registers the container through [UIScrollEdgeElementContainerInteraction](https://developer.apple.com/documentation/uikit/uiscrolledgeelementcontainerinteraction), so content blurs and washes out under the bar the way it does under system bars, with the keyboard open or closed. Set the ScrollView's edge effect to the soft style for the blurred look.
+
+The plugin does not set `textContainerInset` or input traits (autocorrection, spell checking, smart punctuation) on the hosted TextView: size the text with the TextView's CSS padding and configure traits with its own attributes.
+
+With `collapsedHorizontalInset`, the docked bar floats narrower while the keyboard is hidden and widens in step with the keyboard as it opens.
 
 Interactive dismiss is handled via a `CADisplayLink` that tracks the accessory position during scroll gestures, updating the ScrollView's `contentInset` every frame.
 
