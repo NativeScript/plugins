@@ -85,6 +85,24 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 		}
 	}
 
+	/**
+	 * No-op on Android. Dialogs and sheets are their own windows drawn above
+	 * the activity content, so they already cover the accessory bar. Provided
+	 * for API parity with iOS, where the accessory floats above sheets.
+	 */
+	suspend(): void {
+		// intentionally empty
+	}
+
+	/**
+	 * No-op on Android. The accessory bar stays in the layout (it is animated
+	 * via window insets, not an inputAccessoryView tied to first responder),
+	 * so a modal dismiss never removes it. Provided for API parity.
+	 */
+	restore(): void {
+		// intentionally empty
+	}
+
 	cleanup(): void {
 		if (this.helper) {
 			this.helper.cleanup();
