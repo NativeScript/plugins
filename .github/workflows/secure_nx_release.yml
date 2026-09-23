@@ -240,6 +240,16 @@ jobs:
         if: ${{ steps.ctx.outputs.mode == 'main' && steps.affected.outputs.count == '0' }}
         run: echo "No affected release projects on main; skipping version + publish."
 
+      # The branch tip can advance between checkout and the push below (e.g. a PR merges during npm install).
+      # Fast-forward immediately before versioning so the release commit descends from the tip the push
+      # will be compared against.
+      - name: Sync to branch tip (dispatch)
+        if: ${{ steps.ctx.outputs.mode == 'dispatch' && !inputs.dry-run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin "${GITHUB_REF_NAME}"
+
       # Orchestrated release: bumps versions, generates changelogs, commits + tags in one shot.
       # The orchestrator does not accept --git-* flags (config-driven only); push is handled in the next step.
       # --skip-publish keeps publishing as a separate step below so the OIDC token-clearing logic still runs.
@@ -273,9 +283,11 @@ jobs:
             --skip-publish \
             --verbose
 
+      # --atomic: the branch update and the release tag land together or not at all, so a rejected
+      # push can never leave a tag on the remote that points at an unreachable commit.
       - name: Push release commit and tags (dispatch)
         if: ${{ steps.ctx.outputs.mode == 'dispatch' && !inputs.dry-run }}
-        run: git push --follow-tags
+        run: git push --atomic --follow-tags origin "HEAD:${GITHUB_REF_NAME}"
 
       - name: nx release version + changelog (dispatch, dry-run)
         if: ${{ steps.ctx.outputs.mode == 'dispatch' && inputs.dry-run }}
