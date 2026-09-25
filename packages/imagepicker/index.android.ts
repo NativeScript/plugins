@@ -5,6 +5,7 @@ import { ImagePickerMediaType, Options, AuthorizationResult, ImagePickerBase, Im
 export * from './common';
 let copyToAppFolder;
 let renameFileTo;
+let onProgress: Options['onProgress'];
 
 const videoFiles = {
 	mp4: true,
@@ -151,6 +152,55 @@ class UriHelper {
 	}
 }
 
+// Builds the selection for one picked asset. The optional copy into the app
+// folder runs on a background thread via File.copy(); only the video thumbnail
+// and duration are still read on the main thread, because Android offers no
+// asynchronous API for them and JavaScript cannot run on a Java worker thread.
+async function toSelection(selectedAsset: ImageAsset, total: number, index?: number): Promise<ImagePickerSelection> {
+	const file = File.fromPath(selectedAsset.android);
+
+	const item: ImagePickerSelection = {
+		asset: selectedAsset,
+		filename: file.name,
+		originalFilename: file.name,
+		type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
+		path: file.path,
+		filesize: file.size,
+	};
+
+	if (copyToAppFolder) {
+		const filename = targetFilename(file.name, index);
+		// getFolder() creates the destination folder if it does not exist yet.
+		const newPath = knownFolders.documents().getFolder(copyToAppFolder).path + '/' + filename;
+		await file.copy(newPath);
+		item.filename = filename;
+		item.path = newPath;
+		item.asset.android = newPath;
+		item.filesize = new java.io.File(newPath).length();
+	}
+
+	if (item.type == 'video') {
+		const thumb = android.media.ThumbnailUtils.createVideoThumbnail(item.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
+		const retriever = new android.media.MediaMetadataRetriever();
+		retriever.setDataSource(item.path);
+		item.thumbnail = new ImageSource(thumb);
+		const time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
+		item.duration = parseInt(time) / 1000;
+	}
+	// Android has no download progress to report, so the only
+	// notification per item is that it has finished.
+	onProgress?.({ index: index ?? 0, total, fraction: 1 });
+	return item;
+}
+
+function targetFilename(original: string, index?: number): string {
+	if (!renameFileTo) {
+		return original;
+	}
+	const extension = original.split('.').pop();
+	return index || index === 0 ? renameFileTo + '-' + index + '.' + extension : renameFileTo + '.' + extension;
+}
+
 export class ImagePicker extends ImagePickerBase {
 	private _options: Options;
 
@@ -159,6 +209,7 @@ export class ImagePicker extends ImagePickerBase {
 		this._options = options;
 		copyToAppFolder = options.copyToAppFolder;
 		renameFileTo = options.renameFileTo;
+		onProgress = options.onProgress;
 	}
 
 	get mode(): string {
@@ -259,56 +310,8 @@ export class ImagePicker extends ImagePickerBase {
 									uris = [uri];
 								}
 
-								const handle = (selectedAsset, i?) => {
-									const file = File.fromPath(selectedAsset.android);
-									let copiedFile: any = false;
-
-									const item: ImagePickerSelection = {
-										asset: selectedAsset,
-										filename: file.name,
-										originalFilename: file.name,
-										type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
-										path: file.path,
-										filesize: file.size,
-									};
-									if (copyToAppFolder) {
-										let extension = file.name.split('.').pop();
-										let filename = file.name;
-										if (renameFileTo) {
-											if (i || i === 0) {
-												filename = renameFileTo + '-' + i + '.' + extension;
-											} else {
-												filename = renameFileTo + '.' + extension;
-											}
-											item.filename = filename;
-										}
-										let newPath = knownFolders.documents().path + '/' + copyToAppFolder + '/' + filename;
-										copiedFile = File.fromPath(newPath);
-										item.path = newPath;
-										item.asset.android = item.path;
-										copiedFile.writeSync(file.readSync());
-										item.filesize = new java.io.File(item.path).length();
-									}
-									if (item.type == 'video') {
-										const thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
-										let retriever = new android.media.MediaMetadataRetriever();
-										retriever.setDataSource(item.path);
-										item.thumbnail = new ImageSource(thumb);
-										let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
-										let duration = parseInt(time) / 1000;
-										item.duration = duration;
-									}
-									return item;
-								};
-
-								let results = [];
-								for (let i = 0; i <= uris.length - 1; ++i) {
-									const selectedAsset = new ImageAsset(uris[i].toString());
-									let item = handle(selectedAsset, i);
-									results.push(item);
-								}
 								Application.android.off(Application.android.activityResultEvent, onResult);
-								resolve(results);
+								Promise.all(uris.map((uri, i) => toSelection(new ImageAsset(uri), uris.length, i))).then(resolve, reject);
 							} catch (e) {
 								Application.android.off(Application.android.activityResultEvent, onResult);
 								reject(e);
@@ -355,78 +358,31 @@ export class ImagePicker extends ImagePickerBase {
 					let resultCode = args.resultCode;
 					let data = args.intent;
 
-					const handle = (selectedAsset, i?) => {
-						const file = File.fromPath(selectedAsset.android);
-						let copiedFile: any = false;
-
-						const item: ImagePickerSelection = {
-							asset: selectedAsset,
-							filename: file.name,
-							originalFilename: file.name,
-							type: videoFiles[file.extension.replace('.', '')] ? 'video' : 'image',
-							path: file.path,
-							filesize: file.size,
-						};
-						if (copyToAppFolder) {
-							let extension = file.name.split('.').pop();
-							let filename = file.name;
-							if (renameFileTo) {
-								if (i || i === 0) {
-									filename = renameFileTo + '-' + i + '.' + extension;
-								} else {
-									filename = renameFileTo + '.' + extension;
-								}
-								item.filename = filename;
-							}
-							let newPath = knownFolders.documents().path + '/' + copyToAppFolder + '/' + filename;
-							copiedFile = File.fromPath(newPath);
-							item.path = newPath;
-							item.asset.android = item.path;
-							copiedFile.writeSync(file.readSync());
-							item.filesize = new java.io.File(item.path).length();
-						}
-						if (item.type == 'video') {
-							const thumb = android.media.ThumbnailUtils.createVideoThumbnail(copiedFile ? copiedFile.path : file.path, android.provider.MediaStore.Video.Thumbnails.MINI_KIND);
-							let retriever = new android.media.MediaMetadataRetriever();
-							retriever.setDataSource(item.path);
-							item.thumbnail = new ImageSource(thumb);
-							let time = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
-							let duration = parseInt(time) / 1000;
-							item.duration = duration;
-						}
-						return item;
-					};
-
 					if (requestCode === RESULT_CODE_PICKER_IMAGES) {
 						if (resultCode === android.app.Activity.RESULT_OK) {
 							try {
-								let results = [];
-								let clip = data.getClipData();
+								// Resolve every URI before starting any copy, so a failure here
+								// cannot leave copies running with nobody listening for the result.
 								const useHelper = (<any>android).os.Build.VERSION.SDK_INT <= 28;
+								const toPath = (uri: android.net.Uri) => (useHelper ? UriHelper._calculateFileUri(uri) : uri.toString());
+								const paths: string[] = [];
+								let clip = data.getClipData();
 								if (clip) {
 									let count = clip.getItemCount();
 									for (let i = 0; i < count; i++) {
 										let clipItem = clip.getItemAt(i);
-										if (clipItem) {
-											let uri = clipItem.getUri();
-											if (uri) {
-												const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
-												const selectedAsset = new ImageAsset(val);
-												let item = handle(selectedAsset, i);
-												results.push(item);
-											}
+										let uri = clipItem ? clipItem.getUri() : null;
+										if (uri) {
+											paths.push(toPath(uri));
 										}
 									}
 								} else {
-									const uri = data.getData();
-									const val = useHelper ? UriHelper._calculateFileUri(uri) : uri.toString();
-									const selectedAsset = new ImageAsset(val);
-									let item = handle(selectedAsset);
-									results.push(item);
+									paths.push(toPath(data.getData()));
 								}
 
 								Application.android.off(AndroidApplication.activityResultEvent, onResult);
-								resolve(results);
+								const pending = clip ? paths.map((path, i) => toSelection(new ImageAsset(path), paths.length, i)) : paths.map((path) => toSelection(new ImageAsset(path), 1));
+								Promise.all(pending).then(resolve, reject);
 								return;
 							} catch (e) {
 								Application.android.off(Application.android.activityResultEvent, onResult);

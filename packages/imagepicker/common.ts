@@ -50,6 +50,27 @@ export interface ImagePickerSelection {
 }
 
 /**
+ * Progress of loading one picked item, reported through Options.onProgress.
+ */
+export interface ImagePickerProgress {
+	/**
+	 * Zero-based position of the item in the selection.
+	 */
+	index: number;
+
+	/**
+	 * Number of items in the selection.
+	 */
+	total: number;
+
+	/**
+	 * Completion of this item from 0 to 1. On iOS this follows the iCloud
+	 * download of the item; on Android only the final 1 is reported.
+	 */
+	fraction: number;
+}
+
+/**
  * Provide options for the image picker.
  */
 export interface Options {
@@ -59,7 +80,8 @@ export interface Options {
 	mode?: string;
 
 	/**
-	 * Set the minumum number of selected assets in iOS
+	 * Set the minumum number of selected assets in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	minimumNumberOfSelection?: number;
 
@@ -69,22 +91,26 @@ export interface Options {
 	maximumNumberOfSelection?: number;
 
 	/**
-	 * Display the number of selected assets in iOS
+	 * Display the number of selected assets in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	showsNumberOfSelectedAssets?: boolean;
 
 	/**
-	 * Display prompt text when selecting assets in iOS
+	 * Display prompt text when selecting assets in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	prompt?: string;
 
 	/**
-	 * Set the number of columns in Portrait in iOS
+	 * Set the number of columns in Portrait in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	numberOfColumnsInPortrait?: number;
 
 	/**
-	 * Set the number of columns in Landscape in iOS
+	 * Set the number of columns in Landscape in iOS.
+	 * @deprecated Ignored since 5.1: the system PHPickerViewController owns its own UI.
 	 */
 	numberOfColumnsInLandscape?: number;
 
@@ -113,6 +139,14 @@ export interface Options {
 	 * If you want to rename the file when copying it to your app folder, you can pass a string here.
 	 */
 	renameFileTo?: string;
+
+	/**
+	 * Called while the selected items are being resolved, once or more per item.
+	 * iOS reports download progress for items that live in iCloud; every item
+	 * ends with a fraction of 1. Android has no download progress to report and
+	 * only emits the final 1 per item.
+	 */
+	onProgress?: (progress: ImagePickerProgress) => void;
 
 	/**
 	 * Show internal and removable storage options on Android.
