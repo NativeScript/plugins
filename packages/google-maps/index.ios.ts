@@ -40,12 +40,13 @@ import {
 	PolygonOptions,
 	PolylineOptions,
 	Style,
+	StyleSpan,
 	TileOverlayOptions,
 	ILocation,
 	LocationTapEvent,
 } from '.';
-import { bearingProperty, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
-import { deserialize, intoNativeCircleOptions, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, serialize } from './utils';
+import { bearingProperty, CollisionBehavior, JointType, latProperty, lngProperty, MapType, MapViewBase, tiltProperty, zoomProperty } from './common';
+import { deserialize, fromNativeCollisionBehavior, intoNativeCircleOptions, intoNativeCollisionBehavior, intoNativeGroundOverlayOptions, intoNativeMarkerOptions, intoNativePolygonOptions, intoNativePolylineOptions, intoNativeStyleSpans, serialize } from './utils';
 
 export { hueFromColor, intoNativeMarkerOptions } from './utils';
 
@@ -646,7 +647,17 @@ export class MapView extends MapViewBase {
 
 	createNativeView() {
 		MapView._init();
-		const nativeView = GMSMapView.mapWithFrameCamera(CGRectZero, null);
+		let nativeView: GMSMapView;
+		// A cloud mapId (set via the `mapId` attribute) is required for advanced markers and must be
+		// provided through GMSMapViewOptions at construction time.
+		if (this.mapId) {
+			const options = GMSMapViewOptions.new();
+			options.frame = CGRectZero;
+			options.mapID = GMSMapID.mapIDWithIdentifier(this.mapId);
+			nativeView = GMSMapView.alloc().initWithOptions(options);
+		} else {
+			nativeView = GMSMapView.mapWithFrameCamera(CGRectZero, null as any);
+		}
 		this._delegate = GMSMapViewDelegateImpl.initWithOwner(new WeakRef(this));
 		this._indoorDelegate = GMSIndoorDisplayDelegateImpl.initWithOwner(new WeakRef(this));
 		return nativeView;
@@ -1214,6 +1225,19 @@ export class Marker extends OverLayBase implements IMarker {
 		}
 	}
 
+	get collisionBehavior(): CollisionBehavior {
+		if (this.native instanceof GMSAdvancedMarker) {
+			return fromNativeCollisionBehavior(this.native.collisionBehavior);
+		}
+		return CollisionBehavior.Required;
+	}
+
+	set collisionBehavior(value: CollisionBehavior) {
+		if (this.native instanceof GMSAdvancedMarker) {
+			this.native.collisionBehavior = intoNativeCollisionBehavior(value);
+		}
+	}
+
 	get opacity(): number {
 		return this.native.opacity;
 	}
@@ -1690,6 +1714,17 @@ export class Polyline extends OverLayBase implements IPolyline {
 		}
 	}
 
+	_spans: StyleSpan[] = [];
+
+	get spans(): StyleSpan[] {
+		return this._spans;
+	}
+
+	set spans(value: StyleSpan[]) {
+		this._spans = Array.isArray(value) ? value : [];
+		this.native.spans = intoNativeStyleSpans(this._spans);
+	}
+
 	startCap: Cap;
 	endCap: Cap;
 }
@@ -2077,4 +2112,4 @@ export class VisibleRegion implements IVisibleRegion {
 
 export class PatternItem implements IPatternItem {}
 export class Cap implements ICap {}
-export { MapType, JointType };
+export { MapType, JointType, CollisionBehavior };

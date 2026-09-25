@@ -30,6 +30,10 @@ A plugin that allows you to use the [Maps SDK](https://developers.google.com/map
 		* [Marker Object](#marker-object)
 		* [MarkerOptions](#markeroptions)
 		* [Removing Markers](#removing-markers)
+		* [Advanced Markers](#advanced-markers)
+			* [PinConfig](#pinconfig)
+			* [Glyph](#glyph)
+			* [CollisionBehavior enum](#collisionbehavior-enum)
 	* [Circles](#circles)
 		* [Adding Circles](#adding-circles)
 		* [CircleOptions](#circleoptions)
@@ -42,6 +46,7 @@ A plugin that allows you to use the [Maps SDK](https://developers.google.com/map
 	* [Polylines](#polylines)
 		* [Adding Polylines](#adding-polylines)
 		* [PolylineOptions](#polylineoptions)
+		* [Styled Polylines](#styled-polylines)
 		* [Removing Polylines](#removing-polylines)
 	* [Ground Overlays](#ground-overlays)
 		* [Adding Ground Overlays](#adding-ground-overlays)
@@ -237,6 +242,7 @@ The following properties are available for adjusting the camera view on initiali
 `bearing` | `number` | Bearing, in degrees
 `tilt` | `number` | Tilt, in degrees
 `preventDefaultMarkerTapBehavior` | `boolean` | Prevents the default marker event handling (panning/info windows) done by Google Maps
+`mapId` | `string` | A [cloud-based map ID](https://developers.google.com/maps/documentation/get-map-id). Required to use [Advanced Markers](#advanced-markers). Must be set on the `MapView` before the map is created (i.e. as a markup attribute); it cannot be changed at runtime.
 
 #### Events
 
@@ -480,6 +486,12 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 | `hideInfoWindow()`|  `void`
 | `showInfoWindow()`|  `void`
 
+It also exposes the following property:
+
+| Property | Type | Description
+|:---------|:-----|:-----------
+| `collisionBehavior` | [CollisionBehavior](#collisionbehavior-enum) | The [collision behavior](#advanced-markers) of an advanced marker. On iOS this can be changed after the marker is created; on Android it is fixed at creation time and setting it afterwards has no effect (set it via [MarkerOptions](#markeroptions) instead).
+
 #### MarkerOptions
 
 | Property | Type | Description
@@ -497,6 +509,8 @@ function addMarker(map: GoogleMap, markerOptions: MarkerOptions): Marker {
 | `anchorV` | `number` | Vertical icon offset from the marker position
 | `userData` | `any` | Additional information assigned to the marker
 | `zIndex` | `number` | Z-index of the marker
+| `pinConfig` | [PinConfig](#pinconfig) | Turns this into an [advanced marker](#advanced-markers) with a styled pin. Requires a cloud [`mapId`](#properties).
+| `collisionBehavior` | [CollisionBehavior](#collisionbehavior-enum) | Turns this into an [advanced marker](#advanced-markers) with the given collision behavior. Requires a cloud [`mapId`](#properties).
 
 #### Coordinate
 | Property | Type
@@ -513,6 +527,64 @@ function removeMarker(map: GoogleMap, marker: Marker) {
 	map.removeMarker(marker);
 }
 ```
+
+### Advanced Markers
+
+Advanced markers let you customize the marker's pin (background, border and glyph) and control how markers collide with one another. They are added with the same [`addMarker`](#adding-markers) method — a marker becomes "advanced" when its [MarkerOptions](#markeroptions) include a `pinConfig` and/or a `collisionBehavior`.
+
+> **Note:** Advanced markers require the [MapView](#mapview-class) to be created with a cloud-based [`mapId`](#properties) that has advanced markers enabled. Without one, the styled pin and collision behavior are ignored and a default marker is shown. For quick testing you can use the `DEMO_MAP_ID` map ID.
+
+```xml
+<map:MapView mapId="DEMO_MAP_ID" ready="{{ onReady }}" />
+```
+
+```ts
+import { CollisionBehavior, GoogleMap } from '@nativescript/google-maps';
+
+function addStyledMarker(map: GoogleMap) {
+	map.addMarker({
+		position: { lat: 37.7749, lng: -122.4194 },
+		title: 'San Francisco',
+		collisionBehavior: CollisionBehavior.RequiredAndHidesOptional,
+		pinConfig: {
+			backgroundColor: '#1a73e8',
+			borderColor: '#0b47a1',
+			glyph: { text: 'SF', textColor: 'white' },
+		},
+	});
+}
+```
+
+#### PinConfig
+
+Describes the appearance of an advanced marker's pin.
+
+| Property | Type | Description
+|:---------|:-----|:-----------
+| `backgroundColor` | `Color` \| `string` | Fill color of the pin
+| `borderColor` | `Color` \| `string` | Border color of the pin
+| `glyph` | [Glyph](#glyph) | The glyph shown in the center of the pin
+
+#### Glyph
+
+The mark shown inside a pin. Provide **one** of the following: a `text` (optionally with `textColor`), a monochrome `glyphColor`, or a custom `icon`.
+
+| Property | Type | Description
+|:---------|:-----|:-----------
+| `text` | `string` | A short piece of text (typically 1-2 characters) rendered in the center of the pin
+| `textColor` | `Color` \| `string` | Color of the glyph `text`
+| `glyphColor` | `Color` \| `string` | Renders the default glyph shape tinted with this color (ignored when `text` or `icon` is set)
+| `icon` | `ImageSource \| UIImage \| Bitmap` | A custom image rendered as the glyph
+
+#### CollisionBehavior enum
+
+Controls how a marker behaves when it would overlap other markers or labels.
+
+| Value | Description
+|:------|:-----------
+| `Required` | Always render the marker, ignoring collisions (default)
+| `OptionalAndHidesLowerPriority` | Render the marker only when it doesn't overlap another marker; hide it if it does
+| `RequiredAndHidesOptional` | Always render the marker, and hide any overlapping `OptionalAndHidesLowerPriority` markers/labels
 
 ## Circles
 
@@ -612,7 +684,43 @@ function addPolyline(map: GoogleMap, polylineOptions: PolylineOptions): Polyline
 | `color` | Color \| string | 
 | `startCap` | Cap & Partial\<NativeObject\> | 
 | `endCap` | Cap & Partial\<NativeObject\> | 
+| `spans` | [StyleSpan](#styled-polylines)[] | 
 | `userData` | `{ [key: string]: any }` | 
+
+#### Styled Polylines
+
+By default a polyline is drawn in a single `color`. To color a line per-segment — for example a gradient route or alternating colors — provide an array of `spans`. Each [StyleSpan](#stylespan) covers a run of segments (the sections between consecutive vertices), applied in order from the start of the line. `spans` can be set in [PolylineOptions](#polylineoptions) or assigned later on the [Polyline](#polyline) object.
+
+```ts
+import { GoogleMap } from '@nativescript/google-maps';
+
+function addStyledPolyline(map: GoogleMap) {
+	// 4 points => 3 segments, covered by 1 + 2 spans below.
+	map.addPolyline({
+		width: 8,
+		points: [
+			{ lat: 37.7899, lng: -122.4094 },
+			{ lat: 37.7849, lng: -122.4294 },
+			{ lat: 37.7749, lng: -122.4194 },
+			{ lat: 37.7649, lng: -122.4294 },
+		],
+		spans: [
+			{ color: '#ea4335', segments: 1 },
+			{ gradient: { from: '#4285f4', to: '#34a853' }, segments: 2 },
+		],
+	});
+}
+```
+
+##### StyleSpan
+
+| Property | Type | Description
+|:---------|:-----|:-----------
+| `color` | `Color` \| `string` | Solid color for this span (ignored when `gradient` is set)
+| `gradient` | `{ from: Color \| string; to: Color \| string }` | A color gradient blended along this span; takes precedence over `color`
+| `segments` | `number` | Length of the span in line segments (defaults to `1`)
+
+> **Note:** Reading back `polyline.spans` returns the last value you assigned (the native span objects don't round-trip losslessly).
 
 ### Removing Polylines
 

@@ -10,7 +10,6 @@ declare module com {
 					public static DEBUG: boolean = 0;
 					public static LIBRARY_PACKAGE_NAME: string = 'com.google.maps.android';
 					public static BUILD_TYPE: string = 'release';
-					public static TRAVIS: string = 'null';
 					public constructor();
 				}
 			}
@@ -24,6 +23,19 @@ declare module com {
 			export module android {
 				export class MathUtil {
 					public static class: java.lang.Class<com.google.maps.android.MathUtil>;
+					public static INSTANCE: com.google.maps.android.MathUtil;
+					public static EARTH_RADIUS: number = 6371009.0;
+					public static inverseMercator(y: number): number;
+					public static sinSumFromHav(a: number, b: number): number;
+					public static arcHav(x: number): number;
+					public static havDistance(lat1: number, lat2: number, dLng: number): number;
+					public static havFromSin(x2: number): number;
+					public static clamp(x: number, low: number, high: number): number;
+					public static mercator(lat: number): number;
+					public static hav(sinHalf: number): number;
+					public static wrap(n: number, min: number, max: number): number;
+					public static mod(x: number, m: number): number;
+					public static sinFromHav(h: number): number;
 				}
 			}
 		}
@@ -36,21 +48,39 @@ declare module com {
 			export module android {
 				export class PolyUtil {
 					public static class: java.lang.Class<com.google.maps.android.PolyUtil>;
+					public static INSTANCE: com.google.maps.android.PolyUtil;
 					public static DEFAULT_TOLERANCE: number = 0.1;
 					public static isLocationOnEdge(point: com.google.android.gms.maps.model.LatLng, polygon: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean, tolerance: number): boolean;
+					public static simplify($i$a$_require_PolyUtil$simplify$1: java.util.List<com.google.android.gms.maps.model.LatLng>, $i$a$_require_PolyUtil$simplify$2: number): java.util.List<com.google.android.gms.maps.model.LatLng>;
 					public static containsLocation(dLng3: number, lat2: number, lng2: java.util.List<com.google.android.gms.maps.model.LatLng>, point2: boolean): boolean;
 					public static isLocationOnPath(point: com.google.android.gms.maps.model.LatLng, polyline: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean, tolerance: number): boolean;
-					public static locationIndexOnPath(point: com.google.android.gms.maps.model.LatLng, polyline: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean): number;
 					public static isClosedPolygon(poly: java.util.List<com.google.android.gms.maps.model.LatLng>): boolean;
 					public static decode(result: string): java.util.List<com.google.android.gms.maps.model.LatLng>;
+					public static locationIndexOnPath(point: com.google.android.gms.maps.model.LatLng, poly: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean): number;
 					public static containsLocation(point: com.google.android.gms.maps.model.LatLng, polygon: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean): boolean;
 					public static isLocationOnPath(point: com.google.android.gms.maps.model.LatLng, polyline: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean): boolean;
 					public static locationIndexOnPath(point: com.google.android.gms.maps.model.LatLng, poly: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean, tolerance: number): number;
-					public static simplify(OFFSET: java.util.List<com.google.android.gms.maps.model.LatLng>, stackValCurMax: number): java.util.List<com.google.android.gms.maps.model.LatLng>;
-					public static distanceToLine(p: com.google.android.gms.maps.model.LatLng, start: com.google.android.gms.maps.model.LatLng, end: com.google.android.gms.maps.model.LatLng): number;
 					public static encode(lat: java.util.List<com.google.android.gms.maps.model.LatLng>): string;
 					public static isLocationOnEdge(point: com.google.android.gms.maps.model.LatLng, polygon: java.util.List<com.google.android.gms.maps.model.LatLng>, geodesic: boolean): boolean;
 					public static locationIndexOnEdgeOrPath(lat2: com.google.android.gms.maps.model.LatLng, lng2: java.util.List<com.google.android.gms.maps.model.LatLng>, point2: boolean, dy: boolean, len2: number): number;
+					public static distanceToLine(s0lat: com.google.android.gms.maps.model.LatLng, s0lng: com.google.android.gms.maps.model.LatLng, s1lat: com.google.android.gms.maps.model.LatLng): number;
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export class RendererLogger {
+					public static class: java.lang.Class<com.google.maps.android.RendererLogger>;
+					public static setEnabled(value: boolean): void;
+					public static d(tag: string, message: string): void;
+					public static e(tag: string, message: string): void;
+					public static w(tag: string, message: string): void;
+					public static i(tag: string, message: string): void;
 				}
 			}
 		}
@@ -101,14 +131,19 @@ declare module com {
 			export module android {
 				export class SphericalUtil {
 					public static class: java.lang.Class<com.google.maps.android.SphericalUtil>;
-					public static computeOffsetOrigin(to: com.google.android.gms.maps.model.LatLng, distance: number, heading: number): com.google.android.gms.maps.model.LatLng;
+					public static INSTANCE: com.google.maps.android.SphericalUtil;
+					public static computeOffset(distance: com.google.android.gms.maps.model.LatLng, heading: number, fromLat: number): com.google.android.gms.maps.model.LatLng;
 					public static computeSignedArea(path: java.util.List<com.google.android.gms.maps.model.LatLng>): number;
-					public static computeOffset(from: com.google.android.gms.maps.model.LatLng, distance: number, heading: number): com.google.android.gms.maps.model.LatLng;
+					public static computeHeading(fromLat: com.google.android.gms.maps.model.LatLng, fromLng: com.google.android.gms.maps.model.LatLng): number;
+					public static interpolate(fromLat: com.google.android.gms.maps.model.LatLng, fromLng: com.google.android.gms.maps.model.LatLng, toLat: number): com.google.android.gms.maps.model.LatLng;
+					public static computeAngleBetween(from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): number;
 					public static computeDistanceBetween(from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): number;
 					public static computeArea(path: java.util.List<com.google.android.gms.maps.model.LatLng>): number;
-					public static computeHeading(from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): number;
+					public static getPointOnPolyline(polyline: java.util.List<com.google.android.gms.maps.model.LatLng>, percentage: number): com.google.android.gms.maps.model.LatLng;
+					public static getPolylinePrefix(fraction: java.util.List<com.google.android.gms.maps.model.LatLng>, segmentLength: number): java.util.List<com.google.android.gms.maps.model.LatLng>;
 					public static computeLength(prevLat: java.util.List<com.google.android.gms.maps.model.LatLng>): number;
-					public static interpolate(from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng, fraction: number): com.google.android.gms.maps.model.LatLng;
+					public static computeSignedArea(tanLat: java.util.List<com.google.android.gms.maps.model.LatLng>, lng: number): number;
+					public static computeOffsetOrigin(distance: com.google.android.gms.maps.model.LatLng, heading: number, n1: number): com.google.android.gms.maps.model.LatLng;
 				}
 			}
 		}
@@ -131,6 +166,32 @@ declare module com {
 					public static getEntries(): any;
 					public static values(): androidNative.Array<com.google.maps.android.Status>;
 					public static valueOf(value: string): com.google.maps.android.Status;
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export class StreetViewJavaHelper {
+					public static class: java.lang.Class<com.google.maps.android.StreetViewJavaHelper>;
+					public static INSTANCE: com.google.maps.android.StreetViewJavaHelper;
+					public static fetchStreetViewData(latLng: com.google.android.gms.maps.model.LatLng, apiKey: string, callback: com.google.maps.android.StreetViewJavaHelper.StreetViewCallback): void;
+				}
+				export module StreetViewJavaHelper {
+					export class StreetViewCallback {
+						public static class: java.lang.Class<com.google.maps.android.StreetViewJavaHelper.StreetViewCallback>;
+						/**
+						 * Constructs a new instance of the com.google.maps.android.StreetViewJavaHelper$StreetViewCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
+						 */
+						public constructor(implementation: { onStreetViewResult(param0: com.google.maps.android.Status): void; onStreetViewError(param0: java.lang.Exception): void });
+						public constructor();
+						public onStreetViewResult(param0: com.google.maps.android.Status): void;
+						public onStreetViewError(param0: java.lang.Exception): void;
+					}
 				}
 			}
 		}
@@ -372,6 +433,67 @@ declare module com {
 			export module android {
 				export module clustering {
 					export module algo {
+						export class CentroidNonHierarchicalDistanceBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm<any> {
+							public static class: java.lang.Class<com.google.maps.android.clustering.algo.CentroidNonHierarchicalDistanceBasedAlgorithm<any>>;
+							public constructor();
+							public addItems(param0: java.util.Collection<any>): boolean;
+							public setMaxDistanceBetweenClusteredItems(param0: number): void;
+							public getClusters(param0: number): java.util.Set<any>;
+							public computeCentroid(this_: java.util.Collection<any>): com.google.android.gms.maps.model.LatLng;
+							public addItem(param0: any): boolean;
+							public unlock(): void;
+							public getClusters(centroid: number): java.util.Set<any>;
+							public removeItem(param0: any): boolean;
+							public getItems(): java.util.Collection<any>;
+							public clearItems(): void;
+							public lock(): void;
+							public updateItem(param0: any): boolean;
+							public getMaxDistanceBetweenClusteredItems(): number;
+							public removeItems(param0: java.util.Collection<any>): boolean;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export module clustering {
+					export module algo {
+						export class ContinuousZoomEuclideanCentroidAlgorithm<T> extends com.google.maps.android.clustering.algo.CentroidNonHierarchicalDistanceBasedAlgorithm<any> {
+							public static class: java.lang.Class<com.google.maps.android.clustering.algo.ContinuousZoomEuclideanCentroidAlgorithm<any>>;
+							public constructor();
+							public getClusters(radiusSquared: number): java.util.Set<any>;
+							public addItems(param0: java.util.Collection<any>): boolean;
+							public setMaxDistanceBetweenClusteredItems(param0: number): void;
+							public getClusters(param0: number): java.util.Set<any>;
+							public addItem(param0: any): boolean;
+							public unlock(): void;
+							public removeItem(param0: any): boolean;
+							public getItems(): java.util.Collection<any>;
+							public clearItems(): void;
+							public lock(): void;
+							public updateItem(param0: any): boolean;
+							public getMaxDistanceBetweenClusteredItems(): number;
+							public removeItems(param0: java.util.Collection<any>): boolean;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export module clustering {
+					export module algo {
 						export class GridBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.GridBasedAlgorithm<any>>;
 							public constructor();
@@ -410,6 +532,8 @@ declare module com {
 					export module algo {
 						export class NonHierarchicalDistanceBasedAlgorithm<T> extends com.google.maps.android.clustering.algo.AbstractAlgorithm<any> {
 							public static class: java.lang.Class<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm<any>>;
+							public mItems: java.util.Collection<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem<any>>;
+							public mQuadTree: com.google.maps.android.quadtree.PointQuadTree<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem<any>>;
 							public constructor();
 							public removeItems(individualResult: java.util.Collection<any>): boolean;
 							public addItems(param0: java.util.Collection<any>): boolean;
@@ -417,12 +541,14 @@ declare module com {
 							public setMaxDistanceBetweenClusteredItems(param0: number): void;
 							public setMaxDistanceBetweenClusteredItems(maxDistance: number): void;
 							public getClusters(param0: number): java.util.Set<any>;
+							public distanceSquared(a: com.google.maps.android.geometry.Point, b: com.google.maps.android.geometry.Point): number;
 							public removeItem(this_: any): boolean;
 							public addItem(param0: any): boolean;
 							public unlock(): void;
 							public getClusteringItems(quadTree: com.google.maps.android.quadtree.PointQuadTree<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem<any>>, zoom: number): java.util.Collection<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem<any>>;
 							public removeItem(param0: any): boolean;
 							public getItems(): java.util.Collection<any>;
+							public createBoundsFromSpan(p: com.google.maps.android.geometry.Point, span: number): com.google.maps.android.geometry.Bounds;
 							public updateItem(this_: any): boolean;
 							public clearItems(): void;
 							public getClusters(distance: number): java.util.Set<any>;
@@ -435,6 +561,7 @@ declare module com {
 						export module NonHierarchicalDistanceBasedAlgorithm {
 							export class QuadItem<T> extends java.lang.Object {
 								public static class: java.lang.Class<com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem<any>>;
+								public mClusterItem: T;
 								public getItems(): java.util.Set<T>;
 								public getPoint(): com.google.maps.android.geometry.Point;
 								public getItems(): java.util.Collection<T>;
@@ -718,6 +845,7 @@ declare module com {
 							public shouldRenderAsCluster(cluster: com.google.maps.android.clustering.Cluster<any>): boolean;
 							public setAnimation(param0: boolean): void;
 							public setOnClusterItemInfoWindowLongClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowLongClickListener<any>): void;
+							public setLoggingEnabled(enabled: boolean): void;
 							public setOnClusterItemInfoWindowClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowClickListener<any>): void;
 							public onBeforeClusterRendered(cluster: com.google.maps.android.clustering.Cluster<any>, markerOptions: com.google.android.gms.maps.model.MarkerOptions): void;
 							public setAnimationType(type: com.google.maps.android.clustering.view.ClusterRendererMultipleItems.AnimationType): void;
@@ -728,6 +856,7 @@ declare module com {
 							public getClusterItem(marker: com.google.android.gms.maps.model.Marker): any;
 							public getClusterTextAppearance(param0: number): number;
 							public setOnClusterInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<any>): void;
+							public constructor(context: globalAndroid.content.Context, map: com.google.android.gms.maps.GoogleMap, clusterManager: com.google.maps.android.clustering.ClusterManager<any>, executor: java.util.concurrent.Executor);
 							public setOnClusterClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<any>): void;
 							public onClusterItemRendered(clusterItem: any, marker: com.google.android.gms.maps.model.Marker): void;
 							public getMarker(cluster: com.google.maps.android.clustering.Cluster<any>): com.google.android.gms.maps.model.Marker;
@@ -737,6 +866,7 @@ declare module com {
 							public setOnClusterInfoWindowLongClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowLongClickListener<any>): void;
 							public onAdd(): void;
 							public setOnClusterInfoWindowClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<any>): void;
+							public setAnimationInterpolator(interpolator: globalAndroid.animation.TimeInterpolator): void;
 							public setOnClusterItemClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener<any>): void;
 							public getClusterTextAppearance(clusterSize: number): number;
 							public setOnClusterClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<any>): void;
@@ -781,13 +911,13 @@ declare module com {
 							export class MarkerModifier {
 								public static class: java.lang.Class<com.google.maps.android.clustering.view.ClusterRendererMultipleItems.MarkerModifier>;
 								public add(priority: boolean, c: com.google.maps.android.clustering.view.ClusterRendererMultipleItems.CreateMarkerTask): void;
-								public animateThenRemove(this_: com.google.maps.android.clustering.view.ClusterRendererMultipleItems.MarkerWithPosition<any>, marker: com.google.android.gms.maps.model.LatLng, from: com.google.android.gms.maps.model.LatLng): void;
 								public remove(priority: boolean, m: com.google.android.gms.maps.model.Marker): void;
-								public animate(this_: com.google.maps.android.clustering.view.ClusterRendererMultipleItems.MarkerWithPosition<any>, marker: com.google.android.gms.maps.model.LatLng, from: com.google.android.gms.maps.model.LatLng): void;
 								public handleMessage(this_: globalAndroid.os.Message): void;
 								public waitUntilFree(): void;
 								public queueIdle(): boolean;
 								public isBusy(): boolean;
+								public animate(marker: com.google.maps.android.clustering.view.ClusterRendererMultipleItems.MarkerWithPosition<any>, from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): void;
+								public animateThenRemove(marker: com.google.maps.android.clustering.view.ClusterRendererMultipleItems.MarkerWithPosition<any>, from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): void;
 							}
 							export class MarkerWithPosition<T> extends java.lang.Object {
 								public static class: java.lang.Class<com.google.maps.android.clustering.view.ClusterRendererMultipleItems.MarkerWithPosition<any>>;
@@ -849,6 +979,7 @@ declare module com {
 							public getClusterItem(marker: com.google.android.gms.maps.model.Marker): any;
 							public getClusterTextAppearance(param0: number): number;
 							public setOnClusterInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<any>): void;
+							public constructor(context: globalAndroid.content.Context, map: com.google.android.gms.maps.GoogleMap, clusterManager: com.google.maps.android.clustering.ClusterManager<any>, executor: java.util.concurrent.Executor);
 							public setOnClusterClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<any>): void;
 							public onClusterItemRendered(clusterItem: any, marker: com.google.android.gms.maps.model.Marker): void;
 							public getMarker(cluster: com.google.maps.android.clustering.Cluster<any>): com.google.android.gms.maps.model.Marker;
@@ -888,8 +1019,8 @@ declare module com {
 							export class MarkerModifier {
 								public static class: java.lang.Class<com.google.maps.android.clustering.view.DefaultAdvancedMarkersClusterRenderer.MarkerModifier>;
 								public remove(priority: boolean, m: com.google.android.gms.maps.model.Marker): void;
+								public animateThenRemove(this_: com.google.maps.android.clustering.view.DefaultAdvancedMarkersClusterRenderer.MarkerWithPosition, marker: com.google.android.gms.maps.model.LatLng, from: com.google.android.gms.maps.model.LatLng): void;
 								public add(priority: boolean, c: com.google.maps.android.clustering.view.DefaultAdvancedMarkersClusterRenderer.CreateMarkerTask): void;
-								public animateThenRemove(marker: com.google.maps.android.clustering.view.DefaultAdvancedMarkersClusterRenderer.MarkerWithPosition, from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): void;
 								public handleMessage(this_: globalAndroid.os.Message): void;
 								public waitUntilFree(): void;
 								public animate(marker: com.google.maps.android.clustering.view.DefaultAdvancedMarkersClusterRenderer.MarkerWithPosition, from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): void;
@@ -947,7 +1078,6 @@ declare module com {
 							public setAnimation(param0: boolean): void;
 							public setOnClusterItemInfoWindowLongClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowLongClickListener<any>): void;
 							public setOnClusterItemInfoWindowClickListener(listener: com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowClickListener<any>): void;
-							public onBeforeClusterRendered(cluster: com.google.maps.android.clustering.Cluster<any>, markerOptions: com.google.android.gms.maps.model.MarkerOptions): void;
 							public setMinClusterSize(minClusterSize: number): void;
 							public onClusterUpdated(cluster: com.google.maps.android.clustering.Cluster<any>, marker: com.google.android.gms.maps.model.Marker): void;
 							public getMinClusterSize(): number;
@@ -955,10 +1085,12 @@ declare module com {
 							public getClusterItem(marker: com.google.android.gms.maps.model.Marker): any;
 							public getClusterTextAppearance(param0: number): number;
 							public setOnClusterInfoWindowClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowClickListener<any>): void;
+							public constructor(context: globalAndroid.content.Context, map: com.google.android.gms.maps.GoogleMap, clusterManager: com.google.maps.android.clustering.ClusterManager<any>, executor: java.util.concurrent.Executor);
 							public setOnClusterClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterClickListener<any>): void;
 							public onClusterItemRendered(clusterItem: any, marker: com.google.android.gms.maps.model.Marker): void;
 							public getMarker(cluster: com.google.maps.android.clustering.Cluster<any>): com.google.android.gms.maps.model.Marker;
 							public onClustersChanged(clusters: java.util.Set<any>): void;
+							public onBeforeClusterRendered(this_: com.google.maps.android.clustering.Cluster<any>, cluster: com.google.android.gms.maps.model.MarkerOptions): void;
 							public getDescriptorForCluster(cluster: com.google.maps.android.clustering.Cluster<any>): com.google.android.gms.maps.model.BitmapDescriptor;
 							public setOnClusterInfoWindowLongClickListener(param0: com.google.maps.android.clustering.ClusterManager.OnClusterInfoWindowLongClickListener<any>): void;
 							public onAdd(): void;
@@ -995,10 +1127,10 @@ declare module com {
 								public static class: java.lang.Class<com.google.maps.android.clustering.view.DefaultClusterRenderer.MarkerModifier>;
 								public remove(priority: boolean, m: com.google.android.gms.maps.model.Marker): void;
 								public add(priority: boolean, c: com.google.maps.android.clustering.view.DefaultClusterRenderer.CreateMarkerTask): void;
+								public animateThenRemove(this_: com.google.maps.android.clustering.view.DefaultClusterRenderer.MarkerWithPosition, marker: com.google.android.gms.maps.model.LatLng, from: com.google.android.gms.maps.model.LatLng): void;
 								public handleMessage(this_: globalAndroid.os.Message): void;
 								public waitUntilFree(): void;
 								public animate(marker: com.google.maps.android.clustering.view.DefaultClusterRenderer.MarkerWithPosition, from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): void;
-								public animateThenRemove(marker: com.google.maps.android.clustering.view.DefaultClusterRenderer.MarkerWithPosition, from: com.google.android.gms.maps.model.LatLng, to: com.google.android.gms.maps.model.LatLng): void;
 								public queueIdle(): boolean;
 								public isBusy(): boolean;
 							}
@@ -1678,9 +1810,13 @@ declare module com {
 							public setPattern(pattern: java.util.List<com.google.android.gms.maps.model.PatternItem>): void;
 							public getPattern(): java.util.List<com.google.android.gms.maps.model.PatternItem>;
 							public isGeodesic(): boolean;
+							public getStartCap(): com.google.android.gms.maps.model.Cap;
+							public setStartCap(cap: com.google.android.gms.maps.model.Cap): void;
+							public getEndCap(): com.google.android.gms.maps.model.Cap;
 							public setWidth(width: number): void;
 							public setGeodesic(geodesic: boolean): void;
 							public getZIndex(): number;
+							public setEndCap(cap: com.google.android.gms.maps.model.Cap): void;
 							public toPolylineOptions(): com.google.android.gms.maps.model.PolylineOptions;
 							public setColor(color: number): void;
 							public setClickable(clickable: boolean): void;
@@ -2085,16 +2221,31 @@ declare module com {
 						export class KmlLayer extends com.google.maps.android.data.Layer {
 							public static class: java.lang.Class<com.google.maps.android.data.kml.KmlLayer>;
 							public constructor();
+							public constructor(map: com.google.android.gms.maps.GoogleMap, resourceId: number, context: globalAndroid.content.Context, maxKmzEntryCount: number, maxKmzUncompressedTotalSize: number);
 							public getContainers(): java.lang.Iterable<com.google.maps.android.data.kml.KmlContainer>;
 							public hasPlacemarks(): boolean;
-							public getPlacemarks(): java.lang.Iterable<com.google.maps.android.data.kml.KmlPlacemark>;
-							public constructor(map: com.google.android.gms.maps.GoogleMap, resourceId: number, context: globalAndroid.content.Context);
+							public constructor(map: com.google.android.gms.maps.GoogleMap, resourceId: number, context: globalAndroid.content.Context, markerManager: com.google.maps.android.collections.MarkerManager, polygonManager: com.google.maps.android.collections.PolygonManager, polylineManager: com.google.maps.android.collections.PolylineManager, groundOverlayManager: com.google.maps.android.collections.GroundOverlayManager, cache: com.google.maps.android.data.Renderer.ImagesCache, maxKmzEntryCount: number, maxKmzUncompressedTotalSize: number);
 							public getGroundOverlays(): java.lang.Iterable<com.google.maps.android.data.kml.KmlGroundOverlay>;
 							public constructor(map: com.google.android.gms.maps.GoogleMap, stream: java.io.InputStream, context: globalAndroid.content.Context);
-							public constructor(images: com.google.android.gms.maps.GoogleMap, parser: java.io.InputStream, entry: globalAndroid.content.Context, this_: com.google.maps.android.collections.MarkerManager, map: com.google.maps.android.collections.PolygonManager, stream: com.google.maps.android.collections.PolylineManager, context: com.google.maps.android.collections.GroundOverlayManager, markerManager: com.google.maps.android.data.Renderer.ImagesCache);
-							public addLayerToMap(): void;
+							public constructor(map: com.google.android.gms.maps.GoogleMap, stream: java.io.InputStream, context: globalAndroid.content.Context, maxKmzEntryCount: number, maxKmzUncompressedTotalSize: number);
 							public hasContainers(): boolean;
+							public constructor(entryCount: com.google.android.gms.maps.GoogleMap, images: java.io.InputStream, parser: globalAndroid.content.Context, entry: com.google.maps.android.collections.MarkerManager, this_: com.google.maps.android.collections.PolygonManager, map: com.google.maps.android.collections.PolylineManager, stream: com.google.maps.android.collections.GroundOverlayManager, context: com.google.maps.android.data.Renderer.ImagesCache, markerManager: com.google.maps.android.data.kml.KmlUrlSanitizer, polygonManager: number, polylineManager: number);
 							public constructor(map: com.google.android.gms.maps.GoogleMap, resourceId: number, context: globalAndroid.content.Context, markerManager: com.google.maps.android.collections.MarkerManager, polygonManager: com.google.maps.android.collections.PolygonManager, polylineManager: com.google.maps.android.collections.PolylineManager, groundOverlayManager: com.google.maps.android.collections.GroundOverlayManager, cache: com.google.maps.android.data.Renderer.ImagesCache);
+							public getPlacemarks(): java.lang.Iterable<com.google.maps.android.data.kml.KmlPlacemark>;
+							public constructor(map: com.google.android.gms.maps.GoogleMap, resourceId: number, context: globalAndroid.content.Context);
+							public addLayerToMap(): void;
+							public constructor(map: com.google.android.gms.maps.GoogleMap, stream: java.io.InputStream, context: globalAndroid.content.Context, markerManager: com.google.maps.android.collections.MarkerManager, polygonManager: com.google.maps.android.collections.PolygonManager, polylineManager: com.google.maps.android.collections.PolylineManager, groundOverlayManager: com.google.maps.android.collections.GroundOverlayManager, cache: com.google.maps.android.data.Renderer.ImagesCache, urlSanitizer: com.google.maps.android.data.kml.KmlUrlSanitizer);
+							public constructor(map: com.google.android.gms.maps.GoogleMap, stream: java.io.InputStream, context: globalAndroid.content.Context, markerManager: com.google.maps.android.collections.MarkerManager, polygonManager: com.google.maps.android.collections.PolygonManager, polylineManager: com.google.maps.android.collections.PolylineManager, groundOverlayManager: com.google.maps.android.collections.GroundOverlayManager, cache: com.google.maps.android.data.Renderer.ImagesCache);
+							public constructor(map: com.google.android.gms.maps.GoogleMap, stream: java.io.InputStream, context: globalAndroid.content.Context, markerManager: com.google.maps.android.collections.MarkerManager, polygonManager: com.google.maps.android.collections.PolygonManager, polylineManager: com.google.maps.android.collections.PolylineManager, groundOverlayManager: com.google.maps.android.collections.GroundOverlayManager, cache: com.google.maps.android.data.Renderer.ImagesCache, maxKmzEntryCount: number, maxKmzUncompressedTotalSize: number);
+						}
+						export module KmlLayer {
+							export class CountingInputStream {
+								public static class: java.lang.Class<com.google.maps.android.data.kml.KmlLayer.CountingInputStream>;
+								public constructor(in_: java.io.InputStream, maxBytes: number);
+								public read(): number;
+								public read(b: androidNative.Array<number>, off: number, len: number): number;
+								public skip(n: number): number;
+							}
 						}
 					}
 				}
@@ -2274,17 +2425,22 @@ declare module com {
 							public addLayerToMap(): void;
 						}
 						export module KmlRenderer {
+							export class DefaultKmlUrlSanitizer extends com.google.maps.android.data.kml.KmlUrlSanitizer {
+								public static class: java.lang.Class<com.google.maps.android.data.kml.KmlRenderer.DefaultKmlUrlSanitizer>;
+								public sanitizeUrl(param0: string): string;
+								public sanitizeUrl(this_: string): string;
+							}
 							export class GroundOverlayImageDownload extends globalAndroid.os.AsyncTask<string, java.lang.Void, globalAndroid.graphics.Bitmap> {
 								public static class: java.lang.Class<com.google.maps.android.data.kml.KmlRenderer.GroundOverlayImageDownload>;
+								public doInBackground(this_: androidNative.Array<string>): globalAndroid.graphics.Bitmap;
 								public onPostExecute(bitmap: globalAndroid.graphics.Bitmap): void;
 								public constructor(groundOverlayUrl: com.google.maps.android.data.kml.KmlRenderer, param1: string);
-								public doInBackground(e: androidNative.Array<string>): globalAndroid.graphics.Bitmap;
 							}
 							export class MarkerIconImageDownload extends globalAndroid.os.AsyncTask<string, java.lang.Void, globalAndroid.graphics.Bitmap> {
 								public static class: java.lang.Class<com.google.maps.android.data.kml.KmlRenderer.MarkerIconImageDownload>;
+								public doInBackground(this_: androidNative.Array<string>): globalAndroid.graphics.Bitmap;
 								public constructor(iconUrl: com.google.maps.android.data.kml.KmlRenderer, param1: string);
 								public onPostExecute(bitmap: globalAndroid.graphics.Bitmap): void;
-								public doInBackground(e: androidNative.Array<string>): globalAndroid.graphics.Bitmap;
 							}
 						}
 					}
@@ -2373,6 +2529,28 @@ declare module com {
 			export module android {
 				export module data {
 					export module kml {
+						export class KmlUrlSanitizer {
+							public static class: java.lang.Class<com.google.maps.android.data.kml.KmlUrlSanitizer>;
+							/**
+							 * Constructs a new instance of the com.google.maps.android.data.kml.KmlUrlSanitizer interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
+							 */
+							public constructor(implementation: { sanitizeUrl(param0: string): string });
+							public constructor();
+							public sanitizeUrl(param0: string): string;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export module data {
+					export module kml {
 						export class KmlUtil {
 							public static class: java.lang.Class<com.google.maps.android.data.kml.KmlUtil>;
 							public constructor();
@@ -2393,8 +2571,8 @@ declare module com {
 					export class Bounds {
 						public static class: java.lang.Class<com.google.maps.android.geometry.Bounds>;
 						public minX: number;
-						public minY: number;
 						public maxX: number;
+						public minY: number;
 						public maxY: number;
 						public midX: number;
 						public midY: number;
@@ -2420,7 +2598,10 @@ declare module com {
 						public static class: java.lang.Class<com.google.maps.android.geometry.Point>;
 						public x: number;
 						public y: number;
+						public equals(other: any): boolean;
+						public copy(x: number, y: number): com.google.maps.android.geometry.Point;
 						public constructor(x: number, y: number);
+						public hashCode(): number;
 						public toString(): string;
 					}
 				}
@@ -2436,15 +2617,33 @@ declare module com {
 				export module heatmaps {
 					export class Gradient {
 						public static class: java.lang.Class<com.google.maps.android.heatmaps.Gradient>;
-						public mColorMapSize: number;
-						public mColors: androidNative.Array<number>;
-						public mStartPoints: androidNative.Array<number>;
 						public constructor(colors: androidNative.Array<number>, startPoints: androidNative.Array<number>);
-						public constructor(this_: androidNative.Array<number>, colors: androidNative.Array<number>, startPoints: number);
+						public getColors(): androidNative.Array<number>;
+						public generateColorMap(): androidNative.Array<number>;
+						public static interpolateColor(color1: number, color2: number, ratio: number): number;
+						public getColorMapSize(): number;
+						public generateColorMap(i: number): androidNative.Array<number>;
+						public constructor($i$a$_require_Gradient$2: androidNative.Array<number>, $i$a$_require_Gradient$3: androidNative.Array<number>, i: number);
+						public getStartPoints(): androidNative.Array<number>;
 					}
 					export module Gradient {
 						export class ColorInterval {
 							public static class: java.lang.Class<com.google.maps.android.heatmaps.Gradient.ColorInterval>;
+							public component1(): number;
+							public getColor2(): number;
+							public hashCode(): number;
+							public component2(): number;
+							public equals(other: any): boolean;
+							public copy(color1: number, color2: number, duration: number): com.google.maps.android.heatmaps.Gradient.ColorInterval;
+							public component3(): number;
+							public toString(): string;
+							public getColor1(): number;
+							public getDuration(): number;
+							public constructor(color1: number, color2: number, duration: number);
+						}
+						export class Companion {
+							public static class: java.lang.Class<com.google.maps.android.heatmaps.Gradient.Companion>;
+							public interpolateColor(alpha: number, hsv1: number, hsv2: number): number;
 						}
 					}
 				}
@@ -2463,25 +2662,67 @@ declare module com {
 						public static DEFAULT_RADIUS: number = 20;
 						public static DEFAULT_OPACITY: number = 0.7;
 						public static DEFAULT_GRADIENT: com.google.maps.android.heatmaps.Gradient;
+						public static WORLD_WIDTH: number = 1.0;
+						public static MIN_RADIUS: number = 10;
+						public static MAX_RADIUS: number = 50;
 						public setOpacity(opacity: number): void;
 						public setMaxIntensity(intensity: number): void;
-						public setWeightedData(this_: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): void;
-						public setData(data: java.util.Collection<com.google.android.gms.maps.model.LatLng>): void;
+						public static convolve(grid: androidNative.Array<androidNative.Array<number>>, kernel: androidNative.Array<number>): androidNative.Array<androidNative.Array<number>>;
+						public static generateKernel(radius: number, sd: number): androidNative.Array<number>;
+						public static getBounds(points: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): com.google.maps.android.geometry.Bounds;
 						public setGradient(gradient: com.google.maps.android.heatmaps.Gradient): void;
-						public getTile(overlapBounds: number, p: number, bucketX: number): com.google.android.gms.maps.model.Tile;
+						public getTile(overlapBounds: number, $i$a$_forEach_HeatmapTileProvider$getTile$1: number, p: number): com.google.android.gms.maps.model.Tile;
+						public updateData(l: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): void;
+						public updateLatLngs(latLngs: java.util.Collection<com.google.android.gms.maps.model.LatLng>): void;
+						/** @deprecated */
+						public setWeightedData(data: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): void;
+						/** @deprecated */
+						public setData(latLngs: java.util.Collection<com.google.android.gms.maps.model.LatLng>): void;
 						public setRadius(radius: number): void;
 					}
 					export module HeatmapTileProvider {
 						export class Builder {
 							public static class: java.lang.Class<com.google.maps.android.heatmaps.HeatmapTileProvider.Builder>;
 							public constructor();
-							public opacity(val: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
-							public maxIntensity(val: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
-							public data(val: java.util.Collection<com.google.android.gms.maps.model.LatLng>): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
-							public gradient(val: com.google.maps.android.heatmaps.Gradient): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
-							public radius(val: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+							public setIntensity$library_release(value: number): void;
+							public setWeightedData$library_release(value: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): void;
+							public maxIntensity($this$maxIntensity_u24lambda_u240: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+							public setGradient$library_release(value: com.google.maps.android.heatmaps.Gradient): void;
+							public setOpacity$library_release(value: number): void;
+							public setRadius$library_release(value: number): void;
+							public getWeightedData$library_release(): java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>;
+							public gradient($this$gradient_u24lambda_u240: com.google.maps.android.heatmaps.Gradient): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+							public getGradient$library_release(): com.google.maps.android.heatmaps.Gradient;
+							public getOpacity$library_release(): number;
+							public weightedData($i$a$_apply_HeatmapTileProvider$Builder$weightedData$1: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+							public getRadius$library_release(): number;
+							public radius($i$a$_apply_HeatmapTileProvider$Builder$radius$1: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+							public opacity($i$a$_apply_HeatmapTileProvider$Builder$opacity$1: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+							public getIntensity$library_release(): number;
+							public data($i$a$_apply_HeatmapTileProvider$Builder$data$1: java.util.Collection<com.google.android.gms.maps.model.LatLng>): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
 							public build(): com.google.maps.android.heatmaps.HeatmapTileProvider;
-							public weightedData(val: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): com.google.maps.android.heatmaps.HeatmapTileProvider.Builder;
+						}
+						export class Companion {
+							public static class: java.lang.Class<com.google.maps.android.heatmaps.HeatmapTileProvider.Companion>;
+							public getBounds(x: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>): com.google.maps.android.geometry.Bounds;
+							public generateKernel(kernel: number, this_: number): androidNative.Array<number>;
+							public convolve(xUpperLimit: androidNative.Array<androidNative.Array<number>>, value: androidNative.Array<number>): androidNative.Array<androidNative.Array<number>>;
+							public getMaxValue$library_release(answer$iv: java.util.Collection<com.google.maps.android.heatmaps.WeightedLatLng>, $i$f$getOrPut: com.google.maps.android.geometry.Bounds, value$iv: number, $this$getOrPut$iv: number): number;
+							public colorize$library_release(index: androidNative.Array<androidNative.Array<number>>, col: androidNative.Array<number>, j: number): globalAndroid.graphics.Bitmap;
+						}
+						export module Companion {
+							export class Vector {
+								public static class: java.lang.Class<com.google.maps.android.heatmaps.HeatmapTileProvider.Companion.Vector>;
+								public toString(): string;
+								public component1(): number;
+								public copy(x: number, y: number): com.google.maps.android.heatmaps.HeatmapTileProvider.Companion.Vector;
+								public component2(): number;
+								public getX(): number;
+								public getY(): number;
+								public hashCode(): number;
+								public constructor(x: number, y: number);
+								public equals(other: any): boolean;
+							}
 						}
 					}
 				}
@@ -2498,10 +2739,24 @@ declare module com {
 					export class WeightedLatLng extends com.google.maps.android.quadtree.PointQuadTree.Item {
 						public static class: java.lang.Class<com.google.maps.android.heatmaps.WeightedLatLng>;
 						public static DEFAULT_INTENSITY: number = 1.0;
+						public equals(other: any): boolean;
+						public getLatLng(): com.google.android.gms.maps.model.LatLng;
+						public hashCode(): number;
+						public constructor(latLng: com.google.android.gms.maps.model.LatLng, point: com.google.maps.android.geometry.Point, intensity: number);
+						public toString(): string;
+						public constructor(latLng: com.google.android.gms.maps.model.LatLng);
+						public component2(): com.google.maps.android.geometry.Point;
 						public getPoint(): com.google.maps.android.geometry.Point;
 						public constructor(latLng: com.google.android.gms.maps.model.LatLng, intensity: number);
+						public component1(): com.google.android.gms.maps.model.LatLng;
+						public copy(latLng: com.google.android.gms.maps.model.LatLng, point: com.google.maps.android.geometry.Point, intensity: number): com.google.maps.android.heatmaps.WeightedLatLng;
 						public getIntensity(): number;
-						public constructor(latLng: com.google.android.gms.maps.model.LatLng);
+						public component3(): number;
+					}
+					export module WeightedLatLng {
+						export class Companion {
+							public static class: java.lang.Class<com.google.maps.android.heatmaps.WeightedLatLng.Companion>;
+						}
 					}
 				}
 			}
@@ -2548,14 +2803,18 @@ declare module com {
 				export module quadtree {
 					export class PointQuadTree<T> extends java.lang.Object {
 						public static class: java.lang.Class<com.google.maps.android.quadtree.PointQuadTree<any>>;
-						public constructor(bounds: com.google.maps.android.geometry.Bounds);
-						public search(searchBounds: com.google.maps.android.geometry.Bounds): java.util.Collection<T>;
-						public remove(item: T): boolean;
+						public remove(this_: T): boolean;
 						public constructor(minX: number, maxX: number, minY: number, maxY: number);
+						public constructor(mBounds: com.google.maps.android.geometry.Bounds, mDepth: number);
 						public clear(): void;
-						public add(item: T): void;
+						public search(this_: com.google.maps.android.geometry.Bounds): java.util.Collection<T>;
+						public constructor(mBounds: com.google.maps.android.geometry.Bounds);
+						public add(this_: T): void;
 					}
 					export module PointQuadTree {
+						export class Companion {
+							public static class: java.lang.Class<com.google.maps.android.quadtree.PointQuadTree.Companion>;
+						}
 						export class Item {
 							public static class: java.lang.Class<com.google.maps.android.quadtree.PointQuadTree.Item>;
 							/**
@@ -2720,6 +2979,43 @@ declare module com {
 	}
 }
 
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export module utils {
+					export module attribution {
+						export class AttributionIdInitializer extends androidx.startup.Initializer<any> {
+							public static class: java.lang.Class<com.google.maps.android.utils.attribution.AttributionIdInitializer>;
+							public constructor();
+							public create(context: globalAndroid.content.Context): void;
+							public dependencies(): java.util.List<java.lang.Class<any>>;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+declare module com {
+	export module google {
+		export module maps {
+			export module android {
+				export module utils {
+					export module meta {
+						export class AttributionId {
+							public static class: java.lang.Class<com.google.maps.android.utils.meta.AttributionId>;
+							public static INSTANCE: com.google.maps.android.utils.meta.AttributionId;
+							public static VALUE: string = 'gmp_git_androidmapsutils_v4.5.2';
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 //Generics information:
 //com.google.maps.android.clustering.Cluster:1
 //com.google.maps.android.clustering.ClusterManager:1
@@ -2731,6 +3027,8 @@ declare module com {
 //com.google.maps.android.clustering.ClusterManager.OnClusterItemInfoWindowLongClickListener:1
 //com.google.maps.android.clustering.algo.AbstractAlgorithm:1
 //com.google.maps.android.clustering.algo.Algorithm:1
+//com.google.maps.android.clustering.algo.CentroidNonHierarchicalDistanceBasedAlgorithm:1
+//com.google.maps.android.clustering.algo.ContinuousZoomEuclideanCentroidAlgorithm:1
 //com.google.maps.android.clustering.algo.GridBasedAlgorithm:1
 //com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm:1
 //com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm.QuadItem:1

@@ -14,8 +14,7 @@
 				"assets": [
 					"packages/google-maps-utils/*.md",
 					"packages/google-maps-utils/index.d.ts",
-					"packages/google-maps-utils/experimental/**/index.d.ts",
-					"packages/google-maps-utils/utils/index.d.ts",
+					"packages/google-maps-utils/*/index.d.ts",
 					"LICENSE",
 					{
 						"glob": "**/*",
