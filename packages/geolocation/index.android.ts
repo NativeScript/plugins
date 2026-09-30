@@ -128,7 +128,7 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 				successCallback = (value) => {
 					permissions
 						.request('location', {
-							type: 'always',
+							background: true,
 						})
 						.then(() => {
 							resolve();
@@ -145,7 +145,6 @@ function _requestLocationPermissions(always: boolean): Promise<void> {
 			// App has to request for foreground location permissions first, and request for background permissions afterwards if needed
 			permissions
 				.request('location', {
-					type: '',
 					coarse: true,
 					precise: true,
 				})
@@ -272,7 +271,7 @@ export function enableLocationRequest(always?: boolean, openSettingsIfLocationHa
 								}
 							}
 							reject(new Error('Cannot enable the location service. ' + ex));
-						}
+						},
 					);
 				}, reject);
 			}, reject);
@@ -356,14 +355,14 @@ function _systemDialogWillShow(always: boolean): boolean {
 async function _permissionIsGiven(always: boolean): Promise<boolean> {
 	const accessBackground = await permissions.check('android.permission.ACCESS_BACKGROUND_LOCATION');
 	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
-	return always ? authorizedStatus.includes(accessBackground[0]) && accessBackground[1] : authorizedStatus.includes(accessFine[0]) && accessFine[1];
+	return always ? authorizedStatus.includes(accessBackground) : authorizedStatus.includes(accessFine);
 }
 
 async function hasFineAndCoursePermission(): Promise<boolean> {
 	const accessFine = await permissions.check('android.permission.ACCESS_FINE_LOCATION');
 	const accessCourse = await permissions.check('android.permission.ACCESS_COARSE_LOCATION');
-	const hasAccessFine = authorizedStatus.includes(accessFine[0]) && accessFine[1] === true;
-	const hasAccessCourse = authorizedStatus.includes(accessCourse[0]) && accessCourse[1] === true;
+	const hasAccessFine = authorizedStatus.includes(accessFine);
+	const hasAccessCourse = authorizedStatus.includes(accessCourse);
 	return hasAccessFine && hasAccessCourse;
 }
 
@@ -382,7 +381,7 @@ export function isEnabled(options?: Options): Promise<boolean> {
 						return resolve(true);
 					}
 					resolve(false);
-				}
+				},
 			);
 		}
 	});
