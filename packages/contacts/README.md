@@ -90,7 +90,7 @@ import { request } from '@nativescript-community/perms';
 const contact = new Contact();
 // build a new contact...
 
-requestPermissions({
+request({
 	"contacts": {},
 	"android.permission.GET_ACCOUNTS": {},
 	"android.permission.READ_CONTACTS": {},
