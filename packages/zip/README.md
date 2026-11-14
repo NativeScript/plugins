@@ -11,6 +11,7 @@ A plugin to zip and unzip files.
 	* [Zip a folder](#zip-a-folder)
 	* [Get zip request progress](#get-zip-request-progress)
 	* [Get unzip request progress](#get-unzip-request-progress)
+* [Platform notes](#platform-notes)
 * [API](#api) 
 	* [Zip class](#zip-class)
 		* [debugEnabled](#debugenabled)
@@ -113,6 +114,29 @@ function onUnZipProgress(percent: number) {
 }
 ```
 
+## Platform notes
+
+Supported on iOS, macOS, Android, Windows and Linux.
+
+**Windows** uses a built-in C# engine, compiled into the app, that relies on .NET's `DeflateStream` and cryptography APIs. It needs no extra dependencies.
+
+**Linux** uses a bundled, pinned copy of [minizip-ng](https://github.com/zlib-ng/minizip-ng), linked against the system zlib, GLib and OpenSSL (`libcrypto`). These are part of the base system on current desktop distributions, so end users don't need to install anything. Building an app that uses this plugin requires the OpenSSL development headers:
+
+```bash
+sudo apt install libssl-dev        # Debian / Ubuntu / Pop!_OS
+sudo dnf install openssl-devel     # Fedora
+```
+
+On both platforms:
+
+- **Background work:** zipping and unzipping run on a background thread and stream data, so memory use doesn't depend on archive or file size. Archives over 4 GB (ZIP64) are supported.
+- **Passwords:**
+  - Archives created with a `password` use WinZip AES-256 encryption, the same as iOS and Android.
+  - When unzipping, both AES and legacy ZipCrypto archives are supported, and AES entries are authenticated.
+- **Extraction safety:**
+  - Entries that would land outside the destination folder are skipped, and so are symbolic links.
+  - Each file is written to a temporary file first and only moved into place after it has been verified, so a failed extraction never replaces an existing file.
+
 ## API 
 
 ### Zip class
@@ -163,7 +187,7 @@ Extracts all the files from the zip file specified in the `archive` property of 
 | `directory` | `string`| _Optional_: The path to extract the files to.
 | `archive` | `string` | _Optional_: The path of the zip file.
 | `onProgress` | `(progress: number) => void` | _Optional_: Unzip request progress listener.
-| `overwrite`| `boolean` | _Optional_: (`iOS-only`)
+| `overwrite`| `boolean` | _Optional_: Overwrite existing files (default `true`). Supported on iOS, macOS, Windows and Linux.
 | `password`| `string` | _Optional_: The password used to protect the zip file.
 
 ## License
