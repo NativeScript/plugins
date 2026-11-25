@@ -6,7 +6,6 @@
 	"tags": [],
 	"targets": {
 		"build": {
-			"executor": "@nx/js:tsc",
 			"options": {
 				"outputPath": "dist/packages/pdf",
 				"tsConfig": "packages/pdf/tsconfig.json",
@@ -29,15 +28,22 @@
 						"projects": "dependencies"
 					}
 				]
-			}
+			},
+			"executor": "@nx/js:tsc",
+			"dependsOn": [
+				{
+					"target": "build.all",
+					"dependencies": true
+				}
+			]
 		},
 		"build.all": {
-			"executor": "nx:run-commands",
+			"outputs": ["{workspaceRoot}/dist/packages/pdf"],
 			"options": {
 				"commands": ["node tools/scripts/build-finish.ts pdf"],
 				"parallel": false
 			},
-			"outputs": ["{workspaceRoot}/dist/packages/pdf"],
+			"executor": "nx:run-commands",
 			"dependsOn": [
 				{
 					"target": "build.all",
