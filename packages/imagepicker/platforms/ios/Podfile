@@ -1,1 +1,0 @@
-pod "QBImagePickerController", :git => 'https://github.com/smartmobilefactory/QBImagePicker.git', :commit => '1e5cd05d3be0c56fd654d36b77768339faf29248'

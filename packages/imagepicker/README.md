@@ -19,7 +19,7 @@
 
 Imagepicker plugin supporting both single and multiple selection.
 
-- Plugin supports **iOS8+** and uses [QBImagePicker](https://github.com/questbeat/QBImagePicker) cocoapod.
+- Plugin supports **iOS 14+** and uses the system [PHPickerViewController](https://developer.apple.com/documentation/photokit/phpickerviewcontroller) (the modern Photos picker with search and albums). No CocoaPods dependency is required.
 - For **Android** it uses [Intents](https://developer.android.com/reference/android/content/Intent) to open the stock images or file pickers. For Android 6 (API 23) and above, the permissions to read file storage should be explicitly required. 
 
 ## Installation
@@ -28,6 +28,11 @@ Install the plugin by running the following command in the root directory of you
 ```cli
 npm install @nativescript/imagepicker
 ```
+**Note: Version 5.1 changes on iOS:**
+* The picker is now the system `PHPickerViewController`. It runs out of process, so it can be presented without photo-library permission; calling `authorize()` first is still recommended so that selections resolve to their `PHAsset` (see [iOS required permissions](#ios-required-permissions)).
+* `minimumNumberOfSelection`, `showsNumberOfSelectedAssets`, `prompt`, `numberOfColumnsInPortrait` and `numberOfColumnsInLandscape` are accepted but have no effect, because the system picker owns its own UI.
+* Requires iOS 14 or later.
+
 **Note: Version 3.1 contains breaking changes:**
 * New behavior on iOS when the user selects `Limit AccessLim..` detailed in [iOS Limited permission](#ios-limited-permission).
 
@@ -82,7 +87,9 @@ For phones running  < Android 13, this `use_photo_picker` option has no effect.
 
 ### iOS required permissions
 
-Using the plugin on iOS requires the `NSPhotoLibraryUsageDescription` permission. Modify the `app/App_Resources/iOS/Info.plist` file to add it as follows:
+The system picker itself needs no permission. `authorize()` requests photo-library access so that picked items resolve to their `PHAsset` (giving you `asset`, `filesize`, `duration` and `thumbnail` straight from the library). If access is not granted, `present()` still works: the picker hands over a copy of each selected file, which the plugin stores in the app's temporary folder and exposes through `path` and `asset`.
+
+Calling `authorize()` requires the `NSPhotoLibraryUsageDescription` permission. Modify the `app/App_Resources/iOS/Info.plist` file to add it as follows:
 
 ```xml
 <key>NSPhotoLibraryUsageDescription</key>
@@ -95,6 +102,8 @@ Apple App Store might reject your app if you do not describe why you need this p
 Apple introduced the `PHAuthorizationStatusLimited` permission status with iOS 14, this is where the user specifies that the app can only access specified photos by choosing the `Limit Access..` option in the authorization dialog.
 
 In this case `authorise()` will return an `AuthorizationResult` where `authorized` will be `true` and the `details` will contain `'limited'`.
+
+With limited access the system picker still lets the user browse their whole library. Items inside the limited selection resolve to their `PHAsset`; any other item falls back to a copy of the file, exactly as when access was not granted. A single `present()` call can therefore return a mix of both.
 
 Every time the app is launched anew, and the authorize method is called, if the current permission is `limited` the user will be prompted to update the image selection.
 
@@ -159,7 +168,18 @@ imagePickerObj
     });
 ```
 
+On iOS you may also skip `authorize()` altogether: `present()` shows the system picker without any permission and every selection comes back as a file copy (with `asset`, `path`, `filename`, `filesize`, `type`, `duration` and `thumbnail` still populated).
+
+<!--tabs: TS  -->
+```ts
+if (isIOS) {
+    const selection = await imagePickerObj.present(); // rejects with Error('Canceled') if dismissed
+}
+```
+
 ### Demo
+A short recording of the demo app on an iPhone 15 Pro Max with photo access set to None. The PHPicker still opens, the picks come back as file copies, and the progress callback fires for each item: [imagepicker-ios-phpicker.mov](images/imagepicker-ios-phpicker.mov)
+
 You can play with the plugin on StackBlitz at any of the following links:
 
  - [NativeScript TypeScript](https://stackblitz.com/edit/nativescript-stackblitz-templates-2pv6zn?file=app/main-page.xml)
@@ -187,18 +207,37 @@ An object passed to the `create` method to specify the characteristics of a medi
 | Option | Type | Default |Description                                                          
 |:---------------------------|:-------- |:---------|:-------
 | `mode`                       | `string`     | `multiple`  | The mode of the imagepicker. Possible values are `single` for single selection and `multiple` for multiple selection.                              |
-| `minimumNumberOfSelection`    | `number`      | `0`         | _Optional_:  (`iOS-only`) The minumum number of selected assets.                                                                                                             |
+| `minimumNumberOfSelection`    | `number`      | `0`         | _Optional_:  (`iOS-only`) Deprecated: ignored by the system picker.                                                                                                             |
 | `maximumNumberOfSelection`    | `number`      | `0`         | _Optional_:  (`iOS-only`, `Android-Photo Picker-Only`) The maximum number of selected assets.                                                                                                             |
-| `showsNumberOfSelectedAssets` | `boolean`      | `true`      | _Optional_:  (`iOS-only`) Display the number of selected assets.                                                                                                             |
-| `prompt`                      | `string`      | `undefined` | _Optional_:  (`iOS-only`) Display prompt text when selecting assets.                                                                                                         |
-| `numberOfColumnsInPortrait`   | `number`      | `4`         | _Optional_:  (`iOS-only`) Sets the number of columns in Portrait orientation                                                                                                  |
-| `numberOfColumnsInLandscape`  | `number`      | `7`         | _Optional_:  (`iOS-only`) Sets the number of columns in Landscape orientation.                                                                                                |
+| `showsNumberOfSelectedAssets` | `boolean`      | `true`      | _Optional_:  (`iOS-only`) Deprecated: ignored by the system picker.                                                                                                             |
+| `prompt`                      | `string`      | `undefined` | _Optional_:  (`iOS-only`) Deprecated: ignored by the system picker.                                                                                                         |
+| `numberOfColumnsInPortrait`   | `number`      | `4`         | _Optional_:  (`iOS-only`) Deprecated: ignored by the system picker.                                                                                                  |
+| `numberOfColumnsInLandscape`  | `number`      | `7`         | _Optional_:  (`iOS-only`) Deprecated: ignored by the system picker.                                                                                                |
 | `mediaType`                   | [ImagePickerMediaType](#imagepickermediatype)     | `Any`       |_Optional_: The type of media asset to pick whether to pick Image/Video/Any type of assets. |
 | `copyToAppFolder`             | `string`      | `undefined` | _Optional_:  If passed, a new folder will be created in your applications folder and the asset will be copied there.                                                           |
 | `renameFileTo`                | `string`      | `undefined` | _Optional_:  If passed, the copied file will be named what you choose. If you select multiple, -index will be appended.                                                           |
+| `onProgress`                  | `(progress: ImagePickerProgress) => void` | `undefined` | _Optional_: Called while the selected items are resolved. See [Progress](#progress). |
 | `showAdvanced `               | `boolean`  | `false`     | _Optional_:(`Android-only`) Show internal and removable storage options on Android (**WARNING**: [not supported officially](https://issuetracker.google.com/issues/72053350)). |
 | `android` | `{read_external_storage: string;}`| _Optional_: (`Android-only`) Provides a reason for permission request to access external storage on API level above 23.
 
+
+### Progress
+
+Pass `onProgress` to be told how far along each selected item is while `present()` resolves. Each call carries the item's zero-based `index`, the `total` number of items and a `fraction` from 0 to 1 that never goes backwards. Every item ends with a `fraction` of 1.
+
+<!-- tabs: TS -->
+```ts
+let imagePickerObj: ImagePicker = imagePickerPlugin.create({
+    mode: "multiple",
+    onProgress: ({ index, total, fraction }) => {
+        progressBar.value = Math.round(fraction * 100);
+        label.text = `Loading ${index + 1} of ${total}`;
+    },
+});
+```
+
+- **iOS** streams the download progress of items that live in iCloud (through `PHPickerViewController`'s item provider, or PhotoKit when the app has library access). Items already on the device usually go straight to 1.
+- **Android** has no download progress to report, so it emits a single `fraction: 1` per item once that item is ready. This still lets you show an "n of total" counter.
 
 ### ImagePickerMediaType
 
