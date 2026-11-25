@@ -10,14 +10,8 @@ export function getAspectSafeDimensions(sourceWidth, sourceHeight, reqWidth, req
 		height: Math.floor(sourceHeight / aspectCoef),
 	};
 }
-function mapStatus(result: permissions.Result): Status {
-	let status = Status.unknown;
-	if (result && result.length > 1) {
-		if (Object.keys(Status).findIndex((k) => k === result[0]) >= 0) {
-			status = Status[result[0]];
-		}
-	}
-	return status;
+function mapStatus(result: permissions.Status): Status {
+	return Status[result] ?? Status.unknown;
 }
 export function mapError(e): PermissionResult {
 	return {
@@ -26,7 +20,7 @@ export function mapError(e): PermissionResult {
 		Error: e,
 	};
 }
-export function mapCameraPermissionStatus(permission: permissions.Result): PermissionResult {
+export function mapCameraPermissionStatus(permission: permissions.Status): PermissionResult {
 	const status = mapStatus(permission);
 	const result = {
 		Success: status === Status.authorized,
@@ -35,7 +29,7 @@ export function mapCameraPermissionStatus(permission: permissions.Result): Permi
 	return result;
 }
 
-export function mapPhotoPermissionStatus(permission: permissions.Result): PermissionResult {
+export function mapPhotoPermissionStatus(permission: permissions.Status): PermissionResult {
 	const status = mapStatus(permission);
 	const result = {
 		Success: status === Status.authorized || status === Status.limited,
