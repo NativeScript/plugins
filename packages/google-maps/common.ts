@@ -15,6 +15,21 @@ export enum JointType {
 	Default = 'default',
 }
 
+export enum CollisionBehavior {
+	/**
+	 * Always render the marker, ignoring collisions with other markers or labels (default).
+	 */
+	Required = 'required',
+	/**
+	 * Render the marker only when it doesn't overlap with other markers. If it does, hide it.
+	 */
+	OptionalAndHidesLowerPriority = 'optionalAndHidesLowerPriority',
+	/**
+	 * Always render the marker, and hide any overlapping `OptionalAndHidesLowerPriority` markers/labels.
+	 */
+	RequiredAndHidesOptional = 'requiredAndHidesOptional',
+}
+
 export const latProperty = new Property<MapViewBase, number>({
 	name: 'lat',
 });
@@ -38,6 +53,10 @@ export const tiltProperty = new Property<MapViewBase, number>({
 export const preventDefaultMarkerTapBehaviorProperty = new Property<MapViewBase, boolean>({
 	name: 'preventDefaultMarkerTapBehavior',
 	defaultValue: false,
+});
+
+export const mapIdProperty = new Property<MapViewBase, string>({
+	name: 'mapId',
 });
 
 export class MapViewBase extends ContentView {
@@ -79,6 +98,7 @@ export class MapViewBase extends ContentView {
 	bearing: number;
 	tilt: number;
 	preventDefaultMarkerTapBehavior: boolean;
+	mapId: string;
 }
 
 latProperty.register(MapViewBase);
@@ -87,3 +107,4 @@ zoomProperty.register(MapViewBase);
 bearingProperty.register(MapViewBase);
 tiltProperty.register(MapViewBase);
 preventDefaultMarkerTapBehaviorProperty.register(MapViewBase);
+mapIdProperty.register(MapViewBase);

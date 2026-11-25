@@ -1,5 +1,5 @@
 import { Color, ImageSource, EventData, View } from '@nativescript/core';
-import { JointType, MapType, MapViewBase } from './common';
+import { CollisionBehavior, JointType, MapType, MapViewBase } from './common';
 
 export { hueFromColor, intoNativeMarkerOptions } from './utils';
 
@@ -302,9 +302,52 @@ export interface IMarker {
 	userData: { [key: string]: any };
 }
 
+/**
+ * A single glyph shown inside an advanced-marker pin. Provide one of: `text` (optionally with
+ * `textColor`), a monochrome `glyphColor`, or a custom `icon`.
+ */
+export interface Glyph {
+	/**
+	 * A short piece of text (typically 1-2 characters) rendered in the center of the pin.
+	 */
+	text?: string;
+	/**
+	 * Color of the glyph `text`.
+	 */
+	textColor?: Color | string;
+	/**
+	 * Renders the default glyph shape tinted with this color. Ignored when `text` or `icon` is set.
+	 */
+	glyphColor?: Color | string;
+	/**
+	 * A custom image rendered as the glyph.
+	 */
+	icon?: any /* ImageSource, UIImage & Bitmap */;
+}
+
+/**
+ * Styling for an advanced-marker pin. Requires the map to be created with a cloud `mapId` that has
+ * advanced markers enabled; otherwise it is ignored and a default marker is shown.
+ */
+export interface PinConfig {
+	backgroundColor?: Color | string;
+	borderColor?: Color | string;
+	glyph?: Glyph;
+}
+
 export interface MarkerOptions extends Partial<IMarker> {
 	anchorU?: number;
 	anchorV?: number;
+	/**
+	 * Turns this into an advanced marker with the given styled pin. Requires a cloud `mapId` with
+	 * advanced markers enabled.
+	 */
+	pinConfig?: PinConfig;
+	/**
+	 * Turns this into an advanced marker with the given collision behavior. Requires a cloud `mapId`
+	 * with advanced markers enabled. Defaults to {@link CollisionBehavior.Required}.
+	 */
+	collisionBehavior?: CollisionBehavior;
 }
 
 export class Marker implements IMarker, Partial<NativeObject> {
@@ -321,6 +364,11 @@ export class Marker implements IMarker, Partial<NativeObject> {
 	flat: boolean;
 	zIndex: number;
 	userData: { [key: string]: any };
+	/**
+	 * Collision behavior for advanced markers. On iOS this can be changed after creation; on Android
+	 * it is fixed at creation time and setting it after has no effect.
+	 */
+	collisionBehavior: CollisionBehavior;
 	hideInfoWindow(): void;
 
 	showInfoWindow(): void;
@@ -528,6 +576,21 @@ export class Polygon implements IPolygon {
 	userData: { [key: string]: any };
 }
 
+/**
+ * A styled section of a {@link Polyline}. Provide either a solid `color` or a `gradient`
+ * (blending from `from` to `to` along the span). `segments` is the length of the span measured in
+ * number of line segments (the sections between consecutive vertices); omit it and the span covers
+ * a single segment. Spans are applied in order from the start of the line.
+ */
+export interface StyleSpan {
+	/** Solid color for this span. Ignored when `gradient` is set. */
+	color?: Color | string;
+	/** A color gradient blended along this span. Takes precedence over `color`. */
+	gradient?: { from: Color | string; to: Color | string };
+	/** Length of the span in line segments (defaults to 1). */
+	segments?: number;
+}
+
 export interface IPolyline {
 	width: number;
 	points: Coordinate[];
@@ -540,6 +603,7 @@ export interface IPolyline {
 	color: Color | string;
 	startCap: Cap & Partial<NativeObject>;
 	endCap: Cap & Partial<NativeObject>;
+	spans: StyleSpan[];
 	userData: { [key: string]: any };
 }
 
@@ -618,6 +682,11 @@ export class Polyline extends NativeObject implements IPolyline {
 	 * Default is {@link ButtCap}.
 	 */
 	endCap: Cap & Partial<NativeObject>;
+	/**
+	 * Per-segment styling applied along the line, overriding {@link color}. Each {@link StyleSpan}
+	 * covers a run of segments (see {@link StyleSpan.segments}) using a solid color or a gradient.
+	 */
+	spans: StyleSpan[];
 	userData: { [key: string]: any };
 }
 
@@ -768,4 +837,4 @@ export class UrlTileProvider extends TileProvider {
 	constructor(callback: (x: number, y: number, zoom: number) => string, size?: number);
 }
 
-export { MapType, JointType };
+export { MapType, JointType, CollisionBehavior };

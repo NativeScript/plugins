@@ -1,9 +1,9 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "rootDir": "."
-  },
-  "exclude": ["**/*.spec.ts", "angular", "src-native"],
-  "include": ["**/*.ts", "references.d.ts"]
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "../../dist/out-tsc",
+		"rootDir": "."
+	},
+	"exclude": ["**/*.spec.ts", "angular", "nativescript.config.ts", "src-native"],
+	"include": ["**/*.ts", "references.d.ts"]
 }
