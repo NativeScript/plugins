@@ -46,6 +46,14 @@ export interface InputAccessoryConfig {
 	 * Padding added to the text height when calculating container height. Default: 16.
 	 */
 	containerPadding?: number;
+
+	/**
+	 * Extra horizontal inset (DIPs) applied to the input container while the
+	 * software keyboard is hidden, so the docked bar floats narrower against
+	 * the device's rounded bottom corners. Animates to full width in sync
+	 * with the keyboard opening. iOS only. Default: 0.
+	 */
+	collapsedHorizontalInset?: number;
 }
 
 /**
@@ -60,6 +68,7 @@ export class InputAccessoryManagerBase {
 	protected baseHeight: number = 48;
 	protected maxHeight: number = 200;
 	protected containerPadding: number = 16;
+	protected collapsedHorizontalInset: number = 0;
 	protected isRelayoutingScrollView: boolean = false;
 
 	/**
@@ -72,6 +81,7 @@ export class InputAccessoryManagerBase {
 		if (config.baseHeight != null) this.baseHeight = config.baseHeight;
 		if (config.maxHeight != null) this.maxHeight = config.maxHeight;
 		if (config.containerPadding != null) this.containerPadding = config.containerPadding;
+		if (config.collapsedHorizontalInset != null) this.collapsedHorizontalInset = config.collapsedHorizontalInset;
 	}
 
 	/**
@@ -90,14 +100,21 @@ export class InputAccessoryManagerBase {
 			const width = this.getScrollViewWidth();
 			if (width <= 0) return;
 
-			const widthSpec = Utils.layout.makeMeasureSpec(width, Utils.layout.EXACTLY);
+			// Content sits inside the safe-area insets of a viewport that
+			// overflows them, and contentSize includes those insets, as in
+			// core's ScrollView layout. Unlike core, contentSize is not padded
+			// up to the viewport: the keyboard handling scrolls by what the
+			// content really measures, so short content stays put.
+			const insets = this.getScrollViewInsets();
+			const contentWidth = Math.max(0, width - insets.left - insets.right);
+			const widthSpec = Utils.layout.makeMeasureSpec(contentWidth, Utils.layout.EXACTLY);
 			const heightSpec = Utils.layout.makeMeasureSpec(0, Utils.layout.UNSPECIFIED);
 
 			stackLayout.measure(widthSpec, heightSpec);
 			const measuredHeight = stackLayout.getMeasuredHeight();
-			stackLayout.layout(0, 0, width, measuredHeight);
+			stackLayout.layout(insets.left, insets.top, insets.left + contentWidth, insets.top + measuredHeight);
 
-			this.updateScrollContentSize(width, measuredHeight);
+			this.updateScrollContentSize(width, measuredHeight + insets.top + insets.bottom);
 		} finally {
 			this.isRelayoutingScrollView = false;
 		}
@@ -108,6 +125,19 @@ export class InputAccessoryManagerBase {
 	 */
 	protected getScrollViewWidth(): number {
 		return 0;
+	}
+
+	/**
+	 * The safe-area insets core lays the scroll content out with, in device
+	 * pixels. Zero on Android and for an iOS-managed content inset, as in core.
+	 */
+	public getScrollViewInsets(): { left: number; top: number; right: number; bottom: number } {
+		const scrollView = this.nsScrollViewContainer;
+		const zero = { left: 0, top: 0, right: 0, bottom: 0 };
+		if (!scrollView || typeof scrollView.getSafeAreaInsets !== 'function') return zero;
+		const behavior = (scrollView as ScrollView & { iosContentInsetAdjustmentBehavior?: string }).iosContentInsetAdjustmentBehavior;
+		if (behavior && behavior !== 'never') return zero;
+		return scrollView.getSafeAreaInsets();
 	}
 
 	/**

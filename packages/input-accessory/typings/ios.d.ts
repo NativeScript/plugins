@@ -74,6 +74,12 @@ declare class KeyboardTrackingView extends UIView {
 
 	dismissKeyboard(): void;
 
+	restoreAccessory(): void;
+
+	setAccessoryRelayoutCallback(callback: () => void): void;
+
+	setCollapsedHorizontalInset(inset: number): void;
+
 	setScrollViewRelayoutCallback(callback: () => void): void;
 
 	setupWithInputContainerScrollViewHeight(inputContainer: UIView, scrollView: UIScrollView, height: number): void;
@@ -81,6 +87,8 @@ declare class KeyboardTrackingView extends UIView {
 	setTextInputView(textInputView: UIView): void;
 
 	showKeyboardWithTextField(textField: UITextField): void;
+
+	suspendAccessory(): void;
 
 	setDismissingKeyboard(): void;
 

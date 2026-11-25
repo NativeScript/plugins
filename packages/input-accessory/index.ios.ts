@@ -25,6 +25,10 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 		this.keyboardTrackingView = KeyboardTrackingView.alloc().initWithFrame(CGRectMake(0, 0, 0, 0));
 		viewController.view.addSubview(this.keyboardTrackingView);
 
+		// Must be set before setup so the accessory starts in the collapsed
+		// (keyboard hidden) width state.
+		this.keyboardTrackingView.setCollapsedHorizontalInset(this.collapsedHorizontalInset);
+
 		// Swift moves the native UIView into the inputAccessoryView
 		this.keyboardTrackingView.setupWithInputContainerScrollViewHeight(this.inputContainerView, scrollViewNative, inputHeight);
 
@@ -41,21 +45,25 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 			this.relayoutScrollViewContent();
 		});
 
+		// Invoked inside the native width animation block so the composer
+		// children re-layout (and therefore animate) with the keyboard.
+		this.keyboardTrackingView.setAccessoryRelayoutCallback(() => {
+			this.relayoutAccessory();
+		});
+
 		// Configure UITextView for auto-growing
 		const nativeTextView = config.textView.ios as UITextView;
 		if (nativeTextView) {
 			nativeTextView.scrollEnabled = false;
-			nativeTextView.textContainerInset = new UIEdgeInsets({
-				top: 10,
-				left: 10,
-				bottom: 10,
-				right: 10,
-			});
-			nativeTextView.autocorrectionType = UITextAutocorrectionType.Yes;
-			nativeTextView.spellCheckingType = UITextSpellCheckingType.No;
-			nativeTextView.smartQuotesType = UITextSmartQuotesType.No;
-			nativeTextView.smartDashesType = UITextSmartDashesType.No;
-			nativeTextView.smartInsertDeleteType = UITextSmartInsertDeleteType.No;
+			// textContainerInset is core's: it maps the TextView's CSS padding
+			// onto the inset and re-applies that mapping on every full style
+			// pass (appearance change, trait change, hint transition), so a
+			// value written here would be stomped later and misalign the text.
+			// Callers size the text through the TextView's CSS padding.
+			// Input traits (autocorrection, spell checking, smart punctuation,
+			// inline predictions) stay at their UIKit defaults so the composer
+			// follows the user's keyboard settings and the hosted TextView's
+			// own attributes (e.g. autocorrect="false") apply.
 			nativeTextView.inputAssistantItem.leadingBarButtonGroups = Utils.ios.collections.jsArrayToNSArray([]);
 			nativeTextView.inputAssistantItem.trailingBarButtonGroups = Utils.ios.collections.jsArrayToNSArray([]);
 			this.keyboardTrackingView.setTextInputView(nativeTextView);
@@ -75,8 +83,23 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 		const currentWidth = nativeTextView.frame.size.width;
 		const fittingSize = nativeTextView.sizeThatFits(CGSizeMake(currentWidth, 10000));
 
-		let newHeight = fittingSize.height + this.containerPadding;
-		newHeight = Math.max(this.baseHeight, Math.min(newHeight, this.maxHeight));
+		const naturalHeight = fittingSize.height + this.containerPadding;
+		const newHeight = Math.max(this.baseHeight, Math.min(naturalHeight, this.maxHeight));
+
+		// Past the capped accessory height the bar can no longer grow, so the
+		// TextView scrolls itself to keep the newest lines and the caret
+		// reachable; below the cap it stays unscrollable and the bar grows.
+		const shouldScroll = naturalHeight > this.maxHeight;
+		if (nativeTextView.scrollEnabled !== shouldScroll) {
+			nativeTextView.scrollEnabled = shouldScroll;
+			if (!shouldScroll) {
+				// Back below the cap: a leftover offset would leave the top lines clipped.
+				nativeTextView.setContentOffsetAnimated(CGPointMake(0, 0), false);
+			}
+		}
+		if (shouldScroll) {
+			nativeTextView.scrollRangeToVisible(nativeTextView.selectedRange);
+		}
 
 		// Update native accessory container height
 		this.keyboardTrackingView.updateHeight(newHeight);
@@ -96,6 +119,29 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 			return;
 		}
 		Utils.dismissKeyboard();
+	}
+
+	/**
+	 * Hide the docked accessory while a sheet/popover/dialog is presented over
+	 * the host page. Sheet presentations keep the page in the window, and the
+	 * accessory lives in the keyboard's own window which UIKit z-orders above
+	 * the sheet, so without this the bar floats on top of the dialog. Animates
+	 * the bar (and keyboard, if open) away and blocks the plugin's auto-restore
+	 * paths until restore() is called.
+	 */
+	suspend(): void {
+		this.keyboardTrackingView?.suspendAccessory();
+	}
+
+	/**
+	 * Re-show the docked accessory after a modal that covered the host page was
+	 * dismissed. UIKit does not restore first responder automatically, so call
+	 * this when returning from a modal/resource view. Polls internally until the
+	 * modal is fully gone, so it is safe to call as soon as the modal closes.
+	 * Also lifts a suspend() suspension.
+	 */
+	restore(): void {
+		this.keyboardTrackingView?.restoreAccessory();
 	}
 
 	cleanup(): void {
@@ -125,6 +171,9 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 
 		if (width <= 0 || height <= 0) return;
 
+		// frame.origin.x carries the collapsed horizontal inset; laying out at
+		// 0 would snap the container back to the screen edge.
+		const dpX = Utils.layout.toDevicePixels(frame.origin.x);
 		const dpWidth = Utils.layout.toDevicePixels(width);
 		const dpHeight = Utils.layout.toDevicePixels(height);
 
@@ -132,7 +181,7 @@ export class InputAccessoryManager extends InputAccessoryManagerBase {
 		const heightSpec = Utils.layout.makeMeasureSpec(dpHeight, Utils.layout.EXACTLY);
 
 		this.nsInputContainer.measure(widthSpec, heightSpec);
-		this.nsInputContainer.layout(0, 0, dpWidth, dpHeight);
+		this.nsInputContainer.layout(dpX, 0, dpX + dpWidth, dpHeight);
 
 		// Force hint placeholder to re-render after reparenting into the accessory
 		if (this.textView && (!this.textView.text || this.textView.text.length === 0)) {
