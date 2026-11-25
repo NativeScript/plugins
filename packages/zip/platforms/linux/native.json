@@ -1,0 +1,4 @@
+{
+	"pkg-config": ["zlib", "glib-2.0", "libcrypto"],
+	"cflags": ["-O2", "-std=gnu11", "-fvisibility=hidden", "-Wno-deprecated-declarations", "-DHAVE_ZLIB", "-DZLIB_COMPAT", "-DHAVE_PKCRYPT", "-DHAVE_WZAES", "-DHAVE_GETRANDOM", "-D_POSIX_C_SOURCE=200809L", "-D_DEFAULT_SOURCE", "-D_BSD_SOURCE"]
+}
