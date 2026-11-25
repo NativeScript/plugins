@@ -1,5 +1,5 @@
 import { ImageAsset, ImageSource } from '@nativescript/core';
-import { MultiResult, Result } from '@nativescript-community/perms';
+import { MultiResult, Status } from '@nativescript-community/perms';
 
 export enum ImagePickerMediaType {
 	Any = 0,
@@ -148,18 +148,17 @@ export interface ImagePickerApi {
 
 export interface AuthorizationResult {
 	authorized: boolean;
-	details: MultiResult | Result;
+	details: MultiResult | Status;
 }
 const requestingPermissions = ['android.permission.READ_MEDIA_IMAGES', 'android.permission.READ_MEDIA_VIDEO'];
 
 export abstract class ImagePickerBase implements ImagePickerApi {
 	abstract authorize(): Promise<AuthorizationResult>;
 	abstract present(): Promise<ImagePickerSelection[]>;
-	protected mapResult(result: MultiResult | Result): AuthorizationResult {
+	protected mapResult(result: MultiResult | Status): AuthorizationResult {
 		let authorized = true;
-		if (Array.isArray(result) && result.length == 2) {
-			// is of type Result
-			authorized = result[0] === 'authorized' || result[0] === 'limited';
+		if (typeof result === 'string') {
+			authorized = result === 'authorized' || result === 'limited';
 		} else {
 			const t = result as MultiResult;
 			requestingPermissions.forEach((permission) => {
